@@ -82,7 +82,6 @@ for project in "${projects[@]}"; do
     --file "$nupkg_path"
 done
 
-
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
     for exec_path in "./$project/bin/$configuration"/*-"$tag-$rid".*
@@ -94,5 +93,16 @@ for project in "${executables[@]}"; do
         --name "$(basename "$exec_path")" \
         --file "$exec_path"
     done
+  done
+done
+
+for npmpkg in "${npm_packages[@]}"; do
+  for tgz in "./$npmpkg"/*.tgz; do
+    "$(dirname "$0")/github-release.sh" upload \
+      --user "$github_user" \
+      --repo "$github_repo" \
+      --tag "$tag" \
+      --name "$(basename "$tgz")" \
+      --file "$tgz"
   done
 done

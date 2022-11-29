@@ -43,8 +43,8 @@ dotnet tool install -g Libplanet.Tools
 ### Manual installation [![GitHub Releases][releases-badge]][releases page]
 
 Or you could just download an executable binary for your platform from
-the [releases page]: *planet-\*-{linux,osx,win}-x64.{tar.xz,zip}* files are
-CLI tools.  Linux (x64), macOS (x64), and Windows (x64) are supported.
+the [releases page]: *planet-\*-{linux,osx,win}-{x64, arm64}.{tar.xz,zip}* files are
+CLI tools.  Linux (x64), macOS (x64, arm64), and Windows (x64) are supported.
 Extract the binary to an appropriate directory in your `PATH`.
 
 [releases page]: https://github.com/planetarium/libplanet/releases

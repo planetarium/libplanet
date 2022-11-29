@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -9,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Nito.AsyncEx.Synchronous;
@@ -19,13 +17,9 @@ namespace Libplanet.Blocks
     /// <summary>
     /// A block metadata without transactions or any proofs like nonce or hash.  This represents
     /// metadata of a block that is not yet mined nor proven.
-    /// <para>To represent a block content including its metadata and transactions, use <see
-    /// cref="BlockContent{T}"/>, which is its subclass.</para>
+    /// <para>To represent a block content including its metadata and transactions, use
+    /// <see cref="BlockContent{T}"/>.</para>
     /// </summary>
-    /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
-    /// <see cref="PreEvaluationBlock{T}"/>, this type is mutable.  To get a distinct instance with
-    /// partly changed fields, use <see cref="BlockMetadata(IBlockMetadata)"/> constructor and
-    /// property setters on a copy instead.</remarks>
     /// <seealso cref="BlockContent{T}"/>
     public class BlockMetadata : IBlockMetadata
     {
@@ -35,16 +29,7 @@ namespace Libplanet.Blocks
         public const int CurrentProtocolVersion = 3;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private static readonly Codec Codec = new Codec();
-
-        private int _protocolVersion = CurrentProtocolVersion;
-        private long _index;
-        private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
-        private Address _miner;
-        private PublicKey? _publicKey;
-        private long _difficulty;
-        private BigInteger _totalDifficulty;
-        private HashDigest<SHA256>? _txHash;
+        private static readonly Bencodex.Codec Codec = new Bencodex.Codec();
 
         static BlockMetadata()
         {
@@ -55,255 +40,284 @@ namespace Libplanet.Blocks
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
         /// <paramref name="metadata"/>.
         /// </summary>
-        /// <param name="metadata">This source of the block metadata to copy.  This hasn't be
-        /// a actual <see cref="BlockMetadata"/> instance, but can be any object which implements
-        /// <see cref="IBlockMetadata"/> instance.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
-        /// protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// As <paramref name="metadata"/> needn't be an actual <see cref="BlockMetadata"/>
+        /// instance, but simply any object implementing <see cref="IBlockMetadata"/> interface,
+        /// it can't be trusted to satisfy all the constraints for a valid
+        /// <see cref="BlockMetadata"/> instance.  As such, conditions are checked again whilst
+        /// creating a copy.  This is a relatively heavy operation, so must be used sparingly.
+        /// </para>
+        /// <para>
+        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, long, BigInteger, BlockHash?, HashDigest{SHA256}?)"/>.  Refer to the
+        /// aforementioned constructor to see the full list of <see cref="Exception"/>s
+        /// that may be thrown.
+        /// </para>
+        /// </remarks>
+        /// <param name="metadata">The source block metadata to copy.  This needn't be
+        /// an actual <see cref="BlockMetadata"/> instance, but can be any object which
+        /// implements <see cref="IBlockMetadata"/>.</param>
+        /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, long, BigInteger, BlockHash?, HashDigest{SHA256}?)"/>
         public BlockMetadata(IBlockMetadata metadata)
+            : this(
+                protocolVersion: metadata.ProtocolVersion,
+                index: metadata.Index,
+                timestamp: metadata.Timestamp,
+                miner: metadata.Miner,
+                publicKey: metadata.PublicKey,
+                difficulty: metadata.Difficulty,
+                totalDifficulty: metadata.TotalDifficulty,
+                previousHash: metadata.PreviousHash,
+                txHash: metadata.TxHash)
         {
-            ProtocolVersion = metadata.ProtocolVersion;
-            Index = metadata.Index;
-            Timestamp = metadata.Timestamp;
-            Miner = metadata.Miner;
-            PublicKey = metadata.PublicKey;
-            Difficulty = metadata.Difficulty;
-            TotalDifficulty = metadata.TotalDifficulty;
-            PreviousHash = metadata.PreviousHash;
-            _txHash = metadata.TxHash;
         }
 
         /// <summary>
-        /// Creates an empty <see cref="BlockMetadata"/> instance.  Its properties can be easily
-        /// filled with C# object initializers.
+        /// Creates a <see cref="BlockMetadata"/> with
+        /// <see cref="BlockMetadata.CurrentProtocolVersion"/> as its
+        /// <see cref="IBlockMetadata.ProtocolVersion"/>.
         /// </summary>
-        public BlockMetadata()
+        /// <remarks>
+        /// With this, <see cref="IBlockMetadata.Timestamp"/> is set as current time and
+        /// <see cref="IBlockMetadata.Miner"/> is derived from <paramref name="publicKey"/>.
+        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, long, BigInteger, BlockHash?, HashDigest{SHA256}?)"/>.  Refer to the
+        /// aforementioned constructor to see the full list of <see cref="Exception"/>s
+        /// that may be thrown.
+        /// </remarks>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
+        /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
+        /// </param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
+        /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, long, BigInteger, BlockHash?, HashDigest{SHA256}?)"/>
+        public BlockMetadata(
+            long index,
+            DateTimeOffset timestamp,
+            PublicKey publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash)
+            : this(
+                protocolVersion: CurrentProtocolVersion,
+                index: index,
+                timestamp: timestamp,
+                miner: publicKey.ToAddress(),
+                publicKey: publicKey,
+                difficulty: difficulty,
+                totalDifficulty: totalDifficulty,
+                previousHash: previousHash,
+                txHash: txHash)
         {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BlockMetadata"/> by manually filling in the fields for
+        /// <see cref="BlockMetadata"/>.  All other public constructors are redirected to this one.
+        /// </summary>
+        /// <remarks>
+        /// Except for debuggin and/or testing purposes, this shouldn't be called directly.
+        /// </remarks>
+        /// <param name="protocolVersion">Goes to <see cref="IBlockMetadata.ProtocolVersion"/>.
+        /// </param>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
+        /// <param name="miner">Goes to <see cref="IBlockMetadata.Miner"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
+        /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
+        /// </param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// <paramref name="protocolVersion"/> is less than zero or greater than
+        /// <see cref="CurrentProtocolVersion"/>, the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
+        /// less than zero.</exception>
+        /// <exception cref="InvalidBlockPublicKeyException">Thrown when any of the following
+        /// conditions isn't satisfied:
+        /// <list type="bullet">
+        ///   <item><description>If <paramref name="protocolVersion"/> >= 2,
+        ///   <paramref name="miner"/> should match the derived address of
+        ///   <paramref name="publicKey"/>.</description></item>
+        ///   <item><description>Otherwise, <paramref name="publicKey"/> must be
+        ///   <see langword="null"/>.</description></item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when one of the following
+        /// conditions is met:
+        /// <list type="bullet">
+        ///     <item><description>If <paramref name="difficulty"/> is less than 0.
+        ///     </description></item>
+        ///     <item><description>If <paramref name="index"/> is 0 and
+        ///     <paramref name="difficulty"/> is not 0.</description></item>
+        ///     <item><description>If <paramref name="index"/> is greater than 0 and
+        ///     <paramref name="difficulty"/> is 0.</description></item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when one of the following
+        /// conditions is met:
+        /// <list type="bullet">
+        ///     <item><description>If <paramref name="totalDifficulty"/> is less than 0.
+        ///     </description></item>
+        ///     <item><description>If <paramref name="totalDifficulty"/> is less than
+        ///     <paramref name="difficulty"/>.</description></item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
+        /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
+        /// </exception>
+        public BlockMetadata(
+            int protocolVersion,
+            long index,
+            DateTimeOffset timestamp,
+            Address miner,
+            PublicKey? publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash)
+        {
+            // Protocol version validity check.
+            if (protocolVersion < 0)
+            {
+                throw new InvalidBlockProtocolVersionException(
+                    $"A block's protocol version cannot be less than zero: {protocolVersion}.",
+                    protocolVersion);
+            }
+            else if (protocolVersion > CurrentProtocolVersion)
+            {
+                throw new InvalidBlockProtocolVersionException(
+                    "A block's protocol version cannot be greater than " +
+                    $"{CurrentProtocolVersion}: {protocolVersion}.",
+                    protocolVersion);
+            }
+            else
+            {
+                ProtocolVersion = protocolVersion;
+            }
+
+            // Index validity check.
+            Index = index < 0L
+                ? throw new InvalidBlockIndexException(
+                    $"A negative index is not allowed: {index}.")
+                : index;
+
+            // FIXME: Transaction timestamps do not convert to universal time.
+            Timestamp = timestamp.ToUniversalTime();
+
+            // Public key and miner validity checks.
+            if (protocolVersion >= 2)
+            {
+                PublicKey = publicKey is { } p
+                    ? p
+                    : throw new InvalidBlockPublicKeyException(
+                        $"Argument {nameof(publicKey)} cannot be null for " +
+                        $"{nameof(protocolVersion)} >= 2.",
+                        publicKey);
+                Miner = miner == p.ToAddress()
+                    ? miner
+                    : throw new InvalidBlockPublicKeyException(
+                        $"Argument {nameof(miner)} should match the derived address of " +
+                        $"{nameof(publicKey)} for {nameof(protocolVersion)} >= 2.",
+                        publicKey);
+            }
+            else
+            {
+                PublicKey = publicKey is null
+                    ? (PublicKey?)null
+                    : throw new InvalidBlockPublicKeyException(
+                        $"Argument {nameof(publicKey)} should be null for " +
+                        $"{nameof(protocolVersion)} < 2.",
+                        publicKey);
+                Miner = miner;
+            }
+
+            // Difficulty validity checks.
+            if (index == 0L && difficulty > 0L)
+            {
+                throw new InvalidBlockDifficultyException(
+                    $"Genesis block must have zero difficulty: {difficulty}.");
+            }
+            else if (index > 0L && difficulty <= 0L)
+            {
+                throw new InvalidBlockDifficultyException(
+                    $"Block #{index}'s difficulty must be greater than zero (except for " +
+                    $"a genesis block): {difficulty}.");
+            }
+            else if (totalDifficulty < difficulty)
+            {
+                throw new InvalidBlockTotalDifficultyException(
+                    $"{nameof(totalDifficulty)} ({totalDifficulty}) cannot be less than " +
+                    $"{nameof(difficulty)} ({difficulty}).",
+                    difficulty,
+                    totalDifficulty);
+            }
+            else
+            {
+                Difficulty = difficulty < 0L
+                    ? throw new InvalidBlockDifficultyException(
+                        $"{nameof(Difficulty)} cannot be negative: {difficulty}.")
+                    : difficulty;
+                TotalDifficulty = totalDifficulty < BigInteger.Zero
+                    ? throw new InvalidBlockTotalDifficultyException(
+                        $"{nameof(TotalDifficulty)} cannot be negative: ${totalDifficulty}.",
+                        difficulty,
+                        totalDifficulty)
+                    : totalDifficulty;
+            }
+
+            // Previous hash validity checks.
+            if ((index == 0 && previousHash is { }) ||
+                (index != 0 && previousHash is null))
+            {
+                throw new InvalidBlockPreviousHashException(
+                    $"{nameof(previousHash)} can be null if and only if {nameof(index)} is 0.");
+            }
+            else
+            {
+                PreviousHash = previousHash;
+            }
+
+            TxHash = txHash;
         }
 
         public static HashAlgorithmType HashAlgorithmType { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
-        /// less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
-        /// protocol version.</exception>
-        public int ProtocolVersion
-        {
-            get => _protocolVersion;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new InvalidBlockProtocolVersionException(
-                        value,
-                        $"A block's protocol version cannot be less than zero: {value}."
-                    );
-                }
-                else if (value > CurrentProtocolVersion)
-                {
-                    string msg =
-                        "A block's protocol version cannot be greater than " +
-                        $"{CurrentProtocolVersion}: {value}.";
-                    throw new InvalidBlockProtocolVersionException(value, msg);
-                }
-
-                _protocolVersion = value;
-            }
-        }
+        public int ProtocolVersion { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        public long Index
-        {
-            get => _index;
-            set => _index
-                = value >= 0L
-                ? value
-                : throw new InvalidBlockIndexException($"A negative index is disallowed: {value}.");
-        }
+        public long Index { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
-        public DateTimeOffset Timestamp
-        {
-            get => _timestamp;
-            set => _timestamp = value.ToUniversalTime();
-        }
+        public DateTimeOffset Timestamp { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner
-        {
-            get => _miner;
-            set
-            {
-                if (PublicKey is { } pubKey && !pubKey.ToAddress().Equals(value))
-                {
-                    throw new InvalidBlockPublicKeyException(
-                        pubKey,
-                        $"The miner address {value} is not consistent with its public key {pubKey}."
-                    );
-                }
-
-                _miner = value;
-            }
-        }
+        public Address Miner { get; }
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
-        /// <remarks>Its setter also updates the <see cref="Miner"/> property too.</remarks>
-        public PublicKey? PublicKey
-        {
-            get => _publicKey;
-            set
-            {
-                _publicKey = value;
-                if (value is { } pubKey)
-                {
-                    _miner = pubKey.ToAddress();
-                }
-            }
-        }
+        public PublicKey? PublicKey { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        /// negative.</exception>
-        /// <remarks>This cannot not be negative.
-        /// <para>When <see cref="Difficulty"/> is updated, <see cref="TotalDifficulty"/> is also
-        /// updated together.  For example, when <see cref="Difficulty"/> = 10 and
-        /// <see cref="TotalDifficulty"/> = 50, if <see cref="Difficulty"/> is updated to
-        /// 20 (= 10 + 10) <see cref="TotalDifficulty"/> is also updated to 60 (= 50 + 10).</para>
-        /// </remarks>
-        public long Difficulty
-        {
-            get => _difficulty;
-            set
-            {
-                if (value < 0L)
-                {
-                    throw new InvalidBlockDifficultyException(
-                        $"{nameof(Difficulty)} cannot be negative: {value}"
-                    );
-                }
-
-                long delta = value - _difficulty;
-                _difficulty = value;
-                _totalDifficulty += delta;
-            }
-        }
+        public long Difficulty { get; }
 
         /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when the value to set
-        /// is less than <see cref="Difficulty"/>.</exception>
-        public BigInteger TotalDifficulty
-        {
-            get => _totalDifficulty;
-            set
-            {
-                if (value < BigInteger.Zero)
-                {
-                    throw new InvalidBlockTotalDifficultyException(
-                        Difficulty,
-                        value,
-                        $"{nameof(TotalDifficulty)} cannot be negative: ${value}."
-                    );
-                }
-                else if (value < Difficulty)
-                {
-                    string msg =
-                        $"{nameof(TotalDifficulty)} ({value}) cannot be less than " +
-                        $"{nameof(Difficulty)} ({Difficulty}).";
-                    throw new InvalidBlockTotalDifficultyException(Difficulty, value, msg);
-                }
-
-                _totalDifficulty = value;
-            }
-        }
+        public BigInteger TotalDifficulty { get; }
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash { get; set; }
+        public BlockHash? PreviousHash { get; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
-        [SuppressMessage(
-            "SonarQube",
-            "S2292",
-            Justification = "The backing field purposes to prevent intercepting from subclasses.")]
-        public virtual HashDigest<SHA256>? TxHash
-        {
-            get => _txHash;
-            set => _txHash = value;
-        }
-
-        /// <summary>
-        /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
-        /// This data is used for PoW (proof-of-work) to find the satisfying
-        /// <paramref name="nonce"/>, rather than transmitting the block over the network.
-        /// </summary>
-        /// <param name="nonce">The nonce of the block.</param>
-        /// <returns>The serialized block content in a Bencodex dictionary.</returns>
-        public Bencodex.Types.Dictionary MakeCandidateData(Nonce nonce)
-        {
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add("index", Index)
-                .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add("difficulty", Difficulty)
-                .Add("nonce", nonce.ByteArray);
-
-            if (ProtocolVersion != 0)
-            {
-                dict = dict.Add("protocol_version", ProtocolVersion);
-            }
-
-            if (PreviousHash is { } prevHash)
-            {
-                dict = dict.Add("previous_hash", prevHash.ByteArray);
-            }
-
-            if (TxHash is { } txHash)
-            {
-                dict = dict.Add("transaction_fingerprint", txHash.ByteArray);
-            }
-
-            // As blocks hadn't been signed before ProtocolVersion <= 1, the PublicKey property
-            // is nullable type-wise.  Blocks with ProtocolVersion <= 1 had a `reward_beneficiary`
-            // field, which referred to the Miner address.  On the other hand, blocks with
-            // ProtocolVersion >= 2 have a `public_key` field instead.  (As Miner addresses can be
-            // derived from PublicKeys, we don't need to include both at a time.)  The PublicKey
-            // property in this class guarantees that its ProtocolVersion is <= 1 when it is null
-            // and its ProtocolVersion is >= 2 when it is not null:
-            dict = PublicKey is { } pubKey && ProtocolVersion > 1
-                ? dict.Add("public_key", pubKey.Format(compress: true)) // ProtocolVersion >= 2
-                : dict.Add("reward_beneficiary", Miner.ByteArray); /////// ProtocolVersion <= 1
-
-            // For blocks with ProtocolVersion < 2, they had lacked TotalDifficulty values in their
-            // serialization form.  As it was merely an unintended mistake, TotalDifficulty values
-            // have been added from ProtocolVersion >= 2:
-            if (ProtocolVersion >= 2)
-            {
-                dict = dict.Add(
-                    "total_difficulty",
-                    (IValue)(Bencodex.Types.Integer)TotalDifficulty
-                );
-            }
-
-            return dict;
-        }
-
-        /// <summary>
-        /// Derives a hash digest from the block metadata and <paramref name="nonce"/>.
-        /// </summary>
-        /// <param name="nonce">The proof-of-work nonce.</param>
-        /// <returns>A pre-evaluation block hash.</returns>
-        public ImmutableArray<byte> DerivePreEvaluationHash(Nonce nonce) =>
-            HashAlgorithmType.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
+        public HashDigest<SHA256>? TxHash { get; }
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -316,12 +330,10 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            CancellationToken cancellationToken = default
-        ) =>
-            MineNonce(
-                Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
-                cancellationToken
-            );
+            CancellationToken cancellationToken = default) =>
+                MineNonce(
+                    Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
+                    cancellationToken);
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -337,8 +349,7 @@ namespace Libplanet.Blocks
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
             int workers,
-            CancellationToken cancellationToken = default
-        )
+            CancellationToken cancellationToken = default)
         {
             if (workers < 1)
             {
@@ -370,6 +381,67 @@ namespace Libplanet.Blocks
 
             cts.Cancel();
             return (n, h);
+        }
+
+        /// <summary>
+        /// Derives a hash digest from the block metadata and <paramref name="nonce"/>.
+        /// </summary>
+        /// <param name="nonce">The proof-of-work nonce.</param>
+        /// <returns>A pre-evaluation block hash.</returns>
+        public ImmutableArray<byte> DerivePreEvaluationHash(Nonce nonce) =>
+            BlockMetadata.HashAlgorithmType.Digest(
+                Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
+
+        /// <summary>
+        /// Makes a serialized representation for mining.
+        /// </summary>
+        /// <param name="nonce">The proof-of-work nonce.</param>
+        /// <returns>A <see cref="Dictionary"/> representation for mining.</returns>
+        public Dictionary MakeCandidateData(Nonce nonce)
+        {
+            var dict = Dictionary.Empty
+                .Add("index", Index)
+                .Add(
+                    "timestamp",
+                    Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
+                .Add("difficulty", Difficulty)
+                .Add("nonce", nonce.ByteArray);
+
+            if (ProtocolVersion != 0)
+            {
+                dict = dict.Add("protocol_version", ProtocolVersion);
+            }
+
+            if (PreviousHash is { } prevHash)
+            {
+                dict = dict.Add("previous_hash", prevHash.ByteArray);
+            }
+
+            if (TxHash is { } txHash)
+            {
+                dict = dict.Add("transaction_fingerprint", txHash.ByteArray);
+            }
+
+            // As blocks hadn't been signed before ProtocolVersion <= 1, the PublicKey property
+            // is nullable type-wise.  Blocks with ProtocolVersion <= 1 had a `reward_beneficiary`
+            // field, which referred to the Miner address.  On the other hand, blocks with
+            // ProtocolVersion >= 2 have a `public_key` field instead.  (As Miner addresses can be
+            // derived from PublicKeys, we don't need to include both at a time.)  The PublicKey
+            // property in this class guarantees that its ProtocolVersion is <= 1 when it is null
+            // and its ProtocolVersion is >= 2 when it is not null:
+            dict = PublicKey is { } pubKey && ProtocolVersion >= 2
+                ? dict.Add("public_key", pubKey.Format(compress: true)) ////// ProtocolVersion >= 2
+                : dict.Add("reward_beneficiary", Miner.ByteArray); // ProtocolVersion <= 1
+
+            // For blocks with ProtocolVersion < 2, they had lacked TotalDifficulty values in their
+            // serialization form.  As it was merely an unintended mistake, TotalDifficulty values
+            // have been added from ProtocolVersion >= 2:
+            if (ProtocolVersion >= 2)
+            {
+                dict = dict.Add("total_difficulty", TotalDifficulty);
+            }
+
+            return dict;
         }
 
         private Hashcash.Stamp GetStampFunction()

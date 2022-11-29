@@ -63,6 +63,28 @@ namespace Libplanet.Action
         }
 
         /// <summary>
+        /// Creates a random seed.
+        /// </summary>
+        /// <param name="preEvaluationHashBytes">The previous evaluation hash turned into bytes.
+        /// </param>
+        /// <param name="hashedSignature">The hashed signature.</param>
+        /// <param name="signature">The signature.</param>
+        /// <param name="actionOffset">The offset of the action.</param>
+        /// <returns>An integer of the random seed.
+        /// </returns>
+        [Pure]
+        public static int GenerateRandomSeed(
+            byte[] preEvaluationHashBytes,
+            byte[] hashedSignature,
+            byte[] signature,
+            int actionOffset)
+        {
+            return (preEvaluationHashBytes.Length > 0
+                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
+                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - actionOffset;
+        }
+
+        /// <summary>
         /// The main entry point for evaluating a <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
@@ -150,6 +172,17 @@ namespace Libplanet.Action
         ) =>
             currency * 0;
 
+        [Pure]
+        internal static FungibleAssetValue NullTotalSupplyGetter(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            return currency * 0;
+        }
+
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
         /// a given <see cref="Transaction{T}"/> is evaluated.
@@ -168,6 +201,7 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
+                NullTotalSupplyGetter,
                 tx.Signer);
             ImmutableList<IAction> actions = tx.SystemAction is { } sa
                 ? ImmutableList.Create(sa)
@@ -208,7 +242,7 @@ namespace Libplanet.Action
         /// that <paramref name="actions"/> belong to.</param>
         /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the
         /// <see cref="Transaction{T}"/> that <paramref name="actions"/> belong to.
-        /// This can be <c>null</c> on rehearsal mode or if an <see cref="IAction"/> is a
+        /// This can be <see langword="null"/> on rehearsal mode or if an <see cref="IAction"/> is a
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
@@ -220,12 +254,12 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
+        /// The default value is <see langword="false"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
-        /// <param name="blockAction">Pass <c>true</c> if it is
+        /// <param name="blockAction">Pass <see langword="true"/> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
@@ -288,10 +322,7 @@ namespace Libplanet.Action
             }
 
             byte[] preEvaluationHashBytes = preEvaluationHash.ToBuilder().ToArray();
-            int seed =
-                (preEvaluationHashBytes.Length > 0
-                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
-                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
+            int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
             IAccountStateDelta states = previousStates;
             foreach (IAction action in actions)
@@ -337,7 +368,7 @@ namespace Libplanet.Action
                             "rehearsal mode.\n" +
                             "See also this exception's InnerException property.";
                         exc = new UnexpectedlyTerminatedActionException(
-                            null, null, null, null, action, message, e);
+                            message, null, null, null, null, action, e);
                     }
                     else
                     {
@@ -364,12 +395,12 @@ namespace Libplanet.Action
                         logger?.Error(
                             "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
+                            innerMessage,
                             preEvaluationHash,
                             blockIndex,
                             txid,
                             stateRootHash,
                             action,
-                            innerMessage,
                             e);
                     }
                 }
@@ -485,9 +516,13 @@ namespace Libplanet.Action
             );
             foreach (Transaction<T> tx in orderedTxs)
             {
-                delta = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(delta.GetStates, delta.GetBalance, tx.Signer)
-                    : new AccountStateDeltaImplV0(delta.GetStates, delta.GetBalance, tx.Signer);
+                delta = AccountStateDeltaImpl.ChooseVersion(
+                    block.ProtocolVersion,
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    tx.Signer);
+
                 DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     block: block,
@@ -541,9 +576,9 @@ namespace Libplanet.Action
         /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before
         /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> being executed.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
+        /// The default value is <see langword="false"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s for each
@@ -593,9 +628,9 @@ namespace Libplanet.Action
         /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
         /// <param name="previousStates">The states immediately before evaluating
         /// <paramref name="tx"/>.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
         /// to be a dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
+        /// The default value is <see langword="false"/>.</param>
         /// <returns>The resulting states of evaluating the <see cref="IAction"/>s in
         /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/>.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
@@ -742,21 +777,26 @@ namespace Libplanet.Action
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
+            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter) =
                 InitializeAccountGettersPair(block, stateCompleterSet);
             Address miner = block.Miner;
 
-            return block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)
-                : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
+            return AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                miner);
         }
 
-        private (AccountStateGetter, AccountBalanceGetter) InitializeAccountGettersPair(
+        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter)
+            InitializeAccountGettersPair(
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
+            TotalSupplyGetter totalSupplyGetter;
 
             if (block.PreviousHash is { } previousHash)
             {
@@ -769,14 +809,19 @@ namespace Libplanet.Action
                     currency,
                     previousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
+                totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
+                    currency,
+                    previousHash,
+                    stateCompleterSet.TotalSupplyStateCompleter);
             }
             else
             {
                 accountStateGetter = NullAccountStateGetter;
                 accountBalanceGetter = NullAccountBalanceGetter;
+                totalSupplyGetter = NullTotalSupplyGetter;
             }
 
-            return (accountStateGetter, accountBalanceGetter);
+            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter);
         }
     }
 }

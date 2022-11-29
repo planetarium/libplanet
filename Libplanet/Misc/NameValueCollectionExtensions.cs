@@ -123,9 +123,9 @@ namespace Libplanet.Misc
         /// <summary>
         /// Tries to get the boolean text associated with the specified <paramref name="name"/> as
         /// a <see cref="bool"/> value from the specified name-value <paramref name="collection"/>.
-        /// <para>Supported keywords are: <c>true</c>, <c>false</c>, <c>yes</c>, <c>no</c>,
-        /// <c>on</c>, <c>off</c>, <c>t</c>, <c>f</c>, <c>y</c>, <c>n</c>, <c>1</c>, <c>0</c>
-        /// (all case-insensitive).</para>
+        /// <para>Supported keywords are: <see langword="true"/>, <see langword="false"/>,
+        /// <c>yes</c>, <c>no</c>, <c>on</c>, <c>off</c>, <c>t</c>, <c>f</c>, <c>y</c>, <c>n</c>,
+        /// <c>1</c>, <c>0</c> (all case-insensitive).</para>
         /// </summary>
         /// <param name="collection">The <see cref="NameValueCollection"/> that contains the entry
         /// to find.</param>

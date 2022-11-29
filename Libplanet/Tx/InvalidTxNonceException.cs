@@ -16,6 +16,7 @@ namespace Libplanet.Tx
         /// Initializes a new instance of the
         /// <see cref="InvalidTxNonceException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="txid">The invalid <see cref="Transaction{T}"/>'s
         /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
@@ -23,21 +24,20 @@ namespace Libplanet.Tx
         /// result of the <see cref="Transaction{T}.Signer"/>.</param>
         /// <param name="improperNonce">The actual
         /// <see cref="Transaction{T}.Nonce"/>.</param>
-        /// <param name="message">The message that describes the error.</param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",
             Justification = "A long error message should be multiline.")]
         public InvalidTxNonceException(
+            string message,
             TxId txid,
             long expectedNonce,
-            long improperNonce,
-            string message)
+            long improperNonce)
             : base(
-                txid,
                 $"{message}\n" +
                 $"Expected nonce: {expectedNonce}\n" +
-                $"Improper nonce: {improperNonce}")
+                $"Improper nonce: {improperNonce}",
+                txid)
         {
             ExpectedNonce = expectedNonce;
             ImproperNonce = improperNonce;

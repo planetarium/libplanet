@@ -72,7 +72,8 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                Assert.Equal(swarmA.AsPeer, swarmB.AsPeer);
+                Assert.Equal(swarmA.AsPeer.Address, swarmB.AsPeer.Address);
+                Assert.Equal(swarmA.AsPeer.PublicIPAddress, swarmB.AsPeer.PublicIPAddress);
 
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
                 await StopAsync(swarmA);
@@ -122,11 +123,15 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy<DumbAction> policy = receiverChain.Policy;
-            Block<DumbAction> mismatchedGenesis = new BlockContent<DumbAction>
-            {
-                PublicKey = receiverKey.PublicKey,
-                Timestamp = DateTimeOffset.MinValue,
-            }
+            Block<DumbAction> wrongGenesis = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: receiverKey.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: null))
                 .Mine()
                 .Evaluate(
                     privateKey: receiverKey,
@@ -137,7 +142,7 @@ namespace Libplanet.Net.Tests
                 policy,
                 new MemoryStore(),
                 seedStateStore,
-                genesisBlock: mismatchedGenesis);
+                genesisBlock: wrongGenesis);
             var seedMiner = new PrivateKey();
             Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain, seedMiner);
             try
@@ -484,10 +489,10 @@ namespace Libplanet.Net.Tests
             {
                 var tx1 = swarmA.BlockChain.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 var tx2 = swarmA.BlockChain.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 Assert.Equal(0, tx1.Nonce);
                 Assert.Equal(1, tx2.Nonce);
 
@@ -503,8 +508,8 @@ namespace Libplanet.Net.Tests
                 chainA.UnstageTransaction(tx2);
                 Assert.Equal(1, chainA.GetNextTxNonce(privateKey.ToAddress()));
 
-                swarmA.RoutingTable.RemovePeer((BoundPeer)swarmB.AsPeer);
-                swarmB.RoutingTable.RemovePeer((BoundPeer)swarmA.AsPeer);
+                swarmA.RoutingTable.RemovePeer(swarmB.AsPeer);
+                swarmB.RoutingTable.RemovePeer(swarmA.AsPeer);
                 Assert.Empty(swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
 
@@ -512,10 +517,10 @@ namespace Libplanet.Net.Tests
 
                 var tx3 = chainA.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 var tx4 = chainA.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 Assert.Equal(1, tx3.Nonce);
                 Assert.Equal(2, tx4.Nonce);
 
@@ -949,7 +954,7 @@ namespace Libplanet.Net.Tests
                 var transport = swarm1.Transport;
                 var msg = new GetTxsMsg(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
                 var replies = (await transport.SendMessageAsync(
-                    (BoundPeer)swarm2.AsPeer,
+                    swarm2.AsPeer,
                     msg,
                     TimeSpan.FromSeconds(1),
                     4,

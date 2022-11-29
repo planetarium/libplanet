@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests
 {
@@ -133,7 +134,7 @@ namespace Libplanet.Tests
                     continue;
                 }
 
-                byte[] addressBytes = TestUtils.GetRandomBytes(size);
+                byte[] addressBytes = GetRandomBytes(size);
                 Assert.Throws<ArgumentException>(() =>
                     new Address(addressBytes)
                 );
@@ -162,7 +163,7 @@ namespace Libplanet.Tests
         [Fact]
         public void ToByteArray()
         {
-            byte[] addressBytes = TestUtils.GetRandomBytes(20);
+            byte[] addressBytes = GetRandomBytes(20);
             var address = new Address(addressBytes);
             Assert.Equal(addressBytes, address.ToByteArray());
         }
@@ -287,7 +288,7 @@ namespace Libplanet.Tests
             }).ToArray();
             for (int i = 1; i < addresses.Length; i++)
             {
-                IComparable<Address> left = addresses[i - 1];
+                Address left = addresses[i - 1];
                 Address right = addresses[i];
                 string leftString = addresses[i - 1].ToHex().ToLower(),
                        rightString = right.ToHex().ToLower();
@@ -297,16 +298,12 @@ namespace Libplanet.Tests
                 );
                 Assert.Equal(
                     left.CompareTo(right),
-                    (left as IComparable).CompareTo(right)
+                    left.CompareTo(right as object)
                 );
             }
 
-            Assert.Throws<ArgumentNullException>(() =>
-                (addresses[0] as IComparable).CompareTo(null)
-            );
-            Assert.Throws<ArgumentException>(() =>
-                (addresses[0] as IComparable).CompareTo("invalid")
-            );
+            Assert.Throws<ArgumentException>(() => addresses[0].CompareTo(null));
+            Assert.Throws<ArgumentException>(() => addresses[0].CompareTo("invalid"));
         }
 
         [Fact]
@@ -325,6 +322,16 @@ namespace Libplanet.Tests
         {
             Assert.Throws<ArgumentException>(() =>
                  new Address("0X0123456789ABcdefABcdEfABcdEFabcDEFabCDEF")
+            );
+        }
+
+        [SkippableFact]
+        public void JsonSerialization()
+        {
+            var address = new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF");
+            AssertJsonSerializable(
+                address,
+                "\"0123456789ABcdefABcdEfABcdEFabcDEFabCDEF\""
             );
         }
     }

@@ -44,7 +44,7 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="path">A path of the directory to store key files.  A new directory is
         /// created if not exists.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> is passed to
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
         /// <paramref name="path"/>.</exception>
         /// <seealso cref="DefaultKeyStore"/>
         public Web3KeyStore(string path)
@@ -113,7 +113,7 @@ namespace Libplanet.KeyStore
             }
             catch (InvalidOperationException)
             {
-                throw new NoKeyException(id, "There is no key with such ID");
+                throw new NoKeyException("There is no key with such ID", id);
             }
 
             return Get(name);
@@ -152,7 +152,7 @@ namespace Libplanet.KeyStore
                 }
             }
 
-            throw new NoKeyException(id, "No key have such ID");
+            throw new NoKeyException("No key have such ID", id);
         }
 
         private IEnumerable<(Guid, string)> ListFiles()

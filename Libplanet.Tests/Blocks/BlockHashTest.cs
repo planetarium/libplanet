@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {
@@ -14,8 +15,8 @@ namespace Libplanet.Tests.Blocks
         public void DefaultConstructor()
         {
             BlockHash def = default;
-            TestUtils.AssertBytesEqual(new byte[32].ToImmutableArray(), def.ByteArray);
-            TestUtils.AssertBytesEqual(new byte[32], def.ToByteArray());
+            AssertBytesEqual(new byte[32].ToImmutableArray(), def.ByteArray);
+            AssertBytesEqual(new byte[32], def.ToByteArray());
         }
 
         [Fact]
@@ -88,12 +89,12 @@ namespace Libplanet.Tests.Blocks
         public void DeriveFrom()
         {
             byte[] foo = { 0x66, 0x6f, 0x6f }, bar = { 0x62, 0x61, 0x72 };
-            TestUtils.AssertBytesEqual(
+            AssertBytesEqual(
                 BlockHash.FromString(
                     "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"),
                 BlockHash.DeriveFrom(foo)
             );
-            TestUtils.AssertBytesEqual(
+            AssertBytesEqual(
                 BlockHash.FromString(
                     "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9"),
                 BlockHash.DeriveFrom(bar)
@@ -137,6 +138,17 @@ namespace Libplanet.Tests.Blocks
             }
 
             Assert.Equal(deserialized, expected);
+        }
+
+        [SkippableFact]
+        public void JsonSerialization()
+        {
+            BlockHash hash = BlockHash.FromString(
+                "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae");
+            AssertJsonSerializable(
+                hash,
+                "\"2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae\""
+            );
         }
     }
 }

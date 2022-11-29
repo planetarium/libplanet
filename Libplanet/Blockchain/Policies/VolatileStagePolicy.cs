@@ -78,7 +78,7 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public bool Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
-            if (Exipred(transaction))
+            if (Expired(transaction))
             {
                 return false;
             }
@@ -198,7 +198,7 @@ namespace Libplanet.Blockchain.Policies
 
                 if (transaction is Transaction<T> tx)
                 {
-                    if (Exipred(tx) || _ignored.Contains(tx.Id))
+                    if (Expired(tx) || _ignored.Contains(tx.Id))
                     {
                         _staged.TryRemove(id, out _);
                         return null;
@@ -273,7 +273,7 @@ namespace Libplanet.Blockchain.Policies
             return nonce;
         }
 
-        private bool Exipred(Transaction<T> transaction) =>
+        private bool Expired(Transaction<T> transaction) =>
             transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
     }
 }

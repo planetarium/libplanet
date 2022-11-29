@@ -8,8 +8,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using Libplanet.Serialization;
+using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace Libplanet
 {
@@ -27,6 +30,7 @@ namespace Libplanet
         "StaticMemberInGenericType",
         Justification = "Size & DefaultByteArray differ between HashAlgorithm types."
     )]
+    [JsonConverter(typeof(HashDigestJsonConverter))]
     [Serializable]
     public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>
         where T : HashAlgorithm
@@ -65,11 +69,11 @@ namespace Libplanet
         /// <see cref="HashDigest{T}"/>.
         /// </summary>
         /// <param name="hashDigest">A <see cref="byte"/> array that encodes
-        /// a <see cref="HashDigest{T}"/>.  It must not be <c>null</c>,
+        /// a <see cref="HashDigest{T}"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hashDigest"/> is <c>null</c>.</exception>
+        /// <paramref name="hashDigest"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hashDigest"/>'s <see cref="Array.Length"/> is not
         /// the same to the <see cref="Size"/> the hash algorithm
@@ -84,7 +88,7 @@ namespace Libplanet
         /// Converts an immutable <see cref="byte"/> array into a <see cref="HashDigest{T}"/>.
         /// </summary>
         /// <param name="hashDigest">An immutable <see cref="byte"/> array that encodes
-        /// a <see cref="HashDigest{T}"/>.  It must not be <c>null</c>, and its
+        /// a <see cref="HashDigest{T}"/>.  It must not be <see langword="null"/>, and its
         /// <see cref="Array.Length"/> must be the same to <see cref="Size"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hashDigest"/>'s <see cref="ImmutableArray{T}.Length"/> is not
@@ -133,7 +137,7 @@ namespace Libplanet
         /// <returns>A corresponding <see cref="HashDigest{T}"/> value.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hexDigest"/> is <c>null</c>.</exception>
+        /// <paramref name="hexDigest"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hexDigest"/>'s length is not the double of
         /// the <see cref="Size"/>, the hash algorithm
@@ -309,7 +313,7 @@ namespace Libplanet
         /// <returns>A corresponding <see cref="HashDigest{T}"/> value.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hexDigest"/> is <c>null</c>.</exception>
+        /// <paramref name="hexDigest"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hexDigest"/>'s length is not the double of
         /// the <see cref="HashDigest{T}.Size"/>, the hash algorithm
@@ -321,5 +325,63 @@ namespace Libplanet
         {
             return HashDigest<T>.FromString(hexDigest);
         }
+    }
+
+    // NOTE: As JsonConverterAttribute does not take a generic type, we need to make
+    // a JsonConverter<System.Object> instead.
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class HashDigestJsonConverter : JsonConverter<object>
+    {
+        private Type? _queriedType;
+
+        public override bool CanConvert(Type typeToConvert)
+        {
+            if (typeToConvert.IsConstructedGenericType &&
+                typeToConvert.GetGenericTypeDefinition() == typeof(HashDigest<>))
+            {
+                _queriedType = typeToConvert;
+                return true;
+            }
+
+            _queriedType = null;
+            return false;
+        }
+
+        public override object Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            if (typeToConvert == typeof(object) && _queriedType is { } t)
+            {
+                typeToConvert = t;
+            }
+
+            MethodInfo fromString = typeToConvert.GetMethod(
+                "FromString",
+                BindingFlags.Public | BindingFlags.Static
+            )!;
+            string? hex = reader.GetString();
+            try
+            {
+                return fromString.Invoke(null, new object?[] { hex })!;
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            object value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(value.ToString());
     }
 }

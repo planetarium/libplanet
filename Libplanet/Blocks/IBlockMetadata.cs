@@ -19,7 +19,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The height of the block.
         /// </summary>
-        /// <remarks>Zero means it is a genesis block.  Disallowed to be negative.</remarks>
+        /// <remarks>Zero means it is a genesis block.  Not allowed to be negative.</remarks>
         long Index { get; }
 
         /// <summary>
@@ -57,13 +57,13 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)
-        /// this should be <c>null</c>.
+        /// this must be <see langword="null"/>.
         /// </summary>
         BlockHash? PreviousHash { get; }
 
         /// <summary>
-        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
-        /// transactions.
+        /// The hash of all transactions in the block.  This is <see langword="null"/> if the block
+        /// has no transactions.
         /// </summary>
         HashDigest<SHA256>? TxHash { get; }
     }

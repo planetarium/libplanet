@@ -22,11 +22,11 @@ namespace Libplanet.Tests.Action
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02,
             });
 
-            var currency = new Currency("PLT", 0, minter);
+            var currency = Currency.Uncapped("PLT", 0, minter);
             var exc = new InsufficientBalanceException(
+                "for testing",
                 account,
-                FungibleAssetValue.FromRawValue(currency, 99),
-                "for testing"
+                FungibleAssetValue.FromRawValue(currency, 99)
             );
 
             var formatter = new BinaryFormatter();

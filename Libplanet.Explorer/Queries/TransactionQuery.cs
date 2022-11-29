@@ -21,7 +21,7 @@ namespace Libplanet.Explorer.Queries
         private static readonly Codec _codec = new Codec();
         private readonly IBlockChainContext<T> _context;
 
-        // FIXME should be refactored to reduce LoC of consturctor.
+        // FIXME should be refactored to reduce LoC of constructor.
         #pragma warning disable MEN003
         public TransactionQuery(IBlockChainContext<T> context)
         #pragma warning restore MEN003
@@ -166,6 +166,19 @@ namespace Libplanet.Explorer.Queries
                 }
             );
 
+            Field<NonNullGraphType<LongGraphType>>(
+                name: "nextNonce",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<AddressType>>
+                    {
+                        Name = "address",
+                        Description = "Address of the account to get the next tx nonce.",
+                    }
+                ),
+                resolve: context =>
+                    _context.BlockChain.GetNextTxNonce(context.GetArgument<Address>("address"))
+            );
+
             Field<NonNullGraphType<StringGraphType>>(
                 name: "bindSignature",
                 #pragma warning disable MEN002
@@ -199,12 +212,17 @@ namespace Libplanet.Explorer.Queries
                             ),
                             false
                         );
-                    var signedTransaction = new Transaction<T>(
-                        metadata: unsignedTransaction,
-                        customActions: unsignedTransaction.CustomActions,
-                        signature: signature
-                    );
-
+                    var signedTransaction = unsignedTransaction.SystemAction is { } sysAction
+                        ? new Transaction<T>(
+                            metadata: unsignedTransaction,
+                            systemAction: sysAction,
+                            signature: signature
+                        )
+                        : new Transaction<T>(
+                            metadata: unsignedTransaction,
+                            customActions: unsignedTransaction.CustomActions,
+                            signature: signature
+                        );
                     return ByteUtil.Hex(signedTransaction.Serialize(true));
                 }
             );
@@ -228,8 +246,24 @@ namespace Libplanet.Explorer.Queries
                     if (!(store.GetFirstTxIdBlockHashIndex(txId) is { } txExecutedBlockHash))
                     {
                         return blockChain.GetStagedTransactionIds().Contains(txId)
-                            ? new TxResult(TxStatus.STAGING, null, null, null, null)
-                            : new TxResult(TxStatus.INVALID, null, null, null, null);
+                            ? new TxResult(
+                                TxStatus.STAGING,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null)
+                            : new TxResult(
+                                TxStatus.INVALID,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null);
                     }
 
                     try
@@ -240,6 +274,9 @@ namespace Libplanet.Explorer.Queries
                         );
                         Block<T> txExecutedBlock = blockChain[txExecutedBlockHash];
 
+                        var updatedStates = ((TxSuccess)execution).UpdatedStates;
+                        var updatedFungibleAssets = ((TxSuccess)execution).UpdatedFungibleAssets;
+                        var fungibleAssetsDelta = ((TxSuccess)execution).FungibleAssetsDelta;
                         return execution switch
                         {
                             TxSuccess txSuccess => new TxResult(
@@ -247,26 +284,35 @@ namespace Libplanet.Explorer.Queries
                                 txExecutedBlock.Index,
                                 txExecutedBlock.Hash.ToString(),
                                 null,
-                                null
+                                null,
+                                txSuccess.UpdatedStates,
+                                txSuccess.FungibleAssetsDelta,
+                                txSuccess.UpdatedFungibleAssets
                             ),
                             TxFailure txFailure => new TxResult(
                                 TxStatus.FAILURE,
                                 txExecutedBlock.Index,
                                 txExecutedBlock.Hash.ToString(),
                                 txFailure.ExceptionName,
-                                txFailure.ExceptionMetadata
+                                txFailure.ExceptionMetadata,
+                                null,
+                                null,
+                                null
                             ),
                             _ => throw new NotSupportedException(
                                 #pragma warning disable format
                                 $"{nameof(execution)} is not expected concrete class."
                                 #pragma warning restore format
-                            )
+                            ),
                         };
                     }
                     catch (Exception)
                     {
                         return new TxResult(
                             TxStatus.INVALID,
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             null,

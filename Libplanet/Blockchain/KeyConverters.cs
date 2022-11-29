@@ -12,5 +12,8 @@ namespace Libplanet.Blockchain
 
         internal static string ToFungibleAssetKey((Address, Currency) pair) =>
             ToFungibleAssetKey(pair.Item1, pair.Item2);
+
+        internal static string ToTotalSupplyKey(Currency currency) =>
+            "__" + ByteUtil.Hex(currency.Hash.ByteArray).ToLowerInvariant();
     }
 }

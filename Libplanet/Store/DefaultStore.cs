@@ -40,7 +40,7 @@ namespace Libplanet.Store
     /// <list type="table">
     /// <item>
     /// <term><c>journal</c></term>
-    /// <description><c>true</c> (default) or <c>false</c>.  Corresponds to
+    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
     /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
     /// parameter.</description>
     /// </item>
@@ -61,13 +61,13 @@ namespace Libplanet.Store
     /// </item>
     /// <item>
     /// <term><c>flush</c></term>
-    /// <description><c>true</c> (default) or <c>false</c>.  Corresponds to
+    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
     /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
     /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>readonly</c></term>
-    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
     /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
     /// parameter.</description>
     /// </item>
@@ -78,7 +78,7 @@ namespace Libplanet.Store
     /// </item>
     /// <item>
     /// <term><c>secure</c></term>
-    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
     /// <see cref="TrieStateStore(IKeyValueStore, bool)"/>'s <c>secure</c> parameter.</description>
     /// </item>
     /// </list>
@@ -119,7 +119,7 @@ namespace Libplanet.Store
         /// Creates a new <seealso cref="DefaultStore"/>.
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
-        /// If the path is <c>null</c>, the database is created in memory.</param>
+        /// If the path is <see langword="null"/>, the database is created in memory.</param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
@@ -319,42 +319,6 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<TxId> IterateTransactionIds()
-        {
-            foreach (UPath path in _txs.EnumerateDirectories(UPath.Root))
-            {
-                string upper = path.GetName();
-                if (upper.Length != 2)
-                {
-                    continue;
-                }
-
-                foreach (UPath subPath in _txs.EnumerateFiles(path))
-                {
-                    string lower = subPath.GetName();
-                    if (lower.Length != 62)
-                    {
-                        continue;
-                    }
-
-                    string name = upper + lower;
-                    TxId txid;
-                    try
-                    {
-                        txid = new TxId(ByteUtil.ParseHex(name));
-                    }
-                    catch (Exception)
-                    {
-                        // Skip if a filename does not match to the format.
-                        continue;
-                    }
-
-                    yield return txid;
-                }
-            }
-        }
-
-        /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
@@ -393,20 +357,6 @@ namespace Libplanet.Store
 
             WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.Serialize(true));
             _txCache.AddOrUpdate(tx.Id, tx);
-        }
-
-        /// <inheritdoc/>
-        public override bool DeleteTransaction(TxId txid)
-        {
-            var path = TxPath(txid);
-            if (_txs.FileExists(path))
-            {
-                _txs.DeleteFile(path);
-                _txCache.Remove(txid);
-                return true;
-            }
-
-            return false;
         }
 
         /// <inheritdoc/>
@@ -707,17 +657,6 @@ namespace Libplanet.Store
             {
                 DeleteChainId(id);
             }
-        }
-
-        /// <inheritdoc/>
-        public override long CountTransactions()
-        {
-            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
-            // unused (except for unit tests).  If this is never used why should we maintain
-            // this?  This is basically only for making TransactionSet<T> class to implement
-            // IDictionary<TxId, Transaction<T>>.Count property, which is never used either.
-            // We'd better to refactor all such things so that unnecessary APIs are gone away.
-            return IterateTransactionIds().LongCount();
         }
 
         /// <inheritdoc/>

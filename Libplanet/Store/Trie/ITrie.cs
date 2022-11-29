@@ -28,7 +28,7 @@ namespace Libplanet.Store.Trie
         /// <param name="key">The unique key to associate with the <paramref name="value"/>.</param>
         /// <param name="value">The value to store.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when the given
-        /// <paramref name="value"/> is <c>null</c>.</exception>
+        /// <paramref name="value"/> is <see langword="null"/>.</exception>
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
         ITrie Set(in KeyBytes key, IValue value);
 

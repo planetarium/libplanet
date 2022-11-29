@@ -38,7 +38,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// A fixed set of <see cref="Currency"/> objects that are supported by the blockchain
-        /// as first-class citizens.
+        /// as first-class assets.
         /// </summary>
         [Pure]
         IImmutableSet<Currency> NativeTokens { get; }
@@ -52,7 +52,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="transaction">The <see cref="Transaction{T}"/> to consider.</param>
         /// <returns>A <see cref="TxPolicyViolationException"/> with a description
         /// as to why given <paramref name="transaction"/> is <em>invalid</em>,
-        /// or <c>null</c> if <paramref name="transaction"/> is <em>valid</em>.</returns>
+        /// or <see langword="null"/> if <paramref name="transaction"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// This is used in two different cases:
         /// <list type="bullet">
@@ -81,7 +81,7 @@ namespace Libplanet.Blockchain.Policies
         /// <paramref name="blockChain"/>.</param>
         /// <returns>A <see cref="BlockPolicyViolationException"/> with a description
         /// as to why given <paramref name="nextBlock"/> is <em>invalid</em>,
-        /// or <c>null</c> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
+        /// or <see langword="null"/> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// Note that <see cref="ValidateNextBlockTx"/> will be called separately from
         /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block{T}"/>.
@@ -103,12 +103,13 @@ namespace Libplanet.Blockchain.Policies
         long GetNextBlockDifficulty(BlockChain<T> blockChain);
 
         /// <summary>
-        /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.
+        /// Gets the maximum length of <see cref="Block{T}.Transactions"/> in bytes.
         /// </summary>
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// for which this constraint should apply.</param>
-        /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
-        long GetMaxBlockBytes(long index);
+        /// <returns>The maximum length of <see cref="Block{T}.Transactions"/> in bytes
+        /// to accept.</returns>
+        long GetMaxTransactionsBytes(long index);
 
         /// <summary>
         /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for

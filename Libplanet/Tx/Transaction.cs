@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -51,14 +52,11 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
         /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
-        /// <paramref name="signature"/> or <paramref name="systemAction"/>.</exception>
         public Transaction(ITxMetadata metadata, IAction systemAction, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            SystemAction = systemAction ?? throw new ArgumentNullException(nameof(systemAction));
-            _signature =
-                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            SystemAction = systemAction;
+            _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
 
@@ -74,15 +72,11 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
         /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
-        /// <paramref name="signature"/> or <paramref name="customActions"/>.</exception>
         public Transaction(ITxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            CustomActions = customActions?.ToImmutableList()
-                ?? throw new ArgumentNullException(nameof(customActions));
-            _signature =
-                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            CustomActions = customActions.ToImmutableList();
+            _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
 
@@ -109,7 +103,7 @@ namespace Libplanet.Tx
         /// property, and <see cref="Signer"/> property is also derived from this value.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
+        /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
@@ -127,9 +121,6 @@ namespace Libplanet.Tx
         /// or it will throw <see cref="InvalidTxSignatureException"/>.
         /// This is copied and then assigned to the <see cref="Signature"/>
         /// property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
-        /// is passed to <paramref name="signature"/> or <paramref name="customActions"/>.
-        /// </exception>
         [Obsolete("Use constructors taking ITxMetadata or static factory methods instead.")]
         public Transaction(
             long nonce,
@@ -143,21 +134,17 @@ namespace Libplanet.Tx
         {
             // TODO: Remove parameter signer in the future.  Apparently no more used.
             // FIXME: This constructor should be removed.
-            _metadata = new TxMetadata(publicKey
-                ?? throw new ArgumentNullException(nameof(publicKey)))
+            _metadata = new TxMetadata(publicKey)
             {
                 Nonce = nonce,
                 GenesisHash = genesisHash,
-                UpdatedAddresses = updatedAddresses
-                    ?? throw new ArgumentNullException(nameof(updatedAddresses)),
+                UpdatedAddresses = updatedAddresses,
                 Timestamp = timestamp,
             };
 
-            _signature =
-                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
-            CustomActions = customActions?.ToImmutableList()
-                ?? throw new ArgumentNullException(nameof(customActions));
+            CustomActions = customActions.ToImmutableList();
         }
 
         /// <summary>
@@ -220,7 +207,7 @@ namespace Libplanet.Tx
         /// A digital signature of the content of this
         /// <see cref="Transaction{T}"/>.  This is signed by the account
         /// who corresponds to <see cref="PublicKey"/>.
-        /// This cannot be <c>null</c>.
+        /// This cannot be <see langword="null"/>.
         /// </summary>
         /// <returns>A new <see cref="byte"/> array of this transaction's
         /// signature.  Changing a returned array does not affect the internal
@@ -245,10 +232,11 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
-        /// This can be empty, but cannot be <c>null</c>.
+        /// This can be empty, but cannot be <see langword="null"/>.
         /// </summary>
         /// <remarks>This property is deprecated.  Use <see cref="CustomActions"/> or
         /// <see cref="SystemAction"/> instead.</remarks>
+        [JsonIgnore]
         [Obsolete("Use " + nameof(CustomActions) + " or " + nameof(SystemAction) + " instead.")]
         public IImmutableList<IAction> Actions =>
             SystemAction is { } sysAction
@@ -261,6 +249,8 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="CustomActions"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonConverter(typeof(SysActionJsonConverter))]
         public IAction? SystemAction { get; }
 
         /// <summary>
@@ -270,6 +260,8 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="SystemAction"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonConverter(typeof(ActionListJsonConverter))]
         public IImmutableList<T>? CustomActions { get; }
 
         /// <inheritdoc cref="ITxMetadata.Timestamp"/>
@@ -409,7 +401,7 @@ namespace Libplanet.Tx
         /// runtime exceptions could be thrown from this factory method.
         /// The best solution to that is not to oversimplify things,
         /// there is an option to check <see cref="IActionContext"/>'s
-        /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
+        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
         /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="nonce">The number of previous
@@ -423,7 +415,7 @@ namespace Libplanet.Tx
         /// included in the transaction.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
+        /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="customActions">A list of user-defined custom actions to include.  This can
@@ -439,11 +431,11 @@ namespace Libplanet.Tx
         /// <paramref name="customActions"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
-        /// property.  If <c>null</c> (which is default) is passed this will
+        /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="customActions"/>.
         /// </exception>
         public static Transaction<T> Create(
@@ -561,7 +553,7 @@ namespace Libplanet.Tx
         /// runtime exceptions could be thrown from this factory method.
         /// The best solution to that is not to oversimplify things,
         /// there is an option to check <see cref="IActionContext"/>'s
-        /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
+        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
         /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="nonce">The number of previous
@@ -574,7 +566,7 @@ namespace Libplanet.Tx
         /// but this in itself is not included in the transaction.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
+        /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="customActions">A list of user-defined custom actions to include.  This can
@@ -591,10 +583,10 @@ namespace Libplanet.Tx
         /// </param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created.  This goes to the <see cref="Timestamp"/>
-        /// property.  If <c>null</c> (which is default) is passed this will
+        /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> unsigned.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="customActions"/>.</exception>
         public static Transaction<T> CreateUnsigned(
             long nonce,
@@ -680,12 +672,16 @@ namespace Libplanet.Tx
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex(bool sign)
         {
-            ImmutableArray<byte>? sig = sign
-                ? ImmutableArray.Create(_signature)
-                : (ImmutableArray<byte>?)null;
-            return SystemAction is { } sa
-                ? _metadata.ToBencodex(Registry.Serialize(sa), sig)
-                : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue), sig);
+            Dictionary metadataDict = SystemAction is { } sa
+                ? _metadata.ToBencodex().Add(
+                    TxMetadata.SystemActionKey,
+                    Registry.Serialize(sa))
+                : _metadata.ToBencodex().Add(
+                    TxMetadata.CustomActionsKey,
+                    new List(CustomActions!.Select(a => a.PlainValue)));
+            return sign
+                ? metadataDict.Add(TxMetadata.SignatureKey, ImmutableArray.Create(_signature))
+                : metadataDict;
         }
 
         /// <summary>
@@ -703,7 +699,7 @@ namespace Libplanet.Tx
                 string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
                     "to verify.";
-                throw new InvalidTxSignatureException(Id, message);
+                throw new InvalidTxSignatureException(message, Id);
             }
         }
 

@@ -172,12 +172,6 @@ namespace Libplanet.Explorer.Store
             return _store.ContainsTransaction(txId);
         }
 
-        /// <inheritdoc cref="IStore.CountTransactions()"/>
-        public long CountTransactions()
-        {
-            return _store.CountTransactions();
-        }
-
         /// <inheritdoc cref="IStore.CountBlocks()"/>
         public long CountBlocks()
         {
@@ -280,23 +274,11 @@ namespace Libplanet.Explorer.Store
         ) =>
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
-        public IEnumerable<TxId> IterateTransactionIds()
-        {
-            return _store.IterateTransactionIds();
-        }
-
         /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
         public Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new()
         {
             return _store.GetTransaction<T>(txid);
-        }
-
-        /// <inheritdoc cref="IStore.DeleteTransaction(TxId)"/>
-        public bool DeleteTransaction(TxId txid)
-        {
-            return _store.DeleteTransaction(txid);
         }
 
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
@@ -336,7 +318,7 @@ namespace Libplanet.Explorer.Store
             collection.EnsureIndex(nameof(TxRefDoc.BlockIndex));
         }
 
-        public IEnumerable<ValueTuple<TxId, BlockHash>> IterateTxReferences(
+        public IEnumerable<(TxId, BlockHash)> IterateTxReferences(
             TxId? txId = null,
             bool desc = false,
             int offset = 0,

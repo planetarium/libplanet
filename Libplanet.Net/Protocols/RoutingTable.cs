@@ -9,7 +9,7 @@ namespace Libplanet.Net.Protocols
     /// <summary>
     /// Kademlia distributed hash table.
     /// </summary>
-    public class RoutingTable
+    public class RoutingTable : IRoutingTable
     {
         private readonly Address _address;
         private readonly KBucket[] _buckets;
@@ -66,14 +66,10 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         public int BucketSize { get; }
 
-        /// <summary>
-        /// The number of peers in the table.
-        /// </summary>
+        /// <inheritdoc />
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
-        /// <summary>
-        /// An <see cref="IReadOnlyList{T}"/> of peers in the table.
-        /// </summary>
+        /// <inheritdoc />
         public IReadOnlyList<BoundPeer> Peers =>
             NonEmptyBuckets.SelectMany(bucket => bucket.Peers).ToImmutableArray();
 
@@ -112,14 +108,10 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        /// <summary>
-        /// Adds the <paramref name="peer"/> to the table.
-        /// </summary>
-        /// <param name="peer">The <see cref="BoundPeer"/> to add.</param>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="peer"/>'s
-        /// <see cref="Address"/> is equal to the <see cref="Address"/> of self.</exception>
+        /// <inheritdoc />
         public void AddPeer(BoundPeer peer) => AddPeer(peer, DateTimeOffset.UtcNow);
 
+        /// <inheritdoc />
         public bool RemovePeer(BoundPeer peer)
         {
             if (peer.Address.Equals(_address))
@@ -134,12 +126,7 @@ namespace Libplanet.Net.Protocols
             return BucketOf(peer).RemovePeer(peer);
         }
 
-        /// <summary>
-        /// Determines whether the <see cref="RoutingTable"/> contains the specified key.
-        /// </summary>
-        /// <param name="peer">Key to locate in the <see cref="RoutingTable"/>.</param>
-        /// <returns><see langword="true"/> if the <see cref="RoutingTable" /> contains
-        /// an element with the specified key; otherwise, <see langword="false"/>.</returns>
+        /// <inheritdoc />
         public bool Contains(BoundPeer peer)
         {
             return BucketOf(peer).Contains(peer);
@@ -180,8 +167,8 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Returns at most 2 * <paramref name="k"/> (2 * <paramref name="k"/> + 1 if
-        /// <paramref name="includeTarget"/> is <c>true</c>) nearest peers to given parameter peer
-        /// from routing table. Return value is sorted with respect to target.
+        /// <paramref name="includeTarget"/> is <see langword="true"/>) nearest peers to given
+        /// parameter peer from routing table. Return value is sorted with respect to target.
         /// <seealso cref="Kademlia.SortByDistance(IEnumerable{BoundPeer}, Address)"/>
         /// </summary>
         /// <param name="target"><see cref="Address"/> to look up.</param>
@@ -213,7 +200,7 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// Marks <paramref name="peer"/> checked and refreshes last checked time of the peer.
         /// </summary>
-        /// <param name="peer">The <see cref="Peer"/> to check.</param>
+        /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
         /// <param name="start"><see cref="DateTimeOffset"/> at the beginning of the check.</param>
         /// <param name="end"><see cref="DateTimeOffset"/> at the end of the check.</param>
         /// <exception cref="ArgumentNullException">

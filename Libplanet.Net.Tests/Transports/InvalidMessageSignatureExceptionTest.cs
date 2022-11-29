@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Xunit;
@@ -21,7 +22,7 @@ namespace Libplanet.Net.Transports.Tests
 
             var e1 = new InvalidMessageSignatureException(
                 "An error message",
-                new Peer(publicKey),
+                new BoundPeer(publicKey, new DnsEndPoint("0.0.0.0", 0)),
                 publicKey,
                 messageToVerify,
                 signature);

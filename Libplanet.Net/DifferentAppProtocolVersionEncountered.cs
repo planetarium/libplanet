@@ -13,7 +13,7 @@ namespace Libplanet.Net
     /// <param name="localVersion">The currently running application's
     /// <see cref="AppProtocolVersion"/>.</param>
     public delegate void DifferentAppProtocolVersionEncountered(
-        Peer peer,
+        BoundPeer peer,
         AppProtocolVersion peerVersion,
         AppProtocolVersion localVersion
     );

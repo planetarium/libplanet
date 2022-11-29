@@ -82,7 +82,7 @@ namespace Libplanet.RocksDBStore
     /// </item>
     /// <item>
     /// <term><c>secure</c></term>
-    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
     /// <see cref="TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, bool)"/>'s <c>secure</c>
     /// parameter.</description>
     /// </item>
@@ -620,21 +620,6 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<TxId> IterateTransactionIds()
-        {
-            byte[] prefix = TxKeyPrefix;
-
-            foreach (Iterator it in IterateDb(_txIndexDb, prefix) )
-            {
-                byte[] key = it.Key();
-                byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
-
-                var txId = new TxId(txIdBytes);
-                yield return txId;
-            }
-        }
-
-        /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
@@ -715,47 +700,6 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(PutTransaction), e);
-                throw;
-            }
-            finally
-            {
-                _rwTxLock.ExitWriteLock();
-            }
-        }
-
-        /// <inheritdoc/>
-        public override bool DeleteTransaction(TxId txid)
-        {
-            byte[] key = TxKey(txid);
-
-            if (!(_txIndexDb.Get(key) is byte[] txDbNameBytes))
-            {
-                return false;
-            }
-
-            _rwTxLock.EnterWriteLock();
-            try
-            {
-                string txDbName = RocksDBStoreBitConverter.GetString(txDbNameBytes);
-                RocksDb txDb;
-                lock (_txDbCache)
-                {
-                    if (!_txDbCache.TryGetValue(txDbName, out txDb))
-                    {
-                        txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
-                        _txDbCache.AddOrUpdate(txDbName, txDb);
-                    }
-                }
-
-                _txCache.Remove(txid);
-                _txIndexDb.Remove(key);
-                txDb.Remove(key);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(DeleteTransaction), e);
                 throw;
             }
             finally
@@ -1113,12 +1057,6 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override long CountTransactions()
-        {
-            return IterateTransactionIds().LongCount();
-        }
-
-        /// <inheritdoc/>
         public override long CountBlocks()
         {
             return IterateBlockHashes().LongCount();
@@ -1418,31 +1356,59 @@ namespace Libplanet.RocksDBStore
 
         private IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
-            int offset,
-            int? limit,
+            long offset,
+            long? limit,
             bool includeDeleted
         )
         {
+            long count = 0;
+            Stack<(Guid, long)> chainInfos = new Stack<(Guid, long)>();
+
             if (!includeDeleted && IsDeletionMarked(chainId))
             {
                 yield break;
             }
 
-            long count = 0;
+            chainInfos.Push((chainId, CountIndex(chainId)));
 
-            if (GetPreviousChainInfo(chainId) is { } chainInfo)
+            while (true)
             {
-                Guid prevId = chainInfo.Item1;
-                long pi = chainInfo.Item2;
-
-                int expectedCount = (int)(pi - offset + 1);
-                if (limit is { } limitNotNull && limitNotNull < expectedCount)
+                if (chainInfos.Peek().Item2 > offset &&
+                    GetPreviousChainInfo(chainInfos.Peek().Item1) is { } chainInfo)
                 {
-                    expectedCount = limitNotNull;
+                    chainInfos.Push(chainInfo);
                 }
-
-                foreach (BlockHash hash in IterateIndexes(prevId, offset, expectedCount, true))
+                else
                 {
+                    break;
+                }
+            }
+
+            long previousChainTipIndex;
+
+            // Adjust offset if it skipped some previous chains.
+            (offset, previousChainTipIndex) =
+                GetPreviousChainInfo(chainInfos.Peek().Item1) is { } cinfo
+                    ? (Math.Max(0, offset - cinfo.Item2 - 1), cinfo.Item2)
+                    : (offset, 0);
+
+            while (chainInfos.Count > 0)
+            {
+                (Guid, long) chainInfo = chainInfos.Pop();
+                (Guid cid, long chainTipIndex) = chainInfo;
+
+                // Include genesis block.
+                long expectedCount = chainTipIndex - previousChainTipIndex +
+                                     (GetPreviousChainInfo(cid) is null ? 1 : 0);
+
+                foreach (BlockHash hash in IterateIndexesInner(cid, expectedCount))
+                {
+                    if (offset > 0)
+                    {
+                        offset -= 1;
+                        continue;
+                    }
+
                     if (count >= limit)
                     {
                         yield break;
@@ -1452,20 +1418,23 @@ namespace Libplanet.RocksDBStore
                     count += 1;
                 }
 
-                offset = (int)Math.Max(0, offset - pi - 1);
+                previousChainTipIndex = chainTipIndex;
             }
+        }
 
+        private IEnumerable<BlockHash> IterateIndexesInner(Guid chainId, long expectedCount)
+        {
+            long count = 0;
             byte[] prefix = IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-            foreach (Iterator it in IterateDb(_chainDb, prefix).Skip(offset))
+            foreach (Iterator it in IterateDb(_chainDb, prefix))
             {
-                if (count >= limit)
+                if (count >= expectedCount)
                 {
                     yield break;
                 }
 
                 byte[] value = it.Value();
                 yield return new BlockHash(value);
-
                 count += 1;
             }
         }

@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IAction _action = new DumbAction();
 
         private static IAccountStateDelta _stateDelta =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
+            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
 
         private static IActionContext _actionContext =
             new ActionContext(default, default, default, default, 1, _stateDelta, default);

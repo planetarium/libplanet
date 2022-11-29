@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.JsonDiffPatch.Xunit;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using DiffPlex.DiffBuilder;
@@ -325,18 +329,24 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            var content = new BlockContent<T>
-            {
-                Miner = (miner ?? GenesisMiner.PublicKey).ToAddress(),
-                PublicKey = protocolVersion < 2 ? null : miner ?? GenesisMiner.PublicKey,
-                Timestamp = timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                Transactions = transactions ?? Array.Empty<Transaction<T>>(),
-                ProtocolVersion = protocolVersion,
-            };
+            var txs = transactions?.OrderBy(tx => tx.Id).ToList() ?? new List<Transaction<T>>();
+            var content = new BlockContent<T>(
+                new BlockMetadata(
+                    protocolVersion: protocolVersion,
+                    index: 0,
+                    timestamp: timestamp ??
+                        new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                    miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
+                    publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: BlockContent<T>.DeriveTxHash(txs)),
+                transactions: txs.ToList());
+            var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
             return new PreEvaluationBlock<T>(
                 content,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
+                (nonce, content.Metadata.DerivePreEvaluationHash(nonce)));
         }
 
         public static Block<T> MineGenesisBlock<T>(
@@ -352,16 +362,16 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner?.PublicKey,
                 transactions,
                 timestamp,
-                protocolVersion
-            );
+                protocolVersion);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             return protocolVersion < 2
-                ? new Block<T>(preEval, stateRootHash, null)
+                ? new Block<T>(preEval, (stateRootHash, null, hash))
                 : preEval.Sign(miner, stateRootHash);
         }
 
         public static PreEvaluationBlock<T> MineNext<T>(
             Block<T> previousBlock,
-            IReadOnlyList<Transaction<T>> txs = null,
+            IReadOnlyList<Transaction<T>> transactions = null,
             byte[] nonce = null,
             long difficulty = 1,
             PublicKey miner = null,
@@ -370,21 +380,29 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            var content = new BlockContent<T>
-            {
-                Index = previousBlock.Index + 1,
-                Difficulty = difficulty,
-                TotalDifficulty = previousBlock.TotalDifficulty + difficulty,
-                Miner = miner?.ToAddress() ?? previousBlock.Miner,
-                PublicKey = protocolVersion < 2 ? null : miner ?? previousBlock.PublicKey,
-                PreviousHash = previousBlock.Hash,
-                Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
-                Transactions = txs ?? Array.Empty<Transaction<T>>(),
-                ProtocolVersion = protocolVersion,
-            };
-
+            var txs = transactions is null
+                ? new List<Transaction<T>>()
+                : transactions.OrderBy(tx => tx.Id).ToList();
+            var content = new BlockContent<T>(
+                new BlockMetadata(
+                    protocolVersion: protocolVersion,
+                    index: previousBlock.Index + 1,
+                    timestamp: previousBlock.Timestamp
+                        .Add(blockInterval ?? TimeSpan.FromSeconds(15)),
+                    miner: miner?.ToAddress() ?? previousBlock.Miner,
+                    publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
+                    difficulty: difficulty,
+                    totalDifficulty: previousBlock.TotalDifficulty + difficulty,
+                    previousHash: previousBlock.Hash,
+                    txHash: BlockContent<T>.DeriveTxHash(txs)),
+                transactions: txs);
             var preEval = nonce is byte[] nonceBytes
-                ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
+                ? new PreEvaluationBlock<T>(
+                    content,
+                    (
+                        new Nonce(nonceBytes),
+                        content.Metadata.DerivePreEvaluationHash(new Nonce(nonceBytes))
+                    ))
                 : content.Mine();
 
             preEval.ValidateTimestamp();
@@ -410,10 +428,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 difficulty,
                 miner?.PublicKey,
                 blockInterval,
-                protocolVersion
-            );
+                protocolVersion);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             return protocolVersion < 2
-                ? new Block<T>(preEval, stateRootHash, null)
+                ? new Block<T>(preEval, (stateRootHash, null, hash))
                 : preEval.Sign(miner, stateRootHash);
         }
 
@@ -433,35 +451,44 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             actions = actions ?? ImmutableArray<T>.Empty;
             privateKey = privateKey ?? ChainPrivateKey;
 
-            var tx = Transaction<T>.Create(
-                0,
-                privateKey,
-                null,
-                actions,
-                timestamp: timestamp ?? DateTimeOffset.MinValue);
-
+            var txs = new[]
+            {
+                Transaction<T>.Create(
+                    0,
+                    privateKey,
+                    null,
+                    actions,
+                    timestamp: timestamp ?? DateTimeOffset.MinValue),
+            };
             if (genesisBlock is null)
             {
-                var content = new BlockContent<T>()
-                {
-                    Miner = GenesisMiner.ToAddress(),
-                    PublicKey = protocolVersion < 2 ? null : GenesisMiner.PublicKey,
-                    Timestamp = timestamp ?? DateTimeOffset.MinValue,
-                    Transactions = new[] { tx },
-                    ProtocolVersion = protocolVersion,
-                };
+                var content = new BlockContent<T>(
+                    new BlockMetadata(
+                        protocolVersion: protocolVersion,
+                        index: 0,
+                        timestamp: timestamp ?? DateTimeOffset.MinValue,
+                        miner: GenesisMiner.PublicKey.ToAddress(),
+                        publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
+                        difficulty: 0,
+                        totalDifficulty: 0,
+                        previousHash: null,
+                        txHash: BlockContent<T>.DeriveTxHash(txs)),
+                    transactions: txs);
+                var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
                 var preEval = new PreEvaluationBlock<T>(
-                    content,
-                    new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-                );
+                    content, (nonce, content.Metadata.DerivePreEvaluationHash(nonce)));
+                var stateRootHash = preEval.DetermineStateRootHash(
+                    blockAction: policy.BlockAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    stateStore: stateStore);
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
-                         preEval,
-                         preEval.DetermineStateRootHash(
-                             blockAction: policy.BlockAction,
-                             nativeTokenPredicate: policy.NativeTokens.Contains,
-                             stateStore: stateStore),
-                         signature: null)
+                        preEval,
+                        (
+                            stateRootHash,
+                            null,
+                            preEval.Header.DeriveBlockHash(stateRootHash, null)
+                        ))
                     : preEval.Evaluate(
                          privateKey: GenesisMiner,
                          blockAction: policy.BlockAction,
@@ -542,5 +569,33 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 output,
                 conditionLabel
             );
+
+        public static void AssertJsonSerializable<T>(T obj, string expectedJson)
+            where T : IEquatable<T>
+        {
+            Skip.IfNot(
+                Type.GetType("Mono.Runtime") is null,
+                "System.Text.Json 6.0.0+ does not work well with Unity/Mono."
+            );
+
+            var buffer = new MemoryStream();
+            JsonSerializer.Serialize(buffer, obj);
+            buffer.Seek(0L, SeekOrigin.Begin);
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+            JsonNode actual = JsonSerializer.SerializeToNode(obj, options);
+            JsonNode expected = JsonNode.Parse(expectedJson, null, new JsonDocumentOptions
+            {
+                AllowTrailingCommas = true,
+                CommentHandling = JsonCommentHandling.Skip,
+            });
+            JsonAssert.Equal(expected, actual, true);
+            var deserialized = JsonSerializer.Deserialize<T>(expectedJson, options);
+            Assert.Equal(obj, deserialized);
+        }
     }
 }

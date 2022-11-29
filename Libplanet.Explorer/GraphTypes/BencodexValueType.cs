@@ -7,7 +7,7 @@ namespace Libplanet.Explorer.GraphTypes
 {
     public class BencodexValueType : StringGraphType
     {
-        private static readonly Codec _codec = new ();
+        private static readonly Codec _codec = new();
 
         public BencodexValueType()
         {

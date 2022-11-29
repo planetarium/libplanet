@@ -12,83 +12,57 @@ namespace Libplanet.Blocks
     public sealed class BlockHeader : IBlockHeader
     {
         private readonly PreEvaluationBlockHeader _preEvaluationBlockHeader;
+        private readonly HashDigest<SHA256> _stateRootHash;
+        private readonly ImmutableArray<byte>? _signature;
+        private readonly BlockHash _hash;
 
         /// <summary>
-        /// Creates a <see cref="BlockHeader"/> instance from the given
-        /// <paramref name="preEvaluationBlockHeader"/> and <paramref name="stateRootHash"/>.
-        /// This automatically derives its hash from the given inputs.
+        /// Creates a <see cref="BlockHeader"/> by copying the fields of another
+        /// block <paramref name="header"/>.
         /// </summary>
-        /// <param name="preEvaluationBlockHeader">The pre-evaluation block header.</param>
-        /// <param name="stateRootHash">The state root hash.</param>
-        /// <param name="signature">The block signature.</param>
-        /// <exception cref="InvalidBlockSignatureException">Thrown when
-        /// the <paramref name="signature"/> signature is invalid.</exception>
-        public BlockHeader(
-            PreEvaluationBlockHeader preEvaluationBlockHeader,
-            HashDigest<SHA256> stateRootHash,
-            ImmutableArray<byte>? signature
-        )
-#pragma warning disable SA1118
+        /// <remarks>
+        /// <para>
+        /// As <paramref name="header"/> needn't be an actual <see cref="BlockHeader"/>
+        /// instance, but simply any object implementing <see cref="IBlockHeader"/>
+        /// interface, it can't be trusted to satisfy all the constraints for a valid
+        /// <see cref="BlockHeader"/> instance.  As such, conditions are checked again
+        /// whilst creating a copy.  This is a relatively heavy operation, so must be used
+        /// sparingly.
+        /// </para>
+        /// <para>
+        /// In particular, this creates a new instance of
+        /// <see cref="PreEvaluationBlockHeader"/> with data extracted from
+        /// <paramref name="header"/>.  Thus any <see cref="Exception"/>s that can be thrown from a
+        /// <see cref="PreEvaluationBlockHeader"/>'s constructors may also be thrown
+        /// in addition to the ones explicitly listed below.
+        /// </para>
+        /// </remarks>
+        /// <param name="header">The block header to copy.</param>
+        /// <exception cref="InvalidBlockSignatureException">Thrown if
+        /// <paramref name="header.Signature"/> is invalid.</exception>
+        /// <exception cref="InvalidBlockHashException">Thrown when <paramref name="header.Hash"/>
+        /// is inconsistent with other arguments.</exception>
+        /// <seealso cref="PreEvaluationBlockHeader"/>
+        public BlockHeader(IBlockHeader header)
             : this(
-                preEvaluationBlockHeader,
-                (
-                    stateRootHash,
-                    signature,
-                    preEvaluationBlockHeader.DeriveBlockHash(stateRootHash, signature)
-                )
-            )
-#pragma warning restore SA1118
+                new PreEvaluationBlockHeader(header),
+                (header.StateRootHash, header.Signature, header.Hash))
         {
         }
 
         /// <summary>
-        /// Creates a <see cref="BlockHeader"/> instance from the given
-        /// <paramref name="preEvaluationBlockHeader"/> and <paramref name="stateRootHash"/>.
-        /// It also checks the sanity of the given <paramref name="hash"/>.
-        /// </summary>
-        /// <param name="preEvaluationBlockHeader">The pre-evaluation block header.</param>
-        /// <param name="stateRootHash">The state root hash.</param>
-        /// <param name="signature">The block signature.</param>
-        /// <param name="hash">The block hash to check.</param>
-        /// <exception cref="InvalidBlockSignatureException">Thrown when
-        /// the <paramref name="signature"/> signature is invalid.</exception>
-        /// <exception cref="InvalidBlockHashException">Thrown when the given block
-        /// <paramref name="hash"/> is consistent with other arguments.</exception>
-        public BlockHeader(
-            PreEvaluationBlockHeader preEvaluationBlockHeader,
-            HashDigest<SHA256> stateRootHash,
-            ImmutableArray<byte>? signature,
-            BlockHash hash
-        )
-            : this(
-                preEvaluationBlockHeader,
-                (stateRootHash, signature, hash)
-            )
-        {
-            BlockHash expectedHash =
-                preEvaluationBlockHeader.DeriveBlockHash(stateRootHash, signature);
-            if (!hash.Equals(expectedHash))
-            {
-                throw new InvalidBlockHashException(
-                    $"The block #{Index} {Hash} has an invalid hash; expected: {expectedHash}."
-                );
-            }
-        }
-
-        /// <summary>
-        /// Unsafely creates a <see cref="BlockHeader"/> instance with its
-        /// <paramref name="preEvaluationBlockHeader"/> and <paramref name="proof"/> which is
-        /// probably considered as to be valid.
+        /// Creates a <see cref="BlockHeader"/> instance with its
+        /// <paramref name="preEvaluationBlockHeader"/> and <paramref name="proof"/>.
         /// </summary>
         /// <param name="preEvaluationBlockHeader">The pre-evaluation block header.</param>
         /// <param name="proof">A triple of the state root hash, the block signature, and the block
         /// hash which is probably considered as to be derived from
         /// the <paramref name="preEvaluationBlockHeader"/> and the state root hash.</param>
-        /// <exception cref="InvalidBlockSignatureException">Thrown if a <paramref name="proof"/>'s
-        /// signature is invalid.</exception>
-        /// <remarks>This does not verify if a <paramref name="proof"/>'s hash is derived from
-        /// the <paramref name="preEvaluationBlockHeader"/> and the state root hash.</remarks>
-        private BlockHeader(
+        /// <exception cref="InvalidBlockSignatureException">Thrown if
+        /// <paramref name="proof.Signature"/> signature is invalid.</exception>
+        /// <exception cref="InvalidBlockHashException">Thrown when <paramref name="proof.Hash"/>
+        /// is inconsistent with other arguments.</exception>
+        public BlockHeader(
             PreEvaluationBlockHeader preEvaluationBlockHeader,
             (
                 HashDigest<SHA256> StateRootHash,
@@ -97,6 +71,8 @@ namespace Libplanet.Blocks
             ) proof
         )
         {
+            BlockHash expectedHash =
+                preEvaluationBlockHeader.DeriveBlockHash(proof.StateRootHash, proof.Signature);
             if (!preEvaluationBlockHeader.VerifySignature(proof.Signature, proof.StateRootHash))
             {
                 long idx = preEvaluationBlockHeader.Index;
@@ -105,17 +81,27 @@ namespace Libplanet.Blocks
                     : $"The block #{idx} #{proof.Hash} cannot be signed as its protocol version " +
                         $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
                 throw new InvalidBlockSignatureException(
+                    msg,
                     preEvaluationBlockHeader.PublicKey,
-                    proof.Signature,
-                    msg
-                );
+                    proof.Signature);
+            }
+            else if (!proof.Hash.Equals(expectedHash))
+            {
+                throw new InvalidBlockHashException(
+                    $"The block #{preEvaluationBlockHeader.Index} {proof.Hash} has " +
+                    $"an invalid hash; expected: {expectedHash}.");
             }
 
             _preEvaluationBlockHeader = preEvaluationBlockHeader;
-            StateRootHash = proof.StateRootHash;
-            Signature = proof.Signature;
-            Hash = proof.Hash;
+            _stateRootHash = proof.StateRootHash;
+            _signature = proof.Signature;
+            _hash = proof.Hash;
         }
+
+        /// <summary>
+        /// Internal <see cref="PreEvaluationBlockHeader"/>.
+        /// </summary>
+        public PreEvaluationBlockHeader Header => _preEvaluationBlockHeader;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _preEvaluationBlockHeader.ProtocolVersion;
@@ -125,9 +111,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _preEvaluationBlockHeader.Timestamp;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _preEvaluationBlockHeader.Nonce;
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _preEvaluationBlockHeader.Miner;
@@ -147,18 +130,21 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _preEvaluationBlockHeader.TxHash;
 
-        /// <inheritdoc cref="IBlockHeader.Signature"/>
-        public ImmutableArray<byte>? Signature { get; }
-
-        /// <inheritdoc cref="IBlockExcerpt.Hash"/>
-        public BlockHash Hash { get; }
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
+        public Nonce Nonce => _preEvaluationBlockHeader.Nonce;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public ImmutableArray<byte> PreEvaluationHash =>
             _preEvaluationBlockHeader.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
-        public HashDigest<SHA256> StateRootHash { get; }
+        public HashDigest<SHA256> StateRootHash => _stateRootHash;
+
+        /// <inheritdoc cref="IBlockHeader.Signature"/>
+        public ImmutableArray<byte>? Signature => _signature;
+
+        /// <inheritdoc cref="IBlockExcerpt.Hash"/>
+        public BlockHash Hash => _hash;
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString() =>

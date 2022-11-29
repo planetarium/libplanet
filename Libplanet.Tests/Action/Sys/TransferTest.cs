@@ -12,10 +12,10 @@ namespace Libplanet.Tests.Action.Sys
     public class TransferTest
     {
         // ReSharper disable once InconsistentNaming
-        private static readonly Currency FOO = new Currency("FOO", 2, minter: null);
+        private static readonly Currency FOO = Currency.Uncapped("FOO", 2, null);
 
         // ReSharper disable once InconsistentNaming
-        private static readonly Currency BAR = new Currency("BAR", 0, minter: null);
+        private static readonly Currency BAR = Currency.Uncapped("BAR", 0, null);
 
         [Fact]
         public void Constructor()
@@ -67,6 +67,7 @@ namespace Libplanet.Tests.Action.Sys
             var prevStates = new AccountStateDeltaImpl(
                 accountStateGetter: addr => new IValue[addr.Count],
                 accountBalanceGetter: (addr, c) => c * (addr == signer ? 500 : 0),
+                totalSupplyGetter: c => c * 500,
                 signer: signer
             );
             BlockHash genesisHash = random.NextBlockHash();
@@ -103,6 +104,31 @@ namespace Libplanet.Tests.Action.Sys
             );
             Assert.Equal(signer, exc2.Address);
             Assert.Equal(FOO * 500, exc2.Balance);
+        }
+
+        [SkippableFact]
+        public void JsonSerialization()
+        {
+            FungibleAssetValue amount = FOO * 125;
+            var action = new Transfer(
+                new Address("474CB59Dea21159CeFcC828b30a8D864e0b94a6B"),
+                amount
+            );
+            AssertJsonSerializable(action, @"
+                {
+                    ""\ufefftype_id"": ""1"",
+                    ""\ufeffvalues"": {
+                        ""\ufeffamount"": ""12500"",
+                        ""\ufeffcurrency"": {
+                            ""\ufeffdecimals"": ""2"",
+                            ""\ufeffminters"": null,
+                            ""\ufeffticker"": ""\ufeffFOO"",
+                            ""\ufefftotalSupplyTrackable"": true
+                        },
+                        ""\ufeffrecipient"": ""0x474cb59dea21159cefcc828b30a8d864e0b94a6b""
+                    }
+                }
+            ");
         }
     }
 }

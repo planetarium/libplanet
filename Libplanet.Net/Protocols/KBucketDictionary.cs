@@ -87,8 +87,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// The <see cref="PeerState"/> updated most recently. <c>null</c> if the dictionary
-        /// is empty.
+        /// The <see cref="PeerState"/> updated most recently. <see langword="null"/>
+        /// if the dictionary is empty.
         /// </summary>
         public PeerState? Head
         {
@@ -104,8 +104,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// The <see cref="PeerState"/> updated least recently. <c>null</c> if the dictionary
-        /// is empty.
+        /// The <see cref="PeerState"/> updated least recently. <see langword="null"/>
+        /// if the dictionary is empty.
         /// </summary>
         public PeerState? Tail
         {
@@ -126,7 +126,7 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
         /// <returns>The <see cref="BoundPeer"/> with its address equal to
-        /// that of the <paramref name="peer"/>'s. <c>null</c> if not found.</returns>
+        /// that of the <paramref name="peer"/>'s. <see langword="null"/> if not found.</returns>
         public PeerState? Get(BoundPeer peer)
         {
             return Get(peer.Address);
@@ -137,7 +137,7 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="address">The <see cref="Address"/> to check.</param>
         /// <returns>The <see cref="BoundPeer"/> with its address equal to
-        /// that of <paramref name="address"/>. <c>null</c> if not found.</returns>
+        /// that of <paramref name="address"/>. <see langword="null"/> if not found.</returns>
         public PeerState? Get(Address address)
         {
             lock (_lock)
@@ -158,8 +158,8 @@ namespace Libplanet.Net.Protocols
         /// as a key.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
-        /// <returns><c>true</c> if the <paramref name="peer"/>'s <see cref="Address"/> exists,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the <paramref name="peer"/>'s
+        /// <see cref="Address"/> exists, <see langword="false"/> otherwise.</returns>
         public bool Contains(BoundPeer peer)
         {
             return Contains(peer.Address);
@@ -169,8 +169,8 @@ namespace Libplanet.Net.Protocols
         /// Checks if the dictionary contains <paramref name="address"/> as a key.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> to check.</param>
-        /// <returns><c>true</c> if <paramref name="address"/> exists,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="address"/> exists,
+        /// <see langword="false"/> otherwise.</returns>
         public bool Contains(Address address)
         {
             lock (_lock)
@@ -183,8 +183,8 @@ namespace Libplanet.Net.Protocols
         /// Adds or updates the dictionary with <paramref name="peer"/>.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to add or update.</param>
-        /// <returns><c>true</c> if <paramref name="peer"/> was either added or updated,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="peer"/> was either added or updated,
+        /// <see langword="false"/> otherwise.</returns>
         /// <seealso cref="AddOrUpdate(BoundPeer, PeerState)"/>.
         public bool AddOrUpdate(BoundPeer peer)
         {
@@ -196,8 +196,8 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to add or update.</param>
         /// <param name="peerState">The <see cref="PeerState"/> to use as a value.</param>
-        /// <returns><c>true</c> if <paramref name="peer"/> was either added or updated,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="peer"/> was either added or updated,
+        /// <see langword="false"/> otherwise.</returns>
         /// <seealso cref="AddOrUpdate(Address, PeerState)"/>.
         public bool AddOrUpdate(BoundPeer peer, PeerState peerState)
         {
@@ -221,9 +221,9 @@ namespace Libplanet.Net.Protocols
         ///         a key/value pair.
         ///     </description></item>
         ///     <item><description>
-        ///         Else, if the dictionary is full and replace option is set to <c>true</c>,
-        ///         replace the oldest <see cref="PeerState"/>, i.e. <see cref="Tail"/>,
-        ///         with <paramref name="peerState"/>.
+        ///         Else, if the dictionary is full and replace option is set to
+        ///         <see langword="true"/>, replace the oldest <see cref="PeerState"/>, i.e.
+        ///         <see cref="Tail"/>, with <paramref name="peerState"/>.
         ///     </description></item>
         ///     <item><description>
         ///         Else, ignore.
@@ -233,10 +233,10 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="address">The <see cref="Address"/> to use as a key.</param>
         /// <param name="peerState">The <see cref="PeerState"/> to use as a value.</param>
-        /// <returns><c>true</c> if the key/value pair was either added or updated,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the key/value pair was either added or updated,
+        /// <see langword="false"/> otherwise.</returns>
         /// <remarks>
-        /// This returns <c>false</c> only if all following conditions are met:
+        /// This returns <see langword="false"/> only if all following conditions are met:
         /// <list type="bullet">
         ///     <item><description>
         ///         The dictionary does not contain <paramref name="address"/> as a key.
@@ -245,7 +245,7 @@ namespace Libplanet.Net.Protocols
         ///         The dictionary is already full.
         ///     </description></item>
         ///     <item><description>
-        ///         The replacement option is set to <c>false</c> for
+        ///         The replacement option is set to <see langword="false"/> for
         ///         this <see cref="KBucketDictionary"/> instance.
         ///     </description></item>
         /// </list>
@@ -298,8 +298,8 @@ namespace Libplanet.Net.Protocols
         /// Removes <paramref name="peer"/> from the dictionary.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to remove.</param>
-        /// <returns><c>true</c> if <paramref name="peer"/> was successfully removed,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="peer"/> was successfully removed,
+        /// <see langword="false"/> otherwise.</returns>
         public bool Remove(BoundPeer peer)
         {
             return Remove(peer.Address);
@@ -309,8 +309,8 @@ namespace Libplanet.Net.Protocols
         /// Removes <paramref name="address"/> from the dictionary.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> to remove.</param>
-        /// <returns><c>true</c> if <paramref name="address"/> was successfully removed,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="address"/> was successfully removed,
+        /// <see langword="false"/> otherwise.</returns>
         public bool Remove(Address address)
         {
             lock (_lock)

@@ -19,9 +19,13 @@ executables=(
   "Libplanet.Tools"
   "Libplanet.Explorer.Executable"
 )
+npm_packages=(
+  "@planetarium/cli"
+  "@planetarium/tx"
+)
 
 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
-rids=(linux-x64 osx-x64 win-x64)
+rids=(linux-x64 osx-x64 osx-arm64 win-x64)
 
 # Publish a package only if the repository is upstream (planetarium/libplanet)
 # and the branch is for releases (main or *-maintenance or 9c-*).

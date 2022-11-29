@@ -17,28 +17,28 @@ namespace Libplanet.Tx
         /// Initializes a new instance of the
         /// <see cref="InvalidTxGenesisHashException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="txid">The invalid <see cref="Transaction{T}"/>'s
         /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="expectedGenesisHash">The <see cref="HashDigest{SHA256}"/>
         /// value of <see cref="BlockChain{T}.Genesis"/>.</param>
         /// <param name="improperGenesisHash">The actual
-        /// <see cref="Transaction{T}.GenesisHash"/>.  This can be <c>null</c>.</param>
-        /// <param name="message">The message that describes the error.</param>
+        /// <see cref="Transaction{T}.GenesisHash"/>.  This can be <see langword="null"/>.</param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",
             Justification = "A long error message should be multiline.")]
         public InvalidTxGenesisHashException(
+            string message,
             TxId txid,
             BlockHash expectedGenesisHash,
-            BlockHash? improperGenesisHash,
-            string message)
+            BlockHash? improperGenesisHash)
             : base(
-                txid,
                 $"{message}\n" +
                 $"Expected genesis hash: {expectedGenesisHash}\n" +
-                $"Improper genesis hash: {improperGenesisHash}")
+                $"Improper genesis hash: {improperGenesisHash}",
+                txid)
         {
             ExpectedGenesisHash = expectedGenesisHash;
             ImproperGenesisHash = improperGenesisHash;

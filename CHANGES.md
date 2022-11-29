@@ -1,13 +1,549 @@
 Libplanet changelog
 ===================
 
+Version 0.44.1
+--------------
+
+Released on November 7, 2022.
+
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+
+
+Version 0.44.0
+--------------
+
+Released on November 2, 2022.
+
+### Backward-incompatible API changes
+
+ -  Removed all `TxMetadata.ToBencodex()` overload methods with parameters.
+    Use newly introduced parameterless `TxMetadata.ToBencodex()` instead.
+    [[#2457]]
+ -  (Libplanet.Node) Changed `UntypedTransaction(ITxMetadata,
+    IEnumerable<IValue>, ImmutableArray<byte>)` to `UntypedTransaction(
+    ITxMetadata, IValue?, IValue?, ImmutableArray<byte>`) to support
+    `Transaction<T>.SystemAction`.  [[#2456], [#2457]]
+ -  (Libplanet.Node) Renamed `UntypedTransaction.ActionValues` to
+    `UntypedTransaction.CustomActionsValue` and changed its type from
+    `IReadOnlyList<IValue>` to `IValue?`.  [[#2456], [#2457]]
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `json` field to `ActionType` GraphQL type.
+    [[#2418]]
+ -  (Libplanet.Node) Added `IValue? SystemActionValue` property to
+    `UntypedTransaction`.  [[#2456], [#2457]]
+
+### Behavioral changes
+
+ - Optimized `ByteUtil.CalculateHash()` method.  [[#2437], [#2459]]
+
+### Bug fixes
+
+ -  (Libplanet.Explorer) `Libplanet.Explorer.Executable` became to work again.
+    [[#2420]]
+
+[#2420]: https://github.com/planetarium/libplanet/pull/2420
+
+### CLI tools
+
+ -  Added builds for Apple Silicon to releases.  [[#2365]]
+
+[#2365]: https://github.com/planetarium/libplanet/pull/2365
+[#2418]: https://github.com/planetarium/libplanet/pull/2418
+[#2437]: https://github.com/planetarium/libplanet/issues/2437
+[#2459]: https://github.com/planetarium/libplanet/pull/2459
+[#2456]: https://github.com/planetarium/libplanet/issues/2456
+[#2457]: https://github.com/planetarium/libplanet/pull/2457
+
+
+Version 0.43.3
+--------------
+
+Released on November 7, 2022.
+
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+
+[#2424]: https://github.com/planetarium/libplanet/issues/2424
+[#2521]: https://github.com/planetarium/libplanet/pulls/2521
+
+
+Version 0.43.2
+--------------
+
+Released on November 1, 2022.
+
+ -  (Libplanet.RocksDBStore) `RocksDBStore` no more crashes with stack overflow
+    during iterating block indices even if a chain is deeply nested (due to
+    forks).  [[#2338], [#2379]]
+
+[#2338]: https://github.com/planetarium/libplanet/issues/2338
+[#2379]: https://github.com/planetarium/libplanet/pull/2379
+
+
+Version 0.43.1
+--------------
+
+Released on October 17, 2022.
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TxResultType.UpdatedStateType` and
+    `TxResultType.FungibleAssetBalancesType` GraphQL types.  [[#2405]]
+
+[#2405]: https://github.com/planetarium/libplanet/pull/2405
+
+
+Version 0.43.0
+--------------
+
+Released on October 14, 2022.
+
+Since 0.43.0, we officially provide *[@planetarium/tx]*, an npm package for
+creating unsigned transactions in JavaScript/TypeScript.  Although it is still
+in experimental stage, which can build only unsigned transactions with
+a system action, its features will be added more in the future.
+
+### Backward-incompatible API changes
+
+ -  Removed `DateTimeOffset?` type parameter that allowed a creation of
+    a genesis `Block<T>` with specific timestamp from
+    `BlockChain<T>.MakeGenesisBlock()`.  [[#2321]]
+ -  Overhauled constructors for `BlockMetadata`, `BlockContent<T>`,
+    `PreEvaluationBlockHeader`, `PreEvaluationBlock<T>`, `BlockHeader`,
+    and `Block<T>`.  [[#2321]]
+     -  All unsafe constructors have been removed in order to prevent
+        instantiation of invalid block related objects.
+     -  `BlockMetadata` has constructors `BlockMetadata(IBlockMetadata)`
+        and `BlockMetadata(long, DateTimeOffset, PublicKey, long, BigInteger,
+        BlockHash?, HashDigest<SHA256>)`.
+     -  `BlockContent` has constructors `BlockContent<T>(IBlockMetadata,
+        IEnumerable<Transaction<T>> transactions)`,
+        `BlockContent<T>(BlockMetadata)` and `BlockContent<T>(BlockMetadata,
+        IEnumerable<Trnasaction<T>> transactions)`.
+     -  `PreEvaluationBlockHeader` has constructors
+        `PreEvaluationBlockHeader(IPreEvaluationBlockHeader)` and
+        `PreEvaluationBlockHeader(BlockMetadata, (Nonce,
+        ImmutableArray<byte>))`.
+     -  `PreEvaluationBlock<T>` has constructors
+        `PreEvaluationBlock<T>(IPreEvaluationBlockHeader,
+        IEnumerable<Transaction<T>>)` and
+        `PreEvaluatoinBlock<T>(BlockContent<T>, (Nonce, ImmutableArray<byte>))`.
+     -  `BlockHeader` has constructors `BlockHeader(IBlockHeader)` and
+        `BlockHeader(PreEvaluationBlockHeader, (HashDigest<SHA256>,
+        ImmutableArray<byte>?, BlockHash))`.
+     -  `Block<T>` has constructors `Block<T>(IBlockHeader,
+        IEnumerable<Transaction<T>>)` and `Block<T>(PreEvaluationBlock<T>,
+        (HashDigest<SHA256>, ImmutableArray<byte>, BlockHash))`.
+ -  `BlockContent<T>` no longer inherits `BlockMetadata` and
+    `PreEvaluationBlock<T>` no longer inherits `PreEvaluationBlockHeader`.
+    [[#2321]]
+ -  Both `BlockMetadata` and `BlockContent<T>` are made immutable.  Their
+    properties can no longer be assigned to.  [[#2321]]
+ -  Copy extension methods for `BlockMetadata` and `BlockContent<T>` removed.
+    [[#2321]]
+ -  (Libplanet.Extensions.Cocona) The return type of
+    `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
+    [[#2322]]
+
+### Added APIs
+
+ -  System actions now have methods to check equality.  [[#2294]]
+     -  `Mint` now implements `IEquatable<Mint>`.
+     -  `Mint` now implements `IEquatable<IAction>`.
+     -  `Transfer` now implements `IEquatable<Transfer>`.
+     -  `Transfer` now implements `IEquatable<IAction>`.
+ -  (Libplanet.Net) Added `IRoutingTable` interface.  [[#2046], [#2229]]
+ -  (Libplanet.Net) `RoutingTable` now implements `IRoutingTable` interface.
+    [[#2046], [#2229]]
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
+    [[#2131], [#2236]]
+ -  Each `BlockMetadata`, `PreEvaluationBlockHeader`, and `BlockHeader`
+    can be accessed from any "larger" type object through properties.  [[#2321]]
+     -  `BlockMetadata` can be accessed through `BlockContent<T>.Metadata`
+        or `PreEvaluationBlockHeader.Metadata`.
+     -  `PreEvaluationBlockHeader` can be accessed through
+        `PreEvaluationBlock<T>.Header` or `BlockHeader.Header`.
+     -  `BlockHeader` can be accessed thorugh `Block<T>.Header` (this has not
+        changed, but only listed here for completeness in narrative).
+ -  (Libplanet.Explorer) Added `updatedStates`, `updatedFungibleAssets`,
+    `fungibleAssetsDelta` GraphQL fields to `TxResultType`.  [[#2353]]
+ -  (Libplanet.Explorer) Added `nextNonce` query in `TransactionQuery<T>`.
+    [[#2356], [#2366]]
+
+### Behavioral changes
+
+ -  Many types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2294], [#2322]]
+     -  An `Address` became represented as a single hexadecimal string in JSON.
+        [[#2322]]
+     -  A `BlockHash` became represented as a single hexadecimal string in JSON.
+        [[#2322]]
+     -  A `Currency` became represented as an object with values in JSON.
+        Note that it contains its `Hash` and it throws `JsonException`
+        if a JSON object to deserialize has an inconsistent `Hash` with
+        other field values.  [[#2322]]
+     -  A `FungibleAssetValue` became represented as an object with
+        its `Currency` object and `Quantity` string.  [[#2322]]
+     -  A `HashDigest<T>` became represented as a single hexadecimal string in
+        JSON.  [[#2322]]
+     -  A `Transaction<T>` became represented as an object with values in JSON.
+        [[#2294]]
+     -  A `TxId` became represented as a single hexadecimal string in JSON.
+        [[#2322]]
+     -  System actions became represented as a [Bencodex JSON Representation]
+        of their `PlainValue` with `type_id` field.  [[#2294]]
+ -  System actions' `GetHashCode()` and `Equals(object)` methods now check
+    value equality (rather than reference equality).  [[#2294]]
+ -  A `ValidateAppProtocolVersion` became allow validation of different extra.
+    [[#2380]]
+
+### Bug fixes
+
+ -  Interface methods `IComparable.CompareTo()` and
+    `IComparable<T>.CompareTo()` for `Address` are now accessible.  [[#2384]]
+
+### Dependencies
+
+ -  Added *[@planetarium/tx]* npm package.  [[#2294]]
+ -  Now depends on [*Bencodex.Json*
+    0.7.0-dev.20220923062846][Bencodex.Json 0.7.0-dev.20220923062845].
+    [[#2294]]
+ -  Upgrade *Bencodex* from [0.6.0][Bencodex 0.6.0] to
+    [0.7.0-dev.20220923062845][Bencodex 0.7.0-dev.20220923062845].  [[#2294]]
+ -  Upgrade *System.Text.Json* from [4.7.2][System.Text.Json 4.7.2] to
+    [6.0.6][System.Text.Json 6.0.6].  [[#2322]]
+
+### CLI tools
+
+ -  Added `planet tx` subcommand group.  [[#2294]]
+     -  Added `planet tx analyze` subcommand.
+     -  Added `planet tx help` subcommand.
+
+[#2046]: https://github.com/planetarium/libplanet/issues/2046
+[#2131]: https://github.com/planetarium/libplanet/issues/2131
+[#2229]: https://github.com/planetarium/libplanet/pull/2229
+[#2236]: https://github.com/planetarium/libplanet/pull/2236
+[#2294]: https://github.com/planetarium/libplanet/pull/2294
+[#2321]: https://github.com/planetarium/libplanet/pull/2321
+[#2322]: https://github.com/planetarium/libplanet/pull/2322
+[#2353]: https://github.com/planetarium/libplanet/pull/2353
+[#2356]: https://github.com/planetarium/libplanet/issues/2356
+[#2366]: https://github.com/planetarium/libplanet/pull/2366
+[#2380]: https://github.com/planetarium/libplanet/pull/2380
+[#2384]: https://github.com/planetarium/libplanet/pull/2384
+[`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
+[custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
+[@planetarium/tx]: https://www.npmjs.com/package/@planetarium/tx
+[Bencodex JSON Representation]: https://github.com/planetarium/bencodex/blob/4a92a98e859a54bc6e9617d4dd3035250fe69a86/JSON.md
+[Bencodex 0.7.0-dev.20220923062845]: https://www.nuget.org/packages/Bencodex/0.7.0-dev.20220923062845
+[Bencodex.Json 0.7.0-dev.20220923062845]: https://www.nuget.org/packages/Bencodex.Json/0.7.0-dev.20220923062845
+[System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2
+[System.Text.Json 6.0.6]: https://www.nuget.org/packages/System.Text.Json/6.0.6
+
+
+Version 0.42.2
+--------------
+
+Released on September 29, 2022.
+
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+
+Version 0.42.1
+--------------
+
+Released on September 23, 2022.
+
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
+
+
+Version 0.42.0
+--------------
+
+Released on September 19, 2022.
+
+### Backward-incompatible API changes
+
+ -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
+    `customActions`.  [[#2151], [#2273]]
+ -  Changed `IBlockPolicy.GetMaxBlockBytes()` to
+    `IBlockPolicy.GetMaxTransactionBytes()`.  Behaviourally, this is now used
+    as an upper limit for the encoded size of `Block<T>.Transactions`
+    instead of `Block<T>`.  [[#2290], [#2291]]
+     -  (Libplanet.Explorer) Changed `Options.MaxBlockBytes` to
+        `Options.MaxTransactionsBytes` and `Options.MaxGenesisBytes` to
+        `Options.MaxGenesisTransactionsBytes`.
+     -  (Libplanet.Explorer) Changed executable argument `max-block-bytes`
+        to `max-transactions-bytes` and `max-genesis-bytes` to
+        `max-genesis-transactions-bytes`.
+     -  All public method parameter names `maxBlockBytes` changed to
+        `maxTransactionsBytes`.
+
+### Added APIs
+
+ -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
+ -  `TxId` now implements `IEquatable<TxId>` interface.  [[#2320]]
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
+    [[#2151], [#2273]]
+ -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
+ -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
+    [[#2065], [#2198]]
+
+### Dependencies
+
+ -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
+    [[#2283]]
+ -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
+    [[#2298]]
+
+[#1910]: https://github.com/planetarium/libplanet/issues/1910
+[#2065]: https://github.com/planetarium/libplanet/issues/2065
+[#2273]: https://github.com/planetarium/libplanet/pull/2273
+[#2283]: https://github.com/planetarium/libplanet/pull/2283
+[#2189]: https://github.com/planetarium/libplanet/pull/2189
+[#2290]: https://github.com/planetarium/libplanet/issues/2290
+[#2291]: https://github.com/planetarium/libplanet/pull/2291
+[#2298]: https://github.com/planetarium/libplanet/pull/2298
+[#2320]: https://github.com/planetarium/libplanet/pull/2320
+[Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
+[Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
+
+
+Version 0.41.4
+--------------
+
+Released on September 29, 2022.
+
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+
+Version 0.41.3
+--------------
+
+Released on September 23, 2022.
+
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
+
+
+Version 0.41.2
+--------------
+
+Released on September 13, 2022.
+
+ -  Fixed a bug where `NetMQTransport` is not correctly disposed of due to
+    `NetMQTransport._router` already being stopped in prior to
+    `_router.Unbind()` call in `NetMQTransport.Dispose()`.  [[#2311]]
+
+[#2311]: https://github.com/planetarium/libplanet/pull/2311
+
+
+Version 0.41.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268], [#2270]]
+
+[#2270]: https://github.com/planetarium/libplanet/pull/2270
+
+
+Version 0.41.0
+--------------
+
+Released on August 26, 2022.
+
+### Deprecated APIs
+
+ -  (Libplanet.Net) Removed `NetMQTransport()` constructor.  Use
+    `NetMQTransport.Create()` instead.  [[#2215]]
+ -  Unused `TcpMessageCodec` class removed.  [[#2216]]
+ -  (Libplanet.Stun) Removed `TurnClient.IsConnectable()` method.  [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient.BindProxies()` method.
+    [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient()` constructor.
+    Use `TurnClient.Create()` instead.  [[#2219]]
+ -  (Libplanet.Net) Removed `Peer` class.  Use `BoundPeer` instead.  [[#2233]]
+
+### Backward-incompatible API changes
+
+ -  Removed unused transaction related methods from `IStore` and its
+    implementations.  [[#1538], [#2201]]
+    - `IterateTransactionIds()`
+    - `DeleteTransaction()`
+    - `CountTransactions()`
+ -  Removed `Currency(string, byte, IImutableSet<Address>?)` constructor.
+    [[#2200]]
+ -  Removed `Currency(string, byte, Address?)` constructor.
+    [[#2200]]
+ -  Added static methods of `Currency` that defines different kinds of
+    `Currency`.  [[#2200]]
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        IImutableSet<Address>?)` static method which defines an instance of
+        `Currency` with a hard limit on the maximum minted supply.
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        Address)` static method which defines an instance of `Currency` with a
+        hard limit on the maximum minted supply.
+     -  Added `Currency.Uncapped(string, byte, IImutableSet<Address>?)` static
+        method which defines an instance of `Currency` without an enforced
+        maximum supply limit.
+     -  Added `Currency.Uncapped(string, byte, Address)` static method which
+        defines an instance of `Currency` without an enforced maximum supply
+        limit.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, IImutableSet<Address>?)` static method which defines a legacy
+        `Currency` instance which is compatible with `Currency` instances
+        defined before total supply tracking support was introduced.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, Address)` static method which defines a legacy `Currency`
+        instance which is compatible with `Currency` instances defined before
+        total supply tracking support was introduced.
+     -  *NOTE:* if you already have some `Currency` instances defined in prior
+        to the addition of total supply tracking on a live chain, you cannot
+        modify the already-defined `Currency` instances as a capped or uncapped
+        `Currency` but have to define them with `Currency.Legacy()` as
+        the new Currency kinds are internally backwards-incompatible with the
+        legacy `Currency`.
+ -  Added `IAccountStateDelta.TotalSupplyUpdatedCurrencies` property.
+    [[#915], [#2200]]
+ -  Added `IAccountStateView.GetTotalSupply(Currency)` method.
+    [[#915], [#2200]]
+ -  Added `IBlockChainStates<T>.GetTotalSupply(Currency, BlockHash,
+    TotalSupplyStateCompleter<T>` method which gets the total supply of
+    a `Currency` in `FungibleAssetValue` from the state, and if not found,
+    returns null.  [[#915], [#2200]]
+ -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
+    `Peer` to `BoundPeer`.  [[#2215]]
+ -  (Libplanet.Net) All public return type, parameter type, and property type
+    of `Peer` changed to `BoundPeer`.  [[#2228]]
+ -  (Libplanet.Net) Additional public return type, parameter type, and
+    property type of `Peer` that weren't handled by [#2228] changed to
+    `BoundPeer`.  [[#2233]]
+ -  Reworked constructors of exception classes. Affected classes are:
+     - (Libplanet.Net) `PingTimeoutException`
+     - `CurrencyPermissionException`,
+     `DuplicateActionTypeIdentifierException`, `InsufficientBalanceException`,
+     `InvalidBlockPreEvaluationHashException`,
+     `InvalidBlockProtocolVersionException`, `InvalidBlockPublicKeyException`,
+     `InvalidBlockSignatureException`, `InvalidBlockStateRootHashException`,
+     `InvalidBlockTotalDifficultyException`, `InvalidGenesisBlockException`,
+     `InvalidTxException`, `InvalidTxGenesisHashException`,
+     `InvalidTxIdException`, `InvalidTxNonceException`,
+     `InvalidTxSignatureException`, `MissingActionTypeException`,
+     `NoKeyException`, `SupplyOverflowException`,
+     `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
+     `UnexpectedlyTerminatedActionException`.  [[#2239], [#2241]]
+
+### Added APIs
+
+ -  Added `Currency.MaximumSupply` property.  [[#915], [#2200]]
+ -  Added `Currency.TotalSupplyTrackable` field.  [[#915], [#2200]]
+ -  Added `SupplyOverflowException` class.  [[#915], [#2200]]
+ -  Added `TotalSupplyGetter` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleter<T>` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
+ -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
+    [[#915], [#2200]]
+ -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
+ -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
+ -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
+ -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `blockPolicy` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
+    to `Currency` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
+    it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
+    corresponds to `StateQuery` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `BlockPolicyType<T>` class.  In GraphQL, it
+    corresponds to `BlockPolicy` type.  [[#2149], [#2227]]
+
+### Behavioral changes
+
+ -  Bencodex related methods in `Currency` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  For capped currencies, `Currency.Serialize()` method stores the `major`
+        and `minor` values of the maximum supply as `Integer` values under the
+        keys `maximumSupplyMajor` and `maximumSupplyMinor`. For uncapped and
+        legacy untracked currencies, the entries are omitted.
+     -  `Currency(IValue)` constructor now looks for the maximum supply and
+        total supply trackability in the given dictionary and restores them if
+        found.
+ -  `Currency`'s implementation of `ISerializable` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  `Currency`'s implementation of `ISerializable.GetObjectData` now stores
+         the maximum supply if the `Currency` is capped.
+     -  `Currency(SerializationInfo, StreamingContext)` constructor now looks
+        for the maximum supply and total supply trackability and restores it if
+        found.
+ -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` and
+    `IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)` methods now
+    track the total supply if the total supply of the `Currency` is trackable.
+    [[#915], [#2200]]
+     -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` method now
+        throws `SupplyOverflowException` if the sum of current total supply and
+        the value to be minted exceeds the maximum supply of the `Currency`
+        instance.
+ -  (Libplanet.Net) `NetMQTransport`'s general behavior has changed.  [[#2215]]
+     -  `NetMQTransport` is now able to send requests and receive
+        replies as soon as it is created through `NetMQTransport.Create()`
+        factory method.
+     -  `NetMQTransport.StartAsync()` enables a `NetMQTransport` instance
+        to recieve requests and send replies.
+     -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
+        to stop recieving requests and sending replies.
+
+[#915]: https://github.com/planetarium/libplanet/issues/915
+[#1538]: https://github.com/planetarium/libplanet/issues/1538
+[#2187]: https://github.com/planetarium/libplanet/issues/2187
+[#2239]: https://github.com/planetarium/libplanet/issues/2239
+[#2200]: https://github.com/planetarium/libplanet/pull/2200
+[#2201]: https://github.com/planetarium/libplanet/pull/2201
+[#2215]: https://github.com/planetarium/libplanet/pull/2215
+[#2216]: https://github.com/planetarium/libplanet/pull/2216
+[#2219]: https://github.com/planetarium/libplanet/pull/2219
+[#2227]: https://github.com/planetarium/libplanet/pull/2227
+[#2228]: https://github.com/planetarium/libplanet/pull/2228
+[#2232]: https://github.com/planetarium/libplanet/pull/2232
+[#2233]: https://github.com/planetarium/libplanet/pull/2233
+[#2241]: https://github.com/planetarium/libplanet/pull/2241
+
+
+Version 0.40.3
+--------------
+
+Released on September 29, 2022.
+
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+[#2358]: https://github.com/planetarium/libplanet/pull/2358
+
+
 Version 0.40.2
 --------------
 
 Released on September 23, 2022.
 
--  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
-   serialized `SystemAction`.  [[#2339]]
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
 
 [#2339]: https://github.com/planetarium/libplanet/pull/2339
 
@@ -1938,7 +2474,7 @@ Released on October 28, 2021.  Mainly backported critical bug fixes from
  -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
     `BlockDemandTable`.  [[#1549]]
 
-[#1562]: https://github.com/planetarium/libplanet/pull/1561
+[#1562]: https://github.com/planetarium/libplanet/pull/1562
 
 
 Version 0.18.2
@@ -2932,7 +3468,7 @@ Released on July 23, 2021.
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
-[#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1228]: https://github.com/planetarium/libplanet/pull/1228
 [#1230]: https://github.com/planetarium/libplanet/issues/1230
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235

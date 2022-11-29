@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -47,7 +48,7 @@ namespace Libplanet.Tests.Action
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
-                getMaxBlockBytes: _ => 50 * 1024);
+                getMaxTransactionsBytes: _ => 50 * 1024);
             _storeFx = new MemoryStoreFixture(_policy.BlockAction);
             _txFx = new TxFixture(null);
         }
@@ -115,7 +116,12 @@ namespace Libplanet.Tests.Action
             var address = privateKey.ToAddress();
             long blockIndex = 1;
 
-            var action = new EvaluateTestAction();
+            var action = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -191,7 +197,7 @@ namespace Libplanet.Tests.Action
             {
                 ThrowOnRehearsal = false,
                 ThrowOnExecution = true,
-                ExceptionTypeToThrow = typeof(OutOfMemoryException),
+                Deterministic = false,
             };
 
             var store = new MemoryStore();
@@ -208,25 +214,23 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
                 customActions: new[] { action });
-            PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>
-            {
-                Index = 1,
-                Difficulty = 1,
-                TotalDifficulty = genesis.TotalDifficulty + 1,
-                PublicKey = new PrivateKey().PublicKey,
-                PreviousHash = genesis.Hash,
-                Timestamp = DateTimeOffset.UtcNow,
-                Transactions = ImmutableArray.Create(tx),
-            }.Mine();
-            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner);
+            var txs = new Transaction<ThrowException>[] { tx };
+            PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: new PrivateKey().PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: 1L,
+                    previousHash: genesis.Hash,
+                    txHash: BlockContent<ThrowException>.DeriveTxHash(txs)),
+                transactions: ImmutableArray.Create(tx)).Mine();
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                genesis.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                genesis.Miner);
 
             // ToList() is required for realization.
             chain.ActionEvaluator.EvaluateTx(
@@ -261,6 +265,23 @@ namespace Libplanet.Tests.Action
                         : null);
             }
 
+            var totalSupplyGetterFromDict = new Func<
+                IReadOnlyDictionary<Currency, FungibleAssetValue>,
+                TotalSupplyGetter
+            >(
+                totalSupplies =>
+                    currency =>
+                    {
+                        if (!currency.TotalSupplyTrackable)
+                        {
+                            throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                        }
+
+                        return totalSupplies.TryGetValue(currency, out FungibleAssetValue v)
+                            ? v
+                            : currency * 0;
+                    });
+
             Address[] addresses =
             {
                 _txFx.Address1,
@@ -277,15 +298,12 @@ namespace Libplanet.Tests.Action
                 genesisHash: null,
                 nativeTokenPredicate: _ => true
             );
-            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner);
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                genesis.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                genesis.Miner);
             Assert.Empty(
                 actionEvaluator.EvaluateTxs(
                     block: genesis,
@@ -328,19 +346,18 @@ namespace Libplanet.Tests.Action
                 block1Txs,
                 new byte[] { }
             );
-            previousStates = block1.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block1.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                block1.Miner);
             var evals = actionEvaluator.EvaluateTxs(
                 block1,
                 previousStates).ToImmutableArray();
             int randomValue = 0;
+            // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
+            // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
                 (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
@@ -367,20 +384,19 @@ namespace Libplanet.Tests.Action
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            previousStates = block1.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block1.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                block1.Miner);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
+            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies1 =
+                evals1.GetDirtyTotalSupplies();
             Assert.Equal(
                 new Dictionary<Address, IValue>
                 {
@@ -456,29 +472,24 @@ namespace Libplanet.Tests.Action
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
                     ? v
                     : new FungibleAssetValue(currency);
-            previousStates = block2.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner);
+            TotalSupplyGetter totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block2.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                block2.Miner);
             evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
 
+            // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
+            // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
                 (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
                 (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (
-                    2,
-                    0,
-                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
-                    _txFx.Address3
-                ),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -508,15 +519,13 @@ namespace Libplanet.Tests.Action
                 (address, currency), out FungibleAssetValue value)
                     ? value
                     : new FungibleAssetValue(currency);
-            previousStates = block2.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner);
+            totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block2.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -564,15 +573,17 @@ namespace Libplanet.Tests.Action
             };
             var tx =
                 Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
-            var block = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                Difficulty = 1,
-                TotalDifficulty = 1,
-                PublicKey = keys[0].PublicKey,
-                PreviousHash = default(BlockHash),
-                Transactions = ImmutableArray.Create(tx),
-            }.Mine();
+            var txs = new Transaction<DumbAction>[] { tx };
+            var block = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: keys[0].PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: 1L,
+                    previousHash: default(BlockHash),
+                    txHash: BlockContent<DumbAction>.DeriveTxHash(txs)),
+                transactions: txs).Mine();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -590,6 +601,7 @@ namespace Libplanet.Tests.Action
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
                     rehearsal: rehearsal).ToImmutableArray();
 
@@ -669,6 +681,7 @@ namespace Libplanet.Tests.Action
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
                     rehearsal: rehearsal);
                 Assert.Equal(
@@ -694,36 +707,38 @@ namespace Libplanet.Tests.Action
         public void EvaluateTxResultThrowingException()
         {
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
-            Transaction<ThrowException> tx = Transaction<ThrowException>.Create(
+            var tx = Transaction<ThrowException>.Create(
                 0,
                 _txFx.PrivateKey1,
                 null,
                 new[] { action },
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
+            var txs = new Transaction<ThrowException>[] { tx };
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
-                nativeTokenPredicate: _ => true
-            );
-            var block = new BlockContent<ThrowException>
-            {
-                Index = 123,
-                Difficulty = 1,
-                TotalDifficulty = 1,
-                PublicKey = GenesisMiner.PublicKey,
-                PreviousHash = default(BlockHash),
-                Transactions = ImmutableArray.Create(tx),
-            }.Mine();
+                nativeTokenPredicate: _ => true);
+            var block = new BlockContent<ThrowException>(
+                new BlockMetadata(
+                    index: 123,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: GenesisMiner.PublicKey,
+                    difficulty: 1,
+                    totalDifficulty: 1,
+                    previousHash: default(BlockHash),
+                    txHash: BlockContent<ThrowException>.DeriveTxHash(txs)),
+                transactions: txs).Mine();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                     tx.Signer),
                 rehearsal: false);
 
@@ -874,15 +889,14 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter;
             AccountBalanceGetter accountBalanceGetter =
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter;
-            IAccountStateDelta previousStates = block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    genesis.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    genesis.Miner);
+            TotalSupplyGetter totalSupplyGetter =
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter;
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                genesis.Miner);
             var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 genesis,
                 previousStates,
@@ -904,11 +918,14 @@ namespace Libplanet.Tests.Action
                     currency,
                     block.PreviousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
-            previousStates = block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter, accountBalanceGetter, block.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter, accountBalanceGetter, block.Miner);
+            totalSupplyGetter = currency => chain.GetTotalSupply(
+                currency, block.PreviousHash, stateCompleterSet.TotalSupplyStateCompleter);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                block.Miner);
             evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block,
                 previousStates,
@@ -926,15 +943,12 @@ namespace Libplanet.Tests.Action
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
-            previousStates = block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    addresses => chain.GetStates(addresses, block.PreviousHash),
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block.Miner)
-                : new AccountStateDeltaImplV0(
-                    addresses => chain.GetStates(addresses, block.PreviousHash),
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block.Miner);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                addresses => chain.GetStates(addresses, block.PreviousHash),
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                block.Miner);
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,
                 previousStates).ToList();
@@ -1085,7 +1099,13 @@ namespace Libplanet.Tests.Action
                     store: _storeFx.Store,
                     stateStore: _storeFx.StateStore);
             var privateKey = new PrivateKey();
-            var action = new EvaluateTestAction();
+            var action = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
+
             var tx = Transaction<EvaluateTestAction>.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -1100,16 +1120,105 @@ namespace Libplanet.Tests.Action
             Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
         }
 
+        [Fact]
+        private void GenerateRandomSeed()
+        {
+            byte[] preEvaluationHashBytes =
+            {
+                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+            };
+            byte[] signature =
+            {
+                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
+                0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
+                0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
+                0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
+                0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
+                0x7d, 0x37, 0x67, 0xe1, 0xe9,
+            };
+            byte[] hashedSignature;
+            SHA1 hasher = SHA1.Create();
+            hashedSignature = hasher.ComputeHash(signature);
+
+            int seed =
+                ActionEvaluator<RandomAction>.GenerateRandomSeed(
+                    preEvaluationHashBytes,
+                    hashedSignature,
+                    signature,
+                    0);
+            Assert.Equal(353767086, seed);
+        }
+
+        [Fact]
+        private async void CheckRandomSeedInAction()
+        {
+            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
+
+            // txA: ((5 + 1) * 2) + 3 = 15
+            (Transaction<Arithmetic> txA, var deltaA) = fx.Sign(
+                0,
+                Arithmetic.Add(1),
+                Arithmetic.Mul(2),
+                Arithmetic.Add(3));
+
+            Block<Arithmetic> blockA = await fx.Mine();
+            ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
+                txA.GenesisHash,
+                blockA.PreEvaluationHash,
+                blockIndex: blockA.Index,
+                txid: txA.Id,
+                previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
+                miner: blockA.Miner,
+                signer: txA.Signer,
+                signature: txA.Signature,
+                actions: txA.CustomActions.ToImmutableArray<IAction>(),
+                rehearsal: true,
+                previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
+                blockAction: false,
+                nativeTokenPredicate: _ => true
+            ).ToArray();
+            byte[] hashedSignature;
+            using (var hasher = SHA1.Create())
+            {
+                hashedSignature = hasher.ComputeHash(txA.Signature);
+            }
+
+            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToBuilder().ToArray();
+            int initialRandomSeed =
+                ActionEvaluator<DumbAction>.GenerateRandomSeed(
+                    preEvaluationHashBytes,
+                    hashedSignature,
+                    txA.Signature,
+                    0);
+            for (int i = 0; i < evalsA.Length; i++)
+            {
+                ActionEvaluation eval = evalsA[i];
+                IActionContext context = eval.InputContext;
+                Assert.Equal(initialRandomSeed + i, context.Random.Seed);
+            }
+        }
+
         private sealed class EvaluateTestAction : IAction
         {
-            public readonly Address SignerKey = new PrivateKey().ToAddress();
-            public readonly Address MinerKey = new PrivateKey().ToAddress();
-            public readonly Address BlockIndexKey = new PrivateKey().ToAddress();
+            public Address SignerKey { get; set; }
 
-            public IValue PlainValue => Dictionary.Empty;
+            public Address MinerKey { get; set; }
+
+            public Address BlockIndexKey { get; set; }
+
+            public IValue PlainValue => new List(
+                (Binary)SignerKey.ByteArray,
+                (Binary)MinerKey.ByteArray,
+                (Binary)BlockIndexKey.ByteArray
+            );
 
             public void LoadPlainValue(IValue plainValue)
             {
+                 var asList = (List)plainValue;
+                 SignerKey = new Address((Binary)asList[0]);
+                 MinerKey = new Address((Binary)asList[1]);
+                 BlockIndexKey = new Address((Binary)asList[2]);
             }
 
             public IAccountStateDelta Execute(IActionContext context) =>

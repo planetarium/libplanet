@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Libplanet.Serialization;
 
 namespace Libplanet.Blocks
@@ -13,6 +16,7 @@ namespace Libplanet.Blocks
     /// A value type to represent SHA-256 digest of <see cref="Block{T}"/> data.
     /// </summary>
     /// <seealso cref="Block{T}.Hash"/>
+    [JsonConverter(typeof(BlockHashJsonConverter))]
     [Serializable]
     public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>
     {
@@ -52,7 +56,7 @@ namespace Libplanet.Blocks
         /// <param name="blockHash">A <see cref="byte"/> array that encodes
         /// a <see cref="BlockHash"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="blockHash"/> is <c>null</c>.</exception>
+        /// <paramref name="blockHash"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
         /// </exception>
@@ -84,7 +88,7 @@ namespace Libplanet.Blocks
         /// <param name="hex">A hexadecimal representation of a <see cref="BlockHash"/>.</param>
         /// <returns>A corresponding <see cref="BlockHash"/> value.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/> is
-        /// <c>null</c>.</exception>
+        /// <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
         /// <paramref name="hex"/> string is an odd number.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string
@@ -183,5 +187,37 @@ namespace Libplanet.Blocks
         [Pure]
         public override string ToString() =>
             ByteUtil.Hex(ToByteArray());
+    }
+
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class BlockHashJsonConverter : JsonConverter<BlockHash>
+    {
+        public override BlockHash Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? hex = reader.GetString();
+            try
+            {
+                return BlockHash.FromString(hex!);
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            BlockHash value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(ByteUtil.Hex(value.ByteArray));
     }
 }

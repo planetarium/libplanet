@@ -15,16 +15,16 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="DuplicateActionTypeIdentifierException"/> instance.
         /// </summary>
+        /// <param name="message">Specifies an <see cref="Exception.Message"/>.  Note that extra
+        /// informative text will be appended to this.</param>
         /// <param name="typeIdentifier">The <see cref="ActionTypeAttribute.TypeIdentifier"/> string
         /// that the <paramref name="duplicateActionTypes"/> are associated with.</param>
         /// <param name="duplicateActionTypes">The set of multiple action types that are associated
         /// with the same <paramref name="typeIdentifier"/>.</param>
-        /// <param name="message">Specifies an <see cref="Exception.Message"/>.  Note that extra
-        /// informative text will be appended to this.</param>
         public DuplicateActionTypeIdentifierException(
+            string message,
             string typeIdentifier,
-            IImmutableSet<Type> duplicateActionTypes,
-            string message
+            IImmutableSet<Type> duplicateActionTypes
         )
             : base($"{message}\n\n{GetExtraMessage(typeIdentifier, duplicateActionTypes)}")
         {

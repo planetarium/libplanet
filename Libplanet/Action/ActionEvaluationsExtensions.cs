@@ -13,7 +13,8 @@ namespace Libplanet.Action
         public static ImmutableDictionary<string, IValue> GetTotalDelta(
             this IReadOnlyList<ActionEvaluation> actionEvaluations,
             Func<Address, string> toStateKey,
-            Func<(Address, Currency), string> toFungibleAssetKey)
+            Func<(Address, Currency), string> toFungibleAssetKey,
+            Func<Currency, string> toTotalSupplyKey)
         {
             IImmutableSet<Address> stateUpdatedAddresses = actionEvaluations
                 .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
@@ -21,6 +22,9 @@ namespace Libplanet.Action
             IImmutableSet<(Address, Currency)> updatedFungibleAssets = actionEvaluations
                 .SelectMany(a => a.OutputStates.UpdatedFungibleAssets
                     .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
+                .ToImmutableHashSet();
+            IImmutableSet<Currency> updatedTotalSupplies = actionEvaluations
+                .SelectMany(a => a.OutputStates.TotalSupplyUpdatedCurrencies)
                 .ToImmutableHashSet();
 
             IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -40,6 +44,17 @@ namespace Libplanet.Action
                         )
                     )
                 );
+
+            foreach (var currency in updatedTotalSupplies)
+            {
+                if (lastStates?.GetTotalSupply(currency).RawValue is { } rawValue)
+                {
+                    totalDelta = totalDelta.SetItem(
+                        toTotalSupplyKey(currency),
+                        new Bencodex.Types.Integer(rawValue)
+                    );
+                }
+            }
 
             return totalDelta;
         }

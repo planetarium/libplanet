@@ -39,7 +39,7 @@ namespace Libplanet.Action.Sys
 
         public static Bencodex.Types.Dictionary Serialize(IAction action) =>
             Bencodex.Types.Dictionary.Empty
-                .Add("type_id", (short)GetTypeId(action))
+                .Add("type_id", (int)GetTypeId(action))
                 .Add("values", action.PlainValue);
 
         private static IAction Instantiate(TypeId typeId) =>

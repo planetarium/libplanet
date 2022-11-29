@@ -51,8 +51,7 @@ namespace Libplanet.Net.Transports
         // Used only for logging.
         private long _requestCount;
         private long _socketCount;
-
-        private bool _disposed;
+        private bool _disposed = false;
 
         static NetMQTransport()
         {
@@ -63,14 +62,14 @@ namespace Libplanet.Net.Transports
         }
 
         /// <summary>
-        /// Creates <see cref="NetMQTransport"/> instance.
+        /// Creates a <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
         /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
         /// version of the transport layer.</param>
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <c>null</c>.</param>
+        /// <see langword="null"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -82,17 +81,18 @@ namespace Libplanet.Net.Transports
         /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
         /// with one different from <paramref name="appProtocolVersion"/>, and their version is
         /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
-        /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
+        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
+        /// are ignored.
         /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
-        /// If <c>null</c>, any timestamp is accepted.</param>
+        /// If <see langword="null"/>, any timestamp is accepted.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <c>null</c>.</exception>
-        public NetMQTransport(
+        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
+        private NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
@@ -171,9 +171,9 @@ namespace Libplanet.Net.Transports
         public AsyncDelegate<Message> ProcessMessageHandler { get; }
 
         /// <inheritdoc/>
-        public Peer AsPeer => EndPoint is null
-            ? new Peer(_privateKey.PublicKey, PublicIPAddress)
-            : new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
+        public BoundPeer AsPeer => _turnClient is TurnClient turnClient
+            ? new BoundPeer(_privateKey.PublicKey, turnClient.EndPoint, turnClient.PublicAddress)
+            : new BoundPeer(_privateKey.PublicKey, _hostEndPoint);
 
         /// <inheritdoc/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
@@ -196,9 +196,66 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        internal IPAddress PublicIPAddress => _turnClient?.PublicAddress;
-
-        internal DnsEndPoint EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
+        /// <summary>
+        /// Creates an initialized <see cref="NetMQTransport"/> instance.
+        /// </summary>
+        /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
+        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
+        /// version of the transport layer.</param>
+        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
+        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
+        /// <see langword="null"/>.</param>
+        /// <param name="workers">The number of background workers (i.e., threads).</param>
+        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
+        /// they connect to this node.  Note that this is not a hostname to listen to;
+        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
+        /// <param name="listenPort">A port number to listen to.</param>
+        /// <param name="iceServers">
+        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
+        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
+        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
+        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
+        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
+        /// are ignored.
+        /// </param>
+        /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
+        /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
+        /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
+        /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
+        /// If <see langword="null"/>, any timestamp is accepted.</param>
+        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
+        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
+        /// <returns>
+        /// An awaitable <see cref="Task"/> returning a <see cref="NetMQTransport"/>
+        /// when awaited that is ready to send request <see cref="Message"/>s and
+        /// receive reply <see cref="Message"/>s.
+        /// </returns>
+        public static async Task<NetMQTransport> Create(
+            PrivateKey privateKey,
+            AppProtocolVersion appProtocolVersion,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            int workers,
+            string host,
+            int? listenPort,
+            IEnumerable<IceServer> iceServers,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            TimeSpan? messageTimestampBuffer = null)
+        {
+            var transport = new NetMQTransport(
+                privateKey,
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                workers,
+                host,
+                listenPort,
+                iceServers,
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
+            await transport.Initialize();
+            return transport;
+        }
 
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken = default)
@@ -212,8 +269,6 @@ namespace Libplanet.Net.Transports
             {
                 throw new TransportException("Transport is already running.");
             }
-
-            await Initialize(cancellationToken);
 
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -252,7 +307,6 @@ namespace Libplanet.Net.Transports
 
                 _replyQueue.ReceiveReady -= DoReply;
                 _router.ReceiveReady -= ReceiveMessage;
-                _router.Unbind($"tcp://*:{_listenPort}");
 
                 if (_routerPoller.IsRunning)
                 {
@@ -260,8 +314,6 @@ namespace Libplanet.Net.Transports
                 }
 
                 _replyQueue.Dispose();
-                _router.Dispose();
-                _turnClient?.Dispose();
 
                 _runtimeCancellationTokenSource.Cancel();
                 Running = false;
@@ -282,6 +334,15 @@ namespace Libplanet.Net.Transports
                 _runtimeProcessorCancellationTokenSource.Dispose();
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
+
+                if (_router is { } router && !router.IsDisposed)
+                {
+                    // We omitted _router.Unbind() with intention due to hangs.
+                    // See also: https://github.com/planetarium/libplanet/pull/2311
+                    _router.Dispose();
+                    _turnClient?.Dispose();
+                }
+
                 _disposed = true;
             }
         }
@@ -460,7 +521,14 @@ namespace Libplanet.Net.Transports
             _replyCompletionSources.TryRemove(identityHex, out _);
         }
 
-        internal async Task Initialize(CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Initializes a <see cref="NetMQTransport"/> as to make it ready to
+        /// send request <see cref="Message"/>s and recieve reply <see cref="Message"/>s.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token to propagate a notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable <see cref="Task"/> without value.</returns>
+        private async Task Initialize(CancellationToken cancellationToken = default)
         {
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
@@ -482,7 +550,7 @@ namespace Libplanet.Net.Transports
             }
             else if (_iceServers is { } iceServers)
             {
-                _turnClient = await IceServer.CreateTurnClient(_iceServers);
+                _turnClient = await TurnClient.Create(_iceServers, cancellationToken);
                 await _turnClient.StartAsync(_listenPort, cancellationToken);
                 if (!_turnClient.BehindNAT)
                 {
@@ -515,7 +583,6 @@ namespace Libplanet.Net.Transports
                         "Received message {Message} from {Peer}.",
                         message,
                         message.Remote);
-                _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
                 try
                 {
                     _messageValidator.ValidateTimestamp(message);
@@ -692,7 +759,6 @@ namespace Libplanet.Net.Transports
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
-            using var dealer = GetRequestDealerSocket(req);
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             CancellationTokenSource timerCts =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -707,17 +773,19 @@ namespace Libplanet.Net.Transports
                 req.Id,
                 req.Peer,
                 req.Timeout);
-            var message = _messageCodec.Encode(
-                req.Message,
-                _privateKey,
-                _appProtocolVersion,
-                AsPeer,
-                DateTimeOffset.UtcNow);
             var result = new List<Message>();
 
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
+                using var dealer = GetRequestDealerSocket(req);
+                NetMQMessage message = _messageCodec.Encode(
+                    req.Message,
+                    _privateKey,
+                    _appProtocolVersion,
+                    AsPeer,
+                    DateTimeOffset.UtcNow);
+
                 if (dealer.TrySendMultipartMessage(message))
                 {
                     _logger.Debug(
@@ -803,17 +871,13 @@ namespace Libplanet.Net.Transports
                             {
                                 break;
                             }
-                            else
-                            {
-                                throw new TimeoutException(
-                                    $"The operation was canceled due to timeout {req.Timeout}.",
-                                    oce);
-                            }
+
+                            throw new TimeoutException(
+                                $"The operation was canceled due to timeout {req.Timeout}.",
+                                oce);
                         }
-                        else
-                        {
-                            throw;
-                        }
+
+                        throw;
                     }
                 }
 
@@ -827,6 +891,15 @@ namespace Libplanet.Net.Transports
                 e is TimeoutException)
             {
                 tcs.TrySetException(e);
+            }
+            catch (Exception ae)
+            {
+                var se = new SendMessageFailException(
+                    $"Unexpected exception occurred during {nameof(ProcessRequest)}().",
+                    req.Peer,
+                    ae
+                );
+                tcs.TrySetException(se);
             }
             finally
             {

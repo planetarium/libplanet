@@ -17,9 +17,10 @@ namespace Libplanet.Action
         internal AccountStateDeltaImplV0(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         )
-            : base(accountStateGetter, accountBalanceGetter, signer)
+            : base(accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer)
         {
         }
 
@@ -54,7 +55,7 @@ namespace Libplanet.Action
             {
                 var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
                           $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(sender, senderBalance, msg);
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
             return UpdateFungibleAssets(
@@ -68,7 +69,7 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, Signer)
+            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
@@ -78,7 +79,7 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
-            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, Signer)
+            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,

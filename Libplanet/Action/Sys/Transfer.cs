@@ -1,3 +1,5 @@
+using System;
+using System.Text.Json.Serialization;
 using Bencodex.Types;
 using Libplanet.Assets;
 
@@ -8,7 +10,8 @@ namespace Libplanet.Action.Sys
     /// another account.
     /// </summary>
     /// <remarks>Only native tokens can be transferred.</remarks>
-    public sealed class Transfer : IAction
+    [JsonConverter(typeof(SysActionJsonConverter))]
+    public sealed class Transfer : IAction, IEquatable<Transfer>, IEquatable<IAction>
     {
         /// <summary>
         /// Creates a new instance of <see cref="Transfer"/> action.
@@ -40,7 +43,7 @@ namespace Libplanet.Action.Sys
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
             .Add("recipient", Recipient.ByteArray)
             .Add("currency", Amount.Currency.Serialize())
-            .Add("amount", (IValue)new Bencodex.Types.Integer(Amount.RawValue));
+            .Add("amount", new Bencodex.Types.Integer(Amount.RawValue));
 
         /// <inheritdoc cref="IAction.LoadPlainValue(IValue)"/>
         public void LoadPlainValue(IValue plainValue)
@@ -71,5 +74,18 @@ namespace Libplanet.Action.Sys
                 allowNegativeBalance: false
             );
         }
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(Transfer? other) =>
+            other is { } o && Recipient.Equals(o.Recipient) && Amount.Equals(o.Amount);
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(IAction? other) => other is Transfer o && Equals(o);
+
+        /// <inheritdoc cref="object.Equals(object?)"/>
+        public override bool Equals(object? obj) => obj is Transfer o && Equals(o);
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode() => HashCode.Combine(Recipient, Amount);
     }
 }

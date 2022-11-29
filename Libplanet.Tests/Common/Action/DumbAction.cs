@@ -17,7 +17,8 @@ namespace Libplanet.Tests.Common.Action
         public static readonly Address RandomRecordsAddress =
             new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
 
-        public static readonly Currency DumbCurrency = new Currency("DUMB", 0, minters: null);
+        public static readonly Currency DumbCurrency =
+            Currency.Uncapped("DUMB", 0,  null);
 
         public DumbAction()
         {
@@ -84,11 +85,11 @@ namespace Libplanet.Tests.Common.Action
         {
             get
             {
-                var plainValue = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+                var plainValue = new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
                 {
-                    [(Text)"item"] = (Text)Item,
-                    [(Text)"target_address"] = new Binary(TargetAddress.ByteArray),
-                    [(Text)"record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
+                    ["item"] = (Text)Item,
+                    ["target_address"] = new Binary(TargetAddress.ByteArray),
+                    ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                 });
                 if (RecordRandom)
                 {
@@ -107,7 +108,7 @@ namespace Libplanet.Tests.Common.Action
                     plainValue = plainValue
                         .Add("transfer_from", Transfer.Item1.ByteArray)
                         .Add("transfer_to", Transfer.Item2.ByteArray)
-                        .Add("transfer_amount", (IValue)new Bencodex.Types.Integer(Transfer.Item3));
+                        .Add("transfer_amount", Transfer.Item3);
                 }
 
                 return plainValue;
