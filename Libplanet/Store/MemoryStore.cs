@@ -135,9 +135,6 @@ namespace Libplanet.Store
             }
         }
 
-        IEnumerable<TxId> IStore.IterateTransactionIds() =>
-            _txs.Keys;
-
         Transaction<T> IStore.GetTransaction<T>(TxId txid) =>
             _txs.TryGetValue(txid, out object untyped) && untyped is Transaction<T> tx
                 ? tx
@@ -145,9 +142,6 @@ namespace Libplanet.Store
 
         void IStore.PutTransaction<T>(Transaction<T> tx) =>
             _txs[tx.Id] = tx;
-
-        bool IStore.DeleteTransaction(TxId txid) =>
-            _txs.TryRemove(txid, out _);
 
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
             _blocks.Keys;
@@ -257,9 +251,6 @@ namespace Libplanet.Store
 
         bool IStore.ContainsTransaction(TxId txId) =>
             _txs.ContainsKey(txId);
-
-        long IStore.CountTransactions() =>
-            _txs.Count;
 
         long IStore.CountBlocks() =>
             _blocks.Count;

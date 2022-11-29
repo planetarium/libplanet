@@ -23,6 +23,7 @@ namespace Libplanet.Blocks
         /// </summary>
         public const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
 
+        private readonly BlockHeader _header;
         private readonly PreEvaluationBlock<T> _preEvaluationBlock;
 
         /// <summary>
@@ -63,37 +64,37 @@ namespace Libplanet.Blocks
         /// satisfy the required <see cref="PreEvaluationBlockHeader.Difficulty"/>.</exception>
         public Block(IBlockHeader header, IEnumerable<Transaction<T>> transactions)
             : this(
-                new PreEvaluationBlock<T>(
-                    new BlockContent<T>(header, transactions),
-                    header.Nonce,
-                    header.PreEvaluationHash
-                ),
-                header.StateRootHash,
-                header.Signature
-            )
+                new PreEvaluationBlock<T>(header, transactions),
+                (header.StateRootHash, header.Signature, header.Hash))
         {
         }
 
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by combining
-        /// a <paramref name="preEvaluationBlock"/> and its corresponding
-        /// <paramref name="stateRootHash"/>.
+        /// a <paramref name="preEvaluationBlock"/>, its corresponding
+        /// <paramref name="proof.StateRootHash"/>, valid <paramref name="proof.Signature"/>,
+        /// and correctly derived <paramref name="proof.Hash"/>.
         /// </summary>
         /// <param name="preEvaluationBlock">A pre-evaluation block.</param>
-        /// <param name="stateRootHash">A state root hash determined from the given
-        /// <paramref name="preEvaluationBlock"/> and its previous state root.</param>
-        /// <param name="signature">The block signature made using the miner's private key.</param>
-        /// <exception cref="InvalidBlockSignatureException">Thrown when
-        /// the <paramref name="signature"/> signature is invalid.</exception>
+        /// <param name="proof">A triple of the state root hash, the block signature,
+        /// and the block hash.</param>
         public Block(
             PreEvaluationBlock<T> preEvaluationBlock,
-            HashDigest<SHA256> stateRootHash,
-            ImmutableArray<byte>? signature
+            (
+                HashDigest<SHA256> StateRootHash,
+                ImmutableArray<byte>? Signature,
+                BlockHash Hash
+            ) proof
         )
         {
+            _header = new BlockHeader(preEvaluationBlock.Header, proof);
             _preEvaluationBlock = preEvaluationBlock;
-            Header = new BlockHeader(preEvaluationBlock, stateRootHash, signature);
         }
+
+        /// <summary>
+        /// The <see cref="BlockHeader"/> of the block.
+        /// </summary>
+        public BlockHeader Header => _header;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _preEvaluationBlock.ProtocolVersion;
@@ -141,16 +142,12 @@ namespace Libplanet.Blocks
         public IReadOnlyList<Transaction<T>> Transactions => _preEvaluationBlock.Transactions;
 
         /// <summary>
-        /// The <see cref="BlockHeader"/> of the block.
-        /// </summary>
-        public BlockHeader Header { get; }
-
-        /// <summary>
         /// Equivalent to <see cref="IEquatable{T}.Equals(T)"/>.
         /// </summary>
         /// <param name="left">A block.</param>
         /// <param name="right">Another block.</param>
-        /// <returns><c>true</c> if two blocks are equal.  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if two blocks are equal.
+        /// Otherwise <see langword="false"/>.</returns>
         public static bool operator ==(Block<T>? left, Block<T>? right) =>
             Equals(left, right);
 
@@ -159,7 +156,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="left">A block.</param>
         /// <param name="right">Another block.</param>
-        /// <returns><c>true</c> if two blocks are different.  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if two blocks are different.
+        /// Otherwise <see langword="false"/>.</returns>
         public static bool operator !=(Block<T>? left, Block<T>? right) =>
             !Equals(left, right);
 

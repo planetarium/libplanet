@@ -11,7 +11,7 @@ import unzipper from "unzipper";
 
 const URL_BASE = "https://github.com/planetarium/libplanet/releases/download";
 const SUFFIXES = {
-  darwin: {x64: "osx-x64.tar.xz"},
+  darwin: {x64: "osx-x64.tar.xz", arm64: "osx-arm64.tar.xz"},
   linux: {x64: "linux-x64.tar.xz"},
   win32: {x64: "win-x64.zip"},
 };
@@ -76,6 +76,30 @@ export async function download(options = {}) {
     });
   };
 
+  const adhocSign = () => {
+    return new Promise((resolve, reject) => {
+        const args = [
+            "--sign",
+            "-",
+            "--force",
+            "--preserve-metadata=entitlements,requirements,flags,runtime",
+            srcPath
+        ]
+        child_process.execFile(
+            "codesign",
+            args,
+            (err, stdout, stderr) => {
+                if (err)
+                {
+                    return reject(stderr || err);
+                } else {
+                    return resolve(stdout);
+                }
+            }
+        );
+    });
+  }
+
   if (log != null) log(`
 -------------------------------------------------------------------------------
 Downloaing Libplanet CLI Tools ${ver} from GitHub...
@@ -119,7 +143,26 @@ Report this issue from https://github.com/planetarium/libplanet/issues
 ${err}
 -------------------------------------------------------------------------------
     `);
-    throw e;
+    throw err;
+  }
+  if (platform === "darwin" && arch === "arm64")
+  {
+    try {
+        await adhocSign();
+    } catch(err) {
+        console.error(`
+    -------------------------------------------------------------------------------
+    An error occurred during installing Libplanet CLI Tools:
+
+      codesign ${srcPath}
+
+    Report this issue from https://github.com/planetarium/libplanet/issues
+
+    ${err}
+    -------------------------------------------------------------------------------
+        `);
+        throw err;
+    }
   }
   try {
     await finalize();
@@ -135,6 +178,6 @@ Report this issue from https://github.com/planetarium/libplanet/issues
 ${err}
 -------------------------------------------------------------------------------
     `);
-    throw e;
+    throw err;
   }
 }

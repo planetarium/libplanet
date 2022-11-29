@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
@@ -168,7 +168,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             //Invalid Transaction with inner-exception
@@ -179,9 +179,9 @@ namespace Libplanet.Tests.Blockchain.Policies
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException(
-                        tx.Id,
                         "invalid signer",
-                        new InvalidTxSignatureException(tx.Id, "Invalid Signature"));
+                        tx.Id,
+                        new InvalidTxSignatureException("Invalid Signature", tx.Id));
             }
 
             // Invalid Transaction without Inner-exception

@@ -54,15 +54,11 @@ namespace Libplanet.Store
             BlockHash branchpoint
         );
 
-        public abstract IEnumerable<TxId> IterateTransactionIds();
-
         public abstract Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new();
 
         public abstract void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new();
-
-        public abstract bool DeleteTransaction(TxId txid);
 
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
@@ -76,6 +72,7 @@ namespace Libplanet.Store
                 BlockHeader header = blockDigest.GetHeader();
                 (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new TxId(bytes.ToArray()))
+                    .OrderBy(txid => txid)
                     .Select(txid => (txid, GetTransaction<T>(txid)))
                     .ToArray();
 
@@ -84,9 +81,8 @@ namespace Libplanet.Store
                 if (missingTxIds.Any())
                 {
                     throw new InvalidOperationException(
-                        $"Failed to find {missingTxIds.Length} tx(s) (out of {txs.Length}):\n  " +
-                        string.Join("\n  ", missingTxIds)
-                    );
+                        $"Failed to find {missingTxIds.Length} tx(s) (out of {txs.Length}) " +
+                        $"at block {blockHash}:\n" + string.Join("\n  ", missingTxIds));
                 }
 
                 return new Block<T>(header, txs.Select(pair => pair.Tx));
@@ -165,11 +161,6 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1);
 
-        public virtual long CountTransactions()
-        {
-            return IterateTransactionIds().LongCount();
-        }
-
         public virtual long CountBlocks()
         {
             return IterateBlockHashes().LongCount();
@@ -202,11 +193,11 @@ namespace Libplanet.Store
             );
             var favDelta = SerializeGroupedFAVs(txSuccess.FungibleAssetsDelta);
             var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
-            return (Dictionary)Dictionary.Empty
+            return Dictionary.Empty
                 .Add("fail", false)
                 .Add("sDelta", sDelta)
-                .Add((IKey)(Text)"favDelta", new Dictionary(favDelta))
-                .Add((IKey)(Text)"updatedFAVs", new Dictionary(updatedFAVs));
+                .Add("favDelta", new Dictionary(favDelta))
+                .Add("updatedFAVs", new Dictionary(updatedFAVs));
         }
 
         protected static IValue SerializeTxExecution(TxFailure txFailure)
@@ -293,7 +284,7 @@ namespace Libplanet.Store
         ) =>
             new List(
                 favs.Select(
-                    kv => (IValue)List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
+                    kv => List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
                 )
             );
 

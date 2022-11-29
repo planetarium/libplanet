@@ -18,7 +18,7 @@ namespace Libplanet.Explorer.GraphTypes
             {
                 byte[] b => ByteUtil.Hex(b),
                 string s => s,
-                _ => null
+                _ => null,
             };
         }
 

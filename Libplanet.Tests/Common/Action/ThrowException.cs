@@ -16,13 +16,14 @@ namespace Libplanet.Tests.Common.Action
 
         public bool ThrowOnExecution { get; set; }
 
-        public Type ExceptionTypeToThrow { get; set; } = typeof(SomeException);
+        public bool Deterministic { get; set; } = true;
 
         public IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, bool>
             {
-                [(Text)"throw_on_rehearsal"] = new Boolean(ThrowOnRehearsal),
-                [(Text)"throw_on_execution"] = new Boolean(ThrowOnExecution),
+                ["throw_on_rehearsal"] = ThrowOnRehearsal,
+                ["throw_on_execution"] = ThrowOnExecution,
+                ["deterministic"] = Deterministic,
             });
 
         public void LoadPlainValue(IValue plainValue)
@@ -34,14 +35,21 @@ namespace Libplanet.Tests.Common.Action
         {
             ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal");
             ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution");
+            Deterministic = plainValue.GetValue<Boolean>("deterministic");
         }
 
         public IAccountStateDelta Execute(IActionContext context)
         {
             if (context.Rehearsal ? ThrowOnRehearsal : ThrowOnExecution)
             {
-                throw (Exception)Activator.CreateInstance(
-                    ExceptionTypeToThrow, "An expected exception.");
+                if (Deterministic)
+                {
+                    throw new SomeException("An expected exception");
+                }
+                else
+                {
+                    throw new OutOfMemoryException();
+                }
             }
 
             return context.PreviousStates;

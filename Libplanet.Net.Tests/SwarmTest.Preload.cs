@@ -187,7 +187,7 @@ namespace Libplanet.Net.Tests
                     {
                         EstimatedTotalBlockHashCount = 10,
                         ReceivedBlockHashCount = 1,
-                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
+                        SourcePeer = minerSwarm.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -200,7 +200,7 @@ namespace Libplanet.Net.Tests
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
                         ReceivedBlockCount = i,
-                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
+                        SourcePeer = minerSwarm.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -439,7 +439,7 @@ namespace Libplanet.Net.Tests
                     {
                         EstimatedTotalBlockHashCount = 10,
                         ReceivedBlockHashCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
+                        SourcePeer = nominerSwarm1.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -451,7 +451,7 @@ namespace Libplanet.Net.Tests
                         ReceivedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
+                        SourcePeer = nominerSwarm1.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -665,7 +665,7 @@ namespace Libplanet.Net.Tests
 
             (BoundPeer, IBlockExcerpt)[] peersWithExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
+                (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
@@ -757,7 +757,7 @@ namespace Libplanet.Net.Tests
 
             (BoundPeer, IBlockExcerpt)[] peersWithBlockExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
+                (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             long receivedCount = 0;
@@ -862,19 +862,27 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            var genesisContent = new BlockContent<DumbAction>
-            {
-                PublicKey = minerKey.PublicKey,
-                Timestamp = DateTimeOffset.MinValue,
-            };
+            var genesisContent = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: minerKey.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: null));
+            var genesisBlock1Nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
+            var genesisBlock1PreEvaluationHash = genesisContent.Metadata.DerivePreEvaluationHash(
+                genesisBlock1Nonce);
             var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
+                (genesisBlock1Nonce, genesisBlock1PreEvaluationHash));
+            var genesisBlock2Nonce = new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 });
+            var genesisBlock2PreEvaluationHash = genesisContent.Metadata.DerivePreEvaluationHash(
+                genesisBlock2Nonce);
             var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
-            );
+                (genesisBlock2Nonce, genesisBlock2PreEvaluationHash));
 
             BlockChain<DumbAction> MakeBlockChainWithGenesis(
                 PreEvaluationBlock<DumbAction> genesisBlock)

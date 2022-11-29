@@ -12,13 +12,13 @@ namespace Libplanet.Net.Protocols
             Target = target;
         }
 
-        public PingTimeoutException(BoundPeer target, string message)
+        public PingTimeoutException(string message, BoundPeer target)
             : base(message)
         {
             Target = target;
         }
 
-        public PingTimeoutException(BoundPeer target, string message, Exception innerException)
+        public PingTimeoutException(string message, BoundPeer target, Exception innerException)
             : base(message, innerException)
         {
             Target = target;

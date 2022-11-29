@@ -581,23 +581,12 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void StoreTx()
         {
-            Assert.Equal(0, Fx.Store.CountTransactions());
-            Assert.Empty(Fx.Store.IterateTransactionIds());
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id));
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
-            Assert.False(Fx.Store.DeleteTransaction(Fx.Transaction1.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction1);
-            Assert.Equal(1, Fx.Store.CountTransactions());
-            Assert.Equal(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction1.Id,
-                },
-                Fx.Store.IterateTransactionIds()
-            );
             Assert.Equal(
                 Fx.Transaction1,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
@@ -607,15 +596,6 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction2);
-            Assert.Equal(2, Fx.Store.CountTransactions());
-            Assert.Equal(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction1.Id,
-                    Fx.Transaction2.Id,
-                },
-                Fx.Store.IterateTransactionIds().ToHashSet()
-            );
             Assert.Equal(
                 Fx.Transaction1,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
@@ -626,21 +606,10 @@ namespace Libplanet.Tests.Store
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
-            Assert.True(Fx.Store.DeleteTransaction(Fx.Transaction1.Id));
-            Assert.Equal(1, Fx.Store.CountTransactions());
-            Assert.Equal(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction2.Id,
-                },
-                Fx.Store.IterateTransactionIds()
-            );
-            Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id));
             Assert.Equal(
                 Fx.Transaction2,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id)
             );
-            Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
         }
 
@@ -899,19 +868,6 @@ namespace Libplanet.Tests.Store
 
                 throw;
             }
-
-            Assert.Equal(1 + (taskCount * txCount), Fx.Store.CountTransactions());
-            foreach (TxId txid in Fx.Store.IterateTransactionIds())
-            {
-                var tx = Fx.Store.GetTransaction<AtomicityTestAction>(txid);
-                tx.Validate();
-                Assert.Single(tx.CustomActions);
-                AtomicityTestAction action = tx.CustomActions[0];
-                Assert.Equal(
-                    md5Hasher.ComputeHash(action.ArbitraryBytes.ToArray()),
-                    action.Md5Digest.ToArray()
-                );
-            }
         }
 
         [SkippableFact]
@@ -936,6 +892,7 @@ namespace Libplanet.Tests.Store
             store.AppendIndex(chainA, Fx.Block1.Hash);
             store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
             store.AppendIndex(chainB, Fx.Block2.Hash);
+            store.AppendIndex(chainB, Fx.Block3.Hash);
 
             Assert.Equal(
                 new[]
@@ -951,12 +908,14 @@ namespace Libplanet.Tests.Store
                     Fx.GenesisBlock.Hash,
                     Fx.Block1.Hash,
                     Fx.Block2.Hash,
+                    Fx.Block3.Hash,
                 },
                 store.IterateIndexes(chainB)
             );
 
-            store.ForkBlockIndexes(chainB, chainC, Fx.Block2.Hash);
-            store.AppendIndex(chainC, Fx.Block3.Hash);
+            store.ForkBlockIndexes(chainB, chainC, Fx.Block3.Hash);
+            store.AppendIndex(chainC, Fx.Block4.Hash);
+            store.AppendIndex(chainC, Fx.Block5.Hash);
 
             Assert.Equal(
                 new[]
@@ -972,6 +931,7 @@ namespace Libplanet.Tests.Store
                     Fx.GenesisBlock.Hash,
                     Fx.Block1.Hash,
                     Fx.Block2.Hash,
+                    Fx.Block3.Hash,
                 },
                 store.IterateIndexes(chainB)
             );
@@ -982,8 +942,65 @@ namespace Libplanet.Tests.Store
                     Fx.Block1.Hash,
                     Fx.Block2.Hash,
                     Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
                 },
                 store.IterateIndexes(chainC)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 1)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 2)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 3)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 4)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 5)
+            );
+
+            Assert.Equal(
+                Array.Empty<BlockHash>(),
+                store.IterateIndexes(chainC, offset: 6)
             );
 
             Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainA, 1));
@@ -991,7 +1008,10 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainC, 1));
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainB, 2));
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
+            Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainB, 3));
             Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
+            Assert.Equal(Fx.Block4.Hash, store.IndexBlockHash(chainC, 4));
+            Assert.Equal(Fx.Block5.Hash, store.IndexBlockHash(chainC, 5));
         }
 
         [SkippableFact]
@@ -1203,12 +1223,9 @@ namespace Libplanet.Tests.Store
 
             public ImmutableArray<byte> Md5Digest { get; set; }
 
-            public IValue PlainValue =>
-                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                {
-                    { (Text)"bytes", new Binary(ArbitraryBytes) },
-                    { (Text)"md5", new Binary(Md5Digest) },
-                });
+            public IValue PlainValue => Bencodex.Types.Dictionary.Empty
+                .Add("bytes", ArbitraryBytes)
+                .Add("md5", Md5Digest);
 
             public void LoadPlainValue(IValue plainValue)
             {

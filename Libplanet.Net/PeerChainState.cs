@@ -21,12 +21,12 @@ namespace Libplanet.Net
         public BoundPeer Peer { get; }
 
         /// <summary>
-        /// The blockchain tip of the <see cref="Peer"/>.
+        /// The blockchain tip of the <see cref="BoundPeer"/>.
         /// </summary>
         public long TipIndex { get; }
 
         /// <summary>
-        /// The total difficulty of the blockchain of the <see cref="Peer"/>.
+        /// The total difficulty of the blockchain of the <see cref="BoundPeer"/>.
         /// </summary>
         public BigInteger TotalDifficulty { get; }
 

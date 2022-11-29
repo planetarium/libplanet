@@ -1,9 +1,12 @@
 #nullable disable
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Libplanet.Serialization;
 
 namespace Libplanet.Tx
@@ -17,8 +20,9 @@ namespace Libplanet.Tx
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
+    [JsonConverter(typeof(TxIdJsonConverter))]
     [Serializable]
-    public struct TxId : ISerializable, IComparable<TxId>, IComparable
+    public struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -33,11 +37,11 @@ namespace Libplanet.Tx
         /// Converts a <see cref="byte"/> array into a <see cref="TxId"/>.
         /// </summary>
         /// <param name="txid">A <see cref="byte"/> array that encodes
-        /// a <see cref="TxId"/>.  It must not be <c>null</c>,
+        /// a <see cref="TxId"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="txid"/> is <c>null</c>.</exception>
+        /// <paramref name="txid"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not
         /// the same to the required <see cref="Size"/>.</exception>
@@ -176,20 +180,10 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc cref="IComparable.CompareTo(object)"/>
-        public int CompareTo(object obj)
-        {
-            if (obj is TxId other)
-            {
-                return ((IComparable<TxId>)this).CompareTo(other);
-            }
-
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            throw new ArgumentException(nameof(obj));
-        }
+        public int CompareTo(object obj) => obj is TxId other
+            ? this.CompareTo(other)
+            : throw new ArgumentException(
+                $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
 
         /// <inheritdoc />
         public void GetObjectData(
@@ -198,5 +192,38 @@ namespace Libplanet.Tx
         {
             info.AddValue("tx_id", _byteArray.ToArray());
         }
+    }
+
+#nullable enable
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class TxIdJsonConverter : JsonConverter<TxId>
+    {
+        public override TxId Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? hex = reader.GetString();
+            try
+            {
+                return TxId.FromHex(hex);
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            TxId value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(value.ToHex());
     }
 }

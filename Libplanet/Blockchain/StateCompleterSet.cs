@@ -4,8 +4,9 @@ using Libplanet.Action;
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// Groups two kinds of state completers, <see cref="StateCompleters{T}"/>
-    /// and <see cref="FungibleAssetStateCompleters{T}"/>.
+    /// Groups three kinds of state completers, <see cref="StateCompleters{T}"/>,
+    /// <see cref="FungibleAssetStateCompleters{T}"/>, and
+    /// <see cref="TotalSupplyStateCompleters{T}"/>.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
@@ -23,6 +24,7 @@ namespace Libplanet.Blockchain
         {
             StateCompleter = StateCompleters<T>.Recalculate,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.Recalculate,
+            TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.Recalculate,
         };
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace Libplanet.Blockchain
         {
             StateCompleter = StateCompleters<T>.ComplementAll,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.ComplementAll,
+            TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.ComplementAll,
         };
 
         /// <summary>
@@ -50,6 +53,7 @@ namespace Libplanet.Blockchain
         {
             StateCompleter = StateCompleters<T>.ComplementLatest,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.ComplementLatest,
+            TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.ComplementLatest,
         };
 
         /// <summary>
@@ -60,6 +64,7 @@ namespace Libplanet.Blockchain
         {
             StateCompleter = StateCompleters<T>.Reject,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.Reject,
+            TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.Reject,
         };
 
         /// <summary>
@@ -71,5 +76,10 @@ namespace Libplanet.Blockchain
         /// Holds a <see cref="FungibleAssetStateCompleter{T}"/>.
         /// </summary>
         public FungibleAssetStateCompleter<T> FungibleAssetStateCompleter { get; set; }
+
+        /// <summary>
+        /// Holds a <see cref="TotalSupplyStateCompleter{T}"/>.
+        /// </summary>
+        public TotalSupplyStateCompleter<T> TotalSupplyStateCompleter { get; set; }
     }
 }

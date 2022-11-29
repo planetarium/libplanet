@@ -4,13 +4,18 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Assets;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Assets
 {
     public class FungibleAssetValueTest
     {
-        private static readonly Currency FOO = new Currency("FOO", 2, minter: null);
-        private static readonly Currency BAR = new Currency("BAR", 0, minter: null);
+        private static readonly Currency FOO = Currency.Uncapped("FOO", 2, null);
+        private static readonly Currency BAR = Currency.Uncapped("BAR", 0, null);
+        private static readonly Currency BARMAX = Currency.Capped("BAR", 0, (100000, 0), null);
+#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
+        private static readonly Currency BARNOTRACK = Currency.Legacy("BAR", 0, null);
+#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
 
         [Fact]
         public void Constructor()
@@ -105,6 +110,8 @@ namespace Libplanet.Tests.Assets
             FungibleAssetValue bar100b = FungibleAssetValue.FromRawValue(BAR, 100);
             FungibleAssetValue bar200a = FungibleAssetValue.FromRawValue(BAR, 200);
             FungibleAssetValue bar200b = FungibleAssetValue.FromRawValue(BAR, 200);
+            FungibleAssetValue barmax100 = FungibleAssetValue.FromRawValue(BARMAX, 100);
+            FungibleAssetValue barnotrack100 = FungibleAssetValue.FromRawValue(BARNOTRACK, 100);
 
             Assert.Equal(foo100b, foo100a);
             Assert.Equal(foo100b.GetHashCode(), foo100a.GetHashCode());
@@ -151,6 +158,14 @@ namespace Libplanet.Tests.Assets
             Assert.False(foo100a.Equals((object)bar200a));
             Assert.False(foo100a == bar200a);
             Assert.True(foo100a != bar200a);
+            Assert.NotEqual(bar100a, barmax100);
+            Assert.False(bar100a.Equals((object)barmax100));
+            Assert.False(bar100a == barmax100);
+            Assert.True(bar100a != barmax100);
+            Assert.NotEqual(bar100a, barnotrack100);
+            Assert.False(bar100a.Equals((object)barnotrack100));
+            Assert.False(bar100a == barnotrack100);
+            Assert.True(bar100a != barnotrack100);
 
             Assert.False(foo100a.Equals(100));
             Assert.False(foo200a.Equals(200));
@@ -163,6 +178,8 @@ namespace Libplanet.Tests.Assets
             FungibleAssetValue foo100b = FungibleAssetValue.FromRawValue(FOO, 100);
             FungibleAssetValue foo200 = FungibleAssetValue.FromRawValue(FOO, 200);
             FungibleAssetValue bar100 = FungibleAssetValue.FromRawValue(BAR, 100);
+            FungibleAssetValue barmax100 = FungibleAssetValue.FromRawValue(BARMAX, 100);
+            FungibleAssetValue barnotrack100 = FungibleAssetValue.FromRawValue(BARNOTRACK, 100);
 
             Assert.Equal(0, foo100a.CompareTo(foo100b));
             Assert.Equal(0, foo100a.CompareTo((object)foo100b));
@@ -192,6 +209,20 @@ namespace Libplanet.Tests.Assets
             Assert.Throws<ArgumentException>(() => foo100a > bar100);
             Assert.Throws<ArgumentException>(() => foo100a >= bar100);
 
+            Assert.Throws<ArgumentException>(() => bar100.CompareTo(barmax100));
+            Assert.Throws<ArgumentException>(() => bar100.CompareTo((object)barmax100));
+            Assert.Throws<ArgumentException>(() => bar100 < barmax100);
+            Assert.Throws<ArgumentException>(() => bar100 <= barmax100);
+            Assert.Throws<ArgumentException>(() => bar100 > barmax100);
+            Assert.Throws<ArgumentException>(() => bar100 >= barmax100);
+
+            Assert.Throws<ArgumentException>(() => bar100.CompareTo(barnotrack100));
+            Assert.Throws<ArgumentException>(() => bar100.CompareTo((object)barnotrack100));
+            Assert.Throws<ArgumentException>(() => bar100 < barnotrack100);
+            Assert.Throws<ArgumentException>(() => bar100 <= barnotrack100);
+            Assert.Throws<ArgumentException>(() => bar100 > barnotrack100);
+            Assert.Throws<ArgumentException>(() => bar100 >= barnotrack100);
+
             Assert.Throws<ArgumentException>(() => foo100a.CompareTo(100));
         }
 
@@ -216,6 +247,8 @@ namespace Libplanet.Tests.Assets
             FungibleAssetValue foo2 = FungibleAssetValue.FromRawValue(FOO, 2);
             FungibleAssetValue foo3 = FungibleAssetValue.FromRawValue(FOO, 3);
             FungibleAssetValue bar3 = FungibleAssetValue.FromRawValue(BAR, 3);
+            FungibleAssetValue barmax3 = FungibleAssetValue.FromRawValue(BARMAX, 3);
+            FungibleAssetValue barnotrack3 = FungibleAssetValue.FromRawValue(BARNOTRACK, 3);
 
             Assert.Equal(foo1, foo1 + foo0);
             Assert.Equal(foo1, foo0 + foo1);
@@ -228,6 +261,8 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(foo_1, foo0 + foo_1);
 
             Assert.Throws<ArgumentException>(() => foo1 + bar3);
+            Assert.Throws<ArgumentException>(() => bar3 + barmax3);
+            Assert.Throws<ArgumentException>(() => bar3 + barnotrack3);
         }
 
         [Fact]
@@ -238,6 +273,8 @@ namespace Libplanet.Tests.Assets
             FungibleAssetValue foo1 = FungibleAssetValue.FromRawValue(FOO, 1);
             FungibleAssetValue foo2 = FungibleAssetValue.FromRawValue(FOO, 2);
             FungibleAssetValue bar3 = FungibleAssetValue.FromRawValue(BAR, 3);
+            FungibleAssetValue barmax3 = FungibleAssetValue.FromRawValue(BARMAX, 3);
+            FungibleAssetValue barnotrack3 = FungibleAssetValue.FromRawValue(BARNOTRACK, 3);
 
             Assert.Equal(foo0, foo1 - foo1);
             Assert.Equal(foo_1, foo1 - foo2);
@@ -245,6 +282,8 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(foo0, foo_1 - foo_1);
 
             Assert.Throws<ArgumentException>(() => bar3 - foo1);
+            Assert.Throws<ArgumentException>(() => bar3 - barmax3);
+            Assert.Throws<ArgumentException>(() => bar3 - barnotrack3);
         }
 
         [Fact]
@@ -423,7 +462,7 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void Parse()
         {
-            Currency baz = new Currency("BAZ", 1, minter: null);
+            var baz = Currency.Uncapped("BAZ", 1, null);
             FormatException e;
 
             e = Assert.Throws<FormatException>(() => FungibleAssetValue.Parse(FOO, "abc"));
@@ -492,6 +531,40 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(new FungibleAssetValue(FOO, 123, 0), FungibleAssetValue.Parse(FOO, "123"));
             Assert.Equal(new FungibleAssetValue(FOO, 12, 0), FungibleAssetValue.Parse(FOO, "+12"));
             Assert.Equal(new FungibleAssetValue(FOO, -12, 0), FungibleAssetValue.Parse(FOO, "-12"));
+        }
+
+        [SkippableFact]
+        public void JsonSerialization()
+        {
+            var v = new FungibleAssetValue(FOO, 123, 45);
+            AssertJsonSerializable(v, @"
+                {
+                    ""quantity"": ""123.45"",
+                    ""currency"": {
+                        ""hash"": ""946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25"",
+                        ""ticker"": ""FOO"",
+                        ""decimalPlaces"": 2,
+                        ""minters"": null,
+                        ""maximumSupply"": null,
+                        ""totalSupplyTrackable"": true,
+                    }
+                }
+            ");
+
+            v = new FungibleAssetValue(FOO, -456, 0);
+            AssertJsonSerializable(v, @"
+                {
+                    ""quantity"": ""-456"",
+                    ""currency"": {
+                        ""hash"": ""946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25"",
+                        ""ticker"": ""FOO"",
+                        ""decimalPlaces"": 2,
+                        ""minters"": null,
+                        ""maximumSupply"": null,
+                        ""totalSupplyTrackable"": true,
+                    }
+                }
+            ");
         }
     }
 }

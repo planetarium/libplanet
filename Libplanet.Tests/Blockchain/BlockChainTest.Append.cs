@@ -325,7 +325,7 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(miner, _blockChain);
-            long maxBytes = _blockChain.Policy.GetMaxBlockBytes(block.Index);
+            long maxBytes = _blockChain.Policy.GetMaxTransactionsBytes(block.Index);
             Assert.True(block.MarshalBlock().EncodingLength > maxBytes);
 
             var e = Assert.Throws<InvalidBlockBytesLengthException>(() =>
@@ -419,7 +419,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(renderer.ActionSuccessRecords);
             Assert.Single(renderer.ActionErrorRecords);
             RenderRecord<ThrowException>.ActionError errorRecord = renderer.ActionErrorRecords[0];
-            Assert.Same(action, errorRecord.Action);
+            Assert.Equal(action.PlainValue, errorRecord.Action.PlainValue);
             Assert.IsType<UnexpectedlyTerminatedActionException>(errorRecord.Exception);
             Assert.IsType<ThrowException.SomeException>(errorRecord.Exception.InnerException);
         }
@@ -436,7 +436,7 @@ namespace Libplanet.Tests.Blockchain
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
@@ -552,7 +552,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
                 miner: privateKey.PublicKey,
-                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(privateKey, _blockChain);
@@ -573,7 +573,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
                 miner: privateKey.PublicKey,
-                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
+                transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(privateKey, _blockChain);

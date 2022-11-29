@@ -1,5 +1,6 @@
 using System;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -9,23 +10,19 @@ namespace Libplanet.Tests.Blocks
     public class BlockMetadataExtensionsTest : BlockContentFixture
     {
         [Fact]
-        public void Copy()
-        {
-            AssertBlockMetadataEqual(GenesisMetadata, GenesisMetadata.Copy());
-            AssertBlockMetadataEqual(BlockMetadata1, BlockMetadata1.Copy());
-            AssertBlockMetadataEqual(BlockMetadataPv0, BlockMetadataPv0.Copy());
-        }
-
-        [Fact]
         public void ValidateTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             DateTimeOffset future = now + TimeSpan.FromSeconds(17);
-            IBlockMetadata metadata = new BlockMetadata
-            {
-                Timestamp = future,
-            };
-
+            PublicKey publicKey = new PrivateKey().PublicKey;
+            IBlockMetadata metadata = new BlockMetadata(
+                index: 0,
+                timestamp: future,
+                publicKey: publicKey,
+                difficulty: 0,
+                totalDifficulty: 0,
+                previousHash: null,
+                txHash: null);
             Assert.Throws<InvalidBlockTimestampException>(() => metadata.ValidateTimestamp(now));
 
             // It's okay because 3 seconds later.

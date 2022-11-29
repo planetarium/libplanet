@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Tx
             );
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            var foo = new Currency("FOO", 2, minters: null);
+            var foo = Currency.Uncapped("FOO", 2, minters: null);
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
                 privateKey,
@@ -52,22 +52,20 @@ namespace Libplanet.Tests.Tx
             AssertBytesEqual(
                 new byte[]
                 {
-                    0x30, 0x45, 0x02, 0x21, 0x00, 0xe8, 0x7d, 0xf4,
-                    0xf1, 0xa4, 0xa7, 0x5c, 0x92, 0x8d, 0x4b, 0x2c,
-                    0x68, 0x13, 0x03, 0xd8, 0xf0, 0xb9, 0x28, 0xf1,
-                    0xd4, 0x3c, 0x89, 0x2c, 0xfd, 0x16, 0xdc, 0x37,
-                    0x4f, 0x1f, 0x64, 0x4d, 0xc1, 0x02, 0x20, 0x29,
-                    0x87, 0xa7, 0x24, 0xf2, 0x4f, 0xd8, 0x95, 0x91,
-                    0xee, 0xf1, 0xe4, 0x27, 0xae, 0x48, 0xd5, 0xe1,
-                    0x42, 0x3c, 0x31, 0x9e, 0x7e, 0xc7, 0x0d, 0xf8,
-                    0x9f, 0xd0, 0x2c, 0x8a, 0xdf, 0x09, 0x00,
+                    0x30, 0x44, 0x02, 0x20, 0x13, 0x76, 0xa1, 0x67, 0x51, 0x0b,
+                    0x34, 0xe7, 0x84, 0xe3, 0x7b, 0x7c, 0xf8, 0x02, 0x11, 0x74,
+                    0x2a, 0x1c, 0x07, 0xa8, 0x74, 0xcf, 0xa9, 0x05, 0x3d, 0xae,
+                    0x8c, 0x10, 0x7b, 0x69, 0x43, 0x0c, 0x02, 0x20, 0x30, 0x93,
+                    0x3a, 0x51, 0xbd, 0xdb, 0x2a, 0xf8, 0xe3, 0x10, 0x3f, 0x6e,
+                    0xce, 0x46, 0x35, 0x5d, 0xf6, 0x8c, 0x8e, 0x1e, 0xc8, 0x1a,
+                    0xab, 0x77, 0x26, 0xb1, 0x51, 0xfa, 0xad, 0x36, 0x0e, 0x36,
                 },
                 tx.Signature
             );
             AssertBytesEqual(
                 TxId.FromHex(
-                    "5c0c1b9130cc42939960d58b6b39d3ac" +
-                    "1df2847829648ebb5a400df792fe7f27"
+                    "cbbe3fbc2f807fc6e9c817c45f0acb17" +
+                    "440eb79be1ba88267d586c2fdbbd8f0b"
                 ),
                 tx.Id
             );
@@ -318,32 +316,6 @@ namespace Libplanet.Tests.Tx
                 0x09, 0xf4, 0x50, 0x9f, 0xb1, 0xb1, 0x1e, 0xab, 0x11, 0x4b,
                 0x3f,
             };
-
-            // The customActions parameter cannot be null.
-            Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<DumbAction>(
-                    metadata: new TxMetadata(privateKey.PublicKey)
-                    {
-                        Nonce = 0L,
-                        Timestamp = timestamp,
-                    },
-                    customActions: null,
-                    signature: signature
-                )
-            );
-
-            // The signature parameter cannot be null.
-            Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<DumbAction>(
-                    metadata: new TxMetadata(privateKey.PublicKey)
-                    {
-                        Nonce = 0L,
-                        Timestamp = timestamp,
-                    },
-                    customActions: new DumbAction[0],
-                    signature: null
-                )
-            );
         }
 
         [Fact]
@@ -564,20 +536,16 @@ namespace Libplanet.Tests.Tx
                 targetAddress
             );
             Assert.Equal(
-                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                {
-                    { (Text)"weapon", (Text)"wand" },
-                    { (Text)"target", (Text)"orc" },
-                    { (Text)"target_address", (Binary)new Address(publicKey).ToByteArray() },
-                }),
+                Bencodex.Types.Dictionary.Empty
+                    .Add("weapon", "wand")
+                    .Add("target", "orc")
+                    .Add("target_address", new Address(publicKey).ByteArray),
                 tx.CustomActions[0].InnerAction.PlainValue
             );
             Assert.IsType<Sleep>(tx.CustomActions[1].InnerAction);
             Assert.Equal(
-                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                {
-                    { (Text)"zone_id", (Integer)10 },
-                }),
+                Bencodex.Types.Dictionary.Empty
+                    .Add("zone_id", 10),
                 tx.CustomActions[1].InnerAction.PlainValue
             );
         }

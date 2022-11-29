@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -58,10 +59,6 @@ namespace Libplanet.Net.Tests.Transports
                 Assert.True(transport.Running);
                 await transport.StopAsync(TimeSpan.Zero);
                 Assert.False(transport.Running);
-                if (transport is NetMQTransport)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
 
                 await InitializeAsync(transport);
                 Assert.True(transport.Running);
@@ -69,6 +66,10 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 transport.Dispose();
+                if (transport is NetMQTransport)
+                {
+                    NetMQConfig.Cleanup(false);
+                }
             }
         }
 
@@ -119,43 +120,23 @@ namespace Libplanet.Net.Tests.Transports
         }
 
         [SkippableFact(Timeout = Timeout)]
-        public async Task AsPeer()
+        public void AsPeer()
         {
             var privateKey = new PrivateKey();
-            var boundPrivateKey = new PrivateKey();
             string host = IPAddress.Loopback.ToString();
             const int listenPort = 50000;
-            ITransport transport = CreateTransport(privateKey: privateKey);
-            ITransport boundTransport = CreateTransport(
-                privateKey: boundPrivateKey,
-                host: host,
-                listenPort: listenPort);
+            ITransport transport = CreateTransport(privateKey: privateKey, listenPort: listenPort);
 
             try
             {
                 var peer = transport.AsPeer;
-                Assert.IsType<Peer>(peer);
-                Assert.IsNotType<BoundPeer>(peer);
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
-
-                await InitializeAsync(transport);
-                peer = transport.AsPeer;
-                Assert.IsNotType<Peer>(peer);
-                Assert.IsType<BoundPeer>(peer);
-                Assert.Equal(privateKey.ToAddress(), peer.Address);
-
-                await InitializeAsync(boundTransport);
-                peer = boundTransport.AsPeer;
-                Assert.IsType<BoundPeer>(peer);
-                var boundPeer = (BoundPeer)peer;
-                Assert.Equal(boundPrivateKey.ToAddress(), boundPeer.Address);
-                Assert.Equal(listenPort, boundPeer.EndPoint.Port);
-                Assert.Equal(host, boundPeer.EndPoint.Host);
+                Assert.Equal(listenPort, peer.EndPoint.Port);
+                Assert.Equal(host, peer.EndPoint.Host);
             }
             finally
             {
                 transport.Dispose();
-                boundTransport.Dispose();
             }
         }
 
@@ -185,7 +166,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 Message reply = await transportA.SendMessageAsync(
-                    (BoundPeer)transportB.AsPeer,
+                    transportB.AsPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(3),
                     CancellationToken.None);
@@ -214,7 +195,7 @@ namespace Libplanet.Net.Tests.Transports
                 cts.CancelAfter(TimeSpan.FromSeconds(1));
                 await Assert.ThrowsAsync<TaskCanceledException>(
                     async () => await transportA.SendMessageAsync(
-                        (BoundPeer)transportB.AsPeer,
+                        transportB.AsPeer,
                         new PingMsg(),
                         null,
                         cts.Token));
@@ -258,7 +239,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 var replies = (await transportA.SendMessageAsync(
-                    (BoundPeer)transportB.AsPeer,
+                    transportB.AsPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(3),
                     2,
@@ -289,7 +270,7 @@ namespace Libplanet.Net.Tests.Transports
 
                 var e = await Assert.ThrowsAsync<CommunicationFailException>(
                     async () => await transportA.SendMessageAsync(
-                        (BoundPeer)transportB.AsPeer,
+                        transportB.AsPeer,
                         new PingMsg(),
                         TimeSpan.FromSeconds(3),
                         CancellationToken.None));
@@ -302,26 +283,17 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
-        [SkippableFact(Timeout = Timeout)]
-        public async Task SendMessageToInvalidPeerAsync()
+        [SkippableTheory(Timeout = Timeout)]
+        [ClassData(typeof(TransportTestInvalidPeers))]
+        public async Task SendMessageToInvalidPeerAsync(BoundPeer invalidPeer)
         {
             ITransport transport = CreateTransport();
 
             try
             {
                 await InitializeAsync(transport);
-                // Make sure the tcp port is invalid.
-                var l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                int port = ((IPEndPoint)l.LocalEndpoint).Port;
-                l.Stop();
-                var peer = new BoundPeer(
-                    new PrivateKey().PublicKey,
-                    new DnsEndPoint(
-                        "0.0.0.0",
-                        port));
                 Task task = transport.SendMessageAsync(
-                    peer,
+                    invalidPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(5),
                     default);
@@ -348,7 +320,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 Task t = transportA.SendMessageAsync(
-                        (BoundPeer)transportB.AsPeer,
+                        transportB.AsPeer,
                         new PingMsg(),
                         null,
                         CancellationToken.None);
@@ -408,9 +380,9 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportD);
 
                 var table = new RoutingTable(address, bucketSize: 1);
-                table.AddPeer(transportB.AsPeer as BoundPeer);
-                table.AddPeer(transportC.AsPeer as BoundPeer);
-                table.AddPeer(transportD.AsPeer as BoundPeer);
+                table.AddPeer(transportB.AsPeer);
+                table.AddPeer(transportC.AsPeer);
+                table.AddPeer(transportD.AsPeer);
 
                 transportA = CreateTransport();
                 await InitializeAsync(transportA);
@@ -472,6 +444,43 @@ namespace Libplanet.Net.Tests.Transports
                 iceServers ?? Enumerable.Empty<IceServer>(),
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
+        }
+
+        private class TransportTestInvalidPeers : IEnumerable<object[]>
+        {
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                // Make sure the tcp port is invalid.
+                var l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+
+                yield return new[]
+                {
+                    new BoundPeer(
+                        new PrivateKey().PublicKey,
+                        new DnsEndPoint(
+                            "0.0.0.0",
+                            port
+                        )
+                    ),
+                };
+
+                // e.g., "127.0.0.1":0
+                yield return new[]
+                {
+                    new BoundPeer(
+                        new PrivateKey().PublicKey,
+                        new DnsEndPoint(
+                            $"\"{IPAddress.Loopback}\"",
+                            0
+                        )
+                    ),
+                };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

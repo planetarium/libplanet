@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public Address Address => _privateKey.ToAddress();
 
-        public Peer AsPeer => new BoundPeer(
+        public BoundPeer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
             new DnsEndPoint("localhost", 1234));
 
@@ -159,26 +159,6 @@ namespace Libplanet.Net.Tests.Protocols
         /// <inheritdoc cref="ITransport.WaitForRunningAsync"/>
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
-        public async Task BootstrapAsync(
-            IEnumerable<Peer> bootstrapPeers,
-            TimeSpan? pingSeedTimeout = null,
-            int depth = 3,
-            CancellationToken cancellationToken = default)
-        {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException(nameof(TestTransport));
-            }
-
-            IEnumerable<BoundPeer> peers = bootstrapPeers.OfType<BoundPeer>();
-
-            await BootstrapAsync(
-                peers,
-                pingSeedTimeout,
-                depth,
-                cancellationToken);
-        }
-
 #pragma warning disable S4457 // Cannot split the method since method is in interface
         public async Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
@@ -219,7 +199,7 @@ namespace Libplanet.Net.Tests.Protocols
                 cancellationToken);
 
         public Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
         {
@@ -288,7 +268,7 @@ namespace Libplanet.Net.Tests.Protocols
             return DoAddPeersAsync();
         }
 
-        public void SendPing(Peer target, TimeSpan? timeSpan = null)
+        public void SendPing(BoundPeer peer, TimeSpan? timeSpan = null)
         {
             if (_disposed)
             {
@@ -300,15 +280,10 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new TransportException("Start transport before use.");
             }
 
-            if (!(target is BoundPeer boundPeer))
-            {
-                throw new ArgumentException("Target peer does not have endpoint.", nameof(target));
-            }
-
             Task.Run(() =>
             {
                 _ = (Protocol as KademliaProtocol).PingAsync(
-                    boundPeer,
+                    peer,
                     timeSpan,
                     default);
             });

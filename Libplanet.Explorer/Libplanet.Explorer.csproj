@@ -9,7 +9,7 @@
     <Authors>Planetarium</Authors>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <NoWarn>NU1701</NoWarn>
+    <NoWarn>NU1701;NU5104;SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
@@ -44,7 +44,7 @@
     <PackageReference Include="MySqlConnector" Version="1.1.0" />
     <PackageReference Include="SqlKata" Version="2.2.0" />
     <PackageReference Include="SqlKata.Execution" Version="2.2.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers
@@ -52,12 +52,17 @@
     </PackageReference>
     <PackageReference Include="GraphQL" Version="4.7.1" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="4.7.1" />
+    <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="5.1.1" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore.SystemTextJson" Version="5.1.1" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="5.1.1" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="5.1.1" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <PackageReference Include="Bencodex.Json" Version="0.7.0-dev.20220923062845" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>

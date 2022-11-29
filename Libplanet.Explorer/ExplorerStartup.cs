@@ -1,11 +1,19 @@
 #nullable disable
+using GraphQL;
+using GraphQL.Server;
+using GraphQL.SystemTextJson;
+using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Explorer.Controllers;
+using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Queries;
+using Libplanet.Explorer.Schemas;
+using Libplanet.Store;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace Libplanet.Explorer
@@ -32,12 +40,24 @@ namespace Libplanet.Explorer
                             .AllowAnyHeader()
                 )
             );
-            services.AddControllers()
-                .ConfigureApplicationPartManager(p =>
-                    p.FeatureProviders.Add(
-                        new GenericControllerFeatureProvider<T>()))
-                .AddNewtonsoftJson();
+            services.AddControllers();
+
             services.AddSingleton<IBlockChainContext<T>, TU>();
+            services.AddSingleton<IStore>(
+                services => services.GetService<IBlockChainContext<T>>().Store);
+
+            services.TryAddSingleton<ActionType<T>>();
+            services.TryAddSingleton<BlockType<T>>();
+            services.TryAddSingleton<TransactionType<T>>();
+            services.TryAddSingleton<NodeStateType<T>>();
+            services.TryAddSingleton<BlockQuery<T>>();
+            services.TryAddSingleton<TransactionQuery<T>>();
+            services.TryAddSingleton<ExplorerQuery<T>>();
+            services.TryAddSingleton<LibplanetExplorerSchema<T>>();
+
+            services.AddGraphQL()
+                    .AddSystemTextJson()
+                    .AddGraphTypes(typeof(LibplanetExplorerSchema<T>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -54,6 +74,9 @@ namespace Libplanet.Explorer
             {
                 endpoints.MapControllers();
             });
+
+            app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql");
+            app.UseGraphQLPlayground();
         }
     }
 }

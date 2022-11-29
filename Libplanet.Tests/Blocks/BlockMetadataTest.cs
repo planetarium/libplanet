@@ -23,50 +23,52 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Constructor()
-        {
-            DateTimeOffset before = DateTimeOffset.UtcNow;
-            var m = new BlockMetadata();
-            DateTimeOffset after = DateTimeOffset.UtcNow;
-            Assert.Equal(BlockMetadata.CurrentProtocolVersion, m.ProtocolVersion);
-            Assert.Equal(0, m.Index);
-            Assert.InRange(m.Timestamp, before, after);
-            AssertBytesEqual(default(Address), m.Miner);
-            Assert.Equal(0, m.Difficulty);
-            Assert.Equal(0, m.TotalDifficulty);
-            AssertBytesEqual(null, m.PreviousHash);
-            AssertBytesEqual(null, m.TxHash);
-        }
-
-        [Fact]
         public void CopyConstructor()
         {
-            var g = new BlockMetadata(Genesis);
-            AssertBlockMetadataEqual(Genesis, g);
-            var b1 = new BlockMetadata(Block1);
-            AssertBlockMetadataEqual(Block1, b1);
+            var g = new BlockMetadata(GenesisContent);
+            AssertBlockMetadataEqual(GenesisContent, g);
+            var b1 = new BlockMetadata(Block1Content);
+            AssertBlockMetadataEqual(Block1Content, b1);
         }
 
         [Fact]
         public void ProtocolVersion()
         {
-            int v = BlockMetadata1.ProtocolVersion;
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => BlockMetadata1.ProtocolVersion = -1
-            );
-            Assert.Equal(v, BlockMetadata1.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: -1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    difficulty: Block1Metadata.Difficulty,
+                    totalDifficulty: Block1Metadata.TotalDifficulty,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash));
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => BlockMetadata1.ProtocolVersion = Block<Arithmetic>.CurrentProtocolVersion + 1
-            );
-            Assert.Equal(v, BlockMetadata1.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    difficulty: Block1Metadata.Difficulty,
+                    totalDifficulty: Block1Metadata.TotalDifficulty,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
         public void Index()
         {
-            long idx = BlockMetadata1.Index;
-            Assert.Throws<InvalidBlockIndexException>(() => BlockMetadata1.Index = -1);
-            Assert.Equal(idx, BlockMetadata1.Index);
+            Assert.Throws<InvalidBlockIndexException>(() => new BlockMetadata(
+                index: -1L,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
@@ -74,51 +76,102 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset kstTimestamp =
                 new DateTimeOffset(2021, 9, 7, 9, 30, 12, 345, TimeSpan.FromHours(9));
-            BlockMetadata1.Timestamp = kstTimestamp;
-            Assert.Equal(TimeSpan.Zero, BlockMetadata1.Timestamp.Offset);
+            BlockMetadata metadata = new BlockMetadata(
+                protocolVersion: Block1Metadata.ProtocolVersion,
+                index: Block1Metadata.Index,
+                timestamp: kstTimestamp,
+                miner: Block1Metadata.Miner,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash);
+            Assert.Equal(TimeSpan.Zero, metadata.Timestamp.Offset);
             Assert.Equal(
                 new DateTime(2021, 9, 7, 0, 30, 12, 345),
-                BlockMetadata1.Timestamp.DateTime
-            );
-            Assert.Equal(kstTimestamp, BlockMetadata1.Timestamp);
+                metadata.Timestamp.DateTime);
+            Assert.Equal(kstTimestamp, metadata.Timestamp);
         }
 
         [Fact]
         public void Difficulty()
         {
-            BlockMetadata a = BlockMetadata1.Copy();
-            a.Difficulty = BlockMetadata1.Difficulty + 10L;
-            Assert.Equal(BlockMetadata1.Difficulty + 10L, a.Difficulty);
-            Assert.Equal(BlockMetadata1.TotalDifficulty + 10, a.TotalDifficulty);
-
-            BlockMetadata b = BlockMetadata1.Copy();
-            Assert.Throws<InvalidBlockDifficultyException>(() => b.Difficulty = -1);
-            Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
+            Assert.Throws<InvalidBlockTotalDifficultyException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty + 10L,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
+            Assert.Throws<InvalidBlockDifficultyException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: -1L,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
         public void TotalDifficulty()
         {
-            BlockMetadata a = BlockMetadata1.Copy();
-            a.TotalDifficulty = BlockMetadata1.TotalDifficulty + 10;
-            Assert.Equal(BlockMetadata1.TotalDifficulty + 10, a.TotalDifficulty);
-            Assert.Equal(BlockMetadata1.Difficulty, a.Difficulty);
+            BlockMetadata metadata = new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty + 10,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash);
+            Assert.Equal(Block1Metadata.TotalDifficulty + 10, metadata.TotalDifficulty);
+            Assert.Equal(Block1Metadata.Difficulty, metadata.Difficulty);
 
-            BlockMetadata b = Block1.Copy();
+            // Negative total difficulty is not allowed.
             InvalidBlockTotalDifficultyException e =
-                Assert.Throws<InvalidBlockTotalDifficultyException>(() => b.TotalDifficulty = -1);
-            Assert.Equal(BlockMetadata1.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
+                Assert.Throws<InvalidBlockTotalDifficultyException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: -1L,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
             Assert.Equal(-1, e.TotalDifficulty);
 
+            // Total difficulty less than difficulty is not allowed.
             e = Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => b.TotalDifficulty = b.Difficulty - 1L
-            );
-            Assert.Equal(BlockMetadata1.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
-            Assert.Equal(b.Difficulty - 1L, e.TotalDifficulty);
+                () => new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.Difficulty - 1L,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
+            Assert.Equal(Block1Metadata.Difficulty - 1L, e.TotalDifficulty);
+        }
+
+        [Fact]
+        public void PreviousHash()
+        {
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: GenesisMetadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: GenesisMetadata.PublicKey,
+                difficulty: GenesisMetadata.Difficulty,
+                totalDifficulty: GenesisMetadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: GenesisMetadata.TxHash));
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: null,
+                txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
@@ -162,7 +215,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", 3);
             AssertBencodexEqual(
                 expectedBlock1,
-                BlockMetadata1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
+                Block1Metadata.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
             );
 
             Bencodex.Types.Dictionary expectedPv0 = Bencodex.Types.Dictionary.Empty
@@ -171,10 +224,10 @@ namespace Libplanet.Tests.Blocks
                 .Add("difficulty", 0L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"));
-            AssertBencodexEqual(expectedPv0, BlockMetadataPv0.MakeCandidateData(default));
+            AssertBencodexEqual(expectedPv0, GenesisMetadataPv0.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedPv0.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                BlockMetadataPv0.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+                GenesisMetadataPv0.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
             );
 
             Bencodex.Types.Dictionary expectedPv1 = Bencodex.Types.Dictionary.Empty
@@ -192,10 +245,10 @@ namespace Libplanet.Tests.Blocks
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
                 .Add("protocol_version", 1);
-            AssertBencodexEqual(expectedPv1, BlockMetadataPv1.MakeCandidateData(default));
+            AssertBencodexEqual(expectedPv1, Block1MetadataPv1.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedPv1.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                BlockMetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
+                Block1MetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
             );
         }
 
@@ -226,7 +279,8 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", 1);
             AssertBencodexEqual(
                 expected,
-                BlockMetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
+                Block1MetadataPv1.MakeCandidateData(
+                    new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
             );
         }
 
@@ -244,7 +298,7 @@ namespace Libplanet.Tests.Blocks
                 );
             AssertBencodexEqual(
                 (IValue)expected.Remove((Text)"protocol_version"),
-                BlockMetadataPv0.MakeCandidateData(default)
+                GenesisMetadataPv0.MakeCandidateData(default)
             );
         }
 
@@ -260,7 +314,7 @@ namespace Libplanet.Tests.Blocks
                 hash
             );
 
-            hash = BlockMetadata1.DerivePreEvaluationHash(
+            hash = Block1Metadata.DerivePreEvaluationHash(
                 new Nonce(FromHex("e7c1adf92c65d35aaae5"))
             );
             AssertBytesEqual(
@@ -296,7 +350,14 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                BlockMetadata1.Difficulty = long.MaxValue;
+                BlockMetadata metadata = new BlockMetadata(
+                    index: Block1Metadata.Index,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: Block1Metadata.PublicKey,
+                    difficulty: long.MaxValue,
+                    totalDifficulty: Block1Metadata.TotalDifficulty + long.MaxValue,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash);
 
                 Exception exception = null;
                 Task task = Task.Run(() =>
@@ -305,11 +366,11 @@ namespace Libplanet.Tests.Blocks
                     {
                         if (workers is int w)
                         {
-                            BlockMetadata1.MineNonce(w, source.Token);
+                            Block1Metadata.MineNonce(w, source.Token);
                         }
                         else
                         {
-                            BlockMetadata1.MineNonce(source.Token);
+                            Block1Metadata.MineNonce(source.Token);
                         }
                     }
                     catch (OperationCanceledException ce)

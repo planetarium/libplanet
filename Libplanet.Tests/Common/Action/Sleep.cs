@@ -10,9 +10,9 @@ namespace Libplanet.Tests.Common.Action
         public int ZoneId { get; set; }
 
         public override IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, Integer>
             {
-                { (Text)"zone_id", (Integer)ZoneId },
+                { "zone_id", ZoneId },
             });
 
         public override IAccountStateDelta Execute(IActionContext context)

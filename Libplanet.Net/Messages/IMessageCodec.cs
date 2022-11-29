@@ -15,7 +15,7 @@ namespace Libplanet.Net.Messages
         /// </param>
         /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> of
         /// the transport layer.</param>
-        /// <param name="peer">The <see cref="Peer"/>-typed representation of
+        /// <param name="peer">The <see cref="BoundPeer"/>-typed representation of
         /// the transport layer.
         /// <seealso cref="ITransport.AsPeer"/></param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> of the time
@@ -29,7 +29,7 @@ namespace Libplanet.Net.Messages
             Message message,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            Peer peer,
+            BoundPeer peer,
             DateTimeOffset timestamp);
 
         /// <summary>

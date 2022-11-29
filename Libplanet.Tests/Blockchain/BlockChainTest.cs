@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -39,7 +40,7 @@ namespace Libplanet.Tests.Blockchain
         private BlockChain<DumbAction> _blockChainMinTx;
         private ValidatingActionRenderer<DumbAction> _renderer;
         private Block<DumbAction> _validNext;
-        private List<Transaction<DumbAction>> _emptyTransaction;
+        private List<Transaction<DumbAction>> _emptyTransactions;
         private IStagePolicy<DumbAction> _stagePolicy;
 
         public BlockChainTest(ITestOutputHelper output)
@@ -60,10 +61,10 @@ namespace Libplanet.Tests.Blockchain
 
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
-                getMaxBlockBytes: _ => 50 * 1024);
+                getMaxTransactionsBytes: _ => 50 * 1024);
             _policyMinTx = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
-                getMaxBlockBytes: _ => 50 * 1024,
+                getMaxTransactionsBytes: _ => 50 * 1024,
                 getMinTransactionsPerBlock: _ => 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = getStoreFixture(_policy.BlockAction);
@@ -87,17 +88,20 @@ namespace Libplanet.Tests.Blockchain
             _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
 
-            _emptyTransaction = new List<Transaction<DumbAction>>();
-            _validNext = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                Difficulty = 1024L,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _fx.GenesisBlock.Hash,
-                Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            _emptyTransactions = new List<Transaction<DumbAction>>();
+            _validNext = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: 1,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
+                    miner: _fx.Miner.PublicKey.ToAddress(),
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: 1024L,
+                    totalDifficulty: _fx.GenesisBlock.TotalDifficulty + 1024L,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions)
+                .Mine().Evaluate(_fx.Miner, _blockChain);
         }
 
         public void Dispose()
@@ -1573,7 +1577,36 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void MakeTransaction()
+        public void MakeTransactionWithSystemAction()
+        {
+            var foo = Currency.Uncapped("FOO", 2, minters: null);
+            var privateKey = new PrivateKey();
+            Address address = privateKey.ToAddress();
+            var action = new Transfer(address, foo * 10);
+
+            _blockChain.MakeTransaction(privateKey, systemAction: action);
+            _blockChain.MakeTransaction(privateKey, systemAction: action);
+
+            List<Transaction<DumbAction>> txs = _stagePolicy
+                .Iterate(_blockChain)
+                .OrderBy(tx => tx.Nonce)
+                .ToList();
+
+            Assert.Equal(2, txs.Count);
+
+            var transaction = txs[0];
+            Assert.Equal(0, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(action, transaction.SystemAction);
+
+            transaction = txs[1];
+            Assert.Equal(1, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(action, transaction.SystemAction);
+        }
+
+        [Fact]
+        public void MakeTransactionWithCustomActions()
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.ToAddress();
@@ -1735,20 +1768,28 @@ namespace Libplanet.Tests.Blockchain
             AccountStateGetter nullAccountStateGetter = (address) => null;
             AccountBalanceGetter nullAccountBalanceGetter =
                 (address, currency) => new FungibleAssetValue(currency);
-            IAccountStateDelta previousStates = b.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    nullAccountStateGetter,
-                    nullAccountBalanceGetter,
-                    b.Miner)
-                : new AccountStateDeltaImplV0(
-                    nullAccountStateGetter,
-                    nullAccountBalanceGetter,
-                    b.Miner);
+            TotalSupplyGetter nullTotalSupplyGetter = currency =>
+            {
+                if (!currency.TotalSupplyTrackable)
+                {
+                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                }
+
+                return currency * 0;
+            };
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                b.ProtocolVersion,
+                nullAccountStateGetter,
+                nullAccountBalanceGetter,
+                nullTotalSupplyGetter,
+                b.Miner);
             ActionEvaluation[] evals =
                 chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();
+            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies
+                = evals.GetDirtyTotalSupplies();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
                 .Select(_ => new PrivateKey().ToAddress())
@@ -1770,15 +1811,22 @@ namespace Libplanet.Tests.Blockchain
                         blockInterval: TimeSpan.FromSeconds(10),
                         miner: GenesisMiner.PublicKey
                     ).Evaluate(GenesisMiner, chain);
-                    previousStates = b.ProtocolVersion > 0
-                        ? new AccountStateDeltaImpl(
-                            addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
-                            (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner)
-                        : new AccountStateDeltaImplV0(
-                            addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
-                            (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner);
+                    previousStates = AccountStateDeltaImpl.ChooseVersion(
+                        b.ProtocolVersion,
+                        addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
+                        (address, currency) => balances.GetValueOrDefault((address, currency)),
+                        currency =>
+                        {
+                            if (!currency.TotalSupplyTrackable)
+                            {
+                                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                            }
+
+                            return totalSupplies.TryGetValue(currency, out var totalSupply)
+                                ? totalSupply
+                                : currency * 0;
+                        },
+                        b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);
@@ -2077,7 +2125,7 @@ namespace Libplanet.Tests.Blockchain
             )
             {
                 _hook(blockChain);
-                return new TxPolicyViolationException(transaction.Id, "Test Message");
+                return new TxPolicyViolationException("Test Message", transaction.Id);
             }
         }
 

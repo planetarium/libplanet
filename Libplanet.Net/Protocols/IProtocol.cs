@@ -14,11 +14,11 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// Conducts peer discovery for given <paramref name="bootstrapPeers"/>.
         /// </summary>
-        /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="Peer"/>s
+        /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="BoundPeer"/>s
         /// to bootstrap.</param>
         /// <param name="dialTimeout">The timeout used when waiting a reply for either
         /// <see cref="PingMsg"/> or <see cref="FindNeighborsMsg"/>.
-        /// If <c>null</c> is given, the task never halts by itself
+        /// If <see langword="null"/> is given, the task never halts by itself
         /// even no any response was given from the the target seed.</param>
         /// <param name="depth">Recursive operation depth to search peers from network.</param>
         /// <param name="cancellationToken">
@@ -38,19 +38,19 @@ namespace Libplanet.Net.Protocols
         /// <param name="peers">The peers to add.</param>
         /// <param name="timeout">A timeout of waiting for the reply of <see cref="PingMsg"/>
         /// message sent to <paramref name="peers"/>.
-        /// If <c>null</c> is given, task never halts by itself
+        /// If <see langword="null"/> is given, task never halts by itself
         /// even the target peer gives no any response.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is online by
+        /// Checks whether <see cref="BoundPeer"/>s in <see cref="RoutingTable"/> is online by
         /// sending <see cref="PingMsg"/>.
         /// </summary>
         /// <param name="maxAge">Maximum age of peer to validate.</param>
@@ -70,7 +70,7 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
-        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="Peer"/>s
+        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="BoundPeer"/>s
         /// in the <see cref="KBucket.ReplacementCache"/>.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token used to propagate notification

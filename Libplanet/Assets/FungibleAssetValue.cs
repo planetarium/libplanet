@@ -1,9 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Libplanet.Serialization;
 
 namespace Libplanet.Assets
@@ -16,6 +19,7 @@ namespace Libplanet.Assets
     /// to handle its remainder; use <see cref="DivRem(FungibleAssetValue)"/> and <see
     /// cref="DivRem(BigInteger)"/> methods instead.
     /// </remarks>
+    [JsonConverter(typeof(FungibleAssetValueJsonConverter))]
     [Serializable]
     public readonly struct FungibleAssetValue :
         IEquatable<FungibleAssetValue>,
@@ -229,7 +233,8 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">A value.</param>
         /// <param name="other">Another value.</param>
-        /// <returns><c>true</c> if two values are equal.  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if two values are equal.
+        /// Otherwise <see langword="false"/>.</returns>
         [Pure]
         public static bool operator ==(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.Equals(other);
@@ -239,7 +244,8 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">A value.</param>
         /// <param name="other">Another value.</param>
-        /// <returns><c>false</c> if two values are equal.  Otherwise <c>true</c>.</returns>
+        /// <returns><see langword="false"/> if two values are equal.
+        /// Otherwise <see langword="true"/>.</returns>
         [Pure]
         public static bool operator !=(FungibleAssetValue obj, FungibleAssetValue other) =>
             !(obj == other);
@@ -250,9 +256,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is less than the right
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is less than the right
         /// operand (<paramref name="other"/>).  Otherwise (even if two operands are equal)
-        /// <c>false</c>.</returns>
+        /// <see langword="false"/>.</returns>
         [Pure]
         public static bool operator <(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.CompareTo(other) < 0;
@@ -263,8 +270,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is less than or equal
-        /// to the right operand (<paramref name="other"/>).  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is less than or equal
+        /// to the right operand (<paramref name="other"/>).  Otherwise <see langword="false"/>.
+        /// </returns>
         [Pure]
         public static bool operator <=(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.CompareTo(other) <= 0;
@@ -275,9 +284,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is greater than
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is greater than
         /// the right operand (<paramref name="other"/>).  Otherwise (even if two operands are
-        /// equal) <c>false</c>.</returns>
+        /// equal) <see langword="false"/>.</returns>
         [Pure]
         public static bool operator >(FungibleAssetValue obj, FungibleAssetValue other) =>
             other < obj;
@@ -288,8 +298,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is greater than or
-        /// equal to the right operand (<paramref name="other"/>). Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is greater than or
+        /// equal to the right operand (<paramref name="other"/>).
+        /// Otherwise <see langword="false"/>.</returns>
         [Pure]
         public static bool operator >=(FungibleAssetValue obj, FungibleAssetValue other) =>
             other <= obj;
@@ -625,5 +637,119 @@ namespace Libplanet.Assets
         [Pure]
         public override string ToString() =>
             $"{GetQuantityString()} {Currency.Ticker}";
+    }
+
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class FungibleAssetValueJsonConverter : JsonConverter<FungibleAssetValue>
+    {
+        public override FungibleAssetValue Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            if (reader.TokenType != JsonTokenType.StartObject)
+            {
+                throw new JsonException(
+                    $"Expected an object representation of {nameof(FungibleAssetValue)}."
+                );
+            }
+
+            reader.Read();
+
+            string quantityFieldName =
+                options.PropertyNamingPolicy?.ConvertName("Quantity") ?? "Quantity";
+            string currencyFieldName =
+                options.PropertyNamingPolicy?.ConvertName("Currency") ?? "Currency";
+            string? quantityString = null;
+            Currency? currency = null;
+
+            while (reader.TokenType != JsonTokenType.EndObject &&
+                   (quantityString is null || currency is null))
+            {
+                if (quantityString is { } && currency is { })
+                {
+                    throw new JsonException($"Unexpected token: {reader.TokenType}.");
+                }
+
+                if (!(reader.GetString() is { } propName))
+                {
+                    throw new JsonException("Expected a field name.");
+                }
+
+                reader.Read();
+                switch (propName.ToLowerInvariant())
+                {
+                    case "quantity":
+                        if (options.PropertyNameCaseInsensitive || propName == quantityFieldName)
+                        {
+                            quantityString = reader.GetString();
+                            reader.Read();
+                            if (quantityString is null)
+                            {
+                                throw new JsonException("Expected a string value.");
+                            }
+                        }
+
+                        break;
+
+                    case "currency":
+                        if (options.PropertyNameCaseInsensitive || propName == currencyFieldName)
+                        {
+                            currency = JsonSerializer.Deserialize<Currency>(ref reader, options);
+                            if (currency is null)
+                            {
+                                throw new JsonException(
+                                    $"Expected an object representation of {nameof(Currency)}.");
+                            }
+                        }
+
+                        break;
+
+                    default:
+                        throw new JsonException($"Unexpected field name: {propName}.");
+                }
+            }
+
+            if (reader.TokenType != JsonTokenType.EndObject)
+            {
+                throw new JsonException($"Unexpected token: {reader.TokenType}.");
+            }
+
+            reader.Read();
+
+            if (!(quantityString is { } q))
+            {
+                throw new JsonException($"Missing field: \"{quantityFieldName}\".");
+            }
+
+            if (!(currency is { } c))
+            {
+                throw new JsonException($"Missing field: \"{currencyFieldName}\".");
+            }
+
+            return FungibleAssetValue.Parse(c, q);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            FungibleAssetValue value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStartObject();
+            writer.WriteString(
+                options.PropertyNamingPolicy?.ConvertName("Quantity") ?? "Quantity",
+                value.GetQuantityString()
+            );
+            writer.WritePropertyName(
+                options.PropertyNamingPolicy?.ConvertName("Currency") ?? "Currency");
+            JsonSerializer.Serialize(writer, value.Currency, options);
+            writer.WriteEndObject();
+        }
     }
 }
