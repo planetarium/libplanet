@@ -196,7 +196,7 @@ namespace Libplanet.Blockchain.Policies
             }
             finally
             {
-                _lock.EnterReadLock();
+                _lock.ExitReadLock();
             }
         }
 
