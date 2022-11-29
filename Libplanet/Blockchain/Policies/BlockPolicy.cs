@@ -264,6 +264,8 @@ namespace Libplanet.Blockchain.Policies
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
 
+        /// <inheritdoc/>
+        [Pure]
         public int GetMinBlockProtocolVersion(long index)
             => _getMinBlockProtocolVersion(index);
     }
