@@ -89,6 +89,17 @@ To be released.
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 
 
+Version 0.44.2
+--------------
+
+Released on November 29, 2022.
+
+ - Improved performance of `.Iterate()` and `.GetNextTxNonce()` of
+   `VolatileStagePolicy`.  [[#2589]]
+
+[#2589]: https://github.com/planetarium/libplanet/pull/2589
+
+
 Version 0.44.1
 --------------
 
