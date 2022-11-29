@@ -297,34 +297,37 @@ namespace Libplanet.Action
             );
         }
 
-        public IAccountStateDelta PromoteValidator(PublicKey validatorKey)
+        public IAccountStateDelta PromoteValidator(PublicKey validatorPublicKey, BigInteger power)
         {
             var validators = GetValidatorSet().Validators;
 
-            if (validators.Contains(validatorKey))
+            if (validators.Select(validator => validator.PublicKey).Contains(validatorPublicKey))
             {
                 string msg =
-                    $"The validator set already contains {validatorKey.Format(false)} " +
+                    $"The validator set already contains {validatorPublicKey.Format(false)} " +
                     "so it cannot be promoted.";
-                throw new ValidatorAlreadyExistException(msg, validatorKey);
+                throw new ValidatorAlreadyExistException(msg, validatorPublicKey);
             }
 
-            return UpdateValidatorSet(new ValidatorSet(validators.Add(validatorKey).ToList()));
+            var validator = new Validator(validatorPublicKey, power);
+
+            return UpdateValidatorSet(new ValidatorSet(validators.Add(validator).ToList()));
         }
 
-        public IAccountStateDelta DemoteValidator(PublicKey validatorKey)
+        public IAccountStateDelta DemoteValidator(PublicKey validatorPublicKey)
         {
             var validators = GetValidatorSet().Validators;
 
-            if (!validators.Contains(validatorKey))
+            if (!validators.Select(validator => validator.PublicKey).Contains(validatorPublicKey))
             {
                 string msg =
-                    $"The validator does not contain {validatorKey.Format(false)} " +
+                    $"The validator does not contain {validatorPublicKey.Format(false)} " +
                     "so it cannot be demoted.";
-                throw new ValidatorDoesNotExistException(msg, validatorKey);
+                throw new ValidatorDoesNotExistException(msg, validatorPublicKey);
             }
 
-            return UpdateValidatorSet(new ValidatorSet(validators.Remove(validatorKey).ToList()));
+            return UpdateValidatorSet(new ValidatorSet(validators.RemoveAll(
+                validator => validator.PublicKey.Equals(validatorPublicKey)).ToList()));
         }
 
         /// <summary>

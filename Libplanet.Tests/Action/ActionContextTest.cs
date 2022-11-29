@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -231,7 +232,8 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
 
-            public IAccountStateDelta PromoteValidator(PublicKey validatorKey) => this;
+            public IAccountStateDelta PromoteValidator(
+                PublicKey validatorKey, BigInteger power) => this;
 
             public IAccountStateDelta DemoteValidator(PublicKey validatorKey) => this;
         }
