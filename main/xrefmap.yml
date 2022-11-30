@@ -3068,24 +3068,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock
   nameWithType: BlockChain<T>.MineBlock
   nameWithType.vb: BlockChain(Of T).MineBlock
-- uid: Libplanet.Blockchain.BlockChain`1.PerceiveBlock(Libplanet.Blocks.IBlockExcerpt,System.Nullable{DateTimeOffset})
-  name: PerceiveBlock(IBlockExcerpt, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_PerceiveBlock_Libplanet_Blocks_IBlockExcerpt_System_Nullable_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.PerceiveBlock(Libplanet.Blocks.IBlockExcerpt,System.Nullable{DateTimeOffset})
-  name.vb: PerceiveBlock(IBlockExcerpt, Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain<T>.PerceiveBlock(Libplanet.Blocks.IBlockExcerpt, System.Nullable<DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).PerceiveBlock(Libplanet.Blocks.IBlockExcerpt, System.Nullable(Of DateTimeOffset))
-  nameWithType: BlockChain<T>.PerceiveBlock(IBlockExcerpt, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain(Of T).PerceiveBlock(IBlockExcerpt, Nullable(Of DateTimeOffset))
-- uid: Libplanet.Blockchain.BlockChain`1.PerceiveBlock*
-  name: PerceiveBlock
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_PerceiveBlock_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.PerceiveBlock
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.PerceiveBlock
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).PerceiveBlock
-  nameWithType: BlockChain<T>.PerceiveBlock
-  nameWithType.vb: BlockChain(Of T).PerceiveBlock
 - uid: Libplanet.Blockchain.BlockChain`1.Policy
   name: Policy
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Policy
@@ -9056,109 +9038,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMetadata.TxHash
   nameWithType: BlockMetadata.TxHash
-- uid: Libplanet.Blocks.BlockPerception
-  name: BlockPerception
-  href: api/Libplanet.Blocks.BlockPerception.html
-  commentId: T:Libplanet.Blocks.BlockPerception
-  fullName: Libplanet.Blocks.BlockPerception
-  nameWithType: BlockPerception
-- uid: Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt)
-  name: BlockPerception(IBlockExcerpt)
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception__ctor_Libplanet_Blocks_IBlockExcerpt_
-  commentId: M:Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt)
-  fullName: Libplanet.Blocks.BlockPerception.BlockPerception(Libplanet.Blocks.IBlockExcerpt)
-  nameWithType: BlockPerception.BlockPerception(IBlockExcerpt)
-- uid: Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt,DateTimeOffset)
-  name: BlockPerception(IBlockExcerpt, DateTimeOffset)
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception__ctor_Libplanet_Blocks_IBlockExcerpt_DateTimeOffset_
-  commentId: M:Libplanet.Blocks.BlockPerception.#ctor(Libplanet.Blocks.IBlockExcerpt,DateTimeOffset)
-  fullName: Libplanet.Blocks.BlockPerception.BlockPerception(Libplanet.Blocks.IBlockExcerpt, DateTimeOffset)
-  nameWithType: BlockPerception.BlockPerception(IBlockExcerpt, DateTimeOffset)
-- uid: Libplanet.Blocks.BlockPerception.#ctor*
-  name: BlockPerception
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception__ctor_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.BlockPerception
-  nameWithType: BlockPerception.BlockPerception
-- uid: Libplanet.Blocks.BlockPerception.Hash
-  name: Hash
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Hash
-  commentId: P:Libplanet.Blocks.BlockPerception.Hash
-  fullName: Libplanet.Blocks.BlockPerception.Hash
-  nameWithType: BlockPerception.Hash
-- uid: Libplanet.Blocks.BlockPerception.Hash*
-  name: Hash
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Hash_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.Hash
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.Hash
-  nameWithType: BlockPerception.Hash
-- uid: Libplanet.Blocks.BlockPerception.Index
-  name: Index
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Index
-  commentId: P:Libplanet.Blocks.BlockPerception.Index
-  fullName: Libplanet.Blocks.BlockPerception.Index
-  nameWithType: BlockPerception.Index
-- uid: Libplanet.Blocks.BlockPerception.Index*
-  name: Index
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_Index_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.Index
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.Index
-  nameWithType: BlockPerception.Index
-- uid: Libplanet.Blocks.BlockPerception.PerceivedTime
-  name: PerceivedTime
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_PerceivedTime
-  commentId: P:Libplanet.Blocks.BlockPerception.PerceivedTime
-  fullName: Libplanet.Blocks.BlockPerception.PerceivedTime
-  nameWithType: BlockPerception.PerceivedTime
-- uid: Libplanet.Blocks.BlockPerception.PerceivedTime*
-  name: PerceivedTime
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_PerceivedTime_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.PerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.PerceivedTime
-  nameWithType: BlockPerception.PerceivedTime
-- uid: Libplanet.Blocks.BlockPerception.ProtocolVersion
-  name: ProtocolVersion
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ProtocolVersion
-  commentId: P:Libplanet.Blocks.BlockPerception.ProtocolVersion
-  fullName: Libplanet.Blocks.BlockPerception.ProtocolVersion
-  nameWithType: BlockPerception.ProtocolVersion
-- uid: Libplanet.Blocks.BlockPerception.ProtocolVersion*
-  name: ProtocolVersion
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ProtocolVersion_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.ProtocolVersion
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.ProtocolVersion
-  nameWithType: BlockPerception.ProtocolVersion
-- uid: Libplanet.Blocks.BlockPerception.ToString
-  name: ToString()
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ToString
-  commentId: M:Libplanet.Blocks.BlockPerception.ToString
-  fullName: Libplanet.Blocks.BlockPerception.ToString()
-  nameWithType: BlockPerception.ToString()
-- uid: Libplanet.Blocks.BlockPerception.ToString*
-  name: ToString
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_ToString_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.ToString
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.ToString
-  nameWithType: BlockPerception.ToString
-- uid: Libplanet.Blocks.BlockPerception.TotalDifficulty
-  name: TotalDifficulty
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_TotalDifficulty
-  commentId: P:Libplanet.Blocks.BlockPerception.TotalDifficulty
-  fullName: Libplanet.Blocks.BlockPerception.TotalDifficulty
-  nameWithType: BlockPerception.TotalDifficulty
-- uid: Libplanet.Blocks.BlockPerception.TotalDifficulty*
-  name: TotalDifficulty
-  href: api/Libplanet.Blocks.BlockPerception.html#Libplanet_Blocks_BlockPerception_TotalDifficulty_
-  commentId: Overload:Libplanet.Blocks.BlockPerception.TotalDifficulty
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockPerception.TotalDifficulty
-  nameWithType: BlockPerception.TotalDifficulty
 - uid: Libplanet.Blocks.BlockPolicyViolationException
   name: BlockPolicyViolationException
   href: api/Libplanet.Blocks.BlockPolicyViolationException.html
@@ -20959,19 +20838,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest
   nameWithType: RocksDBStore.GetBlockDigest
-- uid: Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  name: GetBlockPerceivedTime(BlockHash)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  nameWithType: RocksDBStore.GetBlockPerceivedTime(BlockHash)
-- uid: Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime*
-  name: GetBlockPerceivedTime
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetBlockPerceivedTime_
-  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.RocksDBStore.RocksDBStore.GetBlockPerceivedTime
-  nameWithType: RocksDBStore.GetBlockPerceivedTime
 - uid: Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId
   name: GetCanonicalChainId()
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId
@@ -21211,19 +21077,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex
   nameWithType: RocksDBStore.PutTxIdBlockHashIndex
-- uid: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
-  nameWithType: RocksDBStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-- uid: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime*
-  name: SetBlockPerceivedTime
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_
-  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime
-  nameWithType: RocksDBStore.SetBlockPerceivedTime
 - uid: Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(Guid)
   name: SetCanonicalChainId(Guid)
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_Guid_
@@ -21777,19 +21630,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetBlockIndex
   nameWithType: BaseStore.GetBlockIndex
-- uid: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  name: GetBlockPerceivedTime(BlockHash)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Store.BaseStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  nameWithType: BaseStore.GetBlockPerceivedTime(BlockHash)
-- uid: Libplanet.Store.BaseStore.GetBlockPerceivedTime*
-  name: GetBlockPerceivedTime
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.BaseStore.GetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.GetBlockPerceivedTime
-  nameWithType: BaseStore.GetBlockPerceivedTime
 - uid: Libplanet.Store.BaseStore.GetCanonicalChainId
   name: GetCanonicalChainId()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetCanonicalChainId
@@ -22064,19 +21904,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.SerializeTxExecution
   nameWithType: BaseStore.SerializeTxExecution
-- uid: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
-  commentId: M:Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  fullName: Libplanet.Store.BaseStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
-  nameWithType: BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-- uid: Libplanet.Store.BaseStore.SetBlockPerceivedTime*
-  name: SetBlockPerceivedTime
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.BaseStore.SetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.SetBlockPerceivedTime
-  nameWithType: BaseStore.SetBlockPerceivedTime
 - uid: Libplanet.Store.BaseStore.SetCanonicalChainId(Guid)
   name: SetCanonicalChainId(Guid)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetCanonicalChainId_Guid_
@@ -22735,19 +22562,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.GetBlockDigest
   nameWithType: DefaultStore.GetBlockDigest
-- uid: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  name: GetBlockPerceivedTime(BlockHash)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  nameWithType: DefaultStore.GetBlockPerceivedTime(BlockHash)
-- uid: Libplanet.Store.DefaultStore.GetBlockPerceivedTime*
-  name: GetBlockPerceivedTime
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.DefaultStore.GetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.GetBlockPerceivedTime
-  nameWithType: DefaultStore.GetBlockPerceivedTime
 - uid: Libplanet.Store.DefaultStore.GetCanonicalChainId
   name: GetCanonicalChainId()
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetCanonicalChainId
@@ -22974,19 +22788,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex
   nameWithType: DefaultStore.PutTxIdBlockHashIndex
-- uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
-  commentId: M:Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  fullName: Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
-  nameWithType: DefaultStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-- uid: Libplanet.Store.DefaultStore.SetBlockPerceivedTime*
-  name: SetBlockPerceivedTime
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.DefaultStore.SetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.SetBlockPerceivedTime
-  nameWithType: DefaultStore.SetBlockPerceivedTime
 - uid: Libplanet.Store.DefaultStore.SetCanonicalChainId(Guid)
   name: SetCanonicalChainId(Guid)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetCanonicalChainId_Guid_
@@ -23216,19 +23017,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetBlockIndex
   nameWithType: IStore.GetBlockIndex
-- uid: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  name: GetBlockPerceivedTime(BlockHash)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  nameWithType: IStore.GetBlockPerceivedTime(BlockHash)
-- uid: Libplanet.Store.IStore.GetBlockPerceivedTime*
-  name: GetBlockPerceivedTime
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.IStore.GetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.GetBlockPerceivedTime
-  nameWithType: IStore.GetBlockPerceivedTime
 - uid: Libplanet.Store.IStore.GetCanonicalChainId
   name: GetCanonicalChainId()
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetCanonicalChainId
@@ -23484,19 +23272,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.PutTxIdBlockHashIndex
   nameWithType: IStore.PutTxIdBlockHashIndex
-- uid: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
-  commentId: M:Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  fullName: Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
-  nameWithType: IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-- uid: Libplanet.Store.IStore.SetBlockPerceivedTime*
-  name: SetBlockPerceivedTime
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.IStore.SetBlockPerceivedTime
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.SetBlockPerceivedTime
-  nameWithType: IStore.SetBlockPerceivedTime
 - uid: Libplanet.Store.IStore.SetCanonicalChainId(Guid)
   name: SetCanonicalChainId(Guid)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetCanonicalChainId_Guid_
@@ -23734,23 +23509,6 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockIndex
   nameWithType: MemoryStore.IStore.GetBlockIndex
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockIndex
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  name: IStore.GetBlockPerceivedTime(BlockHash)
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  name.vb: Libplanet.Store.IStore.GetBlockPerceivedTime(BlockHash)
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)
-  nameWithType: MemoryStore.IStore.GetBlockPerceivedTime(BlockHash)
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime(BlockHash)
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime*
-  name: IStore.GetBlockPerceivedTime
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockPerceivedTime
-  isSpec: "True"
-  name.vb: Libplanet.Store.IStore.GetBlockPerceivedTime
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime
-  nameWithType: MemoryStore.IStore.GetBlockPerceivedTime
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetBlockPerceivedTime
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId
   name: IStore.GetCanonicalChainId()
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalChainId
@@ -24070,23 +23828,6 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxIdBlockHashIndex
   nameWithType: MemoryStore.IStore.PutTxIdBlockHashIndex
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxIdBlockHashIndex
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  name: IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
-  name.vb: Libplanet.Store.IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
-  nameWithType: MemoryStore.IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime*
-  name: IStore.SetBlockPerceivedTime
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetBlockPerceivedTime_
-  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetBlockPerceivedTime
-  isSpec: "True"
-  name.vb: Libplanet.Store.IStore.SetBlockPerceivedTime
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime
-  nameWithType: MemoryStore.IStore.SetBlockPerceivedTime
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.SetBlockPerceivedTime
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId(Guid)
   name: IStore.SetCanonicalChainId(Guid)
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_Guid_

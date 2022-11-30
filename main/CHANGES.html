@@ -68,6 +68,10 @@
 <ul>
 <li>Removed <code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset, bool, long, int, int, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> by making
 it <code>internal</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2529">#2529</a>]</li>
+<li>Removed <code>IStore.SetBlockPerceivedTime()</code> and
+<code>IStore.GetBlockPerceivedTime()</code> methods.  [<a href="https://github.com/planetarium/libplanet/pull/2575">#2575</a>]</li>
+<li>Removed <code>BlockPerception</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/2575">#2575</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.PerceiveBlock()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2575">#2575</a>]</li>
 </ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
