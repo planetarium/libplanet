@@ -8,6 +8,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Serilog;
 
 namespace Libplanet.Action
 {
@@ -434,7 +435,9 @@ namespace Libplanet.Action
                 ValidatorSetGetter,
                 Signer)
             {
-                // FIXME: Should copy updated fungibles, total supplies and states?
+                UpdatedStates = UpdatedStates,
+                UpdatedFungibles = UpdatedFungibles,
+                UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
             };
     }

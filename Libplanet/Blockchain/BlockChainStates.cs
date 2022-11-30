@@ -141,8 +141,8 @@ namespace Libplanet.Blockchain
             {
                 IReadOnlyList<IValue?> values =
                     _stateStore.GetStates(stateRootHash, new[] { ValidatorSetKey });
-                return values.Count > 0 && values.All(v => v is Binary)
-                    ? new ValidatorSet(new List(values.OfType<IValue>()))
+                return values.Count > 0 && values[0] is List l
+                    ? new ValidatorSet(l)
                     : new ValidatorSet();
             }
 
@@ -152,11 +152,6 @@ namespace Libplanet.Blockchain
             }
 
             throw new IncompleteBlockStatesException(offset);
-        }
-
-        public ValidatorSet GetValidatorSet(TotalSupplyStateCompleter<T> stateCompleter)
-        {
-            throw new System.NotSupportedException();
         }
 
         internal void Bind(BlockChain<T> blockChain)

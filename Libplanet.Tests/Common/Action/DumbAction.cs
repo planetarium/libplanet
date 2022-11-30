@@ -208,7 +208,7 @@ namespace Libplanet.Tests.Common.Action
                 nextState = Validators.Aggregate(
                     nextState,
                     (current, validator) => current.SetValidator(validator, BigInteger.One));
-                Log.Debug("Execute validator action: Promote! {State}", nextState);
+                Log.Debug("Execute validator action: SetValidator! {State}", nextState);
             }
 
             if (ExecuteRecords.Value is null)
