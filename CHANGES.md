@@ -23,6 +23,9 @@ To be released.
     `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?,
     IComparer<Transaction<T>>, CancellationToken?)` by removing policy
     controlled parameters.  [[#2529]]
+ -  Changed `BlockPolicy<T>()` constructor to take additional
+    `Func<long, int>` type parameter named `getMinBlockProtocolVersion`.
+    [[#2593]]
 
 ### Backward-incompatible network protocol changes
 
@@ -43,6 +46,8 @@ To be released.
     [[#2562]]
  -  (Libplanet.Explorer) Added `ConfigureLibplanetExplorerSchema` class.
     [[#2572]]
+ -  Added `IBlockPolicy.GetMinBlockProtocolVersion()` interface method.
+    [[#2593]]
 
 ### Behavioral changes
 
@@ -91,6 +96,7 @@ To be released.
 [#2572]: https://github.com/planetarium/libplanet/pull/2572
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
+[#2593]: https://github.com/planetarium/libplanet/pull/2593
 
 
 Version 0.44.2

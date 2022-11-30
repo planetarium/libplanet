@@ -474,6 +474,9 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
+
+            public int GetMinBlockProtocolVersion(long index) =>
+                _impl.GetMinBlockProtocolVersion(index);
         }
 
         internal class Startup : IBlockChainContext<NullAction>
