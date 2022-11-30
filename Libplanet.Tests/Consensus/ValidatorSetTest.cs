@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Consensus
                 .OrderBy(key => key.PublicKey.ToAddress())
                 .ToList();
             var validatorSet = new ValidatorSet(unorderedPrivateKeys.Select(
-                    key => new Validator(key.PublicKey, BigInteger.One)).ToList());
+                key => new Validator(key.PublicKey, BigInteger.One)).ToList());
             var unorderedVotes = unorderedPrivateKeys
                 .Select(key => new VoteMetadata(
                     height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)

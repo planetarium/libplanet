@@ -82,12 +82,12 @@ namespace Libplanet.Net.Consensus
         /// <item><description>
         ///     If <paramref name="message"/> is a <see cref="ConsensusPreVoteMsg"/> and
         ///     there is already a <see cref="ConsensusPreVoteMsg"/> with the same
-        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.PublicKey"/>.
+        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.ValidatorPublicKey"/>.
         /// </description></item>
         /// <item><description>
         ///     If <paramref name="message"/> is a <see cref="ConsensusPreCommitMsg"/> and
         ///     there is already a <see cref="ConsensusPreCommitMsg"/> with the same
-        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.PublicKey"/>.
+        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.ValidatorPublicKey"/>.
         /// </description></item>
         /// </list>
         /// </para>
@@ -112,23 +112,23 @@ namespace Libplanet.Net.Consensus
                         _height);
                     return false;
                 }
-                else if (!_validators.PublicKeys.Contains(message.PublicKey))
+                else if (!_validators.PublicKeys.Contains(message.ValidatorPublicKey))
                 {
                     _logger.Debug(
                         "Given message's validator {MessageValidator} is not one of " +
                         "the validators for height {Height}",
-                        message.PublicKey,
+                        message.ValidatorPublicKey,
                         message.Height);
                     return false;
                 }
                 else if (message is ConsensusProposalMsg proposal1 &&
-                    !proposal1.PublicKey.Equals(expectedProposer.PublicKey))
+                    !proposal1.ValidatorPublicKey.Equals(expectedProposer.PublicKey))
                 {
                     _logger.Debug(
                         "Given proposal message's validator {MessageValidator} does not match " +
                         "the expected proposer {ExpectedValidator} for height {Height} " +
                         "and round {Round}",
-                        proposal1.PublicKey,
+                        proposal1.ValidatorPublicKey,
                         expectedProposer,
                         proposal1.Height,
                         proposal1.Round);
@@ -158,18 +158,18 @@ namespace Libplanet.Net.Consensus
                             new Dictionary<PublicKey, ConsensusPreVoteMsg>();
                     }
 
-                    if (_preVotes[preVote.Round].ContainsKey(preVote.PublicKey))
+                    if (_preVotes[preVote.Round].ContainsKey(preVote.ValidatorPublicKey))
                     {
                         _logger.Debug(
                             "There is already a prevote message for given prevote message's " +
                             "round {Round} and validator {Validator}",
                             preVote.Round,
-                            preVote.PublicKey);
+                            preVote.ValidatorPublicKey);
                         return false;
                     }
                     else
                     {
-                        _preVotes[preVote.Round][preVote.PublicKey] = preVote;
+                        _preVotes[preVote.Round][preVote.ValidatorPublicKey] = preVote;
                         return true;
                     }
                 }
@@ -181,18 +181,18 @@ namespace Libplanet.Net.Consensus
                             new Dictionary<PublicKey, ConsensusPreCommitMsg>();
                     }
 
-                    if (_preCommits[preCommit.Round].ContainsKey(preCommit.PublicKey))
+                    if (_preCommits[preCommit.Round].ContainsKey(preCommit.ValidatorPublicKey))
                     {
                         _logger.Debug(
                             "There is already a precommit message for given precommit message's " +
                             "round {Round} and validator {Validator}",
                             preCommit.Round,
-                            preCommit.PublicKey);
+                            preCommit.ValidatorPublicKey);
                         return false;
                     }
                     else
                     {
-                        _preCommits[preCommit.Round][preCommit.PublicKey] = preCommit;
+                        _preCommits[preCommit.Round][preCommit.ValidatorPublicKey] = preCommit;
                         return true;
                     }
                 }
@@ -271,7 +271,7 @@ namespace Libplanet.Net.Consensus
 
                 if (_proposals.ContainsKey(round))
                 {
-                    validators.Add(_proposals[round].PublicKey);
+                    validators.Add(_proposals[round].ValidatorPublicKey);
                 }
 
                 return validators
