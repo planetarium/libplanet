@@ -168,7 +168,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void GetMaxTransactionsPerBlock()
         {
             const int generatedTxCount = 10;
-            const int policyLimit = 2;
+            const int policyLimit = 5;
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -192,7 +192,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             const int keyCount = 2;
             const int generatedTxCount = 10;
-            const int policyLimit = 2;
+            const int policyLimit = 4;
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());

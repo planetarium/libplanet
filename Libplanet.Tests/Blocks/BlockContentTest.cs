@@ -177,7 +177,6 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void TxHash()
         {
-            Assert.Null(GenesisContent.TxHash);
             var expected = new HashDigest<SHA256>(new byte[]
             {
                 0x65, 0x46, 0x98, 0xd3, 0x4b, 0x6d, 0x9a, 0x55, 0xb0, 0xc9, 0x3e,

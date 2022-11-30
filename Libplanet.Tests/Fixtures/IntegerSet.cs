@@ -21,6 +21,7 @@ namespace Libplanet.Tests.Fixtures
     {
         public readonly IReadOnlyList<PrivateKey> PrivateKeys;
         public readonly IReadOnlyList<Address> Addresses;
+        public readonly IReadOnlyList<Arithmetic> Actions;
         public readonly IReadOnlyList<Transaction<Arithmetic>> Txs;
         public readonly PrivateKey Miner;
         public readonly Block<Arithmetic> Genesis;
@@ -42,6 +43,11 @@ namespace Libplanet.Tests.Fixtures
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
             Addresses = PrivateKeys.Select(AddressExtensions.ToAddress).ToImmutableArray();
+            Actions = initialStates
+                .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
+                .Where(pair => !(pair.State is null))
+                .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
+                .Select(pair => Arithmetic.Add(pair.State)).ToImmutableArray();
             Txs = initialStates
                 .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
                 .Where(pair => !(pair.State is null))
@@ -63,30 +69,14 @@ namespace Libplanet.Tests.Fixtures
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            Genesis = new BlockContent<Arithmetic>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: Miner.PublicKey,
-                    previousHash: null,
-                    txHash: BlockContent<Arithmetic>.DeriveTxHash(Txs),
-                    lastCommit: null),
-                transactions: Txs)
-                .Propose()
-                .Evaluate(
-                    privateKey: Miner,
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: StateStore
-            );
-            Chain = new BlockChain<Arithmetic>(
+            Chain = TestUtils.MakeBlockChain(
                 policy,
-                new VolatileStagePolicy<Arithmetic>(),
                 Store,
                 StateStore,
-                Genesis,
-                renderers
+                actions: Actions,
+                renderers: renderers
             );
+            Genesis = Chain.Genesis;
         }
 
         public int Count => Addresses.Count;

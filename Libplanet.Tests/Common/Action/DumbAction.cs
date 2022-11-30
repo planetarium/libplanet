@@ -300,9 +300,11 @@ namespace Libplanet.Tests.Common.Action
             string transfer = Transfer is Tuple<Address, Address, BigInteger> t
                 ? $"({t.Item1}, {t.Item2}, {t.Item3})"
                 : "null";
-            string validators = Validators
-                .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
-                .TrimEnd(',', ' ');
+            string validators = Validators is null
+                ? "none"
+                : Validators
+                    .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
+                    .TrimEnd(',', ' ');
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +

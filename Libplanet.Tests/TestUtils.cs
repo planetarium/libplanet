@@ -423,7 +423,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         nonce++,
                         GenesisProposer,
                         null,
-                        systemAction: new Promote(validator))));
+                        systemAction: new Promote(validator),
+                        timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 
             var content = new BlockContent<T>(
@@ -559,18 +560,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             if (genesisBlock is null)
             {
-                var content = new BlockContent<T>(
-                    new BlockMetadata(
-                        protocolVersion: protocolVersion,
-                        index: 0,
-                        timestamp: timestamp ?? DateTimeOffset.MinValue,
-                        miner: GenesisProposer.PublicKey.ToAddress(),
-                        publicKey: protocolVersion >= 2 ? GenesisProposer.PublicKey : null,
-                        previousHash: null,
-                        txHash: BlockContent<T>.DeriveTxHash(txs),
-                        lastCommit: null),
-                    transactions: txs);
-                var preEval = content.Propose();
+                var preEval = ProposeGenesis(
+                    GenesisProposer.PublicKey,
+                    txs,
+                    timestamp,
+                    protocolVersion);
                 var stateRootHash = preEval.DetermineStateRootHash(
                     blockAction: policy.BlockAction,
                     nativeTokenPredicate: policy.NativeTokens.Contains,

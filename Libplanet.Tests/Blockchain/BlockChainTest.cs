@@ -215,17 +215,14 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ProcessActions()
         {
-            Block<PolymorphicAction<BaseAction>> genesisBlock =
-                BlockChain<PolymorphicAction<BaseAction>>.ProposeGenesisBlock();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = new BlockChain<PolymorphicAction<BaseAction>>(
+            BlockChain<PolymorphicAction<BaseAction>> chain = MakeBlockChain(
                 new BlockPolicy<PolymorphicAction<BaseAction>>(),
-                new VolatileStagePolicy<PolymorphicAction<BaseAction>>(),
                 store,
-                stateStore,
-                genesisBlock
+                stateStore
             );
+            Block<PolymorphicAction<BaseAction>> genesisBlock = chain.Genesis;
 
             var actions1 = new List<PolymorphicAction<BaseAction>>
             {
@@ -366,7 +363,9 @@ namespace Libplanet.Tests.Blockchain
                     actionEvaluator: chain.ActionEvaluator
                  );
                 chain.Swap(newChain, true)();
-                Assert.Empty(renderer.ActionRecords);
+
+                // 4 is for Promote action
+                Assert.Equal(4, renderer.ActionRecords.Count);
                 Assert.Empty(NonRehearsalExecutions());
             }
         }
@@ -453,10 +452,16 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
             {
-                ActionRenderer = (_, __, nextStates) =>
-                    throw new SomeException("thrown by renderer"),
+                ActionRenderer = (a, __, nextStates) =>
+                {
+                    if (!(a is Promote))
+                    {
+                        throw new SomeException("thrown by renderer");
+                    }
+                },
             };
             renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
@@ -1322,21 +1327,15 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStateReturnsValidStateAfterFork()
         {
-            Block<DumbAction> genesisBlock = BlockChain<DumbAction>.ProposeGenesisBlock(
-                new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
-            );
             var privateKey = new PrivateKey();
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
-
-            var chain =
-                new BlockChain<DumbAction>(
-                    new NullBlockPolicy<DumbAction>(),
-                    new VolatileStagePolicy<DumbAction>(),
-                    store,
-                    stateStore,
-                    genesisBlock);
+            var chain = MakeBlockChain(
+                new NullBlockPolicy<DumbAction>(),
+                store,
+                stateStore,
+                new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) });
             Assert.Equal("item0.0", (Text)chain.GetState(_fx.Address1));
 
             chain.MakeTransaction(

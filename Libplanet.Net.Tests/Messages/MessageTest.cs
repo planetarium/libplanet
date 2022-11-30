@@ -119,7 +119,7 @@ namespace Libplanet.Net.Tests.Messages
             };
             Assert.Equal(
                 new MessageId(ByteUtil.ParseHex(
-                    "dae1eaa93fd023279c4d0eb73000d66fdbf196c1239a4cee3d1d84f28d49ece6")),
+                    "e445231372b31632040fedaa6408febfa3cab0c4edd0cbfae7fe90f3daeec68d")),
                 message.Id);
         }
 
