@@ -106,8 +106,8 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = ProposeNext(
                 genesis,
                 txs,
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                miner: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
 
             _blockChain.Append(
                 block1,

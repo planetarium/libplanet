@@ -938,7 +938,11 @@ namespace Libplanet.Blockchain
                 // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 var totalDelta =
-                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    evaluations.GetTotalDelta(
+                        ToStateKey,
+                        ToFungibleAssetKey,
+                        ToTotalSupplyKey,
+                        ValidatorSetKey);
                 const string deltaMsg =
                     "Summarized the states delta with {KeyCount} key changes " +
                     "made by block #{BlockIndex} {BlockHash}.";
@@ -1534,7 +1538,7 @@ namespace Libplanet.Blockchain
             if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 StateStore.Commit(prevStateRootHash, totalDelta);
             }
@@ -1652,10 +1656,12 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            if (!GetValidatorSet(block.PreviousHash).ValidateBlockCommitValidators(blockCommit))
+            var validators = GetValidatorSet(block.PreviousHash);
+            if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 return new InvalidBlockCommitException(
-                    "BlockCommit has different validator set with policy's validator set.");
+                    "BlockCommit has different validator set with chain state's validator set: " +
+                    $"{validators.Validators.Aggregate(string.Empty, (s, key) => s + key + ", ")}");
             }
 
             return null;

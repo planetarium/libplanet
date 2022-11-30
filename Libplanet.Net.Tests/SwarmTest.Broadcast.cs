@@ -752,15 +752,15 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> block1 = ProposeNext(
                 blockChain.Genesis,
                 new[] { transactions[0] },
-                miner: GenesisMiner.PublicKey
-            ).Evaluate(GenesisMiner, blockChain);
+                miner: GenesisProposer.PublicKey
+            ).Evaluate(GenesisProposer, blockChain);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true, true, false);
             Block<DumbAction> block2 = ProposeNext(
                 block1,
                 new[] { transactions[1] },
-                miner: GenesisMiner.PublicKey,
+                miner: GenesisProposer.PublicKey,
                 lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)
-            ).Evaluate(GenesisMiner, blockChain);
+            ).Evaluate(GenesisProposer, blockChain);
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true, true, false);
 
             try

@@ -8,6 +8,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Serilog;
 
 namespace Libplanet.Action
 {
@@ -309,6 +310,7 @@ namespace Libplanet.Action
                 throw new ValidatorAlreadyExistException(msg, validatorKey);
             }
 
+            Log.Debug("Adding {Key} to validator set.", validatorKey);
             return UpdateValidatorSet(new ValidatorSet(validators.Add(validatorKey).ToList()));
         }
 
@@ -389,6 +391,7 @@ namespace Libplanet.Action
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
+                UpdatedValidatorSet = UpdatedValidatorSet,
             };
 
         [Pure]
@@ -412,6 +415,7 @@ namespace Libplanet.Action
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
                 UpdatedTotalSupply = updatedTotalSupply,
+                UpdatedValidatorSet = UpdatedValidatorSet,
             };
 
         [Pure]
@@ -425,7 +429,9 @@ namespace Libplanet.Action
                 ValidatorSetGetter,
                 Signer)
             {
-                // FIXME: Should copy updated fungibles, total supplies and states?
+                UpdatedStates = UpdatedStates,
+                UpdatedFungibles = UpdatedFungibles,
+                UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
             };
     }
