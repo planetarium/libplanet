@@ -156,25 +156,12 @@ public class TransactionQueryTest
             Store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var minerKey = new PrivateKey();
-            var genesisContent = new BlockContent<T>(
-                new BlockMetadata(
-                    index: 0L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: minerKey.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null));
-            Block<T> genesis = genesisContent.Propose().Evaluate(
-                minerKey,
-                null,
-                _ => true,
-                stateStore);
-            BlockChain = new BlockChain<T>(
+            BlockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 new BlockPolicy<T>(),
-                new VolatileStagePolicy<T>(),
                 Store,
                 stateStore,
-                genesis
+                privateKey: minerKey,
+                timestamp: DateTimeOffset.UtcNow
             );
         }
     }

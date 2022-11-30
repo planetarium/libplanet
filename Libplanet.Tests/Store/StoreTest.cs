@@ -1083,13 +1083,13 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullBlockPolicy<DumbAction>();
-                var blocks = new BlockChain<DumbAction>(
+                var policy = new NullBlockPolicy<NullAction>();
+                var blocks = new BlockChain<NullAction>(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy<NullAction>(),
                     s1,
                     fx.StateStore,
-                    ProposeGenesis<DumbAction>(proposer: GenesisProposer.PublicKey)
+                    ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey)
                         .Evaluate(
                             privateKey: GenesisProposer,
                             blockAction: policy.BlockAction,
@@ -1119,8 +1119,8 @@ namespace Libplanet.Tests.Store
                     foreach (BlockHash blockHash in s1.IterateIndexes(chainId))
                     {
                         Assert.Equal(
-                            s1.GetBlock<DumbAction>(blockHash),
-                            s2.GetBlock<DumbAction>(blockHash)
+                            s1.GetBlock<NullAction>(blockHash),
+                            s2.GetBlock<NullAction>(blockHash)
                         );
                     }
                 }
