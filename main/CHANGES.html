@@ -78,6 +78,9 @@ it <code>internal</code>.  [<a href="https://github.com/planetarium/libplanet/pu
 <li>Changed <code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset?, bool?, long?, int?, int?, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> to
 <code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset?, bool?, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> by removing policy
 controlled parameters.  [<a href="https://github.com/planetarium/libplanet/pull/2529">#2529</a>]</li>
+<li>Changed <code>BlockPolicy&lt;T&gt;()</code> constructor to take additional
+<code>Func&lt;long, int&gt;</code> type parameter named <code>getMinBlockProtocolVersion</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2593">#2593</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -99,6 +102,8 @@ and <code>ActionEvaluator&lt;T&gt;</code> directly.  [<a href="https://github.co
 [<a href="https://github.com/planetarium/libplanet/pull/2562">#2562</a>]</li>
 <li>(Libplanet.Explorer) Added <code>ConfigureLibplanetExplorerSchema</code> class.
 [<a href="https://github.com/planetarium/libplanet/pull/2572">#2572</a>]</li>
+<li>Added <code>IBlockPolicy.GetMinBlockProtocolVersion()</code> interface method.
+[<a href="https://github.com/planetarium/libplanet/pull/2593">#2593</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
