@@ -19,7 +19,7 @@ namespace Libplanet.Consensus
         /// to <see cref="Validators"/>.
         /// </summary>
         public ValidatorSet()
-            : this(new List<PublicKey>())
+            : this(new List<Validator>())
         {
         }
 

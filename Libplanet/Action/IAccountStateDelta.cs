@@ -156,9 +156,6 @@ namespace Libplanet.Action
         IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value);
 
         [Pure]
-        IAccountStateDelta PromoteValidator(PublicKey validatorKey);
-
-        [Pure]
-        IAccountStateDelta DemoteValidator(PublicKey validatorKey);
+        IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power);
     }
 }
