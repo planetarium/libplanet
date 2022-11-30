@@ -85,10 +85,7 @@ namespace Libplanet.Net
 
             if (synced is { } syncedB
                 && !syncedB.Id.Equals(BlockChain?.Id)
-                && (canonComparer.Compare(
-                        BlockChain.PerceiveBlock(BlockChain.Tip),
-                        BlockChain.PerceiveBlock(syncedB.Tip)) < 0
-                )
+                && (canonComparer.Compare(BlockChain.Tip, syncedB.Tip) < 0)
             )
             {
                 _logger.Debug(
@@ -289,10 +286,7 @@ namespace Libplanet.Net
 
             BoundPeer peer = demand.Peer;
 
-            if (canonComparer.Compare(
-                BlockChain.PerceiveBlock(demand),
-                BlockChain.PerceiveBlock(BlockChain.Tip)
-            ) <= 0)
+            if (canonComparer.Compare(demand, BlockChain.Tip) <= 0)
             {
                 return false;
             }

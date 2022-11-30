@@ -223,14 +223,6 @@ namespace Libplanet.Store
             }
         }
 
-        void IStore.SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime) =>
-            _blockPerceivedTimes[blockHash] = perceivedTime;
-
-        DateTimeOffset? IStore.GetBlockPerceivedTime(BlockHash blockHash) =>
-            _blockPerceivedTimes.TryGetValue(blockHash, out DateTimeOffset t)
-                ? t
-                : (DateTimeOffset?)null;
-
         IEnumerable<KeyValuePair<Address, long>> IStore.ListTxNonces(Guid chainId) =>
             _txNonces.TryGetValue(chainId, out ConcurrentDictionary<Address, long> dict)
                 ? dict

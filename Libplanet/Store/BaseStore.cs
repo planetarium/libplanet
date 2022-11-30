@@ -144,15 +144,6 @@ namespace Libplanet.Store
         public abstract void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
         /// <inheritdoc/>
-        public abstract void SetBlockPerceivedTime(
-            BlockHash blockHash,
-            DateTimeOffset perceivedTime
-        );
-
-        /// <inheritdoc/>
-        public abstract DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
-
-        /// <inheritdoc/>
         public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId);
 
         /// <inheritdoc/>

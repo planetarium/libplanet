@@ -961,47 +961,6 @@ namespace Libplanet.RocksDBStore
             return null;
         }
 
-        /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
-        public override void SetBlockPerceivedTime(
-            BlockHash blockHash,
-            DateTimeOffset perceivedTime
-        )
-        {
-            try
-            {
-                byte[] key = BlockKey(blockHash);
-                _blockPerceptionDb.Put(
-                    key,
-                    RocksDBStoreBitConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
-                );
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(SetBlockPerceivedTime), e);
-                throw;
-            }
-        }
-
-        /// <inheritdoc cref="BaseStore.GetBlockPerceivedTime(BlockHash)"/>
-        public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
-        {
-            try
-            {
-                byte[] key = BlockKey(blockHash);
-                if (_blockPerceptionDb.Get(key) is { } bytes)
-                {
-                    long unixTimeMs = RocksDBStoreBitConverter.ToInt64(bytes);
-                    return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs);
-                }
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(GetBlockPerceivedTime), e);
-            }
-
-            return null;
-        }
-
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {

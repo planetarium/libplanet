@@ -156,17 +156,6 @@ namespace Libplanet.Tests.Store
         public virtual void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
             Store.DeleteTxIdBlockHashIndex(txId, blockHash);
 
-        /// <inheritdoc cref="IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
-        public virtual void SetBlockPerceivedTime(
-            BlockHash blockHash,
-            DateTimeOffset perceivedTime
-        ) =>
-            Store.SetBlockPerceivedTime(blockHash, perceivedTime);
-
-        /// <inheritdoc cref="IStore.GetBlockPerceivedTime(BlockHash)"/>
-        public virtual DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash) =>
-            Store.GetBlockPerceivedTime(blockHash);
-
         /// <inheritdoc cref="IStore.ListTxNonces(Guid)"/>
         public virtual IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId) =>
             Store.ListTxNonces(chainId);

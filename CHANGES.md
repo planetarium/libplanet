@@ -11,6 +11,10 @@ To be released.
  -  Removed `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, bool, long,
     int, int, IComparer<Transaction<T>>, CancellationToken?)` by making
     it `internal`.  [[#2529]]
+ -  Removed `IStore.SetBlockPerceivedTime()` and
+    `IStore.GetBlockPerceivedTime()` methods.  [[#2575]]
+ -  Removed `BlockPerception` struct.  [[#2575]]
+ -  Removed `BlockChain<T>.PerceiveBlock()` method.  [[#2575]]
 
 ### Backward-incompatible API changes
 
@@ -85,6 +89,7 @@ To be released.
 [#2563]: https://github.com/planetarium/libplanet/pull/2563
 [#2571]: https://github.com/planetarium/libplanet/pull/2571
 [#2572]: https://github.com/planetarium/libplanet/pull/2572
+[#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 
 

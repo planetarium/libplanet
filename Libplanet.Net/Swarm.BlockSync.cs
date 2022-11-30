@@ -183,9 +183,7 @@ namespace Libplanet.Net
                     block.ValidateTimestamp();
                     blocks.Add(block);
                     if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(
-                            BlockChain.PerceiveBlock(block),
-                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                        BlockChain.Policy.CanonicalChainComparer.Compare(block, tempTip) > 0)
                     {
                         tempTip = block;
                     }
@@ -440,9 +438,7 @@ namespace Libplanet.Net
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
                     if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(
-                            BlockChain.PerceiveBlock(block),
-                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                        BlockChain.Policy.CanonicalChainComparer.Compare(block, tempTip) > 0)
                     {
                         tempTip = block;
                     }
@@ -495,8 +491,7 @@ namespace Libplanet.Net
                         }
                     }
                     else if (BlockChain.Policy.CanonicalChainComparer.Compare(
-                                 BlockChain.PerceiveBlock(tipCandidate),
-                                 BlockChain.PerceiveBlock(tempTip)) <= 0)
+                        tipCandidate, tempTip) <= 0)
                     {
                         blockToAdd = tipCandidate;
                     }
@@ -607,9 +602,7 @@ namespace Libplanet.Net
                         BlockChain.Tip.Hash
                     );
                 }
-                else if (canonComparer.Compare(
-                        BlockChain.PerceiveBlock(workspace.Tip),
-                        BlockChain.PerceiveBlock(BlockChain.Tip)) < 0)
+                else if (canonComparer.Compare(workspace.Tip, BlockChain.Tip) < 0)
                 {
                     _logger.Debug(
                         $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +

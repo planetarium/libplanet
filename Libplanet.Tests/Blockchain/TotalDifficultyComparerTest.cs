@@ -11,7 +11,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public class TotalDifficultyComparerTest
     {
-        private static readonly SimpleBlockExcerpt[] BlockExcerpts =
+        private static readonly IBlockExcerpt[] BlockExcerpts =
         {
             new SimpleBlockExcerpt
             { // 0
@@ -50,15 +50,6 @@ namespace Libplanet.Tests.Blockchain
             },
         };
 
-        private static readonly BlockPerception[] BlockPerceptions =
-        {
-            new BlockPerception(BlockExcerpts[0], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
-            new BlockPerception(BlockExcerpts[1], DateTimeOffset.FromUnixTimeSeconds(1609426815)),
-            new BlockPerception(BlockExcerpts[2], DateTimeOffset.FromUnixTimeSeconds(1609426815)),
-            new BlockPerception(BlockExcerpts[3], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
-            new BlockPerception(BlockExcerpts[4], DateTimeOffset.FromUnixTimeSeconds(1609426800)),
-        };
-
         private readonly ITestOutputHelper _output;
 
         public TotalDifficultyComparerTest(ITestOutputHelper output)
@@ -69,13 +60,13 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void Sort()
         {
-            void PrintBlocks(IEnumerable<BlockPerception> blocks)
+            void PrintBlocks(IEnumerable<IBlockExcerpt> blocks)
             {
-                foreach (BlockPerception b in blocks)
+                foreach (IBlockExcerpt b in blocks)
                 {
                     _output.WriteLine(
-                        nameof(BlockPerceptions) + "[{0}]",
-                        Array.IndexOf(BlockPerceptions, b)
+                        nameof(IBlockExcerpt) + "[{0}]",
+                        Array.IndexOf(BlockExcerpts, b)
                     );
                 }
 
@@ -85,35 +76,33 @@ namespace Libplanet.Tests.Blockchain
             DateTimeOffset currentTime = DateTimeOffset.FromUnixTimeSeconds(1609426815);
             TimeSpan outdateAfter = TimeSpan.FromSeconds(15);
             var comparer = new TotalDifficultyComparer();
-            BlockPerception[] sorted = BlockPerceptions.OrderBy(e => e, comparer).ToArray();
+            IBlockExcerpt[] sorted = BlockExcerpts.OrderBy(e => e, comparer).ToArray();
             PrintBlocks(sorted);
-            Assert.True(BlockPerceptions[2].ExcerptEquals(sorted[0]));
-            Assert.True(BlockPerceptions[1].ExcerptEquals(sorted[1]));
-            Assert.True(BlockPerceptions[0].ExcerptEquals(sorted[2]));
-            Assert.True(BlockPerceptions[4].ExcerptEquals(sorted[3]));
-            Assert.True(BlockPerceptions[3].ExcerptEquals(sorted[4]));
+            Assert.True(BlockExcerpts[2].ExcerptEquals(sorted[0]));
+            Assert.True(BlockExcerpts[1].ExcerptEquals(sorted[1]));
+            Assert.True(BlockExcerpts[0].ExcerptEquals(sorted[2]));
+            Assert.True(BlockExcerpts[4].ExcerptEquals(sorted[3]));
+            Assert.True(BlockExcerpts[3].ExcerptEquals(sorted[4]));
 
-            sorted = BlockPerceptions
-                .Select(p => new BlockPerception(p, currentTime))
+            sorted = BlockExcerpts
                 .OrderBy(e => e, comparer)
                 .ToArray();
             PrintBlocks(sorted);
-            Assert.True(BlockPerceptions[2].ExcerptEquals(sorted[0]));
-            Assert.True(BlockPerceptions[1].ExcerptEquals(sorted[1]));
-            Assert.True(BlockPerceptions[0].ExcerptEquals(sorted[2]));
-            Assert.True(BlockPerceptions[4].ExcerptEquals(sorted[3]));
-            Assert.True(BlockPerceptions[3].ExcerptEquals(sorted[4]));
+            Assert.True(BlockExcerpts[2].ExcerptEquals(sorted[0]));
+            Assert.True(BlockExcerpts[1].ExcerptEquals(sorted[1]));
+            Assert.True(BlockExcerpts[0].ExcerptEquals(sorted[2]));
+            Assert.True(BlockExcerpts[4].ExcerptEquals(sorted[3]));
+            Assert.True(BlockExcerpts[3].ExcerptEquals(sorted[4]));
 
-            sorted = BlockPerceptions
-                .Select(p => new BlockPerception(p, currentTime - outdateAfter))
+            sorted = BlockExcerpts
                 .OrderBy(e => e, comparer)
                 .ToArray();
             PrintBlocks(sorted);
-            Assert.True(BlockPerceptions[2].ExcerptEquals(sorted[0]));
-            Assert.True(BlockPerceptions[1].ExcerptEquals(sorted[1]));
-            Assert.True(BlockPerceptions[0].ExcerptEquals(sorted[2]));
-            Assert.True(BlockPerceptions[4].ExcerptEquals(sorted[3]));
-            Assert.True(BlockPerceptions[3].ExcerptEquals(sorted[4]));
+            Assert.True(BlockExcerpts[2].ExcerptEquals(sorted[0]));
+            Assert.True(BlockExcerpts[1].ExcerptEquals(sorted[1]));
+            Assert.True(BlockExcerpts[0].ExcerptEquals(sorted[2]));
+            Assert.True(BlockExcerpts[4].ExcerptEquals(sorted[3]));
+            Assert.True(BlockExcerpts[3].ExcerptEquals(sorted[4]));
         }
 
         private static BlockHash H(string h) => BlockHash.FromString(h);
