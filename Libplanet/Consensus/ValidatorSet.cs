@@ -98,8 +98,17 @@ namespace Libplanet.Consensus
         /// <returns>The validator at given <paramref name="index"/>.</returns>
         public Validator this[int index] => Validators[index];
 
-        public Validator GetValidator(PublicKey publicKey) => Validators.Find(
-            validator => validator.PublicKey == publicKey);
+        public Validator GetValidator(PublicKey publicKey)
+            => Validators.Find(validator => validator.PublicKey == publicKey);
+
+        public ImmutableList<Validator> GetValidators(IEnumerable<PublicKey> publicKeys)
+            => (from publicKey in publicKeys select GetValidator(publicKey)).ToImmutableList();
+
+        public BigInteger GetValidatorsPower(List<PublicKey> publicKeys)
+        {
+            return GetValidators(publicKeys).Aggregate(
+                BigInteger.Zero, (total, next) => total + next.Power);
+        }
 
         /// <summary>
         /// Checks if the validator is a member of <see cref="ValidatorSet"/>.

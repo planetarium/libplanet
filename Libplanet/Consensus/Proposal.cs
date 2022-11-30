@@ -80,7 +80,7 @@ namespace Libplanet.Consensus
         public DateTimeOffset Timestamp => _proposalMetadata.Timestamp;
 
         /// <inheritdoc cref="ProposalMetadata.ValidatorPublicKey"/>
-        public PublicKey PublicKey => _proposalMetadata.ValidatorPublicKey;
+        public PublicKey ValidatorPublicKey => _proposalMetadata.ValidatorPublicKey;
 
         /// <inheritdoc cref="ProposalMetadata.MarshaledBlock"/>
         public byte[] MarshaledBlock => _proposalMetadata.MarshaledBlock;
@@ -118,7 +118,7 @@ namespace Libplanet.Consensus
         [Pure]
         public bool Verify() =>
             !Signature.IsDefaultOrEmpty &&
-            PublicKey.Verify(
+            ValidatorPublicKey.Verify(
                 _proposalMetadata.ByteArray.ToImmutableArray(),
                 Signature);
 
