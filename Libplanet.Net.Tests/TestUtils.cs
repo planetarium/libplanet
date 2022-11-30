@@ -299,7 +299,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                blockChain.GetValidatorSet(blockChain[height].Hash),
+                blockChain.GetValidatorSet(blockChain[height - 1].Hash),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);

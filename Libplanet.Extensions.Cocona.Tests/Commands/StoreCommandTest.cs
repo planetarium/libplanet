@@ -50,7 +50,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             }
 
             _genesisBlock =
-                TestUtils.ProposeGenesisBlock<Utils.DummyAction>(TestUtils.GenesisMiner);
+                TestUtils.ProposeGenesisBlock<Utils.DummyAction>(TestUtils.GenesisProposer);
             _transaction1 = DummyTransaction();
             _transaction2 = DummyTransaction();
             _transaction3 = DummyTransaction();
@@ -58,27 +58,27 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
 
             _block1 = TestUtils.ProposeNextBlock(
                 _genesisBlock,
-                TestUtils.GenesisMiner,
+                TestUtils.GenesisProposer,
                 new[] { _transaction1 },
                 lastCommit: null);
             _block2 = TestUtils.ProposeNextBlock(
                 _block1,
-                TestUtils.GenesisMiner,
+                TestUtils.GenesisProposer,
                 new[] { _transaction2 },
                 lastCommit: TestUtils.CreateBlockCommit(_block1));
             _block3 = TestUtils.ProposeNextBlock(
                 _block2,
-                TestUtils.GenesisMiner,
+                TestUtils.GenesisProposer,
                 new[] { _transaction3 },
                 lastCommit: TestUtils.CreateBlockCommit(_block2));
             _block4 = TestUtils.ProposeNextBlock(
                 _block3,
-                TestUtils.GenesisMiner,
+                TestUtils.GenesisProposer,
                 new[] { _transaction3 },
                 lastCommit: TestUtils.CreateBlockCommit(_block3));
             _block5 = TestUtils.ProposeNextBlock(
                 _block4,
-                TestUtils.GenesisMiner,
+                TestUtils.GenesisProposer,
                 lastCommit: TestUtils.CreateBlockCommit(_block4));
 
             var guid = Guid.NewGuid();

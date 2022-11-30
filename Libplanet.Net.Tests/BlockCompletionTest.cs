@@ -299,7 +299,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
             Block<DumbAction> demand = ProposeNextBlock(genesis, new PrivateKey());
             BlockCommit demandCommit = TestUtils.CreateBlockCommit(demand);
             Block<DumbAction> wrong = ProposeNextBlock(genesis, new PrivateKey());
@@ -413,14 +413,14 @@ namespace Libplanet.Net.Tests
         {
             if (count >= 1)
             {
-                Block<T> block = ProposeGenesisBlock<T>(GenesisMiner);
+                Block<T> block = ProposeGenesisBlock<T>(GenesisProposer);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
                     block = ProposeNextBlock(
                         block,
-                        GenesisMiner,
+                        GenesisProposer,
                         lastCommit: CreateBlockCommit(block));
                     yield return block;
                 }
