@@ -423,22 +423,5 @@ namespace Libplanet.Action
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
             };
-
-        [Pure]
-        protected virtual AccountStateDeltaImpl UpdateValidatorSet(
-            ValidatorSet updatedValidatorSet
-        ) =>
-            new AccountStateDeltaImpl(
-                StateGetter,
-                BalanceGetter,
-                TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
-            {
-                UpdatedStates = UpdatedStates,
-                UpdatedFungibles = UpdatedFungibles,
-                UpdatedTotalSupply = UpdatedTotalSupply,
-                UpdatedValidatorSet = updatedValidatorSet,
-            };
     }
 }
