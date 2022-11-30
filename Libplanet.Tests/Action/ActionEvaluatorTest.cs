@@ -322,10 +322,6 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 genesis.Miner);
-            Assert.Empty(
-                actionEvaluator.EvaluateBlock(
-                    block: genesis,
-                    previousStates: previousStates));
 
             Transaction<DumbAction>[] block1Txs =
             {
