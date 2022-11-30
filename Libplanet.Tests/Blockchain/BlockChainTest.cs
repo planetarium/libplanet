@@ -79,16 +79,28 @@ namespace Libplanet.Tests.Blockchain
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1,
                     timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
-                    publicKey: _fx.Miner.PublicKey,
+                    miner: _fx.Proposer.PublicKey.ToAddress(),
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
         }
 
         public void Dispose()
         {
             _fx.Dispose();
+        }
+
+        [Fact]
+        public void ValidatorSet()
+        {
+            var validatorSet = _blockChain.GetValidatorSet();
+            _logger.Debug(
+                "GenesisBlock is {Hash}, Transactions: {Txs}",
+                _blockChain.Genesis,
+                _blockChain.Genesis.Transactions);
+            var transactions = _blockChain.Genesis.Transactions.ToList();
+            Assert.Equal(TestUtils.ValidatorSet.TotalCount, validatorSet.TotalCount);
         }
 
         [Fact]
@@ -648,10 +660,10 @@ namespace Libplanet.Tests.Blockchain
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
                 var genesis = ProposeGenesis(
-                    GenesisMiner.PublicKey,
+                    GenesisProposer.PublicKey,
                     transactions: new[] { _fx.MakeTransaction(new[] { action }) }
                 ).Evaluate(
-                    privateKey: GenesisMiner,
+                    privateKey: GenesisProposer,
                     blockAction: _policy.BlockAction,
                     nativeTokenPredicate: _policy.NativeTokens.Contains,
                     stateStore: stateStore
@@ -706,17 +718,17 @@ namespace Libplanet.Tests.Blockchain
                 genesis,
                 txsA,
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                miner: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b1, TestUtils.CreateBlockCommit(b1));
 
             Block<DumbAction> b2 = ProposeNext(
                 b1,
                 txsA,
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey,
+                miner: _fx.Proposer.PublicKey,
                 lastCommit: CreateBlockCommit(b1)
-            ).Evaluate(_fx.Miner, _blockChain);
+            ).Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidTxNonceException>(() =>
                 _blockChain.Append(b2, CreateBlockCommit(b2)));
 
@@ -731,9 +743,9 @@ namespace Libplanet.Tests.Blockchain
                 b1,
                 txsB,
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey,
+                miner: _fx.Proposer.PublicKey,
                 lastCommit: CreateBlockCommit(b1)
-            ).Evaluate(_fx.Miner, _blockChain);
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b2, CreateBlockCommit(b2));
         }
 
@@ -765,8 +777,8 @@ namespace Libplanet.Tests.Blockchain
                 genesis,
                 txsA,
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                miner: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
@@ -782,9 +794,9 @@ namespace Libplanet.Tests.Blockchain
                 b1,
                 txsB,
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey,
+                miner: _fx.Proposer.PublicKey,
                 lastCommit: CreateBlockCommit(b1)
-            ).Evaluate(_fx.Miner, _blockChain);
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b2, CreateBlockCommit(b2));
 
             Assert.Equal(2, _blockChain.GetNextTxNonce(address));
@@ -1125,9 +1137,9 @@ namespace Libplanet.Tests.Blockchain
             {
                 Block<DumbAction> genesis2 = ProposeGenesis<DumbAction>(
                     timestamp: DateTimeOffset.UtcNow,
-                    miner: GenesisMiner.PublicKey
+                    proposer: GenesisProposer.PublicKey
                 ).Evaluate(
-                    GenesisMiner,
+                    GenesisProposer,
                     _policy.BlockAction,
                     _policy.NativeTokens.Contains,
                     fx2.StateStore
@@ -1184,7 +1196,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             Block<DumbAction> genesisWithTx = ProposeGenesis(
-                GenesisMiner.PublicKey,
+                GenesisProposer.PublicKey,
                 new[]
                 {
                     Transaction<DumbAction>.Create(
@@ -1195,7 +1207,7 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             ).Evaluate(
-                privateKey: GenesisMiner,
+                privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: stateStore
@@ -1248,9 +1260,9 @@ namespace Libplanet.Tests.Blockchain
                 b = ProposeNext(
                     b,
                     txs,
-                    miner: _fx.Miner.PublicKey,
+                    miner: _fx.Proposer.PublicKey,
                     lastCommit: CreateBlockCommit(b)
-                ).Evaluate(_fx.Miner, chain);
+                ).Evaluate(_fx.Proposer, chain);
                 chain.Append(b, CreateBlockCommit(b));
             }
 
@@ -1288,9 +1300,9 @@ namespace Libplanet.Tests.Blockchain
                 b = ProposeNext(
                     b,
                     blockInterval: TimeSpan.FromSeconds(10),
-                    miner: _fx.Miner.PublicKey,
+                    miner: _fx.Proposer.PublicKey,
                     lastCommit: CreateBlockCommit(b)
-                ).Evaluate(_fx.Miner, chain);
+                ).Evaluate(_fx.Proposer, chain);
                 chain.Append(b, CreateBlockCommit(b));
             }
 
@@ -1522,8 +1534,8 @@ namespace Libplanet.Tests.Blockchain
                 genesis,
                 txsA,
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                miner: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
@@ -1625,9 +1637,9 @@ namespace Libplanet.Tests.Blockchain
                     block,
                     txs,
                     blockInterval: TimeSpan.FromSeconds(10),
-                    miner: _fx.Miner.PublicKey,
+                    miner: _fx.Proposer.PublicKey,
                     lastCommit: CreateBlockCommit(block)
-                ).Evaluate(_fx.Miner, _blockChain);
+                ).Evaluate(_fx.Proposer, _blockChain);
 
             Transaction<DumbAction>[] txsA =
             {
@@ -1827,9 +1839,9 @@ namespace Libplanet.Tests.Blockchain
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
             Block<DumbAction> genesisBlock = ProposeGenesis<DumbAction>(
-                GenesisMiner.PublicKey
+                GenesisProposer.PublicKey
             ).Evaluate(
-                privateKey: GenesisMiner,
+                privateKey: GenesisProposer,
                 blockAction: blockPolicy.BlockAction,
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 stateStore: stateStore
@@ -1915,9 +1927,9 @@ namespace Libplanet.Tests.Blockchain
                         b,
                         new[] { tx },
                         blockInterval: TimeSpan.FromSeconds(10),
-                        miner: GenesisMiner.PublicKey,
+                        miner: GenesisProposer.PublicKey,
                         lastCommit: CreateBlockCommit(b)
-                    ).Evaluate(GenesisMiner, chain);
+                    ).Evaluate(GenesisProposer, chain);
                     previousStates = AccountStateDeltaImpl.ChooseVersion(
                         b.ProtocolVersion,
                         addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
@@ -2127,7 +2139,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             Block<DumbAction> genesisWithTx = ProposeGenesis(
-                GenesisMiner.PublicKey,
+                GenesisProposer.PublicKey,
                 new[]
                 {
                     Transaction<DumbAction>.Create(
@@ -2138,7 +2150,7 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             ).Evaluate(
-                privateKey: GenesisMiner,
+                privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: stateStore

@@ -26,13 +26,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static Exception _exception = new Exception();
 
         private static Block<DumbAction> _genesis =
-            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
         private static Block<DumbAction> _blockA =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         private static Block<DumbAction> _blockB =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         [Fact]
         public void ActionRenderer()

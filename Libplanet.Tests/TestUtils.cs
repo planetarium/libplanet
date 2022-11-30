@@ -14,6 +14,7 @@ using Bencodex.Types;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -33,7 +34,7 @@ namespace Libplanet.Tests
 {
     public static class TestUtils
     {
-        public static readonly PrivateKey GenesisMiner = PrivateKey.FromString(
+        public static readonly PrivateKey GenesisProposer = PrivateKey.FromString(
             "2a15e7deaac09ce631e1faa184efadb175b6b90989cf1faed9dfc321ad1db5ac");
 
         public static readonly PrivateKey ChainPrivateKey = PrivateKey.FromString(
@@ -397,8 +398,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     index: 0,
                     timestamp: timestamp ??
                         new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                    miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
-                    publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
+                    miner: (miner ?? GenesisProposer.PublicKey).ToAddress(),
+                    publicKey: protocolVersion >= 2 ? miner ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
                     lastCommit: null),
@@ -407,22 +408,32 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static PreEvaluationBlock<T> ProposeGenesis<T>(
-            PublicKey miner = null,
+            PublicKey proposer = null,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
-            var txs = transactions?.OrderBy(tx => tx.Id).ToList() ?? new List<Transaction<T>>();
+            var txs = transactions?.ToList() ?? new List<Transaction<T>>();
+            long nonce = 0;
+            txs.AddRange(
+                ValidatorSet.Validators.Select(
+                    validator => Transaction<T>.Create(
+                        nonce++,
+                        GenesisProposer,
+                        null,
+                        systemAction: new Promote(validator))));
+            txs = txs.OrderBy(tx => tx.Id).ToList();
+
             var content = new BlockContent<T>(
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
                     index: 0,
                     timestamp: timestamp ??
                         new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                    miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
-                    publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
+                    miner: (proposer ?? GenesisProposer.PublicKey).ToAddress(),
+                    publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent<T>.DeriveTxHash(txs),
                     lastCommit: null),
@@ -553,8 +564,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         protocolVersion: protocolVersion,
                         index: 0,
                         timestamp: timestamp ?? DateTimeOffset.MinValue,
-                        miner: GenesisMiner.PublicKey.ToAddress(),
-                        publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
+                        miner: GenesisProposer.PublicKey.ToAddress(),
+                        publicKey: protocolVersion >= 2 ? GenesisProposer.PublicKey : null,
                         previousHash: null,
                         txHash: BlockContent<T>.DeriveTxHash(txs),
                         lastCommit: null),
@@ -573,7 +584,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             preEval.Header.DeriveBlockHash(stateRootHash, null)
                         ))
                     : preEval.Evaluate(
-                         privateKey: GenesisMiner,
+                         privateKey: GenesisProposer,
                          blockAction: policy.BlockAction,
                          nativeTokenPredicate: policy.NativeTokens.Contains,
                          stateStore: stateStore);
