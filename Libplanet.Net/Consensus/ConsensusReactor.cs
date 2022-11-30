@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -73,7 +72,6 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                blockChain.Policy.GetValidatorSet,
                 contextTimeoutOption);
 
             _logger = Log

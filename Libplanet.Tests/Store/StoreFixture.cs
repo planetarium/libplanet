@@ -10,6 +10,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
+using Serilog;
 
 namespace Libplanet.Tests.Store
 {
@@ -100,36 +101,40 @@ namespace Libplanet.Tests.Store
                 bh is BlockHash h && stateRootHashes.TryGetValue(h, out HashDigest<SHA256> rh)
                     ? rh
                     : (HashDigest<SHA256>?)null;
-            Miner = TestUtils.GenesisMiner;
+            Proposer = TestUtils.GenesisProposer;
             GenesisBlock = TestUtils.ProposeGenesis<DumbAction>(
-                Miner.PublicKey
+                proposer: Proposer.PublicKey
             ).Evaluate(
-                privateKey: Miner,
+                privateKey: Proposer,
                 blockAction: blockAction,
                 nativeTokenPredicate: nativeTokens is null
                     ? _ => true
                     : (Predicate<Currency>)nativeTokens.Contains,
                 stateStore: stateStore
             );
+            Log.Debug(
+                "GenesisBlock {Hash} is created. Txs: {Txs}",
+                GenesisBlock,
+                GenesisBlock.Transactions);
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,
-                miner: Miner,
+                miner: Proposer,
                 lastCommit: null);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
             Block2 = TestUtils.ProposeNextBlock(
                 Block1,
-                miner: Miner,
+                miner: Proposer,
                 lastCommit: TestUtils.CreateBlockCommit(Block1));
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
             Block3 = TestUtils.ProposeNextBlock(
                 Block2,
-                miner: Miner,
+                miner: Proposer,
                 lastCommit: TestUtils.CreateBlockCommit(Block2));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
-            Block4 = TestUtils.ProposeNextBlock(Block3, miner: Miner);
+            Block4 = TestUtils.ProposeNextBlock(Block3, miner: Proposer);
             stateRootHashes[Block4.Hash] = Block4.StateRootHash;
-            Block5 = TestUtils.ProposeNextBlock(Block4, miner: Miner);
+            Block5 = TestUtils.ProposeNextBlock(Block4, miner: Proposer);
             stateRootHashes[Block5.Hash] = Block5.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -165,7 +170,7 @@ namespace Libplanet.Tests.Store
 
         public BlockHash Hash3 { get; }
 
-        public PrivateKey Miner { get; }
+        public PrivateKey Proposer { get; }
 
         public Block<DumbAction> GenesisBlock { get; }
 

@@ -27,7 +27,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
@@ -111,7 +111,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
-            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header)
             {
                 Timestamp = dateTimeOffset,

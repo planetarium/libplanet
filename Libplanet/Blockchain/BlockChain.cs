@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -677,6 +678,21 @@ namespace Libplanet.Blockchain
             TotalSupplyStateCompleter<T> stateCompleter
         ) => _blockChainStates.GetTotalSupply(currency, offset, stateCompleter);
 
+        public ValidatorSet GetValidatorSet(
+            BlockHash? offset = null,
+            ValidatorSetStateCompleter<T> stateCompleter = null
+        ) =>
+            GetValidatorSet(
+                offset ?? Tip.Hash,
+                stateCompleter ?? ValidatorSetStateCompleters<T>.Reject
+            );
+
+        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
+        public ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter
+        ) => _blockChainStates.GetValidatorSet(offset, stateCompleter);
+
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
         /// <see cref="Transaction{T}"/> within a <see cref="Block{T}"/>.
@@ -922,7 +938,11 @@ namespace Libplanet.Blockchain
                 // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 var totalDelta =
-                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    evaluations.GetTotalDelta(
+                        ToStateKey,
+                        ToFungibleAssetKey,
+                        ToTotalSupplyKey,
+                        ValidatorSetKey);
                 const string deltaMsg =
                     "Summarized the states delta with {KeyCount} key changes " +
                     "made by block #{BlockIndex} {BlockHash}.";
@@ -1508,7 +1528,7 @@ namespace Libplanet.Blockchain
             if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 StateStore.Commit(prevStateRootHash, totalDelta);
             }
@@ -1635,10 +1655,12 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            if (!Policy.GetValidatorSet(block.Index).ValidateBlockCommitValidators(blockCommit))
+            var validators = GetValidatorSet(block.PreviousHash);
+            if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 return new InvalidBlockCommitException(
-                    "BlockCommit has different validator set with policy's validator set.");
+                    "BlockCommit has different validator set with chain state's validator set: " +
+                    $"{validators.Validators.Aggregate(string.Empty, (s, key) => s + key + ", ")}");
             }
 
             return null;
@@ -1749,7 +1771,7 @@ namespace Libplanet.Blockchain
             }
 
             if (block.LastCommit is { } commit &&
-                !Policy.GetValidatorSet(commit.Height).ValidateBlockCommitValidators(commit))
+                !GetValidatorSet(commit.BlockHash).ValidateBlockCommitValidators(commit))
             {
                 return new InvalidBlockLastCommitException(
                     "The validator set of the block's lastCommit does not match " +

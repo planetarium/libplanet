@@ -44,8 +44,7 @@ namespace Libplanet.Net.Tests
 
         public static readonly IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
-            getMaxTransactionsBytes: _ => 50 * 1024,
-            getValidatorSet: _ => ValidatorSet);
+            getMaxTransactionsBytes: _ => 50 * 1024);
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
             "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
@@ -262,7 +261,6 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                policy.GetValidatorSet,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, consensusContext);
@@ -301,7 +299,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                policy.GetValidatorSet(height),
+                blockChain.GetValidatorSet(blockChain[height - 1].Hash),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);

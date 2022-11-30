@@ -5,6 +5,8 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
@@ -212,6 +214,11 @@ namespace Libplanet.Tests.Action
                 return currency * 0;
             }
 
+            public ValidatorSet GetValidatorSet()
+            {
+                return new ValidatorSet();
+            }
+
             public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value) =>
                 this;
 
@@ -223,6 +230,10 @@ namespace Libplanet.Tests.Action
             ) => this;
 
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
+
+            public IAccountStateDelta PromoteValidator(PublicKey validatorKey) => this;
+
+            public IAccountStateDelta DemoteValidator(PublicKey validatorKey) => this;
         }
     }
 }
