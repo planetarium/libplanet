@@ -100,6 +100,16 @@ namespace Libplanet.Consensus
             return !(obj == other);
         }
 
+        public static bool operator ==(Validator obj, PublicKey other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(Validator obj, PublicKey other)
+        {
+            return !(obj == other);
+        }
+
         public byte[] ToByteArray()
         {
             return ByteArray.ToArray();
@@ -118,6 +128,11 @@ namespace Libplanet.Consensus
         public bool Equals(Validator? other)
         {
             return PublicKey.Equals(other?.PublicKey);
+        }
+
+        public bool Equals(PublicKey? other)
+        {
+            return PublicKey.Equals(other);
         }
 
         public override int GetHashCode()
