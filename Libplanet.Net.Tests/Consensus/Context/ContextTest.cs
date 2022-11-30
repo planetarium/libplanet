@@ -74,7 +74,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // is the proposer for height 2.
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
-                privateKey: TestUtils.PrivateKeys[2]);
+                privateKey: TestUtils.PrivateKeys[2],
+                validatorSet: Libplanet.Tests.TestUtils.ValidatorSet);
 
             context.StateChanged += (_, eventArgs) =>
             {

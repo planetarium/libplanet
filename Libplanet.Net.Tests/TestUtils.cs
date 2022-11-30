@@ -82,13 +82,10 @@ namespace Libplanet.Net.Tests
 
         public static BlockChain<DumbAction> CreateDummyBlockChain(MemoryStoreFixture fx)
         {
-            var store = new MemoryStore();
-            var blockChain = new BlockChain<DumbAction>(
-                TestUtils.Policy,
-                new VolatileStagePolicy<DumbAction>(),
-                store,
-                new TrieStateStore(new MemoryKeyValueStore()),
-                fx.GenesisBlock);
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
+                Policy,
+                fx.Store,
+                new TrieStateStore(new MemoryKeyValueStore()));
 
             return blockChain;
         }
@@ -273,7 +270,8 @@ namespace Libplanet.Net.Tests
                 long height = 1,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                ContextTimeoutOption? contextTimeoutOptions = null)
+                ContextTimeoutOption? contextTimeoutOptions = null,
+                ValidatorSet? validatorSet = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= PrivateKeys[1];
@@ -299,7 +297,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                blockChain.GetValidatorSet(blockChain[height - 1].Hash),
+                validatorSet ?? blockChain.GetValidatorSet(blockChain[height - 1].Hash),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);

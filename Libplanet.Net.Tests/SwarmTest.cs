@@ -454,14 +454,12 @@ namespace Libplanet.Net.Tests
         {
             var keyA = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
-                privateKey: new PrivateKey(), blockAction: policy.BlockAction);
 
-            Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
+            Swarm<DumbAction> swarmA = CreateSwarm(keyA, policy: policy);
+            Block<DumbAction> genesis = swarmA.BlockChain.Genesis;
             Swarm<DumbAction> swarmB = CreateSwarm(genesis: genesis, policy: policy);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
-            BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
             Block<DumbAction> block1 = chainA.ProposeBlock(keyA);
             chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
@@ -526,9 +524,8 @@ namespace Libplanet.Net.Tests
             var keyB = new PrivateKey();
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
-                privateKey: new PrivateKey(), blockAction: policy.BlockAction);
-            Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
+            Swarm<DumbAction> swarmA = CreateSwarm(keyA, policy: policy);
+            Block<DumbAction> genesis = swarmA.BlockChain.Genesis;
             Swarm<DumbAction> swarmB = CreateSwarm(keyB, genesis: genesis, policy: policy);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
@@ -590,9 +587,8 @@ namespace Libplanet.Net.Tests
             var keyB = new PrivateKey();
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
-                privateKey: new PrivateKey(), blockAction: policy.BlockAction);
-            Swarm<DumbAction> swarmA = CreateSwarm(genesis: genesis, policy: policy);
+            Swarm<DumbAction> swarmA = CreateSwarm(policy: policy);
+            Block<DumbAction> genesis = swarmA.BlockChain.Genesis;
             Swarm<DumbAction> swarmB = CreateSwarm(keyB, genesis: genesis, policy: policy);
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
@@ -1088,7 +1084,8 @@ namespace Libplanet.Net.Tests
                 BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress)
+                return tx.Signer.Equals(validAddress) ||
+                       tx.Signer.Equals(GenesisProposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -1147,7 +1144,8 @@ namespace Libplanet.Net.Tests
                 BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress)
+                return tx.Signer.Equals(validAddress) ||
+                       tx.Signer.Equals(GenesisProposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -1215,31 +1213,30 @@ namespace Libplanet.Net.Tests
             var policy = new NullBlockPolicy<DumbAction>();
             var policyA = new NullBlockPolicy<DumbAction>();
             var policyB = new NullBlockPolicy<DumbAction>();
-            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
-                keyC,
-                stateRootHash: MerkleTrie.EmptyRootHash);
+            var fx = new DefaultStoreFixture();
+            var genesis = fx.GenesisBlock;
             Block<DumbAction> aBlock1 = ProposeNextBlock(
                 genesis,
                 keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash);
+                stateRootHash: genesis.StateRootHash);
             Block<DumbAction> aBlock2 = ProposeNextBlock(
                 aBlock1,
                 keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash,
+                stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(aBlock1));
             Block<DumbAction> aBlock3 = ProposeNextBlock(
                 aBlock2,
                 keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash,
+                stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(aBlock2));
             Block<DumbAction> bBlock1 = ProposeNextBlock(
                 genesis,
                 keyB,
-                stateRootHash: MerkleTrie.EmptyRootHash);
+                stateRootHash: genesis.StateRootHash);
             Block<DumbAction> bBlock2 = ProposeNextBlock(
                 bBlock1,
                 keyB,
-                stateRootHash: MerkleTrie.EmptyRootHash,
+                stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(bBlock1));
 
             policyA.BlockedMiners.Add(keyB.ToAddress());
@@ -1330,30 +1327,24 @@ namespace Libplanet.Net.Tests
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock(actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock(actionsB, privateKeyB);
-
-            BlockChain<DumbAction> MakeGenesisChain(
-                IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
-                new BlockChain<DumbAction>(
-                    new BlockPolicy<DumbAction>(),
-                    new VolatileStagePolicy<DumbAction>(),
-                    store,
-                    stateStore,
-                    genesisBlock);
-
-            var genesisChainA = MakeGenesisChain(
+            var genesisChainA = MakeBlockChain(
+                new BlockPolicy<DumbAction>(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                genesisBlockA);
-            var genesisChainB = MakeGenesisChain(
+                actionsA,
+                privateKeyA);
+            var genesisBlockA = genesisChainA.Genesis;
+            var genesisChainB = MakeBlockChain(
+                new BlockPolicy<DumbAction>(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                genesisBlockB);
-            var genesisChainC = MakeGenesisChain(
+                actionsB,
+                privateKeyB);
+            var genesisChainC = MakeBlockChain(
+                new BlockPolicy<DumbAction>(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                genesisBlockA);
+                genesisBlock: genesisBlockA);
 
             var swarmA = CreateSwarm(genesisChainA, privateKeyA);
             var swarmB = CreateSwarm(genesisChainB, privateKeyB);
