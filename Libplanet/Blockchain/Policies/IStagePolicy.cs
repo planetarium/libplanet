@@ -78,8 +78,10 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to get.</param>
-        /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
-        /// or not.  Set to <see langword="true"/> by default.</param>
+        /// <param name="filtered">Whether to filter staged <see cref="Transaction{T}"/>s
+        /// with <see cref="Transaction{T}.Nonce"/>es lower than the expected next nonce
+        /// given by <paramref name="blockChain"/>.  Set to <see langword="true"/> by default.
+        /// </param>
         /// <returns>The staged <see cref="Transaction{T}"/> associated with <paramref name="id"/>
         /// if found,  <see langword="null"/> otherwise.</returns>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true);
@@ -89,13 +91,15 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
-        /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
-        /// or not.  Set to <see langword="true"/> by default.</param>
+        /// <param name="filtered">Whether to filter staged <see cref="Transaction{T}"/>s
+        /// with <see cref="Transaction{T}.Nonce"/>es lower than the expected next nonce
+        /// given by <paramref name="blockChain"/>.  Set to <see langword="true"/> by default.
+        /// </param>
         /// <returns>All staged transactions.  No ordering is guaranteed.</returns>
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true);
 
         /// <summary>
-        /// Calculates the next nonce according for given <paramref name="address"/>.
+        /// Calculates the next nonce for given <paramref name="address"/>.
         /// </summary>
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
