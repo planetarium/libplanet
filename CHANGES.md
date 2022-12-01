@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.44.3
 --------------
 
-To be released.
+Released on December 1, 2022.
 
  -  Fixed a bug of `TxMetadata.ToBencodex()` method where the encoded
     timestamp had differed from `TxMetadata.Timestamp` when it has non-zero
