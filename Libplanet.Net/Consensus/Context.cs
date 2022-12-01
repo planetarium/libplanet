@@ -467,7 +467,8 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="false"/>.</returns>
         private bool HasOneThirdValidators(int round)
         {
-            return _messageLog.GetValidatorsCount(round) > _validatorSet.OneThirdCount;
+            return _validatorSet.GetValidatorsPower(_messageLog.GetValidators(round))
+                > _validatorSet.OneThirdPower;
         }
     }
 }
