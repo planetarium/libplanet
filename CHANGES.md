@@ -59,7 +59,7 @@ To be released.
 ### Dependencies
 
  -  Replaced *[BouncyCastle.NetCore 1.8.6]* with
-   *[BouncyCastle.Cryptography 2.0.0]*.  [[#2571]]
+    *[BouncyCastle.Cryptography 2.0.0]*.  [[#2571]]
  -  (Libplanet.Explorer) Upgraded GraphQL-related dependencies.  [[#2572]]
      -  *GraphQL*: 4.7.1 → 7.1.1
      -  *GraphQL.Server.Authorization.AspNetCore*: 5.1.1 → 7.1.1
@@ -97,6 +97,18 @@ To be released.
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
+
+
+Version 0.44.3
+--------------
+
+Released on December 1, 2022.
+
+ -  Fixed a bug of `TxMetadata.ToBencodex()` method where the encoded
+    timestamp had differed from `TxMetadata.Timestamp` when it has non-zero
+    time zone offset.  [[#2598]]
+
+[#2598]: https://github.com/planetarium/libplanet/pull/2598
 
 
 Version 0.44.2
