@@ -263,7 +263,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>The number of distinct validators for <see cref="ConsensusMsg"/>s
         /// in given <paramref name="round"/>.
         /// </returns>
-        internal int GetValidatorsCount(int round)
+        internal List<PublicKey> GetValidators(int round)
         {
             lock (_lock)
             {
@@ -280,9 +280,21 @@ namespace Libplanet.Net.Consensus
                         : new Dictionary<PublicKey, ConsensusPreVoteMsg>().Keys)
                     .Union(_preCommits.ContainsKey(round)
                         ? _preCommits[round].Keys
-                        : new Dictionary<PublicKey, ConsensusPreCommitMsg>().Keys)
-                    .Count();
+                        : new Dictionary<PublicKey, ConsensusPreCommitMsg>().Keys).ToList();
             }
+        }
+
+        /// <summary>
+        /// Counts distinct validators for <see cref="ConsensusMsg"/>s in given
+        /// <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">The round to search.</param>
+        /// <returns>The number of distinct validators for <see cref="ConsensusMsg"/>s
+        /// in given <paramref name="round"/>.
+        /// </returns>
+        internal int GetValidatorsCount(int round)
+        {
+           return GetValidators(round).Count;
         }
 
         /// <summary>
