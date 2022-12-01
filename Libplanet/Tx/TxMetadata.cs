@@ -107,14 +107,15 @@ namespace Libplanet.Tx
         {
             List updatedAddresses = new List(
                 UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray)));
+            string timestamp = Timestamp
+                .ToUniversalTime()
+                .ToString(TimestampFormat, CultureInfo.InvariantCulture);
             Bencodex.Types.Dictionary dict = Dictionary.Empty
                 .Add(NonceKey, Nonce)
                 .Add(SignerKey, Signer.ByteArray)
                 .Add(UpdatedAddressesKey, updatedAddresses)
                 .Add(PublicKeyKey, PublicKey.ToImmutableArray(compress: false))
-                .Add(
-                    TimestampKey,
-                    Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture));
+                .Add(TimestampKey, timestamp);
 
             if (GenesisHash is { } genesisHash)
             {

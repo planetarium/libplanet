@@ -6,6 +6,12 @@ Version 0.44.3
 
 To be released.
 
+ -  Fixed a bug of `TxMetadata.ToBencodex()` method where the encoded
+    timestamp had differed from `TxMetadata.Timestamp` when it has non-zero
+    time zone offset.  [[#2598]]
+
+[#2598]: https://github.com/planetarium/libplanet/pull/2598
+
 
 Version 0.44.2
 --------------
