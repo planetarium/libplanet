@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Fixtures
                     Nonce = 0L,
                     GenesisHash = GenesisHash,
                     UpdatedAddresses = ImmutableHashSet.Create(Block1Tx0Key.ToAddress()),
-                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, kst),
+                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
                 },
                 customActions: new[]
                 {
@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Fixtures
                     Nonce = 1L,
                     GenesisHash = GenesisHash,
                     UpdatedAddresses = ImmutableHashSet.Create(Block1Tx1Key.ToAddress()),
-                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, kst),
+                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
                 },
                 customActions: new[] { Arithmetic.Add(30) },
                 signature: ByteUtil.ParseHex(
