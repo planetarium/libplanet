@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.45.0
 --------------
 
-To be released.
+Released on December 3, 2022.
 
 ### Deprecated APIs
 
@@ -27,10 +27,6 @@ To be released.
     `Func<long, int>` type parameter named `getMinBlockProtocolVersion`.
     [[#2593]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `BlockChainStates<T>` class.  [[#2507]]
@@ -46,8 +42,6 @@ To be released.
     [[#2562]]
  -  Added `IBlockPolicy.GetMinBlockProtocolVersion()` interface method.
     [[#2593]]
-
-### Behavioral changes
 
 ### Bug fixes
 
