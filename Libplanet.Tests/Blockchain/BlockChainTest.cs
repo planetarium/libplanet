@@ -457,7 +457,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 ActionRenderer = (a, __, nextStates) =>
                 {
-                    if (!(a is Promote))
+                    if (!(a is SetValidator))
                     {
                         throw new SomeException("thrown by renderer");
                     }
