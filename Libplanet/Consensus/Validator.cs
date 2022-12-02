@@ -76,14 +76,14 @@ namespace Libplanet.Consensus
             {
                 var codec = new Codec();
                 var dict = Dictionary.Empty;
-                dict.Add(PublicKeyKey, PublicKey.Format(true));
+                dict = dict.Add(PublicKeyKey, PublicKey.Format(true));
                 if (Power is { } power)
                 {
-                    dict.Add(PowerKey, power.ToByteArray());
+                    dict = dict.Add(PowerKey, power.ToByteArray());
                 }
                 else
                 {
-                    dict.Add(PowerKey, BigInteger.MinusOne.ToByteArray());
+                    dict = dict.Add(PowerKey, BigInteger.MinusOne.ToByteArray());
                 }
 
                 return codec.Encode(dict).ToImmutableArray();
