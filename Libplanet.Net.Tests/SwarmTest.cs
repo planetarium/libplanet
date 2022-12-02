@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -13,6 +14,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -22,6 +24,7 @@ using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using Nito.AsyncEx;
 using Serilog;
 using xRetry;
 using Xunit;
@@ -324,6 +327,126 @@ namespace Libplanet.Net.Tests
             }
 
             Assert.True(canceled);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task BootstrapContext()
+        {
+            var stepChangedToPreVotes = Enumerable.Range(0, 4).Select(i =>
+                new AsyncAutoResetEvent()).ToList();
+            var stepChangedToPreCommits = Enumerable.Range(0, 4).Select(i =>
+                new AsyncAutoResetEvent()).ToList();
+            var roundChangedToOnes = Enumerable.Range(0, 4).Select(i =>
+                new AsyncAutoResetEvent()).ToList();
+            var roundOneProposed = new AsyncAutoResetEvent();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
+
+            var consensusPeers = Enumerable.Range(0, 4).Select(i =>
+                new BoundPeer(
+                    TestUtils.PrivateKeys[i].PublicKey,
+                    new DnsEndPoint("localhost", 6000 + i))).ToImmutableList();
+            var reactorOpts = Enumerable.Range(0, 4).Select(i =>
+                new ConsensusReactorOption()
+                {
+                    SeedPeers = consensusPeers,
+                    ConsensusPeers = consensusPeers,
+                    ConsensusPort = 6000 + i,
+                    ConsensusPrivateKey = TestUtils.PrivateKeys[i],
+                    ConsensusWorkers = 100,
+                    TargetBlockInterval = TimeSpan.FromSeconds(10),
+                    ContextTimeoutOptions = new ContextTimeoutOption(),
+                }).ToList();
+            var swarms = Enumerable.Range(0, 4).Select(i =>
+                CreateSwarm(
+                    privateKey: TestUtils.PrivateKeys[i],
+                    host: "localhost",
+                    listenPort: 9000 + i,
+                    policy: policy,
+                    genesis: genesis,
+                    consensusReactorOption: reactorOpts[i])).ToList();
+
+            try
+            {
+                // swarms[1] is the round 0 proposer for height 1.
+                // swarms[2] is the round 1 proposer for height 2.
+                _ = swarms[0].StartAsync();
+                _ = swarms[3].StartAsync();
+
+                swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
+                {
+                    if (eventArgs.Step == Step.PreVote)
+                    {
+                        stepChangedToPreVotes[0].Set();
+                    }
+                };
+                swarms[3].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
+                {
+                    if (eventArgs.Step == Step.PreVote)
+                    {
+                        stepChangedToPreVotes[3].Set();
+                    }
+                };
+
+                // Make sure both swarms time out.
+                await Task.WhenAll(
+                    stepChangedToPreVotes[0].WaitAsync(), stepChangedToPreVotes[3].WaitAsync());
+
+                // Dispose swarm[3] to simulate shutdown during bootstrap.
+                swarms[3].Dispose();
+
+                // Bring swarm[2] online.
+                _ = swarms[2].StartAsync();
+                swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
+                {
+                    if (eventArgs.Step == Step.PreVote)
+                    {
+                        stepChangedToPreCommits[0].Set();
+                    }
+                };
+                swarms[2].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
+                {
+                    if (eventArgs.Step == Step.PreCommit)
+                    {
+                        stepChangedToPreCommits[2].Set();
+                    }
+                };
+
+                // Since we already have swarm[3]'s PreVote, when swarm[2] times out,
+                // swarm[2] adds additional PreVote, making it possible to reach PreCommit.
+                // Current network's context state should be:
+                // Proposal: null
+                // PreVote: swarm[0], swarm[2], swarm[3],
+                // PreCommit: swarm[0], swarm[2]
+                await Task.WhenAll(
+                    stepChangedToPreCommits[0].WaitAsync(), stepChangedToPreCommits[2].WaitAsync());
+
+                // After swarm[1] comes online, eventually it'll catch up to vote PreCommit,
+                // at which point the round will move to 1 where swarm[2] is the proposer.
+                _ = swarms[1].StartAsync();
+                swarms[2].ConsensusReactor.ConsensusContext.MessageBroadcasted += (_, eventArgs) =>
+                {
+                    if (eventArgs.Message is ConsensusProposalMsg proposalMsg &&
+                        proposalMsg.Round == 1 &&
+                        proposalMsg.Validator.Equals(TestUtils.PrivateKeys[2].PublicKey))
+                    {
+                        roundOneProposed.Set();
+                    }
+                };
+
+                await roundOneProposed.WaitAsync();
+
+                await AssertThatEventually(() => swarms[0].BlockChain.Tip.Index == 1, int.MaxValue);
+                Assert.Equal(1, swarms[0].BlockChain.GetBlockCommit(1).Round);
+            }
+            finally
+            {
+                swarms[0].Dispose();
+                swarms[1].Dispose();
+                swarms[2].Dispose();
+                swarms[3].Dispose();
+            }
         }
 
         [Fact(Timeout = Timeout)]
