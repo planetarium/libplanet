@@ -50,11 +50,12 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="GraphQL" Version="7.1.1" />
-    <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="7.1.1" />
-    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="7.1.1" />
-    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="7.1.1" />
-    <PackageReference Include="GraphQL.SystemTextJson" Version="7.1.1" />
+    <PackageReference Include="GraphQL" Version="4.7.1" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="4.7.1" />
+    <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="5.1.1" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore.SystemTextJson" Version="5.1.1" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="5.1.1" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="5.1.1" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

@@ -6,8 +6,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Cocona;
-using GraphQL;
+using GraphQL.Server;
 using GraphQL.Utilities;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -20,6 +21,7 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Schemas;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
+using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -58,8 +60,8 @@ namespace Libplanet.Explorer.Executable
         public void Schema()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddGraphQL(builder =>
-                builder.AddLibplanetExplorerSchema<NullAction>());
+            serviceCollection.AddGraphQL()
+                .AddGraphTypes(typeof(LibplanetExplorerSchema<NullAction>));
 
             serviceCollection.AddSingleton<IBlockChainContext<NullAction>, Startup>();
             serviceCollection.AddSingleton<IStore, MemoryStore>();
