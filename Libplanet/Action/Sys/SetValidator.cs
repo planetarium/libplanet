@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using Bencodex.Types;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 
 namespace Libplanet.Action.Sys
@@ -22,6 +23,11 @@ namespace Libplanet.Action.Sys
         {
             ValidatorPublicKey = validatorPublicKey;
             Power = power;
+        }
+
+        public SetValidator(Validator validator)
+            : this(validator.PublicKey, validator.Power)
+        {
         }
 
         internal SetValidator()

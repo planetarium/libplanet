@@ -45,7 +45,7 @@ namespace Libplanet.Tests.Fixtures
                         nonce++,
                         GenesisKey,
                         null,
-                        systemAction: new Promote(validator),
+                        systemAction: new SetValidator(validator),
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
             GenesisContent = new BlockContent<Arithmetic>(
