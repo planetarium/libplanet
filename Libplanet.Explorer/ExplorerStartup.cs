@@ -1,5 +1,8 @@
 #nullable disable
 using GraphQL;
+using GraphQL.Server;
+using GraphQL.SystemTextJson;
+using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
@@ -52,7 +55,9 @@ namespace Libplanet.Explorer
             services.TryAddSingleton<ExplorerQuery<T>>();
             services.TryAddSingleton<LibplanetExplorerSchema<T>>();
 
-            services.AddGraphQL(builder => builder.AddLibplanetExplorerSchema<T>());
+            services.AddGraphQL()
+                    .AddSystemTextJson()
+                    .AddGraphTypes(typeof(LibplanetExplorerSchema<T>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

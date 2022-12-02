@@ -1,4 +1,4 @@
-using GraphQLParser.AST;
+using GraphQL.Language.AST;
 using Libplanet.Explorer.GraphTypes;
 using Xunit;
 
@@ -31,15 +31,16 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         public void ParseLiteral(string stringValue, object parsed)
         {
             var actual =
-                stringValue is { } v ? _type.ParseLiteral(new GraphQLStringValue(v)) : null;
+                stringValue is { } v ? _type.ParseLiteral(new StringValue(v)) : null;
             Assert.Equal(parsed, actual);
         }
 
         [Fact]
         public void ParseLiteral_NotStringValue_ReturnNull()
         {
-            Assert.Null(_type.ParseLiteral(new GraphQLIntValue(0)));
-            Assert.Null(_type.ParseLiteral(new GraphQLTrueBooleanValue()));
+            Assert.Null(_type.ParseLiteral(new IntValue(0)));
+            Assert.Null(_type.ParseLiteral(new BigIntValue(0)));
+            Assert.Null(_type.ParseLiteral(new EnumValue("NAME")));
         }
     }
 }

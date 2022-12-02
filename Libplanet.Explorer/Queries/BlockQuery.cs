@@ -13,8 +13,8 @@ namespace Libplanet.Explorer.Queries
         public BlockQuery()
         {
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType<T>>>>>(
-                "blocks")
-                .Arguments(new QueryArguments(
+                "blocks",
+                arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType>
                     {
                         Name = "desc",
@@ -32,8 +32,8 @@ namespace Libplanet.Explorer.Queries
                         DefaultValue = false,
                     },
                     new QueryArgument<AddressType> { Name = "miner" }
-                ))
-                .Resolve(context =>
+                ),
+                resolve: context =>
                 {
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
@@ -41,12 +41,16 @@ namespace Libplanet.Explorer.Queries
                     bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
                     Address? miner = context.GetArgument<Address?>("miner", null);
                     return ExplorerQuery<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
-                });
+                }
+            );
 
-            Field<BlockType<T>>("block")
-                .Argument<IdGraphType>("hash")
-                .Argument<IdGraphType>("index")
-                .Resolve(context =>
+            Field<BlockType<T>>(
+                "block",
+                arguments: new QueryArguments(
+                    new QueryArgument<IdGraphType> { Name = "hash" },
+                    new QueryArgument<IdGraphType> { Name = "index" }
+                ),
+                resolve: context =>
                 {
                     string hash = context.GetArgument<string>("hash");
                     long? index = context.GetArgument<long?>("index", null);
@@ -69,7 +73,8 @@ namespace Libplanet.Explorer.Queries
                     }
 
                     throw new GraphQL.ExecutionError("Unexpected block query");
-                });
+                }
+            );
 
             Name = "BlockQuery";
         }

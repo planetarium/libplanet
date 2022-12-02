@@ -2,6 +2,7 @@
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Queries;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -10,9 +11,10 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public NodeStateType()
         {
-            Field<NonNullGraphType<BooleanGraphType>>("preloaded")
-                .Resolve(context => context.Source.Preloaded);
-
+            Field<NonNullGraphType<BooleanGraphType>>(
+                "preloaded",
+                resolve: context => context.Source.Preloaded
+            );
             Name = "NodeState";
         }
     }

@@ -18,12 +18,19 @@ namespace Libplanet.Explorer.Mutations
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
-            Field<TransactionType<T>>("stage")
-                .Description("Stage transaction to current chain")
-                .Argument<StringGraphType>(
-                    "payload",
-                    description: "The hexadecimal string of the serialized transaction to stage.")
-                .Resolve(context =>
+            Field<TransactionType<T>>(
+                "stage",
+                description: "Stage transaction to current chain",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>>
+                    {
+                        Name = "payload",
+                        #pragma warning disable MEN002
+                        Description = "The hexadecimal string of the serialized transaction to stage.",
+                        #pragma warning restore MEN002
+                    }
+                ),
+                resolve: context =>
                 {
                     BlockChain<T> chain = _context.BlockChain;
                     byte[] payload = ByteUtil.ParseHex(context.GetArgument<string>("payload"));
@@ -36,7 +43,8 @@ namespace Libplanet.Explorer.Mutations
                     }
 
                     return tx;
-                });
+                }
+            );
         }
     }
 }

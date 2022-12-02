@@ -4,20 +4,14 @@ using GraphQL;
 using GraphQL.Types;
 using Libplanet.Store;
 using Libplanet.Explorer.GraphTypes;
-using Libplanet.Explorer.Schemas;
 using Libplanet.Action;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Concurrent;
-using GraphQL.DI;
 
 namespace Libplanet.Explorer.Tests
 {
     public static class GraphQLTestUtils
     {
-        private static readonly ConcurrentDictionary<IObjectGraphType, ISchema> CachedSchemaMap =
-            new(ReferenceEqualityComparer.Instance);
-
         public static Task<ExecutionResult> ExecuteQueryAsync<TObjectGraphType>(
             string query,
             IDictionary<string, object> userContext = null,
@@ -61,26 +55,14 @@ namespace Libplanet.Explorer.Tests
                 }
             );
 
-            // A IGraphType instance can be used as a query root type only once.
-            if (!CachedSchemaMap.TryGetValue(queryGraphType, out ISchema schema))
-            {
-                IConfigureSchema[] configurations =
-                {
-                    ConfigureLibplanetExplorerSchema.Instance,
-                };
-                schema = new Schema(failSafeServiceProvider, configurations)
-                {
-                    Query = queryGraphType,
-                };
-
-                CachedSchemaMap[queryGraphType] = schema;
-            }
-
             return documentExecutor.ExecuteAsync(
                 new ExecutionOptions
                 {
                     Query = query,
-                    Schema = schema,
+                    Schema = new Schema(failSafeServiceProvider)
+                    {
+                        Query = queryGraphType,
+                    },
                     UserContext = userContext,
                     Root = source,
                 }

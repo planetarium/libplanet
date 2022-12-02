@@ -29,24 +29,31 @@ namespace Libplanet.Explorer.Queries
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
-                "transactions")
-                .Argument<Address>(
-                    "signer",
-                    true,
-                    "Filter by signer (if given).",
-                    arg => arg.DefaultValue = null)
-                .Argument<Address>(
-                    "involvedAddress",
-                    true,
-                    "Filter by involved addresses (if given).",
-                    arg => arg.DefaultValue = null)
-                .Argument<bool>(
-                    "desc",
-                    true,
-                    arg => arg.DefaultValue = false)
-                .Argument<int>("offset", false, arg => arg.DefaultValue = 0)
-                .Argument<int>("limit", true, arg => arg.DefaultValue = null)
-                .Resolve(context =>
+                "transactions",
+                arguments: new QueryArguments(
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "desc",
+                        DefaultValue = false,
+                    },
+                    new QueryArgument<IntGraphType>
+                    {
+                        Name = "offset",
+                        DefaultValue = 0,
+                    },
+                    new QueryArgument<IntGraphType> { Name = "limit" }
+                ),
+                resolve: context =>
                 {
                     var signer = context.GetArgument<Address?>("signer");
                     var involved = context.GetArgument<Address?>("involvedAddress");
@@ -55,16 +62,35 @@ namespace Libplanet.Explorer.Queries
                     int? limit = context.GetArgument<int?>("limit", null);
 
                     return ExplorerQuery<T>.ListTransactions(signer, involved, desc, offset, limit);
-                });
+                }
+            );
 
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
-                "stagedTransactions")
-                .Argument<Address>("signer", false, arg => arg.DefaultValue = null)
-                .Argument<Address>("involvedAddress", false, arg => arg.DefaultValue = null)
-                .Argument<bool>("desc", false, arg => arg.DefaultValue = false)
-                .Argument<int>("offset", false, arg => arg.DefaultValue = 0)
-                .Argument<int>("limit", true, arg => arg.DefaultValue = null)
-                .Resolve(context =>
+                "stagedTransactions",
+                arguments: new QueryArguments(
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "desc",
+                        DefaultValue = false,
+                    },
+                    new QueryArgument<IntGraphType>
+                    {
+                        Name = "offset",
+                        DefaultValue = 0,
+                    },
+                    new QueryArgument<IntGraphType> { Name = "limit" }
+                ),
+                resolve: context =>
                 {
                     var signer = context.GetArgument<Address?>("signer");
                     var involved = context.GetArgument<Address?>("involvedAddress");
@@ -79,29 +105,43 @@ namespace Libplanet.Explorer.Queries
                         offset,
                         limit
                     );
-                });
+                }
+            );
 
-            Field<TransactionType<T>>("transaction")
-                .Argument<IdGraphType>("id")
-                .Resolve(context =>
+            Field<TransactionType<T>>(
+                "transaction",
+                arguments: new QueryArguments(
+                    new QueryArgument<IdGraphType> { Name = "id" }
+                ),
+                resolve: context =>
                 {
                     var id = new TxId(
                         ByteUtil.ParseHex(context.GetArgument<string>("id"))
                     );
                     return ExplorerQuery<T>.GetTransaction(id);
-                });
+                }
+            );
 
-            Field<NonNullGraphType<ByteStringType>>("unsignedTransaction")
-                .Argument<string>(
-                    "publicKey",
-                    false,
-                    "The hexadecimal string of public key for transaction.")
-                .Argument<string>(
-                    "plainValue",
-                    false,
-                    "The hexadecimal string of plain value for action.")
-                .Argument<long>("nonce", false, "The nonce for transaction.")
-                .Resolve(context =>
+            Field<NonNullGraphType<ByteStringType>>(
+                name: "unsignedTransaction",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>>
+                    {
+                        Name = "publicKey",
+                        Description = "The hexadecimal string of public key for Transaction.",
+                    },
+                    new QueryArgument<NonNullGraphType<StringGraphType>>
+                    {
+                        Name = "plainValue",
+                        Description = "The hexadecimal string of plain value for Action.",
+                    },
+                    new QueryArgument<LongGraphType>
+                    {
+                        Name = "nonce",
+                        Description = "The nonce for Transaction.",
+                    }
+                ),
+                resolve: context =>
                 {
                     BlockChain<T> chain = _context.BlockChain;
                     string plainValueString = context.GetArgument<string>("plainValue");
@@ -123,29 +163,44 @@ namespace Libplanet.Explorer.Queries
                             new[] { action }
                         );
                     return unsignedTransaction.Serialize(false);
-                });
+                }
+            );
 
-            Field<NonNullGraphType<LongGraphType>>("nextNonce")
-                .Argument<Address>(
-                    "address",
-                    false,
-                    "Address of the account to get the next tx nonce.")
-                .Resolve(ctx =>
-                    _context.BlockChain.GetNextTxNonce(ctx.GetArgument<Address>("address")));
+            Field<NonNullGraphType<LongGraphType>>(
+                name: "nextNonce",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<AddressType>>
+                    {
+                        Name = "address",
+                        Description = "Address of the account to get the next tx nonce.",
+                    }
+                ),
+                resolve: context =>
+                    _context.BlockChain.GetNextTxNonce(context.GetArgument<Address>("address"))
+            );
 
-            Field<NonNullGraphType<StringGraphType>>("bindSignature")
-                .Description(
-                    "Attach the given signature to the given transaction and return tx " +
-                    "as hexadecimal")
-                .Argument<string>(
-                    "unsignedTransaction",
-                    false,
-                    "The hexadecimal string of unsigned transaction to attach the given signature.")
-                .Argument<string>(
-                    "signature",
-                    false,
-                    "The hexadecimal string of the given unsigned transaction.")
-                .Resolve(context =>
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "bindSignature",
+                #pragma warning disable MEN002
+                description: "Attach the given signature to the given transaction and return tx as hexadecimal",
+                #pragma warning restore MEN002
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>>
+                    {
+                        Name = "unsignedTransaction",
+                        #pragma warning disable MEN002
+                        Description = "The hexadecimal string of unsigned transaction to attach the given signature.",
+                        #pragma warning restore MEN002
+                    },
+                    new QueryArgument<NonNullGraphType<StringGraphType>>
+                    {
+                        Name = "signature",
+                        #pragma warning disable MEN002
+                        Description = "The hexadecimal string of the given unsigned transaction.",
+                        #pragma warning restore MEN002
+                    }
+                ),
+                resolve: context =>
                 {
                     byte[] signature = ByteUtil.ParseHex(
                         context.GetArgument<string>("signature")
@@ -169,11 +224,19 @@ namespace Libplanet.Explorer.Queries
                             signature: signature
                         );
                     return ByteUtil.Hex(signedTransaction.Serialize(true));
-                });
+                }
+            );
 
-            Field<NonNullGraphType<TxResultType>>("transactionResult")
-                .Argument<IdGraphType>("txId", description: "A transaction ID.")
-                .Resolve(context =>
+            Field<NonNullGraphType<TxResultType>>(
+                name: "transactionResult",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>>
+                    {
+                        Name = "txId",
+                        Description = "transaction id.",
+                    }
+                ),
+                resolve: context =>
                 {
                     BlockChain<T> blockChain = _context.BlockChain;
                     IStore store = _context.Store;
@@ -256,7 +319,8 @@ namespace Libplanet.Explorer.Queries
                             null
                         );
                     }
-                });
+                }
+            );
 
             Name = "TransactionQuery";
         }

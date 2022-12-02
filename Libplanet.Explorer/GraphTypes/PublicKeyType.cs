@@ -1,6 +1,7 @@
+#nullable disable
 using System;
+using GraphQL.Language.AST;
 using GraphQL.Types;
-using GraphQLParser.AST;
 using Libplanet.Crypto;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -12,7 +13,7 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "PublicKey";
         }
 
-        public override object? Serialize(object? value)
+        public override object Serialize(object value)
         {
             if (value is PublicKey pubKey)
             {
@@ -22,7 +23,7 @@ namespace Libplanet.Explorer.GraphTypes
             return value;
         }
 
-        public override object? ParseValue(object? value)
+        public override object ParseValue(object value)
         {
             switch (value)
             {
@@ -36,7 +37,14 @@ namespace Libplanet.Explorer.GraphTypes
             }
         }
 
-        public override object? ParseLiteral(GraphQLValue? value) =>
-            value is GraphQLStringValue v ? ParseValue((string)v.Value) : null;
+        public override object ParseLiteral(IValue value)
+        {
+            if (value is StringValue)
+            {
+                return ParseValue(value.Value);
+            }
+
+            return null;
+        }
     }
 }
