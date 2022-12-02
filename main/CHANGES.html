@@ -141,6 +141,13 @@ You should use <code>serve</code> command instead.  [<a href="https://github.com
 </li>
 <li>(Libplanet.Explorer) Added <code>schema</code> subcommand.  [<a href="https://github.com/planetarium/libplanet/pull/2563">#2563</a>]</li>
 </ul>
+<h2 id="version-0443">Version 0.44.3</h2>
+<p>Released on December 1, 2022.</p>
+<ul>
+<li>Fixed a bug of <code>TxMetadata.ToBencodex()</code> method where the encoded
+timestamp had differed from <code>TxMetadata.Timestamp</code> when it has non-zero
+time zone offset.  [<a href="https://github.com/planetarium/libplanet/pull/2598">#2598</a>]</li>
+</ul>
 <h2 id="version-0442">Version 0.44.2</h2>
 <p>Released on November 29, 2022.</p>
 <ul>
