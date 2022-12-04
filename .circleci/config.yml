@@ -325,7 +325,7 @@ commands:
         default: StandaloneLinux64
       runner_version:
         type: string
-        default: 0.5.1-dev-2022120502
+        default: 0.5.1-dev-2022120503
     steps:
     - checkout
     - attach_workspace:
@@ -474,7 +474,7 @@ jobs:
     docker:
     - image: mono:6.12
     environment:
-      XUNIT_UNITY_RUNNER: 0.5.1-dev-2022120502
+      XUNIT_UNITY_RUNNER: 0.5.1-dev-2022120503
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 4
@@ -488,7 +488,7 @@ jobs:
     macos:
       xcode: 11.3.0
     environment:
-      XUNIT_UNITY_RUNNER: 0.5.1-dev-2022120502
+      XUNIT_UNITY_RUNNER: 0.5.1-dev-2022120503
     parallelism: 3
     steps:
     - ulimit: { n: 10240 }
@@ -500,7 +500,7 @@ jobs:
       name: win/default
       size: large
     environment:
-      XUNIT_UNITY_RUNNER: 0.5.1-dev-2022120502
+      XUNIT_UNITY_RUNNER: 0.5.1-dev-2022120503
     parallelism: 4
     steps:
     - run:
