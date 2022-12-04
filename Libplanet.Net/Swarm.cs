@@ -260,6 +260,9 @@ namespace Libplanet.Net
 
         internal SwarmOptions Options { get; }
 
+        // FIXME: This should be exposed in a better way.
+        internal ConsensusReactor<T> ConsensusReactor => _consensusReactor;
+
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>

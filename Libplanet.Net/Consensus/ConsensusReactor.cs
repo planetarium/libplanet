@@ -91,6 +91,9 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="ConsensusContext{T}.Height"/>
         public long Height => _consensusContext.Height;
 
+        // FIXME: This should be exposed in a better way.
+        internal ConsensusContext<T> ConsensusContext => _consensusContext;
+
         /// <summary>
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         /// </summary>
