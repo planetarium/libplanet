@@ -213,13 +213,11 @@ namespace Libplanet.Blockchain
         {
             if (store is null)
             {
-                throw new ArgumentNullException(
-                    nameof(store), $"Given {nameof(store)} cannot be null");
+                throw new ArgumentNullException(nameof(store));
             }
             else if (stateStore is null)
             {
-                throw new ArgumentNullException(
-                    nameof(stateStore), $"Given {nameof(stateStore)} cannot be null");
+                throw new ArgumentNullException(nameof(stateStore));
             }
 
             Id = id;
