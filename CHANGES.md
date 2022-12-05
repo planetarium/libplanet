@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `BlockChain<T>()` now explicitly requires both `store` and `stateStore`
+    arguments to be not `null`.  [[#2609]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2609]: https://github.com/planetarium/libplanet/pull/2609
 
 
 Version 0.45.0

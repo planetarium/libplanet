@@ -81,6 +81,8 @@ namespace Libplanet.Blockchain
         /// events made by unsuccessful transactions too; see also
         /// <see cref="AtomicActionRenderer{T}"/> for workaround.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
+        /// <exception cref="ArgumentNullException">Thrown when either of <paramref name="store"/>
+        /// or <paramref name="stateStore"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
@@ -209,22 +211,25 @@ namespace Libplanet.Blockchain
             IBlockChainStates<T> blockChainStates,
             ActionEvaluator<T> actionEvaluator)
         {
+            if (store is null)
+            {
+                throw new ArgumentNullException(nameof(store));
+            }
+            else if (stateStore is null)
+            {
+                throw new ArgumentNullException(nameof(stateStore));
+            }
+
             Id = id;
             Policy = policy;
             StagePolicy = stagePolicy;
             Store = store;
-            _blockChainStates = blockChainStates;
+            StateStore = stateStore;
 
+            _blockChainStates = blockChainStates;
             if (_blockChainStates is BlockChainStates<T> bindableImpl)
             {
                 bindableImpl.Bind(this);
-            }
-
-            // It expects store is DefaultStore or RocksDBStore.
-            StateStore = stateStore ?? store as IStateStore;
-            if (StateStore is null)
-            {
-                throw new ArgumentNullException(nameof(stateStore));
             }
 
             _blocks = new BlockSet<T>(store);
