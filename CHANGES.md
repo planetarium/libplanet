@@ -1,6 +1,30 @@
 Libplanet changelog
 ===================
 
+Version 0.46.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+
 Version 0.45.0
 --------------
 
