@@ -185,25 +185,11 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy<DumbAction> policy = receiverChain.Policy;
-            Block<DumbAction> wrongGenesis = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: receiverKey.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null))
-                .Propose()
-                .Evaluate(
-                    privateKey: receiverKey,
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: seedStateStore);
             BlockChain<DumbAction> seedChain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 seedStateStore,
-                genesisBlock: wrongGenesis);
+                privateKey: receiverKey);
             var seedMiner = new PrivateKey();
             Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain, seedMiner);
             try
