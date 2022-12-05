@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "TPlG0SDemTxF0DZitISvBksT0ycW5k37VUMr7r+U5DI="
+          "hash": "24fC5RXmmQ+EAyIA9ujqA5lGg6CB5Qdv8yTdYPdc8eA="
         }
       },
       "is_incremental": false,
@@ -537,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "NbmWsBQPOXMJEogMZ4poNSkNpArahe7ElgkbF2u+nA0="
+          "hash": "7Peq9qHyc/sY1jbxnFFnSb/Wa11yNx2nBP5/gG3t+O8="
         }
       },
       "is_incremental": false,
