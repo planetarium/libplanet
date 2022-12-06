@@ -88,7 +88,6 @@ namespace Libplanet.Tests.Fixtures
                 Genesis,
                 renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
             );
-            Genesis = Chain.Genesis;
         }
 
         public int Count => Addresses.Count;
