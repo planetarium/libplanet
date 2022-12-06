@@ -9,6 +9,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -69,14 +70,24 @@ namespace Libplanet.Tests.Fixtures
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            Chain = TestUtils.MakeBlockChain(
+            var preEval = TestUtils.ProposeGenesis(
+                Miner.PublicKey,
+                Txs,
+                DateTimeOffset.UtcNow,
+                Block<Arithmetic>.CurrentProtocolVersion);
+            Genesis = preEval.Evaluate(
+                privateKey: Miner,
+                blockAction: policy.BlockAction,
+                nativeTokenPredicate: policy.NativeTokens.Contains,
+                stateStore: StateStore);
+            Chain = new BlockChain<Arithmetic>(
                 policy,
+                new VolatileStagePolicy<Arithmetic>(),
                 Store,
                 StateStore,
-                actions: Actions,
-                renderers: renderers
+                Genesis,
+                renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
             );
-            Genesis = Chain.Genesis;
         }
 
         public int Count => Addresses.Count;
