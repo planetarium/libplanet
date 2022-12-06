@@ -70,11 +70,17 @@ namespace Libplanet.Tests.Action
                     customActions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            PreEvaluationBlock<RandomAction> noStateRootBlock = ProposeGenesis(
-                proposer: GenesisProposer.PublicKey,
-                timestamp: timestamp,
-                transactions: txs
-            );
+            var noStateRootBlock = new BlockContent<RandomAction>(
+                new BlockMetadata(
+                    protocolVersion: Block<RandomAction>.CurrentProtocolVersion,
+                    index: 0,
+                    timestamp: timestamp,
+                    miner: GenesisProposer.PublicKey.ToAddress(),
+                    publicKey: GenesisProposer.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent<RandomAction>.DeriveTxHash(txs),
+                    lastCommit: null),
+                transactions: txs).Propose();
             Block<RandomAction> stateRootBlock =
                 noStateRootBlock.Evaluate(GenesisProposer, null, _ => true, stateStore);
             var actionEvaluator =

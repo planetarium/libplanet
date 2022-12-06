@@ -666,7 +666,17 @@ namespace Libplanet.Tests.Blockchain
             {
                 var genesis = ProposeGenesis(
                     GenesisProposer.PublicKey,
-                    transactions: new[] { _fx.MakeTransaction(new[] { action }) }
+                    transactions: new[]
+                    {
+                        Transaction<DumbAction>.Create(
+                            0,
+                            new PrivateKey(),
+                            null,
+                            new[] { action },
+                            null,
+                            DateTimeOffset.UtcNow
+                        ),
+                    }
                 ).Evaluate(
                     privateKey: GenesisProposer,
                     blockAction: _policy.BlockAction,
