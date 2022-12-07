@@ -26,7 +26,6 @@ Version PBFT
 ### Backward-incompatible API changes
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
- -  Added `IBlockPolicy.GetValidatorSet()` method.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
@@ -34,6 +33,12 @@ Version PBFT
  -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
  -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
+ -  Added `IAccountStateDelta.SetValidator(PublicKey, BigInteger)` method.
+    [[#PBFT]]
+ -  Added `IAccountStateView.GetValidatorSet()` method.  [[#PBFT]]
+ -  Added `IBlockChainStates.GetValidatorSet(BlockHash,
+    ValidatorSetStateCompleter<T>)` method.  [[#PBFT]]
+ -  Added `StateCompleterSet<T>.ValidatorSetStateCompleter` property.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
@@ -49,7 +54,6 @@ Version PBFT
  -  Added `IVoteMetadata` interface.  [[#PBFT]]
  -  Added `VoteMetadata` class.  [[#PBFT]]
  -  Added `Vote` class.  [[#PBFT]]
- -  Added `ValidatorSet` class.  [[#PBFT]]
  -  Added `BlockContent.Propose()` method.  [[#PBFT]]
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
@@ -60,8 +64,13 @@ Version PBFT
  -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
  -  Added `BlockChain<T>.CleanupBlockCommitStore()` method.  [[#PBFT]]
  -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
- -  Added `BlockChain<T>.ValidateBlockCommit()` method  [[#PBFT]]
- -  Added `Validator` class. [[#PBFT]]
+ -  Added `BlockChain<T>.ValidateBlockCommit()` method.  [[#PBFT]]
+ -  Added `Validator` class.  [[#PBFT]]
+ -  Added `ValidatorSet` class.  [[#PBFT]]
+ -  Added `SetValidator` class.  [[#PBFT]]
+ -  Added `ValidatorSetGetter` delegate.  [[#PBFT]]
+ -  Added `ValidatorSetStateCompleter<T>` delegate.  [[#PBFT]]
+ -  Added `ValidatorSetStateCompleters<T>` static class.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
