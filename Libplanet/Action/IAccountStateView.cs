@@ -77,6 +77,11 @@ namespace Libplanet.Action
         [Pure]
         FungibleAssetValue GetTotalSupply(Currency currency);
 
+        /// <summary>
+        /// Returns the validator set.
+        /// </summary>
+        /// <returns>The validator set of type <see cref="ValidatorSet"/>.
+        /// </returns>
         [Pure]
         ValidatorSet GetValidatorSet();
     }

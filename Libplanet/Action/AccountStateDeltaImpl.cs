@@ -8,7 +8,6 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Serilog;
 
 namespace Libplanet.Action
 {
@@ -160,6 +159,7 @@ namespace Libplanet.Action
             return TotalSupplyGetter(currency);
         }
 
+        /// <inheritdoc/>
         [Pure]
         public virtual ValidatorSet GetValidatorSet() =>
             UpdatedValidatorSet ?? ValidatorSetGetter();
@@ -298,10 +298,11 @@ namespace Libplanet.Action
             );
         }
 
+        /// <inheritdoc/>
+        [Pure]
         public IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power)
         {
             var validator = new Validator(validatorKey, power);
-            Log.Debug("Update {Key} to validator set.", validatorKey);
             var validators = GetValidatorSet().Validators.Remove(validator);
 
             if (power.Sign < 0)
