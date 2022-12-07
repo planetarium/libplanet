@@ -8,7 +8,6 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Serilog;
 
 namespace Libplanet.Action
 {

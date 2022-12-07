@@ -132,28 +132,6 @@ namespace Libplanet.Blockchain
             throw new IncompleteBlockStatesException(offset);
         }
 
-        public ValidatorSet GetValidatorSet(
-            BlockHash offset,
-            ValidatorSetStateCompleter<T> stateCompleter)
-        {
-            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
-            {
-                IReadOnlyList<IValue?> values =
-                    _stateStore.GetStates(stateRootHash, new[] { ValidatorSetKey });
-                return values.Count > 0 && values[0] is List l
-                    ? new ValidatorSet(l)
-                    : new ValidatorSet();
-            }
-
-            if (!(_blockChain is null))
-            {
-                return stateCompleter(_blockChain, offset);
-            }
-
-            throw new IncompleteBlockStatesException(offset);
-        }
-
         internal void Bind(BlockChain<T> blockChain)
         {
             _blockChain = blockChain;
