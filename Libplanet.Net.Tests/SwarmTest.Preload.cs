@@ -217,25 +217,21 @@ namespace Libplanet.Net.Tests
                 for (var i = 1; i < minerChain.Count; i++)
                 {
                     var b = minerChain[i];
-                    var state = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = b.Hash,
-                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
-                    var state = new ActionExecutionState
+                    var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
                         TotalBlockCount = 11,
                         ExecutedBlockCount = i,
                     };
-                    expectedStates.Add(state);
+                    expectedStates.Add(state1);
+
+                    var state2 = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = b.Hash,
+                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state2);
                 }
 
                 _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
@@ -254,7 +250,9 @@ namespace Libplanet.Net.Tests
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [Fact(
+            Skip = "Scenario is no more possible since validator set has moved to state.",
+            Timeout = Timeout)]
         public async Task PreloadWithMaliciousPeer()
         {
             const int initialSharedTipHeight = 3;
@@ -596,31 +594,25 @@ namespace Libplanet.Net.Tests
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var state = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = minerChain[i].Hash,
-                        TotalBlockCount = 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var state = new ActionExecutionState
+                    var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ExecutedBlockCount = i,
                     };
-                    expectedStates.Add(state);
+                    expectedStates.Add(state1);
+
+                    var state2 = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = minerChain[i].Hash,
+                        TotalBlockCount = 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state2);
                 }
 
                 // FIXME: this test does not ensures block download in order
-                Assert.Equal(
-                    new HashSet<PreloadState>(expectedStates),
-                    new HashSet<PreloadState>(actualStates)
-                );
+                Assert.True(expectedStates.SequenceEqual(actualStates));
             }
             finally
             {
@@ -1013,48 +1005,23 @@ namespace Libplanet.Net.Tests
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            var genesisContent1 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: key1.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null));
-            var genesisContent2 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: key2.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null));
-            var genesisBlock1 = genesisContent1.Propose();
-            var genesisBlock2 = genesisContent2.Propose();
 
-            BlockChain<DumbAction> MakeBlockChainWithGenesis(
-                PreEvaluationBlock<DumbAction> genesisBlock,
-                PrivateKey privateKey)
-            {
-                var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-                return MakeBlockChain(
-                    policy,
-                    new MemoryStore(),
-                    stateStore,
-                    genesisBlock: genesisBlock.Evaluate(
-                        privateKey: privateKey,
-                        blockAction: policy.BlockAction,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
-                        stateStore: stateStore)
-                );
-            }
-
-            BlockChain<DumbAction> receiverChain = MakeBlockChainWithGenesis(
-                genesisBlock1, key1);
-            BlockChain<DumbAction> validSeedChain = MakeBlockChainWithGenesis(
-                genesisBlock1, key1);
-            BlockChain<DumbAction> invalidSeedChain = MakeBlockChainWithGenesis(
-                genesisBlock2, key2);
+            BlockChain<DumbAction> receiverChain = MakeBlockChain(
+                policy,
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                privateKey: key1);
+            BlockChain<DumbAction> validSeedChain = MakeBlockChain(
+                policy,
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                privateKey: key1,
+                genesisBlock: receiverChain.Genesis);
+            BlockChain<DumbAction> invalidSeedChain = MakeBlockChain(
+                policy,
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                privateKey: key2);
             Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
             Swarm<DumbAction> validSeedSwarm = CreateSwarm(validSeedChain);
             Swarm<DumbAction> invalidSeedSwarm = CreateSwarm(invalidSeedChain);

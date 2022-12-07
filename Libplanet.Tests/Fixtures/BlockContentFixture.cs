@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Action.Sys;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -36,15 +37,26 @@ namespace Libplanet.Tests.Fixtures
             TimeSpan kst = TimeSpan.FromHours(9);
             GenesisKey = PrivateKey.FromString(
                 "9bf4664ba09a89faeb684b94e69ffde01d26ae14b556204d3f6ab58f61f78418");
+            var txs = new List<Transaction<Arithmetic>>();
+            long nonce = 0;
+            txs.AddRange(
+                TestUtils.ValidatorSet.Validators.Select(
+                    validator => Transaction<Arithmetic>.Create(
+                        nonce++,
+                        GenesisKey,
+                        null,
+                        systemAction: new SetValidator(validator),
+                        timestamp: DateTimeOffset.MinValue)));
+            txs = txs.OrderBy(tx => tx.Id).ToList();
             GenesisContent = new BlockContent<Arithmetic>(
                 new BlockMetadata(
                     index: 0,
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                     publicKey: GenesisKey.PublicKey,
                     previousHash: null,
-                    txHash: null,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: new List<Transaction<Arithmetic>>());
+                transactions: txs);
             GenesisMetadata = new BlockMetadata(GenesisContent);
             GenesisHash = BlockHash.FromString(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a");

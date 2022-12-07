@@ -9,6 +9,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -21,6 +22,7 @@ namespace Libplanet.Tests.Fixtures
     {
         public readonly IReadOnlyList<PrivateKey> PrivateKeys;
         public readonly IReadOnlyList<Address> Addresses;
+        public readonly IReadOnlyList<Arithmetic> Actions;
         public readonly IReadOnlyList<Transaction<Arithmetic>> Txs;
         public readonly PrivateKey Miner;
         public readonly Block<Arithmetic> Genesis;
@@ -42,6 +44,11 @@ namespace Libplanet.Tests.Fixtures
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
             Addresses = PrivateKeys.Select(AddressExtensions.ToAddress).ToImmutableArray();
+            Actions = initialStates
+                .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
+                .Where(pair => !(pair.State is null))
+                .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
+                .Select(pair => Arithmetic.Add(pair.State)).ToImmutableArray();
             Txs = initialStates
                 .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
                 .Where(pair => !(pair.State is null))
@@ -63,29 +70,23 @@ namespace Libplanet.Tests.Fixtures
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            Genesis = new BlockContent<Arithmetic>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: Miner.PublicKey,
-                    previousHash: null,
-                    txHash: BlockContent<Arithmetic>.DeriveTxHash(Txs),
-                    lastCommit: null),
-                transactions: Txs)
-                .Propose()
-                .Evaluate(
-                    privateKey: Miner,
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: StateStore
-            );
+            var preEval = TestUtils.ProposeGenesis(
+                Miner.PublicKey,
+                Txs,
+                DateTimeOffset.UtcNow,
+                Block<Arithmetic>.CurrentProtocolVersion);
+            Genesis = preEval.Evaluate(
+                privateKey: Miner,
+                blockAction: policy.BlockAction,
+                nativeTokenPredicate: policy.NativeTokens.Contains,
+                stateStore: StateStore);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
                 Store,
                 StateStore,
                 Genesis,
-                renderers
+                renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
             );
         }
 

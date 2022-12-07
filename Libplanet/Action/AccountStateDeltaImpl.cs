@@ -298,35 +298,22 @@ namespace Libplanet.Action
             );
         }
 
-        public IAccountStateDelta PromoteValidator(PublicKey validatorKey)
+        public IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power)
         {
-            var validators = GetValidatorSet().Validators;
+            var validator = new Validator(validatorKey, power);
+            Log.Debug("Update {Key} to validator set.", validatorKey);
+            var validators = GetValidatorSet().Validators.Remove(validator);
 
-            if (validators.Contains(validatorKey))
+            if (power.Sign < 0)
             {
-                string msg =
-                    $"The validator set already contains {validatorKey.Format(false)} " +
-                    "so it cannot be promoted.";
-                throw new ValidatorAlreadyExistException(msg, validatorKey);
+                throw new ArgumentException("The power cannot be negative");
+            }
+            else if (power.Sign == 0)
+            {
+                return UpdateValidatorSet(new ValidatorSet(validators.ToList()));
             }
 
-            Log.Debug("Adding {Key} to validator set.", validatorKey);
-            return UpdateValidatorSet(new ValidatorSet(validators.Add(validatorKey).ToList()));
-        }
-
-        public IAccountStateDelta DemoteValidator(PublicKey validatorKey)
-        {
-            var validators = GetValidatorSet().Validators;
-
-            if (!validators.Contains(validatorKey))
-            {
-                string msg =
-                    $"The validator does not contain {validatorKey.Format(false)} " +
-                    "so it cannot be demoted.";
-                throw new ValidatorDoesNotExistException(msg, validatorKey);
-            }
-
-            return UpdateValidatorSet(new ValidatorSet(validators.Remove(validatorKey).ToList()));
+            return UpdateValidatorSet(new ValidatorSet(validators.Add(validator).ToList()));
         }
 
         /// <summary>

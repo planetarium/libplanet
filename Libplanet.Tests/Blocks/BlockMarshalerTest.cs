@@ -64,14 +64,18 @@ namespace Libplanet.Tests
                 .Add(
                     TimestampKey,
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true));
+                .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true))
+                .Add(TxHashKey, _fx.Genesis.TxHash.Value.ByteArray);
             var expectedGenesisHeader = _marshaledGenesisMetadata
                 .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Genesis.Signature ?? default)
                 .Add(HashKey, _fx.Genesis.Hash.ByteArray);
+            IValue expectedGenesisTx = new List(
+                _fx.Genesis.Transactions.Select(tx => tx.Serialize(true)));
             _marshaledGenesis = Dictionary.Empty
-                .Add(HeaderKey, expectedGenesisHeader);
+                .Add(HeaderKey, expectedGenesisHeader)
+                .Add(TransactionsKey, expectedGenesisTx);
 
             // Index #1 block does not have LastCommit.
             _marshaledNextMetadata = Dictionary.Empty

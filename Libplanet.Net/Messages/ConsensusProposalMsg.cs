@@ -19,7 +19,7 @@ namespace Libplanet.Net.Messages
         /// <param name="proposal">A <see cref="Proposal"/> of given height and round.</param>
         public ConsensusProposalMsg(
             Proposal proposal)
-            : base(proposal.Validator, proposal.Height, proposal.Round, proposal.BlockHash)
+            : base(proposal.ValidatorPublicKey, proposal.Height, proposal.Round, proposal.BlockHash)
         {
             Proposal = proposal;
         }

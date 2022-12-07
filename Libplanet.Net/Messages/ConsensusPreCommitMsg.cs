@@ -18,7 +18,7 @@ namespace Libplanet.Net.Messages
         /// <exception cref="ArgumentException">Thrown when given <paramref name="vote"/>'s
         /// <see cref="Vote.Flag"/> is not <see cref="VoteFlag.PreCommit"/>.</exception>
         public ConsensusPreCommitMsg(Vote vote)
-            : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
+            : base(vote.ValidatorPublicKey, vote.Height, vote.Round, vote.BlockHash)
         {
             if (vote.Flag != VoteFlag.PreCommit)
             {

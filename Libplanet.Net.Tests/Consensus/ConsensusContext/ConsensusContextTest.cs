@@ -226,14 +226,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var blockCommit = consensusContext.Contexts[1].GetBlockCommit();
             Assert.NotNull(blockCommit);
             Assert.NotEqual(votes[0], blockCommit!.Votes.First(x =>
-                x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
+                x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             var actualVotesWithoutInvalid =
                 HashSetExtensions.ToHashSet(blockCommit.Votes.Where(x =>
-                    !x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
+                    !x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             var expectedVotes = HashSetExtensions.ToHashSet(votes.Where(x =>
-                !x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
+                !x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
         }

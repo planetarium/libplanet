@@ -433,8 +433,11 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="false"/>.</returns>
         private bool HasTwoThirdsPreVote(int round, Func<ConsensusPreVoteMsg, bool> predicate)
         {
-            int count = _messageLog.GetPreVotes(round).Count(preVote => predicate(preVote));
-            return count > _validatorSet.TwoThirdsCount;
+            var validatorPublicKeys = _messageLog.GetPreVotes(round).FindAll(
+                preVote => predicate(preVote)).Select(
+                preVote => preVote.PreVote.ValidatorPublicKey).ToList();
+            return _validatorSet.GetValidatorsPower(validatorPublicKeys)
+                > _validatorSet.TwoThirdsPower;
         }
 
         /// <summary>
@@ -447,8 +450,11 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="false"/>.</returns>
         private bool HasTwoThirdsPreCommit(int round, Func<ConsensusPreCommitMsg, bool> predicate)
         {
-            int count = _messageLog.GetPreCommits(round).Count(preCommit => predicate(preCommit));
-            return count > _validatorSet.TwoThirdsCount;
+            var validatorPublicKeys = _messageLog.GetPreCommits(round).FindAll(
+                preCommit => predicate(preCommit)).Select(
+                preCommit => preCommit.PreCommit.ValidatorPublicKey).ToList();
+            return _validatorSet.GetValidatorsPower(validatorPublicKeys)
+                > _validatorSet.TwoThirdsPower;
         }
 
         /// <summary>
@@ -461,7 +467,8 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="false"/>.</returns>
         private bool HasOneThirdValidators(int round)
         {
-            return _messageLog.GetValidatorsCount(round) > _validatorSet.OneThirdCount;
+            return _validatorSet.GetValidatorsPower(_messageLog.GetValidators(round))
+                > _validatorSet.OneThirdPower;
         }
     }
 }

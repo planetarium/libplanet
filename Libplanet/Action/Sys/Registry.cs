@@ -9,7 +9,7 @@ namespace Libplanet.Action.Sys
         {
             Mint = 0,
             Transfer = 1,
-            Promote = 2,
+            SetValidator = 2,
         }
 
         public static IAction Deserialize(Bencodex.Types.Dictionary serialized)
@@ -48,7 +48,7 @@ namespace Libplanet.Action.Sys
             {
                 TypeId.Mint => new Mint(),
                 TypeId.Transfer => new Transfer(),
-                TypeId.Promote => new Promote(),
+                TypeId.SetValidator => new SetValidator(),
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(typeId),
                     typeId,
@@ -61,7 +61,7 @@ namespace Libplanet.Action.Sys
             {
                 Mint _ => TypeId.Mint,
                 Transfer _ => TypeId.Transfer,
-                Promote _ => TypeId.Promote,
+                SetValidator _ => TypeId.SetValidator,
                 _ => throw new ArgumentException("Unknown system action type.", nameof(action)),
             };
     }

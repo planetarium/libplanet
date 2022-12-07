@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -159,7 +160,7 @@ namespace Libplanet.Tests.Action
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             ITrie previousBlockStatesTrie = new MerkleTrie(keyValueStore);
-            previousBlockStatesTrie = previousBlockStatesTrie.Set(default, Null.Value);
+            previousBlockStatesTrie = previousBlockStatesTrie.Set(new KeyBytes(0x01), Null.Value);
             var actionContext = new ActionContext(
                 genesisHash: null,
                 signer: _address,
@@ -231,9 +232,8 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
 
-            public IAccountStateDelta PromoteValidator(PublicKey validatorKey) => this;
-
-            public IAccountStateDelta DemoteValidator(PublicKey validatorKey) => this;
+            public IAccountStateDelta SetValidator(
+                PublicKey validatorKey, BigInteger power) => this;
         }
     }
 }

@@ -70,11 +70,17 @@ namespace Libplanet.Tests.Action
                     customActions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            PreEvaluationBlock<RandomAction> noStateRootBlock = ProposeGenesis(
-                proposer: GenesisProposer.PublicKey,
-                timestamp: timestamp,
-                transactions: txs
-            );
+            var noStateRootBlock = new BlockContent<RandomAction>(
+                new BlockMetadata(
+                    protocolVersion: Block<RandomAction>.CurrentProtocolVersion,
+                    index: 0,
+                    timestamp: timestamp,
+                    miner: GenesisProposer.PublicKey.ToAddress(),
+                    publicKey: GenesisProposer.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent<RandomAction>.DeriveTxHash(txs),
+                    lastCommit: null),
+                transactions: txs).Propose();
             Block<RandomAction> stateRootBlock =
                 noStateRootBlock.Evaluate(GenesisProposer, null, _ => true, stateStore);
             var actionEvaluator =
@@ -306,10 +312,6 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 genesis.Miner);
-            Assert.Empty(
-                actionEvaluator.EvaluateTxs(
-                    block: genesis,
-                    previousStates: previousStates));
 
             Transaction<DumbAction>[] block1Txs =
             {
@@ -361,9 +363,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
-                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
+                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
+                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -438,7 +440,7 @@ namespace Libplanet.Tests.Action
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
                 Transaction<DumbAction>.Create(
                     0,
                     _txFx.PrivateKey3,
@@ -454,7 +456,7 @@ namespace Libplanet.Tests.Action
                             recordRehearsal: true,
                             recordRandom: true),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(6)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
                 Enumerable.Range(0, block2Txs.Count()), (x, y) => (x, y)))

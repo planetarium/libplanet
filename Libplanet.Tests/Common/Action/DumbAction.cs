@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Common.Action
             {
                 nextState = Validators.Aggregate(
                     nextState,
-                    (current, validator) => current.PromoteValidator(validator));
+                    (current, validator) => current.SetValidator(validator, BigInteger.One));
                 Log.Debug("Execute validator action: Promote! {State}", nextState);
             }
 
@@ -300,9 +300,11 @@ namespace Libplanet.Tests.Common.Action
             string transfer = Transfer is Tuple<Address, Address, BigInteger> t
                 ? $"({t.Item1}, {t.Item2}, {t.Item3})"
                 : "null";
-            string validators = Validators
-                .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
-                .TrimEnd(',', ' ');
+            string validators = Validators is null
+                ? "none"
+                : Validators
+                    .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
+                    .TrimEnd(',', ' ');
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +

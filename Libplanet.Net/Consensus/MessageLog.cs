@@ -82,12 +82,12 @@ namespace Libplanet.Net.Consensus
         /// <item><description>
         ///     If <paramref name="message"/> is a <see cref="ConsensusPreVoteMsg"/> and
         ///     there is already a <see cref="ConsensusPreVoteMsg"/> with the same
-        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.Validator"/>.
+        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.ValidatorPublicKey"/>.
         /// </description></item>
         /// <item><description>
         ///     If <paramref name="message"/> is a <see cref="ConsensusPreCommitMsg"/> and
         ///     there is already a <see cref="ConsensusPreCommitMsg"/> with the same
-        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.Validator"/>.
+        ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.ValidatorPublicKey"/>.
         /// </description></item>
         /// </list>
         /// </para>
@@ -112,23 +112,23 @@ namespace Libplanet.Net.Consensus
                         _height);
                     return false;
                 }
-                else if (!_validators.Contains(message.Validator))
+                else if (!_validators.PublicKeys.Contains(message.ValidatorPublicKey))
                 {
                     _logger.Debug(
                         "Given message's validator {MessageValidator} is not one of " +
                         "the validators for height {Height}",
-                        message.Validator,
+                        message.ValidatorPublicKey,
                         message.Height);
                     return false;
                 }
                 else if (message is ConsensusProposalMsg proposal1 &&
-                    !proposal1.Validator.Equals(expectedProposer))
+                    !proposal1.ValidatorPublicKey.Equals(expectedProposer.PublicKey))
                 {
                     _logger.Debug(
                         "Given proposal message's validator {MessageValidator} does not match " +
                         "the expected proposer {ExpectedValidator} for height {Height} " +
                         "and round {Round}",
-                        proposal1.Validator,
+                        proposal1.ValidatorPublicKey,
                         expectedProposer,
                         proposal1.Height,
                         proposal1.Round);
@@ -158,18 +158,18 @@ namespace Libplanet.Net.Consensus
                             new Dictionary<PublicKey, ConsensusPreVoteMsg>();
                     }
 
-                    if (_preVotes[preVote.Round].ContainsKey(preVote.Validator))
+                    if (_preVotes[preVote.Round].ContainsKey(preVote.ValidatorPublicKey))
                     {
                         _logger.Debug(
                             "There is already a prevote message for given prevote message's " +
                             "round {Round} and validator {Validator}",
                             preVote.Round,
-                            preVote.Validator);
+                            preVote.ValidatorPublicKey);
                         return false;
                     }
                     else
                     {
-                        _preVotes[preVote.Round][preVote.Validator] = preVote;
+                        _preVotes[preVote.Round][preVote.ValidatorPublicKey] = preVote;
                         return true;
                     }
                 }
@@ -181,18 +181,18 @@ namespace Libplanet.Net.Consensus
                             new Dictionary<PublicKey, ConsensusPreCommitMsg>();
                     }
 
-                    if (_preCommits[preCommit.Round].ContainsKey(preCommit.Validator))
+                    if (_preCommits[preCommit.Round].ContainsKey(preCommit.ValidatorPublicKey))
                     {
                         _logger.Debug(
                             "There is already a precommit message for given precommit message's " +
                             "round {Round} and validator {Validator}",
                             preCommit.Round,
-                            preCommit.Validator);
+                            preCommit.ValidatorPublicKey);
                         return false;
                     }
                     else
                     {
-                        _preCommits[preCommit.Round][preCommit.Validator] = preCommit;
+                        _preCommits[preCommit.Round][preCommit.ValidatorPublicKey] = preCommit;
                         return true;
                     }
                 }
@@ -263,7 +263,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>The number of distinct validators for <see cref="ConsensusMsg"/>s
         /// in given <paramref name="round"/>.
         /// </returns>
-        internal int GetValidatorsCount(int round)
+        internal List<PublicKey> GetValidators(int round)
         {
             lock (_lock)
             {
@@ -271,7 +271,7 @@ namespace Libplanet.Net.Consensus
 
                 if (_proposals.ContainsKey(round))
                 {
-                    validators.Add(_proposals[round].Validator);
+                    validators.Add(_proposals[round].ValidatorPublicKey);
                 }
 
                 return validators
@@ -280,9 +280,21 @@ namespace Libplanet.Net.Consensus
                         : new Dictionary<PublicKey, ConsensusPreVoteMsg>().Keys)
                     .Union(_preCommits.ContainsKey(round)
                         ? _preCommits[round].Keys
-                        : new Dictionary<PublicKey, ConsensusPreCommitMsg>().Keys)
-                    .Count();
+                        : new Dictionary<PublicKey, ConsensusPreCommitMsg>().Keys).ToList();
             }
+        }
+
+        /// <summary>
+        /// Counts distinct validators for <see cref="ConsensusMsg"/>s in given
+        /// <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">The round to search.</param>
+        /// <returns>The number of distinct validators for <see cref="ConsensusMsg"/>s
+        /// in given <paramref name="round"/>.
+        /// </returns>
+        internal int GetValidatorsCount(int round)
+        {
+           return GetValidators(round).Count;
         }
 
         /// <summary>
@@ -315,15 +327,15 @@ namespace Libplanet.Net.Consensus
             {
                 ImmutableArray<Vote> votes = _validators.Validators.Select(validator =>
                     _preCommits.ContainsKey(round) &&
-                    _preCommits[round].ContainsKey(validator) &&
-                    hash.Equals(_preCommits[round][validator].BlockHash)
-                        ? _preCommits[round][validator].PreCommit
+                    _preCommits[round].ContainsKey(validator.PublicKey) &&
+                    hash.Equals(_preCommits[round][validator.PublicKey].BlockHash)
+                        ? _preCommits[round][validator.PublicKey].PreCommit
                         : new VoteMetadata(
                             _height,
                             round,
                             hash,
                             DateTimeOffset.UtcNow,
-                            validator,
+                            validator.PublicKey,
                             VoteFlag.Null).Sign(null)).ToImmutableArray();
 
                 try
