@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -2057,6 +2058,12 @@ namespace Libplanet.Tests.Blockchain
                 .Add(storeFixture.Address2)
                 .Add(storeFixture.Address3);
 
+            var validatorPrivKey = new PrivateKey();
+            var systemActions = new IAction[]
+            {
+                new SetValidator(new Validator(validatorPrivKey.PublicKey, BigInteger.One)),
+            };
+
             var actions =
                 addresses
                     .Select((address, index) => new DumbAction(address, index.ToString()))
@@ -2067,9 +2074,14 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     storeFixture.Store,
                     storeFixture.StateStore,
-                    BlockChain<DumbAction>.ProposeGenesisBlock(actions));
+                    BlockChain<DumbAction>.ProposeGenesisBlock(
+                        customActions: actions, systemActions: systemActions));
 
-            Assert.Equal(addresses, blockChain.Genesis.Transactions.First().UpdatedAddresses);
+            var validator = blockChain.GetValidatorSet()[0];
+            Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
+            Assert.Equal(BigInteger.One, validator.Power);
+            Assert.Equal(addresses, blockChain.Genesis.Transactions.Single(
+                tx => !(tx.CustomActions is null)).UpdatedAddresses);
 
             var states = addresses.Select(address => blockChain.GetState(address))
                 .ToArray();

@@ -424,8 +424,12 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
-        /// <param name="actions">List of actions will be included in the genesis block.
+        /// <param name="customActions">List of custom actions
+        /// will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
+        /// as default.</param>
+        /// <param name="systemActions">System action that will be included in the genesis block.
+        /// If it's null, no system action will be added.
         /// as default.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
@@ -440,19 +444,34 @@ namespace Libplanet.Blockchain
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> ProposeGenesisBlock(
-            IEnumerable<T> actions = null,
+            IEnumerable<T> customActions = null,
+            IEnumerable<IAction> systemActions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
             privateKey ??= new PrivateKey();
-            actions ??= ImmutableArray<T>.Empty;
+            customActions ??= ImmutableArray<T>.Empty;
+            systemActions ??= ImmutableArray<IAction>.Empty;
+            int nonce = 0;
             Transaction<T>[] transactions =
             {
                 Transaction<T>.Create(
-                    0, privateKey, null, actions, timestamp: timestamp),
+                    nonce, privateKey, null, customActions, timestamp: timestamp),
             };
+            foreach (var systemAction in systemActions)
+            {
+                nonce += 1;
+                transactions = transactions.Concat(
+                    new Transaction<T>[]
+                    {
+                        Transaction<T>.Create(
+                            nonce, privateKey, null, systemAction, timestamp: timestamp),
+                    }).ToArray();
+            }
+
+            transactions = transactions.OrderBy(tx => tx.Id).ToArray();
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
