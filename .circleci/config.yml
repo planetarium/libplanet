@@ -513,7 +513,8 @@ workflows:
   main:
     jobs:
     - linux-netcore-build
-    - linux-mono-build
+    # Temporarily tunred off by excluding of linux-unity-test
+    #- linux-mono-build
     - linux-netcore-test-netmq:
         requires: [linux-netcore-build]
     - linux-netcore-test-ar-SA:
@@ -524,8 +525,9 @@ workflows:
         requires: [linux-netcore-build]
     - windows-netcore-test:
         requires: [linux-netcore-build]
-    - linux-unity-test:
-        requires: [linux-mono-build]
+    # Temporarily tunred off due to error on xunity-unity-runner:
+    #- linux-unity-test:
+    #    requires: [linux-mono-build]
     # Temporarily turned off due to CircleCI's slow worker node assignments of
     # macOS and Windows VMs:
     #- macos-unity-test:
