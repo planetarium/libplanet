@@ -33,6 +33,7 @@ namespace Libplanet.Net.Consensus
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
+        private bool _bootstrapping;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
@@ -71,6 +72,7 @@ namespace Libplanet.Net.Consensus
 
             _contexts = new Dictionary<long, Context<T>>();
             _blockChain.TipChanged += OnBlockChainTipChanged;
+            _bootstrapping = true;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -241,7 +243,7 @@ namespace Libplanet.Net.Consensus
                         AttachEventHandlers(_contexts[height]);
                     }
 
-                    _contexts[height].Start(lastCommit);
+                    _contexts[height].Start(lastCommit, _bootstrapping);
                 }
             }
         }
@@ -260,6 +262,7 @@ namespace Libplanet.Net.Consensus
         /// </remarks>
         public void Commit(Block<T> block, BlockCommit? commit)
         {
+            _bootstrapping = false;
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
             _blockChain.Append(block, commit);
         }

@@ -13,7 +13,10 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
         /// </param>
-        public void Start(BlockCommit? lastCommit = null)
+        /// <param name="bootstrapping">A <see langword="bool"/> flag indicating whether
+        /// this <see cref="Context{T}"/> should run as a bootstrapping <see cref="Context{T}"/>
+        /// or not.</param>
+        public void Start(BlockCommit? lastCommit = null, bool bootstrapping = false)
         {
             _logger.Debug(
                 "Starting context for height #{Height}, LastCommit: {LastCommit}",
@@ -25,6 +28,11 @@ namespace Libplanet.Net.Consensus
             // FIXME: Exceptions inside tasks should be handled properly.
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
             _ = MutationConsumerTask(_cancellationTokenSource.Token);
+
+            if (bootstrapping)
+            {
+                _ = BootstrappingTask(_cancellationTokenSource.Token);
+            }
         }
 
         /// <summary>
@@ -87,6 +95,29 @@ namespace Libplanet.Net.Consensus
                         nameof(ConsumeMutation));
                     ExceptionOccurred?.Invoke(this, e);
                     throw;
+                }
+            }
+        }
+
+        internal async Task BootstrappingTask(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                try
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                }
+                catch (OperationCanceledException oce)
+                {
+                    _logger.Debug(oce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, oce);
+                    throw;
+                }
+
+                if (_messageLog.GetRandomMessage() is { } message)
+                {
+                    BroadcastMessage(message);
                 }
             }
         }
