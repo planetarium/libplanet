@@ -69,6 +69,8 @@
 <ul>
 <li><code>BlockChain&lt;T&gt;()</code> now explicitly requires both <code>store</code> and <code>stateStore</code>
 arguments to be not <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2609">#2609</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Swap()</code> now throws an <code>InvalidOperationException</code> if called
+on a non-canonical chain.  [<a href="https://github.com/planetarium/libplanet/pull/2619">#2619</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
