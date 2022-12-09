@@ -31,7 +31,7 @@ namespace Libplanet.Net.Transports
         private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
 
-        private NetMQQueue<Message> _replyQueue;
+        private NetMQQueue<NetMQMessage> _replyQueue;
 
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
@@ -275,7 +275,7 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            _replyQueue = new NetMQQueue<Message>();
+            _replyQueue = new NetMQQueue<NetMQMessage>();
             _routerPoller = new NetMQPoller { _router, _replyQueue };
 
             _router.ReceiveReady += ReceiveMessage;
@@ -513,7 +513,15 @@ namespace Libplanet.Net.Transports
                 cancellationToken.Register(() => tcs.TrySetCanceled());
             _replyCompletionSources.TryAdd(identityHex, tcs);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(message);
+            _replyQueue.Enqueue(
+                _messageCodec.Encode(
+                    message,
+                    _privateKey,
+                    _appProtocolVersion,
+                    AsPeer,
+                    DateTimeOffset.UtcNow
+                )
+            );
 
             await tcs.Task;
             _replyCompletionSources.TryRemove(identityHex, out _);
@@ -573,63 +581,67 @@ namespace Libplanet.Net.Transports
                     return;
                 }
 
-                Message message = _messageCodec.Decode(raw, false);
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "InboundMessageReport")
-                    .Debug(
-                        "Received message {Message} from {Peer}.",
-                        message,
-                        message.Remote);
-                try
-                {
-                    _messageValidator.ValidateTimestamp(message);
-                    _messageValidator.ValidateAppProtocolVersion(message);
-                }
-                catch (InvalidMessageTimestampException imte)
-                {
-                    _logger.Debug(
-                        imte,
-                        "Received request {Message} from {Peer} has an invalid timestamp.",
-                        message,
-                        message.Remote);
-                    return;
-                }
-                catch (DifferentAppProtocolVersionException dapve)
-                {
-                    _logger.Debug(
-                        dapve,
-                        "Received request {Message} from {Peer} has an invalid APV.",
-                        message,
-                        message.Remote);
-                    var diffVersion = new DifferentVersionMsg() { Identity = message.Identity };
-                    _logger.Debug(
-                        "Replying to {Peer} with {Reply}.",
-                        diffVersion);
-                    _ = ReplyMessageAsync(diffVersion, _runtimeCancellationTokenSource.Token);
-                    return;
-                }
-
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
 
                 Task.Run(() =>
                 {
                     try
                     {
-                        _ = ProcessMessageHandler.InvokeAsync(message);
+                        Message message = _messageCodec.Decode(raw, false);
+                        _logger
+                            .ForContext("Tag", "Metric")
+                            .ForContext("Subtag", "InboundMessageReport")
+                            .Debug(
+                                "Received message {Message} from {Peer}.",
+                                message,
+                                message.Remote);
+                        try
+                        {
+                            _messageValidator.ValidateTimestamp(message);
+                            _messageValidator.ValidateAppProtocolVersion(message);
+
+                            _ = ProcessMessageHandler.InvokeAsync(message);
+                        }
+                        catch (InvalidMessageTimestampException imte)
+                        {
+                            _logger.Debug(
+                                imte,
+                                "Received request {Message} from {Peer} has an invalid timestamp.",
+                                message,
+                                message.Remote);
+                        }
+                        catch (DifferentAppProtocolVersionException dapve)
+                        {
+                            _logger.Debug(
+                                dapve,
+                                "Received request {Message} from {Peer} has an invalid APV.",
+                                message,
+                                message.Remote);
+                            var diffVersion = new DifferentVersionMsg()
+                            {
+                                Identity = message.Identity,
+                            };
+                            _logger.Debug(
+                                "Replying to {Peer} with {Reply}.",
+                                diffVersion);
+                            _ = ReplyMessageAsync(
+                                diffVersion,
+                                _runtimeCancellationTokenSource.Token
+                            );
+                        }
+                    }
+                    catch (InvalidMessageException ex)
+                    {
+                        _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
                     }
                     catch (Exception exc)
                     {
                         _logger.Error(
                             exc,
-                            "Something went wrong during message parsing.");
+                            "Something went wrong during message processing.");
                         throw;
                     }
                 });
-            }
-            catch (InvalidMessageException ex)
-            {
-                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
             }
             catch (Exception ex)
             {
@@ -639,24 +651,14 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void DoReply(object sender, NetMQQueueEventArgs<Message> e)
+        private void DoReply(object sender, NetMQQueueEventArgs<NetMQMessage> e)
         {
-            Message message = e.Queue.Dequeue();
-            string identityHex = ByteUtil.Hex(
-                message.Identity is { } bytes
-                    ? bytes
-                    : new byte[] { });
-            _logger.Verbose("Dequeued reply message {Message} {Identity}", message, identityHex);
-            NetMQMessage netMqMessage = _messageCodec.Encode(
-                            message,
-                            _privateKey,
-                            _appProtocolVersion,
-                            AsPeer,
-                            DateTimeOffset.UtcNow);
+            NetMQMessage message = e.Queue.Dequeue();
+            string identityHex = ByteUtil.Hex(message[0].Buffer);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMqMessage))
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
             {
                 _logger.Debug(
                     "{Message} as a reply to {Identity} sent.", message, identityHex);
