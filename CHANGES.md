@@ -12,6 +12,8 @@ To be released.
 
  -  `BlockChain<T>()` now explicitly requires both `store` and `stateStore`
     arguments to be not `null`.  [[#2609]]
+ -  `BlockChain<T>.Swap()` now throws an `InvalidOperationException` if called
+    on a non-canonical chain.  [[#2619]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +30,7 @@ To be released.
 ### CLI tools
 
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
+[#2619]: https://github.com/planetarium/libplanet/pull/2619
 
 
 Version 0.45.0
