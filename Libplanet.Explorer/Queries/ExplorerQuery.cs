@@ -25,6 +25,7 @@ namespace Libplanet.Explorer.Queries
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
             Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
             Field<StateQuery<T>>("stateQuery", resolve: context => new { });
+            Field<VoteQuery<T>>("previousVoteQuery", resolve: context => new { });
             Field<NonNullGraphType<NodeStateType<T>>>(
                 "nodeState",
                 resolve: context => chainContext

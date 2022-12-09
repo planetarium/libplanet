@@ -84,6 +84,11 @@ Version PBFT
  -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
  -  (Libplaent.Net) Added `ProposalMetadata` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `VoteFlagType` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `VoteType` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `VoteCount` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `VoteCountType` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `VoteQuery` class.  [[#PBFT]]
 
 ### Behavioral changes
 
