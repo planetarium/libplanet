@@ -113,6 +113,12 @@ public static class Utils
         // use IStore as the option/argument types rather than taking them as strings.
         var uri = new Uri(uriString);
 
+        // FIXME: A workaround for MSBuild not including unused references. Find a better way
+        // to handle this. See: https://github.com/planetarium/libplanet/issues/2623
+#pragma warning disable CS0219
+        RocksDBStore.RocksDBStore? rocksDbStore = null;
+#pragma warning restore CS0219
+
         switch (uri.Scheme)
         {
             case "default":
