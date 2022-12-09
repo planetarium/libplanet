@@ -20,7 +20,12 @@ namespace Libplanet.Blockchain
             bool render,
             StateCompleterSet<T>? stateCompleters = null)
         {
-            if (other is null)
+            if (!IsCanonical)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot perform {nameof(Swap)} on a non canonical chain.");
+            }
+            else if (other is null)
             {
                 throw new ArgumentNullException(nameof(other));
             }
@@ -108,9 +113,10 @@ namespace Libplanet.Blockchain
                         StagePolicy.Stage(this, tx);
                     }
 
+                    Store.SetCanonicalChainId(other.Id);
                     Guid obsoleteId = Id;
                     Id = other.Id;
-                    Store.SetCanonicalChainId(Id);
+
                     _blocks = new BlockSet<T>(Store);
                     foreach (Transaction<T> tx in txsToUnstage)
                     {
