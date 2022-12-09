@@ -281,13 +281,11 @@ namespace Libplanet.Net.Transports
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
 
-            List<Task> tasks = new List<Task>();
-
-            tasks.Add(RunPoller(_routerPoller));
+            Task pollerTask = RunPoller(_routerPoller);
 
             Running = true;
 
-            await await Task.WhenAny(tasks);
+            await pollerTask;
         }
 
         /// <inheritdoc/>
