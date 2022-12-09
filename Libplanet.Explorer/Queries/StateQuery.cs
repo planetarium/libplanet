@@ -37,8 +37,8 @@ public class StateQuery<T>
             ),
             resolve: ResolveTotalSupply
         );
-        Field<FungibleAssetValueType>(
-            "validatorSet",
+        Field<ListGraphType<NonNullGraphType<ValidatorType>>>(
+            "validators",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
             ),
@@ -160,6 +160,6 @@ public class StateQuery<T>
         return context.Source.ChainStates.GetValidatorSet(
             offset,
             ValidatorSetStateCompleters<T>.Reject
-        );
+        ).Validators;
     }
 }
