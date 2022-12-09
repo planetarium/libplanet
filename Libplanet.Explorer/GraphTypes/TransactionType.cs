@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Blockchain;
+using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
-using Libplanet.Explorer.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -13,7 +11,7 @@ namespace Libplanet.Explorer.GraphTypes
     public class TransactionType<T> : ObjectGraphType<Transaction<T>>
         where T : IAction, new()
     {
-        public TransactionType()
+        public TransactionType(IBlockChainContext<T> context)
         {
             Field<NonNullGraphType<IdGraphType>>(
                 name: "Id",
@@ -64,25 +62,22 @@ namespace Libplanet.Explorer.GraphTypes
                     return Convert.ToBase64String(bytes);
                 });
 
-            // The block including the transaction. - Only RichStore supports.
-            Field<ListGraphType<NonNullGraphType<BlockType<T>>>>(
+            // The block including the transaction, only available when IBlockChainIndex is
+            // provided.
+            Field<NonNullGraphType<BlockType<T>>>(
                 name: "BlockRef",
                 description: "The block including the transaction.",
                 resolve: ctx =>
                 {
-                    // FIXME: use context with DI.
-                    const string storeKey = nameof(IBlockChainContext<T>.Store);
-                    const string blockChainKey = nameof(IBlockChainContext<T>.BlockChain);
-                    if (ctx.UserContext[storeKey] is IRichStore richStore &&
-                        ctx.UserContext[blockChainKey] is BlockChain<T>)
+                    if (context is { Index: { } index, BlockChain: { } chain })
                     {
-                        return richStore
-                            .IterateTxReferences(ctx.Source.Id)
-                            .Select(r => richStore.GetBlock<T>(r.Item2));
+                        return chain[index.GetContainedBlockHashByTxId(ctx.Source.Id)];
                     }
 
                     var exceptionMessage =
-                        $"This feature 'BlockRef' needs {nameof(IRichStore)} implementation";
+                        "To resolve the field 'BlockRef', an instance of"
+                        + $" {nameof(IBlockChainIndex)} must be provided to the"
+                        + $" {nameof(IBlockChainContext<T>)}.";
                     ctx.Errors.Add(new ExecutionError(exceptionMessage));
                     return null;
                 });

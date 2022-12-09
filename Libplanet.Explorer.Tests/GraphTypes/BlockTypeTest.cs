@@ -10,6 +10,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Explorer.Tests.Queries;
 using Libplanet.Store;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -75,7 +76,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 }";
 
             var store = new MemoryStore();
-            var blockType = new BlockType<NullAction>(store);
+            var blockType = new BlockType<NullAction>(new MockBlockChainContext<NullAction>(store));
             ExecutionResult result = await ExecuteQueryAsync(
                 query,
                 blockType,

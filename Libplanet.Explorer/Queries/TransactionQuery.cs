@@ -11,7 +11,6 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
-using Libplanet.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
@@ -60,7 +59,7 @@ namespace Libplanet.Explorer.Queries
                     var involved = context.GetArgument<Address?>("involvedAddress");
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
-                    int? limit = context.GetArgument<int?>("limit", null);
+                    int? limit = context.GetArgument<int?>("limit");
 
                     return ExplorerQuery<T>.ListTransactions(signer, involved, desc, offset, limit);
                 }
@@ -221,12 +220,28 @@ namespace Libplanet.Explorer.Queries
                 ),
                 resolve: context =>
                 {
-                    BlockChain<T> blockChain = _context.BlockChain;
-                    IStore store = _context.Store;
-                    TxId txId = new TxId(
+                    var blockChain = _context.BlockChain;
+                    var store = _context.Store;
+                    var index = _context.Index;
+                    var txId = new TxId(
                         ByteUtil.ParseHex(context.GetArgument<string>("txId"))
                     );
-                    if (!(store.GetFirstTxIdBlockHashIndex(txId) is { } txExecutedBlockHash))
+                    BlockHash? txExecutedBlockHash = null;
+                    if (
+                        index is not null
+                        && index.TryGetContainedBlockHashById(txId, out var hash))
+                    {
+                        txExecutedBlockHash = hash;
+                    }
+                    else if (
+                        index is null
+                        && store.GetFirstTxIdBlockHashIndex(txId)
+                            is { } txExecutedBlockHashFromStore)
+                    {
+                        txExecutedBlockHash = txExecutedBlockHashFromStore;
+                    }
+
+                    if (txExecutedBlockHash is not { } txExecutedBlockHashValue)
                     {
                         return blockChain.GetStagedTransactionIds().Contains(txId)
                             ? new TxResult(
@@ -253,15 +268,12 @@ namespace Libplanet.Explorer.Queries
 
                     try
                     {
-                        TxExecution execution = blockChain.GetTxExecution(
-                            txExecutedBlockHash,
+                        var execution = blockChain.GetTxExecution(
+                            txExecutedBlockHashValue,
                             txId
                         );
-                        Block<T> txExecutedBlock = blockChain[txExecutedBlockHash];
+                        var txExecutedBlock = blockChain[txExecutedBlockHashValue];
 
-                        var updatedStates = ((TxSuccess)execution).UpdatedStates;
-                        var updatedFungibleAssets = ((TxSuccess)execution).UpdatedFungibleAssets;
-                        var fungibleAssetsDelta = ((TxSuccess)execution).FungibleAssetsDelta;
                         return execution switch
                         {
                             TxSuccess txSuccess => new TxResult(

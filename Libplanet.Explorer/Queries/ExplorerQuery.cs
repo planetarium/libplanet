@@ -1,14 +1,13 @@
 #nullable disable
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Store;
@@ -44,6 +43,8 @@ namespace Libplanet.Explorer.Queries
         private static BlockChain<T> Chain => ChainContext.BlockChain;
 
         private static IStore Store => ChainContext.Store;
+
+        private static IBlockChainIndex Index => ChainContext.Index;
 
         internal static IEnumerable<Block<T>> ListBlocks(
             bool desc,
@@ -215,18 +216,17 @@ namespace Libplanet.Explorer.Queries
             Address? signer,
             Address? involved)
         {
-            if (involved is null && signer is null)
+            if (signer is { } signerVal)
             {
-                return true;
+                return tx.Signer.Equals(signerVal);
             }
-            else if (!(signer is null))
+
+            if (involved is { } involvedVal)
             {
-                return tx.Signer.Equals(signer.Value);
+                return tx.UpdatedAddresses.Contains(involvedVal);
             }
-            else
-            {
-                return tx.UpdatedAddresses.Contains(involved.Value);
-            }
+
+            return true;
         }
     }
 }
