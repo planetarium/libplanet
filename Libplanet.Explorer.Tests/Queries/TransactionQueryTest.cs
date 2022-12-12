@@ -16,6 +16,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Queries;
+using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -146,8 +147,13 @@ public class TransactionQueryTest
         where T : IAction, new()
     {
         public bool Preloaded => true;
+
         public BlockChain<T> BlockChain { get; }
+
         public IStore Store { get; }
+
+        public Swarm<T> Swarm { get; }
+
         public PrivateKey Validator { get; }
 
         public MockBlockChainContext()
