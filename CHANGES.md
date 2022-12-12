@@ -35,6 +35,9 @@ Version PBFT
  -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+ -  (Libplanet.Net) Added `Swarm<T>.Validators` property.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `peers` and `validators` query
+    in `NodeStateType`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
@@ -84,6 +87,7 @@ Version PBFT
  -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
  -  (Libplaent.Net) Added `ProposalMetadata` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `BoundPeerType` class.  [[#PBFT]]
 
 ### Behavioral changes
 
