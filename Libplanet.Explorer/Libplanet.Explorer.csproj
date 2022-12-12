@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Lexical.FileProvider.SharpCompress" Version="0.14.4" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -69,6 +70,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Views\**" />
+    <EmbeddedResource Include="libplanet-explorer-frontend-504d1b2.zip" />
   </ItemGroup>
 
   <ItemGroup>

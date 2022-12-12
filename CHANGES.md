@@ -31,6 +31,11 @@ To be released.
     [[#2474], [#2505]]
  -  (Libplanet.Explorer) Added `actionsLogsList` field to `TxResultType`.
     [[#2474], [#2505]]
+ -  (Libplanet.Explorer) Added `ApplicationBuilderExtensions` static class.
+    [[#2627]]
+ -  (Libplanet.Explorer) Added
+    `IApplicationBuilder.UseLibplanetExplorerFrontend()` extension method.
+    [[#2610], [#2627]]
 
 ### Behavioral changes
 
@@ -43,7 +48,9 @@ To be released.
 [#2474]: https://github.com/planetarium/libplanet/discussions/2474
 [#2505]: https://github.com/planetarium/libplanet/pull/2505
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
+[#2610]: https://github.com/planetarium/libplanet/issues/2610
 [#2619]: https://github.com/planetarium/libplanet/pull/2619
+[#2627]: https://github.com/planetarium/libplanet/pull/2627
 
 
 Version 0.45.0
