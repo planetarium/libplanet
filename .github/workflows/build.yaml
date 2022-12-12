@@ -10,6 +10,7 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@main
     - if: github.ref_type == 'tag'
       run: |
