@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,6 +91,11 @@ namespace Libplanet.Net.Consensus
 
         /// <inheritdoc cref="ConsensusContext{T}.Height"/>
         public long Height => _consensusContext.Height;
+
+        /// <summary>
+        /// An <see cref="IEnumerable{BoundPeer}"/> of the validators.
+        /// </summary>
+        public IReadOnlyList<BoundPeer> Validators => _gossip.Peers.ToList().AsReadOnly();
 
         // FIXME: This should be exposed in a better way.
         internal ConsensusContext<T> ConsensusContext => _consensusContext;
