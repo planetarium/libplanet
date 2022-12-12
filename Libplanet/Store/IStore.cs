@@ -351,7 +351,7 @@ namespace Libplanet.Store
         void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <summary>
-        /// Gets a <see cref="BlockCommit"/> of given height from store.
+        /// Gets a <see cref="BlockCommit"/> for given <see cref="BlockHash"/> from store.
         /// </summary>
         /// <param name="blockHash">The <see cref="BlockHash"/> of a <see cref="BlockCommit"/>
         /// to get.</param>
