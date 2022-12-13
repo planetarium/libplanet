@@ -184,11 +184,18 @@ namespace Libplanet.Store
             );
             var favDelta = SerializeGroupedFAVs(txSuccess.FungibleAssetsDelta);
             var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
-            return Dictionary.Empty
+            var serialized = Dictionary.Empty
                 .Add("fail", false)
                 .Add("sDelta", sDelta)
                 .Add("favDelta", new Dictionary(favDelta))
                 .Add("updatedFAVs", new Dictionary(updatedFAVs));
+
+            if (txSuccess.ActionsLogsList is { } actionsLogsList)
+            {
+                serialized = serialized.Add("actionsLogsList", SerializeLogs(actionsLogsList));
+            }
+
+            return serialized;
         }
 
         protected static IValue SerializeTxExecution(TxFailure txFailure)
@@ -196,6 +203,12 @@ namespace Libplanet.Store
             Dictionary d = Dictionary.Empty
                 .Add("fail", true)
                 .Add("exc", txFailure.ExceptionName);
+
+            if (txFailure.ActionsLogsList is { } actionsLogsList)
+            {
+                d = d.Add("actionsLogsList", SerializeLogs(txFailure.ActionsLogsList));
+            }
+
             return txFailure.ExceptionMetadata is { } v ? d.Add("excMeta", v) : d;
         }
 
@@ -217,11 +230,19 @@ namespace Libplanet.Store
             try
             {
                 bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
+
+                List<List<string>> actionsLogsList = null;
+                if (d.ContainsKey("actionsLogsList"))
+                {
+                    actionsLogsList =
+                        DeserializeLogs(d.GetValue<List>("actionsLogsList"));
+                }
+
                 if (fail)
                 {
                     string excName = d.GetValue<Text>("exc");
                     IValue excMetadata = d.ContainsKey("excMeta") ? d["excMeta"] : null;
-                    return new TxFailure(blockHash, txid, excName, excMetadata);
+                    return new TxFailure(blockHash, txid, actionsLogsList, excName, excMetadata);
                 }
 
                 ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
@@ -233,9 +254,11 @@ namespace Libplanet.Store
                     favDelta = DeserializeGroupedFAVs(d.GetValue<Dictionary>("favDelta"));
                 IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>
                     updatedFAVs = DeserializeGroupedFAVs(d.GetValue<Dictionary>("updatedFAVs"));
+
                 return new TxSuccess(
                     blockHash,
                     txid,
+                    actionsLogsList,
                     sDelta,
                     favDelta,
                     updatedFAVs
@@ -269,6 +292,15 @@ namespace Libplanet.Store
                 kv => new Address((Binary)kv.Key),
                 kv => DeserializeFAVs((List)kv.Value)
             );
+
+        private static Bencodex.Types.List SerializeLogs(
+            List<List<string>> logs
+        ) =>
+            new List(logs.Select(l => new List(l.Select(x => (Text)x))));
+
+        private static List<List<string>> DeserializeLogs(
+            Bencodex.Types.List serialized) =>
+            serialized.Cast<List>().Select(l => l.Select(x => (string)(Text)x).ToList()).ToList();
 
         private static Bencodex.Types.List SerializeFAVs(
             IImmutableDictionary<Currency, FungibleAssetValue> favs

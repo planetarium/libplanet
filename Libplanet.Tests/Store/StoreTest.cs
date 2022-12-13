@@ -422,8 +422,10 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
-        [SkippableFact]
-        public void TxExecution()
+        [SkippableTheory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void TxExecution(bool actionsLogsList)
         {
             void AssertTxSuccessesEqual(TxSuccess expected, TxExecution actual)
             {
@@ -431,6 +433,7 @@ namespace Libplanet.Tests.Store
                 var success = (TxSuccess)actual;
                 Assert.Equal(expected.TxId, success.TxId);
                 Assert.Equal(expected.BlockHash, success.BlockHash);
+                Assert.Equal(expected.ActionsLogsList, success.ActionsLogsList);
                 Assert.Equal(expected.UpdatedStates, success.UpdatedStates);
                 Assert.Equal(expected.FungibleAssetsDelta, success.FungibleAssetsDelta);
                 Assert.Equal(expected.UpdatedFungibleAssets, success.UpdatedFungibleAssets);
@@ -442,6 +445,7 @@ namespace Libplanet.Tests.Store
                 var failure = (TxFailure)actual;
                 Assert.Equal(expected.TxId, failure.TxId);
                 Assert.Equal(expected.BlockHash, failure.BlockHash);
+                Assert.Equal(expected.ActionsLogsList, failure.ActionsLogsList);
                 Assert.Equal(expected.ExceptionName, failure.ExceptionName);
                 Assert.Equal(expected.ExceptionMetadata, failure.ExceptionMetadata);
             }
@@ -455,6 +459,15 @@ namespace Libplanet.Tests.Store
             var inputA = new TxSuccess(
                 Fx.Hash1,
                 Fx.TxId1,
+                actionsLogsList
+                    ? new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "LOG",
+                        },
+                    }
+                    : null,
                 ImmutableDictionary<Address, IValue>.Empty.Add(
                     random.NextAddress(),
                     (Text)"state value"
@@ -486,6 +499,7 @@ namespace Libplanet.Tests.Store
             var inputB = new TxFailure(
                 Fx.Hash1,
                 Fx.TxId2,
+                actionsLogsList ? new List<List<string>>() : null,
                 "AnExceptionName",
                 Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
             );
@@ -499,6 +513,7 @@ namespace Libplanet.Tests.Store
             var inputC = new TxFailure(
                 Fx.Hash2,
                 Fx.TxId1,
+                actionsLogsList ? new List<List<string>>() : null,
                 "AnotherExceptionName",
                 null
             );
