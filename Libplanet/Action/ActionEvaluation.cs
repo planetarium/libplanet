@@ -58,6 +58,10 @@ namespace Libplanet.Action
         /// </summary>
         public Exception? Exception { get; }
 
+        /// <summary>
+        /// Logs recorded while executing an action through
+        /// <see cref="IActionContext.PutLog(string)"/>.
+        /// </summary>
         public List<string> Logs { get; }
     }
 }

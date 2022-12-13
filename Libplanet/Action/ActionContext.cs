@@ -76,6 +76,7 @@ namespace Libplanet.Action
 
         internal List<string> Logs { get; }
 
+        /// <inheritdoc cref="IActionContext.PutLog(string)"/>
         public void PutLog(string log) => Logs.Add(log);
 
         public bool IsNativeToken(Currency currency) =>
