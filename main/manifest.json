@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "hcm21+ROKjorT0VakEuLHd6l3meilfcG5o4HTeCMqIw="
+          "hash": "4XIv+GQKBD16E1qfVaAnXWNqt/fbdM0XmQBqYVo+rKQ="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.ActionEvaluation.html",
-          "hash": "d0mi2JhFUoZdK1djfzRlHVaXDglbiBADEWDfiXRqOjY="
+          "hash": "LxJket3gCoEW01t3R6XVlQ3UUyMG83bLJH2tKMZqrqw="
         }
       },
       "is_incremental": false,
@@ -249,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IActionContext.html",
-          "hash": "kWyZ3KjrmjzvoSpEKN7ydjIqscgIZU3ElNIPYFgJNf0="
+          "hash": "yTXgqTfVHeRxDGs28rbCqiq6e8UPB9udwhXolFEQ1OA="
         }
       },
       "is_incremental": false,
@@ -3201,7 +3201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "whUANM8Ctdtv9hhi4UkjjGw3wtMKOZVmCkDV5DoinNI="
+          "hash": "ZsD7R7UbnTENXRF9+8/A08bIuHzF5qXK2QCaPodPQMY="
         }
       },
       "is_incremental": false,
@@ -4149,7 +4149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.TxExecution.html",
-          "hash": "qx66ah5DicpJOd1+4x2sfxDndl1lxCyRJUb9EqMRKZk="
+          "hash": "IKE87t5Ay08XuQ7siXWjS766uGM3JJBJt8PP+7YCd04="
         }
       },
       "is_incremental": false,
@@ -4161,7 +4161,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.TxFailure.html",
-          "hash": "0sgX/m7osb1qchQIBA/iZiO2/YSCT0SIymJoapTR48I="
+          "hash": "ZZQ6/7xEXueg4t1H+NhbQhfr25dct7cXw0Zo55pqb38="
         }
       },
       "is_incremental": false,
@@ -4209,7 +4209,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.TxSuccess.html",
-          "hash": "BRIj1chfHnXiuzoMFZ8y3kxxL7LJDYmPe5WHNPxxXCU="
+          "hash": "W/UtpIyU8XLhWIXcUzj8hR/f/LVbblMt1GwWz6sZKkU="
         }
       },
       "is_incremental": false,

@@ -31,15 +31,15 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluation
   fullName: Libplanet.Action.ActionEvaluation
   nameWithType: ActionEvaluation
-- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Nullable{Exception})
-  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable<Exception>)
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Nullable_Exception__
-  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Nullable{Exception})
-  name.vb: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable(Of Exception))
-  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Nullable<Exception>)
-  fullName.vb: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Nullable(Of Exception))
-  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable<Exception>)
-  nameWithType.vb: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable(Of Exception))
+- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Nullable{Exception},System.Nullable{List{System.String}})
+  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable<Exception>, Nullable<List<String>>)
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Nullable_Exception__System_Nullable_List_System_String___
+  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Nullable{Exception},System.Nullable{List{System.String}})
+  name.vb: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable(Of Exception), Nullable(Of List(Of String)))
+  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Nullable<Exception>, System.Nullable<List<System.String>>)
+  fullName.vb: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Nullable(Of Exception), System.Nullable(Of List(Of System.String)))
+  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable<Exception>, Nullable<List<String>>)
+  nameWithType.vb: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable(Of Exception), Nullable(Of List(Of String)))
 - uid: Libplanet.Action.ActionEvaluation.#ctor*
   name: ActionEvaluation
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_
@@ -86,6 +86,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluation.InputContext
   nameWithType: ActionEvaluation.InputContext
+- uid: Libplanet.Action.ActionEvaluation.Logs
+  name: Logs
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Logs
+  commentId: P:Libplanet.Action.ActionEvaluation.Logs
+  fullName: Libplanet.Action.ActionEvaluation.Logs
+  nameWithType: ActionEvaluation.Logs
+- uid: Libplanet.Action.ActionEvaluation.Logs*
+  name: Logs
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Logs_
+  commentId: Overload:Libplanet.Action.ActionEvaluation.Logs
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluation.Logs
+  nameWithType: ActionEvaluation.Logs
 - uid: Libplanet.Action.ActionEvaluation.OutputStates
   name: OutputStates
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_OutputStates
@@ -657,6 +670,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.PreviousStates
   nameWithType: IActionContext.PreviousStates
+- uid: Libplanet.Action.IActionContext.PutLog(System.String)
+  name: PutLog(String)
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_System_String_
+  commentId: M:Libplanet.Action.IActionContext.PutLog(System.String)
+  fullName: Libplanet.Action.IActionContext.PutLog(System.String)
+  nameWithType: IActionContext.PutLog(String)
+- uid: Libplanet.Action.IActionContext.PutLog*
+  name: PutLog
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_
+  commentId: Overload:Libplanet.Action.IActionContext.PutLog
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.PutLog
+  nameWithType: IActionContext.PutLog
 - uid: Libplanet.Action.IActionContext.Random
   name: Random
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random
@@ -28337,6 +28363,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxExecution.TxExecution
   nameWithType: TxExecution.TxExecution
+- uid: Libplanet.Tx.TxExecution.ActionsLogsList
+  name: ActionsLogsList
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_ActionsLogsList
+  commentId: P:Libplanet.Tx.TxExecution.ActionsLogsList
+  fullName: Libplanet.Tx.TxExecution.ActionsLogsList
+  nameWithType: TxExecution.ActionsLogsList
+- uid: Libplanet.Tx.TxExecution.ActionsLogsList*
+  name: ActionsLogsList
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_ActionsLogsList_
+  commentId: Overload:Libplanet.Tx.TxExecution.ActionsLogsList
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxExecution.ActionsLogsList
+  nameWithType: TxExecution.ActionsLogsList
 - uid: Libplanet.Tx.TxExecution.BlockHash
   name: BlockHash
   href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash
@@ -28388,21 +28427,24 @@ references:
   commentId: T:Libplanet.Tx.TxFailure
   fullName: Libplanet.Tx.TxFailure
   nameWithType: TxFailure
-- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,Exception)
-  name: TxFailure(BlockHash, TxId, Exception)
-  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_Exception_
-  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,Exception)
-  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, Exception)
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, Exception)
-- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,System.Nullable{IValue})
-  name: TxFailure(BlockHash, TxId, String, Nullable<IValue>)
-  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_String_System_Nullable_IValue__
-  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,System.Nullable{IValue})
-  name.vb: TxFailure(BlockHash, TxId, String, Nullable(Of IValue))
-  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.String, System.Nullable<IValue>)
-  fullName.vb: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.String, System.Nullable(Of IValue))
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, String, Nullable<IValue>)
-  nameWithType.vb: TxFailure.TxFailure(BlockHash, TxId, String, Nullable(Of IValue))
+- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Nullable{List{List{System.String}}},Exception)
+  name: TxFailure(BlockHash, TxId, Nullable<List<List<String>>>, Exception)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Nullable_List_List_System_String____Exception_
+  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Nullable{List{List{System.String}}},Exception)
+  name.vb: TxFailure(BlockHash, TxId, Nullable(Of List(Of List(Of String))), Exception)
+  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Nullable<List<List<System.String>>>, Exception)
+  fullName.vb: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Nullable(Of List(Of List(Of System.String))), Exception)
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, Nullable<List<List<String>>>, Exception)
+  nameWithType.vb: TxFailure.TxFailure(BlockHash, TxId, Nullable(Of List(Of List(Of String))), Exception)
+- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Nullable{List{List{System.String}}},System.String,System.Nullable{IValue})
+  name: TxFailure(BlockHash, TxId, Nullable<List<List<String>>>, String, Nullable<IValue>)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Nullable_List_List_System_String____System_String_System_Nullable_IValue__
+  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Nullable{List{List{System.String}}},System.String,System.Nullable{IValue})
+  name.vb: TxFailure(BlockHash, TxId, Nullable(Of List(Of List(Of String))), String, Nullable(Of IValue))
+  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Nullable<List<List<System.String>>>, System.String, System.Nullable<IValue>)
+  fullName.vb: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Nullable(Of List(Of List(Of System.String))), System.String, System.Nullable(Of IValue))
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, Nullable<List<List<String>>>, String, Nullable<IValue>)
+  nameWithType.vb: TxFailure.TxFailure(BlockHash, TxId, Nullable(Of List(Of List(Of String))), String, Nullable(Of IValue))
 - uid: Libplanet.Tx.TxFailure.#ctor*
   name: TxFailure
   href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_
@@ -28804,15 +28846,15 @@ references:
   commentId: T:Libplanet.Tx.TxSuccess
   fullName: Libplanet.Tx.TxSuccess
   nameWithType: TxSuccess
-- uid: Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IImmutableDictionary{Libplanet.Address,System.Nullable{IValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
-  name: TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, Nullable<IValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_IImmutableDictionary_Libplanet_Address_System_Nullable_IValue___IImmutableDictionary_Libplanet_Address_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___IImmutableDictionary_Libplanet_Address_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___
-  commentId: M:Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,IImmutableDictionary{Libplanet.Address,System.Nullable{IValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
-  name.vb: TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, Nullable(Of IValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
-  fullName: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, IImmutableDictionary<Libplanet.Address, System.Nullable<IValue>>, IImmutableDictionary<Libplanet.Address, IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>, IImmutableDictionary<Libplanet.Address, IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>)
-  fullName.vb: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, IImmutableDictionary(Of Libplanet.Address, System.Nullable(Of IValue)), IImmutableDictionary(Of Libplanet.Address, IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)), IImmutableDictionary(Of Libplanet.Address, IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)))
-  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, Nullable<IValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, Nullable(Of IValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+- uid: Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Nullable{List{List{System.String}}},IImmutableDictionary{Libplanet.Address,System.Nullable{IValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
+  name: TxSuccess(BlockHash, TxId, Nullable<List<List<String>>>, IImmutableDictionary<Address, Nullable<IValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Nullable_List_List_System_String____IImmutableDictionary_Libplanet_Address_System_Nullable_IValue___IImmutableDictionary_Libplanet_Address_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___IImmutableDictionary_Libplanet_Address_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___
+  commentId: M:Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Nullable{List{List{System.String}}},IImmutableDictionary{Libplanet.Address,System.Nullable{IValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},IImmutableDictionary{Libplanet.Address,IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
+  name.vb: TxSuccess(BlockHash, TxId, Nullable(Of List(Of List(Of String))), IImmutableDictionary(Of Address, Nullable(Of IValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+  fullName: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Nullable<List<List<System.String>>>, IImmutableDictionary<Libplanet.Address, System.Nullable<IValue>>, IImmutableDictionary<Libplanet.Address, IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>, IImmutableDictionary<Libplanet.Address, IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>)
+  fullName.vb: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Nullable(Of List(Of List(Of System.String))), IImmutableDictionary(Of Libplanet.Address, System.Nullable(Of IValue)), IImmutableDictionary(Of Libplanet.Address, IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)), IImmutableDictionary(Of Libplanet.Address, IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)))
+  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, Nullable<List<List<String>>>, IImmutableDictionary<Address, Nullable<IValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, Nullable(Of List(Of List(Of String))), IImmutableDictionary(Of Address, Nullable(Of IValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
 - uid: Libplanet.Tx.TxSuccess.#ctor*
   name: TxSuccess
   href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_

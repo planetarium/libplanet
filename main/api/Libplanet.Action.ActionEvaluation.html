@@ -92,20 +92,20 @@ a single action.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Nullable_Exception__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta%2CSystem.Nullable%7BException%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Nullable_Exception__System_Nullable_List_System_String___.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta%2CSystem.Nullable%7BException%7D%2CSystem.Nullable%7BList%7BSystem.String%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation__ctor_" data-uid="Libplanet.Action.ActionEvaluation.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Nullable_Exception__" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Nullable{Exception})">ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable&lt;Exception&gt;)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Nullable_Exception__System_Nullable_List_System_String___" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Nullable{Exception},System.Nullable{List{System.String}})">ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Nullable&lt;Exception&gt;, Nullable&lt;List&lt;String&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a> instance
 with filling properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccountStateDelta outputStates, Exception? exception = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccountStateDelta outputStates, Exception? exception = null, List&lt;string&gt;? logs = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,6 +144,12 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
 <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">List</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td><span class="parametername">logs</span></td>
+        <td><p>The logs recorded while executing action.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
@@ -153,7 +159,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_Action.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.Action%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L37">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L41">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation_Action_" data-uid="Libplanet.Action.ActionEvaluation.Action*"></a>
   <h4 id="Libplanet_Action_ActionEvaluation_Action" data-uid="Libplanet.Action.ActionEvaluation.Action">Action</h4>
@@ -184,7 +190,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_Exception.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.Exception%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L55">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation_Exception_" data-uid="Libplanet.Action.ActionEvaluation.Exception*"></a>
   <h4 id="Libplanet_Action_ActionEvaluation_Exception" data-uid="Libplanet.Action.ActionEvaluation.Exception">Exception</h4>
@@ -215,7 +221,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_InputContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.InputContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L49">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation_InputContext_" data-uid="Libplanet.Action.ActionEvaluation.InputContext*"></a>
   <h4 id="Libplanet_Action_ActionEvaluation_InputContext" data-uid="Libplanet.Action.ActionEvaluation.InputContext">InputContext</h4>
@@ -248,10 +254,42 @@ is not consumed yet.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_Logs.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.Logs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L65">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluation_Logs_" data-uid="Libplanet.Action.ActionEvaluation.Logs*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluation_Logs" data-uid="Libplanet.Action.ActionEvaluation.Logs">Logs</h4>
+  <div class="markdown level1 summary"><p>Logs recorded while executing an action through
+<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_System_String_">PutLog(String)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Logs { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_OutputStates.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.OutputStates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L54">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation_OutputStates_" data-uid="Libplanet.Action.ActionEvaluation.OutputStates*"></a>
   <h4 id="Libplanet_Action_ActionEvaluation_OutputStates" data-uid="Libplanet.Action.ActionEvaluation.OutputStates">OutputStates</h4>
@@ -288,7 +326,7 @@ is not consumed yet.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
