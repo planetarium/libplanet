@@ -127,12 +127,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
-            Assert.Throws<InvalidConsensusMessageException>(
-                () => consensusContext.HandleMessage(
-                    TestUtils.CreateConsensusPropose(
-                        blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
-                        TestUtils.PrivateKeys[0],
-                        0)));
+            Assert.False(consensusContext.HandleMessage(
+                TestUtils.CreateConsensusPropose(
+                    blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
+                    TestUtils.PrivateKeys[0],
+                    0)));
         }
 
         [Fact(Timeout = Timeout)]
