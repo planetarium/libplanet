@@ -39,11 +39,6 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         auto-push: true
-        external-data-json-path: ./cache/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
-        alert-threshold: '130%'
-        comment-on-alert: true
-        fail-on-alert: true
-        alert-comment-cc-users: '@libplanet'
 
     - name: Store DataModel benchmark result
       uses: rhysd/github-action-benchmark@v1
@@ -53,11 +48,6 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         auto-push: true
-        external-data-json-path: ./cache/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
-        alert-threshold: '130%'
-        comment-on-alert: true
-        fail-on-alert: true
-        alert-comment-cc-users: '@libplanet'
 
     - name: Store MineBlock benchmark result
       uses: rhysd/github-action-benchmark@v1
@@ -67,11 +57,6 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         auto-push: true
-        external-data-json-path: ./cache/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
-        alert-threshold: '130%'
-        comment-on-alert: true
-        fail-on-alert: true
-        alert-comment-cc-users: '@libplanet'
 
     - name: Store Libplanet.Store benchmark result
       uses: rhysd/github-action-benchmark@v1
@@ -81,11 +66,6 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.Store-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         auto-push: true
-        external-data-json-path: ./cache/Libplanet.Benchmarks.Store-report-full-compressed.json
-        alert-threshold: '130%'
-        comment-on-alert: true
-        fail-on-alert: true
-        alert-comment-cc-users: '@libplanet'
 
 #    - name: Store Swarm benchmark result
 #      uses: rhysd/github-action-benchmark@v1
@@ -95,11 +75,6 @@ jobs:
 #        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
 #        github-token: ${{ secrets.GITHUB_TOKEN }}
 #        auto-push: true
-#        external-data-json-path: ./cache/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
-#        alert-threshold: '130%'
-#        comment-on-alert: true
-#        fail-on-alert: true
-#        alert-comment-cc-users: '@libplanet'
 
     - name: Copy benchmark results to cache
       run: cp BenchmarkDotnet.Artifacts/results/*-full-compressed.json ./cache
