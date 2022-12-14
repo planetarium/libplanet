@@ -1,0 +1,105 @@
+name: Benchmark.Net for libplanet
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    name: Run Benchmark.Net benchmarks
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Download previous benchmark data
+      uses: actions/cache@v1
+      with:
+        path: ./cache
+        key: ${{ runner.os }}-benchmark
+    - name: Run benchmark
+      run: dotnet run -p Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
+
+    - name: Store BlockChain benchmark result
+      uses: rhysd/github-action-benchmark@v1
+      with:
+        name: Benchmark.Net Benchmark
+        tool: 'benchmarkdotnet'
+        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        external-data-json-path: ./cache/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
+        alert-threshold: '130%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc-users: '@libplanet'
+
+    - name: Store DataModel benchmark result
+      uses: rhysd/github-action-benchmark@v1
+      with:
+        name: Benchmark.Net Benchmark
+        tool: 'benchmarkdotnet'
+        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        external-data-json-path: ./cache/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
+        alert-threshold: '130%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc-users: '@libplanet'
+
+    - name: Store MineBlock benchmark result
+      uses: rhysd/github-action-benchmark@v1
+      with:
+        name: Benchmark.Net Benchmark
+        tool: 'benchmarkdotnet'
+        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        external-data-json-path: ./cache/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
+        alert-threshold: '130%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc-users: '@libplanet'
+
+    - name: Store Libplanet.Store benchmark result
+      uses: rhysd/github-action-benchmark@v1
+      with:
+        name: Benchmark.Net Benchmark
+        tool: 'benchmarkdotnet'
+        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.Store-report-full-compressed.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        external-data-json-path: ./cache/Libplanet.Benchmarks.Store-report-full-compressed.json
+        alert-threshold: '130%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc-users: '@libplanet'
+
+#    - name: Store Swarm benchmark result
+#      uses: rhysd/github-action-benchmark@v1
+#      with:
+#        name: Benchmark.Net Benchmark
+#        tool: 'benchmarkdotnet'
+#        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
+#        github-token: ${{ secrets.GITHUB_TOKEN }}
+#        auto-push: true
+#        external-data-json-path: ./cache/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
+#        alert-threshold: '130%'
+#        comment-on-alert: true
+#        fail-on-alert: true
+#        alert-comment-cc-users: '@libplanet'
+
+    - name: Copy benchmark results to cache
+      run: cp BenchmarkDotnet.Artifacts/results/*-full-compressed.json ./cache
