@@ -15,7 +15,8 @@ jobs:
         - macos-latest
         - ubuntu-latest
         - windows-latest
-    runs-on: [${{ matrix.os }}, "8cores"]
+    runs-on:
+      labels: [${{ matrix.os }}, "8cores"]
     steps:
     - uses: actions/checkout@v2
       with:
