@@ -295,7 +295,7 @@ namespace Libplanet.Net.Consensus
             {
                 _logger.Debug(
                     "Discarding a received message as its height #{MessageHeight} " +
-                    "is lower than the current context's height ${ContextHeight}",
+                    "is lower than the current context's height #{ContextHeight}",
                     height,
                     Height);
                 return false;
