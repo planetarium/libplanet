@@ -338,15 +338,15 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls the
-        /// <see cref="NewHeight"/>. Starting a new height will be delayed for
-        /// <see cref="_newHeightDelay"/> to collecting remaining votes and stabilize the
-        /// consensus process by waiting for Global Stabilization Time.
+        /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls
+        /// <see cref="NewHeight"/>.  Starting a new height will be delayed for
+        /// <see cref="_newHeightDelay"/> in order to collect remaining delayed votes
+        /// and stabilize the consensus process by waiting for Global Stabilization Time.
         /// </summary>
-        /// <param name="sender">the object instance for <see cref="EventHandler"/>.
+        /// <param name="sender">The source object instance for <see cref="EventHandler"/>.
         /// </param>
-        /// <param name="e">the tuple of <see cref="Block{T}"/>s that are OldTip and NewTip
-        /// respectively.
+        /// <param name="e">The event arguments given by <see cref="BlockChain{T}.TipChanged"/>
+        /// as a tuple of the old tip and the new tip.
         /// </param>
         private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
