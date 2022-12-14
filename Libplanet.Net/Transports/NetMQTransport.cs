@@ -1,6 +1,5 @@
 #nullable disable
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -46,7 +45,6 @@ namespace Libplanet.Net.Transports
         private Task _runtimeProcessor;
 
         private TaskCompletionSource<object> _runningEvent;
-        private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
 
         // Used only for logging.
         private long _requestCount;
@@ -163,8 +161,6 @@ namespace Libplanet.Net.Transports
             );
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
-            _replyCompletionSources =
-                new ConcurrentDictionary<string, TaskCompletionSource<object>>();
         }
 
         /// <inheritdoc/>
@@ -500,7 +496,7 @@ namespace Libplanet.Net.Transports
         }
 
         /// <inheritdoc/>
-        public async Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)
+        public Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)
         {
             if (_disposed)
             {
@@ -508,10 +504,6 @@ namespace Libplanet.Net.Transports
             }
 
             string identityHex = ByteUtil.Hex(message.Identity);
-            var tcs = new TaskCompletionSource<object>();
-            using CancellationTokenRegistration ctr =
-                cancellationToken.Register(() => tcs.TrySetCanceled());
-            _replyCompletionSources.TryAdd(identityHex, tcs);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
             _replyQueue.Enqueue(
                 _messageCodec.Encode(
@@ -523,8 +515,7 @@ namespace Libplanet.Net.Transports
                 )
             );
 
-            await tcs.Task;
-            _replyCompletionSources.TryRemove(identityHex, out _);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -678,9 +669,6 @@ namespace Libplanet.Net.Transports
                 _logger.Debug(
                     "Failed to send {Message} as a reply to {Identity}.", message, identityHex);
             }
-
-            _replyCompletionSources.TryGetValue(identityHex, out TaskCompletionSource<object> tcs);
-            tcs?.TrySetResult(null);
         }
 
         private async Task ProcessRuntime(
