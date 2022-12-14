@@ -268,23 +268,37 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Handling the received <see cref="ConsensusMsg"/>.
+        /// <para>
+        /// Handles a received <see cref="ConsensusMsg"/> by either dispatching it to the right
+        /// <see cref="Context{T}"/> or discarding it.
+        /// </para>
+        /// <para>
+        /// In particular, this discards <paramref name="consensusMessage"/> with
+        /// <see cref="ConsensusMsg.Height"/> less than <see cref="Height"/>.  Otherwise,
+        /// given <paramref name="consensusMessage"/> is passed on to a <see cref="Context{T}"/>
+        /// with <see cref="Context{T}.Height"/> the same as <see cref="ConsensusMsg.Height"/> of
+        /// <paramref name="consensusMessage"/>.  If there is no such <see cref="Context{T}"/>,
+        /// then a new <see cref="Context{T}"/> is created for the dispatch.
+        /// </para>
         /// </summary>
-        /// <param name="consensusMessage">a received <see cref="ConsensusMsg"/> from any
-        /// bounding validator.
+        /// <param name="consensusMessage">The <see cref="ConsensusMsg"/> received from
+        /// any validator.
         /// </param>
-        /// <exception cref="InvalidConsensusMessageException"> Thrown if the given message is
-        /// lower than the current <see cref="Height"/>.
-        /// </exception>
-        public void HandleMessage(ConsensusMsg consensusMessage)
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="consensusMessage"/> is dispatched to
+        /// a <see cref="Context{T}"/>, <see langword="false"/> otherwise.
+        /// </returns>
+        public bool HandleMessage(ConsensusMsg consensusMessage)
         {
             long height = consensusMessage.Height;
             if (height < Height)
             {
-                throw new InvalidConsensusMessageException(
-                    $"Received message's height {height} is lower than " +
-                    $"current context's height {Height}.",
-                    consensusMessage);
+                _logger.Debug(
+                    "Discarding a received message as its height #{MessageHeight} " +
+                    "is lower than the current context's height ${ContextHeight}",
+                    height,
+                    Height);
+                return false;
             }
 
             lock (_contextLock)
@@ -303,6 +317,7 @@ namespace Libplanet.Net.Consensus
                 }
 
                 _contexts[height].ProduceMessage(consensusMessage);
+                return true;
             }
         }
 
