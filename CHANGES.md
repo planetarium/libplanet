@@ -6,6 +6,11 @@ Version 0.44.4
 
 To be released.
 
+ -  Improved overall performance of `NetMQTransport` and `TxCompletion<T>`
+    classes.  [[#2631]]
+
+[#2631]: https://github.com/planetarium/libplanet/pull/2631
+
 
 Version 0.44.3
 --------------
