@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670996031614,
+  "lastUpdate": 1671005464741,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -480,6 +480,36 @@ window.BENCHMARK_DATA = {
             "value": 18941.139784946237,
             "unit": "ns",
             "range": "± 1888.8541073739475"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "riemannulus@hitagi.moe",
+            "name": "Lee, Suho",
+            "username": "riemannulus"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5d82ab337c05576affb3eba735cd933e38a3d707",
+          "message": "Merge pull request #2636 from riemannulus/fix/ci/benchmark/fix-benchmark-result\n\nFix benchmark script error",
+          "timestamp": "2022-12-14T16:57:00+09:00",
+          "tree_id": "db0f8fe11c3b7d0102b648dd126095f5754700f7",
+          "url": "https://github.com/planetarium/libplanet/commit/5d82ab337c05576affb3eba735cd933e38a3d707"
+        },
+        "date": 1671005426955,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 105179.48717948717,
+            "unit": "ns",
+            "range": "± 3641.513529114789"
           }
         ]
       }
