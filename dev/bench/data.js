@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670991444504,
+  "lastUpdate": 1670996001850,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -240,6 +240,36 @@ window.BENCHMARK_DATA = {
             "value": 18924.63440860215,
             "unit": "ns",
             "range": "± 2084.4919190398195"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "riemannulus@hitagi.moe",
+            "name": "Lee, Suho",
+            "username": "riemannulus"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e07c27414a35c54c3747a88d6835fe36a2bafce3",
+          "message": "Merge pull request #2635 from riemannulus/fix/ci/benchmarks/use-8cores\n\nUpscale to large runner",
+          "timestamp": "2022-12-14T14:22:01+09:00",
+          "tree_id": "9ac01463a6ffadb47f69ff300117fd8058150180",
+          "url": "https://github.com/planetarium/libplanet/commit/e07c27414a35c54c3747a88d6835fe36a2bafce3"
+        },
+        "date": 1670995986783,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 112282.38461538461,
+            "unit": "ns",
+            "range": "± 1066.4428050346892"
           }
         ]
       }
