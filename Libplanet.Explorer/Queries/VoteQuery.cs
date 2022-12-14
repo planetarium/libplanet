@@ -16,11 +16,12 @@ namespace Libplanet.Explorer.Queries
     public class VoteQuery<T> : ObjectGraphType
         where T : IAction, new()
     {
-        public VoteQuery(IBlockChainContext<T> chainContext)
+        public VoteQuery(BlockChain<T> blockChain, IStore store)
         {
             Name = "VoteQuery";
 
-            ChainContext = chainContext;
+            BlockChain = blockChain;
+            Store = store;
 
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<VoteType>>>>(
                 "votes",
@@ -77,7 +78,8 @@ namespace Libplanet.Explorer.Queries
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
                     PublicKey validator = context.GetArgument<PublicKey>("validator");
-                    return ListValidatorVotes(desc, offset, limit, validator);
+                    return ListVotes(desc, offset, limit).Where(
+                        vote => vote.Validator.Equals(validator));
                 }
             );
 
@@ -104,7 +106,7 @@ namespace Libplanet.Explorer.Queries
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
-                    return CountVotes(desc, offset, limit);
+                    return CountVotes(ListVotes(desc, offset, limit));
                 }
             );
 
@@ -136,22 +138,23 @@ namespace Libplanet.Explorer.Queries
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
                     PublicKey validator = context.GetArgument<PublicKey>("validator");
-                    return CountValidatorVotes(desc, offset, limit, validator);
+                    return CountVotes(ListVotes(desc, offset, limit).Where(
+                        vote => vote.Validator.Equals(validator))).First();
                 }
             );
         }
 
-        private static IBlockChainContext<T> ChainContext { get; set; }
+        private static BlockChain<T> BlockChain { get; set; }
 
-        private static BlockChain<T> Chain => ChainContext.BlockChain;
+        private static IStore Store { get; set; }
 
         internal IEnumerable<Vote> ListVotes(
             bool desc,
             long offset,
             long? limit)
         {
-            long tipIndex = Chain.Tip.Index;
-            IStore store = ChainContext.Store;
+            long tipIndex = BlockChain.Tip.Index;
+            IStore store = Store;
 
             if (desc)
             {
@@ -173,7 +176,7 @@ namespace Libplanet.Explorer.Queries
             }
 
             var indexList = store.IterateIndexes(
-                    Chain.Id,
+                    BlockChain.Id,
                     (int)offset,
                     limit == null ? null : (int)limit)
                 .Select((value, i) => new { i, value });
@@ -186,31 +189,19 @@ namespace Libplanet.Explorer.Queries
             var result = new List<Vote>();
             foreach (var index in indexList)
             {
-                var votes = store.GetBlockCommit(index.value)?.Votes;
-                if (votes is { })
+                if (BlockChain.GetBlockCommit(index.value)?.Votes is { } votes)
                 {
-                    result = result.Concat(store.GetBlockCommit(index.value).Votes).ToList();
+                    result.AddRange(votes);
                 }
             }
 
             return result;
         }
 
-        internal IEnumerable<Vote> ListValidatorVotes(
-            bool desc,
-            long offset,
-            long? limit,
-            PublicKey publicKey)
-        {
-            return ListVotes(desc, offset, limit).Where(vote => vote.Validator.Equals(publicKey));
-        }
-
         internal IEnumerable<VoteCount> CountVotes(
-            bool desc,
-            long offset,
-            long? limit)
+            IEnumerable<Vote> votes)
         {
-            var voteGroups = ListVotes(desc, offset, limit).GroupBy(vote => vote.Validator);
+            var voteGroups = votes.GroupBy(vote => vote.Validator);
             var countList = new List<VoteCount>();
             foreach (var voteGroup in voteGroups)
             {
@@ -224,23 +215,6 @@ namespace Libplanet.Explorer.Queries
             }
 
             return countList;
-        }
-
-        internal VoteCount CountValidatorVotes(
-            bool desc,
-            long offset,
-            long? limit,
-            PublicKey publicKey)
-        {
-            var voteList = ListValidatorVotes(desc, offset, limit, publicKey);
-            var countPreCommits = voteList.Count(vote => vote.Flag.Equals(VoteFlag.PreCommit));
-            var countVotes = voteList.Count();
-
-            return new VoteCount(
-                publicKey,
-                countVotes - countPreCommits,
-                countPreCommits,
-                countVotes);
         }
     }
 }

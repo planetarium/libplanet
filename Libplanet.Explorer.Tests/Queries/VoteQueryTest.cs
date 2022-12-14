@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
@@ -11,7 +12,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Queries;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -22,17 +22,17 @@ namespace Libplanet.Explorer.Tests.Queries
 {
     public class VoteQueryTest
     {
-        private readonly MockBlockChainContext<NullAction> _source;
+        private readonly MockContext<NullAction> _source;
         private readonly VoteQuery<NullAction> _queryGraph;
 
         public VoteQueryTest()
         {
-            _source = new MockBlockChainContext<NullAction>();
-            _queryGraph = new VoteQuery<NullAction>(_source);
+            _source = new MockContext<NullAction>();
+            _queryGraph = new VoteQuery<NullAction>(_source.BlockChain, _source.Store);
         }
 
         [Fact]
-        public async void VotesQuery()
+        public async Task VotesQuery()
         {
             var query =
                 $@"{{
@@ -75,7 +75,7 @@ namespace Libplanet.Explorer.Tests.Queries
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public async void ValidatorVotesQuery(int validatorIdx)
+        public async Task ValidatorVotesQuery(int validatorIdx)
         {
             var queryValidator = _source.ValidatorPrivateKeys[validatorIdx];
             var query =
@@ -118,7 +118,7 @@ namespace Libplanet.Explorer.Tests.Queries
         }
 
         [Fact]
-        public async void CountVotesQuery()
+        public async Task CountVotesQuery()
         {
             var query =
                 $@"{{
@@ -173,7 +173,7 @@ namespace Libplanet.Explorer.Tests.Queries
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public async void CountValidatorVotesQuery(int validatorIdx)
+        public async Task CountValidatorVotesQuery(int validatorIdx)
         {
             var queryValidator = _source.ValidatorPrivateKeys[validatorIdx];
             var query =
@@ -208,19 +208,18 @@ namespace Libplanet.Explorer.Tests.Queries
         }
 
 
-        private class MockBlockChainContext<T> : IBlockChainContext<T>
-            where T : IAction, new()
+        private class MockContext<T> where T : IAction, new()
         {
-            public bool Preloaded => true;
             public BlockChain<T> BlockChain { get; }
             public IStore Store { get; }
+
             public List<PrivateKey> ValidatorPrivateKeys = Libplanet.Tests.TestUtils.ValidatorPrivateKeys;
             public PrivateKey ProposerGenesis => ValidatorPrivateKeys[0];
             public PrivateKey ProposerPrevBlock => ValidatorPrivateKeys[1];
             public PrivateKey ProposerNextBlock => ValidatorPrivateKeys[2];
             public PrivateKey NullCommitValidator => ValidatorPrivateKeys[3];
 
-            public MockBlockChainContext()
+            public MockContext()
             {
                 Store = new MemoryStore();
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
