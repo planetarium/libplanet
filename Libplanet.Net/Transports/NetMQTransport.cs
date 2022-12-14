@@ -495,18 +495,21 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            IReadOnlyList<BoundPeer> peersList = peers.ToList();
+            Task<Message>[] sendTasks = peers.AsParallel()
+                .Select(peer => SendMessageAsync(
+                    peer,
+                    message,
+                    TimeSpan.FromSeconds(1),
+                    _runtimeCancellationTokenSource.Token
+                )).ToArray();
             _logger.Debug(
                 "Broadcasting message {Message} as {AsPeer} to {PeerCount} peers",
                 message,
                 AsPeer,
-                peersList.Count);
-            peersList.AsParallel().ForAll(
-                peer => Task.Run(() => SendMessageAsync(
-                    peer,
-                    message,
-                    TimeSpan.FromSeconds(1),
-                    _runtimeCancellationTokenSource.Token)));
+                sendTasks.Length
+            );
+
+            Task.WhenAll(sendTasks);
         }
 
         /// <inheritdoc/>
