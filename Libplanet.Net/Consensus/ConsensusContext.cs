@@ -159,15 +159,11 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Starts a consensus for a block of index <paramref name="height"/>.
+        /// Starts a new <see cref="Context{T}"/> for given <paramref name="height"/>.
         /// </summary>
-        /// <param name="height">The height of new consensus process. this should be increasing
-        /// monotonically by 1.
-        /// </param>
+        /// <param name="height">The height of a new <see cref="Context{T}"/> to start.</param>
         /// <exception cref="InvalidHeightIncreasingException">Thrown if given
-        /// <paramref name="height"/> is not the same as the index of
-        /// <see cref="BlockChain{T}.Tip"/> + 1, or a context corresponding to
-        /// <paramref name="height"/> is already running.</exception>
+        /// <paramref name="height"/> is less than or equal to <see cref="Height"/>.</exception>
         /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
         /// changed (i.e., committed, synchronized).
         /// </remarks>
@@ -183,21 +179,14 @@ namespace Libplanet.Net.Consensus
                     height,
                     Height);
 
-                if (height == Height)
+                if (height <= Height)
                 {
                     throw new InvalidHeightIncreasingException(
-                        $"Context of height #{height} is already running.");
-                }
-
-                if (height != _blockChain.Tip.Index + 1)
-                {
-                    throw new InvalidHeightIncreasingException(
-                        $"Given height #{height} must be equal to " +
-                        $"the tip's index #{_blockChain.Tip.Index} + 1.");
+                        $"Given new height #{height} must be greater than " +
+                        $"the current height #{Height}.");
                 }
 
                 BlockCommit? lastCommit = null;
-
                 lock (_contextLock)
                 {
                     lastCommit = _contexts.ContainsKey(height - 1)
