@@ -358,7 +358,7 @@ namespace Libplanet.Net.Transports
                     timeout,
                     1,
                     false,
-                    cancellationToken);
+                    cancellationToken).ConfigureAwait(false);
             Message reply = replies.First();
 
             return reply;
