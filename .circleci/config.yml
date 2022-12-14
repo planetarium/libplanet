@@ -457,9 +457,9 @@ jobs:
         locale: fr_FR.UTF-8
 
   macos-netcore-test:
-    resource_class: xlarge
     macos:
       xcode: 13.2.1
+    resource_class: xlarge
     parallelism: 4
     steps:
     - macos_netcore_test_base: { code_coverage: false }

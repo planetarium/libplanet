@@ -1,4 +1,4 @@
-name: Benchmark.Net for libplanet
+name: Benchmark.Net for libplanet(PR)
 on:
   pull_request: []
 
@@ -15,7 +15,7 @@ jobs:
         - macos-latest
         - ubuntu-latest
         - windows-latest
-    runs-on: ${{ matrix.os }}
+    runs-on: [${{ matrix.os }}, "8cores"]
     steps:
     - uses: actions/checkout@v2
       with:

@@ -1,4 +1,4 @@
-name: Benchmark.Net for libplanet
+name: Benchmark.Net for libplanet(Merge)
 on:
   push:
     branches:
@@ -17,7 +17,7 @@ jobs:
         - macos-latest
         - ubuntu-latest
         - windows-latest
-    runs-on: ${{ matrix.os }}
+    runs-on: [${{ matrix.os }}, "8cores"]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-dotnet@v1
@@ -77,4 +77,4 @@ jobs:
 #        auto-push: true
 
     - name: Copy benchmark results to cache
-      run: cp BenchmarkDotnet.Artifacts/results/*-full-compressed.json ./cache
+      run: cp BenchmarkDotNet.Artifacts/results/*-full-compressed.json ./cache
