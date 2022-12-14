@@ -1,4 +1,4 @@
-name: Benchmark.Net for libplanet(PR)
+name: Libplanet benchmark (for pull requests)
 on:
   pull_request: []
 

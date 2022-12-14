@@ -1,4 +1,4 @@
-name: Benchmark.Net for libplanet(Merge)
+name: Libplanet benchmark (for merge commits)
 on:
   push:
     branches:
