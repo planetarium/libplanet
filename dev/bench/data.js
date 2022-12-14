@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670996001850,
+  "lastUpdate": 1670996011907,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -270,6 +270,66 @@ window.BENCHMARK_DATA = {
             "value": 112282.38461538461,
             "unit": "ns",
             "range": "± 1066.4428050346892"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "riemannulus@hitagi.moe",
+            "name": "Lee, Suho",
+            "username": "riemannulus"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e07c27414a35c54c3747a88d6835fe36a2bafce3",
+          "message": "Merge pull request #2635 from riemannulus/fix/ci/benchmarks/use-8cores\n\nUpscale to large runner",
+          "timestamp": "2022-12-14T14:22:01+09:00",
+          "tree_id": "9ac01463a6ffadb47f69ff300117fd8058150180",
+          "url": "https://github.com/planetarium/libplanet/commit/e07c27414a35c54c3747a88d6835fe36a2bafce3"
+        },
+        "date": 1670996004818,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRootModel",
+            "value": 5886975.445833334,
+            "unit": "ns",
+            "range": "± 35406.66164643478"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeLeafModel",
+            "value": 1882864.6524739584,
+            "unit": "ns",
+            "range": "± 8658.19814879318"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRawLeafModel",
+            "value": 1358434.520703125,
+            "unit": "ns",
+            "range": "± 3679.24760925183"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRootModel",
+            "value": 2617860.5485491073,
+            "unit": "ns",
+            "range": "± 4209.987269508833"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeLeafModel",
+            "value": 830274.8594447544,
+            "unit": "ns",
+            "range": "± 603.6286811654343"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRawLeafModel",
+            "value": 758783.6073521206,
+            "unit": "ns",
+            "range": "± 349.24198113166176"
           }
         ]
       }
