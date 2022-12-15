@@ -267,12 +267,27 @@ namespace Libplanet.Net.Consensus
                 Step = Step.EndCommit;
                 _decision = block4;
                 _committedRound = round;
+
+                try
+                {
+                    ConsensusContext.Commit(block4, GetBlockCommit());
+                }
+                catch (Exception e)
+                {
+                    _logger.Debug(
+                        e,
+                        "Failed to commit block #{Index} {Hash}. (context: {Context})",
+                        block4.Index,
+                        block4.Hash,
+                        ToString());
+                    ExceptionOccurred?.Invoke(this, e);
+                    return;
+                }
+
                 _logger.Debug(
-                    "Committed block in round {Round}. (context: {Context})",
+                    "Committed block in round #{Round}. (context: {Context})",
                     Round,
                     ToString());
-
-                ConsensusContext.Commit(block4, GetBlockCommit());
                 return;
             }
 
