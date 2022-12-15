@@ -4,7 +4,12 @@ Libplanet changelog
 Version 0.45.1
 --------------
 
-To be released.
+Released on December 15, 2022.
+
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
+    hadn't been canceled properly.  [[#2641]]
+
+[#2641]: https://github.com/planetarium/libplanet/pull/2641
 
 
 Version 0.45.0
