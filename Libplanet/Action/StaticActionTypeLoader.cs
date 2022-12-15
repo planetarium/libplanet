@@ -30,7 +30,7 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Load action types from assemblies.
+        /// Load action types inherited the base type given in the constructor from assemblies.
         /// </summary>
         /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
         /// use. But it isn't used in this implementation.</param>
