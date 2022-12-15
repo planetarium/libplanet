@@ -80,7 +80,7 @@ namespace Libplanet.Tests.Action
                 noStateRootBlock.Evaluate(GenesisMiner, null, _ => true, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
-                    policyBlockAction: null,
+                    policyBlockActionGetter: _ => null,
                     blockChainStates: NullChainStates<RandomAction>.Instance,
                     trieGetter: null,
                     genesisHash: null,
@@ -302,7 +302,7 @@ namespace Libplanet.Tests.Action
             };
             Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
-                policyBlockAction: null,
+                policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: null,
@@ -595,7 +595,7 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent<DumbAction>.DeriveTxHash(txs)),
                 transactions: txs).Mine();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
-                policyBlockAction: null,
+                policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
@@ -728,7 +728,7 @@ namespace Libplanet.Tests.Action
             var txs = new Transaction<ThrowException>[] { tx };
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
-                policyBlockAction: null,
+                policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,

@@ -1816,7 +1816,7 @@ namespace Libplanet.Tests.Blockchain
                 renderers: renderer is null ? null : new[] { renderer },
                 blockChainStates: chainStates,
                 actionEvaluator: new ActionEvaluator<DumbAction>(
-                    blockPolicy.BlockAction,
+                    _ => blockPolicy.BlockAction,
                     chainStates,
                     trieGetter: hash => stateStore.GetStateRoot(
                         store.GetBlockDigest(hash)?.StateRootHash

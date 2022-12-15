@@ -130,7 +130,7 @@ namespace Libplanet.Blockchain
                 renderers,
                 blockChainStates,
                 new ActionEvaluator<T>(
-                    policy.BlockAction,
+                    _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     trieGetter: hash => stateStore.GetStateRoot(
                         store.GetBlockDigest(hash)?.StateRootHash

@@ -29,7 +29,7 @@ namespace Libplanet.Action
     {
         private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
-        private readonly IAction? _policyBlockAction;
+        private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
@@ -38,9 +38,8 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
         /// </summary>
-        /// <param name="policyBlockAction">The <see cref="IAction"/> provided by
-        /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
-        /// <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
+        /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
+        /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
@@ -51,13 +50,13 @@ namespace Libplanet.Action
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         public ActionEvaluator(
-            IAction? policyBlockAction,
+            PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate)
         : this(
-            policyBlockAction,
+            policyBlockActionGetter,
             blockChainStates,
             trieGetter,
             genesisHash,
@@ -74,10 +73,10 @@ namespace Libplanet.Action
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
-        /// <inheritdoc cref="ActionEvaluator{T}(IAction?, IBlockChainStates{T}, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
+        /// <inheritdoc cref="ActionEvaluator{T}(PolicyBlockActionGetter, IBlockChainStates{T}, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
         /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
         public ActionEvaluator(
-            IAction? policyBlockAction,
+            PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
@@ -88,7 +87,7 @@ namespace Libplanet.Action
 #pragma warning restore CS1573
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
-            _policyBlockAction = policyBlockAction;
+            _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
             _genesisHash = genesisHash;
@@ -159,7 +158,8 @@ namespace Libplanet.Action
                     previousStates: previousStates,
                     previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
 
-                if (_policyBlockAction is null)
+                var policyBlockAction = _policyBlockActionGetter(block);
+                if (policyBlockAction is null)
                 {
                     return evaluations;
                 }
@@ -625,11 +625,12 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie)
         {
-            if (_policyBlockAction is null)
+            var policyBlockAction = _policyBlockActionGetter(blockHeader);
+            if (policyBlockAction is null)
             {
                 var message =
                     "To evaluate policy block action, " +
-                    "_policyBlockAction must not be null.";
+                    "policyBlockAction must not be null.";
                 throw new InvalidOperationException(message);
             }
 
@@ -646,7 +647,7 @@ namespace Libplanet.Action
                 miner: blockHeader.Miner,
                 signer: blockHeader.Miner,
                 signature: Array.Empty<byte>(),
-                actions: new[] { _policyBlockAction }.ToImmutableList(),
+                actions: new[] { policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true,
