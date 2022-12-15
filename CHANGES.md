@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.44.4
 --------------
 
-To be released.
+Released on December 15, 2022.
 
  -  Improved overall performance of `NetMQTransport` and `TxCompletion<T>`
     classes.  [[#2631]]
