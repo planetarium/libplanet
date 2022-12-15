@@ -403,7 +403,7 @@ namespace Libplanet.Net.Protocols
                     new PingMsg(),
                     timeout,
                     cancellationToken
-                );
+                ).ConfigureAwait(false);
                 if (!(reply is PongMsg pong))
                 {
                     throw new InvalidMessageException(
@@ -585,15 +585,16 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            var findPeer = new Messages.FindNeighborsMsg(target);
+            var findPeer = new FindNeighborsMsg(target);
             try
             {
                 Message reply = await _transport.SendMessageAsync(
                     peer,
                     findPeer,
                     timeout,
-                    cancellationToken);
-                if (!(reply is Messages.NeighborsMsg neighbors))
+                    cancellationToken
+                ).ConfigureAwait(false);
+                if (!(reply is NeighborsMsg neighbors))
                 {
                     throw new InvalidMessageException(
                         $"Reply to {nameof(Messages.FindNeighborsMsg)} is invalid.",
