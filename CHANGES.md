@@ -89,6 +89,17 @@ Released on December 3, 2022.
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
 
 
+Version 0.44.4
+--------------
+
+Released on December 15, 2022.
+
+ -  Improved overall performance of `NetMQTransport` and `TxCompletion<T>`
+    classes.  [[#2631]]
+
+[#2631]: https://github.com/planetarium/libplanet/pull/2631
+
+
 Version 0.44.3
 --------------
 

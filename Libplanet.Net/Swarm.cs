@@ -774,6 +774,7 @@ namespace Libplanet.Net
                 nameof(Messages.GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
+
             Message parsedMessage;
             try
             {
@@ -782,7 +783,7 @@ namespace Libplanet.Net
                     request,
                     timeout: transportTimeout,
                     cancellationToken: cancellationToken
-                );
+                ).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
@@ -861,7 +862,7 @@ namespace Libplanet.Net
                     ((hashCount - 1) / request.ChunkSize) + 1,
                     false,
                     cancellationToken
-                );
+                ).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
@@ -875,7 +876,7 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (message is Messages.BlocksMsg blockMessage)
+                if (message is BlocksMsg blockMessage)
                 {
                     IList<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
@@ -934,7 +935,7 @@ namespace Libplanet.Net
                     txCount,
                     true,
                     cancellationToken
-                );
+                ).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
