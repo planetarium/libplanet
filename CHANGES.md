@@ -35,6 +35,8 @@ To be released.
  -  (Libplanet.Explorer) Added `actionsLogsList` field to `TxResultType`.
     [[#2474], [#2505]]
  -  Added `PolicyBlockActionGetter` delegator type.  [[#2646]]
+ -  Added `IActionTypeLoader.LoadAllActionTypes()` method.  [[#2646]]
+     -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
 
 ### Behavioral changes
 
