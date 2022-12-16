@@ -29,6 +29,8 @@ namespace Libplanet.Net.Transports
         private readonly AppProtocolVersion _appProtocolVersion;
         private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
+        private readonly Channel<MessageRequest> _requests;
+        private readonly Task _runtimeProcessor;
 
         private NetMQQueue<NetMQMessage> _replyQueue;
 
@@ -38,11 +40,8 @@ namespace Libplanet.Net.Transports
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
-        private Channel<MessageRequest> _requests;
-        private CancellationTokenSource _runtimeProcessorCancellationTokenSource;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
-        private Task _runtimeProcessor;
 
         private TaskCompletionSource<object> _runningEvent;
 
@@ -53,6 +52,7 @@ namespace Libplanet.Net.Transports
 
         static NetMQTransport()
         {
+            NetMQConfig.ThreadPoolSize = 3;
             if (!(Type.GetType("Mono.Runtime") is null))
             {
                 ForceDotNet.Force();
@@ -127,38 +127,22 @@ namespace Libplanet.Net.Transports
             _messageCodec = new NetMQMessageCodec();
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
-            _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
-            _runtimeProcessor = Task.Factory.StartNew(
-                () =>
-                {
-                    // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
-                    // tests
-                    try
-                    {
-                        using var runtime = new NetMQRuntime();
-                        Task[] workerTasks = Enumerable
-                            .Range(0, workers)
-                            .Select(_ =>
-                                ProcessRuntime(_runtimeProcessorCancellationTokenSource.Token))
-                            .ToArray();
-                        runtime.Run(workerTasks);
-                    }
-                    catch (Exception e)
-                        when (e is NetMQException nme || e is ObjectDisposedException ode)
-                    {
-                        _logger.Error(
-                            e,
-                            "An exception has occurred while running {TaskName}.",
-                            nameof(_runtimeProcessor));
-                    }
-                },
-                CancellationToken.None,
-                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
-                TaskScheduler.Default
-            );
+            CancellationToken runtimeCt = _runtimeCancellationTokenSource.Token;
+            _runtimeProcessor = Task.WhenAll(
+                Enumerable.Range(0, Environment.ProcessorCount)
+                    .Select(_ => Task.Factory.StartNew(
+                        () =>
+                        {
+                            using var runtime = new NetMQRuntime();
+                            runtime.Run(ProcessRuntime(runtimeCt));
+                        },
+                        runtimeCt,
+                        TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                        TaskScheduler.Default))
+                    .ToArray());
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
         }
@@ -319,13 +303,11 @@ namespace Libplanet.Net.Transports
         {
             if (!_disposed)
             {
-                _requests.Writer.Complete();
-                _runtimeProcessorCancellationTokenSource.Cancel();
+                _requests.Writer.TryComplete();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
                 _runtimeProcessor.Wait();
 
-                _runtimeProcessorCancellationTokenSource.Dispose();
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
 
@@ -395,6 +377,14 @@ namespace Libplanet.Net.Transports
 
             Guid reqId = Guid.NewGuid();
             var replies = new List<Message>();
+            Channel<Message> channel = Channel.CreateUnbounded<Message>(
+                new UnboundedChannelOptions
+                {
+                    SingleReader = true,
+                    SingleWriter = true,
+                }
+            );
+
             try
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -404,7 +394,6 @@ namespace Libplanet.Net.Transports
                     peer,
                     message
                 );
-                var channel = Channel.CreateUnbounded<Message>();
                 Interlocked.Increment(ref _requestCount);
                 var req = new MessageRequest(
                     reqId,
@@ -486,7 +475,7 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
-                await Task.Yield();
+                channel.Writer.TryComplete();
             }
         }
 
@@ -691,35 +680,25 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private async Task ProcessRuntime(
-            CancellationToken cancellationToken = default)
+        private async Task ProcessRuntime(CancellationToken cancellationToken)
         {
             const string waitMsg = "Waiting for a new request...";
+            ChannelReader<MessageRequest> reader = _requests.Reader;
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
             _logger.Verbose(waitMsg);
-            await foreach (MessageRequest req in _requests.Reader.ReadAllAsync(cancellationToken))
+            await foreach (MessageRequest req in reader.ReadAllAsync(cancellationToken))
             {
 #else
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 _logger.Verbose(waitMsg);
-                MessageRequest req = await _requests.Reader.ReadAsync(cancellationToken);
+                MessageRequest req = await reader.ReadAsync(cancellationToken);
 #endif
                 long left = Interlocked.Decrement(ref _requestCount);
                 _logger.Debug("Request taken; {Count} requests left.", left);
 
-                try
-                {
-                    await ProcessRequest(req, req.CancellationToken);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        "Failed to process {Message} {RequestId}; discarding it.",
-                        req.Message,
-                        req.Id);
-                }
+                _ = ProcessRequest(req, req.CancellationToken);
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
                 _logger.Verbose(waitMsg);
@@ -731,7 +710,10 @@ namespace Libplanet.Net.Transports
         {
             try
             {
-                DealerSocket dealer = new DealerSocket(request.Peer.ToNetMQAddress());
+                var dealer = new DealerSocket();
+                dealer.Options.DisableTimeWait = true;
+                _logger.Debug("Trying to connect {RequestId}.", request.Id);
+                dealer.Connect(request.Peer.ToNetMQAddress());
                 long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                 _logger
                     .ForContext("Tag", "Metric")
@@ -874,7 +856,13 @@ namespace Libplanet.Net.Transports
             }
             catch (Exception e)
             {
-                channel.Writer.Complete(e);
+                _logger.Error(
+                    e,
+                    "Failed to process {Message} {RequestId}; discarding it.",
+                    req.Message,
+                    req.Id
+                );
+                channel.Writer.TryComplete(e);
             }
             finally
             {
