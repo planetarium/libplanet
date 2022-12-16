@@ -45,7 +45,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="seedPeers">A list of seed's <see cref="BoundPeer"/>.</param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block. <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
+        /// block.
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>

@@ -47,7 +47,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
         /// </param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block. <seealso cref="OnBlockChainTipChanged"/>
+        /// block. <seealso cref="OnTipChanged"/>
         /// </param>
         /// <param name="getValidatorSet">The function determining the set of validators
         /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
@@ -71,7 +71,7 @@ namespace Libplanet.Net.Consensus
             _contextTimeoutOption = contextTimeoutOption;
 
             _contexts = new Dictionary<long, Context<T>>();
-            _blockChain.TipChanged += OnBlockChainTipChanged;
+            _blockChain.TipChanged += OnTipChanged;
             _bootstrapping = true;
 
             _logger = Log
@@ -97,8 +97,8 @@ namespace Libplanet.Net.Consensus
         /// The index of block that <see cref="ConsensusContext{T}"/> is watching. The value can be
         /// changed by starting a consensus or appending a block.
         /// </summary>
-        /// <seealso cref="NewHeight"/>  <seealso cref="OnBlockChainTipChanged"/>
-        /// <returns>If <see cref="NewHeight"/> or <see cref="OnBlockChainTipChanged"/> is called
+        /// <seealso cref="NewHeight"/>  <seealso cref="OnTipChanged"/>
+        /// <returns>If <see cref="NewHeight"/> or <see cref="OnTipChanged"/> is called
         /// before, returns current working height, otherwise returns <c>-1</c>.</returns>
         public long Height { get; private set; }
 
@@ -155,7 +155,7 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            _blockChain.TipChanged -= OnBlockChainTipChanged;
+            _blockChain.TipChanged -= OnTipChanged;
         }
 
         /// <summary>
@@ -251,7 +251,6 @@ namespace Libplanet.Net.Consensus
         /// </remarks>
         public void Commit(Block<T> block, BlockCommit? commit)
         {
-            _bootstrapping = false;
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
             _blockChain.Append(block, commit);
         }
@@ -327,6 +326,28 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// A handler to process <see cref="Context{T}.StateChanged"/> <see langword="event"/>s.
+        /// In particular, this watches for a successful state change into
+        /// <see cref="Step.EndCommit"/> for a <see cref="Context{T}"/> to turn off
+        /// bootstrapping.
+        /// </summary>
+        /// <param name="sender">The source object invoking the event.</param>
+        /// <param name="e">The event arguments given by the source object.</param>
+        /// <remarks>
+        /// This is conditionally attached to <see cref="Context{T}.StateChanged"/>
+        /// to reduce memory usage.
+        /// </remarks>
+        /// <seealso cref="AttachEventHandlers"/>
+        private void OnContextStateChanged(
+            object? sender, (int MessageLogSize, int Round, Step Step) e)
+        {
+            if (e.Step == Step.EndCommit)
+            {
+                _bootstrapping = false;
+            }
+        }
+
+        /// <summary>
         /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls
         /// <see cref="NewHeight"/>.  Starting a new height will be delayed for
         /// <see cref="_newHeightDelay"/> in order to collect remaining delayed votes
@@ -337,7 +358,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="e">The event arguments given by <see cref="BlockChain{T}.TipChanged"/>
         /// as a tuple of the old tip and the new tip.
         /// </param>
-        private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
+        private void OnTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
             // TODO: Should set delay by using GST.
             _newHeightCts?.Cancel();
