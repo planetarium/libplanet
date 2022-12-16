@@ -238,24 +238,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Committing the block to the <see cref="BlockChain{T}"/> and saves
-        /// <see cref="BlockCommit"/> of currently committed height.
-        /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> to committing to the
-        /// <see cref="BlockChain{T}"/>.
-        /// </param>
-        /// <param name="commit">A <see cref="BlockCommit"/> created from committed height.
-        /// </param>
-        /// <remarks>the method is called when a block is voted by <see cref="Context{T}"/>
-        /// in <see cref="Libplanet.Net.Consensus.Step.EndCommit"/>.
-        /// </remarks>
-        public void Commit(Block<T> block, BlockCommit? commit)
-        {
-            _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
-            _blockChain.Append(block, commit);
-        }
-
-        /// <summary>
         /// <para>
         /// Handles a received <see cref="ConsensusMsg"/> by either dispatching it to the right
         /// <see cref="Context{T}"/> or discarding it.

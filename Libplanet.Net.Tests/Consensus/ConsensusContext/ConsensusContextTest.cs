@@ -254,47 +254,5 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
         }
-
-        [Fact(Timeout = Timeout)]
-        public void Commit()
-        {
-            var stepChangedToPreVote = new AsyncAutoResetEvent();
-            var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            var stepChangedToEndCommit = new AsyncAutoResetEvent();
-
-            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
-
-            consensusContext.StateChanged += (sender, eventArgs) =>
-            {
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreVote)
-                {
-                    stepChangedToPreVote.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreCommit)
-                {
-                    stepChangedToPreCommit.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.EndCommit)
-                {
-                    stepChangedToEndCommit.Set();
-                }
-            };
-
-            // Height 1 does not have lastCommit, so skipping height 1.
-            var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1], lastCommit: null);
-            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-
-            var block2 = blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[2],
-                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
-            consensusContext.Commit(block2, TestUtils.CreateBlockCommit(block2));
-            Assert.Equal(blockChain.Tip, block2);
-            Assert.NotNull(blockChain.Store.GetBlockCommit(block2.Hash));
-        }
     }
 }

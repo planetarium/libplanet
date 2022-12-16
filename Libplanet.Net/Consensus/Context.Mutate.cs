@@ -270,7 +270,12 @@ namespace Libplanet.Net.Consensus
 
                 try
                 {
-                    ConsensusContext.Commit(block4, GetBlockCommit());
+                    _logger.Debug(
+                        "Committing block #{Index} {Hash}. (context: {Context})",
+                        block4.Index,
+                        block4.Hash,
+                        ToString());
+                    _blockChain.Append(block4, GetBlockCommit());
                 }
                 catch (Exception e)
                 {
