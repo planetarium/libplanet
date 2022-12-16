@@ -118,7 +118,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
             }
 
@@ -253,7 +253,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
             }
 
@@ -271,7 +271,7 @@ namespace Libplanet.Net.Consensus
                 try
                 {
                     _logger.Debug(
-                        "Committing block #{Index} {Hash}. (context: {Context})",
+                        "Committing block #{Index} {Hash} (context: {Context})",
                         block4.Index,
                         block4.Hash,
                         ToString());
@@ -281,18 +281,17 @@ namespace Libplanet.Net.Consensus
                 {
                     _logger.Debug(
                         e,
-                        "Failed to commit block #{Index} {Hash}. (context: {Context})",
+                        "Failed to commit block #{Index} {Hash}",
                         block4.Index,
-                        block4.Hash,
-                        ToString());
+                        block4.Hash);
                     ExceptionOccurred?.Invoke(this, e);
                     return;
                 }
 
                 _logger.Debug(
-                    "Committed block in round #{Round}. (context: {Context})",
-                    Round,
-                    ToString());
+                    "Committed block #{Index} {Hash}",
+                    block4.Index,
+                    block4.Hash);
                 return;
             }
 
@@ -353,7 +352,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
             }
 
