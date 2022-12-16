@@ -172,10 +172,10 @@ namespace Libplanet.Net.Consensus
                     "({NextMessageLogSize}, {NextRound}, {NextStep})",
                     prevState.MessageLogSize,
                     prevState.Round,
-                    prevState.Step.ToString(),
+                    prevState.Step,
                     nextState.MessageLogSize,
                     nextState.Round,
-                    nextState.Step.ToString());
+                    nextState.Step);
                 StateChanged?.Invoke(
                     this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
 
