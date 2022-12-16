@@ -418,7 +418,7 @@ namespace Libplanet.Net.Transports
                 await _requests.Writer.WriteAsync(
                     req,
                     linkedCt
-                );
+                ).ConfigureAwait(false);
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
                     "{LeftRequests} left.",
@@ -430,7 +430,10 @@ namespace Libplanet.Net.Transports
 
                 foreach (var i in Enumerable.Range(0, expectedResponses))
                 {
-                    replies.Add(await channel.Reader.ReadAsync(linkedCt));
+                    Message reply = await channel.Reader
+                        .ReadAsync(linkedCt)
+                        .ConfigureAwait(false);
+                    replies.Add(reply);
                 }
 
                 const string dbgMsg =
