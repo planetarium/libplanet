@@ -1330,7 +1330,11 @@ namespace Libplanet.Blockchain
                     if (block.Index != 0 && blockCommit is { })
                     {
                         Store.PutBlockCommit(blockCommit);
-                        CleanupBlockCommitStore(blockCommit.Height);
+                    }
+
+                    if (block.PreviousHash is { } prevHash)
+                    {
+                        Store.DeleteBlockCommit(prevHash);
                     }
                 }
                 finally
