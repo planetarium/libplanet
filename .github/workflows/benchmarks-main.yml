@@ -77,4 +77,4 @@ jobs:
 #        auto-push: true
 
     - name: Copy benchmark results to cache
-      run: rm -rf ./cache && cp -R BenchmarkDotNet.Artifacts/results ./cache
+      run: rm -r ./cache && cp -R BenchmarkDotNet.Artifacts/results ./cache
