@@ -121,24 +121,24 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T)
   nameWithType: ActionEvaluator<T>
   nameWithType.vb: ActionEvaluator(Of T)
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})
-  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})
-  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>, Predicate<Libplanet.Assets.Currency>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency))
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
-  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
-  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>, Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionTypeLoader)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionTypeLoader)
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})
+  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>, Predicate<Libplanet.Assets.Currency>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency))
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
+  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>, Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionTypeLoader)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionTypeLoader)
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
 - uid: Libplanet.Action.ActionEvaluator`1.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
@@ -754,6 +754,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionTypeLoader.Load
   nameWithType: IActionTypeLoader.Load
+- uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  name: LoadAllActionTypes(IPreEvaluationBlockHeader)
+  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_Libplanet_Blocks_IPreEvaluationBlockHeader_
+  commentId: M:Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  nameWithType: IActionTypeLoader.LoadAllActionTypes(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes*
+  name: LoadAllActionTypes
+  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_
+  commentId: Overload:Libplanet.Action.IActionTypeLoader.LoadAllActionTypes
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes
+  nameWithType: IActionTypeLoader.LoadAllActionTypes
 - uid: Libplanet.Action.IExtractableException
   name: IExtractableException
   href: api/Libplanet.Action.IExtractableException.html
@@ -984,6 +997,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.NullAction.PlainValue
   nameWithType: NullAction.PlainValue
+- uid: Libplanet.Action.PolicyBlockActionGetter
+  name: PolicyBlockActionGetter
+  href: api/Libplanet.Action.PolicyBlockActionGetter.html
+  commentId: T:Libplanet.Action.PolicyBlockActionGetter
+  fullName: Libplanet.Action.PolicyBlockActionGetter
+  nameWithType: PolicyBlockActionGetter
 - uid: Libplanet.Action.PolymorphicAction`1
   name: PolymorphicAction<T>
   href: api/Libplanet.Action.PolymorphicAction-1.html
@@ -1201,6 +1220,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.StaticActionTypeLoader.Load
   nameWithType: StaticActionTypeLoader.Load
+- uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  name: LoadAllActionTypes(IPreEvaluationBlockHeader)
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Blocks_IPreEvaluationBlockHeader_
+  commentId: M:Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  fullName: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  nameWithType: StaticActionTypeLoader.LoadAllActionTypes(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes*
+  name: LoadAllActionTypes
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_
+  commentId: Overload:Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes
+  isSpec: "True"
+  fullName: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes
+  nameWithType: StaticActionTypeLoader.LoadAllActionTypes
 - uid: Libplanet.Action.SupplyOverflowException
   name: SupplyOverflowException
   href: api/Libplanet.Action.SupplyOverflowException.html

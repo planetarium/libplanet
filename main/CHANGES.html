@@ -75,6 +75,9 @@ on a non-canonical chain.  [<a href="https://github.com/planetarium/libplanet/pu
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
 <li>Added <code>actionsLogsList</code> parameter to <code>TxFailure</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
+<li>Replaced <code>IAction?</code>-typed <code>policyBlockAction</code> parameter with
+<code>PolicyBlockActionGetter</code>-typed <code>policyBlockActionGetter</code> parameter
+in <code>ActionEvaluator</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2646">#2646</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -86,6 +89,12 @@ on a non-canonical chain.  [<a href="https://github.com/planetarium/libplanet/pu
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
 <li>(Libplanet.Explorer) Added <code>actionsLogsList</code> field to <code>TxResultType</code>.
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
+<li>Added <code>PolicyBlockActionGetter</code> delegator type.  [<a href="https://github.com/planetarium/libplanet/pull/2646">#2646</a>]</li>
+<li>Added <code>IActionTypeLoader.LoadAllActionTypes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2646">#2646</a>]
+<ul>
+<li>Added <code>StaticActionTypeLoader.LoadAllActionTypes()</code> method.</li>
+</ul>
+</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
