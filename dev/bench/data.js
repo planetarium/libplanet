@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1671005555778,
+  "lastUpdate": 1671430759719,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -720,6 +720,36 @@ window.BENCHMARK_DATA = {
             "value": 18045.555555555555,
             "unit": "ns",
             "range": "± 1577.0945488397406"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d04f39b1b40a88d730de13cb49007b222f4dcd9f",
+          "message": "Merge pull request #2646 from moreal/load-block-action-lazily\n\nLoad block action from delegator",
+          "timestamp": "2022-12-19T15:05:34+09:00",
+          "tree_id": "45b3b9641d8def00cc6a329c8735c75a36241c20",
+          "url": "https://github.com/planetarium/libplanet/commit/d04f39b1b40a88d730de13cb49007b222f4dcd9f"
+        },
+        "date": 1671430743978,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 112640,
+            "unit": "ns",
+            "range": "± 5643.3616669596495"
           }
         ]
       }
