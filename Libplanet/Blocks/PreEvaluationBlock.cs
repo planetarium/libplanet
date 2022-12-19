@@ -263,7 +263,7 @@ namespace Libplanet.Blocks
             }
 
             var actionEvaluator = new ActionEvaluator<T>(
-                blockAction,
+                _ => blockAction,
                 blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null,
                 genesisHash: null,

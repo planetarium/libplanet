@@ -18,6 +18,9 @@ To be released.
     [[#2474], [#2505]]
  -  Added `actionsLogsList` parameter to `TxFailure` constructor.
     [[#2474], [#2505]]
+ -  Replaced `IAction?`-typed `policyBlockAction` parameter with
+    `PolicyBlockActionGetter`-typed `policyBlockActionGetter` parameter
+    in `ActionEvaluator` constructor.  [[#2646]]
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +34,9 @@ To be released.
     [[#2474], [#2505]]
  -  (Libplanet.Explorer) Added `actionsLogsList` field to `TxResultType`.
     [[#2474], [#2505]]
+ -  Added `PolicyBlockActionGetter` delegator type.  [[#2646]]
+ -  Added `IActionTypeLoader.LoadAllActionTypes()` method.  [[#2646]]
+     -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
 
 ### Behavioral changes
 
@@ -44,6 +50,7 @@ To be released.
 [#2505]: https://github.com/planetarium/libplanet/pull/2505
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
 [#2619]: https://github.com/planetarium/libplanet/pull/2619
+[#2646]: https://github.com/planetarium/libplanet/pull/2646
 
 
 Version 0.45.0

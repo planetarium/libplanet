@@ -16,5 +16,14 @@ namespace Libplanet.Action
         /// use.</param>
         /// <returns>A dictionary made of action id to action type pairs.</returns>
         public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader);
+
+        /// <summary>
+        /// Load action types branched by <paramref name="blockHeader"/>.
+        /// </summary>
+        /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
+        /// use.</param>
+        /// <returns>Types of available actions. It also includes actions not having
+        /// <see cref="ActionTypeAttribute"/>.</returns>
+        public IEnumerable<Type> LoadAllActionTypes(IPreEvaluationBlockHeader blockHeader);
     }
 }
