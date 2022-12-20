@@ -586,7 +586,8 @@ namespace Libplanet.Action
             ITrie? previousBlockStatesTrie = null)
         {
             IAction? systemAction = CreateSystemAction(tx);
-            IEnumerable<IAction> customActions = CreateCustomActions(blockHeader, tx);
+            IEnumerable<IAction> customActions = CreateCustomActions(
+                ActionTypeLoaderContext.From(blockHeader), tx);
 
             ImmutableList<IAction> actions = systemAction is { }
                 ? ImmutableList.Create(systemAction)
@@ -775,13 +776,13 @@ namespace Libplanet.Action
         }
 
         private IEnumerable<IAction> CreateCustomActions(
-            IPreEvaluationBlockHeader blockHeader,
+            IActionTypeLoaderContext actionTypeLoaderContext,
             ITransaction tx
         )
         {
             if (tx.CustomActions is { } customActions)
             {
-                IDictionary<string, Type> types = _actionTypeLoader.Load(blockHeader);
+                IDictionary<string, Type> types = _actionTypeLoader.Load(actionTypeLoaderContext);
 
                 foreach (IValue rawAction in customActions)
                 {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
-using Libplanet.Blocks;
 
 namespace Libplanet.Action
 {
@@ -32,18 +31,18 @@ namespace Libplanet.Action
         /// <summary>
         /// Load action types inherited the base type given in the constructor from assemblies.
         /// </summary>
-        /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
-        /// use. But it isn't used in this implementation.</param>
+        /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine
+        /// what action types to use. But it isn't used in this implementation.</param>
         /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader) => Load();
+        public IDictionary<string, Type> Load(IActionTypeLoaderContext context) => Load();
 
         /// <summary>
         /// Load all action types from assemblies.
         /// </summary>
-        /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
-        /// use. But it isn't used in this implementation.</param>
+        /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine what action
+        /// types to use. But it isn't used in this implementation.</param>
         /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IEnumerable<Type> LoadAllActionTypes(IPreEvaluationBlockHeader blockHeader)
+        public IEnumerable<Type> LoadAllActionTypes(IActionTypeLoaderContext context)
             => LoadAllActionTypesImpl(_assembliesSet);
 
         internal IDictionary<string, Type> Load() =>
