@@ -1330,7 +1330,11 @@ namespace Libplanet.Blockchain
                     if (block.Index != 0 && blockCommit is { })
                     {
                         Store.PutBlockCommit(blockCommit);
-                        CleanupBlockCommitStore(blockCommit.Height);
+                    }
+
+                    if (block.PreviousHash is { } prevHash)
+                    {
+                        Store.DeleteBlockCommit(prevHash);
                     }
                 }
                 finally
@@ -1554,22 +1558,13 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Clean up <see cref="BlockCommit"/>s in the store. The <paramref name="limit"/> height
-        /// of <see cref="BlockCommit"/> will not be removed. If the stored
-        /// <see cref="BlockCommit"/> count is not over <paramref name="maxCacheSize"/>, the removal
-        /// is skipped.
+        /// Cleans up every <see cref="BlockCommit"/> in the store with
+        /// <see cref="BlockCommit.Height"/> less than <paramref name="limit"/>.
         /// </summary>
         /// <param name="limit">A exceptional index that is not to be removed.</param>
-        /// <param name="maxCacheSize">A maximum count value of <see cref="BlockCommit"/> cache.
-        /// </param>
-        internal void CleanupBlockCommitStore(long limit, long maxCacheSize = 30)
+        internal void CleanupBlockCommitStore(long limit)
         {
             List<BlockHash> hashes = Store.GetBlockCommitHashes().ToList();
-
-            if (hashes.Count < maxCacheSize)
-            {
-                return;
-            }
 
             _logger.Debug("Removing old BlockCommits with heights lower than {Limit}...", limit);
             foreach (var hash in hashes)
