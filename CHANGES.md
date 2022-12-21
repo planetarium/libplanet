@@ -114,8 +114,6 @@ Version PBFT
 
  -  (Libplanet.Explorer) Fixed a bug where `stateQuery` hadn't work
     correctly in some situations.  [[#PBFT]]
- -  Fixed validation on `lastCommit` with wrong block's `ValidatorSet`.
-    [[#PBFT]]
 
 ### Dependencies
 
