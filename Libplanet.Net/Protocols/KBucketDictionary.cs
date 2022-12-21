@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Serilog;
 
 namespace Libplanet.Net.Protocols
@@ -26,7 +27,7 @@ namespace Libplanet.Net.Protocols
     /// </summary>
     internal class KBucketDictionary
     {
-        private readonly object _lock;
+        private readonly ReaderWriterLockSlim _lock;
         private readonly int _size;
         private readonly bool _replace;
         private readonly ILogger _logger;
@@ -49,7 +50,7 @@ namespace Libplanet.Net.Protocols
                     $"The value of {nameof(size)} must be positive.");
             }
 
-            _lock = new object();
+            _lock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _size = size;
             _replace = replace;
             _dictionary = new Dictionary<Address, PeerState>();
@@ -68,9 +69,14 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                lock (_lock)
+                _lock.EnterReadLock();
+                try
                 {
                     return _dictionary.Values.ToList();
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
                 }
             }
         }
@@ -79,9 +85,14 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                lock (_lock)
+                _lock.EnterReadLock();
+                try
                 {
                     return _dictionary.Count;
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
                 }
             }
         }
@@ -94,11 +105,25 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                lock (_lock)
+                _lock.EnterReadLock();
+                try
                 {
-                    return _dictionary.Values
-                        .OrderBy(peerState => peerState.LastUpdated)
-                        .LastOrDefault();
+                    return _dictionary.Values.Aggregate<PeerState, PeerState?>(
+                        null,
+                        (candidate, ps) =>
+                        {
+                            if (candidate is null)
+                            {
+                                return ps;
+                            }
+
+                            return candidate.LastUpdated < ps.LastUpdated ? ps : candidate;
+                        }
+                    );
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
                 }
             }
         }
@@ -111,11 +136,25 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                lock (_lock)
+                _lock.EnterReadLock();
+                try
                 {
-                    return _dictionary.Values
-                        .OrderBy(peerState => peerState.LastUpdated)
-                        .FirstOrDefault();
+                    return _dictionary.Values.Aggregate<PeerState, PeerState?>(
+                        null,
+                        (candidate, ps) =>
+                        {
+                            if (candidate is null)
+                            {
+                                return ps;
+                            }
+
+                            return candidate.LastUpdated > ps.LastUpdated ? ps : candidate;
+                        }
+                    );
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
                 }
             }
         }
@@ -140,7 +179,8 @@ namespace Libplanet.Net.Protocols
         /// that of <paramref name="address"/>. <see langword="null"/> if not found.</returns>
         public PeerState? Get(Address address)
         {
-            lock (_lock)
+            _lock.EnterReadLock();
+            try
             {
                 if (_dictionary.ContainsKey(address))
                 {
@@ -150,6 +190,10 @@ namespace Libplanet.Net.Protocols
                 {
                     return null;
                 }
+            }
+            finally
+            {
+                _lock.ExitReadLock();
             }
         }
 
@@ -173,9 +217,14 @@ namespace Libplanet.Net.Protocols
         /// <see langword="false"/> otherwise.</returns>
         public bool Contains(Address address)
         {
-            lock (_lock)
+            _lock.EnterReadLock();
+            try
             {
                 return _dictionary.ContainsKey(address);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
             }
         }
 
@@ -252,7 +301,8 @@ namespace Libplanet.Net.Protocols
         /// </remarks>
         public bool AddOrUpdate(Address address, PeerState peerState)
         {
-            lock (_lock)
+            _lock.EnterWriteLock();
+            try
             {
                 if (_dictionary.ContainsKey(address))
                 {
@@ -292,6 +342,10 @@ namespace Libplanet.Net.Protocols
                     }
                 }
             }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -313,9 +367,14 @@ namespace Libplanet.Net.Protocols
         /// <see langword="false"/> otherwise.</returns>
         public bool Remove(Address address)
         {
-            lock (_lock)
+            _lock.EnterWriteLock();
+            try
             {
                 return _dictionary.Remove(address);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
             }
         }
 
@@ -324,12 +383,15 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         public void Clear()
         {
-            lock (_lock)
+            _lock.EnterWriteLock();
+            try
             {
                 _dictionary = new Dictionary<Address, PeerState>();
             }
-
-            return;
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
         }
     }
 }

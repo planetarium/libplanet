@@ -73,7 +73,8 @@ namespace Libplanet.Net.Protocols
                 // Guarantees at least one connection (seed peer)
                 try
                 {
-                    await PingAsync(peer, dialTimeout, cancellationToken);
+                    await PingAsync(peer, dialTimeout, cancellationToken)
+                        .ConfigureAwait(false);
                     findPeerTasks.Add(
                         FindPeerAsync(
                             history,
@@ -108,7 +109,7 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                await Task.WhenAll(findPeerTasks);
+                await Task.WhenAll(findPeerTasks).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -136,7 +137,7 @@ namespace Libplanet.Net.Protocols
                 }
 
                 _logger.Verbose("Trying to ping {PeerCount} peers.", tasks.Count);
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(tasks).ConfigureAwait(false);
                 _logger.Verbose("Update complete.");
             }
             catch (PingTimeoutException e)
@@ -434,13 +435,14 @@ namespace Libplanet.Net.Protocols
             {
                 case PingMsg ping:
                 {
-                    await ReceivePingAsync(ping);
+                    await ReceivePingAsync(ping).ConfigureAwait(false);
                     break;
                 }
 
                 case FindNeighborsMsg findNeighbors:
                 {
-                    await ReceiveFindPeerAsync(findNeighbors);
+                    await ReceiveFindPeerAsync(findNeighbors)
+                        .ConfigureAwait(false);
                     break;
                 }
             }
