@@ -6,19 +6,21 @@ Version 0.45.2
 
 To be released.
 
- - Ported fixes on [Libplanet 0.44.5] release.  [[#2654]]
+ - Ported changes from [Libplanet 0.44.5] release.  [[#2654]]
 
 [Libplanet 0.44.5]: https://www.nuget.org/packages/Libplanet/0.44.5
-[#2654]: https://github.com/planetarium/libplanet/pull/2654
+
 
 Version 0.45.1
 --------------
 
 Released on December 15, 2022.
 
+ -  Ported changes from [Libplanet 0.44.4] release.  [[#2631]]
  -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
     hadn't been canceled properly.  [[#2641]]
 
+[Libplanet 0.44.4]: https://www.nuget.org/packages/Libplanet/0.44.4
 [#2641]: https://github.com/planetarium/libplanet/pull/2641
 
 
