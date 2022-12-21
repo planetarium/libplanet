@@ -2197,6 +2197,94 @@ namespace Libplanet.Tests.Blockchain
             });
         }
 
+        [Fact]
+        private void ValidateNextBlockCommitOnValidatorSetChange()
+        {
+            var storeFixture = new MemoryStoreFixture();
+            var policy = new NullBlockPolicy<DumbAction>();
+
+            var addresses = ImmutableList<Address>.Empty
+                .Add(storeFixture.Address1)
+                .Add(storeFixture.Address2)
+                .Add(storeFixture.Address3);
+
+            var newValidatorPrivKey = new PrivateKey();
+            var newValidators = ValidatorPrivateKeys.Append(newValidatorPrivKey);
+            var systemActions = ValidatorPrivateKeys.Select(
+                pk => new SetValidator(new Validator(pk.PublicKey, BigInteger.One)));
+
+            BlockChain<DumbAction> blockChain =
+                new BlockChain<DumbAction>(
+                    policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    storeFixture.Store,
+                    storeFixture.StateStore,
+                    BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
+
+            blockChain.MakeTransaction(
+                new PrivateKey(), new SetValidator(newValidatorPrivKey.PublicKey, BigInteger.One));
+            var newBlock = blockChain.ProposeBlock(new PrivateKey());
+            var newBlockCommit = new BlockCommit(
+                newBlock.Index, 0, newBlock.Hash, ValidatorPrivateKeys.Select(
+                    pk => new VoteMetadata(
+                        newBlock.Index,
+                        0,
+                        newBlock.Hash,
+                        DateTimeOffset.UtcNow,
+                        pk.PublicKey,
+                        VoteFlag.PreCommit).Sign(pk))
+                .OrderBy(vote => vote.ValidatorPublicKey.ToAddress())
+                .ToImmutableArray());
+            blockChain.Append(newBlock, newBlockCommit);
+
+            blockChain.MakeTransaction(
+                new PrivateKey(), new SetValidator(new PrivateKey().PublicKey, BigInteger.One));
+            var nextBlock = blockChain.ProposeBlock(
+                new PrivateKey(), lastCommit: newBlockCommit);
+            var nextBlockCommit = new BlockCommit(
+                nextBlock.Index, 0, nextBlock.Hash, newValidators.Select(
+                    pk => new VoteMetadata(
+                        nextBlock.Index,
+                        0,
+                        nextBlock.Hash,
+                        DateTimeOffset.UtcNow,
+                        pk.PublicKey,
+                        VoteFlag.PreCommit).Sign(pk))
+                .OrderBy(vote => vote.ValidatorPublicKey.ToAddress())
+                .ToImmutableArray());
+            blockChain.Append(nextBlock, nextBlockCommit);
+
+            blockChain.MakeTransaction(
+                new PrivateKey(), new SetValidator(new PrivateKey().PublicKey, BigInteger.One));
+            var invalidCommitBlock = blockChain.ProposeBlock(
+                new PrivateKey(), lastCommit: nextBlockCommit);
+
+            Assert.Throws<InvalidBlockCommitException>(
+                () => blockChain.Append(
+                    invalidCommitBlock,
+                    new BlockCommit(
+                        invalidCommitBlock.Index, 0, invalidCommitBlock.Hash, newValidators.Select(
+                            pk => new VoteMetadata(
+                                invalidCommitBlock.Index,
+                                0,
+                                invalidCommitBlock.Hash,
+                                DateTimeOffset.UtcNow,
+                                pk.PublicKey,
+                                VoteFlag.PreCommit).Sign(pk)).ToImmutableArray())));
+
+            Assert.Equal(
+                blockChain.GetValidatorSet(blockChain[0].Hash),
+                new ValidatorSet(
+                    ValidatorPrivateKeys.Select(
+                        pk => new Validator(pk.PublicKey, BigInteger.One)).ToList()));
+
+            Assert.Equal(
+                blockChain.GetValidatorSet(blockChain[1].Hash),
+                new ValidatorSet(
+                    newValidators.Select(
+                        pk => new Validator(pk.PublicKey, BigInteger.One)).ToList()));
+        }
+
         private class
             NullPolicyButTxPolicyAlwaysThrows<T> : NullPolicyForGetStatesOnUninitializedBlockChain<
                 T>

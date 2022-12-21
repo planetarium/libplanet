@@ -1669,12 +1669,18 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            var validators = GetValidatorSet(block.PreviousHash);
+            var validators = GetValidatorSet(block.PreviousHash ?? Genesis.Hash);
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 return new InvalidBlockCommitException(
-                    "BlockCommit has different validator set with chain state's validator set: " +
-                    $"{validators.Validators.Aggregate(string.Empty, (s, key) => s + key + ", ")}");
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                    $"in states | \n " +
+                    validators.Validators.Aggregate(
+                        string.Empty, (s, key) => s + key + ", \n") +
+                    $"in blockCommit | \n " +
+                    blockCommit.Votes.Aggregate(
+                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
             }
 
             return null;
@@ -1782,14 +1788,12 @@ namespace Libplanet.Blockchain
                             "is not a block after a PoW block should have lastCommit.");
                     }
                 }
-            }
 
-            if (block.LastCommit is { } commit &&
-                !GetValidatorSet(commit.BlockHash).ValidateBlockCommitValidators(commit))
-            {
-                return new InvalidBlockLastCommitException(
-                    "The validator set of the block's lastCommit does not match " +
-                    "the validator set given by the policy.");
+                if (ValidateBlockCommit(
+                    this[block.PreviousHash ?? Genesis.Hash], block.LastCommit) is { } e)
+                {
+                    return new InvalidBlockLastCommitException(e.Message);
+                }
             }
 
             return null;
