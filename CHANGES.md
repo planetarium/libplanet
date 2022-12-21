@@ -7,7 +7,7 @@ Version 0.44.5
 To be released.
 
  -  Improved overall performance of `NetMQTransport` and `Swarm<T>`
-    classes. [[#2654]]
+    classes.  [[#2654]]
 
 [#2654]: https://github.com/planetarium/libplanet/pull/2654
 
