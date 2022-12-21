@@ -6,15 +6,21 @@ Version 0.45.2
 
 To be released.
 
+ - Ported changes from [Libplanet 0.44.5] release.  [[#2654]]
+
+[Libplanet 0.44.5]: https://www.nuget.org/packages/Libplanet/0.44.5
+
 
 Version 0.45.1
 --------------
 
 Released on December 15, 2022.
 
+ -  Ported changes from [Libplanet 0.44.4] release.  [[#2631]]
  -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
     hadn't been canceled properly.  [[#2641]]
 
+[Libplanet 0.44.4]: https://www.nuget.org/packages/Libplanet/0.44.4
 [#2641]: https://github.com/planetarium/libplanet/pull/2641
 
 
@@ -98,6 +104,16 @@ Released on December 3, 2022.
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
+
+Version 0.44.5
+--------------
+
+Released on December 21, 2022.
+
+ -  Improved overall performance of `NetMQTransport` and `Swarm<T>`
+    classes.  [[#2654]]
+
+[#2654]: https://github.com/planetarium/libplanet/pull/2654
 
 
 Version 0.44.4
