@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1671613352722,
+  "lastUpdate": 1671613498128,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -1440,6 +1440,36 @@ window.BENCHMARK_DATA = {
             "value": 17748.79761904762,
             "unit": "ns",
             "range": "± 986.9752963762129"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7f1fe1076336d954abd16d11e9e5ff1698c53b6d",
+          "message": "Merge pull request #2637 from moreal/ci/gh-actions/update-actions-node12\n\nci(gh-actions): update actions used node12",
+          "timestamp": "2022-12-21T17:50:38+09:00",
+          "tree_id": "53e36f7651ecf3fca82f2806cc1839967a1a6947",
+          "url": "https://github.com/planetarium/libplanet/commit/7f1fe1076336d954abd16d11e9e5ff1698c53b6d"
+        },
+        "date": 1671613458993,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 102078.20512820513,
+            "unit": "ns",
+            "range": "± 5231.222385416972"
           }
         ]
       }
