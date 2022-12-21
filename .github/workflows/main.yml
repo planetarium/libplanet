@@ -22,7 +22,7 @@ jobs:
       with:
         ref: ${{ github.pull_request.head.sha }}
     - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-    - uses: actions/setup-dotnet@v1
+    - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - run: dotnet build -p:SkipSonar=true
