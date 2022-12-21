@@ -112,6 +112,9 @@ Version PBFT
 
 ### Bug fixes
 
+ -  (Libplanet.Explorer) Fixed a bug where `stateQuery` hadn't work
+    correctly in some situations.  [[#PBFT]]
+
 ### Dependencies
 
 ### CLI tools
