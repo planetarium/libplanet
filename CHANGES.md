@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.44.5
 --------------
 
-To be released.
+Released on December 21, 2022.
 
  -  Improved overall performance of `NetMQTransport` and `Swarm<T>`
     classes.  [[#2654]]
