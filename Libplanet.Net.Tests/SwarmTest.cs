@@ -339,8 +339,7 @@ namespace Libplanet.Net.Tests
             var roundChangedToOnes = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
@@ -429,7 +428,7 @@ namespace Libplanet.Net.Tests
                 {
                     if (eventArgs.Message is ConsensusProposalMsg proposalMsg &&
                         proposalMsg.Round == 1 &&
-                        proposalMsg.Validator.Equals(TestUtils.PrivateKeys[2].PublicKey))
+                        proposalMsg.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[2].PublicKey))
                     {
                         roundOneProposed.Set();
                     }
