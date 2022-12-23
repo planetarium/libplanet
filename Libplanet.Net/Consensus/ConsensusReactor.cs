@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="seedPeers">A list of seed's <see cref="BoundPeer"/>.</param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block. <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
+        /// block.
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
@@ -88,6 +89,14 @@ namespace Libplanet.Net.Consensus
 
         /// <inheritdoc cref="ConsensusContext{T}.Height"/>
         public long Height => _consensusContext.Height;
+
+        /// <summary>
+        /// An <see cref="IEnumerable{BoundPeer}"/> of the validators.
+        /// </summary>
+        public IReadOnlyList<BoundPeer> Validators => _gossip.Peers.ToList().AsReadOnly();
+
+        // FIXME: This should be exposed in a better way.
+        internal ConsensusContext<T> ConsensusContext => _consensusContext;
 
         /// <summary>
         /// <inheritdoc cref="IDisposable.Dispose()"/>

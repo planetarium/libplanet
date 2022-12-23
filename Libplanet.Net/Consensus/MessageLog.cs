@@ -358,5 +358,21 @@ namespace Libplanet.Net.Consensus
                 }
             }
         }
+
+        internal ConsensusMsg? GetRandomMessage()
+        {
+            lock (_lock)
+            {
+                Random random = new Random();
+                List<ConsensusMsg> pool = new List<ConsensusMsg>()
+                    .Concat(_proposals.Values)
+                    .Concat(_preVotes.Values.SelectMany(kv => kv.Values))
+                    .Concat(_preCommits.Values.SelectMany(kv => kv.Values))
+                    .ToList();
+                return pool.Count > 0
+                    ? pool[random.Next(pool.Count)]
+                    : null;
+            }
+        }
     }
 }

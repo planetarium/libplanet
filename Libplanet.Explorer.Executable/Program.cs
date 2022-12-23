@@ -251,6 +251,8 @@ If omitted (default) explorer only the local blockchain store.")]
                     );
                 }
 
+                Startup.SwarmSingleton = swarm;
+
                 using (var cts = new CancellationTokenSource())
                 using (swarm)
                 {
@@ -431,11 +433,15 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IStore Store => StoreSingleton;
 
+            public Swarm<NullAction> Swarm => SwarmSingleton;
+
             internal static bool PreloadedSingleton { get; set; }
 
             internal static BlockChain<NullAction> BlockChainSingleton { get; set; }
 
             internal static IStore StoreSingleton { get; set; }
+
+            internal static Swarm<NullAction> SwarmSingleton { get; set; }
         }
 
         private class NoOpStateStore : IStateStore

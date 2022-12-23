@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -109,7 +110,111 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task ThrowInvalidProposer()
+        public async Task CanAcceptMessagesAfterCommitFailure()
+        {
+            Codec codec = new Codec();
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
+            Block<DumbAction>? proposedBlock = null;
+            var stepChangedToEndCommit = new AsyncAutoResetEvent();
+            var exceptionOccurred = new AsyncAutoResetEvent();
+            Exception? exceptionThrown = null;
+
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                height: 2,
+                privateKey: TestUtils.PrivateKeys[2],
+                validatorSet: TestUtils.ValidatorSet);
+
+            // Add block #1 so we can start with a last commit for height 2.
+            Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
+            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
+
+            context.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+                else if (eventArgs.Step == Step.EndCommit)
+                {
+                    stepChangedToEndCommit.Set();
+                }
+            };
+            context.MessageBroadcasted += (_, message) =>
+            {
+                if (message is ConsensusProposalMsg proposalMsg)
+                {
+                    proposal = proposalMsg;
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        (Dictionary)codec.Decode(proposalMsg!.Proposal.MarshaledBlock));
+                    proposalSent.Set();
+                }
+            };
+            context.ExceptionOccurred += (_, exception) =>
+            {
+                exceptionThrown = exception;
+                exceptionOccurred.Set();
+            };
+
+            context.Start(lastCommit);
+
+            await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
+
+            // Simulate bypass of context and block sync by swarm by
+            // directly appending to the blockchain.
+            Assert.NotNull(proposedBlock);
+            blockChain.Append(proposedBlock!, TestUtils.CreateBlockCommit(proposedBlock!));
+            Assert.Equal(2, blockChain.Tip.Index);
+
+            // Make PreVotes to normally move to PreCommit step.
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                context.ProduceMessage(new ConsensusPreVoteMsg(new VoteMetadata(
+                    2,
+                    0,
+                    proposedBlock!.Hash,
+                    DateTimeOffset.UtcNow,
+                    TestUtils.PrivateKeys[i].PublicKey,
+                    VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
+            }
+
+            // Validator 2 will automatically vote its PreCommit.
+            foreach (int i in new int[] { 0, 1 })
+            {
+                context.ProduceMessage(new ConsensusPreCommitMsg(new VoteMetadata(
+                    2,
+                    0,
+                    proposedBlock!.Hash,
+                    DateTimeOffset.UtcNow,
+                    TestUtils.PrivateKeys[i].PublicKey,
+                    VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
+            }
+
+            await Task.WhenAll(stepChangedToEndCommit.WaitAsync(), exceptionOccurred.WaitAsync());
+            Assert.IsType<InvalidBlockIndexException>(exceptionThrown);
+
+            // Check context has only three votes.
+            BlockCommit? commit = context.GetBlockCommit();
+            Assert.Equal(3, commit?.Votes.Where(vote => vote.Flag == VoteFlag.PreCommit).Count());
+
+            // Context should still accept new votes.
+            context.ProduceMessage(new ConsensusPreCommitMsg(new VoteMetadata(
+                2,
+                0,
+                proposedBlock!.Hash,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[3].PublicKey,
+                VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[3])));
+
+            await Task.Delay(100);  // Wait for the new message to be added to the message log.
+            commit = context.GetBlockCommit();
+            Assert.Equal(4, commit?.Votes.Where(vote => vote.Flag == VoteFlag.PreCommit).Count());
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task ThrowOnInvalidProposerMessage()
         {
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();

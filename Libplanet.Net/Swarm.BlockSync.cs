@@ -593,6 +593,8 @@ namespace Libplanet.Net
                                         VerifiedBlockHash = deltaBlock.Hash,
                                     });
                             }
+
+                            workspace.CleanupBlockCommitStore(workspace.Tip.Index);
                         }
                         catch (Exception e)
                         {

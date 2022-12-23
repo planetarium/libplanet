@@ -3,8 +3,8 @@ using System.Runtime.CompilerServices;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Queries;
+using Libplanet.Net;
 using Libplanet.Store;
 
 namespace Libplanet.Explorer.Interfaces
@@ -17,6 +17,8 @@ namespace Libplanet.Explorer.Interfaces
         BlockChain<T> BlockChain { get; }
 
         IStore Store { get; }
+
+        Swarm<T> Swarm { get; }
     }
 
     public static class BlockChainContext

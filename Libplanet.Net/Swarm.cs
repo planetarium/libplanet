@@ -220,6 +220,12 @@ namespace Libplanet.Net
         public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
 
         /// <summary>
+        /// Returns list of the validators that consensus has in its routing table.
+        /// If the node is not joining consensus, returns <c>null</c>.
+        /// </summary>
+        public IReadOnlyList<BoundPeer> Validators => _consensusReactor?.Validators;
+
+        /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
         /// synchronizes with.
         /// </summary>
@@ -259,6 +265,9 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
+
+        // FIXME: This should be exposed in a better way.
+        internal ConsensusReactor<T> ConsensusReactor => _consensusReactor;
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.

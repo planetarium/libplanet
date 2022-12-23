@@ -40,6 +40,9 @@ Version PBFT
     ValidatorSetStateCompleter<T>)` method.  [[#PBFT]]
  -  Added `StateCompleterSet<T>.ValidatorSetStateCompleter` property.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+ -  (Libplanet.Net) Added `Swarm<T>.Validators` property.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `peers` and `validators` query
+    in `NodeStateType`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
@@ -62,7 +65,6 @@ Version PBFT
  -  Added `ContextTimeoutOption` class.  [[#PBFT]]
  -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#PBFT]]
  -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
- -  Added `BlockChain<T>.CleanupBlockCommitStore()` method.  [[#PBFT]]
  -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
  -  Added `BlockChain<T>.ValidateBlockCommit()` method.  [[#PBFT]]
  -  Added `Validator` class.  [[#PBFT]]
@@ -94,6 +96,7 @@ Version PBFT
  -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
  -  (Libplaent.Net) Added `ProposalMetadata` class.  [[#PBFT]]
+ -  (Libplanet.Explorer) Added `BoundPeerType` class.  [[#PBFT]]
 
 ### Behavioral changes
 

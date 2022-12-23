@@ -1087,19 +1087,10 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Store.PutBlockCommit(blockCommit1);
             _blockChain.Store.PutBlockCommit(blockCommit2);
             _blockChain.Store.PutBlockCommit(blockCommit3);
-            _blockChain.CleanupBlockCommitStore(blockCommit3.Height, 3);
+            _blockChain.CleanupBlockCommitStore(blockCommit3.Height);
 
             Assert.Null(_blockChain.Store.GetBlockCommit(blockCommit1.BlockHash));
             Assert.Null(_blockChain.Store.GetBlockCommit(blockCommit2.BlockHash));
-            Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
-
-            _blockChain.Store.PutBlockCommit(blockCommit1);
-            _blockChain.Store.PutBlockCommit(blockCommit2);
-            _blockChain.Store.PutBlockCommit(blockCommit3);
-            _blockChain.CleanupBlockCommitStore(blockCommit3.Height, 4);
-
-            Assert.Equal(blockCommit1, _blockChain.Store.GetBlockCommit(blockCommit1.BlockHash));
-            Assert.Equal(blockCommit2, _blockChain.Store.GetBlockCommit(blockCommit2.BlockHash));
             Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
         }
 
