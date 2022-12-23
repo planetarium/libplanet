@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1671813552793,
+  "lastUpdate": 1671813563061,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -1944,6 +1944,60 @@ window.BENCHMARK_DATA = {
             "value": 38938110.95714286,
             "unit": "ns",
             "range": "± 1886300.7940566854"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "greymistcube@gmail.com",
+            "name": "Say Cheong",
+            "username": "greymistcube"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "189c062dd24a1df2d4dd27cec323c785be27417c",
+          "message": "Merge pull request #2666 from greymistcube/fix/benchmark-workflow\n\n🔧 Benchmark CI fix",
+          "timestamp": "2022-12-24T01:21:37+09:00",
+          "tree_id": "7db4ad9f7efac5e2fa8889516702a29ffdd2efea",
+          "url": "https://github.com/planetarium/libplanet/commit/189c062dd24a1df2d4dd27cec323c785be27417c"
+        },
+        "date": 1671813539431,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockEmpty",
+            "value": 5419759.474719102,
+            "unit": "ns",
+            "range": "± 300086.7943142655"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionNoAction",
+            "value": 6482588.197916667,
+            "unit": "ns",
+            "range": "± 507429.4104178042"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsNoAction",
+            "value": 29314857.320224717,
+            "unit": "ns",
+            "range": "± 1617448.47242682"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionWithActions",
+            "value": 7726380.357142857,
+            "unit": "ns",
+            "range": "± 605391.087750026"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsWithActions",
+            "value": 34432196.483146064,
+            "unit": "ns",
+            "range": "± 1905148.7562193265"
           }
         ]
       }
