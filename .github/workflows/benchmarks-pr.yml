@@ -39,7 +39,7 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         external-data-json-path: ./cache/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
-        alert-threshold: '130%'
+        alert-threshold: '150%'
         comment-on-alert: true
         fail-on-alert: true
         alert-comment-cc-users: '@libplanet'
@@ -52,7 +52,7 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         external-data-json-path: ./cache/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
-        alert-threshold: '130%'
+        alert-threshold: '150%'
         comment-on-alert: true
         fail-on-alert: true
         alert-comment-cc-users: '@libplanet'
@@ -65,7 +65,7 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         external-data-json-path: ./cache/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
-        alert-threshold: '130%'
+        alert-threshold: '150%'
         comment-on-alert: true
         fail-on-alert: true
         alert-comment-cc-users: '@libplanet'
@@ -78,7 +78,7 @@ jobs:
         output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.Store-report-full-compressed.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         external-data-json-path: ./cache/Libplanet.Benchmarks.Store-report-full-compressed.json
-        alert-threshold: '130%'
+        alert-threshold: '150%'
         comment-on-alert: true
         fail-on-alert: true
         alert-comment-cc-users: '@libplanet'
@@ -91,7 +91,7 @@ jobs:
 #        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
 #        github-token: ${{ secrets.GITHUB_TOKEN }}
 #        external-data-json-path: ./cache/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
-#        alert-threshold: '130%'
+#        alert-threshold: '150%'
 #        comment-on-alert: true
 #        fail-on-alert: true
 #        alert-comment-cc-users: '@libplanet'
