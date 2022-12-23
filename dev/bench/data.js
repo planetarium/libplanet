@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1671813597311,
+  "lastUpdate": 1671814063194,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -2190,6 +2190,36 @@ window.BENCHMARK_DATA = {
             "value": 32303.79120879121,
             "unit": "ns",
             "range": "± 4215.79744800299"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "greymistcube@gmail.com",
+            "name": "Say Cheong",
+            "username": "greymistcube"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "189c062dd24a1df2d4dd27cec323c785be27417c",
+          "message": "Merge pull request #2666 from greymistcube/fix/benchmark-workflow\n\n🔧 Benchmark CI fix",
+          "timestamp": "2022-12-24T01:21:37+09:00",
+          "tree_id": "7db4ad9f7efac5e2fa8889516702a29ffdd2efea",
+          "url": "https://github.com/planetarium/libplanet/commit/189c062dd24a1df2d4dd27cec323c785be27417c"
+        },
+        "date": 1671814011835,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 124450.57471264368,
+            "unit": "ns",
+            "range": "± 8470.219699564352"
           }
         ]
       }
