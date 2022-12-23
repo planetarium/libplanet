@@ -32,7 +32,7 @@ jobs:
       run: dotnet run --project Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
     - name: Store BlockChain benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -45,7 +45,7 @@ jobs:
         alert-comment-cc-users: '@libplanet'
 
     - name: Store DataModel benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -58,7 +58,7 @@ jobs:
         alert-comment-cc-users: '@libplanet'
 
     - name: Store MineBlock benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -71,7 +71,7 @@ jobs:
         alert-comment-cc-users: '@libplanet'
 
     - name: Store Libplanet.Store benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -84,7 +84,7 @@ jobs:
         alert-comment-cc-users: '@libplanet'
 
 #    - name: Store Swarm benchmark result
-#      uses: rhysd/github-action-benchmark@v1
+#      uses: benchmark-action/github-action-benchmark@v1
 #      with:
 #        name: Benchmark.Net Benchmark
 #        tool: 'benchmarkdotnet'

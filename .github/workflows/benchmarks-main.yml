@@ -17,15 +17,14 @@ jobs:
         - macos-latest
         - ubuntu-latest
         - windows-latest
-    runs-on:
-      labels: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - name: Download previous benchmark data
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: ./cache
         key: ${{ runner.os }}-benchmark
@@ -33,7 +32,7 @@ jobs:
       run: dotnet run -p Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
     - name: Store BlockChain benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -42,7 +41,7 @@ jobs:
         auto-push: true
 
     - name: Store DataModel benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -51,7 +50,7 @@ jobs:
         auto-push: true
 
     - name: Store MineBlock benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -60,7 +59,7 @@ jobs:
         auto-push: true
 
     - name: Store Libplanet.Store benchmark result
-      uses: rhysd/github-action-benchmark@v1
+      uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
@@ -69,7 +68,7 @@ jobs:
         auto-push: true
 
 #    - name: Store Swarm benchmark result
-#      uses: rhysd/github-action-benchmark@v1
+#      uses: benchmark-action/github-action-benchmark@v1
 #      with:
 #        name: Benchmark.Net Benchmark
 #        tool: 'benchmarkdotnet'
