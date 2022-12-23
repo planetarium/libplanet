@@ -1,6 +1,6 @@
 name: Libplanet benchmark (for pull requests)
 on:
-  pull_request: []
+  pull_request: {}
 
 permissions:
   contents: write
@@ -24,7 +24,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Download previous benchmark data
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: ./cache
         key: ${{ runner.os }}-benchmark
