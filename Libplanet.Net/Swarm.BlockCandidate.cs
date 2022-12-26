@@ -30,7 +30,7 @@ namespace Libplanet.Net
                             "Count of {BlockCandidateTable}: {Count}",
                             nameof(ConsumeBlockCandidates),
                             latest.Value.Index,
-                            latest.Value.Header,
+                            latest.Value.Hash,
                             nameof(BlockCandidateTable),
                             BlockCandidateTable.Count);
                         _ = BlockCandidateProcess(
