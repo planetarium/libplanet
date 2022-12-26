@@ -168,7 +168,9 @@ namespace Libplanet.Net.Transports
                 }
                 else
                 {
-                    _runningEvent = new TaskCompletionSource<object>();
+                    _runningEvent = new TaskCompletionSource<object>(
+                        TaskCreationOptions.RunContinuationsAsynchronously
+                    );
                 }
             }
         }
