@@ -108,18 +108,12 @@ namespace Libplanet.Net.Protocols
                 _lock.EnterReadLock();
                 try
                 {
-                    return _dictionary.Values.Aggregate<PeerState, PeerState?>(
-                        null,
-                        (candidate, ps) =>
-                        {
-                            if (candidate is null)
-                            {
-                                return ps;
-                            }
-
-                            return candidate.LastUpdated < ps.LastUpdated ? ps : candidate;
-                        }
-                    );
+#pragma warning disable S3358   // Extract this nested ternary operation.
+                    return _dictionary.Values.Count > 0
+                        ? _dictionary.Values.Aggregate((candidate, ps) =>
+                            candidate.LastUpdated < ps.LastUpdated ? ps : candidate)
+                        : null;
+#pragma warning restore S3358
                 }
                 finally
                 {
@@ -139,18 +133,12 @@ namespace Libplanet.Net.Protocols
                 _lock.EnterReadLock();
                 try
                 {
-                    return _dictionary.Values.Aggregate<PeerState, PeerState?>(
-                        null,
-                        (candidate, ps) =>
-                        {
-                            if (candidate is null)
-                            {
-                                return ps;
-                            }
-
-                            return candidate.LastUpdated > ps.LastUpdated ? ps : candidate;
-                        }
-                    );
+#pragma warning disable S3358   // Extract this nested ternary operation.
+                    return _dictionary.Values.Count > 0
+                        ? _dictionary.Values.Aggregate((candidate, ps) =>
+                            candidate.LastUpdated > ps.LastUpdated ? ps : candidate)
+                        : null;
+#pragma warning restore S3358
                 }
                 finally
                 {

@@ -6,13 +6,17 @@ Version 0.45.3
 
 To be released.
 
+ -  Ported changes from [Libplanet 0.44.6] release.  [[#2667]]
+
+[Libplanet 0.44.6]: https://www.nuget.org/packages/Libplanet/0.44.6
+
 
 Version 0.45.2
 --------------
 
 Released on December 21, 2022.
 
- - Ported changes from [Libplanet 0.44.5] release.  [[#2654]]
+ -  Ported changes from [Libplanet 0.44.5] release.  [[#2654]]
 
 [Libplanet 0.44.5]: https://www.nuget.org/packages/Libplanet/0.44.5
 
@@ -110,6 +114,20 @@ Released on December 3, 2022.
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
+
+
+Version 0.44.6
+--------------
+
+Released on December 26, 2022.
+
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport` hadn't worked properly
+    on Windows.  [[#2667]]
+ -  Fixed a scope of readlock on `BlockChain<T>.GetBlockLocator()` method for
+    sake of parallelism.  [[#2667]]
+
+[#2667]: https://github.com/planetarium/libplanet/pull/2667
+
 
 Version 0.44.5
 --------------
