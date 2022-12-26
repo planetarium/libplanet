@@ -34,7 +34,7 @@ namespace Libplanet.Net
         public async Task InvokeAsync(T arg)
         {
             IEnumerable<Task> tasks = _functions.Select(f => f(arg));
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks).ConfigureAwait(false);
         }
     }
 }
