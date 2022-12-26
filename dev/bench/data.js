@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672034387918,
+  "lastUpdate": 1672063701520,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -3132,6 +3132,36 @@ window.BENCHMARK_DATA = {
             "value": 16161.224489795919,
             "unit": "ns",
             "range": "± 2426.937854817598"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "greymistcube@gmail.com",
+            "name": "Say Cheong",
+            "username": "greymistcube"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "115d2dc17460bf4a3ae8341ea49ac29bf06aa76a",
+          "message": "Merge pull request #2662 from longfin/port/0.45.2\n\nPort 0.45.3 to main",
+          "timestamp": "2022-12-26T22:57:59+09:00",
+          "tree_id": "cf3b180c02e84bb03669a215cf514ba0bcaae902",
+          "url": "https://github.com/planetarium/libplanet/commit/115d2dc17460bf4a3ae8341ea49ac29bf06aa76a"
+        },
+        "date": 1672063684290,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 107638.53333333334,
+            "unit": "ns",
+            "range": "± 1457.9036743933132"
           }
         ]
       }
