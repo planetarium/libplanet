@@ -102,6 +102,23 @@ implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2664">
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0453">Version 0.45.3</h2>
+<p>Released on December 26, 2022.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/0.44.6">Libplanet 0.44.6</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/2667">#2667</a>]</li>
+</ul>
+<h2 id="version-0452">Version 0.45.2</h2>
+<p>Released on December 21, 2022.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/0.44.5">Libplanet 0.44.5</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/2654">#2654</a>]</li>
+</ul>
+<h2 id="version-0451">Version 0.45.1</h2>
+<p>Released on December 15, 2022.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/0.44.4">Libplanet 0.44.4</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/2631">#2631</a>]</li>
+<li>(Libplanet.Net) Fixed a bug where <code>NetMQTransport.SendMessageAsync()</code>
+hadn't been canceled properly.  [<a href="https://github.com/planetarium/libplanet/pull/2641">#2641</a>]</li>
+</ul>
 <h2 id="version-0450">Version 0.45.0</h2>
 <p>Released on December 3, 2022.</p>
 <h3 id="deprecated-apis-1">Deprecated APIs</h3>
@@ -165,6 +182,26 @@ You should use <code>serve</code> command instead.  [<a href="https://github.com
 </ul>
 </li>
 <li>(Libplanet.Explorer) Added <code>schema</code> subcommand.  [<a href="https://github.com/planetarium/libplanet/pull/2563">#2563</a>]</li>
+</ul>
+<h2 id="version-0446">Version 0.44.6</h2>
+<p>Released on December 26, 2022.</p>
+<ul>
+<li>(Libplanet.Net) Fixed a bug where <code>NetMQTransport</code> hadn't worked properly
+on Windows.  [<a href="https://github.com/planetarium/libplanet/pull/2667">#2667</a>]</li>
+<li>Fixed a scope of readlock on <code>BlockChain&lt;T&gt;.GetBlockLocator()</code> method for
+sake of parallelism.  [<a href="https://github.com/planetarium/libplanet/pull/2667">#2667</a>]</li>
+</ul>
+<h2 id="version-0445">Version 0.44.5</h2>
+<p>Released on December 21, 2022.</p>
+<ul>
+<li>Improved overall performance of <code>NetMQTransport</code> and <code>Swarm&lt;T&gt;</code>
+classes.  [<a href="https://github.com/planetarium/libplanet/pull/2654">#2654</a>]</li>
+</ul>
+<h2 id="version-0444">Version 0.44.4</h2>
+<p>Released on December 15, 2022.</p>
+<ul>
+<li>Improved overall performance of <code>NetMQTransport</code> and <code>TxCompletion&lt;T&gt;</code>
+classes.  [<a href="https://github.com/planetarium/libplanet/pull/2631">#2631</a>]</li>
 </ul>
 <h2 id="version-0443">Version 0.44.3</h2>
 <p>Released on December 1, 2022.</p>
