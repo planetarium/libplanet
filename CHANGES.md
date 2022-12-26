@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-Version 0.45.3
+Version 0.45.4
 --------------
 
 To be released.
