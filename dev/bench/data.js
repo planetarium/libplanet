@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672034348136,
+  "lastUpdate": 1672034355583,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -2988,6 +2988,60 @@ window.BENCHMARK_DATA = {
             "value": 21507.252631578947,
             "unit": "ns",
             "range": "± 2363.494622188792"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f1f6cb1586a17c51d905518df832e7f3f85d8e30",
+          "message": "Merge pull request #2668 from moreal/fix-typo\n\nFix typo 'dail' → 'dial'",
+          "timestamp": "2022-12-26T14:46:22+09:00",
+          "tree_id": "7471606bfb8e0ff6f8ff2a2560b3cc10c096f64b",
+          "url": "https://github.com/planetarium/libplanet/commit/f1f6cb1586a17c51d905518df832e7f3f85d8e30"
+        },
+        "date": 1672034329521,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockEmpty",
+            "value": 3902465.0948660714,
+            "unit": "ns",
+            "range": "± 22921.516144707522"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionNoAction",
+            "value": 5654476.923076923,
+            "unit": "ns",
+            "range": "± 72708.39192562476"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsNoAction",
+            "value": 22487793.333333332,
+            "unit": "ns",
+            "range": "± 310554.53734677046"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionWithActions",
+            "value": 6229314.285714285,
+            "unit": "ns",
+            "range": "± 98068.0364860018"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsWithActions",
+            "value": 25103313.333333332,
+            "unit": "ns",
+            "range": "± 311426.45512605534"
           }
         ]
       }
