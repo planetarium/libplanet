@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1671814182469,
+  "lastUpdate": 1672029159163,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -2430,6 +2430,36 @@ window.BENCHMARK_DATA = {
             "value": 24640.22988505747,
             "unit": "ns",
             "range": "± 2654.634375477834"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "greymistcube@gmail.com",
+            "name": "Say Cheong",
+            "username": "greymistcube"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "db06b4a5d99984a1bc168776b14d367fc8362b9a",
+          "message": "Merge pull request #2664 from greymistcube/chore/cleanup-istore\n\n🧹 Removed `IStore.GetCanonicalGenesisBlock<T>()`",
+          "timestamp": "2022-12-26T13:19:48+09:00",
+          "tree_id": "3341ea6f8fcb05b02d7832fe4d8e2c971ebeccd3",
+          "url": "https://github.com/planetarium/libplanet/commit/db06b4a5d99984a1bc168776b14d367fc8362b9a"
+        },
+        "date": 1672029128397,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 82650.94339622642,
+            "unit": "ns",
+            "range": "± 3423.2026525726683"
           }
         ]
       }
