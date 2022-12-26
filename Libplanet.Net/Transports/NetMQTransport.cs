@@ -262,7 +262,7 @@ namespace Libplanet.Net.Transports
 
             Running = true;
 
-            await pollerTask;
+            await pollerTask.ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

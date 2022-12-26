@@ -47,7 +47,8 @@ namespace Libplanet.Net.Consensus
             {
                 try
                 {
-                    await ConsumeMessage(cancellationToken);
+                    await ConsumeMessage(cancellationToken)
+                        .ConfigureAwait(false);
                 }
                 catch (OperationCanceledException oce)
                 {
@@ -79,7 +80,8 @@ namespace Libplanet.Net.Consensus
             {
                 try
                 {
-                    await ConsumeMutation(cancellationToken);
+                    await ConsumeMutation(cancellationToken)
+                        .ConfigureAwait(false);
                 }
                 catch (OperationCanceledException oce)
                 {
@@ -106,7 +108,7 @@ namespace Libplanet.Net.Consensus
                 try
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException oce)
                 {
@@ -142,7 +144,8 @@ namespace Libplanet.Net.Consensus
 
         private async Task ConsumeMessage(CancellationToken cancellationToken)
         {
-            ConsensusMsg message = await _messageRequests.Reader.ReadAsync(cancellationToken);
+            ConsensusMsg message = await _messageRequests.Reader.ReadAsync(cancellationToken)
+                .ConfigureAwait(false);
             ProduceMutation(() =>
             {
                 int prevMessageLogSize = _messageLog.GetTotalCount();
@@ -158,7 +161,8 @@ namespace Libplanet.Net.Consensus
 
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
-            System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
+            System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken)
+                .ConfigureAwait(false);
             (int MessageLogSize, int Round, Step Step) prevState =
                 (_messageLog.GetTotalCount(), Round, Step);
             mutation();
@@ -193,7 +197,8 @@ namespace Libplanet.Net.Consensus
         private async Task OnTimeoutPropose(int round)
         {
             TimeSpan timeout = TimeoutPropose(round);
-            await Task.Delay(timeout, _cancellationTokenSource.Token);
+            await Task.Delay(timeout, _cancellationTokenSource.Token)
+                .ConfigureAwait(false);
             _logger.Debug(
                 "TimeoutPropose has occurred in {Timeout}. {Info}",
                 timeout,
@@ -209,7 +214,8 @@ namespace Libplanet.Net.Consensus
         private async Task OnTimeoutPreVote(int round)
         {
             TimeSpan timeout = TimeoutPreVote(round);
-            await Task.Delay(timeout, _cancellationTokenSource.Token);
+            await Task.Delay(timeout, _cancellationTokenSource.Token)
+                .ConfigureAwait(false);
             _logger.Debug(
                 "TimeoutPreVote has occurred in {Timeout}. {Info}",
                 timeout,
@@ -225,7 +231,8 @@ namespace Libplanet.Net.Consensus
         private async Task OnTimeoutPreCommit(int round)
         {
             TimeSpan timeout = TimeoutPreCommit(round);
-            await Task.Delay(timeout, _cancellationTokenSource.Token);
+            await Task.Delay(timeout, _cancellationTokenSource.Token)
+                .ConfigureAwait(false);
             _logger.Debug(
                 "TimeoutPreCommit has occurred in {Timeout}. {Info}",
                 timeout,

@@ -118,9 +118,9 @@ namespace Libplanet.Net.Consensus
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             Task task = _gossip.StartAsync(cancellationToken);
-            await _gossip.WaitForRunningAsync();
+            await _gossip.WaitForRunningAsync().ConfigureAwait(false);
             _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
-            await task;
+            await task.ConfigureAwait(false);
         }
 
         /// <summary>

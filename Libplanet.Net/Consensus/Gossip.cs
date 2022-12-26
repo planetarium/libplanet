@@ -124,11 +124,12 @@ namespace Libplanet.Net.Consensus
         public async Task StartAsync(CancellationToken ctx)
         {
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(ctx);
-            Task transportTask = _transport.StartAsync(ctx);
+            Task transportTask = _transport.StartAsync(_cancellationTokenSource.Token);
             await _transport.WaitForRunningAsync();
             try
             {
-                await _protocol.BootstrapAsync(_seeds, TimeSpan.FromSeconds(1), 3, ctx);
+                await _protocol.BootstrapAsync(_seeds, TimeSpan.FromSeconds(1), 3, ctx)
+                    .ConfigureAwait(false);
             }
             catch (PeerDiscoveryException pde)
             {
@@ -263,7 +264,7 @@ namespace Libplanet.Net.Consensus
                     await HandleWantAsync(w, ctx);
                     break;
                 default:
-                    AddMessage(msg);
+                    await Task.Run(() => AddMessage(msg), ctx);
                     break;
             }
         };
@@ -289,7 +290,7 @@ namespace Libplanet.Net.Consensus
 
                 _cache.Shift();
 
-                await Task.Delay(_heartbeatInterval, ctx);
+                await Task.Delay(_heartbeatInterval, ctx).ConfigureAwait(false);
             }
         }
 
@@ -310,10 +311,11 @@ namespace Libplanet.Net.Consensus
 
             if (!_table.Contains(peer))
             {
-                await _protocol.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1), ctx);
+                await _protocol.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1), ctx)
+                    .ConfigureAwait(false);
             }
 
-            await ReplyMessagePongAsync(msg, ctx);
+            await ReplyMessagePongAsync(msg, ctx).ConfigureAwait(false);
             MessageId[] idsToGet = msg.Ids.Where(id => !_seen.TryGetValue(id, out _)).ToArray();
             _logger.Verbose(
                 "Handle HaveMessage. {Total}/{Count} messages to get.",
@@ -332,7 +334,7 @@ namespace Libplanet.Net.Consensus
                 TimeSpan.FromSeconds(1),
                 idsToGet.Length,
                 true,
-                ctx)).ToArray();
+                ctx).ConfigureAwait(false)).ToArray();
             _logger.Verbose(
                 "Received {Expected}/{Count} messages. Messages: {@Messages}, Ids: {Ids}",
                 idsToGet.Length,
@@ -390,12 +392,14 @@ namespace Libplanet.Net.Consensus
 
             while (!ctx.IsCancellationRequested)
             {
-                await Task.Delay(_rebuildTableInterval, ctx);
+                await Task.Delay(_rebuildTableInterval, ctx)
+                    .ConfigureAwait(false);
                 _logger.Debug(
                     "{FName}: Updating peer table from seed(s) {Seeds}...",
                     nameof(RebuildTableAsync),
                     _seeds.Select(s => s.Address.ToHex()));
-                await _protocol.RebuildConnectionAsync(Kademlia.MaxDepth, ctx);
+                await _protocol.RebuildConnectionAsync(Kademlia.MaxDepth, ctx)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -411,9 +415,12 @@ namespace Libplanet.Net.Consensus
             {
                 try
                 {
-                    await _protocol.RefreshTableAsync(_refreshLifespan, ctx);
-                    await _protocol.CheckReplacementCacheAsync(ctx);
-                    await Task.Delay(_refreshTableInterval, ctx);
+                    await _protocol.RefreshTableAsync(_refreshLifespan, ctx)
+                        .ConfigureAwait(false);
+                    await _protocol.CheckReplacementCacheAsync(ctx)
+                        .ConfigureAwait(false);
+                    await Task.Delay(_refreshTableInterval, ctx)
+                        .ConfigureAwait(false);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -439,7 +446,7 @@ namespace Libplanet.Net.Consensus
         private async Task ReplyMessagePongAsync(Message message, CancellationToken ctx)
         {
             var pong = new PongMsg { Identity = message.Identity };
-            await _transport.ReplyMessageAsync(pong, ctx);
+            await _transport.ReplyMessageAsync(pong, ctx).ConfigureAwait(false);
         }
     }
 }
