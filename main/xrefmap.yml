@@ -21752,22 +21752,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetCanonicalChainId
   nameWithType: BaseStore.GetCanonicalChainId
-- uid: Libplanet.Store.BaseStore.GetCanonicalGenesisBlock*
-  name: GetCanonicalGenesisBlock
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetCanonicalGenesisBlock_
-  commentId: Overload:Libplanet.Store.BaseStore.GetCanonicalGenesisBlock
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.GetCanonicalGenesisBlock
-  nameWithType: BaseStore.GetCanonicalGenesisBlock
-- uid: Libplanet.Store.BaseStore.GetCanonicalGenesisBlock``1
-  name: GetCanonicalGenesisBlock<T>()
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetCanonicalGenesisBlock__1
-  commentId: M:Libplanet.Store.BaseStore.GetCanonicalGenesisBlock``1
-  name.vb: GetCanonicalGenesisBlock(Of T)()
-  fullName: Libplanet.Store.BaseStore.GetCanonicalGenesisBlock<T>()
-  fullName.vb: Libplanet.Store.BaseStore.GetCanonicalGenesisBlock(Of T)()
-  nameWithType: BaseStore.GetCanonicalGenesisBlock<T>()
-  nameWithType.vb: BaseStore.GetCanonicalGenesisBlock(Of T)()
 - uid: Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: GetFirstTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -23139,22 +23123,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetCanonicalChainId
   nameWithType: IStore.GetCanonicalChainId
-- uid: Libplanet.Store.IStore.GetCanonicalGenesisBlock*
-  name: GetCanonicalGenesisBlock
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetCanonicalGenesisBlock_
-  commentId: Overload:Libplanet.Store.IStore.GetCanonicalGenesisBlock
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.GetCanonicalGenesisBlock
-  nameWithType: IStore.GetCanonicalGenesisBlock
-- uid: Libplanet.Store.IStore.GetCanonicalGenesisBlock``1
-  name: GetCanonicalGenesisBlock<T>()
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetCanonicalGenesisBlock__1
-  commentId: M:Libplanet.Store.IStore.GetCanonicalGenesisBlock``1
-  name.vb: GetCanonicalGenesisBlock(Of T)()
-  fullName: Libplanet.Store.IStore.GetCanonicalGenesisBlock<T>()
-  fullName.vb: Libplanet.Store.IStore.GetCanonicalGenesisBlock(Of T)()
-  nameWithType: IStore.GetCanonicalGenesisBlock<T>()
-  nameWithType.vb: IStore.GetCanonicalGenesisBlock(Of T)()
 - uid: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: GetFirstTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -23635,24 +23603,6 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetCanonicalChainId
   nameWithType: MemoryStore.IStore.GetCanonicalChainId
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetCanonicalChainId
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalGenesisBlock*
-  name: IStore.GetCanonicalGenesisBlock
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalGenesisBlock_
-  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalGenesisBlock
-  isSpec: "True"
-  name.vb: Libplanet.Store.IStore.GetCanonicalGenesisBlock
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetCanonicalGenesisBlock
-  nameWithType: MemoryStore.IStore.GetCanonicalGenesisBlock
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetCanonicalGenesisBlock
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalGenesisBlock``1
-  name: IStore.GetCanonicalGenesisBlock<T>()
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalGenesisBlock__1
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalGenesisBlock``1
-  name.vb: Libplanet.Store.IStore.GetCanonicalGenesisBlock(Of T)()
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetCanonicalGenesisBlock<T>()
-  fullName.vb: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.GetCanonicalGenesisBlock(Of T)()
-  nameWithType: MemoryStore.IStore.GetCanonicalGenesisBlock<T>()
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.GetCanonicalGenesisBlock(Of T)()
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: IStore.GetFirstTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
