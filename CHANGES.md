@@ -57,6 +57,39 @@ To be released.
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
 
 
+Version 0.45.3
+--------------
+
+Released on December 26, 2022.
+
+ -  Ported changes from [Libplanet 0.44.6] release.  [[#2667]]
+
+[Libplanet 0.44.6]: https://www.nuget.org/packages/Libplanet/0.44.6
+
+
+Version 0.45.2
+--------------
+
+Released on December 21, 2022.
+
+ -  Ported changes from [Libplanet 0.44.5] release.  [[#2654]]
+
+[Libplanet 0.44.5]: https://www.nuget.org/packages/Libplanet/0.44.5
+
+
+Version 0.45.1
+--------------
+
+Released on December 15, 2022.
+
+ -  Ported changes from [Libplanet 0.44.4] release.  [[#2631]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
+    hadn't been canceled properly.  [[#2641]]
+
+[Libplanet 0.44.4]: https://www.nuget.org/packages/Libplanet/0.44.4
+[#2641]: https://github.com/planetarium/libplanet/pull/2641
+
+
 Version 0.45.0
 --------------
 
@@ -137,6 +170,41 @@ Released on December 3, 2022.
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
+
+
+Version 0.44.6
+--------------
+
+Released on December 26, 2022.
+
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport` hadn't worked properly
+    on Windows.  [[#2667]]
+ -  Fixed a scope of readlock on `BlockChain<T>.GetBlockLocator()` method for
+    sake of parallelism.  [[#2667]]
+
+[#2667]: https://github.com/planetarium/libplanet/pull/2667
+
+
+Version 0.44.5
+--------------
+
+Released on December 21, 2022.
+
+ -  Improved overall performance of `NetMQTransport` and `Swarm<T>`
+    classes.  [[#2654]]
+
+[#2654]: https://github.com/planetarium/libplanet/pull/2654
+
+
+Version 0.44.4
+--------------
+
+Released on December 15, 2022.
+
+ -  Improved overall performance of `NetMQTransport` and `TxCompletion<T>`
+    classes.  [[#2631]]
+
+[#2631]: https://github.com/planetarium/libplanet/pull/2631
 
 
 Version 0.44.3

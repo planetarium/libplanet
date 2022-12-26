@@ -417,7 +417,8 @@ namespace Libplanet.Net
                 seedPeers: Options.BootstrapOptions.SeedPeers,
                 dialTimeout: Options.BootstrapOptions.DialTimeout,
                 searchDepth: Options.BootstrapOptions.SearchDepth,
-                cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -447,14 +448,15 @@ namespace Libplanet.Net
 
             if (Options.StaticPeers.Any())
             {
-                await AddPeersAsync(Options.StaticPeers, dialTimeout, cancellationToken);
+                await AddPeersAsync(Options.StaticPeers, dialTimeout, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             await PeerDiscovery.BootstrapAsync(
                 seedPeers,
                 dialTimeout,
                 searchDepth,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             if (!Transport.Running)
             {
@@ -727,7 +729,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        public async Task AddPeersAsync(
+        public Task AddPeersAsync(
             IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
@@ -742,7 +744,7 @@ namespace Libplanet.Net
                 cancellationToken = _cancellationToken;
             }
 
-            await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
+            return PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
@@ -774,6 +776,7 @@ namespace Libplanet.Net
                 nameof(Messages.GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
+
             Message parsedMessage;
             try
             {
@@ -782,7 +785,7 @@ namespace Libplanet.Net
                     request,
                     timeout: transportTimeout,
                     cancellationToken: cancellationToken
-                );
+                ).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
@@ -861,7 +864,7 @@ namespace Libplanet.Net
                     ((hashCount - 1) / request.ChunkSize) + 1,
                     false,
                     cancellationToken
-                );
+                ).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
@@ -875,7 +878,7 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (message is Messages.BlocksMsg blockMessage)
+                if (message is BlocksMsg blockMessage)
                 {
                     IList<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
@@ -934,7 +937,7 @@ namespace Libplanet.Net
                     txCount,
                     true,
                     cancellationToken
-                );
+                ).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
