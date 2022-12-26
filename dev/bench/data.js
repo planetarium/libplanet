@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672034321599,
+  "lastUpdate": 1672034327401,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -2784,6 +2784,66 @@ window.BENCHMARK_DATA = {
             "value": 799535.17578125,
             "unit": "ns",
             "range": "± 1600.641347376391"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f1f6cb1586a17c51d905518df832e7f3f85d8e30",
+          "message": "Merge pull request #2668 from moreal/fix-typo\n\nFix typo 'dail' → 'dial'",
+          "timestamp": "2022-12-26T14:46:22+09:00",
+          "tree_id": "7471606bfb8e0ff6f8ff2a2560b3cc10c096f64b",
+          "url": "https://github.com/planetarium/libplanet/commit/f1f6cb1586a17c51d905518df832e7f3f85d8e30"
+        },
+        "date": 1672034319380,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRootModel",
+            "value": 5931818.306770833,
+            "unit": "ns",
+            "range": "± 23790.19213663601"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeLeafModel",
+            "value": 1913979.4545572917,
+            "unit": "ns",
+            "range": "± 4477.122377164055"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRawLeafModel",
+            "value": 1349125.931919643,
+            "unit": "ns",
+            "range": "± 4785.742577967088"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRootModel",
+            "value": 2738490.130989583,
+            "unit": "ns",
+            "range": "± 5195.705568553713"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeLeafModel",
+            "value": 820675.7970052083,
+            "unit": "ns",
+            "range": "± 1188.8090758031863"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRawLeafModel",
+            "value": 750589.7380208333,
+            "unit": "ns",
+            "range": "± 830.0527866647467"
           }
         ]
       }
