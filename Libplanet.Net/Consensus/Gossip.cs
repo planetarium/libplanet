@@ -74,7 +74,9 @@ namespace Libplanet.Net.Consensus
             _protocol = new KademliaProtocol(_table, _transport, transport.AsPeer.Address);
             _seeds = seeds;
 
-            _runningEvent = new TaskCompletionSource<object?>();
+            _runningEvent = new TaskCompletionSource<object?>(
+                TaskCreationOptions.RunContinuationsAsynchronously
+            );
             Running = false;
 
             _logger = Log
@@ -100,7 +102,9 @@ namespace Libplanet.Net.Consensus
                 }
                 else
                 {
-                    _runningEvent = new TaskCompletionSource<object?>();
+                    _runningEvent = new TaskCompletionSource<object?>(
+                        TaskCreationOptions.RunContinuationsAsynchronously
+                    );
                 }
             }
         }
