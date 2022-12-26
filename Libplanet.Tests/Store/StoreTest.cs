@@ -319,41 +319,6 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void CanonicalGenesisBlock()
-        {
-            var chainId1 = Guid.NewGuid();
-            var chainId2 = Guid.NewGuid();
-            var chainId3 = Guid.NewGuid();
-            var canonicalGenesisBlock = new Func<Block<DumbAction>>(() =>
-                Fx.Store.GetCanonicalGenesisBlock<DumbAction>());
-
-            Assert.Null(canonicalGenesisBlock());
-
-            Fx.Store.SetCanonicalChainId(chainId1);
-            Assert.Null(canonicalGenesisBlock());
-            Fx.Store.PutBlock(Fx.Block1);
-            Assert.Null(canonicalGenesisBlock());
-            Fx.Store.AppendIndex(chainId1, Fx.Block1.Hash);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-
-            Fx.Store.SetCanonicalChainId(chainId2);
-            Assert.Null(canonicalGenesisBlock());
-            Fx.Store.AppendIndex(chainId2, Fx.Block1.Hash);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-            Fx.Store.PutBlock(Fx.Block2);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-            Fx.Store.AppendIndex(chainId2, Fx.Block2.Hash);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-
-            Fx.Store.SetCanonicalChainId(chainId3);
-            Fx.Store.PutBlock(Fx.Block3);
-            Fx.Store.AppendIndex(chainId3, Fx.Block3.Hash);
-            Assert.Equal(Fx.Block3, canonicalGenesisBlock());
-            Fx.Store.SetCanonicalChainId(chainId1);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-        }
-
-        [SkippableFact]
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());

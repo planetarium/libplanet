@@ -21,6 +21,9 @@ To be released.
  -  Replaced `IAction?`-typed `policyBlockAction` parameter with
     `PolicyBlockActionGetter`-typed `policyBlockActionGetter` parameter
     in `ActionEvaluator` constructor.  [[#2646]]
+ -  Removed `IStore.GetCanonicalGenesisBlock<T>()` interface method and all its
+    implementations.  [[#2664]]
+
 
 ### Backward-incompatible network protocol changes
 
@@ -51,6 +54,7 @@ To be released.
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
 [#2619]: https://github.com/planetarium/libplanet/pull/2619
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
+[#2664]: https://github.com/planetarium/libplanet/pull/2664
 
 
 Version 0.45.0

@@ -42,15 +42,6 @@ namespace Libplanet.Store
         /// <seealso cref="GetCanonicalChainId()"/>
         void SetCanonicalChainId(Guid chainId);
 
-        /// <summary>
-        /// Returns the genesis block of the current canonical chain.
-        /// </summary>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-        /// <returns>The genesis block of the current canonical chain.</returns>
-        Block<T> GetCanonicalGenesisBlock<T>()
-            where T : IAction, new();
-
         long CountIndex(Guid chainId);
 
         /// <summary>

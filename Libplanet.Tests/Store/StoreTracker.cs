@@ -216,13 +216,6 @@ namespace Libplanet.Tests.Store
             _store.SetCanonicalChainId(chainId);
         }
 
-        public Block<T> GetCanonicalGenesisBlock<T>()
-            where T : IAction, new()
-        {
-            Log(nameof(GetCanonicalGenesisBlock));
-            return _store.GetCanonicalGenesisBlock<T>();
-        }
-
         public void Dispose()
         {
             if (!_disposed)
