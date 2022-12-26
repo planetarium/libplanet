@@ -8,8 +8,11 @@ To be released.
 
  -  (Libplanet.Net) Fixed a bug where `NetMQTransport` hadn't worked properly
     on Windows.  [[#2667]]
+ -  Fixed a scope of readlock on `BlockChain<T>.GetBlockLocator()` method for
+    sake of parallelism.  [[#2667]]
 
 [#2667]: https://github.com/planetarium/libplanet/pull/2667
+
 
 Version 0.44.5
 --------------
