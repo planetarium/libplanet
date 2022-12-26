@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672029183718,
+  "lastUpdate": 1672029208502,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -2520,6 +2520,60 @@ window.BENCHMARK_DATA = {
             "value": 731522.8645833334,
             "unit": "ns",
             "range": "± 1931.7746067126584"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "greymistcube@gmail.com",
+            "name": "Say Cheong",
+            "username": "greymistcube"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "db06b4a5d99984a1bc168776b14d367fc8362b9a",
+          "message": "Merge pull request #2664 from greymistcube/chore/cleanup-istore\n\n🧹 Removed `IStore.GetCanonicalGenesisBlock<T>()`",
+          "timestamp": "2022-12-26T13:19:48+09:00",
+          "tree_id": "3341ea6f8fcb05b02d7832fe4d8e2c971ebeccd3",
+          "url": "https://github.com/planetarium/libplanet/commit/db06b4a5d99984a1bc168776b14d367fc8362b9a"
+        },
+        "date": 1672029191094,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockEmpty",
+            "value": 3898926.2239583335,
+            "unit": "ns",
+            "range": "± 37047.40344142108"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionNoAction",
+            "value": 5358685.714285715,
+            "unit": "ns",
+            "range": "± 47729.939114900284"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsNoAction",
+            "value": 21699357.692307692,
+            "unit": "ns",
+            "range": "± 344245.12938103295"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionWithActions",
+            "value": 6050527.777777778,
+            "unit": "ns",
+            "range": "± 125795.41657018095"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsWithActions",
+            "value": 24516818.75,
+            "unit": "ns",
+            "range": "± 460167.2090573889"
           }
         ]
       }
