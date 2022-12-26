@@ -1230,7 +1230,7 @@ namespace Libplanet.Net
                     case CommunicationFailException cfe:
                         _logger.Debug(
                             cfe,
-                            "Failed to dail {Peer}.",
+                            "Failed to dial {Peer}.",
                             peer);
                         break;
                     case Exception e:
