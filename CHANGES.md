@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.44.6
 --------------
 
-To be released.
+Released on December 26, 2022.
 
  -  (Libplanet.Net) Fixed a bug where `NetMQTransport` hadn't worked properly
     on Windows.  [[#2667]]
