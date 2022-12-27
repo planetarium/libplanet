@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using AsyncIO;
+using Dasync.Collections;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Stun;
@@ -497,21 +498,22 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            Task<Message>[] sendTasks = peers.AsParallel()
-                .Select(peer => SendMessageAsync(
-                    peer,
-                    message,
-                    TimeSpan.FromSeconds(1),
-                    _runtimeCancellationTokenSource.Token
-                )).ToArray();
+            CancellationToken ct = _runtimeCancellationTokenSource.Token;
+            List<BoundPeer> boundPeers = peers.ToList();
+            boundPeers.ParallelForEachAsync(
+                async peer =>
+                {
+                    await SendMessageAsync(peer, message, TimeSpan.FromSeconds(1), ct)
+                        .ConfigureAwait(false);
+                },
+                ct);
+
             _logger.Debug(
                 "Broadcasting message {Message} as {AsPeer} to {PeerCount} peers",
                 message,
                 AsPeer,
-                sendTasks.Length
+                boundPeers.Count
             );
-
-            Task.WhenAll(sendTasks);
         }
 
         /// <inheritdoc/>
