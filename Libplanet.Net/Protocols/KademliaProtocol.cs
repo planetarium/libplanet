@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Serilog;
@@ -169,15 +170,20 @@ namespace Libplanet.Net.Protocols
                     peers.Count,
                     _table.Peers.Count);
 
-                List<Task> tasks = peers
-                    .Select(peer =>
-                        ValidateAsync(
-                            peer,
-                            _requestTimeout,
-                            cancellationToken))
-                    .ToList();
-
-                await Task.WhenAll(tasks).ConfigureAwait(false);
+                await peers.ParallelForEachAsync(
+                    async peer =>
+                    {
+                        try
+                        {
+                            await ValidateAsync(peer, _requestTimeout, cancellationToken);
+                        }
+                        catch (TimeoutException)
+                        {
+                            _logger.Debug("Can't validate peer: {Peer}", peer);
+                        }
+                    },
+                    cancellationToken
+                );
                 cancellationToken.ThrowIfCancellationRequested();
             }
             catch (TimeoutException)
