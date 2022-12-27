@@ -262,13 +262,13 @@ namespace Libplanet.Net.Consensus
                     // Ignore protocol related messages, Kadmelia Protocol will handle it.
                     break;
                 case HaveMessage h:
-                    await HandleHaveAsync(h, ctx);
+                    await HandleHaveAsync(h, ctx).ConfigureAwait(false);
                     break;
                 case WantMessage w:
-                    await HandleWantAsync(w, ctx);
+                    await HandleWantAsync(w, ctx).ConfigureAwait(false);
                     break;
                 default:
-                    await Task.Run(() => AddMessage(msg), ctx);
+                    await Task.Run(() => AddMessage(msg), ctx).ConfigureAwait(false);
                     break;
             }
         };
