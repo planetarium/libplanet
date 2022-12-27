@@ -981,6 +981,7 @@ namespace Libplanet.Net.Tests
             {
                 await StartAsync(swarm1);
                 await StartAsync(swarm2);
+                await swarm1.AddPeersAsync(new[] { swarm2.AsPeer }, null);
 
                 var transport = swarm1.Transport;
                 var msg = new GetTxsMsg(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
