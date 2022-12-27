@@ -636,7 +636,7 @@ namespace Libplanet.Action
 
             _logger.Debug(
                 $"Evaluating policy block action for block #{blockHeader.Index} " +
-                $"{blockHeader.PreEvaluationHash}");
+                $"{ByteUtil.Hex(blockHeader.PreEvaluationHash)}");
 
             return EvaluateActions(
                 genesisHash: _genesisHash,
