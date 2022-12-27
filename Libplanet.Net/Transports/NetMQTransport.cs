@@ -603,7 +603,7 @@ namespace Libplanet.Net.Transports
                     LastMessageTimestamp = DateTimeOffset.UtcNow;
 
                     Message message = _messageCodec.Decode(raw, false);
-                    Task.Run(() =>
+                    Task.Run(async () =>
                     {
                         try
                         {
@@ -618,8 +618,8 @@ namespace Libplanet.Net.Transports
                             {
                                 _messageValidator.ValidateTimestamp(message);
                                 _messageValidator.ValidateAppProtocolVersion(message);
-
-                                _ = ProcessMessageHandler.InvokeAsync(message);
+                                await ProcessMessageHandler.InvokeAsync(message)
+                                    .ConfigureAwait(false);
                             }
                             catch (InvalidMessageTimestampException imte)
                             {
@@ -643,10 +643,10 @@ namespace Libplanet.Net.Transports
                                 _logger.Debug(
                                     "Replying to {Peer} with {Reply}.",
                                     diffVersion);
-                                _ = ReplyMessageAsync(
+                                await ReplyMessageAsync(
                                     diffVersion,
                                     _runtimeCancellationTokenSource.Token
-                                );
+                                ).ConfigureAwait(false);
                             }
                         }
                         catch (InvalidMessageException ex)
