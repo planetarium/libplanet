@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672209738244,
+  "lastUpdate": 1672209968484,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -4536,6 +4536,36 @@ window.BENCHMARK_DATA = {
             "value": 16203.923076923076,
             "unit": "ns",
             "range": "± 841.1310068172322"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "riemannulus@hitagi.moe",
+            "name": "Lee, Suho",
+            "username": "riemannulus"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "63c014ae5abaa98fd31481bb9abded860087eb52",
+          "message": "Merge pull request #2649 from riemannulus/fix/ci/benchmark/powershell-commend-error\n\nFix CI - benchmark for windows",
+          "timestamp": "2022-12-28T15:31:44+09:00",
+          "tree_id": "b3e61bc34f489f8e8116e13dbcba69e55e63acf2",
+          "url": "https://github.com/planetarium/libplanet/commit/63c014ae5abaa98fd31481bb9abded860087eb52"
+        },
+        "date": 1672209928392,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 102983.92857142857,
+            "unit": "ns",
+            "range": "± 4275.353330883438"
           }
         ]
       }
