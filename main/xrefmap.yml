@@ -741,12 +741,12 @@ references:
   commentId: T:Libplanet.Action.IActionTypeLoader
   fullName: Libplanet.Action.IActionTypeLoader
   nameWithType: IActionTypeLoader
-- uid: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  name: Load(IPreEvaluationBlockHeader)
-  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_Libplanet_Blocks_IPreEvaluationBlockHeader_
-  commentId: M:Libplanet.Action.IActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  fullName: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  nameWithType: IActionTypeLoader.Load(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
+  name: Load(IActionTypeLoaderContext)
+  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_Libplanet_Action_IActionTypeLoaderContext_
+  commentId: M:Libplanet.Action.IActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
+  fullName: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
+  nameWithType: IActionTypeLoader.Load(IActionTypeLoaderContext)
 - uid: Libplanet.Action.IActionTypeLoader.Load*
   name: Load
   href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_
@@ -754,12 +754,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionTypeLoader.Load
   nameWithType: IActionTypeLoader.Load
-- uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  name: LoadAllActionTypes(IPreEvaluationBlockHeader)
-  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_Libplanet_Blocks_IPreEvaluationBlockHeader_
-  commentId: M:Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  nameWithType: IActionTypeLoader.LoadAllActionTypes(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
+  name: LoadAllActionTypes(IActionTypeLoaderContext)
+  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_Libplanet_Action_IActionTypeLoaderContext_
+  commentId: M:Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
+  fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
+  nameWithType: IActionTypeLoader.LoadAllActionTypes(IActionTypeLoaderContext)
 - uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes*
   name: LoadAllActionTypes
   href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_
@@ -767,6 +767,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes
   nameWithType: IActionTypeLoader.LoadAllActionTypes
+- uid: Libplanet.Action.IActionTypeLoaderContext
+  name: IActionTypeLoaderContext
+  href: api/Libplanet.Action.IActionTypeLoaderContext.html
+  commentId: T:Libplanet.Action.IActionTypeLoaderContext
+  fullName: Libplanet.Action.IActionTypeLoaderContext
+  nameWithType: IActionTypeLoaderContext
+- uid: Libplanet.Action.IActionTypeLoaderContext.Index
+  name: Index
+  href: api/Libplanet.Action.IActionTypeLoaderContext.html#Libplanet_Action_IActionTypeLoaderContext_Index
+  commentId: P:Libplanet.Action.IActionTypeLoaderContext.Index
+  fullName: Libplanet.Action.IActionTypeLoaderContext.Index
+  nameWithType: IActionTypeLoaderContext.Index
+- uid: Libplanet.Action.IActionTypeLoaderContext.Index*
+  name: Index
+  href: api/Libplanet.Action.IActionTypeLoaderContext.html#Libplanet_Action_IActionTypeLoaderContext_Index_
+  commentId: Overload:Libplanet.Action.IActionTypeLoaderContext.Index
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionTypeLoaderContext.Index
+  nameWithType: IActionTypeLoaderContext.Index
 - uid: Libplanet.Action.IExtractableException
   name: IExtractableException
   href: api/Libplanet.Action.IExtractableException.html
@@ -1207,12 +1226,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader
   nameWithType: StaticActionTypeLoader.StaticActionTypeLoader
-- uid: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  name: Load(IPreEvaluationBlockHeader)
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Blocks_IPreEvaluationBlockHeader_
-  commentId: M:Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  fullName: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  nameWithType: StaticActionTypeLoader.Load(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
+  name: Load(IActionTypeLoaderContext)
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Action_IActionTypeLoaderContext_
+  commentId: M:Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
+  fullName: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
+  nameWithType: StaticActionTypeLoader.Load(IActionTypeLoaderContext)
 - uid: Libplanet.Action.StaticActionTypeLoader.Load*
   name: Load
   href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_
@@ -1220,12 +1239,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.StaticActionTypeLoader.Load
   nameWithType: StaticActionTypeLoader.Load
-- uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  name: LoadAllActionTypes(IPreEvaluationBlockHeader)
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Blocks_IPreEvaluationBlockHeader_
-  commentId: M:Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  fullName: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)
-  nameWithType: StaticActionTypeLoader.LoadAllActionTypes(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
+  name: LoadAllActionTypes(IActionTypeLoaderContext)
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Action_IActionTypeLoaderContext_
+  commentId: M:Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
+  fullName: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
+  nameWithType: StaticActionTypeLoader.LoadAllActionTypes(IActionTypeLoaderContext)
 - uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes*
   name: LoadAllActionTypes
   href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_

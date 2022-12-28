@@ -99,7 +99,7 @@ without branching by block index.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_StaticActionTypeLoader__ctor_IEnumerable_Assembly__System_Nullable_Type__.md&amp;value=---%0Auid%3A%20Libplanet.Action.StaticActionTypeLoader.%23ctor(IEnumerable%7BAssembly%7D%2CSystem.Nullable%7BType%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L25">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Action_StaticActionTypeLoader__ctor_" data-uid="Libplanet.Action.StaticActionTypeLoader.#ctor*"></a>
   <h4 id="Libplanet_Action_StaticActionTypeLoader__ctor_IEnumerable_Assembly__System_Nullable_Type__" data-uid="Libplanet.Action.StaticActionTypeLoader.#ctor(IEnumerable{Assembly},System.Nullable{Type})">StaticActionTypeLoader(IEnumerable&lt;Assembly&gt;, Nullable&lt;Type&gt;)</h4>
@@ -138,19 +138,19 @@ without branching by block index.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Blocks_IPreEvaluationBlockHeader_.md&amp;value=---%0Auid%3A%20Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Action_IActionTypeLoaderContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L38">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Action_StaticActionTypeLoader_Load_" data-uid="Libplanet.Action.StaticActionTypeLoader.Load*"></a>
-  <h4 id="Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Blocks_IPreEvaluationBlockHeader_" data-uid="Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)">Load(IPreEvaluationBlockHeader)</h4>
+  <h4 id="Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Action_IActionTypeLoaderContext_" data-uid="Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)">Load(IActionTypeLoaderContext)</h4>
   <div class="markdown level1 summary"><p>Load action types inherited the base type given in the constructor from assemblies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IDictionary&lt;string, Type&gt; Load(IPreEvaluationBlockHeader blockHeader)</code></pre>
+    <pre><code class="lang-csharp hljs">public IDictionary&lt;string, Type&gt; Load(IActionTypeLoaderContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,10 +163,10 @@ without branching by block index.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></td>
-        <td><span class="parametername">blockHeader</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a> to determine what action types to
-use. But it isn't used in this implementation.</p>
+        <td><a class="xref" href="Libplanet.Action.IActionTypeLoaderContext.html">IActionTypeLoaderContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Action.IActionTypeLoaderContext.html">IActionTypeLoaderContext</a> to determine
+what action types to use. But it isn't used in this implementation.</p>
 </td>
       </tr>
     </tbody>
@@ -189,19 +189,19 @@ use. But it isn't used in this implementation.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Blocks_IPreEvaluationBlockHeader_.md&amp;value=---%0Auid%3A%20Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Action_IActionTypeLoaderContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_" data-uid="Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes*"></a>
-  <h4 id="Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Blocks_IPreEvaluationBlockHeader_" data-uid="Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Blocks.IPreEvaluationBlockHeader)">LoadAllActionTypes(IPreEvaluationBlockHeader)</h4>
+  <h4 id="Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Action_IActionTypeLoaderContext_" data-uid="Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)">LoadAllActionTypes(IActionTypeLoaderContext)</h4>
   <div class="markdown level1 summary"><p>Load all action types from assemblies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Type&gt; LoadAllActionTypes(IPreEvaluationBlockHeader blockHeader)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Type&gt; LoadAllActionTypes(IActionTypeLoaderContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -214,10 +214,10 @@ use. But it isn't used in this implementation.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></td>
-        <td><span class="parametername">blockHeader</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a> to determine what action types to
-use. But it isn't used in this implementation.</p>
+        <td><a class="xref" href="Libplanet.Action.IActionTypeLoaderContext.html">IActionTypeLoaderContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Action.IActionTypeLoaderContext.html">IActionTypeLoaderContext</a> to determine what action
+types to use. But it isn't used in this implementation.</p>
 </td>
       </tr>
     </tbody>
@@ -253,7 +253,7 @@ use. But it isn't used in this implementation.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_StaticActionTypeLoader.md&amp;value=---%0Auid%3A%20Libplanet.Action.StaticActionTypeLoader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/StaticActionTypeLoader.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
