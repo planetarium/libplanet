@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Blocks;
 
 namespace Libplanet.Action
 {
@@ -10,20 +9,20 @@ namespace Libplanet.Action
     public interface IActionTypeLoader
     {
         /// <summary>
-        /// Load action types branched by <paramref name="blockHeader"/>.
+        /// Load action types branched by <paramref name="context"/>.
         /// </summary>
-        /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
-        /// use.</param>
+        /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine
+        /// what action types to use.</param>
         /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader);
+        public IDictionary<string, Type> Load(IActionTypeLoaderContext context);
 
         /// <summary>
-        /// Load action types branched by <paramref name="blockHeader"/>.
+        /// Load action types branched by <paramref name="context"/>.
         /// </summary>
-        /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
-        /// use.</param>
+        /// <param name="context">A <see cref="IActionTypeLoader"/> to determine
+        /// what action types to use.</param>
         /// <returns>Types of available actions. It also includes actions not having
         /// <see cref="ActionTypeAttribute"/>.</returns>
-        public IEnumerable<Type> LoadAllActionTypes(IPreEvaluationBlockHeader blockHeader);
+        public IEnumerable<Type> LoadAllActionTypes(IActionTypeLoaderContext context);
     }
 }
