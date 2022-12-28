@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672210065989,
+  "lastUpdate": 1672215913989,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -4800,6 +4800,36 @@ window.BENCHMARK_DATA = {
             "value": 18237.20930232558,
             "unit": "ns",
             "range": "± 1127.2085783946848"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "90e6c0b16709db2ba1bdce03cc3a6330b3ff56be",
+          "message": "Merge pull request #2653 from moreal/action-typeloader-context\n\nIntroduce `IActionTypeLoaderContext`",
+          "timestamp": "2022-12-28T17:13:22+09:00",
+          "tree_id": "cdaddbfe0bea7df9160d57e5ac59243634e1f161",
+          "url": "https://github.com/planetarium/libplanet/commit/90e6c0b16709db2ba1bdce03cc3a6330b3ff56be"
+        },
+        "date": 1672215897303,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.BlockChain.ContainsBlock",
+            "value": 113539.58181818182,
+            "unit": "ns",
+            "range": "± 4806.710689777247"
           }
         ]
       }
