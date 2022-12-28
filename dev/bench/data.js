@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672216389625,
+  "lastUpdate": 1672216434422,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -5358,6 +5358,60 @@ window.BENCHMARK_DATA = {
             "value": 928791.171875,
             "unit": "ns",
             "range": "± 15998.624332620748"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "90e6c0b16709db2ba1bdce03cc3a6330b3ff56be",
+          "message": "Merge pull request #2653 from moreal/action-typeloader-context\n\nIntroduce `IActionTypeLoaderContext`",
+          "timestamp": "2022-12-28T17:13:22+09:00",
+          "tree_id": "cdaddbfe0bea7df9160d57e5ac59243634e1f161",
+          "url": "https://github.com/planetarium/libplanet/commit/90e6c0b16709db2ba1bdce03cc3a6330b3ff56be"
+        },
+        "date": 1672216401466,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockEmpty",
+            "value": 5791496.908244681,
+            "unit": "ns",
+            "range": "± 330025.43688559445"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionNoAction",
+            "value": 6796204.2105263155,
+            "unit": "ns",
+            "range": "± 740062.1105210638"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsNoAction",
+            "value": 31743698.550724637,
+            "unit": "ns",
+            "range": "± 1525718.1117806511"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockOneTransactionWithActions",
+            "value": 7300612.307692308,
+            "unit": "ns",
+            "range": "± 338056.9582683573"
+          },
+          {
+            "name": "Libplanet.Benchmarks.MineBlock.MineBlockTenTransactionsWithActions",
+            "value": 33859240,
+            "unit": "ns",
+            "range": "± 497058.0359906247"
           }
         ]
       }
