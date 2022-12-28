@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672209728185,
+  "lastUpdate": 1672209738244,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -4446,6 +4446,96 @@ window.BENCHMARK_DATA = {
             "value": 28167664.933333334,
             "unit": "ns",
             "range": "± 454181.8767572975"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "riemannulus@hitagi.moe",
+            "name": "Lee, Suho",
+            "username": "riemannulus"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "63c014ae5abaa98fd31481bb9abded860087eb52",
+          "message": "Merge pull request #2649 from riemannulus/fix/ci/benchmark/powershell-commend-error\n\nFix CI - benchmark for windows",
+          "timestamp": "2022-12-28T15:31:44+09:00",
+          "tree_id": "b3e61bc34f489f8e8116e13dbcba69e55e63acf2",
+          "url": "https://github.com/planetarium/libplanet/commit/63c014ae5abaa98fd31481bb9abded860087eb52"
+        },
+        "date": 1672209731358,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.Store.PutFirstEmptyBlock",
+            "value": 87424.77551020408,
+            "unit": "ns",
+            "range": "± 8536.45830194451"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.PutFirstBlockWithTxs",
+            "value": 194891.52727272728,
+            "unit": "ns",
+            "range": "± 7246.936627023468"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.PutBlockOnManyBlocks",
+            "value": 174944.83333333334,
+            "unit": "ns",
+            "range": "± 3564.770650984106"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.GetOldBlockOutOfManyBlocks",
+            "value": 3699612.1333333333,
+            "unit": "ns",
+            "range": "± 31065.674904412856"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.GetRecentBlockOutOfManyBlocks",
+            "value": 9135316.8,
+            "unit": "ns",
+            "range": "± 103148.40521944237"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.TryGetNonExistentBlockHash",
+            "value": 16207.046511627907,
+            "unit": "ns",
+            "range": "± 902.6701294033717"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.PutFirstTx",
+            "value": 47312.141304347824,
+            "unit": "ns",
+            "range": "± 4038.0947732063055"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.PutTxOnManyTxs",
+            "value": 38517,
+            "unit": "ns",
+            "range": "± 791.2017664882438"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.GetOldTxOutOfManyTxs",
+            "value": 77271.02247191011,
+            "unit": "ns",
+            "range": "± 7896.436975533978"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.GetRecentTxOutOfManyTxs",
+            "value": 4139.494736842105,
+            "unit": "ns",
+            "range": "± 263.1462207265056"
+          },
+          {
+            "name": "Libplanet.Benchmarks.Store.TryGetNonExistentTxId",
+            "value": 16203.923076923076,
+            "unit": "ns",
+            "range": "± 841.1310068172322"
           }
         ]
       }
