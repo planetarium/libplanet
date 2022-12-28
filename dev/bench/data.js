@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672216344688,
+  "lastUpdate": 1672216389625,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -5298,6 +5298,66 @@ window.BENCHMARK_DATA = {
             "value": 142864.2105263158,
             "unit": "ns",
             "range": "± 14718.810629197793"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dev.moreal@gmail.com",
+            "name": "Lee Dogeon",
+            "username": "moreal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "90e6c0b16709db2ba1bdce03cc3a6330b3ff56be",
+          "message": "Merge pull request #2653 from moreal/action-typeloader-context\n\nIntroduce `IActionTypeLoaderContext`",
+          "timestamp": "2022-12-28T17:13:22+09:00",
+          "tree_id": "cdaddbfe0bea7df9160d57e5ac59243634e1f161",
+          "url": "https://github.com/planetarium/libplanet/commit/90e6c0b16709db2ba1bdce03cc3a6330b3ff56be"
+        },
+        "date": 1672216356689,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRootModel",
+            "value": 6424643.6279296875,
+            "unit": "ns",
+            "range": "± 198679.99073193612"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeLeafModel",
+            "value": 2067870.1822916667,
+            "unit": "ns",
+            "range": "± 56884.89687585448"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRawLeafModel",
+            "value": 1415314.1550164474,
+            "unit": "ns",
+            "range": "± 30160.6127031468"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRootModel",
+            "value": 3126273.28125,
+            "unit": "ns",
+            "range": "± 51229.629368225724"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeLeafModel",
+            "value": 1022964.35546875,
+            "unit": "ns",
+            "range": "± 31217.5286376613"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRawLeafModel",
+            "value": 928791.171875,
+            "unit": "ns",
+            "range": "± 15998.624332620748"
           }
         ]
       }
