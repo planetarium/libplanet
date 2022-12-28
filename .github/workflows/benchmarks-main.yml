@@ -26,52 +26,12 @@ jobs:
     - name: Run benchmark
       run: dotnet run -p Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
-    - name: Store BlockChain benchmark result
+    - name: Store benchmark result
       uses: benchmark-action/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
-        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.BlockChain-report-full-compressed.json
+        output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         benchmark-data-dir-path: dev/bench/${{ matrix.os }}
         auto-push: true
-
-    - name: Store DataModel benchmark result
-      uses: benchmark-action/github-action-benchmark@v1
-      with:
-        name: Benchmark.Net Benchmark
-        tool: 'benchmarkdotnet'
-        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.DataModel.DataModelBenchmark-report-full-compressed.json
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
-        auto-push: true
-
-    - name: Store MineBlock benchmark result
-      uses: benchmark-action/github-action-benchmark@v1
-      with:
-        name: Benchmark.Net Benchmark
-        tool: 'benchmarkdotnet'
-        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.MineBlock-report-full-compressed.json
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
-        auto-push: true
-
-    - name: Store Libplanet.Store benchmark result
-      uses: benchmark-action/github-action-benchmark@v1
-      with:
-        name: Benchmark.Net Benchmark
-        tool: 'benchmarkdotnet'
-        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.Store-report-full-compressed.json
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
-        auto-push: true
-
-#    - name: Store Swarm benchmark result
-#      uses: benchmark-action/github-action-benchmark@v1
-#      with:
-#        name: Benchmark.Net Benchmark
-#        tool: 'benchmarkdotnet'
-#        output-file-path: BenchmarkDotNet.Artifacts/results/Libplanet.Benchmarks.SwarmBenchmark-report-full-compressed.json
-#        github-token: ${{ secrets.GITHUB_TOKEN }}
-#        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
-#        auto-push: true
