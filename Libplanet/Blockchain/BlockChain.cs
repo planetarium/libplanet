@@ -1117,14 +1117,9 @@ namespace Libplanet.Blockchain
         /// <returns>A instance of block locator.</returns>
         public BlockLocator GetBlockLocator(int threshold = 10)
         {
-            Guid chainId;
-            BlockHash tipHash;
-
             _rwlock.EnterReadLock();
             try
             {
-                _rwlock.EnterReadLock();
-
                 return BlockLocator.Create(
                     startIndex: Tip.Index,
                     indexToBlockHash: idx => Store.IndexBlockHash(Id, idx),
@@ -1134,13 +1129,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitReadLock();
             }
-
-            return new BlockLocator(
-                tipHash: tipHash,
-                indexBlockHash: idx => Store.IndexBlockHash(chainId, idx),
-                indexByBlockHash: hash => _blocks[hash].Index,
-                sampleAfter: threshold
-            );
         }
 
 #pragma warning disable MEN003
