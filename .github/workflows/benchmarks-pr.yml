@@ -9,6 +9,7 @@ permissions:
 jobs:
   benchmark:
     name: Run Benchmark.Net benchmarks
+    continue-on-error: true
     strategy:
       matrix:
         os:
