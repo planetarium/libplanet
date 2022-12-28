@@ -332,7 +332,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task BootstrapContext()
         {
-            var stepChangedToPreVotes = Enumerable.Range(0, 4).Select(i =>
+            var collectedTwoMessages = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var stepChangedToPreCommits = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
@@ -376,22 +376,14 @@ namespace Libplanet.Net.Tests
 
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreVote)
+                    if (eventArgs.MessageLogSize == 2)
                     {
-                        stepChangedToPreVotes[0].Set();
-                    }
-                };
-                swarms[3].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
-                {
-                    if (eventArgs.Step == Step.PreVote)
-                    {
-                        stepChangedToPreVotes[3].Set();
+                        collectedTwoMessages[0].Set();
                     }
                 };
 
-                // Make sure both swarms time out.
-                await Task.WhenAll(
-                    stepChangedToPreVotes[0].WaitAsync(), stepChangedToPreVotes[3].WaitAsync());
+                // Make sure both swarms time out and swarm[0] collects two PreVotes.
+                await collectedTwoMessages[0].WaitAsync();
 
                 // Dispose swarm[3] to simulate shutdown during bootstrap.
                 swarms[3].Dispose();
@@ -400,7 +392,7 @@ namespace Libplanet.Net.Tests
                 _ = swarms[2].StartAsync();
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreVote)
+                    if (eventArgs.Step == Step.PreCommit)
                     {
                         stepChangedToPreCommits[0].Set();
                     }
