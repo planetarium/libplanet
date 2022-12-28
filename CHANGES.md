@@ -23,7 +23,11 @@ To be released.
     in `ActionEvaluator` constructor.  [[#2646]]
  -  Removed `IStore.GetCanonicalGenesisBlock<T>()` interface method and all its
     implementations.  [[#2664]]
-
+ -  Replaced `IPreEvaluationBlockHeader`-typed `blockHeader` parameter with
+    `IActionTypeLoaderContext`-typed `context` parameter in the below methods.
+    [[#2653]]
+     - `IActionTypeLoader.Load()`.
+     - `IActionTypeLoader.LoadAllActionTypes()`.
 
 ### Backward-incompatible network protocol changes
 
@@ -40,6 +44,7 @@ To be released.
  -  Added `PolicyBlockActionGetter` delegator type.  [[#2646]]
  -  Added `IActionTypeLoader.LoadAllActionTypes()` method.  [[#2646]]
      -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
+ -  Added `IActionTypeLoaderContext` interface.  [[#2653]]
 
 ### Behavioral changes
 
@@ -54,6 +59,7 @@ To be released.
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
 [#2619]: https://github.com/planetarium/libplanet/pull/2619
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
+[#2653]: https://github.com/planetarium/libplanet/pull/2653
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
 
 
