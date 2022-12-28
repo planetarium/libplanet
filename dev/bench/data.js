@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672209968484,
+  "lastUpdate": 1672210001165,
   "repoUrl": "https://github.com/planetarium/libplanet",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -4566,6 +4566,66 @@ window.BENCHMARK_DATA = {
             "value": 102983.92857142857,
             "unit": "ns",
             "range": "± 4275.353330883438"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "riemannulus@hitagi.moe",
+            "name": "Lee, Suho",
+            "username": "riemannulus"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "63c014ae5abaa98fd31481bb9abded860087eb52",
+          "message": "Merge pull request #2649 from riemannulus/fix/ci/benchmark/powershell-commend-error\n\nFix CI - benchmark for windows",
+          "timestamp": "2022-12-28T15:31:44+09:00",
+          "tree_id": "b3e61bc34f489f8e8116e13dbcba69e55e63acf2",
+          "url": "https://github.com/planetarium/libplanet/commit/63c014ae5abaa98fd31481bb9abded860087eb52"
+        },
+        "date": 1672209976885,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRootModel",
+            "value": 4777350.279017857,
+            "unit": "ns",
+            "range": "± 11348.233763923537"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeLeafModel",
+            "value": 1511528.671875,
+            "unit": "ns",
+            "range": "± 6213.672267557959"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.EncodeRawLeafModel",
+            "value": 1159464.8287259615,
+            "unit": "ns",
+            "range": "± 4517.91010426727"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRootModel",
+            "value": 2623309.1045673075,
+            "unit": "ns",
+            "range": "± 10275.662271217212"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeLeafModel",
+            "value": 822966.5248325893,
+            "unit": "ns",
+            "range": "± 1208.5732794398325"
+          },
+          {
+            "name": "Libplanet.Benchmarks.DataModel.DataModelBenchmark.DecodeRawLeafModel",
+            "value": 752533.6077008928,
+            "unit": "ns",
+            "range": "± 1201.5876811535668"
           }
         ]
       }
