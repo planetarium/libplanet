@@ -762,7 +762,7 @@ namespace Libplanet.Net.Transports
                 req.Id,
                 req.Peer
             );
-            var result = new List<Message>();
+            int receivedCount = 0;
 
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
@@ -850,6 +850,7 @@ namespace Libplanet.Net.Transports
                     }
 
                     await channel.Writer.WriteAsync(reply, cancellationToken);
+                    receivedCount += 1;
                 }
 
                 channel.Writer.Complete();
@@ -884,7 +885,7 @@ namespace Libplanet.Net.Transports
                         req.Message,
                         req.Id,
                         (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds,
-                        result.Count,
+                        receivedCount,
                         req.ExpectedResponses);
             }
         }
