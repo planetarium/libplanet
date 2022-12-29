@@ -227,7 +227,7 @@ namespace Libplanet.Net.Consensus
         /// An enumerable <see cref="Message"/> instance to process and gossip.</param>
         public void AddMessages(IEnumerable<Message> messages)
         {
-            messages.AsParallel().ForAll(AddMessage);
+            Parallel.ForEach(messages, AddMessage);
         }
 
         /// <summary>
