@@ -128,18 +128,19 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
             CancellationToken runtimeCt = _runtimeCancellationTokenSource.Token;
-            _runtimeProcessor = Task.WhenAll(
-                Enumerable.Range(0, Environment.ProcessorCount)
-                    .Select(_ => Task.Factory.StartNew(
-                        () =>
-                        {
-                            using var runtime = new NetMQRuntime();
-                            runtime.Run(ProcessRuntime(runtimeCt));
-                        },
-                        runtimeCt,
-                        TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
-                        TaskScheduler.Default))
-                    .ToArray());
+            _runtimeProcessor = Task.Factory.StartNew(
+                () =>
+                {
+                    using var runtime = new NetMQRuntime();
+                    Task[] procs = Enumerable.Range(0, 100)
+                        .Select(_ => ProcessRuntime(runtimeCt))
+                        .ToArray();
+                    runtime.Run(procs);
+                },
+                runtimeCt,
+                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
         }
