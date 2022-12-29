@@ -711,7 +711,7 @@ namespace Libplanet.Net.Transports
                 long left = Interlocked.Decrement(ref _requestCount);
                 _logger.Debug("Request taken; {Count} requests left.", left);
 
-                _ = ProcessRequest(req, req.CancellationToken);
+                await ProcessRequest(req, req.CancellationToken);
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
                 _logger.Verbose(waitMsg);
