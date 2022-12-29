@@ -128,18 +128,29 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
             CancellationToken runtimeCt = _runtimeCancellationTokenSource.Token;
-            _runtimeProcessor = Task.WhenAll(
-                Enumerable.Range(0, Environment.ProcessorCount)
-                    .Select(_ => Task.Factory.StartNew(
-                        () =>
-                        {
-                            using var runtime = new NetMQRuntime();
-                            runtime.Run(ProcessRuntime(runtimeCt));
-                        },
-                        runtimeCt,
-                        TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
-                        TaskScheduler.Default))
-                    .ToArray());
+            _runtimeProcessor = Task.Factory.StartNew(
+                () =>
+                {
+                    // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
+                    // tests
+                    try
+                    {
+                        using var runtime = new NetMQRuntime();
+                        runtime.Run(ProcessRuntime(runtimeCt));
+                    }
+                    catch (Exception e)
+                        when (e is NetMQException || e is ObjectDisposedException)
+                    {
+                        _logger.Error(
+                            e,
+                            "An exception has occurred while running {TaskName}.",
+                            nameof(_runtimeProcessor));
+                    }
+                },
+                runtimeCt,
+                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
         }
@@ -697,7 +708,9 @@ namespace Libplanet.Net.Transports
                 long left = Interlocked.Decrement(ref _requestCount);
                 _logger.Debug("Request taken; {Count} requests left.", left);
 
-                _ = ProcessRequest(req, req.CancellationToken);
+                _ = SynchronizationContext.Current.PostAsync(
+                    () => ProcessRequest(req, req.CancellationToken)
+                );
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
                 _logger.Verbose(waitMsg);
