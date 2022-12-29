@@ -27,8 +27,32 @@ namespace Libplanet.Blockchain
             Func<BlockHash, long> indexByBlockHash,
             int sampleAfter = 10
         )
+            : this(
+                indexBlockHash(-1),
+                indexBlockHash,
+                indexByBlockHash,
+                sampleAfter
+            )
         {
-            BlockHash? current = indexBlockHash(-1);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hashes"/>.
+        /// </summary>
+        /// <param name="hashes">Enumerable of <see cref="BlockHash"/>es to convert from.</param>
+        public BlockLocator(IEnumerable<BlockHash> hashes)
+        {
+            _impl = hashes;
+        }
+
+        internal BlockLocator(
+            BlockHash? tipHash,
+            Func<long, BlockHash?> indexBlockHash,
+            Func<BlockHash, long> indexByBlockHash,
+            int sampleAfter
+        )
+        {
+            BlockHash? current = tipHash;
             long step = 1;
             var hashes = new List<BlockHash>();
             while (current is { } hash)
@@ -50,15 +74,6 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            _impl = hashes;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hashes"/>.
-        /// </summary>
-        /// <param name="hashes">Enumerable of <see cref="BlockHash"/>es to convert from.</param>
-        public BlockLocator(IEnumerable<BlockHash> hashes)
-        {
             _impl = hashes;
         }
 

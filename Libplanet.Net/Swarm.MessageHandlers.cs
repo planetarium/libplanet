@@ -12,19 +12,19 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private async Task ProcessMessageHandlerAsync(Message message)
+        private Task ProcessMessageHandlerAsync(Message message)
         {
             switch (message)
             {
                 case PingMsg _:
                 case FindNeighborsMsg _:
-                    break;
+                    return Task.CompletedTask;
 
                 case GetChainStatusMsg getChainStatus:
                 {
                     _logger.Debug(
                         "Received a {MessageType} message.",
-                        nameof(Messages.GetChainStatusMsg));
+                        nameof(GetChainStatusMsg));
 
                     // This is based on the assumption that genesis block always exists.
                     Block<T> tip = BlockChain.Tip;
@@ -37,15 +37,14 @@ namespace Libplanet.Net
                         Identity = getChainStatus.Identity,
                     };
 
-                    await Transport.ReplyMessageAsync(chainStatus, default);
-                    break;
+                    return Transport.ReplyMessageAsync(chainStatus, default);
                 }
 
                 case GetBlockHashesMsg getBlockHashes:
                 {
                     _logger.Debug(
                         "Received a {MessageType} message (stop: {Stop}).",
-                        nameof(Messages.GetBlockHashesMsg),
+                        nameof(GetBlockHashesMsg),
                         getBlockHashes.Stop);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
@@ -67,37 +66,34 @@ namespace Libplanet.Net
                         Identity = getBlockHashes.Identity,
                     };
 
-                    await Transport.ReplyMessageAsync(reply, default);
-                    break;
+                    return Transport.ReplyMessageAsync(reply, default);
                 }
 
                 case GetBlocksMsg getBlocks:
-                    await TransferBlocksAsync(getBlocks);
-                    break;
+                    return TransferBlocksAsync(getBlocks);
 
                 case GetTxsMsg getTxs:
-                    await TransferTxsAsync(getTxs);
-                    break;
+                    return TransferTxsAsync(getTxs);
 
                 case TxIdsMsg txIds:
-                    await Transport.ReplyMessageAsync(
-                        new PongMsg { Identity = txIds.Identity },
-                        default);
                     ProcessTxIds(txIds);
-                    break;
+                    return Transport.ReplyMessageAsync(
+                        new PongMsg { Identity = txIds.Identity },
+                        default
+                    );
 
                 case BlockHashesMsg _:
                     _logger.Error(
                         "{MessageType} messages are only for IBD.",
-                        nameof(Messages.BlockHashesMsg));
-                    break;
+                        nameof(BlockHashesMsg));
+                    return Task.CompletedTask;
 
                 case BlockHeaderMsg blockHeader:
-                    await Transport.ReplyMessageAsync(
-                        new PongMsg { Identity = blockHeader.Identity },
-                        default);
                     ProcessBlockHeader(blockHeader);
-                    break;
+                    return Transport.ReplyMessageAsync(
+                        new PongMsg { Identity = blockHeader.Identity },
+                        default
+                    );
 
                 default:
                     throw new InvalidMessageException(
@@ -217,7 +213,7 @@ namespace Libplanet.Net
                         continue;
                     }
 
-                    Message response = new Messages.TxMsg(tx.Serialize(true))
+                    Message response = new TxMsg(tx.Serialize(true))
                     {
                         Identity = getTxs.Identity,
                     };
