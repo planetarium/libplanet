@@ -14,6 +14,7 @@ using Libplanet.Net.Messages;
 using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;
+using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Transports
@@ -33,7 +34,7 @@ namespace Libplanet.Net.Transports
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
 
-        private NetMQQueue<NetMQMessage> _replyQueue;
+        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
 
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
@@ -256,7 +257,7 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            _replyQueue = new NetMQQueue<NetMQMessage>();
+            _replyQueue = new NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>();
             _routerPoller = new NetMQPoller { _router, _replyQueue };
 
             _router.ReceiveReady += ReceiveMessage;
@@ -507,7 +508,7 @@ namespace Libplanet.Net.Transports
         }
 
         /// <inheritdoc/>
-        public Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)
+        public async Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)
         {
             if (_disposed)
             {
@@ -516,17 +517,22 @@ namespace Libplanet.Net.Transports
 
             string identityHex = ByteUtil.Hex(message.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
+
+            var ev = new AsyncManualResetEvent();
             _replyQueue.Enqueue(
-                _messageCodec.Encode(
-                    message,
-                    _privateKey,
-                    _appProtocolVersion,
-                    AsPeer,
-                    DateTimeOffset.UtcNow
+                (
+                    ev,
+                    _messageCodec.Encode(
+                        message,
+                        _privateKey,
+                        _appProtocolVersion,
+                        AsPeer,
+                        DateTimeOffset.UtcNow
+                    )
                 )
             );
 
-            return Task.CompletedTask;
+            await ev.WaitAsync(cancellationToken);
         }
 
         /// <summary>
@@ -663,9 +669,12 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void DoReply(object sender, NetMQQueueEventArgs<NetMQMessage> e)
+        private void DoReply(
+            object sender,
+            NetMQQueueEventArgs<(AsyncManualResetEvent, NetMQMessage)> e
+        )
         {
-            NetMQMessage message = e.Queue.Dequeue();
+            (AsyncManualResetEvent ev, NetMQMessage message) = e.Queue.Dequeue();
             string identityHex = ByteUtil.Hex(message[0].Buffer);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
@@ -680,6 +689,8 @@ namespace Libplanet.Net.Transports
                 _logger.Debug(
                     "Failed to send {Message} as a reply to {Identity}.", message, identityHex);
             }
+
+            ev.Set();
         }
 
         private async Task ProcessRuntime(CancellationToken cancellationToken)
