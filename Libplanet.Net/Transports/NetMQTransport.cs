@@ -133,11 +133,26 @@ namespace Libplanet.Net.Transports
             _runtimeProcessor = Task.Factory.StartNew(
                 () =>
                 {
-                    using var runtime = new NetMQRuntime();
-                    Task[] procs = Enumerable.Range(0, workers)
-                        .Select(_ => ProcessRuntime(runtimeCt))
-                        .ToArray();
-                    runtime.Run(procs);
+                    // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
+                    // tests
+                    try
+                    {
+                        using var runtime = new NetMQRuntime();
+                        Task[] workerTasks = Enumerable
+                            .Range(0, workers)
+                            .Select(_ =>
+                                ProcessRuntime(runtimeCt))
+                            .ToArray();
+                        runtime.Run(workerTasks);
+                    }
+                    catch (Exception e)
+                        when (e is NetMQException || e is ObjectDisposedException)
+                    {
+                        _logger.Error(
+                            e,
+                            "An exception has occurred while running {TaskName}.",
+                            nameof(_runtimeProcessor));
+                    }
                 },
                 runtimeCt,
                 TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
