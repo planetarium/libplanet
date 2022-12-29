@@ -134,7 +134,7 @@ namespace Libplanet.Net.Transports
                 () =>
                 {
                     using var runtime = new NetMQRuntime();
-                    Task[] procs = Enumerable.Range(0, 100)
+                    Task[] procs = Enumerable.Range(0, workers)
                         .Select(_ => ProcessRuntime(runtimeCt))
                         .ToArray();
                     runtime.Run(procs);
