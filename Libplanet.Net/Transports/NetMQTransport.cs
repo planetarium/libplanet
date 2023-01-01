@@ -610,65 +610,66 @@ namespace Libplanet.Net.Transports
 
                     LastMessageTimestamp = DateTimeOffset.UtcNow;
 
-                    Message message = _messageCodec.Decode(raw, false);
-                    Task.Run(async () =>
-                    {
-                        try
+                    Task.Factory.StartNew(
+                        async () =>
                         {
-                            _logger
-                                .ForContext("Tag", "Metric")
-                                .ForContext("Subtag", "InboundMessageReport")
-                                .Debug(
-                                    "Received message {Message} from {Peer}.",
-                                    message,
-                                    message.Remote);
                             try
                             {
-                                _messageValidator.ValidateTimestamp(message);
-                                _messageValidator.ValidateAppProtocolVersion(message);
-                                await ProcessMessageHandler.InvokeAsync(message)
-                                    .ConfigureAwait(false);
-                            }
-                            catch (InvalidMessageTimestampException imte)
-                            {
-                                _logger.Debug(
-                                    imte,
-                                    "Received {Message} from {Peer} has an invalid timestamp.",
-                                    message,
-                                    message.Remote);
-                            }
-                            catch (DifferentAppProtocolVersionException dapve)
-                            {
-                                _logger.Debug(
-                                    dapve,
-                                    "Received {Message} from {Peer} has an invalid APV.",
-                                    message,
-                                    message.Remote);
-                                var diffVersion = new DifferentVersionMsg()
+                                Message message = _messageCodec.Decode(raw, false);
+                                _logger
+                                    .ForContext("Tag", "Metric")
+                                    .ForContext("Subtag", "InboundMessageReport")
+                                    .Debug(
+                                        "Received message {Message} from {Peer}.",
+                                        message,
+                                        message.Remote);
+                                try
                                 {
-                                    Identity = message.Identity,
-                                };
-                                _logger.Debug(
-                                    "Replying to {Peer} with {Reply}.",
-                                    diffVersion);
-                                await ReplyMessageAsync(
-                                    diffVersion,
-                                    _runtimeCancellationTokenSource.Token
-                                ).ConfigureAwait(false);
+                                    _messageValidator.ValidateTimestamp(message);
+                                    _messageValidator.ValidateAppProtocolVersion(message);
+                                    await ProcessMessageHandler.InvokeAsync(message);
+                                }
+                                catch (InvalidMessageTimestampException imte)
+                                {
+                                    _logger.Debug(
+                                        imte,
+                                        "Received {Message} from {Peer} has an invalid timestamp.",
+                                        message,
+                                        message.Remote);
+                                }
+                                catch (DifferentAppProtocolVersionException dapve)
+                                {
+                                    _logger.Debug(
+                                        dapve,
+                                        "Received {Message} from {Peer} has an invalid APV.",
+                                        message,
+                                        message.Remote);
+                                    var diffVersion = new DifferentVersionMsg()
+                                    {
+                                        Identity = message.Identity,
+                                    };
+                                    _logger.Debug(
+                                        "Replying to {Peer} with {Reply}.",
+                                        diffVersion);
+                                    await ReplyMessageAsync(
+                                        diffVersion,
+                                        _runtimeCancellationTokenSource.Token
+                                    );
+                                }
                             }
-                        }
-                        catch (InvalidMessageException ex)
-                        {
-                            _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
-                        }
-                        catch (Exception exc)
-                        {
-                            _logger.Error(
-                                exc,
-                                "Something went wrong during message processing.");
-                            throw;
-                        }
-                    });
+                            catch (InvalidMessageException ex)
+                            {
+                                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+                            }
+                            catch (Exception exc)
+                            {
+                                _logger.Error(
+                                    exc,
+                                    "Something went wrong during message processing.");
+                            }
+                        },
+                        TaskCreationOptions.HideScheduler | TaskCreationOptions.DenyChildAttach
+                    );
                 }
             }
             catch (Exception ex)
