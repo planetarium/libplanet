@@ -125,7 +125,7 @@ namespace Libplanet.Net
         {
             try
             {
-                var validTxs = new HashSet<Transaction<TAction>>(
+                var policyCompatTxs = new HashSet<Transaction<TAction>>(
                     txs.Where(
                         tx =>
                         {
@@ -151,7 +151,7 @@ namespace Libplanet.Net
                         }));
 
                 var stagedTxs = new List<Transaction<TAction>>();
-                foreach (var tx in validTxs)
+                foreach (var tx in policyCompatTxs)
                 {
                     try
                     {
@@ -169,7 +169,10 @@ namespace Libplanet.Net
                 }
 
                 // To maintain the consistency of the unit tests.
-                TxReceived.Set();
+                if (policyCompatTxs.Any())
+                {
+                    TxReceived.Set();
+                }
 
                 if (stagedTxs.Any())
                 {
