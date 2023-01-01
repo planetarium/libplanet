@@ -26,7 +26,7 @@ namespace Libplanet.Net.Transports
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
-        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
         private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
         private readonly Channel<MessageRequest> _requests;
@@ -115,12 +115,15 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
-            _appProtocolVersion = appProtocolVersion;
+            _appProtocolVersionOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = appProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+            };
             _messageValidator = new MessageValidator(
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered,
-                messageTimestampBuffer);
+                _appProtocolVersionOptions, messageTimestampBuffer);
             _messageCodec = new NetMQMessageCodec();
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
@@ -515,7 +518,7 @@ namespace Libplanet.Net.Transports
                 _messageCodec.Encode(
                     message,
                     _privateKey,
-                    _appProtocolVersion,
+                    _appProtocolVersionOptions.AppProtocolVersion,
                     AsPeer,
                     DateTimeOffset.UtcNow
                 )
@@ -768,7 +771,7 @@ namespace Libplanet.Net.Transports
                 NetMQMessage message = _messageCodec.Encode(
                     req.Message,
                     _privateKey,
-                    _appProtocolVersion,
+                    _appProtocolVersionOptions.AppProtocolVersion,
                     AsPeer,
                     DateTimeOffset.UtcNow);
 

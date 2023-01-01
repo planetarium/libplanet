@@ -16,11 +16,7 @@ namespace Libplanet.Net.Tests.Messages
         {
             var peer = new BoundPeer(new PrivateKey().PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var buffer = TimeSpan.FromSeconds(1);
-            var messageValidator = new MessageValidator(
-                appProtocolVersion: default,
-                trustedAppProtocolVersionSigners: null,
-                messageTimestampBuffer: buffer,
-                differentAppProtocolVersionEncountered: null);
+            var messageValidator = new MessageValidator(new AppProtocolVersionOptions(), buffer);
 
             // Within buffer window is okay.
             messageValidator.ValidateTimestamp(
@@ -37,7 +33,7 @@ namespace Libplanet.Net.Tests.Messages
                     new PingMsg() { Timestamp = DateTimeOffset.UtcNow - buffer.Multiply(2) }));
 
             // If buffer is null, no exception gets thrown.
-            messageValidator = new MessageValidator(default, null, null, null);
+            messageValidator = new MessageValidator(new AppProtocolVersionOptions(), null);
             messageValidator.ValidateTimestamp(
                 new PingMsg() { Remote = peer, Timestamp = DateTimeOffset.MaxValue });
             messageValidator.ValidateTimestamp(
@@ -111,14 +107,18 @@ namespace Libplanet.Net.Tests.Messages
             };
 
             DifferentAppProtocolVersionException exception;
+            AppProtocolVersionOptions appProtocolVersionOptions;
             MessageValidator messageValidator;
 
             // Trust specific signers.
-            messageValidator = new MessageValidator(
-                appProtocolVersion: trustedApv,
-                trustedAppProtocolVersionSigners: trustedApvSigners,
-                messageTimestampBuffer: null,
-                differentAppProtocolVersionEncountered: callback);
+            appProtocolVersionOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = trustedApv,
+                TrustedAppProtocolVersionSigners = trustedApvSigners,
+                DifferentAppProtocolVersionEncountered = callback,
+            };
+
+            messageValidator = new MessageValidator(appProtocolVersionOptions, null);
 
             // Check trust pings
             messageValidator.ValidateAppProtocolVersion(trustedPing);
@@ -147,11 +147,14 @@ namespace Libplanet.Net.Tests.Messages
             Assert.False(called);
 
             // Trust no one.
-            messageValidator = new MessageValidator(
-                appProtocolVersion: trustedApv,
-                trustedAppProtocolVersionSigners: emptyApvSigners,
-                messageTimestampBuffer: null,
-                differentAppProtocolVersionEncountered: callback);
+            appProtocolVersionOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = trustedApv,
+                TrustedAppProtocolVersionSigners = emptyApvSigners,
+                DifferentAppProtocolVersionEncountered = callback,
+            };
+
+            messageValidator = new MessageValidator(appProtocolVersionOptions, null);
 
             // Check trust pings
             messageValidator.ValidateAppProtocolVersion(trustedPing);
@@ -180,11 +183,14 @@ namespace Libplanet.Net.Tests.Messages
             Assert.False(called);
 
             // Trust anyone.
-            messageValidator = new MessageValidator(
-                appProtocolVersion: trustedApv,
-                trustedAppProtocolVersionSigners: nullApvSigners,
-                messageTimestampBuffer: null,
-                differentAppProtocolVersionEncountered: callback);
+            appProtocolVersionOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = trustedApv,
+                TrustedAppProtocolVersionSigners = nullApvSigners,
+                DifferentAppProtocolVersionEncountered = callback,
+            };
+
+            messageValidator = new MessageValidator(appProtocolVersionOptions, null);
 
             // Check trust pings
             messageValidator.ValidateAppProtocolVersion(trustedPing);
