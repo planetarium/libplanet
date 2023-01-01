@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -60,11 +59,9 @@ namespace Libplanet.Net.Transports
         /// Creates a <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
-        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
-        /// version of the transport layer.</param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
-        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <see langword="null"/>.</param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -73,13 +70,6 @@ namespace Libplanet.Net.Transports
         /// <param name="iceServers">
         /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
         /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
-        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
-        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
-        /// are ignored.
-        /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
@@ -89,13 +79,11 @@ namespace Libplanet.Net.Transports
         /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         private NetMQTransport(
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            AppProtocolVersionOptions appProtocolVersionOptions,
             int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             TimeSpan? messageTimestampBuffer = null)
         {
             _logger = Log
@@ -115,13 +103,7 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
-            _appProtocolVersionOptions = new AppProtocolVersionOptions()
-            {
-                AppProtocolVersion = appProtocolVersion,
-                TrustedAppProtocolVersionSigners =
-                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
-                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
-            };
+            _appProtocolVersionOptions = appProtocolVersionOptions;
             _messageValidator = new MessageValidator(
                 _appProtocolVersionOptions, messageTimestampBuffer);
             _messageCodec = new NetMQMessageCodec();
@@ -180,11 +162,9 @@ namespace Libplanet.Net.Transports
         /// Creates an initialized <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
-        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
-        /// version of the transport layer.</param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
-        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <see langword="null"/>.</param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -193,13 +173,6 @@ namespace Libplanet.Net.Transports
         /// <param name="iceServers">
         /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
         /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
-        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
-        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
-        /// are ignored.
-        /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
@@ -214,24 +187,20 @@ namespace Libplanet.Net.Transports
         /// </returns>
         public static async Task<NetMQTransport> Create(
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            AppProtocolVersionOptions appProtocolVersionOptions,
             int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             TimeSpan? messageTimestampBuffer = null)
         {
             var transport = new NetMQTransport(
                 privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
+                appProtocolVersionOptions,
                 workers,
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
             await transport.Initialize();
             return transport;

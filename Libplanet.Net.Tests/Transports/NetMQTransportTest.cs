@@ -69,16 +69,21 @@ namespace Libplanet.Net.Tests.Transports
             privateKey = privateKey ?? new PrivateKey();
             host = host ?? IPAddress.Loopback.ToString();
             iceServers = iceServers ?? new List<IceServer>();
+            var appProtocolVersionOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = appProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+            };
 
             return NetMQTransport.Create(
                 privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
+                appProtocolVersionOptions,
                 workers,
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
                 messageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }

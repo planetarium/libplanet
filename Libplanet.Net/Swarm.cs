@@ -94,6 +94,13 @@ namespace Libplanet.Net
             _appProtocolVersion = appProtocolVersion;
             TrustedAppProtocolVersionSigners =
                 trustedAppProtocolVersionSigners?.ToImmutableHashSet();
+            var appProtocolVersionOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = AppProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+            };
 
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
@@ -111,13 +118,11 @@ namespace Libplanet.Net
             // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = NetMQTransport.Create(
                 _privateKey,
-                _appProtocolVersion,
-                TrustedAppProtocolVersionSigners,
+                appProtocolVersionOptions,
                 workers,
                 host,
                 listenPort,
                 iceServers ?? new List<IceServer>(),
-                differentAppProtocolVersionEncountered,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
