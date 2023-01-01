@@ -770,8 +770,6 @@ namespace Libplanet.Net.Transports
 
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
             _logger.Debug(
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
@@ -792,6 +790,8 @@ namespace Libplanet.Net.Transports
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 using var dealer = GetRequestDealerSocket(req);
                 NetMQMessage message = _messageCodec.Encode(
                     req.Message,
