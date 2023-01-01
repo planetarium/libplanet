@@ -915,8 +915,13 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private Task RunPoller(NetMQPoller poller) =>
-            Task.Factory.StartNew(
+        private async Task RunPoller(NetMQPoller poller)
+        {
+            TaskCreationOptions taskCreationOptions =
+                TaskCreationOptions.DenyChildAttach |
+                TaskCreationOptions.LongRunning |
+                TaskCreationOptions.HideScheduler;
+            await Task.Factory.StartNew(
                 () =>
                 {
                     // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
@@ -941,9 +946,10 @@ namespace Libplanet.Net.Transports
                     }
                 },
                 CancellationToken.None,
-                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                taskCreationOptions,
                 TaskScheduler.Default
             );
+        }
 
         private CommunicationFailException WrapCommunicationFailException(
             Exception innerException,
