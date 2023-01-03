@@ -671,8 +671,10 @@ namespace Libplanet.Net.Transports
                                     "Something went wrong during message processing.");
                             }
                         },
-                        TaskCreationOptions.HideScheduler | TaskCreationOptions.DenyChildAttach
-                    );
+                        CancellationToken.None,
+                        TaskCreationOptions.HideScheduler | TaskCreationOptions.DenyChildAttach,
+                        TaskScheduler.Default
+                    ).Unwrap();
                 }
             }
             catch (Exception ex)
