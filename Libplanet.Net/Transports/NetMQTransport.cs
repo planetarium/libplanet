@@ -389,17 +389,19 @@ namespace Libplanet.Net.Transports
 
             Guid reqId = Guid.NewGuid();
             var replies = new List<Message>();
-            Channel<Message> channel = Channel.CreateUnbounded<Message>(
-                new UnboundedChannelOptions
-                {
-                    SingleReader = true,
-                    SingleWriter = true,
-                }
-            );
+
+            Channel<NetMQMessage> channel = Channel.CreateUnbounded<NetMQMessage>();
 
             try
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
+                NetMQMessage rawMessage = _messageCodec.Encode(
+                    message,
+                    _privateKey,
+                    _appProtocolVersion,
+                    AsPeer,
+                    DateTimeOffset.UtcNow
+                );
                 _logger.Verbose(
                     "Enqueue a request {RequestId} to {Peer}: {@Message}.",
                     reqId,
@@ -409,7 +411,7 @@ namespace Libplanet.Net.Transports
                 Interlocked.Increment(ref _requestCount);
                 var req = new MessageRequest(
                     reqId,
-                    message,
+                    rawMessage,
                     peer,
                     now,
                     expectedResponses,
@@ -431,9 +433,52 @@ namespace Libplanet.Net.Transports
 
                 foreach (var i in Enumerable.Range(0, expectedResponses))
                 {
-                    Message reply = await channel.Reader
+                    NetMQMessage raw = await channel.Reader
                         .ReadAsync(linkedCt)
                         .ConfigureAwait(false);
+                    Message reply = _messageCodec.Decode(raw, true);
+
+                    _logger.Debug(
+                        "A reply to request {Message} {RequestId} from {Peer} " +
+                        "has parsed: {Reply}.",
+                        req.Message,
+                        req.Id,
+                        reply.Remote,
+                        reply);
+                    try
+                    {
+                        _messageValidator.ValidateTimestamp(reply);
+                        _messageValidator.ValidateAppProtocolVersion(reply);
+                    }
+                    catch (InvalidMessageTimestampException imte)
+                    {
+                        const string imteMsge =
+                            "Received reply {Reply} from {Peer} to request {Message} " +
+                            "{RequestId} has an invalid timestamp.";
+                        _logger.Debug(
+                            imte,
+                            imteMsge,
+                            reply,
+                            reply.Remote,
+                            message,
+                            req.Id);
+                        channel.Writer.Complete(imte);
+                    }
+                    catch (DifferentAppProtocolVersionException dapve)
+                    {
+                        const string dapveMsg =
+                            "Received reply {Reply} from {Peer} to request {Message} " +
+                            "{RequestId} has an invalid APV.";
+                        _logger.Debug(
+                            dapve,
+                            dapveMsg,
+                            reply,
+                            reply.Remote,
+                            message,
+                            req.Id);
+                        channel.Writer.Complete(dapve);
+                    }
+
                     replies.Add(reply);
                 }
 
@@ -781,16 +826,14 @@ namespace Libplanet.Net.Transports
         {
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
             _logger.Debug(
-                "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
-                req.Message,
+                "Request {RequestId} is ready to be processed in {TimeSpan}.",
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
-            Channel<Message> channel = req.Channel;
+            Channel<NetMQMessage> channel = req.Channel;
 
             _logger.Debug(
-                "Trying to send request {Message} {RequestId} to {Peer}",
-                req.Message,
+                "Trying to send request {RequestId} to {Peer}",
                 req.Id,
                 req.Peer
             );
@@ -802,26 +845,18 @@ namespace Libplanet.Net.Transports
                 cancellationToken.ThrowIfCancellationRequested();
 
                 using var dealer = GetRequestDealerSocket(req);
-                NetMQMessage message = _messageCodec.Encode(
-                    req.Message,
-                    _privateKey,
-                    _appProtocolVersion,
-                    AsPeer,
-                    DateTimeOffset.UtcNow);
 
-                if (dealer.TrySendMultipartMessage(message))
+                if (dealer.TrySendMultipartMessage(req.Message))
                 {
                     _logger.Debug(
-                        "Request {Message} {RequestId} sent to {Peer}.",
-                        req.Message,
+                        "Request {RequestId} sent to {Peer}.",
                         req.Id,
                         req.Peer);
                 }
                 else
                 {
                     _logger.Debug(
-                        "Failed to send {Message} {RequestId} to {Peer}.",
-                        req.Message,
+                        "Failed to send {RequestId} to {Peer}.",
                         req.Id,
                         req.Peer);
 
@@ -834,6 +869,7 @@ namespace Libplanet.Net.Transports
                     NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
                         cancellationToken: cancellationToken
                     );
+
                     _logger.Verbose(
                         "Received a raw message with {FrameCount} frames as a reply to " +
                         "request {RequestId} from {Peer}.",
@@ -841,49 +877,7 @@ namespace Libplanet.Net.Transports
                         req.Id,
                         req.Peer
                     );
-                    Message reply = _messageCodec.Decode(raw, true);
-                    _logger.Debug(
-                        "A reply to request {Message} {RequestId} from {Peer} " +
-                        "has parsed: {Reply}.",
-                        req.Message,
-                        req.Id,
-                        reply.Remote,
-                        reply);
-                    try
-                    {
-                        _messageValidator.ValidateTimestamp(reply);
-                        _messageValidator.ValidateAppProtocolVersion(reply);
-                    }
-                    catch (InvalidMessageTimestampException imte)
-                    {
-                        const string dbgMsg =
-                            "Received reply {Reply} from {Peer} to request {Message} " +
-                            "{RequestId} has an invalid timestamp.";
-                        _logger.Debug(
-                            imte,
-                            dbgMsg,
-                            reply,
-                            reply.Remote,
-                            message,
-                            req.Id);
-                        throw;
-                    }
-                    catch (DifferentAppProtocolVersionException dapve)
-                    {
-                        const string dbgMsg =
-                            "Received reply {Reply} from {Peer} to request {Message} " +
-                            "{RequestId} has an invalid APV.";
-                        _logger.Debug(
-                            dapve,
-                            dbgMsg,
-                            reply,
-                            reply.Remote,
-                            message,
-                            req.Id);
-                        throw;
-                    }
-
-                    await channel.Writer.WriteAsync(reply, cancellationToken);
+                    await channel.Writer.WriteAsync(raw, cancellationToken);
                     receivedCount += 1;
                 }
 
@@ -893,9 +887,9 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Failed to process {Message} {RequestId}; discarding it.",
-                    req.Message,
-                    req.Id
+                    "Failed to process {RequestId}; discarding it. {e}",
+                    req.Id,
+                    e
                 );
                 channel.Writer.TryComplete(e);
             }
@@ -913,10 +907,9 @@ namespace Libplanet.Net.Transports
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "OutboundMessageReport")
                     .Debug(
-                        "Request {Message} {RequestId} " +
+                        "Request {RequestId} " +
                         "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies.",
-                        req.Message,
                         req.Id,
                         (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds,
                         receivedCount,
@@ -983,11 +976,11 @@ namespace Libplanet.Net.Transports
         {
             public MessageRequest(
                 in Guid id,
-                Message message,
+                NetMQMessage message,
                 BoundPeer peer,
                 DateTimeOffset requestedTime,
                 in int expectedResponses,
-                Channel<Message> channel,
+                Channel<NetMQMessage> channel,
                 CancellationToken cancellationToken)
             {
                 Id = id;
@@ -1001,7 +994,7 @@ namespace Libplanet.Net.Transports
 
             public Guid Id { get; }
 
-            public Message Message { get; }
+            public NetMQMessage Message { get; }
 
             public BoundPeer Peer { get; }
 
@@ -1009,7 +1002,7 @@ namespace Libplanet.Net.Transports
 
             public int ExpectedResponses { get; }
 
-            public Channel<Message> Channel { get; }
+            public Channel<NetMQMessage> Channel { get; }
 
             public CancellationToken CancellationToken { get; }
         }
