@@ -31,7 +31,7 @@ namespace Libplanet.Net
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
 
         private readonly AsyncLock _runningMutex;
 
@@ -91,15 +91,17 @@ namespace Libplanet.Net
 
             _runningMutex = new AsyncLock();
 
-            _appProtocolVersion = appProtocolVersion;
-            TrustedAppProtocolVersionSigners =
-                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
-            var appProtocolVersionOptions = new AppProtocolVersionOptions()
+            differentAppProtocolVersionEncountered =
+                differentAppProtocolVersionEncountered is { } dapve
+                    ? dapve
+                    : (boundPeer, peerVersion, localVersion) => { };
+            _appProtocolVersionOptions = new AppProtocolVersionOptions()
             {
-                AppProtocolVersion = AppProtocolVersion,
+                AppProtocolVersion = appProtocolVersion,
                 TrustedAppProtocolVersionSigners =
                     trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
-                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+                DifferentAppProtocolVersionEncountered =
+                    differentAppProtocolVersionEncountered,
             };
 
             string loggerId = _privateKey.ToAddress().ToHex();
@@ -118,7 +120,7 @@ namespace Libplanet.Net
             // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = NetMQTransport.Create(
                 _privateKey,
-                appProtocolVersionOptions,
+                _appProtocolVersionOptions,
                 workers,
                 host,
                 listenPort,
@@ -168,12 +170,14 @@ namespace Libplanet.Net
         /// <see cref="PublicKey"/>s of parties who signed <see cref="AppProtocolVersion"/>s to
         /// trust.  In case of <see langword="null"/>, any parties are trusted.
         /// </summary>
-        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
+            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
 
         /// <summary>
         /// The application protocol version to comply.
         /// </summary>
-        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
+        public AppProtocolVersion AppProtocolVersion =>
+            _appProtocolVersionOptions.AppProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
 

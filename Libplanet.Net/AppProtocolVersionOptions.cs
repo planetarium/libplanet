@@ -1,13 +1,12 @@
 using System.Collections.Immutable;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net
 {
     /// <summary>
     /// Various options for a <see cref="Swarm{T}"/>'s
-    /// <see cref="Libplanet.Net.AppProtocolVersion"/>.
+    /// <see cref="Net.AppProtocolVersion"/>.
     /// </summary>
     public class AppProtocolVersionOptions
     {
