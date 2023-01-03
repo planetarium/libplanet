@@ -610,12 +610,15 @@ namespace Libplanet.Net.Transports
 
                     LastMessageTimestamp = DateTimeOffset.UtcNow;
 
+                    // Duplicate received message before distributing.
+                    var copied = new NetMQMessage(raw.Select(f => f.Duplicate()));
+
                     Task.Factory.StartNew(
                         async () =>
                         {
                             try
                             {
-                                Message message = _messageCodec.Decode(raw, false);
+                                Message message = _messageCodec.Decode(copied, false);
                                 _logger
                                     .ForContext("Tag", "Metric")
                                     .ForContext("Subtag", "InboundMessageReport")
