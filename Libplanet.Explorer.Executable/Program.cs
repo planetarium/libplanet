@@ -282,13 +282,18 @@ If omitted (default) explorer only the local blockchain store.")]
                         },
                     };
 
+                    var apvOptions = new AppProtocolVersionOptions()
+                    {
+                        AppProtocolVersion = options.AppProtocolVersionToken is string t
+                            ? AppProtocolVersion.FromToken(t)
+                            : default(AppProtocolVersion),
+                        DifferentAppProtocolVersionEncountered = (p, pv, lv) => { },
+                    };
+
                     swarm = new Swarm<NullAction>(
                         blockChain,
                         privateKey,
-                        options.AppProtocolVersionToken is string t
-                            ? AppProtocolVersion.FromToken(t)
-                            : default(AppProtocolVersion),
-                        differentAppProtocolVersionEncountered: (p, pv, lv) => { },
+                        apvOptions,
                         workers: options.Workers,
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions

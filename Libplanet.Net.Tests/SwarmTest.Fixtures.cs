@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -119,16 +120,26 @@ namespace Libplanet.Net.Tests
 
             options ??= new SwarmOptions();
 
+            differentAppProtocolVersionEncountered =
+                differentAppProtocolVersionEncountered is { } dapve
+                    ? dapve
+                    : (boundPeer, peerVersion, localVersion) => { };
+            var apvOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = appProtocolVersion ?? DefaultAppProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+            };
+
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
-                appProtocolVersion ?? DefaultAppProtocolVersion,
+                apvOptions,
                 5,
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
                 options);
             _finalizers.Add(async () =>
             {

@@ -50,7 +50,9 @@ namespace Libplanet.Net
         /// <param name="blockChain">A blockchain to publicize on the network.</param>
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
-        /// <param name="appProtocolVersion">An app protocol to comply.</param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -59,25 +61,15 @@ namespace Libplanet.Net
         /// <param name="iceServers">
         /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
         /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when this
-        /// node encounters a peer with one different from <paramref name="appProtocolVersion"/>,
-        /// and their version is signed by a trusted party (i.e.,
-        /// <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// </param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties who
-        /// signed <see cref="AppProtocolVersion"/>s to trust.  To trust any party, pass
-        /// <see langword="null"/>, which is the default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
+            AppProtocolVersionOptions appProtocolVersionOptions,
             int workers = 100,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -91,18 +83,7 @@ namespace Libplanet.Net
 
             _runningMutex = new AsyncLock();
 
-            differentAppProtocolVersionEncountered =
-                differentAppProtocolVersionEncountered is { } dapve
-                    ? dapve
-                    : (boundPeer, peerVersion, localVersion) => { };
-            _appProtocolVersionOptions = new AppProtocolVersionOptions()
-            {
-                AppProtocolVersion = appProtocolVersion,
-                TrustedAppProtocolVersionSigners =
-                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
-                DifferentAppProtocolVersionEncountered =
-                    differentAppProtocolVersionEncountered,
-            };
+            _appProtocolVersionOptions = appProtocolVersionOptions;
 
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log

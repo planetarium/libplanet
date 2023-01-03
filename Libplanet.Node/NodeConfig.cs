@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
@@ -101,18 +102,23 @@ namespace Libplanet.Node
         public Swarm<T> GetSwarm()
         {
             BlockChain<T> blockChain = GetBlockChain();
-#pragma warning disable MEN002
+            var apvOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = NetworkConfig.AppProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    NetworkConfig.TrustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                DifferentAppProtocolVersionEncountered =
+                    NetworkConfig.DifferentAppProtocolVersionEncountered,
+            };
+
             return new Swarm<T>(
                 privateKey: _privateKey,
                 blockChain: blockChain,
-                appProtocolVersion: NetworkConfig.AppProtocolVersion,
-                trustedAppProtocolVersionSigners: NetworkConfig.TrustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered: NetworkConfig.DifferentAppProtocolVersionEncountered,
+                appProtocolVersionOptions: apvOptions,
                 host: SwarmConfig.InitConfig.Host,
                 listenPort: SwarmConfig.InitConfig.Port,
                 iceServers: SwarmConfig.InitConfig.IceServers,
                 options: SwarmConfig.ToSwarmOptions());
-#pragma warning restore MEN002
         }
     }
 }
