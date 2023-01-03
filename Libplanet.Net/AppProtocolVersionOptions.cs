@@ -22,7 +22,7 @@ namespace Libplanet.Net
         /// <see cref="Net.AppProtocolVersion"/> is ignored by the node.  To trust any party,
         /// set this to <see langword="null"/>.  Set to <see langword="null"/> by default.
         /// </summary>
-        public ImmutableHashSet<PublicKey>? TrustedAppProtocolVersionSigners { get; set; } = null;
+        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners { get; set; } = null;
 
         /// <summary>
         /// The callback triggered when a node encounters

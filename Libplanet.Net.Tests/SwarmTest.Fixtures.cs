@@ -88,27 +88,33 @@ namespace Libplanet.Net.Tests
                 fx.StateStore,
                 genesisBlock: genesis
             );
+            differentAppProtocolVersionEncountered ??=
+                (boundPeer, peerVersion, localVersion) => { };
+            var apvOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = appProtocolVersion ?? DefaultAppProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+            };
+
             return CreateSwarm(
                 blockchain,
                 privateKey,
-                appProtocolVersion,
+                apvOptions,
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
                 options);
         }
 
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null
         )
             where T : IAction, new()
@@ -120,22 +126,16 @@ namespace Libplanet.Net.Tests
 
             options ??= new SwarmOptions();
 
-            differentAppProtocolVersionEncountered =
-                differentAppProtocolVersionEncountered is { } dapve
-                    ? dapve
-                    : (boundPeer, peerVersion, localVersion) => { };
-            var apvOptions = new AppProtocolVersionOptions()
+            // FIXME: This is only to conform with the existing tests.
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions()
             {
-                AppProtocolVersion = appProtocolVersion ?? DefaultAppProtocolVersion,
-                TrustedAppProtocolVersionSigners =
-                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
-                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+                AppProtocolVersion = DefaultAppProtocolVersion,
             };
 
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
-                apvOptions,
+                appProtocolVersionOptions,
                 5,
                 host,
                 listenPort,

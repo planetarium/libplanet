@@ -135,7 +135,7 @@ namespace Libplanet.Net.Messages
         private static void ValidateAppProtocolVersion(
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             Message message)
         {
             if (message.Remote is BoundPeer peer)
@@ -148,9 +148,10 @@ namespace Libplanet.Net.Messages
                 bool trusted = !(
                     trustedAppProtocolVersionSigners is { } tapvs &&
                     tapvs.All(publicKey => !message.Version.Verify(publicKey)));
-                if (trusted && differentAppProtocolVersionEncountered is { } dapve)
+                if (trusted)
                 {
-                    dapve(peer, message.Version, appProtocolVersion);
+                    differentAppProtocolVersionEncountered(
+                        peer, message.Version, appProtocolVersion);
                 }
 
                 if (!trusted || !message.Version.Version.Equals(appProtocolVersion.Version))

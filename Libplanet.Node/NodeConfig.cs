@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
@@ -106,7 +105,7 @@ namespace Libplanet.Node
             {
                 AppProtocolVersion = NetworkConfig.AppProtocolVersion,
                 TrustedAppProtocolVersionSigners =
-                    NetworkConfig.TrustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                    NetworkConfig.TrustedAppProtocolVersionSigners,
                 DifferentAppProtocolVersionEncountered =
                     NetworkConfig.DifferentAppProtocolVersionEncountered,
             };

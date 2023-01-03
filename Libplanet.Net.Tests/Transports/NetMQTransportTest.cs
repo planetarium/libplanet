@@ -72,8 +72,7 @@ namespace Libplanet.Net.Tests.Transports
             var appProtocolVersionOptions = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = appProtocolVersion,
-                TrustedAppProtocolVersionSigners =
-                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
+                TrustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners,
                 DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
             };
 
