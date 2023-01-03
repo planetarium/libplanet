@@ -92,7 +92,7 @@ namespace Libplanet.Net.Tests
                 (boundPeer, peerVersion, localVersion) => { };
             var apvOptions = new AppProtocolVersionOptions()
             {
-                AppProtocolVersion = appProtocolVersion ?? DefaultAppProtocolVersion,
+                AppProtocolVersion = appProtocolVersion ?? default,
                 TrustedAppProtocolVersionSigners =
                     trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
                 DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
@@ -125,12 +125,7 @@ namespace Libplanet.Net.Tests
             }
 
             options ??= new SwarmOptions();
-
-            // FIXME: This is only to conform with the existing tests.
-            appProtocolVersionOptions ??= new AppProtocolVersionOptions()
-            {
-                AppProtocolVersion = DefaultAppProtocolVersion,
-            };
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
 
             var swarm = new Swarm<T>(
                 blockChain,

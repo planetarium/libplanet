@@ -11,9 +11,6 @@ namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {
-        private static readonly AppProtocolVersion DefaultAppProtocolVersion =
-            AppProtocolVersion.Sign(new PrivateKey(), 1);
-
         [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {

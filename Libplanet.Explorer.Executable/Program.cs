@@ -287,7 +287,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         AppProtocolVersion = options.AppProtocolVersionToken is string t
                             ? AppProtocolVersion.FromToken(t)
                             : default(AppProtocolVersion),
-                        DifferentAppProtocolVersionEncountered = (p, pv, lv) => { },
                     };
 
                     swarm = new Swarm<NullAction>(
