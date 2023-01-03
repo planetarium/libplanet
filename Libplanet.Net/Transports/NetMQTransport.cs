@@ -501,13 +501,16 @@ namespace Libplanet.Net.Transports
 
             CancellationToken ct = _runtimeCancellationTokenSource.Token;
             List<BoundPeer> boundPeers = peers.ToList();
-            boundPeers.ParallelForEachAsync(
-                async peer =>
+            Task.Run(
+                async () =>
                 {
-                    await SendMessageAsync(peer, message, TimeSpan.FromSeconds(1), ct)
-                        .ConfigureAwait(false);
+                    await boundPeers.ParallelForEachAsync(
+                        peer => SendMessageAsync(peer, message, TimeSpan.FromSeconds(1), ct),
+                        ct
+                    );
                 },
-                ct);
+                ct
+            );
 
             _logger.Debug(
                 "Broadcasting message {Message} as {AsPeer} to {PeerCount} peers",
