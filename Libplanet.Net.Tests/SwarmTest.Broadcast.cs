@@ -475,9 +475,15 @@ namespace Libplanet.Net.Tests
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var swarmA = CreateSwarm(keyA);
-            var swarmB = CreateSwarm(keyB);
-            var swarmC = CreateSwarm(keyC);
+            var autoBroadcastDisabled = new SwarmOptions
+            {
+                BlockBroadcastInterval = TimeSpan.FromSeconds(Timeout),
+                TxBroadcastInterval = TimeSpan.FromSeconds(Timeout),
+            };
+
+            var swarmA = CreateSwarm(keyA, options: autoBroadcastDisabled);
+            var swarmB = CreateSwarm(keyB, options: autoBroadcastDisabled);
+            var swarmC = CreateSwarm(keyC, options: autoBroadcastDisabled);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
@@ -508,10 +514,16 @@ namespace Libplanet.Net.Tests
                 chainA.UnstageTransaction(tx2);
                 Assert.Equal(1, chainA.GetNextTxNonce(privateKey.ToAddress()));
 
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+
                 swarmA.RoutingTable.RemovePeer(swarmB.AsPeer);
                 swarmB.RoutingTable.RemovePeer(swarmA.AsPeer);
                 Assert.Empty(swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
+
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
 
                 await chainB.MineBlock(keyB);
 
