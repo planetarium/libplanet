@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -15,12 +16,14 @@ namespace Libplanet.Net.Tests
         public async Task DetectAppProtocolVersion()
         {
             var signer = new PrivateKey();
-            AppProtocolVersion v2 = AppProtocolVersion.Sign(signer, 2);
-            AppProtocolVersion v3 = AppProtocolVersion.Sign(signer, 3);
-            var a = CreateSwarm(appProtocolVersion: v2);
-            var b = CreateSwarm(appProtocolVersion: v3);
-            var c = CreateSwarm(appProtocolVersion: v2);
-            var d = CreateSwarm(appProtocolVersion: v3);
+            AppProtocolVersionOptions v2 = new AppProtocolVersionOptions()
+                { AppProtocolVersion = AppProtocolVersion.Sign(signer, 2) };
+            AppProtocolVersionOptions v3 = new AppProtocolVersionOptions()
+                { AppProtocolVersion = AppProtocolVersion.Sign(signer, 3) };
+            var a = CreateSwarm(appProtocolVersionOptions: v2);
+            var b = CreateSwarm(appProtocolVersionOptions: v3);
+            var c = CreateSwarm(appProtocolVersionOptions: v2);
+            var d = CreateSwarm(appProtocolVersionOptions: v3);
 
             try
             {
@@ -56,16 +59,15 @@ namespace Libplanet.Net.Tests
             var isCalled = false;
 
             var signer = new PrivateKey();
-            AppProtocolVersion v1 = AppProtocolVersion.Sign(signer, 1);
-            AppProtocolVersion v2 = AppProtocolVersion.Sign(signer, 2);
-            var a = CreateSwarm(
-                appProtocolVersion: v1,
-                differentAppProtocolVersionEncountered: (_, ver, __) =>
-                {
-                    isCalled = true;
-                }
-            );
-            var b = CreateSwarm(appProtocolVersion: v2);
+            AppProtocolVersionOptions v1 = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = AppProtocolVersion.Sign(signer, 1),
+                DifferentAppProtocolVersionEncountered = (_, ver, __) => { isCalled = true; },
+            };
+            AppProtocolVersionOptions v2 = new AppProtocolVersionOptions()
+                { AppProtocolVersion = AppProtocolVersion.Sign(signer, 2) };
+            var a = CreateSwarm(appProtocolVersionOptions: v1);
+            var b = CreateSwarm(appProtocolVersionOptions: v2);
 
             try
             {
@@ -110,31 +112,45 @@ namespace Libplanet.Net.Tests
                 logs[peer] = peerVersion;
             }
 
-            var a = CreateSwarm(
-                appProtocolVersion: older,
-                trustedAppProtocolVersionSigners: new[] { signer.PublicKey },
-                differentAppProtocolVersionEncountered: DifferentAppProtocolVersionEncountered
-            );
-            var b = CreateSwarm(
-                appProtocolVersion: newer,
-                trustedAppProtocolVersionSigners: new[] { signer.PublicKey }
-            );
-            var c = CreateSwarm(
-                appProtocolVersion: older,
-                trustedAppProtocolVersionSigners: new[] { signer.PublicKey }
-            );
-            var d = CreateSwarm(
-                appProtocolVersion: newer,
-                trustedAppProtocolVersionSigners: new[] { signer.PublicKey }
-            );
-            var e = CreateSwarm(
-                appProtocolVersion: untrustedOlder,
-                trustedAppProtocolVersionSigners: new[] { untrustedSigner.PublicKey }
-            );
-            var f = CreateSwarm(
-                appProtocolVersion: untrustedNewer,
-                trustedAppProtocolVersionSigners: new[] { untrustedSigner.PublicKey }
-            );
+            var trustedSigners = new[] { signer.PublicKey }.ToImmutableHashSet();
+            var untrustedSigners = new[] { untrustedSigner.PublicKey }.ToImmutableHashSet();
+            var optionsA = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = older,
+                TrustedAppProtocolVersionSigners = trustedSigners,
+                DifferentAppProtocolVersionEncountered = DifferentAppProtocolVersionEncountered,
+            };
+            var a = CreateSwarm(appProtocolVersionOptions: optionsA);
+            var optionsB = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = newer,
+                TrustedAppProtocolVersionSigners = trustedSigners,
+            };
+            var b = CreateSwarm(appProtocolVersionOptions: optionsB);
+            var optionsC = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = older,
+                TrustedAppProtocolVersionSigners = trustedSigners,
+            };
+            var c = CreateSwarm(appProtocolVersionOptions: optionsC);
+            var optionsD = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = newer,
+                TrustedAppProtocolVersionSigners = trustedSigners,
+            };
+            var d = CreateSwarm(appProtocolVersionOptions: optionsD);
+            var optionsE = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = untrustedOlder,
+                TrustedAppProtocolVersionSigners = untrustedSigners,
+            };
+            var e = CreateSwarm(appProtocolVersionOptions: optionsE);
+            var optionsF = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = untrustedNewer,
+                TrustedAppProtocolVersionSigners = untrustedSigners,
+            };
+            var f = CreateSwarm(appProtocolVersionOptions: optionsF);
 
             try
             {

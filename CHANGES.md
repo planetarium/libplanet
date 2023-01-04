@@ -28,6 +28,10 @@ To be released.
     [[#2653]]
      - `IActionTypeLoader.Load()`.
      - `IActionTypeLoader.LoadAllActionTypes()`.
+ -  Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
+    `AppProtocolVersionOptions` as a combined parameter instead of taking
+    `AppProtocolVersion`, `IImmutableSet<PublicKey>?`, and
+    `DifferentAppProtocolVersionEncountered` separately.  [[#2693]]
 
 ### Backward-incompatible network protocol changes
 
@@ -45,6 +49,7 @@ To be released.
  -  Added `IActionTypeLoader.LoadAllActionTypes()` method.  [[#2646]]
      -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
  -  Added `IActionTypeLoaderContext` interface.  [[#2653]]
+ -  Added `AppProtocolVersionOptions` class.  [[#2693]]
 
 ### Behavioral changes
 
@@ -61,6 +66,7 @@ To be released.
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
 [#2653]: https://github.com/planetarium/libplanet/pull/2653
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
+[#2693]: https://github.com/planetarium/libplanet/pull/2693
 
 
 Version 0.45.3

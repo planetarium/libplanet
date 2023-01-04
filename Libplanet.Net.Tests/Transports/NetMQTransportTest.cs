@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Transports;
@@ -19,23 +18,18 @@ namespace Libplanet.Net.Tests.Transports
         {
             TransportConstructor = (
                     privateKey,
-                    appProtocolVersion,
-                    trustedAppProtocolVersionSigners,
+                    appProtocolVersionOptions,
                     host,
                     listenPort,
                     iceServers,
-                    differentAppProtocolVersionEncountered,
-                    messageTimestampBuffer
-                )
-                => CreateNetMQTransport(
+                    messageTimestampBuffer) =>
+                CreateNetMQTransport(
                     privateKey,
-                    appProtocolVersion,
-                    trustedAppProtocolVersionSigners,
+                    appProtocolVersionOptions,
                     50,
                     host,
                     listenPort,
                     iceServers,
-                    differentAppProtocolVersionEncountered,
                     messageTimestampBuffer);
 
             const string outputTemplate =
@@ -56,25 +50,17 @@ namespace Libplanet.Net.Tests.Transports
 
         private NetMQTransport CreateNetMQTransport(
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            AppProtocolVersionOptions appProtocolVersionOptions,
             int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             TimeSpan? messageTimestampBuffer
         )
         {
             privateKey = privateKey ?? new PrivateKey();
             host = host ?? IPAddress.Loopback.ToString();
             iceServers = iceServers ?? new List<IceServer>();
-            var appProtocolVersionOptions = new AppProtocolVersionOptions()
-            {
-                AppProtocolVersion = appProtocolVersion,
-                TrustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners,
-                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
-            };
 
             return NetMQTransport.Create(
                 privateKey,

@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -70,12 +69,10 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
             Block<DumbAction> genesis = null)
@@ -88,20 +85,12 @@ namespace Libplanet.Net.Tests
                 fx.StateStore,
                 genesisBlock: genesis
             );
-            differentAppProtocolVersionEncountered ??=
-                (boundPeer, peerVersion, localVersion) => { };
-            var apvOptions = new AppProtocolVersionOptions()
-            {
-                AppProtocolVersion = appProtocolVersion ?? default,
-                TrustedAppProtocolVersionSigners =
-                    trustedAppProtocolVersionSigners?.ToImmutableHashSet(),
-                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
-            };
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
 
             return CreateSwarm(
                 blockchain,
                 privateKey,
-                apvOptions,
+                appProtocolVersionOptions,
                 host,
                 listenPort,
                 iceServers,
