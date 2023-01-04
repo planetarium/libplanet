@@ -73,22 +73,28 @@ namespace Libplanet.Tests.Action
                 [_currencies[3]] = (5, 0),
             }.ToImmutableDictionary();
 
-            // FIXME: Need default value for tests?
-            _validatorSet = new ValidatorSet();
+            _validatorSet =
+                new ValidatorSet(new[]
+                {
+                    new Validator(_keys[0].PublicKey, 1),
+                    new Validator(_keys[1].PublicKey, 1),
+                    new Validator(_keys[2].PublicKey, 1),
+                }.ToList());
 
-            output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State", "Address");
+            output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
             int i = 0;
             foreach (Address a in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3} {6}",
+                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3} {6}  {7}",
                     i++,
                     a,
                     GetBalance(a, _currencies[0]),
                     GetBalance(a, _currencies[1]),
                     GetBalance(a, _currencies[2]),
                     GetBalance(a, _currencies[3]),
-                    GetStates(new[] { a })[0]
+                    GetStates(new[] { a })[0],
+                    GetValidatorSet()
                 );
             }
 
@@ -345,6 +351,58 @@ namespace Libplanet.Tests.Action
             // currencies[2] (BAZ) allows everyone to burn
             delta1 = delta1.BurnAsset(_addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[1], _currencies[2]));
+        }
+
+        [Fact]
+        public virtual void SetValidator()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                _init.SetValidator(new PrivateKey().PublicKey, -1)
+            );
+
+            var initCount = _keys.Length;
+            var key3 = new PrivateKey().PublicKey;
+            var key4 = new PrivateKey().PublicKey;
+
+            IAccountStateDelta delta = _init;
+            // delta already has 3 validators
+            Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
+
+            // nothing happens trying to delete non existing validator
+            delta = delta.SetValidator(key3, 0);
+            Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
+
+            // add key 3 to the validator set
+            delta = delta.SetValidator(key3, 1);
+            Assert.Equal(initCount + 1, delta.GetValidatorSet().TotalCount);
+            Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
+            Assert.False(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
+
+            // add key 4 to the validator set
+            delta = delta.SetValidator(key4, 1);
+            Assert.Equal(initCount + 2, delta.GetValidatorSet().TotalCount);
+            Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
+            Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
+
+            // remove key 3 from the validator set
+            delta = delta.SetValidator(key3, 0);
+            Assert.Equal(initCount + 1, delta.GetValidatorSet().TotalCount);
+            Assert.False(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
+            Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
+
+            // re-add key 3 to the validator set
+            delta = delta.SetValidator(key3, 1);
+            Assert.Equal(initCount + 2, delta.GetValidatorSet().TotalCount);
+            Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
+            Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
+
+            // remove all keys from the validator set
+            delta = _keys.Aggregate(
+                delta,
+                (current, key) => current.SetValidator(key.PublicKey, 0));
+            delta = delta.SetValidator(key3, 0);
+            delta = delta.SetValidator(key4, 0);
+            Assert.Equal(0, delta.GetValidatorSet().TotalCount);
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
