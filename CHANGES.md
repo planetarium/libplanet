@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.45.4
 --------------
 
-To be released.
+Released on January 4, 2023.
 
   -  Ported changes from [Libplaent 0.44.7] release.  [[#2684]]
 
