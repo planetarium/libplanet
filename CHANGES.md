@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.44.7
 --------------
 
-To be released.
+Released on January 4, 2023.
 
  -  (Libplanet.Net) Fixed bugs where `NetMQTransport` hadn't worked expected
     when not many threads were available.  [[#2684]]
