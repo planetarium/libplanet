@@ -529,7 +529,7 @@ namespace Libplanet.Net.Tests
                 await swarmB.AddPeersAsync(new[] { swarmC.AsPeer }, null);
 
                 swarmA.BroadcastTxs(new[] { tx3, tx4 });
-                await swarmC.TxReceived.WaitAsync();
+                await swarmB.TxReceived.WaitAsync();
 
                 // SwarmB receives tx3 and is staged, but policy filters it.
                 Assert.DoesNotContain(tx3.Id, chainB.GetStagedTransactionIds());
@@ -538,6 +538,7 @@ namespace Libplanet.Net.Tests
                     chainB.StagePolicy.Iterate(chainB, filtered: false).Select(tx => tx.Id));
                 Assert.Contains(tx4.Id, chainB.GetStagedTransactionIds());
 
+                await swarmC.TxReceived.WaitAsync();
                 // SwarmC can not receive tx3 because SwarmB does not rebroadcast it.
                 Assert.DoesNotContain(tx3.Id, chainC.GetStagedTransactionIds());
                 Assert.DoesNotContain(

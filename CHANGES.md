@@ -6,6 +6,13 @@ Version 0.44.7
 
 To be released.
 
+ -  (Libplanet.Net) Fixed bugs where `NetMQTransport` hadn't worked expected
+    when not many threads were available.  [[#2684]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.ReplyMessageAsync()`
+    hadn't worked properly.  [[#2684]]
+
+[#2684]: https://github.com/planetarium/libplanet/pull/2684
+
 
 Version 0.44.6
 --------------
