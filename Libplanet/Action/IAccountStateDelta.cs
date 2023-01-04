@@ -167,7 +167,7 @@ namespace Libplanet.Action
         /// If 0 is given, the validator will be removed from the validator set.</param>
         /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
         /// name="power"/> is set to <paramref name="validatorKey"/>'s power.</returns>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when the given <paramref name="power"/> is negative.</exception>
         [Pure]
         IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power);
