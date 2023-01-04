@@ -306,7 +306,9 @@ namespace Libplanet.Action
 
             if (power.Sign < 0)
             {
-                throw new ArgumentException("The power cannot be negative");
+                throw new ArgumentOutOfRangeException(
+                    nameof(power),
+                    "The field \"power\" cannot be negative.");
             }
             else if (power.Sign == 0)
             {
