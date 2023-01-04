@@ -155,6 +155,20 @@ namespace Libplanet.Action
         [Pure]
         IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value);
 
+        /// <summary>
+        /// Sets the power of the given validator of key <paramref name="validatorKey"/> to
+        /// <paramref name="power"/>. If 0 is given as the power, does not add validator to the
+        /// validator set. If the validator is already exist in the validator set,
+        /// remove the validator from the validator set.
+        /// </summary>
+        /// <param name="validatorKey">The <see cref="PublicKey"/> of the validator to
+        /// modify its power.</param>
+        /// <param name="power">The <see cref="BigInteger"/>-typed value of the power.
+        /// If 0 is given, the validator will be removed from the validator set.</param>
+        /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
+        /// name="power"/> is set to <paramref name="validatorKey"/>'s power.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when the given <paramref name="power"/> is negative.</exception>
         [Pure]
         IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power);
     }
