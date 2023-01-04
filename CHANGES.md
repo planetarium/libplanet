@@ -1,6 +1,12 @@
 Libplanet changelog
 ===================
 
+Version 0.45.5
+--------------
+
+To be released.
+
+
 Version 0.45.4
 --------------
 
@@ -124,7 +130,8 @@ Released on December 3, 2022.
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
-=======
+
+
 Version 0.44.7
 --------------
 
@@ -136,7 +143,6 @@ Released on January 4, 2023.
     hadn't worked properly.  [[#2684]]
 
 [#2684]: https://github.com/planetarium/libplanet/pull/2684
->>>>>>> 0.44.7
 
 
 Version 0.44.6
