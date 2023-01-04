@@ -32,6 +32,8 @@ To be released.
     `AppProtocolVersionOptions` as a combined parameter instead of taking
     `AppProtocolVersion`, `IImmutableSet<PublicKey>?`, and
     `DifferentAppProtocolVersionEncountered` separately.  [[#2693]]
+ -  (Libplanet.Net) Removed `workers` parameter from `NetMQTransport.Create()`
+    method and `Swarm<T>()` constructor.  [[#2690]]
 
 ### Backward-incompatible network protocol changes
 
@@ -66,6 +68,7 @@ To be released.
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
 [#2653]: https://github.com/planetarium/libplanet/pull/2653
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
+[#2690]: https://github.com/planetarium/libplanet/pull/2690
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
 
 

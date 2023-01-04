@@ -64,7 +64,6 @@ namespace Libplanet.Net.Transports
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
         /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
@@ -82,7 +81,6 @@ namespace Libplanet.Net.Transports
         private NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
@@ -180,7 +178,6 @@ namespace Libplanet.Net.Transports
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
         /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
@@ -203,7 +200,6 @@ namespace Libplanet.Net.Transports
         public static async Task<NetMQTransport> Create(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
@@ -212,7 +208,6 @@ namespace Libplanet.Net.Transports
             var transport = new NetMQTransport(
                 privateKey,
                 appProtocolVersionOptions,
-                workers,
                 host,
                 listenPort,
                 iceServers,
@@ -370,7 +365,7 @@ namespace Libplanet.Net.Transports
                 NetMQMessage rawMessage = _messageCodec.Encode(
                     message,
                     _privateKey,
-                    _appProtocolVersion,
+                    _appProtocolVersionOptions.AppProtocolVersion,
                     AsPeer,
                     DateTimeOffset.UtcNow
                 );

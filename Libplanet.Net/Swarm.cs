@@ -53,7 +53,6 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
         /// <see cref="Swarm{T}"/> always listens to 0.0.0.0 &amp; ::/0.</param>
@@ -66,7 +65,6 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            int workers = 100,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
@@ -102,7 +100,6 @@ namespace Libplanet.Net
             Transport = NetMQTransport.Create(
                 _privateKey,
                 _appProtocolVersionOptions,
-                workers,
                 host,
                 listenPort,
                 iceServers ?? new List<IceServer>(),

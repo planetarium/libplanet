@@ -26,7 +26,6 @@ namespace Libplanet.Net.Tests.Transports
                 CreateNetMQTransport(
                     privateKey,
                     appProtocolVersionOptions,
-                    50,
                     host,
                     listenPort,
                     iceServers,
@@ -51,7 +50,6 @@ namespace Libplanet.Net.Tests.Transports
         private NetMQTransport CreateNetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
@@ -65,7 +63,6 @@ namespace Libplanet.Net.Tests.Transports
             return NetMQTransport.Create(
                 privateKey,
                 appProtocolVersionOptions,
-                workers,
                 host,
                 listenPort,
                 iceServers,
