@@ -287,56 +287,65 @@ namespace Libplanet.Net
             TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken = default)
         {
-            var tasks = new List<Task>();
-            _workerCancellationTokenSource = new CancellationTokenSource();
-            _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
+            Task<Task> runner;
+            using (await _runningMutex.LockAsync().ConfigureAwait(false))
+            {
+                _workerCancellationTokenSource = new CancellationTokenSource();
+                _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
-            if (Transport.Running)
-            {
-                throw new SwarmException("Swarm is already running.");
-            }
+                BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+                BlockCandidateTable = new BlockCandidateTable<T>();
 
-            _logger.Debug("Starting swarm...");
-            _logger.Debug("Peer information : {Peer}", AsPeer);
+                if (Transport.Running)
+                {
+                    throw new SwarmException("Swarm is already running.");
+                }
 
-            _logger.Debug("Watching the " + nameof(BlockChain) + " for tip changes...");
-            BlockChain.TipChanged += OnBlockChainTipChanged;
+                _logger.Debug("Starting swarm...");
+                _logger.Debug("Peer information : {Peer}", AsPeer);
 
-            try
-            {
-                tasks.Add(
-                    RefreshTableAsync(
-                        Options.RefreshPeriod,
-                        Options.RefreshLifespan,
-                        _cancellationToken));
-                tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
-                tasks.Add(Transport.StartAsync(_cancellationToken));
-                tasks.Add(BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken));
-                tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(FillBlocksAsync(_cancellationToken));
-                tasks.Add(ConsumeBlockCandidates(_cancellationToken));
-                tasks.Add(
-                    PollBlocksAsync(
+                _logger.Debug("Watching the " + nameof(BlockChain) + " for tip changes...");
+                BlockChain.TipChanged += OnBlockChainTipChanged;
+
+                var tasks = new List<Func<Task>>
+                {
+                    () => Transport.StartAsync(_cancellationToken),
+                    () => BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken),
+                    () => BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
+                    () => FillBlocksAsync(_cancellationToken),
+                    () => PollBlocksAsync(
                         dialTimeout,
                         Options.TipLifespan,
                         Options.MaximumPollPeers,
                         _cancellationToken
-                    )
-                );
+                    ),
+                    () => ConsumeBlockCandidates(_cancellationToken),
+                    () => RefreshTableAsync(
+                        Options.RefreshPeriod,
+                        Options.RefreshLifespan,
+                        _cancellationToken),
+                    () => RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken),
+                };
+
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
-                        MaintainStaticPeerAsync(
+                        () => MaintainStaticPeerAsync(
                             Options.StaticPeersMaintainPeriod,
-                            _cancellationToken));
+                            _cancellationToken
+                        )
+                    );
                 }
 
-                _logger.Debug("Swarm started.");
+                runner = Task.WhenAny(tasks.Select(CreateLongRunningTask));
+                await Transport.WaitForRunningAsync().ConfigureAwait(false);
+            }
 
-                await await Task.WhenAny(tasks);
+            try
+            {
+                _logger.Debug("Swarm started.");
+                await await runner;
             }
             catch (OperationCanceledException e)
             {
@@ -1406,6 +1415,12 @@ namespace Libplanet.Net
                 await Task.WhenAll(tasks);
                 await Task.Delay(period, cancellationToken);
             }
+        }
+
+        private async Task CreateLongRunningTask(Func<Task> f)
+        {
+            using var thread = new AsyncContextThread();
+            await thread.Factory.Run(f).WaitAsync(_cancellationToken);
         }
     }
 }
