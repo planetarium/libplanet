@@ -23,6 +23,8 @@ using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using NetMQ;
+using Nito.AsyncEx.Synchronous;
 using Serilog;
 using xRetry;
 using Xunit;
@@ -43,6 +45,8 @@ namespace Libplanet.Net.Tests
         private readonly ITestOutputHelper _output;
         private readonly ILogger _logger;
 
+        private bool _disposed = false;
+
         public SwarmTest(ITestOutputHelper output)
         {
             const string outputTemplate =
@@ -60,17 +64,15 @@ namespace Libplanet.Net.Tests
             _finalizers = new List<Func<Task>>();
         }
 
+        ~SwarmTest()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            Log.Logger.Debug("Starts to finalize {Resources} resources...", _finalizers.Count);
-            int i = 1;
-            foreach (Func<Task> finalize in _finalizers)
-            {
-                Log.Logger.Debug("Tries to finalize the resource #{Resource}...", i++);
-                finalize().Wait(DisposeTimeout);
-            }
-
-            Log.Logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         [Fact(Timeout = Timeout)]
@@ -1730,6 +1732,28 @@ namespace Libplanet.Net.Tests
             {
                 await StopAsync(swarm1);
                 await StopAsync(swarm2);
+            }
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _logger.Debug("Starts to finalize {Resources} resources...", _finalizers.Count);
+                    int i = 1;
+                    foreach (Func<Task> finalize in _finalizers)
+                    {
+                        _logger.Debug("Tries to finalize the resource #{Resource}...", i++);
+                        finalize().WaitAndUnwrapException();
+                    }
+
+                    _logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
+                    NetMQConfig.Cleanup(false);
+                }
+
+                _disposed = true;
             }
         }
 
