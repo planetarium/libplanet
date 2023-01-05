@@ -7,6 +7,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -21,7 +22,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
     public class DelayedActionRendererTest : DelayedRendererTest
     {
         private static readonly IAccountStateDelta _emptyStates =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
+            new AccountStateDeltaImpl(
+                _ => null,
+                (_, __) => default,
+                _ => default,
+                () => new ValidatorSet(),
+                default);
 
         public DelayedActionRendererTest(ITestOutputHelper output)
             : base(output)

@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
@@ -218,6 +219,12 @@ namespace Libplanet.Action
             return currency * 0;
         }
 
+        [Pure]
+        internal static ValidatorSet NullValidatorSetGetter()
+        {
+            return new ValidatorSet();
+        }
+
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
         /// a given <see cref="Transaction{T}"/> is evaluated.
@@ -237,6 +244,7 @@ namespace Libplanet.Action
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
                 NullTotalSupplyGetter,
+                NullValidatorSetGetter,
                 tx.Signer);
             ImmutableList<IAction> actions = tx.SystemAction is { } sa
                 ? ImmutableList.Create(sa)
@@ -540,6 +548,7 @@ namespace Libplanet.Action
                     delta.GetStates,
                     delta.GetBalance,
                     delta.GetTotalSupply,
+                    delta.GetValidatorSet,
                     tx.Signer);
 
                 DateTimeOffset startTime = DateTimeOffset.Now;
@@ -728,7 +737,7 @@ namespace Libplanet.Action
             IPreEvaluationBlockHeader blockHeader,
             StateCompleterSet<T> stateCompleterSet)
         {
-            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter) =
+            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
                 InitializeAccountGettersPair(blockHeader, stateCompleterSet);
             Address miner = blockHeader.Miner;
 
@@ -737,10 +746,11 @@ namespace Libplanet.Action
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                validatorSetGetter,
                 miner);
         }
 
-        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter)
+        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
             InitializeAccountGettersPair(
             IPreEvaluationBlockHeader blockHeader,
             StateCompleterSet<T> stateCompleterSet)
@@ -748,6 +758,7 @@ namespace Libplanet.Action
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
             TotalSupplyGetter totalSupplyGetter;
+            ValidatorSetGetter validatorSetGetter;
 
             if (blockHeader.PreviousHash is { } previousHash)
             {
@@ -764,15 +775,20 @@ namespace Libplanet.Action
                     currency,
                     previousHash,
                     stateCompleterSet.TotalSupplyStateCompleter);
+                validatorSetGetter = () => _blockChainStates.GetValidatorSet(
+                    previousHash,
+                    stateCompleterSet.ValidatorSetStateCompleter);
             }
             else
             {
                 accountStateGetter = NullAccountStateGetter;
                 accountBalanceGetter = NullAccountBalanceGetter;
                 totalSupplyGetter = NullTotalSupplyGetter;
+                validatorSetGetter = NullValidatorSetGetter;
             }
 
-            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter);
+            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter,
+                validatorSetGetter);
         }
 
         private IEnumerable<IAction> CreateCustomActions(
