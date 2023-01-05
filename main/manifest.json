@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "KgNiV8i9teVsHME0jBJtvAFz5gKJndv1iXHP1v8KRGU="
+          "hash": "Pk0/+lAhYQzvVuTWjLQeg+bramngRrxInBsTI4uyBSw="
         }
       },
       "is_incremental": false,
@@ -2297,6 +2297,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.AppProtocolVersionOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.AppProtocolVersionOptions.html",
+          "hash": "kxWVfV+ddJcGESaUEs2J6od0mgFjtABIy9R9jj8ZB2U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.AsyncDelegate-1.yml",
       "output": {
         ".html": {
@@ -2529,7 +2541,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.MessageValidator.html",
-          "hash": "iWXlHSMCNGrdL3/5OfO6KL7II3SRBV9tXWsvGB+94jA="
+          "hash": "NrHJ0YzfBdmkBsEBQGxQzBwfdyIJeK28XvjU/6T3AtY="
         }
       },
       "is_incremental": false,
@@ -2781,7 +2793,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "8O91ux0zvfEfk7T8ct9hWVm2QHr0Dx+6WBB9IRKFP6g="
+          "hash": "nT4dennvxvETouEY0eWoV3R5bmC6nTh7okYxsCij2sw="
         }
       },
       "is_incremental": false,
@@ -2913,7 +2925,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.NetMQTransport.html",
-          "hash": "0qXYMggE/yHtdr/wALGG7rdf/GRCjggEJrJ98QHf0B0="
+          "hash": "Di+X3bHUGcX18+8MLHMnypYQCBv9qQBWFhRfon73R4E="
         }
       },
       "is_incremental": false,
@@ -2997,7 +3009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "D0T1MlVr86DcfT8gTOEflrDzq80kf2BuiDdyd724hKs="
+          "hash": "8fEiP67c/HCyEbj5oRux6YGXXtlCVBrA3CaH5pTdaIw="
         }
       },
       "is_incremental": false,
@@ -3033,7 +3045,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Node.NetworkConfig-1.html",
-          "hash": "XPuVu3NhNkfCangJZKXdQwytKaYMFQ1UvJcKCUMtsGU="
+          "hash": "w5qvTojUPP2Mptojf1ZqWngFIFblUUG/B6MfVUXtwkU="
         }
       },
       "is_incremental": false,
@@ -4281,7 +4293,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "HkkWVMGCEsEFrN5JNf3Dq3NodSnCj7s9R+pbNvQbGso="
+          "hash": "NSeeMYenLXsO8a1dJPYHV/GJQWjN2vfJvkX/8xtIqoM="
         }
       },
       "is_incremental": false,
@@ -4390,7 +4402,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 346,
+          "total_file_count": 347,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
