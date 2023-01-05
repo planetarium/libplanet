@@ -3,6 +3,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 
 namespace Libplanet.Blockchain
 {
@@ -42,6 +43,13 @@ namespace Libplanet.Blockchain
             }
 
             return currency * 0;
+        }
+
+        public ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter)
+        {
+            return new ValidatorSet();
         }
     }
 }
