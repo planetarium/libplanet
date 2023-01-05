@@ -69,6 +69,16 @@ To be released.
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
 
 
+Version 0.45.4
+--------------
+
+Released on January 4, 2023.
+
+  -  Ported changes from [Libplaent 0.44.7] release.  [[#2684]]
+
+[Libplanet 0.44.7]: https://www.nuget.org/packages/Libplanet/0.44.7
+
+
 Version 0.45.3
 --------------
 
@@ -182,6 +192,19 @@ Released on December 3, 2022.
 [#2575]: https://github.com/planetarium/libplanet/pull/2575
 [#2586]: https://github.com/planetarium/libplanet/pull/2586
 [#2593]: https://github.com/planetarium/libplanet/pull/2593
+
+
+Version 0.44.7
+--------------
+
+Released on January 4, 2023.
+
+ -  (Libplanet.Net) Fixed bugs where `NetMQTransport` hadn't worked expected
+    when not many threads were available.  [[#2684]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.ReplyMessageAsync()`
+    hadn't worked properly.  [[#2684]]
+
+[#2684]: https://github.com/planetarium/libplanet/pull/2684
 
 
 Version 0.44.6
