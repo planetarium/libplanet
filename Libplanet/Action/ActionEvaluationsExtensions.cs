@@ -14,7 +14,8 @@ namespace Libplanet.Action
             this IReadOnlyList<ActionEvaluation> actionEvaluations,
             Func<Address, string> toStateKey,
             Func<(Address, Currency), string> toFungibleAssetKey,
-            Func<Currency, string> toTotalSupplyKey)
+            Func<Currency, string> toTotalSupplyKey,
+            string validatorSetKey)
         {
             IImmutableSet<Address> stateUpdatedAddresses = actionEvaluations
                 .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
@@ -54,6 +55,14 @@ namespace Libplanet.Action
                         new Bencodex.Types.Integer(rawValue)
                     );
                 }
+            }
+
+            if (lastStates?.GetValidatorSet() is { } validatorSet)
+            {
+                totalDelta = totalDelta.SetItem(
+                    validatorSetKey,
+                    validatorSet.Encoded
+                );
             }
 
             return totalDelta;

@@ -21,12 +21,14 @@ namespace Libplanet.Tests.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
             Address signer
         ) =>
             new AccountStateDeltaImplV0(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                validatorSetGetter,
                 signer);
 
         [Fact]

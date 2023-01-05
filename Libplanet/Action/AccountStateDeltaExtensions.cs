@@ -43,19 +43,29 @@ namespace Libplanet.Action
         internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(
             this IAccountStateDelta delta) =>
             delta.GetUpdatedStates()
-                .Select(pair =>
+                .Select(
+                    pair =>
+                        new KeyValuePair<string, IValue?>(
+                            ToStateKey(pair.Key),
+                            pair.Value))
+                .Union(
+                    delta.GetUpdatedBalances().Select(
+                        pair =>
+                            new KeyValuePair<string, IValue?>(
+                                ToFungibleAssetKey(pair.Key),
+                                (Integer)pair.Value.RawValue)))
+                .Union(
+                    delta.GetUpdatedTotalSupplies().Select(
+                        pair =>
+                            new KeyValuePair<string, IValue?>(
+                                ToTotalSupplyKey(pair.Key),
+                                (Integer)pair.Value.RawValue)))
+                .Union(new[]
+                {
                     new KeyValuePair<string, IValue?>(
-                        ToStateKey(pair.Key),
-                        pair.Value))
-                .Union(
-                    delta.GetUpdatedBalances().Select(pair =>
-                        new KeyValuePair<string, IValue?>(
-                            ToFungibleAssetKey(pair.Key),
-                            (Integer)pair.Value.RawValue)))
-                .Union(
-                    delta.GetUpdatedTotalSupplies().Select(pair =>
-                        new KeyValuePair<string, IValue?>(
-                            ToTotalSupplyKey(pair.Key),
-                            (Integer)pair.Value.RawValue))).ToImmutableDictionary();
+                        ValidatorSetKey,
+                        delta.GetValidatorSet().Encoded),
+                })
+                .ToImmutableDictionary();
     }
 }

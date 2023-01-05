@@ -208,25 +208,21 @@ namespace Libplanet.Net.Tests
                 for (var i = 1; i < minerChain.Count; i++)
                 {
                     var b = minerChain[i];
-                    var state = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = b.Hash,
-                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
-                    var state = new ActionExecutionState
+                    var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
                         TotalBlockCount = 11,
                         ExecutedBlockCount = i,
                     };
-                    expectedStates.Add(state);
+                    expectedStates.Add(state1);
+
+                    var state2 = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = b.Hash,
+                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state2);
                 }
 
                 _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
@@ -458,31 +454,25 @@ namespace Libplanet.Net.Tests
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var state = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = minerChain[i].Hash,
-                        TotalBlockCount = 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var state = new ActionExecutionState
+                    var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ExecutedBlockCount = i,
                     };
-                    expectedStates.Add(state);
+                    expectedStates.Add(state1);
+
+                    var state2 = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = minerChain[i].Hash,
+                        TotalBlockCount = 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state2);
                 }
 
                 // FIXME: this test does not ensures block download in order
-                Assert.Equal(
-                    new HashSet<PreloadState>(expectedStates),
-                    new HashSet<PreloadState>(actualStates)
-                );
+                Assert.True(expectedStates.SequenceEqual(actualStates));
             }
             finally
             {
