@@ -31,7 +31,8 @@ namespace Libplanet.Net.Tests.Transports
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var apvKey = new PrivateKey();
             var swarmKey = new PrivateKey();
-            AppProtocolVersion apv = AppProtocolVersion.Sign(apvKey, 1);
+            var apv = AppProtocolVersion.Sign(apvKey, 1);
+            var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
 
             string host = IPAddress.Loopback.ToString();
             int port = FreeTcpPort();
@@ -41,7 +42,7 @@ namespace Libplanet.Net.Tests.Transports
             using (var swarm = new Swarm<DumbAction>(
                 blockchain,
                 swarmKey,
-                apv,
+                apvOptions,
                 host: host,
                 listenPort: port,
                 options: option))

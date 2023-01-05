@@ -31,7 +31,7 @@ namespace Libplanet.Net
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
 
         private readonly AsyncLock _runningMutex;
 
@@ -50,7 +50,9 @@ namespace Libplanet.Net
         /// <param name="blockChain">A blockchain to publicize on the network.</param>
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
-        /// <param name="appProtocolVersion">An app protocol to comply.</param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -59,25 +61,15 @@ namespace Libplanet.Net
         /// <param name="iceServers">
         /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
         /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when this
-        /// node encounters a peer with one different from <paramref name="appProtocolVersion"/>,
-        /// and their version is signed by a trusted party (i.e.,
-        /// <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// </param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties who
-        /// signed <see cref="AppProtocolVersion"/>s to trust.  To trust any party, pass
-        /// <see langword="null"/>, which is the default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
+            AppProtocolVersionOptions appProtocolVersionOptions,
             int workers = 100,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -91,9 +83,7 @@ namespace Libplanet.Net
 
             _runningMutex = new AsyncLock();
 
-            _appProtocolVersion = appProtocolVersion;
-            TrustedAppProtocolVersionSigners =
-                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
+            _appProtocolVersionOptions = appProtocolVersionOptions;
 
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
@@ -111,51 +101,12 @@ namespace Libplanet.Net
             // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = NetMQTransport.Create(
                 _privateKey,
-                _appProtocolVersion,
-                TrustedAppProtocolVersionSigners,
+                _appProtocolVersionOptions,
                 workers,
                 host,
                 listenPort,
                 iceServers ?? new List<IceServer>(),
-                differentAppProtocolVersionEncountered,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
-            Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
-            PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
-        }
-
-        internal Swarm(
-            BlockChain<T> blockChain,
-            PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            RoutingTable routingTable,
-            ITransport transport,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
-        {
-            BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
-            _store = BlockChain.Store;
-            _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
-            LastSeenTimestamps =
-                new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
-            BlockHeaderReceived = new AsyncAutoResetEvent();
-            BlockAppended = new AsyncAutoResetEvent();
-            BlockReceived = new AsyncAutoResetEvent();
-
-            _runningMutex = new AsyncLock();
-            _appProtocolVersion = appProtocolVersion;
-            TrustedAppProtocolVersionSigners =
-                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
-
-            string loggerId = _privateKey.ToAddress().ToHex();
-            _logger = Log
-                .ForContext<Swarm<T>>()
-                .ForContext("Source", nameof(Swarm<T>))
-                .ForContext("SwarmId", loggerId);
-
-            Options = options ?? new SwarmOptions();
-            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
-            RoutingTable = routingTable;
-            Transport = transport;
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
@@ -200,12 +151,14 @@ namespace Libplanet.Net
         /// <see cref="PublicKey"/>s of parties who signed <see cref="AppProtocolVersion"/>s to
         /// trust.  In case of <see langword="null"/>, any parties are trusted.
         /// </summary>
-        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
+            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
 
         /// <summary>
         /// The application protocol version to comply.
         /// </summary>
-        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
+        public AppProtocolVersion AppProtocolVersion =>
+            _appProtocolVersionOptions.AppProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
 

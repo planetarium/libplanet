@@ -539,25 +539,25 @@ namespace Libplanet.Net.Tests
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
-            AppProtocolVersion ver = AppProtocolVersion.Sign(key, 1);
-            Assert.Throws<ArgumentNullException>(() => { new Swarm<DumbAction>(null, key, ver); });
+            var apv = AppProtocolVersion.Sign(key, 1);
+            var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
 
             Assert.Throws<ArgumentNullException>(() =>
-            {
-                new Swarm<DumbAction>(blockchain, null, ver);
-            });
+                new Swarm<DumbAction>(null, key, apvOptions));
+            Assert.Throws<ArgumentNullException>(() =>
+                new Swarm<DumbAction>(blockchain, null, apvOptions));
 
             // Swarm<DumbAction> needs host or iceServers.
             Assert.Throws<ArgumentException>(() =>
-            {
-                new Swarm<DumbAction>(blockchain, key, ver);
-            });
+                new Swarm<DumbAction>(blockchain, key, apvOptions));
 
             // Swarm<DumbAction> needs host or iceServers.
             Assert.Throws<ArgumentException>(() =>
-            {
-                new Swarm<DumbAction>(blockchain, key, ver, iceServers: new IceServer[] { });
-            });
+                new Swarm<DumbAction>(
+                    blockchain,
+                    key,
+                    apvOptions,
+                    iceServers: new IceServer[] { }));
         }
 
         [Fact(Timeout = Timeout)]

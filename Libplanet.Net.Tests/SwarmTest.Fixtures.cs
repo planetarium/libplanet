@@ -69,12 +69,10 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
             Block<DumbAction> genesis = null)
@@ -87,27 +85,25 @@ namespace Libplanet.Net.Tests
                 fx.StateStore,
                 genesisBlock: genesis
             );
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
+
             return CreateSwarm(
                 blockchain,
                 privateKey,
-                appProtocolVersion,
+                appProtocolVersionOptions,
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
                 options);
         }
 
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null
         )
             where T : IAction, new()
@@ -118,17 +114,16 @@ namespace Libplanet.Net.Tests
             }
 
             options ??= new SwarmOptions();
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
 
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
-                appProtocolVersion ?? DefaultAppProtocolVersion,
+                appProtocolVersionOptions,
                 5,
                 host,
                 listenPort,
                 iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
                 options);
             _finalizers.Add(async () =>
             {

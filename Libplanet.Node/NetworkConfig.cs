@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -60,7 +60,7 @@ namespace Libplanet.Node
         /// <see cref="NetworkConfig{T}.AppProtocolVersion"/>.  To trust any party,
         /// set this to <see langword="null"/>.  Set to <see langword="null"/> by default.
         /// </summary>
-        public ISet<PublicKey>? TrustedAppProtocolVersionSigners { get; set; } = null;
+        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners { get; set; } = null;
 
         /// <summary>
         /// The event triggered when a node encounters
