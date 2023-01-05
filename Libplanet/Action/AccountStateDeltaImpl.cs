@@ -6,6 +6,9 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
+using Serilog;
 
 namespace Libplanet.Action
 {
@@ -23,18 +26,22 @@ namespace Libplanet.Action
         /// </param>
         /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
         /// currencies.</param>
+        /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
+        /// set.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
         internal AccountStateDeltaImpl(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
             Address signer
         )
         {
             StateGetter = accountStateGetter;
             BalanceGetter = accountBalanceGetter;
             TotalSupplyGetter = totalSupplyGetter;
+            ValidatorSetGetter = validatorSetGetter;
             UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
@@ -70,6 +77,8 @@ namespace Libplanet.Action
 
         protected TotalSupplyGetter TotalSupplyGetter { get; set; }
 
+        protected ValidatorSetGetter ValidatorSetGetter { get; set; }
+
         protected Address Signer { get; set; }
 
         protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
@@ -81,6 +90,8 @@ namespace Libplanet.Action
         }
 
         protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
+
+        protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
         /// <inheritdoc/>
         [Pure]
@@ -148,6 +159,10 @@ namespace Libplanet.Action
 
             return TotalSupplyGetter(currency);
         }
+
+        [Pure]
+        public virtual ValidatorSet GetValidatorSet() =>
+            UpdatedValidatorSet ?? ValidatorSetGetter();
 
         /// <inheritdoc/>
         [Pure]
@@ -283,6 +298,24 @@ namespace Libplanet.Action
             );
         }
 
+        public IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power)
+        {
+            var validator = new Validator(validatorKey, power);
+            Log.Debug("Update {Key} to validator set.", validatorKey);
+            var validators = GetValidatorSet().Validators.Remove(validator);
+
+            if (power.Sign < 0)
+            {
+                throw new ArgumentException("The power cannot be negative");
+            }
+            else if (power.Sign == 0)
+            {
+                return UpdateValidatorSet(new ValidatorSet(validators.ToList()));
+            }
+
+            return UpdateValidatorSet(new ValidatorSet(validators.Add(validator).ToList()));
+        }
+
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>,
         /// <paramref name="accountBalanceGetter"/>, and <paramref name="totalSupplyGetter"/>,
@@ -295,6 +328,8 @@ namespace Libplanet.Action
         /// </param>
         /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
         /// currencies.</param>
+        /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
+        /// set.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
         /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
@@ -305,16 +340,19 @@ namespace Libplanet.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
             Address signer) => protocolVersion > 0
             ? new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                validatorSetGetter,
                 signer)
             : new AccountStateDeltaImplV0(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                validatorSetGetter,
                 signer);
 
         [Pure]
@@ -330,11 +368,17 @@ namespace Libplanet.Action
         protected virtual AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImpl(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
+            new AccountStateDeltaImpl(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
+                UpdatedValidatorSet = UpdatedValidatorSet,
             };
 
         [Pure]
@@ -348,11 +392,34 @@ namespace Libplanet.Action
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
         ) =>
-            new AccountStateDeltaImpl(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
+            new AccountStateDeltaImpl(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
                 UpdatedTotalSupply = updatedTotalSupply,
+                UpdatedValidatorSet = UpdatedValidatorSet,
+            };
+
+        [Pure]
+        protected virtual AccountStateDeltaImpl UpdateValidatorSet(
+            ValidatorSet updatedValidatorSet
+        ) =>
+            new AccountStateDeltaImpl(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
+            {
+                UpdatedStates = UpdatedStates,
+                UpdatedFungibles = UpdatedFungibles,
+                UpdatedTotalSupply = UpdatedTotalSupply,
+                UpdatedValidatorSet = updatedValidatorSet,
             };
     }
 }

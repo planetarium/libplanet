@@ -9,6 +9,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -27,6 +28,7 @@ namespace Libplanet.Tests.Action
         protected readonly IImmutableDictionary<Address, IValue> _states;
         protected readonly IImmutableDictionary<(Address, Currency), BigInteger> _assets;
         protected readonly IImmutableDictionary<Currency, (BigInteger, BigInteger)> _totalSupplies;
+        protected readonly ValidatorSet _validatorSet;
         protected readonly IAccountStateDelta _init;
 
         protected AccountStateDeltaTest(ITestOutputHelper output)
@@ -71,6 +73,9 @@ namespace Libplanet.Tests.Action
                 [_currencies[3]] = (5, 0),
             }.ToImmutableDictionary();
 
+            // FIXME: Need default value for tests?
+            _validatorSet = new ValidatorSet();
+
             output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State", "Address");
             int i = 0;
             foreach (Address a in _addr)
@@ -87,7 +92,12 @@ namespace Libplanet.Tests.Action
                 );
             }
 
-            _init = CreateInstance(GetStates, GetBalance, GetTotalSupply, _addr[0]);
+            _init = CreateInstance(
+                GetStates,
+                GetBalance,
+                GetTotalSupply,
+                GetValidatorSet,
+                _addr[0]);
         }
 
         public abstract int ProtocolVersion { get; }
@@ -96,6 +106,7 @@ namespace Libplanet.Tests.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
             Address signer
         );
 
@@ -279,7 +290,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, _addr[1]);
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.MintAsset(_addr[1], Value(0, 10))
@@ -321,7 +332,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, _addr[1]);
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.BurnAsset(_addr[0], Value(0, 5))
@@ -362,6 +373,11 @@ namespace Libplanet.Tests.Action
             return _totalSupplies.TryGetValue(currency, out var totalSupply)
                 ? new FungibleAssetValue(currency, totalSupply.Item1, totalSupply.Item2)
                 : currency * 0;
+        }
+
+        protected ValidatorSet GetValidatorSet()
+        {
+            return _validatorSet ?? new ValidatorSet();
         }
     }
 }

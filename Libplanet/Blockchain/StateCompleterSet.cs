@@ -81,5 +81,10 @@ namespace Libplanet.Blockchain
         /// Holds a <see cref="TotalSupplyStateCompleter{T}"/>.
         /// </summary>
         public TotalSupplyStateCompleter<T> TotalSupplyStateCompleter { get; set; }
+
+        /// <summary>
+        /// Holds a <see cref="ValidatorSetStateCompleter{T}"/>.
+        /// </summary>
+        public ValidatorSetStateCompleter<T> ValidatorSetStateCompleter { get; set; }
     }
 }

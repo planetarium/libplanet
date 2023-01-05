@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 
 namespace Libplanet.Action
 {
@@ -152,5 +154,8 @@ namespace Libplanet.Action
         /// has insufficient balance than <paramref name="value"/> to burn.</exception>
         [Pure]
         IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value);
+
+        [Pure]
+        IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power);
     }
 }
