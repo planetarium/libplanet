@@ -154,13 +154,84 @@ To be released.
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
 
 
+Version 0.44.7
+--------------
+
+Released on January 4, 2023.
+
+ -  (Libplanet.Net) Fixed bugs where `NetMQTransport` hadn't worked expected
+    when not many threads were available.  [[#2684]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.ReplyMessageAsync()`
+    hadn't worked properly.  [[#2684]]
+
+[#2684]: https://github.com/planetarium/libplanet/pull/2684
+
+
+Version 0.44.6
+--------------
+
+Released on December 26, 2022.
+
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport` hadn't worked properly
+    on Windows.  [[#2667]]
+ -  Fixed a scope of readlock on `BlockChain<T>.GetBlockLocator()` method for
+    sake of parallelism.  [[#2667]]
+
+[#2667]: https://github.com/planetarium/libplanet/pull/2667
+
+
+Version 0.44.5
+--------------
+
+Released on December 21, 2022.
+
+ -  Improved overall performance of `NetMQTransport` and `Swarm<T>`
+    classes.  [[#2654]]
+
+[#2654]: https://github.com/planetarium/libplanet/pull/2654
+
+
+Version 0.44.4
+--------------
+
+Released on December 15, 2022.
+
+ -  Improved overall performance of `NetMQTransport` and `TxCompletion<T>`
+    classes.  [[#2631]]
+
+[#2631]: https://github.com/planetarium/libplanet/pull/2631
+
+
+Version 0.44.3
+--------------
+
+Released on December 1, 2022.
+
+ -  Fixed a bug of `TxMetadata.ToBencodex()` method where the encoded
+    timestamp had differed from `TxMetadata.Timestamp` when it has non-zero
+    time zone offset.  [[#2598]]
+
+[#2598]: https://github.com/planetarium/libplanet/pull/2598
+
+
+Version 0.44.2
+--------------
+
+Released on November 29, 2022.
+
+ -  Improved performance of `.Iterate()` and `.GetNextTxNonce()` of
+    `VolatileStagePolicy`.  [[#2589]]
+
+[#2589]: https://github.com/planetarium/libplanet/pull/2589
+
+
 Version 0.44.1
 --------------
 
 Released on November 7, 2022.
 
- - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
-   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+    hung forever when given peer information isn't valid.  [[#2424], [#2521]]
 
 
 Version 0.44.0
@@ -225,8 +296,8 @@ Version 0.43.3
 
 Released on November 7, 2022.
 
- - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
-   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+    hung forever when given peer information isn't valid.  [[#2424], [#2521]]
 
 [#2424]: https://github.com/planetarium/libplanet/issues/2424
 [#2521]: https://github.com/planetarium/libplanet/pulls/2521

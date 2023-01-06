@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blocks
                 {
                     GenesisHash = GenesisHash,
                     Timestamp = new DateTimeOffset(
-                        2021, 9, 7, 10, 23, 12, 345, TimeSpan.FromHours(9)),
+                        2021, 9, 7, 10, 23, 12, 345, default),
                 },
                 customActions: Array.Empty<Arithmetic>(),
                 signature: ByteUtil.ParseHex(
