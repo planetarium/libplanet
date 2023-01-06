@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Serilog;
@@ -73,7 +74,8 @@ namespace Libplanet.Net.Protocols
                 // Guarantees at least one connection (seed peer)
                 try
                 {
-                    await PingAsync(peer, dialTimeout, cancellationToken);
+                    await PingAsync(peer, dialTimeout, cancellationToken)
+                        .ConfigureAwait(false);
                     findPeerTasks.Add(
                         FindPeerAsync(
                             history,
@@ -108,7 +110,7 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                await Task.WhenAll(findPeerTasks);
+                await Task.WhenAll(findPeerTasks).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -136,7 +138,7 @@ namespace Libplanet.Net.Protocols
                 }
 
                 _logger.Verbose("Trying to ping {PeerCount} peers.", tasks.Count);
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(tasks).ConfigureAwait(false);
                 _logger.Verbose("Update complete.");
             }
             catch (PingTimeoutException e)
@@ -168,15 +170,20 @@ namespace Libplanet.Net.Protocols
                     peers.Count,
                     _table.Peers.Count);
 
-                List<Task> tasks = peers
-                    .Select(peer =>
-                        ValidateAsync(
-                            peer,
-                            _requestTimeout,
-                            cancellationToken))
-                    .ToList();
-
-                await Task.WhenAll(tasks);
+                await peers.ParallelForEachAsync(
+                    async peer =>
+                    {
+                        try
+                        {
+                            await ValidateAsync(peer, _requestTimeout, cancellationToken);
+                        }
+                        catch (TimeoutException)
+                        {
+                            _logger.Debug("Can't validate peer: {Peer}", peer);
+                        }
+                    },
+                    cancellationToken
+                );
                 cancellationToken.ThrowIfCancellationRequested();
             }
             catch (TimeoutException)
@@ -201,7 +208,8 @@ namespace Libplanet.Net.Protocols
                 _logger.Verbose("Start to validate all peers: ({Count})", _table.Peers.Count);
                 foreach (var peer in _table.Peers)
                 {
-                    await ValidateAsync(peer, timeout ?? _requestTimeout, cancellationToken);
+                    await ValidateAsync(peer, timeout ?? _requestTimeout, cancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
             catch (TimeoutException e)
@@ -242,7 +250,7 @@ namespace Libplanet.Net.Protocols
                     cancellationToken));
             try
             {
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(tasks).ConfigureAwait(false);
             }
             catch (TimeoutException)
             {
@@ -262,7 +270,8 @@ namespace Libplanet.Net.Protocols
                         _logger.Verbose("Check peer {Peer}.", replacement);
 
                         _table.RemoveCache(replacement);
-                        await PingAsync(replacement, _requestTimeout, cancellationToken);
+                        await PingAsync(replacement, _requestTimeout, cancellationToken)
+                            .ConfigureAwait(false);
                     }
                     catch (PingTimeoutException)
                     {
@@ -304,7 +313,8 @@ namespace Libplanet.Net.Protocols
             {
                 try
                 {
-                    await PingAsync(boundPeer, _requestTimeout, cancellationToken);
+                    await PingAsync(boundPeer, _requestTimeout, cancellationToken)
+                        .ConfigureAwait(false);
                 }
                 catch (PingTimeoutException)
                 {
@@ -341,7 +351,8 @@ namespace Libplanet.Net.Protocols
 
                 history.Add(viaPeer);
                 IEnumerable<BoundPeer> foundPeers =
-                    await GetNeighbors(viaPeer, target, timeout, cancellationToken);
+                    await GetNeighbors(viaPeer, target, timeout, cancellationToken)
+                    .ConfigureAwait(false);
                 IEnumerable<BoundPeer> filteredPeers = foundPeers
                     .Where(peer =>
                         !history.Contains(peer) &&
@@ -353,7 +364,8 @@ namespace Libplanet.Net.Protocols
                 {
                     try
                     {
-                        await PingAsync(found, _requestTimeout, cancellationToken);
+                        await PingAsync(found, _requestTimeout, cancellationToken)
+                            .ConfigureAwait(false);
                         if (found.Address.Equals(target))
                         {
                             return found;
@@ -403,7 +415,7 @@ namespace Libplanet.Net.Protocols
                     new PingMsg(),
                     timeout,
                     cancellationToken
-                );
+                ).ConfigureAwait(false);
                 if (!(reply is PongMsg pong))
                 {
                     throw new InvalidMessageException(
@@ -434,13 +446,14 @@ namespace Libplanet.Net.Protocols
             {
                 case PingMsg ping:
                 {
-                    await ReceivePingAsync(ping);
+                    await ReceivePingAsync(ping).ConfigureAwait(false);
                     break;
                 }
 
                 case FindNeighborsMsg findNeighbors:
                 {
-                    await ReceiveFindPeerAsync(findNeighbors);
+                    await ReceiveFindPeerAsync(findNeighbors)
+                        .ConfigureAwait(false);
                     break;
                 }
             }
@@ -474,7 +487,7 @@ namespace Libplanet.Net.Protocols
             {
                 _logger.Verbose("Starting to validate peer {Peer}...", peer);
                 DateTimeOffset check = DateTimeOffset.UtcNow;
-                await PingAsync(peer, timeout, cancellationToken);
+                await PingAsync(peer, timeout, cancellationToken).ConfigureAwait(false);
                 _table.Check(peer, check, DateTimeOffset.UtcNow);
             }
             catch (PingTimeoutException)
@@ -537,11 +550,13 @@ namespace Libplanet.Net.Protocols
             IEnumerable<BoundPeer> found;
             if (viaPeer is null)
             {
-                found = await QueryNeighborsAsync(history, target, timeout, cancellationToken);
+                found = await QueryNeighborsAsync(history, target, timeout, cancellationToken)
+                    .ConfigureAwait(false);
             }
             else
             {
-                found = await GetNeighbors(viaPeer, target, timeout, cancellationToken);
+                found = await GetNeighbors(viaPeer, target, timeout, cancellationToken)
+                    .ConfigureAwait(false);
                 history.Add(viaPeer);
             }
 
@@ -556,7 +571,7 @@ namespace Libplanet.Net.Protocols
                 target,
                 depth,
                 timeout,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<BoundPeer>> QueryNeighborsAsync(
@@ -571,7 +586,8 @@ namespace Libplanet.Net.Protocols
             for (var i = 0; i < count; i++)
             {
                 var peers =
-                    await GetNeighbors(neighbors[i], target, timeout, cancellationToken);
+                    await GetNeighbors(neighbors[i], target, timeout, cancellationToken)
+                    .ConfigureAwait(false);
                 history.Add(neighbors[i]);
                 found.AddRange(peers.Where(peer => !found.Contains(peer)));
             }
@@ -585,15 +601,16 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            var findPeer = new Messages.FindNeighborsMsg(target);
+            var findPeer = new FindNeighborsMsg(target);
             try
             {
                 Message reply = await _transport.SendMessageAsync(
                     peer,
                     findPeer,
                     timeout,
-                    cancellationToken);
-                if (!(reply is Messages.NeighborsMsg neighbors))
+                    cancellationToken
+                ).ConfigureAwait(false);
+                if (!(reply is NeighborsMsg neighbors))
                 {
                     throw new InvalidMessageException(
                         $"Reply to {nameof(Messages.FindNeighborsMsg)} is invalid.",
@@ -628,7 +645,7 @@ namespace Libplanet.Net.Protocols
                 Identity = ping.Identity,
             };
 
-            await _transport.ReplyMessageAsync(pong, default);
+            await _transport.ReplyMessageAsync(pong, default).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -686,7 +703,7 @@ namespace Libplanet.Net.Protocols
             Task aggregateTask = Task.WhenAll(tasks);
             try
             {
-                await aggregateTask;
+                await aggregateTask.ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -739,7 +756,7 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                await Task.WhenAll(findPeerTasks);
+                await Task.WhenAll(findPeerTasks).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -761,7 +778,7 @@ namespace Libplanet.Net.Protocols
                 Identity = findNeighbors.Identity,
             };
 
-            await _transport.ReplyMessageAsync(neighbors, default);
+            await _transport.ReplyMessageAsync(neighbors, default).ConfigureAwait(false);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -30,6 +31,13 @@ namespace Libplanet.Tests.Tx
                 0xdc, 0xac, 0x3c, 0xf9, 0x27, 0x8a, 0xcb, 0x57, 0x86, 0xc7,
             });
         }
+
+        public static IEnumerable<object[]> ToBencodexTheoryData() =>
+            new object[][]
+            {
+                new object[] { new DateTimeOffset(2022, 5, 23, 10, 2, 0, default) },
+                new object[] { new DateTimeOffset(2022, 5, 23, 19, 2, 0, TimeSpan.FromHours(9)) },
+            };
 
         [Fact]
         public void Constructor()
@@ -132,13 +140,14 @@ namespace Libplanet.Tests.Tx
             );
         }
 
-        [Fact]
-        public void ToBencodex()
+        [Theory]
+        [MemberData(nameof(ToBencodexTheoryData))]
+        public void ToBencodex(DateTimeOffset timestamp)
         {
             var meta1 = new TxMetadata(_key1.PublicKey)
             {
                 Nonce = 123L,
-                Timestamp = new DateTimeOffset(2022, 5, 23, 10, 2, 0, default),
+                Timestamp = timestamp,
             };
             Bencodex.Types.Dictionary expected1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)

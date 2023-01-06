@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -21,6 +23,7 @@ namespace Libplanet.Net
         private readonly TxFetcher _txFetcher;
         private readonly TxBroadcaster _txBroadcaster;
         private readonly ILogger _logger;
+        private readonly ConcurrentDictionary<TPeer, TxFetchJob> _txFetchJobs;
 
         private bool _disposed;
 
@@ -33,6 +36,7 @@ namespace Libplanet.Net
             _blockChain = blockChain;
             _txFetcher = txFetcher;
             _txBroadcaster = txBroadcaster;
+            _txFetchJobs = new ConcurrentDictionary<TPeer, TxFetchJob>();
             TxReceived = new AsyncAutoResetEvent();
 
             _logger = Log
@@ -82,57 +86,46 @@ namespace Libplanet.Net
                 required.Count
             );
 
-            // spawn task.
-            _ = RequestTxsFromPeerAsync(peer, required, _cancellationTokenSource.Token);
+            do
+            {
+                TxFetchJob txFetchJob = _txFetchJobs.GetOrAdd(
+                    peer,
+                    peerAsKey => TxFetchJob.RunAfter(
+                        peerAsKey,
+                        _txFetcher,
+                        TimeSpan.FromSeconds(1),
+                        (task) =>
+                        {
+                            if (task.IsCompleted &&
+                                !task.IsFaulted &&
+                                !task.IsCanceled &&
+                                task.Result is ISet<Transaction<TAction>> txs)
+                            {
+                                ProcessFetchedTxIds(txs, peerAsKey);
+                            }
+
+                            _txFetchJobs.TryRemove(peer, out _);
+                        },
+                        _cancellationTokenSource.Token
+                    )
+                );
+
+                if (txFetchJob.TryAdd(required, out HashSet<TxId> rest))
+                {
+                    break;
+                }
+
+                required = rest;
+                _txFetchJobs.TryRemove(peer, out _);
+            }
+            while (true);
         }
 
-        private HashSet<TxId> GetRequiredTxIds(IEnumerable<TxId> ids)
-        {
-            return new HashSet<TxId>(ids
-                .Where(txId =>
-                    !_blockChain.StagePolicy.Ignores(_blockChain, txId)
-                        && _blockChain.StagePolicy.Get(_blockChain, txId, filtered: false) is null
-                        && _blockChain.Store.GetTransaction<TAction>(txId) is null));
-        }
-
-        private async Task RequestTxsFromPeerAsync(
-            TPeer peer,
-            HashSet<TxId> txIds,
-            CancellationToken cancellationToken)
+        private void ProcessFetchedTxIds(ISet<Transaction<TAction>> txs, TPeer peer)
         {
             try
             {
-                const string log =
-                    "Starting RequestTxsFromPeerAsync from {Peer}. " +
-                    "(_requiredTxIds count: {Count})";
-                _logger.Debug(log, peer, txIds.Count);
-
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new TaskCanceledException();
-                }
-
-                _logger.Debug(
-                    "Start to run _txFetcher from {Peer}. (count: {Count})",
-                    peer,
-                    txIds.Count);
-                var stopWatch = new Stopwatch();
-                stopWatch.Start();
-                var txs = new HashSet<Transaction<TAction>>(
-                    await _txFetcher(
-                            peer,
-                            txIds,
-                            cancellationToken)
-                        .ToListAsync(cancellationToken)
-                        .AsTask());
-                _logger.Debug(
-                    "End of _txFetcher from {Peer}. (received: {Count}); " +
-                    "Time taken: {Elapsed}",
-                    peer,
-                    txs.Count,
-                    stopWatch.Elapsed);
-
-                txs = new HashSet<Transaction<TAction>>(
+                var policyCompatTxs = new HashSet<Transaction<TAction>>(
                     txs.Where(
                         tx =>
                         {
@@ -158,7 +151,7 @@ namespace Libplanet.Net
                         }));
 
                 var stagedTxs = new List<Transaction<TAction>>();
-                foreach (var tx in txs)
+                foreach (var tx in policyCompatTxs)
                 {
                     try
                     {
@@ -176,7 +169,7 @@ namespace Libplanet.Net
                 }
 
                 // To maintain the consistency of the unit tests.
-                if (txs.Any())
+                if (policyCompatTxs.Any())
                 {
                     TxReceived.Set();
                 }
@@ -194,9 +187,10 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Information(
-                        "Failed to get {TxIdCount} transactions from {Peer}.",
-                        txIds.Count,
-                        peer);
+                        "No transaction has been staged among received {TxCount} from {Peer}.",
+                        txs.Count,
+                        peer
+                    );
                 }
             }
             catch (Exception e)
@@ -204,7 +198,7 @@ namespace Libplanet.Net
                 _logger.Error(
                     e,
                     "An error occurred during {FName} from {Peer}.",
-                    nameof(RequestTxsFromPeerAsync),
+                    nameof(ProcessFetchedTxIds),
                     peer);
                 throw;
             }
@@ -212,8 +206,150 @@ namespace Libplanet.Net
             {
                 _logger.Debug(
                     "End of {FName} from {Peer}.",
-                    nameof(RequestTxsFromPeerAsync),
+                    nameof(ProcessFetchedTxIds),
                     peer);
+            }
+        }
+
+        private HashSet<TxId> GetRequiredTxIds(IEnumerable<TxId> ids)
+        {
+            return new HashSet<TxId>(ids
+                .Where(txId =>
+                    !_blockChain.StagePolicy.Ignores(_blockChain, txId)
+                        && _blockChain.StagePolicy.Get(_blockChain, txId, filtered: false) is null
+                        && _blockChain.Store.GetTransaction<TAction>(txId) is null));
+        }
+
+        private class TxFetchJob
+        {
+            private readonly TxFetcher _txFetcher;
+            private readonly Channel<TxId> _txIds;
+            private readonly TPeer _peer;
+            private readonly ILogger _logger;
+            private readonly ReaderWriterLockSlim _txIdsWriterLock;
+
+            private TxFetchJob(TxFetcher txFetcher, TPeer peer)
+            {
+                _txFetcher = txFetcher;
+                _peer = peer;
+                _txIds = Channel.CreateUnbounded<TxId>(
+                    new UnboundedChannelOptions
+                    {
+                        SingleReader = true,
+                    }
+                );
+                _txIdsWriterLock = new ReaderWriterLockSlim();
+
+                _logger = Log
+                    .ForContext<TxFetchJob>()
+                    .ForContext("Source", nameof(TxFetchJob));
+            }
+
+            public static TxFetchJob RunAfter(
+                TPeer peer,
+                TxFetcher txFetcher,
+                TimeSpan waitFor,
+                Action<Task<ISet<Transaction<TAction>>>> continuation,
+                CancellationToken cancellationToken)
+            {
+                var task = new TxFetchJob(txFetcher, peer);
+                _ = task.RequestAsync(waitFor, cancellationToken).ContinueWith(continuation);
+                return task;
+            }
+
+            public bool TryAdd(IEnumerable<TxId> txIds, out HashSet<TxId> rest)
+            {
+                rest = new HashSet<TxId>(txIds);
+                _txIdsWriterLock.EnterReadLock();
+                try
+                {
+                    foreach (TxId txId in txIds)
+                    {
+                        _txIds.Writer.WriteAsync(txId);
+                        rest.Remove(txId);
+                    }
+
+                    return true;
+                }
+                catch (ChannelClosedException)
+                {
+                    return false;
+                }
+                finally
+                {
+                    _txIdsWriterLock.ExitReadLock();
+                }
+            }
+
+            private async Task<ISet<Transaction<TAction>>> RequestAsync(
+                TimeSpan waitFor,
+                CancellationToken cancellationToken
+            )
+            {
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(waitFor);
+                    _txIdsWriterLock.EnterWriteLock();
+                    try
+                    {
+                        _txIds.Writer.TryComplete();
+                    }
+                    finally
+                    {
+                        _txIdsWriterLock.ExitWriteLock();
+                    }
+                });
+
+                try
+                {
+                    var txIds = new HashSet<TxId>();
+
+                    while (await _txIds.Reader.WaitToReadAsync(cancellationToken))
+                    {
+                        while (_txIds.Reader.TryRead(out TxId txId))
+                        {
+                            txIds.Add(txId);
+                        }
+                    }
+
+                    _logger.Debug(
+                        "Start to run _txFetcher from {Peer}. (count: {Count})",
+                        _peer,
+                        txIds.Count);
+                    var stopWatch = new Stopwatch();
+                    stopWatch.Start();
+                    var txs = new HashSet<Transaction<TAction>>(
+                        await _txFetcher(
+                                _peer,
+                                txIds,
+                                cancellationToken)
+                            .ToListAsync(cancellationToken)
+                            .AsTask());
+                    _logger.Debug(
+                        "End of _txFetcher from {Peer}. (received: {Count}); " +
+                        "Time taken: {Elapsed}",
+                        _peer,
+                        txs.Count,
+                        stopWatch.Elapsed);
+
+                    return txs;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "An error occurred during {FName} from {Peer}.",
+                        nameof(RequestAsync),
+                        _peer);
+                    throw;
+                }
+                finally
+                {
+                    _logger.Debug(
+                        "End of {FName} from {Peer}.",
+                        nameof(RequestAsync),
+                        _peer);
+                }
             }
         }
     }

@@ -457,7 +457,8 @@ namespace Libplanet.Net
                 seedPeers: Options.BootstrapOptions.SeedPeers,
                 dialTimeout: Options.BootstrapOptions.DialTimeout,
                 searchDepth: Options.BootstrapOptions.SearchDepth,
-                cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -489,7 +490,7 @@ namespace Libplanet.Net
                 seedPeers,
                 dialTimeout,
                 searchDepth,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             if (!Transport.Running)
             {
@@ -761,7 +762,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        public async Task AddPeersAsync(
+        public Task AddPeersAsync(
             IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
@@ -776,7 +777,7 @@ namespace Libplanet.Net
                 cancellationToken = _cancellationToken;
             }
 
-            await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
+            return PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
@@ -813,7 +814,7 @@ namespace Libplanet.Net
                 request,
                 timeout: transportTimeout,
                 cancellationToken: cancellationToken
-            );
+            ).ConfigureAwait(false);
 
             if (parsedMessage is BlockHashesMsg blockHashes)
             {
@@ -884,7 +885,7 @@ namespace Libplanet.Net
                 ((hashCount - 1) / request.ChunkSize) + 1,
                 false,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
 
             _logger.Debug("Received replies from {Peer}.", peer);
             int count = 0;
@@ -893,7 +894,7 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (message is Messages.BlocksMsg blockMessage)
+                if (message is BlocksMsg blockMessage)
                 {
                     List<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
@@ -953,7 +954,7 @@ namespace Libplanet.Net
                 txCount,
                 true,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
 
             foreach (Message message in replies)
             {
