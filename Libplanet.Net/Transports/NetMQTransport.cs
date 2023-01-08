@@ -33,6 +33,7 @@ namespace Libplanet.Net.Transports
         private readonly NetMQMessageCodec _messageCodec;
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
+        private readonly AsyncManualResetEvent _runningEvent;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
 
@@ -44,8 +45,6 @@ namespace Libplanet.Net.Transports
 
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
-
-        private TaskCompletionSource<object> _runningEvent;
 
         // Used only for logging.
         private long _requestCount;
@@ -97,8 +96,6 @@ namespace Libplanet.Net.Transports
                     $"Swarm requires either {nameof(host)} or {nameof(iceServers)}.");
             }
 
-            Running = false;
-
             _socketCount = 0;
             _privateKey = privateKey;
             _host = host;
@@ -138,6 +135,7 @@ namespace Libplanet.Net.Transports
                 TaskScheduler.Default
             );
 
+            _runningEvent = new AsyncManualResetEvent();
             ProcessMessageHandler = new AsyncDelegate<Message>();
         }
 
@@ -153,24 +151,7 @@ namespace Libplanet.Net.Transports
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
         /// <inheritdoc/>
-        public bool Running
-        {
-            get => _runningEvent.Task.Status == TaskStatus.RanToCompletion;
-
-            private set
-            {
-                if (value)
-                {
-                    _runningEvent.TrySetResult(null);
-                }
-                else
-                {
-                    _runningEvent = new TaskCompletionSource<object>(
-                        TaskCreationOptions.RunContinuationsAsynchronously
-                    );
-                }
-            }
-        }
+        public bool Running => _routerPoller?.IsRunning ?? false;
 
         /// <summary>
         /// Creates an initialized <see cref="NetMQTransport"/> instance.
@@ -242,8 +223,15 @@ namespace Libplanet.Net.Transports
             _replyQueue.ReceiveReady += DoReply;
 
             Task pollerTask = RunPoller(_routerPoller);
+            new Task(async () =>
+            {
+                while (!_routerPoller.IsRunning)
+                {
+                    await Task.Yield();
+                }
 
-            Running = true;
+                _runningEvent.Set();
+            }).Start(_routerPoller);
 
             await pollerTask.ConfigureAwait(false);
         }
@@ -274,7 +262,7 @@ namespace Libplanet.Net.Transports
                 _replyQueue.Dispose();
 
                 _runtimeCancellationTokenSource.Cancel();
-                Running = false;
+                _runningEvent.Reset();
             }
         }
 
@@ -309,7 +297,7 @@ namespace Libplanet.Net.Transports
         }
 
         /// <inheritdoc/>
-        public Task WaitForRunningAsync() => _runningEvent.Task;
+        public Task WaitForRunningAsync() => _runningEvent.WaitAsync();
 
         /// <inheritdoc/>
         public async Task<Message> SendMessageAsync(
