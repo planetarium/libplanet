@@ -57,7 +57,7 @@ namespace Libplanet.Action
                 }
             }
 
-            if (lastStates?.GetValidatorSet() is { } validatorSet)
+            if (lastStates?.GetValidatorSet() is { } validatorSet && validatorSet.Validators.Any())
             {
                 totalDelta = totalDelta.SetItem(
                     validatorSetKey,
