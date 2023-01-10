@@ -15707,6 +15707,67 @@ references:
   commentId: T:Libplanet.Net.DifferentAppProtocolVersionEncountered
   fullName: Libplanet.Net.DifferentAppProtocolVersionEncountered
   nameWithType: DifferentAppProtocolVersionEncountered
+- uid: Libplanet.Net.HostOptions
+  name: HostOptions
+  href: api/Libplanet.Net.HostOptions.html
+  commentId: T:Libplanet.Net.HostOptions
+  fullName: Libplanet.Net.HostOptions
+  nameWithType: HostOptions
+- uid: Libplanet.Net.HostOptions.#ctor(System.Nullable{System.String},IEnumerable{Libplanet.Net.IceServer},System.Int32)
+  name: HostOptions(Nullable<String>, IEnumerable<IceServer>, Int32)
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions__ctor_System_Nullable_System_String__IEnumerable_Libplanet_Net_IceServer__System_Int32_
+  commentId: M:Libplanet.Net.HostOptions.#ctor(System.Nullable{System.String},IEnumerable{Libplanet.Net.IceServer},System.Int32)
+  name.vb: HostOptions(Nullable(Of String), IEnumerable(Of IceServer), Int32)
+  fullName: Libplanet.Net.HostOptions.HostOptions(System.Nullable<System.String>, IEnumerable<Libplanet.Net.IceServer>, System.Int32)
+  fullName.vb: Libplanet.Net.HostOptions.HostOptions(System.Nullable(Of System.String), IEnumerable(Of Libplanet.Net.IceServer), System.Int32)
+  nameWithType: HostOptions.HostOptions(Nullable<String>, IEnumerable<IceServer>, Int32)
+  nameWithType.vb: HostOptions.HostOptions(Nullable(Of String), IEnumerable(Of IceServer), Int32)
+- uid: Libplanet.Net.HostOptions.#ctor*
+  name: HostOptions
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions__ctor_
+  commentId: Overload:Libplanet.Net.HostOptions.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.HostOptions.HostOptions
+  nameWithType: HostOptions.HostOptions
+- uid: Libplanet.Net.HostOptions.Host
+  name: Host
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions_Host
+  commentId: P:Libplanet.Net.HostOptions.Host
+  fullName: Libplanet.Net.HostOptions.Host
+  nameWithType: HostOptions.Host
+- uid: Libplanet.Net.HostOptions.Host*
+  name: Host
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions_Host_
+  commentId: Overload:Libplanet.Net.HostOptions.Host
+  isSpec: "True"
+  fullName: Libplanet.Net.HostOptions.Host
+  nameWithType: HostOptions.Host
+- uid: Libplanet.Net.HostOptions.IceServers
+  name: IceServers
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions_IceServers
+  commentId: P:Libplanet.Net.HostOptions.IceServers
+  fullName: Libplanet.Net.HostOptions.IceServers
+  nameWithType: HostOptions.IceServers
+- uid: Libplanet.Net.HostOptions.IceServers*
+  name: IceServers
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions_IceServers_
+  commentId: Overload:Libplanet.Net.HostOptions.IceServers
+  isSpec: "True"
+  fullName: Libplanet.Net.HostOptions.IceServers
+  nameWithType: HostOptions.IceServers
+- uid: Libplanet.Net.HostOptions.Port
+  name: Port
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions_Port
+  commentId: P:Libplanet.Net.HostOptions.Port
+  fullName: Libplanet.Net.HostOptions.Port
+  nameWithType: HostOptions.Port
+- uid: Libplanet.Net.HostOptions.Port*
+  name: Port
+  href: api/Libplanet.Net.HostOptions.html#Libplanet_Net_HostOptions_Port_
+  commentId: Overload:Libplanet.Net.HostOptions.Port
+  isSpec: "True"
+  fullName: Libplanet.Net.HostOptions.Port
+  nameWithType: HostOptions.Port
 - uid: Libplanet.Net.IceServer
   name: IceServer
   href: api/Libplanet.Net.IceServer.html
@@ -17505,15 +17566,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T)
   nameWithType: Swarm<T>
   nameWithType.vb: Swarm(Of T)
-- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.SwarmOptions)
-  name: Swarm(BlockChain<T>, PrivateKey, AppProtocolVersionOptions, String, Nullable<Int32>, IEnumerable<IceServer>, SwarmOptions)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_SwarmOptions_
-  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.SwarmOptions)
-  name.vb: Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersionOptions, String, Nullable(Of Int32), IEnumerable(Of IceServer), SwarmOptions)
-  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.SwarmOptions)
-  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.SwarmOptions)
-  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, AppProtocolVersionOptions, String, Nullable<Int32>, IEnumerable<IceServer>, SwarmOptions)
-  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersionOptions, String, Nullable(Of Int32), IEnumerable(Of IceServer), SwarmOptions)
+- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.HostOptions,Libplanet.Net.SwarmOptions)
+  name: Swarm(BlockChain<T>, PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_Libplanet_Net_HostOptions_Libplanet_Net_SwarmOptions_
+  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.HostOptions,Libplanet.Net.SwarmOptions)
+  name.vb: Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
+  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, Libplanet.Net.HostOptions, Libplanet.Net.SwarmOptions)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, Libplanet.Net.HostOptions, Libplanet.Net.SwarmOptions)
+  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
+  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
 - uid: Libplanet.Net.Swarm`1.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_
@@ -18927,15 +18988,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage
   nameWithType: NetMQTransport.BroadcastMessage
-- uid: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},System.Nullable{TimeSpan})
-  name: Create(PrivateKey, AppProtocolVersionOptions, String, Nullable<Int32>, IEnumerable<IceServer>, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},System.Nullable{TimeSpan})
-  name.vb: Create(PrivateKey, AppProtocolVersionOptions, String, Nullable(Of Int32), IEnumerable(Of IceServer), Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), System.Nullable(Of TimeSpan))
-  nameWithType: NetMQTransport.Create(PrivateKey, AppProtocolVersionOptions, String, Nullable<Int32>, IEnumerable<IceServer>, Nullable<TimeSpan>)
-  nameWithType.vb: NetMQTransport.Create(PrivateKey, AppProtocolVersionOptions, String, Nullable(Of Int32), IEnumerable(Of IceServer), Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.HostOptions,System.Nullable{TimeSpan})
+  name: Create(PrivateKey, AppProtocolVersionOptions, HostOptions, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_Libplanet_Net_HostOptions_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.HostOptions,System.Nullable{TimeSpan})
+  name.vb: Create(PrivateKey, AppProtocolVersionOptions, HostOptions, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, Libplanet.Net.HostOptions, System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, Libplanet.Net.HostOptions, System.Nullable(Of TimeSpan))
+  nameWithType: NetMQTransport.Create(PrivateKey, AppProtocolVersionOptions, HostOptions, Nullable<TimeSpan>)
+  nameWithType.vb: NetMQTransport.Create(PrivateKey, AppProtocolVersionOptions, HostOptions, Nullable(Of TimeSpan))
 - uid: Libplanet.Net.Transports.NetMQTransport.Create*
   name: Create
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Create_

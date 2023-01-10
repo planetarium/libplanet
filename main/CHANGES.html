@@ -88,12 +88,15 @@ implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2664">
 <li><code>IActionTypeLoader.LoadAllActionTypes()</code>.</li>
 </ul>
 </li>
-<li>Changed <code>Swarm&lt;T&gt;()</code> and <code>NetMQTransport.Create()</code> to take
+<li>(Libplanet.Net) Removed <code>workers</code> parameter from <code>NetMQTransport.Create()</code>
+method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2690">#2690</a>]</li>
+<li>(Libplanet.Net) Changed <code>Swarm&lt;T&gt;()</code> and <code>NetMQTransport.Create()</code> to take
 <code>AppProtocolVersionOptions</code> as a combined parameter instead of taking
 <code>AppProtocolVersion</code>, <code>IImmutableSet&lt;PublicKey&gt;?</code>, and
 <code>DifferentAppProtocolVersionEncountered</code> separately.  [<a href="https://github.com/planetarium/libplanet/pull/2693">#2693</a>]</li>
-<li>(Libplanet.Net) Removed <code>workers</code> parameter from <code>NetMQTransport.Create()</code>
-method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2690">#2690</a>]</li>
+<li>(Libplanet.Net) Changed <code>Swarm&lt;T&gt;()</code> and <code>NetMQTransport.Create()</code> to take
+<code>HostOptions</code> as a combined parameter instead of taking
+<code>string?</code>, <code>IEnumerable&lt;IceServer&gt;?</code>, and <code>int?</code> separately.  [<a href="https://github.com/planetarium/libplanet/pull/2701">#2701</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -113,6 +116,7 @@ method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.
 </li>
 <li>Added <code>IActionTypeLoaderContext</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2653">#2653</a>]</li>
 <li>Added <code>AppProtocolVersionOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2693">#2693</a>]</li>
+<li>Added <code>HostOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2701">#2701</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
