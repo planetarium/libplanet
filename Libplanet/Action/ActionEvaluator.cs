@@ -32,7 +32,7 @@ namespace Libplanet.Action
         private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
-        private readonly IBlockChainStates<T> _blockChainStates;
+        private readonly IBlockChainStates _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
         private readonly IActionTypeLoader _actionTypeLoader;
@@ -42,7 +42,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
-        /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
@@ -53,7 +53,7 @@ namespace Libplanet.Action
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates<T> blockChainStates,
+            IBlockChainStates blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate)
@@ -75,11 +75,11 @@ namespace Libplanet.Action
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
-        /// <inheritdoc cref="ActionEvaluator{T}(PolicyBlockActionGetter, IBlockChainStates{T}, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
+        /// <inheritdoc cref="ActionEvaluator{T}(PolicyBlockActionGetter, IBlockChainStates, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
         /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates<T> blockChainStates,
+            IBlockChainStates blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate,
@@ -124,7 +124,6 @@ namespace Libplanet.Action
         /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="ActionEvaluation"/>s.</returns>
@@ -136,9 +135,7 @@ namespace Libplanet.Action
         /// the end.</para>
         /// </remarks>
         [Pure]
-        public IReadOnlyList<ActionEvaluation> Evaluate(
-            IPreEvaluationBlock block,
-            StateCompleterSet<T> stateCompleterSet)
+        public IReadOnlyList<ActionEvaluation> Evaluate(IPreEvaluationBlock block)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -154,8 +151,7 @@ namespace Libplanet.Action
                     !(_trieGetter is null) && block.PreviousHash is { } h
                     ? _trieGetter(h)
                     : null;
-                IAccountStateDelta previousStates =
-                    GetPreviousBlockOutputStates(block, stateCompleterSet);
+                IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
 
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
@@ -731,16 +727,14 @@ namespace Libplanet.Action
         /// <paramref name="blockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of block to reference.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
         /// <see cref="Block{T}"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader blockHeader,
-            StateCompleterSet<T> stateCompleterSet)
+            IPreEvaluationBlockHeader blockHeader)
         {
             var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
-                InitializeAccountGettersPair(blockHeader, stateCompleterSet);
+                InitializeAccountGettersPair(blockHeader);
             Address miner = blockHeader.Miner;
 
             return AccountStateDeltaImpl.ChooseVersion(
@@ -754,8 +748,7 @@ namespace Libplanet.Action
 
         private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
             InitializeAccountGettersPair(
-            IPreEvaluationBlockHeader blockHeader,
-            StateCompleterSet<T> stateCompleterSet)
+            IPreEvaluationBlockHeader blockHeader)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
@@ -766,20 +759,18 @@ namespace Libplanet.Action
             {
                 accountStateGetter = addresses => _blockChainStates.GetStates(
                     addresses,
-                    previousHash,
-                    stateCompleterSet.StateCompleter);
+                    previousHash
+                );
                 accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
                     address,
                     currency,
-                    previousHash,
-                    stateCompleterSet.FungibleAssetStateCompleter);
+                    previousHash
+                );
                 totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
                     currency,
-                    previousHash,
-                    stateCompleterSet.TotalSupplyStateCompleter);
-                validatorSetGetter = () => _blockChainStates.GetValidatorSet(
-                    previousHash,
-                    stateCompleterSet.ValidatorSetStateCompleter);
+                    previousHash
+                );
+                validatorSetGetter = () => _blockChainStates.GetValidatorSet(previousHash);
             }
             else
             {

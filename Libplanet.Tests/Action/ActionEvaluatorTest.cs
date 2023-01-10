@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     policyBlockActionGetter: _ => null,
-                    blockChainStates: NullChainStates<RandomAction>.Instance,
+                    blockChainStates: NullChainStates.Instance,
                     trieGetter: null,
                     genesisHash: null,
                     nativeTokenPredicate: _ => true);
@@ -96,14 +96,10 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(
-                    noStateRootBlock,
-                    StateCompleterSet<RandomAction>.Reject);
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
-                actionEvaluations = actionEvaluator.Evaluate(
-                    stateRootBlock,
-                    StateCompleterSet<RandomAction>.Reject);
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock);
                 generatedRandomNumbers.Add(
                     (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
             }
@@ -145,9 +141,7 @@ namespace Libplanet.Tests.Action
             Block<EvaluateTestAction> block = chain.ProposeBlock(miner);
             chain.Append(block, CreateBlockCommit(block));
 
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<EvaluateTestAction>.Recalculate);
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -181,9 +175,7 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             Block<ThrowException> block = chain.ProposeBlock(new PrivateKey());
             chain.Append(block, CreateBlockCommit(block));
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<ThrowException>.Recalculate);
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -252,9 +244,7 @@ namespace Libplanet.Tests.Action
                     previousStates: previousStates,
                     rehearsal: false).ToList());
             Assert.Throws<OutOfMemoryException>(
-                () => chain.ActionEvaluator.Evaluate(
-                    block: block,
-                    stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
+                () => chain.ActionEvaluator.Evaluate(block).ToList());
         }
 
         [Fact]
@@ -300,7 +290,7 @@ namespace Libplanet.Tests.Action
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockActionGetter: _ => null,
-                blockChainStates: NullChainStates<DumbAction>.Instance,
+                blockChainStates: NullChainStates.Instance,
                 trieGetter: null,
                 genesisHash: null,
                 nativeTokenPredicate: _ => true
@@ -597,7 +587,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockActionGetter: _ => null,
-                blockChainStates: NullChainStates<DumbAction>.Instance,
+                blockChainStates: NullChainStates.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true);
@@ -732,7 +722,7 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockActionGetter: _ => null,
-                blockChainStates: NullChainStates<ThrowException>.Instance,
+                blockChainStates: NullChainStates.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true);
@@ -899,7 +889,6 @@ namespace Libplanet.Tests.Action
                 txs,
                 miner: GenesisProposer.PublicKey
             ).Evaluate(GenesisProposer, chain);
-            var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 
             AccountStateGetter accountStateGetter =
                 ActionEvaluator<DumbAction>.NullAccountStateGetter;
@@ -927,18 +916,13 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            accountStateGetter = addresses => chain.GetStates(
-                addresses,
-                block.PreviousHash,
-                stateCompleterSet.StateCompleter);
+            accountStateGetter = addresses => chain.GetStates(addresses, block.PreviousHash);
             accountBalanceGetter =
                 (address, currency) => chain.GetBalance(
                     address,
                     currency,
-                    block.PreviousHash,
-                    stateCompleterSet.FungibleAssetStateCompleter);
-            totalSupplyGetter = currency => chain.GetTotalSupply(
-                currency, block.PreviousHash, stateCompleterSet.TotalSupplyStateCompleter);
+                    block.PreviousHash);
+            totalSupplyGetter = currency => chain.GetTotalSupply(currency, block.PreviousHash);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 accountStateGetter,
@@ -1138,9 +1122,7 @@ namespace Libplanet.Tests.Action
             var miner = new PrivateKey();
             Block<EvaluateTestAction> block = chain.ProposeBlock(miner);
             chain.Append(block, CreateBlockCommit(block));
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip,
-                StateCompleterSet<EvaluateTestAction>.Recalculate);
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
             Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
         }
 

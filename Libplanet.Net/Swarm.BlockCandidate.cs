@@ -96,8 +96,7 @@ namespace Libplanet.Net
                 );
                 renderSwap = BlockChain.Swap(
                     synced,
-                    render: true,
-                    stateCompleters: null);
+                    render: true);
                 _logger.Debug(
                     "Swapped chain {ChainIdA} with chain {ChainIdB}",
                     BlockChain.Id,

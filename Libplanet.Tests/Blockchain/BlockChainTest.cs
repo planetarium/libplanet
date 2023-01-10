@@ -487,7 +487,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.False(workspace.IsCanonical);
 
             // Both are canonical after swap.
-            _blockChain.Swap(workspace, false, null);
+            _blockChain.Swap(workspace, false);
             Assert.True(_blockChain.IsCanonical);
             Assert.True(workspace.IsCanonical);
         }
@@ -1293,64 +1293,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal("item0.0,item1.0", (Text)forked.GetState(_fx.Address1));
         }
 
-        [Fact]
-        public void GetStateWithRecalculation()
-        {
-            // Only chain[4] and chain[7] has stored states.
-            var fx = new MemoryStoreFixture(_policy.BlockAction);
-            (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
-                = MakeIncompleteBlockStates(fx.Store, fx.StateStore);
-            IStateStore stateStore = chain.StateStore;
-
-            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            IValue value = chain.GetState(
-                addresses[4],
-                chain[6].Hash,
-                StateCompleters<DumbAction>.Recalculate);
-            Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash));
-            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
-        }
-
-        [Fact]
-        public void GetStateWithComplementAll()
-        {
-            // Only chain[4] and chain[7] has stored states.
-            var fx = new MemoryStoreFixture(_policy.BlockAction);
-            (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
-                = MakeIncompleteBlockStates(fx.Store, fx.StateStore);
-            IStateStore stateStore = chain.StateStore;
-
-            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            IValue value = chain.GetState(
-                addresses[4],
-                chain[6].Hash,
-                StateCompleters<DumbAction>.ComplementAll);
-            Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash));
-            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
-        }
-
-        [Fact]
-        public void GetStateWithComplementLatest()
-        {
-            // Only chain[4] and chain[7] has stored states.
-            var fx = new MemoryStoreFixture(_policy.BlockAction);
-            (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
-                = MakeIncompleteBlockStates(fx.Store, fx.StateStore);
-            IStateStore stateStore = chain.StateStore;
-
-            Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            IValue value = chain.GetState(
-                addresses[4],
-                chain[6].Hash,
-                StateCompleters<DumbAction>.ComplementLatest);
-            Assert.False(stateStore.ContainsStateRoot(chain[2].StateRootHash));
-            Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
-        }
-
-        [Fact]
+        [SkippableFact]
         public void GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
@@ -1789,7 +1732,8 @@ namespace Libplanet.Tests.Blockchain
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 stateStore: new TrieStateStore(new MemoryKeyValueStore())
             );
-            var chainStates = new BlockChainStates<DumbAction>(store, stateStore);
+
+            var chainStates = new BlockChainStates(store, stateStore);
             var chain = BlockChain<DumbAction>.Create(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),

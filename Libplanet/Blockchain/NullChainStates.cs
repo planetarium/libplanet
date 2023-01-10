@@ -7,10 +7,9 @@ using Libplanet.Consensus;
 
 namespace Libplanet.Blockchain
 {
-    internal class NullChainStates<T> : IBlockChainStates<T>
-        where T : IAction, new()
+    internal class NullChainStates : IBlockChainStates
     {
-        public static readonly NullChainStates<T> Instance = new NullChainStates<T>();
+        public static readonly NullChainStates Instance = new NullChainStates();
 
         private NullChainStates()
         {
@@ -18,23 +17,20 @@ namespace Libplanet.Blockchain
 
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset,
-            StateCompleter<T> stateCompleter
+            BlockHash offset
         ) =>
             new IValue?[addresses.Count];
 
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset,
-            FungibleAssetStateCompleter<T> stateCompleter
+            BlockHash offset
         ) =>
             currency * 0;
 
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset,
-            TotalSupplyStateCompleter<T> stateCompleter
+            BlockHash offset
         )
         {
             if (!currency.TotalSupplyTrackable)
@@ -45,9 +41,7 @@ namespace Libplanet.Blockchain
             return currency * 0;
         }
 
-        public ValidatorSet GetValidatorSet(
-            BlockHash offset,
-            ValidatorSetStateCompleter<T> stateCompleter)
+        public ValidatorSet GetValidatorSet(BlockHash offset)
         {
             return new ValidatorSet();
         }
