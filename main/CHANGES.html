@@ -92,6 +92,8 @@ implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2664">
 <code>AppProtocolVersionOptions</code> as a combined parameter instead of taking
 <code>AppProtocolVersion</code>, <code>IImmutableSet&lt;PublicKey&gt;?</code>, and
 <code>DifferentAppProtocolVersionEncountered</code> separately.  [<a href="https://github.com/planetarium/libplanet/pull/2693">#2693</a>]</li>
+<li>(Libplanet.Net) Removed <code>workers</code> parameter from <code>NetMQTransport.Create()</code>
+method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2690">#2690</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -116,6 +118,11 @@ implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2664">
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0454">Version 0.45.4</h2>
+<p>Released on January 4, 2023.</p>
+<ul>
+<li>Ported changes from [Libplaent 0.44.7] release.  [<a href="https://github.com/planetarium/libplanet/pull/2684">#2684</a>]</li>
+</ul>
 <h2 id="version-0453">Version 0.45.3</h2>
 <p>Released on December 26, 2022.</p>
 <ul>
@@ -196,6 +203,14 @@ You should use <code>serve</code> command instead.  [<a href="https://github.com
 </ul>
 </li>
 <li>(Libplanet.Explorer) Added <code>schema</code> subcommand.  [<a href="https://github.com/planetarium/libplanet/pull/2563">#2563</a>]</li>
+</ul>
+<h2 id="version-0447">Version 0.44.7</h2>
+<p>Released on January 4, 2023.</p>
+<ul>
+<li>(Libplanet.Net) Fixed bugs where <code>NetMQTransport</code> hadn't worked expected
+when not many threads were available.  [<a href="https://github.com/planetarium/libplanet/pull/2684">#2684</a>]</li>
+<li>(Libplanet.Net) Fixed a bug where <code>NetMQTransport.ReplyMessageAsync()</code>
+hadn't worked properly.  [<a href="https://github.com/planetarium/libplanet/pull/2684">#2684</a>]</li>
 </ul>
 <h2 id="version-0446">Version 0.44.6</h2>
 <p>Released on December 26, 2022.</p>
