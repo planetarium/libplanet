@@ -1,9 +1,5 @@
 #nullable disable
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Transports;
 using NetMQ;
@@ -23,16 +19,12 @@ namespace Libplanet.Net.Tests.Transports
             TransportConstructor = (
                     privateKey,
                     appProtocolVersionOptions,
-                    host,
-                    listenPort,
-                    iceServers,
+                    hostOptions,
                     messageTimestampBuffer) =>
                 CreateNetMQTransport(
                     privateKey,
                     appProtocolVersionOptions,
-                    host,
-                    listenPort,
-                    iceServers,
+                    hostOptions,
                     messageTimestampBuffer);
 
             const string outputTemplate =
@@ -73,20 +65,10 @@ namespace Libplanet.Net.Tests.Transports
         private NetMQTransport CreateNetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            string host,
-            int listenPort,
-            IEnumerable<IceServer> iceServers,
-            TimeSpan? messageTimestampBuffer
-        )
+            HostOptions hostOptions,
+            TimeSpan? messageTimestampBuffer)
         {
             privateKey = privateKey ?? new PrivateKey();
-            var hostOptions = iceServers.Any()
-                ? new HostOptions(null, iceServers.ToImmutableList(), listenPort)
-                : new HostOptions(
-                    host ?? IPAddress.Loopback.ToString(),
-                    ImmutableList<IceServer>.Empty,
-                    listenPort);
-
             return NetMQTransport.Create(
                 privateKey,
                 appProtocolVersionOptions,

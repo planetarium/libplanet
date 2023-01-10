@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -25,8 +26,7 @@ namespace Libplanet.Net.Tests.Transports
 
         protected ILogger Logger { get; set; }
 
-        protected Func<PrivateKey, AppProtocolVersionOptions,
-            string, int, IEnumerable<IceServer>, TimeSpan?, ITransport>
+        protected Func<PrivateKey, AppProtocolVersionOptions, HostOptions, TimeSpan?, ITransport>
             TransportConstructor { get; set; }
 
         [SkippableFact(Timeout = Timeout)]
@@ -415,9 +415,7 @@ namespace Libplanet.Net.Tests.Transports
         private ITransport CreateTransport(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
-            string host = null,
-            int listenPort = 0,
-            IEnumerable<IceServer> iceServers = null,
+            HostOptions hostOptions = null,
             TimeSpan? messageTimestampBuffer = null
         )
         {
@@ -427,14 +425,11 @@ namespace Libplanet.Net.Tests.Transports
             }
 
             privateKey = privateKey ?? new PrivateKey();
-            host = host ?? IPAddress.Loopback.ToString();
-
             return TransportConstructor(
                 privateKey,
                 appProtocolVersionOptions ?? new AppProtocolVersionOptions(),
-                host,
-                listenPort,
-                iceServers ?? Enumerable.Empty<IceServer>(),
+                hostOptions ?? new HostOptions(
+                    IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 0),
                 messageTimestampBuffer);
         }
 

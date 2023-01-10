@@ -289,9 +289,13 @@ namespace Libplanet.Net.Tests
         public async Task MaintainStaticPeers()
         {
             var keyA = new PrivateKey();
+            var hostOptionsA = new HostOptions(
+                IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 20_000);
+            var hostOptionsB = new HostOptions(
+                IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 20_001);
 
-            Swarm<DumbAction> swarmA = CreateSwarm(keyA, listenPort: 20000);
-            Swarm<DumbAction> swarmB = CreateSwarm(listenPort: 20001);
+            Swarm<DumbAction> swarmA = CreateSwarm(keyA, hostOptions: hostOptionsA);
+            Swarm<DumbAction> swarmB = CreateSwarm(hostOptions: hostOptionsB);
             await StartAsync(swarmA);
             await StartAsync(swarmB);
 
@@ -330,7 +334,7 @@ namespace Libplanet.Net.Tests
             Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
             Assert.Contains(swarmB.AsPeer, swarm.Peers);
 
-            Swarm<DumbAction> swarmC = CreateSwarm(keyA, listenPort: 20000);
+            Swarm<DumbAction> swarmC = CreateSwarm(keyA, hostOptions: hostOptionsA);
             await StartAsync(swarmC);
             await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
             await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
@@ -548,7 +552,8 @@ namespace Libplanet.Net.Tests
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
-            using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
+            var hostOptions = new HostOptions("1.2.3.4", ImmutableList<IceServer>.Empty, 5678);
+            using (Swarm<DumbAction> s = CreateSwarm(hostOptions: hostOptions))
             {
                 Assert.Equal(expected, s.EndPoint);
                 Assert.Equal(expected, s.AsPeer?.EndPoint);
@@ -589,9 +594,11 @@ namespace Libplanet.Net.Tests
         public async Task ExchangeWithIceServer()
         {
             var iceServers = FactOnlyTurnAvailableAttribute.GetIceServers();
-            var seed = CreateSwarm(host: "localhost");
-            var swarmA = CreateSwarm(iceServers: iceServers);
-            var swarmB = CreateSwarm(iceServers: iceServers);
+            var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
+            var swarmHostOptions = new HostOptions(null, iceServers.ToImmutableList(), 0);
+            var seed = CreateSwarm(hostOptions: seedHostOptions);
+            var swarmA = CreateSwarm(hostOptions: swarmHostOptions);
+            var swarmB = CreateSwarm(hostOptions: swarmHostOptions);
 
             try
             {
@@ -654,8 +661,10 @@ namespace Libplanet.Net.Tests
             var proxyTask = TurnProxy(port, turnUrl, cts.Token);
 
             var seedKey = new PrivateKey();
-            var seed = CreateSwarm(seedKey, host: "localhost");
-            var swarmA = CreateSwarm(iceServers: iceServers);
+            var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
+            var swarmHostOptions = new HostOptions(null, iceServers.ToImmutableList(), 0);
+            var seed = CreateSwarm(seedKey, hostOptions: seedHostOptions);
+            var swarmA = CreateSwarm(hostOptions: swarmHostOptions);
 
             async Task RefreshTableAsync(CancellationToken cancellationToken)
             {
