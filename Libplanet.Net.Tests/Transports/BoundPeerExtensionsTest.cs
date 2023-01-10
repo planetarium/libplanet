@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections.Immutable;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -33,9 +34,12 @@ namespace Libplanet.Net.Tests.Transports
             var swarmKey = new PrivateKey();
             var apv = AppProtocolVersion.Sign(apvKey, 1);
             var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
-
             string host = IPAddress.Loopback.ToString();
             int port = FreeTcpPort();
+            var hostOptions = new HostOptions(
+                IPAddress.Loopback.ToString(),
+                ImmutableList<IceServer>.Empty,
+                port);
 
             var option = new SwarmOptions();
 
@@ -43,8 +47,7 @@ namespace Libplanet.Net.Tests.Transports
                 blockchain,
                 swarmKey,
                 apvOptions,
-                host: host,
-                listenPort: port,
+                hostOptions,
                 options: option))
             {
                 var peer = new BoundPeer(swarmKey.PublicKey, new DnsEndPoint(host, port));

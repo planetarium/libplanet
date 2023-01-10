@@ -53,21 +53,14 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="Swarm{T}"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
+            HostOptions hostOptions,
             SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -97,10 +90,6 @@ namespace Libplanet.Net
             // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
             // fixed. for context, refer to
             // https://github.com/planetarium/libplanet/discussions/2303.
-            var hostOptions = new HostOptions(
-                host,
-                iceServers?.ToImmutableList() ?? ImmutableList<IceServer>.Empty,
-                listenPort ?? 0);
             Transport = NetMQTransport.Create(
                 _privateKey,
                 _appProtocolVersionOptions,

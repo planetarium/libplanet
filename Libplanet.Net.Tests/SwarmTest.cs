@@ -533,23 +533,15 @@ namespace Libplanet.Net.Tests
             var key = new PrivateKey();
             var apv = AppProtocolVersion.Sign(key, 1);
             var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
+            var hostOptions = new HostOptions(
+                IPAddress.Loopback.ToString(),
+                ImmutableList<IceServer>.Empty,
+                0);
 
             Assert.Throws<ArgumentNullException>(() =>
-                new Swarm<DumbAction>(null, key, apvOptions));
+                new Swarm<DumbAction>(null, key, apvOptions, hostOptions));
             Assert.Throws<ArgumentNullException>(() =>
-                new Swarm<DumbAction>(blockchain, null, apvOptions));
-
-            // Swarm<DumbAction> needs host or iceServers.
-            Assert.Throws<ArgumentException>(() =>
-                new Swarm<DumbAction>(blockchain, key, apvOptions));
-
-            // Swarm<DumbAction> needs host or iceServers.
-            Assert.Throws<ArgumentException>(() =>
-                new Swarm<DumbAction>(
-                    blockchain,
-                    key,
-                    apvOptions,
-                    iceServers: new IceServer[] { }));
+                new Swarm<DumbAction>(blockchain, null, apvOptions, hostOptions));
         }
 
         [Fact(Timeout = Timeout)]

@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -115,14 +116,21 @@ namespace Libplanet.Net.Tests
 
             options ??= new SwarmOptions();
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
+            var hostOptions = iceServers is null
+                ? new HostOptions(
+                    host ?? IPAddress.Loopback.ToString(),
+                    ImmutableList<IceServer>.Empty,
+                    listenPort ?? 0)
+                : new HostOptions(
+                    null,
+                    iceServers.ToImmutableList(),
+                    listenPort ?? 0);
 
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
                 appProtocolVersionOptions,
-                host,
-                listenPort,
-                iceServers,
+                hostOptions,
                 options);
             _finalizers.Add(async () =>
             {

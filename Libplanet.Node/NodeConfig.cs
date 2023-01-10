@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
@@ -109,14 +110,16 @@ namespace Libplanet.Node
                 DifferentAppProtocolVersionEncountered =
                     NetworkConfig.DifferentAppProtocolVersionEncountered,
             };
+            var hostOptions = new HostOptions(
+                SwarmConfig.InitConfig.Host,
+                SwarmConfig.InitConfig.IceServers.ToImmutableList(),
+                SwarmConfig.InitConfig.Port ?? 0);
 
             return new Swarm<T>(
                 privateKey: _privateKey,
                 blockChain: blockChain,
                 appProtocolVersionOptions: apvOptions,
-                host: SwarmConfig.InitConfig.Host,
-                listenPort: SwarmConfig.InitConfig.Port,
-                iceServers: SwarmConfig.InitConfig.IceServers,
+                hostOptions: hostOptions,
                 options: SwarmConfig.ToSwarmOptions());
         }
     }
