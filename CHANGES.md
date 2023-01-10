@@ -61,6 +61,10 @@ To be released.
 
 ### CLI tools
 
+ -  Fixed a bug `planet store` had not recognized RocksDB store
+    (`rocksdb+file:`).  [[#2699]]
+ -  Added `planet store chain-ids` subcommand.  [[#2699]]
+
 [#2474]: https://github.com/planetarium/libplanet/discussions/2474
 [#2505]: https://github.com/planetarium/libplanet/pull/2505
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
@@ -70,6 +74,7 @@ To be released.
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
 [#2690]: https://github.com/planetarium/libplanet/pull/2690
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
+[#2699]: https://github.com/planetarium/libplanet/pull/2699
 
 
 Version 0.45.4

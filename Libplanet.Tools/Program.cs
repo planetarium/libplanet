@@ -20,6 +20,9 @@ namespace Libplanet.Tools
             "planetarium",
             "cli.json");
 
+        // Workaround for linking with Libplanet.RocksDBStore.
+        private static readonly Type _rocksdb = typeof(Libplanet.RocksDBStore.RocksDBStore);
+
         public static Task Main(string[] args) =>
             CoconaLiteApp.CreateHostBuilder()
                 .ConfigureServices(services =>
