@@ -97,12 +97,14 @@ namespace Libplanet.Net
             // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
             // fixed. for context, refer to
             // https://github.com/planetarium/libplanet/discussions/2303.
+            var hostOptions = new HostOptions(
+                host,
+                iceServers?.ToImmutableList() ?? ImmutableList<IceServer>.Empty,
+                listenPort ?? 0);
             Transport = NetMQTransport.Create(
                 _privateKey,
                 _appProtocolVersionOptions,
-                host,
-                listenPort,
-                iceServers ?? new List<IceServer>(),
+                hostOptions,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);

@@ -26,7 +26,7 @@ namespace Libplanet.Net.Tests.Transports
         protected ILogger Logger { get; set; }
 
         protected Func<PrivateKey, AppProtocolVersionOptions,
-            string, int?, IEnumerable<IceServer>, TimeSpan?, ITransport>
+            string, int, IEnumerable<IceServer>, TimeSpan?, ITransport>
             TransportConstructor { get; set; }
 
         [SkippableFact(Timeout = Timeout)]
@@ -416,7 +416,7 @@ namespace Libplanet.Net.Tests.Transports
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             string host = null,
-            int? listenPort = null,
+            int listenPort = 0,
             IEnumerable<IceServer> iceServers = null,
             TimeSpan? messageTimestampBuffer = null
         )
