@@ -12286,6 +12286,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.BuildIndexTxBlock
   nameWithType: StoreCommand.BuildIndexTxBlock
+- uid: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String)
+  name: ChainIds(String)
+  href: api/Libplanet.Extensions.Cocona.Commands.StoreCommand.html#Libplanet_Extensions_Cocona_Commands_StoreCommand_ChainIds_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String)
+  fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String)
+  nameWithType: StoreCommand.ChainIds(String)
+- uid: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds*
+  name: ChainIds
+  href: api/Libplanet.Extensions.Cocona.Commands.StoreCommand.html#Libplanet_Extensions_Cocona_Commands_StoreCommand_ChainIds_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds
+  nameWithType: StoreCommand.ChainIds
 - uid: Libplanet.Extensions.Cocona.Commands.StoreCommand.MigrateIndex(System.String)
   name: MigrateIndex(String)
   href: api/Libplanet.Extensions.Cocona.Commands.StoreCommand.html#Libplanet_Extensions_Cocona_Commands_StoreCommand_MigrateIndex_System_String_
