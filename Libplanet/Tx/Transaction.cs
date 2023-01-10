@@ -512,7 +512,7 @@ namespace Libplanet.Tx
                 UpdatedAddresses = updatedAddresses ?? ImmutableHashSet<Address>.Empty,
                 Timestamp = timestamp ?? DateTimeOffset.UtcNow,
             };
-            var evalUpdatedAddresses = ActionEvaluator<T>.GetUpdatedAddresses(
+            var evalUpdatedAddresses = ActionEvaluator.GetUpdatedAddresses(
                 new Transaction<T>(metadata, systemAction, Array.Empty<byte>()));
             metadata.UpdatedAddresses = metadata.UpdatedAddresses.Union(evalUpdatedAddresses);
 
@@ -621,7 +621,7 @@ namespace Libplanet.Tx
             };
             if (!actionsArray.IsEmpty)
             {
-                var evalUpdatedAddresses = ActionEvaluator<T>.GetUpdatedAddresses(
+                var evalUpdatedAddresses = ActionEvaluator.GetUpdatedAddresses(
                     new Transaction<T>(metadata, actionsArray, Array.Empty<byte>()));
                 metadata.UpdatedAddresses = metadata.UpdatedAddresses.Union(evalUpdatedAddresses);
             }

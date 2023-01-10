@@ -246,12 +246,13 @@ namespace Libplanet.Blocks
                 );
             }
 
-            var actionEvaluator = new ActionEvaluator<T>(
+            var actionEvaluator = new ActionEvaluator(
                 _ => blockAction,
                 blockChainStates: NullChainStates.Instance,
                 trieGetter: null,
                 genesisHash: null,
-                nativeTokenPredicate: nativeTokenPredicate
+                nativeTokenPredicate: nativeTokenPredicate,
+                actionTypeLoader: StaticActionTypeLoader.Create<T>()
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations = actionEvaluator.Evaluate(this);
             statesDelta = actionEvaluations.GetTotalDelta(

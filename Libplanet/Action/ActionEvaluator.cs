@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Reflection;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.Sys;
@@ -24,10 +23,7 @@ namespace Libplanet.Action
     /// <summary>
     /// Class responsible for handling of <see cref="IAction"/> evaluations.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// the <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public class ActionEvaluator<T>
-        where T : IAction, new()
+    public class ActionEvaluator
     {
         private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
@@ -37,8 +33,10 @@ namespace Libplanet.Action
         private readonly Predicate<Currency> _nativeTokenPredicate;
         private readonly IActionTypeLoader _actionTypeLoader;
 
+#pragma warning disable MEN002
+#pragma warning disable CS1573
         /// <summary>
-        /// Creates a new <see cref="ActionEvaluator{T}"/>.
+        /// Creates a new <see cref="ActionEvaluator"/>.
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
@@ -51,31 +49,6 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        public ActionEvaluator(
-            PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates blockChainStates,
-            Func<BlockHash, ITrie>? trieGetter,
-            BlockHash? genesisHash,
-            Predicate<Currency> nativeTokenPredicate)
-        : this(
-            policyBlockActionGetter,
-            blockChainStates,
-            trieGetter,
-            genesisHash,
-            nativeTokenPredicate,
-            new StaticActionTypeLoader(
-                Assembly.GetEntryAssembly() is Assembly entryAssembly
-                    ? new[] { typeof(T).Assembly, entryAssembly }
-                    : new[] { typeof(T).Assembly },
-                typeof(T)
-            )
-        )
-        {
-        }
-
-#pragma warning disable MEN002
-#pragma warning disable CS1573
-        /// <inheritdoc cref="ActionEvaluator{T}(PolicyBlockActionGetter, IBlockChainStates, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
         /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
@@ -88,8 +61,8 @@ namespace Libplanet.Action
 #pragma warning restore MEN002
 #pragma warning restore CS1573
         {
-            _logger = Log.ForContext<ActionEvaluator<T>>()
-                .ForContext("Source", nameof(ActionEvaluator<T>));
+            _logger = Log.ForContext<ActionEvaluator>()
+                .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
@@ -229,14 +202,23 @@ namespace Libplanet.Action
         /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
         /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </returns>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// the <see cref="Transaction{T}"/>'s type parameter.</typeparam>
         /// <remarks>
         /// A mock evaluation is performed on <paramref name="tx"/> using a mock
         /// <see cref="Block{T}"/> for its evaluation context and a mock
         /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
         /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </remarks>
-        internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
+        internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction<T> tx)
+            where T : IAction, new()
         {
+            // FIXME this static method(and related APIs) should be removed since it doesn't
+            // compatible with action type loader.
+            // see also:
+            // - https://github.com/planetarium/libplanet/issues/368
+            // - https://github.com/planetarium/libplanet/discussions/2440
+            // - https://github.com/planetarium/libplanet/pull/2703#discussion_r1130315141
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
@@ -616,7 +598,7 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy when
-        /// this <see cref="ActionEvaluator{T}"/> was instantiated for a given
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
@@ -806,12 +788,17 @@ namespace Libplanet.Action
                         action = (IAction)Activator.CreateInstance(actionType)!;
                         action.LoadPlainValue(pv["values"]);
                     }
+                    else if (_actionTypeLoader is StaticActionTypeLoader loader &&
+                             loader.BaseType is { } baseActionType)
+                    {
+                        action = (IAction)Activator.CreateInstance(baseActionType)!;
+                        action.LoadPlainValue(rawAction);
+                    }
                     else
                     {
-                        // FIXME: Just fallback, do we really need non-polymorphic action?
-                        //        is it possible?
-                        action = new T();
-                        action.LoadPlainValue(rawAction);
+                        throw new InvalidOperationException(
+                            $"Failed to instantiate given action: {rawAction}"
+                        );
                     }
 
                     yield return action;

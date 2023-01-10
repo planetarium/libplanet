@@ -137,13 +137,14 @@ namespace Libplanet.Blockchain
                 genesisBlock,
                 renderers,
                 blockChainStates,
-                new ActionEvaluator<T>(
+                new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     trieGetter: hash =>
                         stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: genesisBlock.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionTypeLoader.Create<T>()
                 )
             )
         {
@@ -152,7 +153,7 @@ namespace Libplanet.Blockchain
 #pragma warning disable MEN002
 #pragma warning disable CS1573
         /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}}, IBlockChainStates)" />
-        /// <param name="actionEvaluator">The <see cref="ActionEvaluator{T}" /> implementation to calculate next states when append new blocks.</param>
+        /// <param name="actionEvaluator">The <see cref="ActionEvaluator" /> implementation to calculate next states when append new blocks.</param>
         public BlockChain(
             IBlockPolicy<T> policy,
             IStagePolicy<T> stagePolicy,
@@ -161,7 +162,7 @@ namespace Libplanet.Blockchain
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
             IBlockChainStates blockChainStates,
-            ActionEvaluator<T> actionEvaluator
+            ActionEvaluator actionEvaluator
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
@@ -192,7 +193,7 @@ namespace Libplanet.Blockchain
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
             IBlockChainStates blockChainStates,
-            ActionEvaluator<T> actionEvaluator)
+            ActionEvaluator actionEvaluator)
         {
             if (store is null)
             {
@@ -318,7 +319,7 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore { get; }
 
-        internal ActionEvaluator<T> ActionEvaluator { get; }
+        internal ActionEvaluator ActionEvaluator { get; }
 
         /// <summary>
         /// Whether the instance is canonical or not.
@@ -471,13 +472,15 @@ namespace Libplanet.Blockchain
             stateStore);
 
             var blockChainStates = new BlockChainStates(store, stateStore);
-            var actionEvaluator = new ActionEvaluator<T>(
+            var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 blockChainStates: blockChainStates,
                 trieGetter: hash => stateStore.GetStateRoot(
                     store.GetBlockDigest(hash)?.StateRootHash),
                 genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: policy.NativeTokens.Contains);
+                nativeTokenPredicate: policy.NativeTokens.Contains,
+                actionTypeLoader: StaticActionTypeLoader.Create<T>()
+            );
 
             return new BlockChain<T>(
                 policy,

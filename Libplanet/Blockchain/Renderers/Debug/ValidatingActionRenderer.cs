@@ -155,7 +155,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
                 IEnumerable<Transaction<T>> transactions = txIds.Select(store.GetTransaction<T>);
 
-                transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
+                transactions = ActionEvaluator.OrderTxsForEvaluation(
                     header.ProtocolVersion,
                     transactions,
                     header.PreEvaluationHash.ByteArray
@@ -180,7 +180,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             while (!header.Hash.Equals(branchpoint.Hash))
             {
                 IEnumerable<Transaction<T>> transactions = txIds.Select(store.GetTransaction<T>);
-                transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
+                transactions = ActionEvaluator.OrderTxsForEvaluation(
                     header.ProtocolVersion,
                     transactions,
                     header.PreEvaluationHash.ByteArray
