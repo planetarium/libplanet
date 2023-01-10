@@ -14,6 +14,8 @@ namespace Libplanet.Net.Tests.Transports
     [Collection("NetMQConfiguration")]
     public class NetMQTransportTest : TransportTest, IDisposable
     {
+        private bool _disposed;
+
         public NetMQTransportTest(ITestOutputHelper testOutputHelper)
         {
             TransportConstructor = (
@@ -26,7 +28,6 @@ namespace Libplanet.Net.Tests.Transports
                 CreateNetMQTransport(
                     privateKey,
                     appProtocolVersionOptions,
-                    50,
                     host,
                     listenPort,
                     iceServers,
@@ -43,15 +44,33 @@ namespace Libplanet.Net.Tests.Transports
             Logger = Log.ForContext<NetMQTransportTest>();
         }
 
+        ~NetMQTransportTest()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            NetMQConfig.Cleanup(false);
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    NetMQConfig.Cleanup(false);
+                }
+
+                _disposed = true;
+            }
         }
 
         private NetMQTransport CreateNetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
@@ -65,7 +84,6 @@ namespace Libplanet.Net.Tests.Transports
             return NetMQTransport.Create(
                 privateKey,
                 appProtocolVersionOptions,
-                workers,
                 host,
                 listenPort,
                 iceServers,

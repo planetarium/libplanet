@@ -22,7 +22,6 @@ namespace Libplanet.Explorer.Executable
             int blockIntervalMilliseconds,
             long minimumDifficulty,
             int difficultyBoundDivisor,
-            int workers,
             string appProtocolVersionToken,
             string mysqlServer,
             uint? mysqlPort,
@@ -45,7 +44,6 @@ namespace Libplanet.Explorer.Executable
             BlockIntervalMilliseconds = blockIntervalMilliseconds;
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
-            Workers = workers;
             AppProtocolVersionToken = appProtocolVersionToken;
             MySQLServer = mysqlServer;
             MySQLPort = mysqlPort;
@@ -73,8 +71,6 @@ namespace Libplanet.Explorer.Executable
         public long MinimumDifficulty { get; set; }
 
         public int DifficultyBoundDivisor { get; set; }
-
-        public int Workers { get; set; }
 
         public string AppProtocolVersionToken { get; set; }
 

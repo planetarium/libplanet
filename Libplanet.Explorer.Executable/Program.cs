@@ -126,11 +126,6 @@ consecutive blocks.")]
                 Description = "A bound divisor to determine precision of block difficulties.")]
             int difficultyBoundDivisor = 128,
             [Option(
-                "workers",
-                new[] { 'W' },
-                Description = "The number of swarm workers.")]
-            int workers = 100,
-            [Option(
                 "app-protocol-version",
                 new[] { 'V' },
                 Description = "An app protocol version token.")]
@@ -192,7 +187,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 blockIntervalMilliseconds,
                 minimumDifficulty,
                 difficultyBoundDivisor,
-                workers,
                 appProtocolVersionToken,
                 mysqlServer,
                 mysqlPort,
@@ -293,7 +287,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         blockChain,
                         privateKey,
                         apvOptions,
-                        workers: options.Workers,
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions
                     );

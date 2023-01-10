@@ -120,7 +120,6 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 privateKey ?? new PrivateKey(),
                 appProtocolVersionOptions,
-                5,
                 host,
                 listenPort,
                 iceServers,
