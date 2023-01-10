@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using Cocona;
 using Libplanet.Action;
@@ -15,6 +16,24 @@ namespace Libplanet.Extensions.Cocona.Commands
         private const string StoreArgumentDescription =
             "The URI denotes the type and path of concrete class for " + nameof(IStore) + "."
             + "<store-type>://<store-path> (e.g., rocksdb+file:///path/to/store)";
+
+        [Command(Description = "List all chain IDs.")]
+        public void ChainIds(
+            [Argument("STORE", Description = StoreArgumentDescription)]
+            string storeUri
+        )
+        {
+            IStore store = Utils.LoadStoreFromUri(storeUri);
+            Guid? canon = store.GetCanonicalChainId();
+            Utils.PrintTable(
+                ("Chain ID", "Height", "Canon?"),
+                store.ListChainIds().Select(id => (
+                    id.ToString(),
+                    store.CountIndex(id).ToString(CultureInfo.InvariantCulture),
+                    id == canon ? "*" : string.Empty)
+                )
+            );
+        }
 
         [Command(Description = "Build an index for transaction id and block hash.")]
         public void BuildIndexTxBlock(
