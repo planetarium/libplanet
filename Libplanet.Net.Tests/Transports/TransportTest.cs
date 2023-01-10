@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -429,7 +428,7 @@ namespace Libplanet.Net.Tests.Transports
                 privateKey,
                 appProtocolVersionOptions ?? new AppProtocolVersionOptions(),
                 hostOptions ?? new HostOptions(
-                    IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 0),
+                    IPAddress.Loopback.ToString(), new IceServer[] { }, 0),
                 messageTimestampBuffer);
         }
 

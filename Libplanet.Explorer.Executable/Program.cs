@@ -283,10 +283,7 @@ If omitted (default) explorer only the local blockchain store.")]
                             : default(AppProtocolVersion),
                     };
 
-                    var hostOptions = new HostOptions(
-                        null,
-                        new[] { options.IceServer }.ToImmutableList(),
-                        0);
+                    var hostOptions = new HostOptions(null, new[] { options.IceServer });
 
                     swarm = new Swarm<NullAction>(
                         blockChain,

@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -85,8 +84,7 @@ namespace Libplanet.Net.Tests
                 genesisBlock: genesis
             );
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
-            hostOptions ??= new HostOptions(
-                IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 0);
+            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
             return CreateSwarm(
                 blockchain,
@@ -105,8 +103,7 @@ namespace Libplanet.Net.Tests
             where T : IAction, new()
         {
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
-            hostOptions ??= new HostOptions(
-                IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 0);
+            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
             options ??= new SwarmOptions();
             var swarm = new Swarm<T>(
                 blockChain,

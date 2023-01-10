@@ -51,7 +51,7 @@ namespace Libplanet.Node.Tests
         [MemberData(nameof(SerializationData))]
         public void Serialization(
             string host,
-            int? port,
+            int port,
             IEnumerable<IceServer> iceServers,
             IEnumerable<BoundPeer> seedPeers,
             bool render,

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace Libplanet.Net
     {
         public HostOptions(
             string? host,
-            ImmutableList<IceServer> iceServers,
+            IEnumerable<IceServer> iceServers,
             int port = 0)
         {
             if (port < 0)
@@ -25,7 +26,7 @@ namespace Libplanet.Net
             }
 
             Host = host;
-            IceServers = iceServers;
+            IceServers = iceServers.ToImmutableList();
             Port = port;
         }
 
@@ -42,7 +43,7 @@ namespace Libplanet.Net
         /// servers to use for TURN/STUN to traverse NAT.  This is empty when <see cref="Host"/>
         /// is provided.
         /// </summary>
-        public ImmutableList<IceServer> IceServers { get; }
+        public IReadOnlyList<IceServer> IceServers { get; }
 
         /// <summary>
         /// The port number to use for the host.  If set to zero, a free port will be assigned.

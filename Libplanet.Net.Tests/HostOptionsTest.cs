@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using Xunit;
 
 namespace Libplanet.Net.Tests
@@ -9,12 +8,11 @@ namespace Libplanet.Net.Tests
         [Fact]
         public void Constructor()
         {
-            var iceServers = ImmutableList<IceServer>.Empty
-                .Add(new IceServer("turn://user:info@some.path"));
             Assert.Throws<ArgumentException>(
-                () => new HostOptions(null, ImmutableList<IceServer>.Empty, 0));
+                () => new HostOptions(null, new IceServer[] { }));
             Assert.Throws<ArgumentException>(
-                () => new HostOptions("localhost", iceServers, 0));
+                () => new HostOptions(
+                    "localhost", new IceServer[] { new IceServer("turn://user:info@some.path") }));
         }
     }
 }

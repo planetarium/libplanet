@@ -290,9 +290,9 @@ namespace Libplanet.Net.Tests
         {
             var keyA = new PrivateKey();
             var hostOptionsA = new HostOptions(
-                IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 20_000);
+                IPAddress.Loopback.ToString(), new IceServer[] { }, 20_000);
             var hostOptionsB = new HostOptions(
-                IPAddress.Loopback.ToString(), ImmutableList<IceServer>.Empty, 20_001);
+                IPAddress.Loopback.ToString(), new IceServer[] { }, 20_001);
 
             Swarm<DumbAction> swarmA = CreateSwarm(keyA, hostOptions: hostOptionsA);
             Swarm<DumbAction> swarmB = CreateSwarm(hostOptions: hostOptionsB);
@@ -538,9 +538,7 @@ namespace Libplanet.Net.Tests
             var apv = AppProtocolVersion.Sign(key, 1);
             var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
             var hostOptions = new HostOptions(
-                IPAddress.Loopback.ToString(),
-                ImmutableList<IceServer>.Empty,
-                0);
+                IPAddress.Loopback.ToString(), new IceServer[] { });
 
             Assert.Throws<ArgumentNullException>(() =>
                 new Swarm<DumbAction>(null, key, apvOptions, hostOptions));
@@ -552,7 +550,7 @@ namespace Libplanet.Net.Tests
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
-            var hostOptions = new HostOptions("1.2.3.4", ImmutableList<IceServer>.Empty, 5678);
+            var hostOptions = new HostOptions("1.2.3.4", new IceServer[] { }, 5678);
             using (Swarm<DumbAction> s = CreateSwarm(hostOptions: hostOptions))
             {
                 Assert.Equal(expected, s.EndPoint);
@@ -595,7 +593,7 @@ namespace Libplanet.Net.Tests
         {
             var iceServers = FactOnlyTurnAvailableAttribute.GetIceServers();
             var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
-            var swarmHostOptions = new HostOptions(null, iceServers.ToImmutableList(), 0);
+            var swarmHostOptions = new HostOptions(null, iceServers);
             var seed = CreateSwarm(hostOptions: seedHostOptions);
             var swarmA = CreateSwarm(hostOptions: swarmHostOptions);
             var swarmB = CreateSwarm(hostOptions: swarmHostOptions);
@@ -651,18 +649,14 @@ namespace Libplanet.Net.Tests
             string username = userInfo[0];
             string password = userInfo[1];
             var proxyUri = new Uri($"turn://{username}:{password}@localhost:{port}/");
-
-            IEnumerable<IceServer> iceServers = new[]
-            {
-                new IceServer(url: proxyUri),
-            };
+            IEnumerable<IceServer> iceServers = new[] { new IceServer(url: proxyUri) };
 
             var cts = new CancellationTokenSource();
             var proxyTask = TurnProxy(port, turnUrl, cts.Token);
 
             var seedKey = new PrivateKey();
             var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
-            var swarmHostOptions = new HostOptions(null, iceServers.ToImmutableList(), 0);
+            var swarmHostOptions = new HostOptions(null, iceServers, 0);
             var seed = CreateSwarm(seedKey, hostOptions: seedHostOptions);
             var swarmA = CreateSwarm(hostOptions: swarmHostOptions);
 

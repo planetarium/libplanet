@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
@@ -112,8 +111,8 @@ namespace Libplanet.Node
             };
             var hostOptions = new HostOptions(
                 SwarmConfig.InitConfig.Host,
-                SwarmConfig.InitConfig.IceServers.ToImmutableList(),
-                SwarmConfig.InitConfig.Port ?? 0);
+                SwarmConfig.InitConfig.IceServers,
+                SwarmConfig.InitConfig.Port);
 
             return new Swarm<T>(
                 privateKey: _privateKey,
