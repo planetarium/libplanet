@@ -70,9 +70,7 @@ namespace Libplanet.Net.Tests
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
+            HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
             Block<DumbAction> genesis = null)
@@ -86,14 +84,13 @@ namespace Libplanet.Net.Tests
                 genesisBlock: genesis
             );
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
+            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
             return CreateSwarm(
                 blockchain,
                 privateKey,
                 appProtocolVersionOptions,
-                host,
-                listenPort,
-                iceServers,
+                hostOptions,
                 options);
         }
 
@@ -101,28 +98,18 @@ namespace Libplanet.Net.Tests
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            SwarmOptions options = null
-        )
+            HostOptions hostOptions = null,
+            SwarmOptions options = null)
             where T : IAction, new()
         {
-            if (host is null && !(iceServers?.Any() ?? false))
-            {
-                host = IPAddress.Loopback.ToString();
-            }
-
-            options ??= new SwarmOptions();
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
-
+            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
+            options ??= new SwarmOptions();
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
                 appProtocolVersionOptions,
-                host,
-                listenPort,
-                iceServers,
+                hostOptions,
                 options);
             _finalizers.Add(async () =>
             {

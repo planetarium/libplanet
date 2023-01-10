@@ -45,9 +45,9 @@ namespace Libplanet.Node
         public string? Host { get; set; } = "localhost";
 
         /// <summary>
-        /// Determines the <em>incoming</em> port.  Set to <see langword="null"/> by default.
+        /// Determines the <em>incoming</em> port.  Set to <c>0</c> by default.
         /// </summary>
-        public int? Port { get; set; } = null;
+        public int Port { get; set; } = 0;
 
         /// <summary>
         /// The list of <see cref="IceServers"/> to use when connecting to the network.

@@ -109,14 +109,16 @@ namespace Libplanet.Node
                 DifferentAppProtocolVersionEncountered =
                     NetworkConfig.DifferentAppProtocolVersionEncountered,
             };
+            var hostOptions = new HostOptions(
+                SwarmConfig.InitConfig.Host,
+                SwarmConfig.InitConfig.IceServers,
+                SwarmConfig.InitConfig.Port);
 
             return new Swarm<T>(
                 privateKey: _privateKey,
                 blockChain: blockChain,
                 appProtocolVersionOptions: apvOptions,
-                host: SwarmConfig.InitConfig.Host,
-                listenPort: SwarmConfig.InitConfig.Port,
-                iceServers: SwarmConfig.InitConfig.IceServers,
+                hostOptions: hostOptions,
                 options: SwarmConfig.ToSwarmOptions());
         }
     }

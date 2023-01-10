@@ -53,21 +53,14 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="Swarm{T}"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
+            HostOptions hostOptions,
             SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -100,9 +93,7 @@ namespace Libplanet.Net
             Transport = NetMQTransport.Create(
                 _privateKey,
                 _appProtocolVersionOptions,
-                host,
-                listenPort,
-                iceServers ?? new List<IceServer>(),
+                hostOptions,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);

@@ -28,12 +28,15 @@ To be released.
     [[#2653]]
      - `IActionTypeLoader.Load()`.
      - `IActionTypeLoader.LoadAllActionTypes()`.
- -  Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
+ -  (Libplanet.Net) Removed `workers` parameter from `NetMQTransport.Create()`
+    method and `Swarm<T>()` constructor.  [[#2690]]
+ -  (Libplanet.Net) Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
     `AppProtocolVersionOptions` as a combined parameter instead of taking
     `AppProtocolVersion`, `IImmutableSet<PublicKey>?`, and
     `DifferentAppProtocolVersionEncountered` separately.  [[#2693]]
- -  (Libplanet.Net) Removed `workers` parameter from `NetMQTransport.Create()`
-    method and `Swarm<T>()` constructor.  [[#2690]]
+ -  (Libplanet.Net) Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
+    `HostOptions` as a combined parameter instead of taking
+    `string?`, `IEnumerable<IceServer>?`, and `int?` separately.  [[#2701]]
 
 ### Backward-incompatible network protocol changes
 
@@ -52,6 +55,7 @@ To be released.
      -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
  -  Added `IActionTypeLoaderContext` interface.  [[#2653]]
  -  Added `AppProtocolVersionOptions` class.  [[#2693]]
+ -  Added `HostOptions` class.  [[#2701]]
 
 ### Behavioral changes
 
@@ -75,6 +79,7 @@ To be released.
 [#2690]: https://github.com/planetarium/libplanet/pull/2690
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
 [#2699]: https://github.com/planetarium/libplanet/pull/2699
+[#2701]: https://github.com/planetarium/libplanet/pull/2701
 
 
 Version 0.45.4

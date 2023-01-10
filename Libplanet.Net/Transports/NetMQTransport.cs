@@ -25,10 +25,9 @@ namespace Libplanet.Net.Transports
     public class NetMQTransport : ITransport
     {
         private readonly PrivateKey _privateKey;
-        private readonly string _host;
-        private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
+        private readonly HostOptions _hostOptions;
         private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
         private readonly Channel<MessageRequest> _requests;
@@ -39,7 +38,6 @@ namespace Libplanet.Net.Transports
 
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
-        private int _listenPort;
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
@@ -64,43 +62,26 @@ namespace Libplanet.Net.Transports
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
         /// If <see langword="null"/>, any timestamp is accepted.</param>
-        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         private NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
+            HostOptions hostOptions,
             TimeSpan? messageTimestampBuffer = null)
         {
             _logger = Log
                 .ForContext<NetMQTransport>()
                 .ForContext("Source", nameof(NetMQTransport));
 
-            if (host is null && (iceServers is null || !iceServers.Any()))
-            {
-                throw new ArgumentException(
-                    $"Swarm requires either {nameof(host)} or {nameof(iceServers)}.");
-            }
-
             _socketCount = 0;
             _privateKey = privateKey;
-            _host = host;
-            _iceServers = iceServers?.ToList();
-            _listenPort = listenPort ?? 0;
+            _hostOptions = hostOptions;
             _appProtocolVersionOptions = appProtocolVersionOptions;
             _messageValidator = new MessageValidator(
                 _appProtocolVersionOptions, messageTimestampBuffer);
@@ -160,20 +141,13 @@ namespace Libplanet.Net.Transports
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
         /// If <see langword="null"/>, any timestamp is accepted.</param>
-        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         /// <returns>
         /// An awaitable <see cref="Task"/> returning a <see cref="NetMQTransport"/>
         /// when awaited that is ready to send request <see cref="Message"/>s and
@@ -182,17 +156,13 @@ namespace Libplanet.Net.Transports
         public static async Task<NetMQTransport> Create(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
+            HostOptions hostOptions,
             TimeSpan? messageTimestampBuffer = null)
         {
             var transport = new NetMQTransport(
                 privateKey,
                 appProtocolVersionOptions,
-                host,
-                listenPort,
-                iceServers,
+                hostOptions,
                 messageTimestampBuffer);
             await transport.Initialize();
             return transport;
@@ -565,30 +535,32 @@ namespace Libplanet.Net.Transports
         {
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
+            int listenPort = 0;
 
-            if (_listenPort == 0)
+            if (_hostOptions.Port == 0)
             {
-                _listenPort = _router.BindRandomPort("tcp://*");
+                listenPort = _router.BindRandomPort("tcp://*");
             }
             else
             {
-                _router.Bind($"tcp://*:{_listenPort}");
+                listenPort = _hostOptions.Port;
+                _router.Bind($"tcp://*:{listenPort}");
             }
 
-            _logger.Information("Listening on {Port}...", _listenPort);
+            _logger.Information("Listening on {Port}...", listenPort);
 
-            if (_host is { } host)
+            if (_hostOptions.Host is { } host)
             {
-                _hostEndPoint = new DnsEndPoint(host, _listenPort);
+                _hostEndPoint = new DnsEndPoint(host, listenPort);
             }
-            else if (_iceServers is { } iceServers)
+            else
             {
-                _turnClient = await TurnClient.Create(_iceServers, cancellationToken);
-                await _turnClient.StartAsync(_listenPort, cancellationToken);
+                _turnClient = await TurnClient.Create(_hostOptions.IceServers, cancellationToken);
+                await _turnClient.StartAsync(listenPort, cancellationToken);
                 if (!_turnClient.BehindNAT)
                 {
                     _hostEndPoint = new DnsEndPoint(
-                        _turnClient.PublicAddress.ToString(), _listenPort);
+                        _turnClient.PublicAddress.ToString(), listenPort);
                 }
             }
         }
