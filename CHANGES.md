@@ -8,10 +8,6 @@ To be released.
 
 ### Deprecated APIs
 
- -  Removed `BlockLocator(Func<long, BlockHash?>, Func<BlockHash, long>, int)`
-    constructor.  Use `BlockLocator.Create()` static method instead.
-    [[#2580], [#2584]]
-
 ### Backward-incompatible API changes
 
  -  Changed `BlockLocator` to throw an `ArgumentException` if an empty set of
@@ -24,6 +20,9 @@ To be released.
     [[#2474], [#2505]]
  -  Added `actionsLogsList` parameter to `TxFailure` constructor.
     [[#2474], [#2505]]
+ -  Removed `BlockLocator(Func<long, BlockHash?>, Func<BlockHash, long>, int)`
+    constructor.  Use `BlockLocator.Create()` static method instead.
+    [[#2580], [#2584]]
  -  Replaced `IAction?`-typed `policyBlockAction` parameter with
     `PolicyBlockActionGetter`-typed `policyBlockActionGetter` parameter
     in `ActionEvaluator` constructor.  [[#2646]]

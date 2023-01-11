@@ -23,7 +23,8 @@ namespace Libplanet.Blockchain
         {
             _impl = hashes.Any()
                 ? hashes.ToList()
-                : throw new ArgumentException($"Given {nameof(hashes)} cannot be empty.");
+                : throw new ArgumentException(
+                    $"Given {nameof(hashes)} cannot be empty.", nameof(hashes));
         }
 
         /// <summary>
@@ -71,8 +72,8 @@ namespace Libplanet.Blockchain
         /// An instance of <see cref="BlockLocator"/> created with given arguments.
         /// </returns>
         /// <remarks>
-        /// Returned <see cref="BlockLocator"/> created this factory method is guaranteed to have
-        /// the <see cref="BlockHash"/> corresponding <c>0</c>.
+        /// Returned <see cref="BlockLocator"/> created by this factory method is guaranteed
+        /// to have the <see cref="BlockHash"/> corresponding to index <c>0</c>.
         /// </remarks>
         public static BlockLocator Create(
             long startIndex,
@@ -82,12 +83,14 @@ namespace Libplanet.Blockchain
             if (startIndex < 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"Given {nameof(startIndex)} cannot be negative: {startIndex}");
+                    $"Given {nameof(startIndex)} cannot be negative: {startIndex}",
+                    nameof(startIndex));
             }
 
             BlockHash genesisHash = indexToBlockHash(0) ??
                 throw new ArgumentException(
-                    $"Given {nameof(indexToBlockHash)} should not be null at zero index.");
+                    $"Given {nameof(indexToBlockHash)} should not be null at zero index.",
+                    nameof(indexToBlockHash));
             var hashes = new List<BlockHash>();
 
             foreach (long index in GetEnumeratedIndices(startIndex, sampleAfter))
