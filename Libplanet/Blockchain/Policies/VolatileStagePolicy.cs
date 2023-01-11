@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Tx;
 using Serilog;
@@ -190,37 +191,14 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
         {
-            _lock.EnterUpgradeableReadLock();
+            _lock.EnterReadLock();
             try
             {
-                if (GetInner(blockChain, id, filtered) is { } result)
-                {
-                    if (result.Expired)
-                    {
-                        _lock.EnterWriteLock();
-                        try
-                        {
-                            _staged.TryRemove(result.Transaction.Id, out _);
-                            return null;
-                        }
-                        finally
-                        {
-                            _lock.ExitWriteLock();
-                        }
-                    }
-                    else
-                    {
-                        return result.Transaction;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
+                return GetInner(blockChain, id, filtered);
             }
             finally
             {
-                _lock.ExitUpgradeableReadLock();
+                _lock.ExitReadLock();
             }
         }
 
@@ -228,43 +206,21 @@ namespace Libplanet.Blockchain.Policies
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true)
         {
             List<Transaction<T>> transactions = new List<Transaction<T>>();
-            List<TxId> expiredList = new List<TxId>();
-
-            _lock.EnterUpgradeableReadLock();
+            _lock.EnterReadLock();
             try
             {
                 List<TxId> txIds = _staged.Keys.ToList();
                 foreach (TxId txId in txIds)
                 {
-                    if (GetInner(blockChain, txId, filtered) is { } result)
+                    if (GetInner(blockChain, txId, filtered) is { } tx)
                     {
-                        if (result.Expired)
-                        {
-                            expiredList.Add(result.Transaction.Id);
-                        }
-                        else
-                        {
-                            transactions.Add(result.Transaction);
-                        }
+                        transactions.Add(tx);
                     }
-                }
-
-                _lock.EnterWriteLock();
-                try
-                {
-                    foreach (TxId txId in expiredList)
-                    {
-                        _staged.TryRemove(txId, out _);
-                    }
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
                 }
             }
             finally
             {
-                _lock.ExitUpgradeableReadLock();
+                _lock.ExitReadLock();
             }
 
             return transactions;
@@ -307,19 +263,16 @@ namespace Libplanet.Blockchain.Policies
         ///     If <paramref name="id"/> is not staged, returns <see langword="null"/>.
         ///   </description></item>
         ///   <item><description>
-        ///     If <paramref name="id"/> is staged and expired, returns the found
-        ///     <see cref="Transaction{T}"/> earmarked with <see langword="true"/>.
-        ///     This bypasses filtering.
+        ///     If <paramref name="id"/> is staged and expired, returns <see langword="null"/>.
         ///   </description></item>
         ///   <item><description>
-        ///     If <paramref name="id"/> is staged, not expired, and filtered,
+        ///     If <paramref name="id"/> is staged, not expired, but filtered,
         ///     returns <see langword="null"/>.  This is treating the same as if
         ///     the <see cref="Transaction{T}"/> was not staged in the first place.
         ///   </description></item>
         ///   <item><description>
         ///     If <paramref name="id"/> is staged, not expired, and not filtered,
-        ///     returns the found <see cref="Transaction{T}"/> earmarked
-        ///     with <see langword="false"/>.
+        ///     returns the found <see cref="Transaction{T}"/>.
         ///   </description></item>
         /// </list>
         /// </returns>
@@ -328,20 +281,15 @@ namespace Libplanet.Blockchain.Policies
         /// This has been intended to avoid recursive lock, hence doesn't hold any synchronous
         /// scope.  Therefore, we should manage the lock from its caller side.
         /// </para>
-        /// <para>
-        /// Earmarking is done to defer removal of the expired <see cref="Transaction{T}"/> so
-        /// the act of inner retrieval can be write-lock-free.  This allows the caller to
-        /// aggregate expired <see cref="Transaction{T}"/>s and remove them in bulk.
-        /// </para>
         /// </remarks>
-        private (Transaction<T> Transaction, bool Expired)? GetInner(
-            BlockChain<T> blockChain, TxId id, bool filtered)
+        private Transaction<T>? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
         {
             if (_staged.TryGetValue(id, out Transaction<T>? tx) && tx is { })
             {
                 if (Expired(tx))
                 {
-                    return (tx, true);
+                    _ = Task.Run(() => CleanupExpired(tx.Id));
+                    return null;
                 }
                 else if (filtered &&
                     tx.Nonce < blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer))
@@ -350,12 +298,25 @@ namespace Libplanet.Blockchain.Policies
                 }
                 else
                 {
-                    return (tx, false);
+                    return tx;
                 }
             }
             else
             {
                 return null;
+            }
+        }
+
+        private void CleanupExpired(TxId txid)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                _staged.TryRemove(txid, out _);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
             }
         }
 
