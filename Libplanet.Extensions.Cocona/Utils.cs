@@ -24,7 +24,7 @@ namespace Libplanet.Extensions.Cocona
         }
 
         public static void
-            PrintTable<T1>(ValueTuple<T1> header, IEnumerable<ValueTuple<T1>> rows)
+            PrintTable<T1>(ValueTuple<string> header, IEnumerable<ValueTuple<T1>> rows)
             where T1 : notnull
         {
             PrintTable(
@@ -39,7 +39,7 @@ namespace Libplanet.Extensions.Cocona
         }
 
         public static void
-            PrintTable<T1, T2>((T1, T2) header, IEnumerable<(T1, T2)> rows)
+            PrintTable<T1, T2>((string, string) header, IEnumerable<(T1, T2)> rows)
             where T1 : notnull
             where T2 : notnull
         {
@@ -58,7 +58,7 @@ namespace Libplanet.Extensions.Cocona
 
         public static void
             PrintTable<T1, T2, T3>(
-                (T1, T2, T3) header,
+                (string, string, string) header,
                 IEnumerable<(T1, T2, T3)> rows)
             where T1 : notnull
             where T2 : notnull
@@ -76,6 +76,32 @@ namespace Libplanet.Extensions.Cocona
                     row.Item1,
                     row.Item2,
                     row.Item3,
+                }));
+        }
+
+        public static void
+            PrintTable<T1, T2, T3, T4>(
+                (string, string, string, string) header,
+                IEnumerable<(T1, T2, T3, T4)> rows)
+            where T1 : notnull
+            where T2 : notnull
+            where T3 : notnull
+            where T4 : notnull
+        {
+            PrintTable(
+                new object[]
+                {
+                    header.Item1,
+                    header.Item2,
+                    header.Item3,
+                    header.Item4,
+                },
+                rows.Select(row => new object[]
+                {
+                    row.Item1,
+                    row.Item2,
+                    row.Item3,
+                    row.Item4,
                 }));
         }
 
