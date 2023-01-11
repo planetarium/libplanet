@@ -12286,12 +12286,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.BuildIndexTxBlock
   nameWithType: StoreCommand.BuildIndexTxBlock
-- uid: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String)
-  name: ChainIds(String)
-  href: api/Libplanet.Extensions.Cocona.Commands.StoreCommand.html#Libplanet_Extensions_Cocona_Commands_StoreCommand_ChainIds_System_String_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String)
-  fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String)
-  nameWithType: StoreCommand.ChainIds(String)
+- uid: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String,System.Boolean)
+  name: ChainIds(String, Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.StoreCommand.html#Libplanet_Extensions_Cocona_Commands_StoreCommand_ChainIds_System_String_System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String,System.Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds(System.String, System.Boolean)
+  nameWithType: StoreCommand.ChainIds(String, Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.StoreCommand.ChainIds*
   name: ChainIds
   href: api/Libplanet.Extensions.Cocona.Commands.StoreCommand.html#Libplanet_Extensions_Cocona_Commands_StoreCommand_ChainIds_
@@ -12735,33 +12735,42 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Utils.PrintTable
   nameWithType: Utils.PrintTable
-- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``1(ValueTuple{``0},IEnumerable{ValueTuple{``0}})
-  name: PrintTable<T1>(ValueTuple<T1>, IEnumerable<ValueTuple<T1>>)
-  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__1_ValueTuple___0__IEnumerable_ValueTuple___0___
-  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``1(ValueTuple{``0},IEnumerable{ValueTuple{``0}})
-  name.vb: PrintTable(Of T1)(ValueTuple(Of T1), IEnumerable(Of ValueTuple(Of T1)))
-  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1>(ValueTuple<T1>, IEnumerable<ValueTuple<T1>>)
-  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1)(ValueTuple(Of T1), IEnumerable(Of ValueTuple(Of T1)))
-  nameWithType: Utils.PrintTable<T1>(ValueTuple<T1>, IEnumerable<ValueTuple<T1>>)
-  nameWithType.vb: Utils.PrintTable(Of T1)(ValueTuple(Of T1), IEnumerable(Of ValueTuple(Of T1)))
-- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{``0,``1},IEnumerable{System.ValueTuple{``0,``1}})
-  name: PrintTable<T1, T2>((T1, T2), IEnumerable<(T1, T2)>)
-  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__2_System_ValueTuple___0___1__IEnumerable_System_ValueTuple___0___1___
-  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{``0,``1},IEnumerable{System.ValueTuple{``0,``1}})
-  name.vb: PrintTable(Of T1, T2)((T1, T2)(Of T1, T2), IEnumerable(Of (T1, T2)(Of T1, T2)))
-  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2>(System.ValueTuple<T1, T2>, IEnumerable<System.ValueTuple<T1, T2>>)
-  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2)(System.ValueTuple(Of T1, T2), IEnumerable(Of System.ValueTuple(Of T1, T2)))
-  nameWithType: Utils.PrintTable<T1, T2>((T1, T2), IEnumerable<(T1, T2)>)
-  nameWithType.vb: Utils.PrintTable(Of T1, T2)((T1, T2)(Of T1, T2), IEnumerable(Of (T1, T2)(Of T1, T2)))
-- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{``0,``1,``2},IEnumerable{System.ValueTuple{``0,``1,``2}})
-  name: PrintTable<T1, T2, T3>((T1, T2, T3), IEnumerable<(T1, T2, T3)>)
-  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__3_System_ValueTuple___0___1___2__IEnumerable_System_ValueTuple___0___1___2___
-  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{``0,``1,``2},IEnumerable{System.ValueTuple{``0,``1,``2}})
-  name.vb: PrintTable(Of T1, T2, T3)((T1, T2, T3)(Of T1, T2, T3), IEnumerable(Of (T1, T2, T3)(Of T1, T2, T3)))
-  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2, T3>(System.ValueTuple<T1, T2, T3>, IEnumerable<System.ValueTuple<T1, T2, T3>>)
-  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2, T3)(System.ValueTuple(Of T1, T2, T3), IEnumerable(Of System.ValueTuple(Of T1, T2, T3)))
-  nameWithType: Utils.PrintTable<T1, T2, T3>((T1, T2, T3), IEnumerable<(T1, T2, T3)>)
-  nameWithType.vb: Utils.PrintTable(Of T1, T2, T3)((T1, T2, T3)(Of T1, T2, T3), IEnumerable(Of (T1, T2, T3)(Of T1, T2, T3)))
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``1(ValueTuple{System.String},IEnumerable{ValueTuple{``0}})
+  name: PrintTable<T1>(ValueTuple<String>, IEnumerable<ValueTuple<T1>>)
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__1_ValueTuple_System_String__IEnumerable_ValueTuple___0___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``1(ValueTuple{System.String},IEnumerable{ValueTuple{``0}})
+  name.vb: PrintTable(Of T1)(ValueTuple(Of String), IEnumerable(Of ValueTuple(Of T1)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1>(ValueTuple<System.String>, IEnumerable<ValueTuple<T1>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1)(ValueTuple(Of System.String), IEnumerable(Of ValueTuple(Of T1)))
+  nameWithType: Utils.PrintTable<T1>(ValueTuple<String>, IEnumerable<ValueTuple<T1>>)
+  nameWithType.vb: Utils.PrintTable(Of T1)(ValueTuple(Of String), IEnumerable(Of ValueTuple(Of T1)))
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{System.String,System.String},IEnumerable{System.ValueTuple{``0,``1}})
+  name: PrintTable<T1, T2>((String, String), IEnumerable<(T1, T2)>)
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__2_System_ValueTuple_System_String_System_String__IEnumerable_System_ValueTuple___0___1___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{System.String,System.String},IEnumerable{System.ValueTuple{``0,``1}})
+  name.vb: PrintTable(Of T1, T2)((String, String)(Of String, String), IEnumerable(Of (T1, T2)(Of T1, T2)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2>(System.ValueTuple<System.String, System.String>, IEnumerable<System.ValueTuple<T1, T2>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2)(System.ValueTuple(Of System.String, System.String), IEnumerable(Of System.ValueTuple(Of T1, T2)))
+  nameWithType: Utils.PrintTable<T1, T2>((String, String), IEnumerable<(T1, T2)>)
+  nameWithType.vb: Utils.PrintTable(Of T1, T2)((String, String)(Of String, String), IEnumerable(Of (T1, T2)(Of T1, T2)))
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{System.String,System.String,System.String},IEnumerable{System.ValueTuple{``0,``1,``2}})
+  name: PrintTable<T1, T2, T3>((String, String, String), IEnumerable<(T1, T2, T3)>)
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__3_System_ValueTuple_System_String_System_String_System_String__IEnumerable_System_ValueTuple___0___1___2___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{System.String,System.String,System.String},IEnumerable{System.ValueTuple{``0,``1,``2}})
+  name.vb: PrintTable(Of T1, T2, T3)((String, String, String)(Of String, String, String), IEnumerable(Of (T1, T2, T3)(Of T1, T2, T3)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2, T3>(System.ValueTuple<System.String, System.String, System.String>, IEnumerable<System.ValueTuple<T1, T2, T3>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2, T3)(System.ValueTuple(Of System.String, System.String, System.String), IEnumerable(Of System.ValueTuple(Of T1, T2, T3)))
+  nameWithType: Utils.PrintTable<T1, T2, T3>((String, String, String), IEnumerable<(T1, T2, T3)>)
+  nameWithType.vb: Utils.PrintTable(Of T1, T2, T3)((String, String, String)(Of String, String, String), IEnumerable(Of (T1, T2, T3)(Of T1, T2, T3)))
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``4(System.ValueTuple{System.String,System.String,System.String,System.String},IEnumerable{System.ValueTuple{``0,``1,``2,``3}})
+  name: PrintTable<T1, T2, T3, T4>((String, String, String, String), IEnumerable<(T1, T2, T3, T4)>)
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__4_System_ValueTuple_System_String_System_String_System_String_System_String__IEnumerable_System_ValueTuple___0___1___2___3___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``4(System.ValueTuple{System.String,System.String,System.String,System.String},IEnumerable{System.ValueTuple{``0,``1,``2,``3}})
+  name.vb: PrintTable(Of T1, T2, T3, T4)((String, String, String, String)(Of String, String, String, String), IEnumerable(Of (T1, T2, T3, T4)(Of T1, T2, T3, T4)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2, T3, T4>(System.ValueTuple<System.String, System.String, System.String, System.String>, IEnumerable<System.ValueTuple<T1, T2, T3, T4>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2, T3, T4)(System.ValueTuple(Of System.String, System.String, System.String, System.String), IEnumerable(Of System.ValueTuple(Of T1, T2, T3, T4)))
+  nameWithType: Utils.PrintTable<T1, T2, T3, T4>((String, String, String, String), IEnumerable<(T1, T2, T3, T4)>)
+  nameWithType.vb: Utils.PrintTable(Of T1, T2, T3, T4)((String, String, String, String)(Of String, String, String, String), IEnumerable(Of (T1, T2, T3, T4)(Of T1, T2, T3, T4)))
 - uid: Libplanet.Extensions.Cocona.Utils.SerializeHumanReadable*
   name: SerializeHumanReadable
   href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_SerializeHumanReadable_
