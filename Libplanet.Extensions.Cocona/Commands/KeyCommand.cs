@@ -267,15 +267,20 @@ namespace Libplanet.Extensions.Cocona.Commands
         [Command(Description = "Derive public key and address from private key.")]
         public void Derive(
             [Argument(
-                "PRIVATE-KEY",
-                Description = "A raw private key to import."
+                "KEY",
+                Description = "A raw private key (or a public key if -P/--public-key is used) " +
+                    "to derive the address from."
             )]
-            string key
+            string key,
+            [Option('P', Description = "Derive from a public key instead of a private key.")]
+            bool publicKey = false
         )
         {
-            PrivateKey privateKey = ValidateRawHex(key);
-            string addr = privateKey.ToAddress().ToString();
-            string pub = ByteUtil.Hex(privateKey.PublicKey.Format(compress: true));
+            PublicKey pubKey = publicKey
+                ? new PublicKey(ByteUtil.ParseHex(key))
+                : ValidateRawHex(key).PublicKey;
+            string addr = pubKey.ToAddress().ToString();
+            string pub = ByteUtil.Hex(pubKey.Format(compress: true));
             Utils.PrintTable(("Public Key", "Address"), new[] { (pub, addr) });
         }
 
