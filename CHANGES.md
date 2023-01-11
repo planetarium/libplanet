@@ -67,7 +67,9 @@ To be released.
 
  -  Fixed a bug `planet store` had not recognized RocksDB store
     (`rocksdb+file:`).  [[#2699]]
- -  Added `planet store chain-ids` subcommand.  [[#2699]]
+ -  Added `planet store chain-ids` subcommand.  [[#2699], [#2704]]
+ -  Added `-P`/`--public-key` option to `planet key derive` subcommand.
+    [[#2705]]
 
 [#2474]: https://github.com/planetarium/libplanet/discussions/2474
 [#2505]: https://github.com/planetarium/libplanet/pull/2505
@@ -80,6 +82,8 @@ To be released.
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
 [#2699]: https://github.com/planetarium/libplanet/pull/2699
 [#2701]: https://github.com/planetarium/libplanet/pull/2701
+[#2704]: https://github.com/planetarium/libplanet/pull/2704
+[#2705]: https://github.com/planetarium/libplanet/pull/2705
 
 
 Version 0.45.4
