@@ -20,19 +20,34 @@ namespace Libplanet.Extensions.Cocona.Commands
         [Command(Description = "List all chain IDs.")]
         public void ChainIds(
             [Argument("STORE", Description = StoreArgumentDescription)]
-            string storeUri
+            string storeUri,
+            [Option("hash", Description = "Show the hash of the chain tip.")]
+            bool showHash
         )
         {
             IStore store = Utils.LoadStoreFromUri(storeUri);
             Guid? canon = store.GetCanonicalChainId();
-            Utils.PrintTable(
-                ("Chain ID", "Height", "Canon?"),
-                store.ListChainIds().Select(id => (
+            var headerWithoutHash = ("Chain ID", "Height", "Canon?");
+            var headerWithHash = ("Chain ID", "Height", "Canon?", "Hash");
+            var chainIds = store.ListChainIds().Select(id =>
+            {
+                var height = store.CountIndex(id) - 1;
+                return (
                     id.ToString(),
-                    store.CountIndex(id).ToString(CultureInfo.InvariantCulture),
-                    id == canon ? "*" : string.Empty)
-                )
-            );
+                    height.ToString(CultureInfo.InvariantCulture),
+                    id == canon ? "*" : string.Empty,
+                    store.GetBlockDigest(
+                        store.IndexBlockHash(id, height)!.Value)!.Value.Hash.ToString());
+            });
+            if (showHash)
+            {
+                Utils.PrintTable(headerWithHash, chainIds);
+            }
+            else
+            {
+                Utils.PrintTable(
+                    headerWithoutHash, chainIds.Select(i => (i.Item1, i.Item2, i.Item3)));
+            }
         }
 
         [Command(Description = "Build an index for transaction id and block hash.")]
