@@ -11946,12 +11946,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create
   nameWithType: KeyCommand.Create
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String)
-  name: Derive(String)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Derive_System_String_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String)
-  nameWithType: KeyCommand.Derive(String)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String,System.Boolean)
+  name: Derive(String, Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Derive_System_String_System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String,System.Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String, System.Boolean)
+  nameWithType: KeyCommand.Derive(String, Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive*
   name: Derive
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Derive_
