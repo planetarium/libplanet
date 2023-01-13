@@ -33,6 +33,8 @@ namespace Libplanet.Net.Transports
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
         private readonly AsyncManualResetEvent _runningEvent;
+        private readonly AsyncAutoResetEvent _stoppingEvent;
+        private readonly CancellationTokenSource _runtimeCancellationTokenSource;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
 
@@ -41,7 +43,7 @@ namespace Libplanet.Net.Transports
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
-        private CancellationTokenSource _runtimeCancellationTokenSource;
+        private CancellationTokenSource _stoppingTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
 
         // Used only for logging.
@@ -117,6 +119,7 @@ namespace Libplanet.Net.Transports
             );
 
             _runningEvent = new AsyncManualResetEvent();
+            _stoppingEvent = new AsyncAutoResetEvent();
             ProcessMessageHandler = new AsyncDelegate<Message>();
         }
 
@@ -181,18 +184,26 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
-            _runtimeCancellationTokenSource =
+            _stoppingTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
+            var stoppingToken = _stoppingTokenSource.Token;
+            using CancellationTokenRegistration ctr =
+                stoppingToken.Register(
+                    () =>
+                    {
+                        _routerPoller.RemoveAndDispose(_replyQueue);
+                        _routerPoller.StopAsync();
+                        _runningEvent.Reset();
+                    },
+                    useSynchronizationContext: false);
+
             _replyQueue = new NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>();
+            _replyQueue.ReceiveReady += DoReply;
             _routerPoller = new NetMQPoller { _router, _replyQueue };
 
-            _router.ReceiveReady += ReceiveMessage;
-            _replyQueue.ReceiveReady += DoReply;
-
-            Task pollerTask = RunPoller(_routerPoller);
             new Task(async () =>
             {
                 while (!_routerPoller.IsRunning)
@@ -203,7 +214,38 @@ namespace Libplanet.Net.Transports
                 _runningEvent.Set();
             }).Start(_routerPoller);
 
-            await pollerTask.ConfigureAwait(false);
+            using var thread = new AsyncContextThread();
+            await thread.Factory.Run(() =>
+            {
+                // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
+                // tests.
+                try
+                {
+                    _routerPoller.Run();
+                }
+                catch (TerminatingException)
+                {
+                    _logger.Error("TerminatingException occurred during poller.Run()");
+                }
+                catch (ObjectDisposedException)
+                {
+                    _logger.Error(
+                        "ObjectDisposedException occurred during poller.Run()");
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e, "An unexpected exception occurred during poller.Run().");
+                }
+                finally
+                {
+                    _routerPoller.Dispose();
+                    _stoppingEvent.Set();
+
+                    // Notify cancellation to awaiters
+                    stoppingToken.ThrowIfCancellationRequested();
+                }
+            });
         }
 
         /// <inheritdoc/>
@@ -217,23 +259,8 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            if (Running)
-            {
-                await Task.Delay(waitFor, cancellationToken);
-
-                _replyQueue.ReceiveReady -= DoReply;
-                _router.ReceiveReady -= ReceiveMessage;
-
-                if (_routerPoller.IsRunning)
-                {
-                    _routerPoller.Dispose();
-                }
-
-                _replyQueue.Dispose();
-
-                _runtimeCancellationTokenSource.Cancel();
-                _runningEvent.Reset();
-            }
+            _stoppingTokenSource?.Cancel();
+            await _stoppingEvent.WaitAsync(cancellationToken);
         }
 
         /// <inheritdoc/>
@@ -312,7 +339,7 @@ namespace Libplanet.Net.Transports
 
             using CancellationTokenSource linkedCts =
                 CancellationTokenSource.CreateLinkedTokenSource(
-                    _runtimeCancellationTokenSource.Token,
+                    _stoppingTokenSource?.Token ?? default,
                     cancellationToken,
                     timerCts.Token
                 );
@@ -475,17 +502,21 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            CancellationToken ct = _runtimeCancellationTokenSource.Token;
             List<BoundPeer> boundPeers = peers.ToList();
             Task.Run(
                 async () =>
                 {
                     await boundPeers.ParallelForEachAsync(
-                        peer => SendMessageAsync(peer, message, TimeSpan.FromSeconds(1), ct),
-                        ct
+                        peer => SendMessageAsync(
+                            peer,
+                            message,
+                            TimeSpan.FromSeconds(1),
+                            CancellationToken.None
+                        ),
+                        CancellationToken.None
                     );
                 },
-                ct
+                CancellationToken.None
             );
 
             _logger.Debug(
@@ -535,6 +566,7 @@ namespace Libplanet.Net.Transports
         {
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
+            _router.ReceiveReady += ReceiveMessage;
             int listenPort = 0;
 
             if (_hostOptions.Port == 0)
@@ -584,11 +616,6 @@ namespace Libplanet.Net.Transports
                         raw.FrameCount
                     );
 
-                    if (_runtimeCancellationTokenSource.IsCancellationRequested)
-                    {
-                        return;
-                    }
-
                     LastMessageTimestamp = DateTimeOffset.UtcNow;
 
                     // Duplicate received message before distributing.
@@ -637,7 +664,7 @@ namespace Libplanet.Net.Transports
                                         diffVersion);
                                     await ReplyMessageAsync(
                                         diffVersion,
-                                        _runtimeCancellationTokenSource.Token
+                                        CancellationToken.None
                                     );
                                 }
                             }
@@ -847,42 +874,6 @@ namespace Libplanet.Net.Transports
                         receivedCount,
                         req.ExpectedResponses);
             }
-        }
-
-        private async Task RunPoller(NetMQPoller poller)
-        {
-            TaskCreationOptions taskCreationOptions =
-                TaskCreationOptions.DenyChildAttach |
-                TaskCreationOptions.LongRunning |
-                TaskCreationOptions.HideScheduler;
-            await Task.Factory.StartNew(
-                () =>
-                {
-                    // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
-                    // tests.
-                    try
-                    {
-                        poller.Run();
-                    }
-                    catch (TerminatingException)
-                    {
-                        _logger.Error("TerminatingException occurred during poller.Run()");
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        _logger.Error(
-                            "ObjectDisposedException occurred during poller.Run()");
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Error(
-                            e, "An unexpected exception ocurred during poller.Run().");
-                    }
-                },
-                CancellationToken.None,
-                taskCreationOptions,
-                TaskScheduler.Default
-            );
         }
 
         private CommunicationFailException WrapCommunicationFailException(

@@ -11,12 +11,13 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private async Task ConsumeBlockCandidates(
-            CancellationToken cancellationToken)
+        private async Task ConsumeBlockCandidates()
         {
             var checkInterval = TimeSpan.FromMilliseconds(10);
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
+                _stoppingToken.ThrowIfCancellationRequested();
+
                 if (BlockCandidateTable.Any())
                 {
                     BlockHeader tipHeader = BlockChain.Tip.Header;
@@ -35,13 +36,13 @@ namespace Libplanet.Net
                             BlockCandidateTable.Count);
                         _ = BlockCandidateProcess(
                             blocks,
-                            cancellationToken);
+                            _stoppingToken);
                         BlockAppended.Set();
                     }
                 }
                 else
                 {
-                    await Task.Delay(checkInterval, cancellationToken);
+                    await Task.Delay(checkInterval, _stoppingToken);
                     continue;
                 }
 

@@ -223,13 +223,13 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task FillBlocksAsync(
-            CancellationToken cancellationToken
-        )
+        private async Task FillBlocksAsync()
         {
             var checkInterval = TimeSpan.FromMilliseconds(100);
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
+                _stoppingToken.ThrowIfCancellationRequested();
+
                 if (BlockDemandTable.Any())
                 {
                     _logger.Debug(
@@ -241,38 +241,35 @@ namespace Libplanet.Net
                         BlockDemandTable.Remove(blockDemand.Peer);
                         _ = ProcessBlockDemandAsync(
                             blockDemand,
-                            cancellationToken);
+                            _stoppingToken
+                        );
                     }
                 }
                 else
                 {
-                    await Task.Delay(checkInterval, cancellationToken);
+                    await Task.Delay(checkInterval, _stoppingToken);
                     continue;
                 }
 
                 BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
             }
-
-            _logger.Debug($"{nameof(FillBlocksAsync)} has finished.");
         }
 
-        private async Task PollBlocksAsync(
-            TimeSpan timeout,
-            TimeSpan tipLifespan,
-            int maximumPollPeers,
-            CancellationToken cancellationToken
-        )
+        private async Task PollBlocksAsync(TimeSpan timeout)
         {
             IBlockExcerpt lastTip = BlockChain.Tip;
             DateTimeOffset lastUpdated = DateTimeOffset.UtcNow;
-            while (!cancellationToken.IsCancellationRequested)
+
+            while (true)
             {
+                _stoppingToken.ThrowIfCancellationRequested();
+
                 if (!lastTip.Hash.Equals(BlockChain.Tip.Hash))
                 {
                     lastUpdated = DateTimeOffset.UtcNow;
                     lastTip = BlockChain.Tip;
                 }
-                else if (lastUpdated + tipLifespan < DateTimeOffset.UtcNow)
+                else if (lastUpdated + Options.TipLifespan < DateTimeOffset.UtcNow)
                 {
                     _logger.Debug(
                         "Tip #{TipIndex} {TipHash} has expired (last updated: {LastUpdated}); " +
@@ -281,10 +278,10 @@ namespace Libplanet.Net
                         lastTip.Hash,
                         lastUpdated
                     );
-                    await PullBlocksAsync(timeout, maximumPollPeers, cancellationToken);
+                    await PullBlocksAsync(timeout, Options.MaximumPollPeers, _stoppingToken);
                 }
 
-                await Task.Delay(1000, cancellationToken);
+                await Task.Delay(1000, _stoppingToken);
             }
         }
 

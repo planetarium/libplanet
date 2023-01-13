@@ -38,8 +38,9 @@ namespace Libplanet.Net
         private readonly ILogger _logger;
         private readonly IStore _store;
 
-        private CancellationTokenSource _workerCancellationTokenSource;
-        private CancellationToken _cancellationToken;
+        private CancellationToken _stoppingToken;
+        private CancellationTokenSource _stoppingTokenSource;
+        private List<Task> _backgroundTasks;
 
         private bool _disposed;
 
@@ -184,10 +185,8 @@ namespace Libplanet.Net
         {
             if (!_disposed)
             {
-                _workerCancellationTokenSource?.Cancel();
                 TxCompletion?.Dispose();
                 Transport?.Dispose();
-                _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
         }
@@ -204,13 +203,30 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default
         )
         {
-            _logger.Debug("Stopping watching " + nameof(BlockChain) + " for tip changes...");
-            BlockChain.TipChanged -= OnBlockChainTipChanged;
-
-            _logger.Debug($"Stopping {nameof(Swarm<T>)}...");
-            using (await _runningMutex.LockAsync())
+            using (await _runningMutex.LockAsync(cancellationToken).ConfigureAwait(false))
             {
-                await Transport.StopAsync(waitFor, cancellationToken);
+                if (_stoppingTokenSource is { })
+                {
+                    _stoppingTokenSource.Cancel();
+                    _stoppingTokenSource.Dispose();
+                    _stoppingTokenSource = null;
+                }
+
+                if (_backgroundTasks is { })
+                {
+                    IEnumerable<Task> remainingTasks = _backgroundTasks
+                        .Where(t => !t.IsCanceled && !t.IsCompleted && !t.IsFaulted);
+                    try
+                    {
+                        await Task.WhenAll(remainingTasks);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // Ignore rest canellations
+                    }
+
+                    _backgroundTasks = null;
+                }
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -279,12 +295,9 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default)
         {
             Task<Task> runner;
+
             using (await _runningMutex.LockAsync().ConfigureAwait(false))
             {
-                _workerCancellationTokenSource = new CancellationTokenSource();
-                _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
-                    _workerCancellationTokenSource.Token, cancellationToken
-                ).Token;
                 BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
                 BlockCandidateTable = new BlockCandidateTable<T>();
 
@@ -298,38 +311,43 @@ namespace Libplanet.Net
 
                 _logger.Debug("Watching the " + nameof(BlockChain) + " for tip changes...");
                 BlockChain.TipChanged += OnBlockChainTipChanged;
+                _stoppingTokenSource =
+                    CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                _stoppingToken = _stoppingTokenSource.Token;
+
+                using CancellationTokenRegistration ctr = _stoppingToken.Register(
+                    () =>
+                    {
+                        _logger.Debug(
+                            $"Stopping watching {nameof(BlockChain)} for tip changes..."
+                        );
+                        BlockChain.TipChanged -= OnBlockChainTipChanged;
+
+                        _logger.Debug($"Stopping {nameof(Swarm<T>)}...");
+                    },
+                    useSynchronizationContext: false
+                );
 
                 var tasks = new List<Func<Task>>
                 {
-                    () => Transport.StartAsync(_cancellationToken),
-                    () => BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken),
-                    () => BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
-                    () => FillBlocksAsync(_cancellationToken),
-                    () => PollBlocksAsync(
-                        dialTimeout,
-                        Options.TipLifespan,
-                        Options.MaximumPollPeers,
-                        _cancellationToken
-                    ),
-                    () => ConsumeBlockCandidates(_cancellationToken),
-                    () => RefreshTableAsync(
-                        Options.RefreshPeriod,
-                        Options.RefreshLifespan,
-                        _cancellationToken),
-                    () => RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken),
+                    () => Transport.StartAsync(_stoppingToken),
+                    () => BroadcastBlockAsync(broadcastBlockInterval),
+                    () => BroadcastTxAsync(broadcastTxInterval),
+                    () => FillBlocksAsync(),
+                    () => PollBlocksAsync(dialTimeout),
+                    () => ConsumeBlockCandidates(),
+                    () => RefreshTableAsync(),
+                    () => RebuildConnectionAsync(TimeSpan.FromMinutes(30)),
                 };
 
                 if (Options.StaticPeers.Any())
                 {
-                    tasks.Add(
-                        () => MaintainStaticPeerAsync(
-                            Options.StaticPeersMaintainPeriod,
-                            _cancellationToken
-                        )
-                    );
+                    tasks.Add(() => MaintainStaticPeerAsync());
                 }
 
-                runner = Task.WhenAny(tasks.Select(CreateLongRunningTask));
+                _backgroundTasks = tasks.Select(CreateLongRunningTask).ToList();
+
+                runner = Task.WhenAny(_backgroundTasks);
                 await Transport.WaitForRunningAsync().ConfigureAwait(false);
             }
 
@@ -662,7 +680,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default)
         {
             using CancellationTokenSource cts = CancellationTokenSource
-                .CreateLinkedTokenSource(cancellationToken, _cancellationToken);
+                .CreateLinkedTokenSource(cancellationToken, _stoppingToken);
             cancellationToken = cts.Token;
 
             KademliaProtocol kademliaProtocol = (KademliaProtocol)PeerDiscovery;
@@ -691,7 +709,7 @@ namespace Libplanet.Net
 
             if (cancellationToken == default)
             {
-                cancellationToken = _cancellationToken;
+                cancellationToken = _stoppingToken;
             }
 
             return PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
@@ -1228,16 +1246,16 @@ namespace Libplanet.Net
             );
         }
 
-        private async Task BroadcastBlockAsync(
-            TimeSpan broadcastBlockInterval,
-            CancellationToken cancellationToken)
+        private async Task BroadcastBlockAsync(TimeSpan broadcastBlockInterval)
         {
             const string fname = nameof(BroadcastBlockAsync);
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
                 try
                 {
-                    await Task.Delay(broadcastBlockInterval, cancellationToken);
+                    _stoppingToken.ThrowIfCancellationRequested();
+
+                    await Task.Delay(broadcastBlockInterval, _stoppingToken);
                     if (BlockChain.Tip is { } tip)
                     {
                         BroadcastBlock(tip);
@@ -1258,16 +1276,15 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task BroadcastTxAsync(
-            TimeSpan broadcastTxInterval,
-            CancellationToken cancellationToken)
+        private async Task BroadcastTxAsync(TimeSpan broadcastTxInterval)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
                 try
                 {
-                    await Task.Delay(broadcastTxInterval, cancellationToken);
+                    _stoppingToken.ThrowIfCancellationRequested();
 
+                    await Task.Delay(broadcastTxInterval, _stoppingToken);
                     await Task.Run(
                         () =>
                         {
@@ -1282,7 +1299,7 @@ namespace Libplanet.Net
                                     txIds.Count);
                                 BroadcastTxIds(null, txIds);
                             }
-                        }, cancellationToken);
+                        }, _stoppingToken);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -1319,18 +1336,20 @@ namespace Libplanet.Net
             return canonComparer.Compare(target, BlockChain.Tip) > 0;
         }
 
-        private async Task RefreshTableAsync(
-            TimeSpan period,
-            TimeSpan maxAge,
-            CancellationToken cancellationToken)
+        private async Task RefreshTableAsync()
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
+                _stoppingToken.ThrowIfCancellationRequested();
+
                 try
                 {
-                    await PeerDiscovery.RefreshTableAsync(maxAge, cancellationToken);
-                    await PeerDiscovery.CheckReplacementCacheAsync(cancellationToken);
-                    await Task.Delay(period, cancellationToken);
+                    await PeerDiscovery.RefreshTableAsync(
+                        Options.RefreshLifespan,
+                        _stoppingToken
+                    );
+                    await PeerDiscovery.CheckReplacementCacheAsync(_stoppingToken);
+                    await Task.Delay(Options.RefreshPeriod, _stoppingToken);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -1346,18 +1365,18 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task RebuildConnectionAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
+        private async Task RebuildConnectionAsync(TimeSpan period)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
                 try
                 {
-                    await Task.Delay(period, cancellationToken);
+                    _stoppingToken.ThrowIfCancellationRequested();
+
+                    await Task.Delay(period, _stoppingToken);
                     await PeerDiscovery.RebuildConnectionAsync(
                         Kademlia.MaxDepth,
-                        cancellationToken);
+                        _stoppingToken);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -1373,34 +1392,36 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task MaintainStaticPeerAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
+        private async Task MaintainStaticPeerAsync()
         {
             TimeSpan timeout = TimeSpan.FromSeconds(3);
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
+                _stoppingToken.ThrowIfCancellationRequested();
+
                 var tasks = Options.StaticPeers
                     .Where(peer => !RoutingTable.Contains(peer))
                     .Select(async peer =>
                     {
                         try
                         {
-                            await AddPeersAsync(new[] { peer }, timeout, cancellationToken);
+                            await AddPeersAsync(new[] { peer }, timeout, _stoppingToken);
                         }
                         catch (TimeoutException)
                         {
                         }
                     });
                 await Task.WhenAll(tasks);
-                await Task.Delay(period, cancellationToken);
+                await Task.Delay(Options.StaticPeersMaintainPeriod, _stoppingToken);
             }
         }
 
-        private async Task CreateLongRunningTask(Func<Task> f)
-        {
-            using var thread = new AsyncContextThread();
-            await thread.Factory.Run(f).WaitAsync(_cancellationToken);
-        }
+        private Task CreateLongRunningTask(Func<Task> f)
+            => Task.Factory.StartNew(
+                f,
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            ).Unwrap();
     }
 }
