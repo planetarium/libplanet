@@ -838,50 +838,53 @@ namespace Libplanet.Net.Transports
                 req.Peer
             );
             int receivedCount = 0;
+            DealerSocket dealer = null;
 
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                using var dealer = GetRequestDealerSocket(req);
-
-                if (dealer.TrySendMultipartMessage(req.Message))
+                using (dealer = GetRequestDealerSocket(req))
                 {
-                    _logger.Debug(
-                        "Request {RequestId} sent to {Peer}.",
-                        req.Id,
-                        req.Peer);
+                    if (dealer.TrySendMultipartMessage(req.Message))
+                    {
+                        _logger.Debug(
+                            "Request {RequestId} sent to {Peer}.",
+                            req.Id,
+                            req.Peer);
+                    }
+                    else
+                    {
+                        _logger.Debug(
+                            "Failed to send {RequestId} to {Peer}.",
+                            req.Id,
+                            req.Peer);
+
+                        throw new SendMessageFailException(
+                            $"Failed to send {req.Message} to {req.Peer}.",
+                            req.Peer);
+                    }
+
+                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                    {
+                        NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
+                            cancellationToken: cancellationToken
+                        );
+
+                        _logger.Verbose(
+                            "Received a raw message with {FrameCount} frames as a reply to " +
+                            "request {RequestId} from {Peer}.",
+                            raw.FrameCount,
+                            req.Id,
+                            req.Peer
+                        );
+                        await channel.Writer.WriteAsync(raw, cancellationToken);
+                        receivedCount += 1;
+                    }
+
+                    channel.Writer.Complete();
                 }
-                else
-                {
-                    _logger.Debug(
-                        "Failed to send {RequestId} to {Peer}.",
-                        req.Id,
-                        req.Peer);
-
-                    throw new SendMessageFailException(
-                        $"Failed to send {req.Message} to {req.Peer}.", req.Peer);
-                }
-
-                foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
-                {
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken
-                    );
-
-                    _logger.Verbose(
-                        "Received a raw message with {FrameCount} frames as a reply to " +
-                        "request {RequestId} from {Peer}.",
-                        raw.FrameCount,
-                        req.Id,
-                        req.Peer
-                    );
-                    await channel.Writer.WriteAsync(raw, cancellationToken);
-                    receivedCount += 1;
-                }
-
-                channel.Writer.Complete();
             }
             catch (Exception e)
             {
@@ -901,7 +904,10 @@ namespace Libplanet.Net.Transports
                     await Task.Delay(1000);
                 }
 
-                Interlocked.Decrement(ref _socketCount);
+                if (dealer is { })
+                {
+                    Interlocked.Decrement(ref _socketCount);
+                }
 
                 _logger
                     .ForContext("Tag", "Metric")
@@ -962,7 +968,7 @@ namespace Libplanet.Net.Transports
         {
             const string errMsg =
                 "Failed to send and receive replies from {Peer} for request " +
-                "{Message} {RequestId}.";
+                "{Message} {RequestId}.";g
             _logger.Error(innerException, errMsg, peer, message, reqId);
             return new CommunicationFailException(
                 $"Failed to send and receive replies from {peer} for request {message}.",
