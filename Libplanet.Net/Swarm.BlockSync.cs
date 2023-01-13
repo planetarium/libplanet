@@ -490,67 +490,64 @@ namespace Libplanet.Net
 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (deltaBlocks.First is { } deltaBottom)
+                Block<T> bottomBlock = deltaBlocks.First.Value;
+                if (bottomBlock.PreviousHash is { } bp)
                 {
-                    Block<T> bottomBlock = deltaBottom.Value;
-                    if (bottomBlock.PreviousHash is { } bp)
+                    branchpoint = workspace[bp];
+                    _logger.Debug(
+                        "Branchpoint block is #{Index} {Hash}.",
+                        branchpoint.Index,
+                        branchpoint.Hash);
+                    workspace = workspace.Fork(bp, inheritRenderers: true);
+                    chainIds.Add(workspace.Id);
+                    renderBlocks = false;
+                    renderActions = false;
+
+                    try
                     {
-                        branchpoint = workspace[bp];
-                        _logger.Debug(
-                            "Branchpoint block is #{Index} {Hash}.",
-                            branchpoint.Index,
-                            branchpoint.Hash);
-                        workspace = workspace.Fork(bp, inheritRenderers: true);
-                        chainIds.Add(workspace.Id);
-                        renderBlocks = false;
-                        renderActions = false;
-
-                        try
+                        long verifiedBlockCount = 0;
+                        foreach (Block<T> deltaBlock in deltaBlocks)
                         {
-                            long verifiedBlockCount = 0;
-                            foreach (Block<T> deltaBlock in deltaBlocks)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
+                            cancellationToken.ThrowIfCancellationRequested();
 
-                                _logger.Debug(
-                                    "Appending block #{Index} {Hash}",
-                                    deltaBlock.Index,
-                                    deltaBlock.Hash);
-                                workspace.Append(
-                                    deltaBlock,
-                                    evaluateActions: false,
-                                    renderBlocks: renderBlocks,
-                                    renderActions: renderActions
-                                );
-                                progress?.Report(
-                                    new BlockVerificationState
-                                    {
-                                        TotalBlockCount = deltaBlocks.Count,
-                                        VerifiedBlockCount = ++verifiedBlockCount,
-                                        VerifiedBlockHash = deltaBlock.Hash,
-                                    });
-                            }
+                            _logger.Debug(
+                                "Appending block #{Index} {Hash}",
+                                deltaBlock.Index,
+                                deltaBlock.Hash);
+                            workspace.Append(
+                                deltaBlock,
+                                evaluateActions: false,
+                                renderBlocks: renderBlocks,
+                                renderActions: renderActions
+                            );
+                            progress?.Report(
+                                new BlockVerificationState
+                                {
+                                    TotalBlockCount = deltaBlocks.Count,
+                                    VerifiedBlockCount = ++verifiedBlockCount,
+                                    VerifiedBlockHash = deltaBlock.Hash,
+                                });
                         }
-                        catch (Exception e)
-                        {
-                            _logger.Error(
-                                e,
-                                "An exception occurred during appending blocks.");
-                            throw;
-                        }
-
-                        cancellationToken.ThrowIfCancellationRequested();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
-                        BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
-                        throw new SwarmException(
-                            $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
-                            $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
-                        );
+                        _logger.Error(
+                            e,
+                            "An exception occurred during appending blocks.");
+                        throw;
                     }
+
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+                else
+                {
+                    Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
+                    BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
+                    throw new SwarmException(
+                        $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
+                        $"#{last.Index} {last.Hash}) are incompatible with the existing " +
+                        $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
+                    );
                 }
 
                 ExecuteActions(
