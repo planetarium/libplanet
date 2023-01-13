@@ -474,28 +474,18 @@ namespace Libplanet.Net
                     return renderSwap;
                 }
 
-                var deltaBlocks = new LinkedList<Block<T>>();
+                var deltaBlocks = new LinkedList<Block<T>>(new[] { tipCandidate });
                 while (true)
                 {
-                    Block<T> blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<Block<T>> node)
+                    Block<T> b = deltaBlocks.First.Value;
+                    if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                     {
-                        Block<T> b = node.Value;
-                        if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
-                        {
-                            blockToAdd = workspace.Store.GetBlock<T>(p);
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        deltaBlocks.AddFirst(workspace.Store.GetBlock<T>(p));
                     }
                     else
                     {
-                        blockToAdd = tipCandidate;
+                        break;
                     }
-
-                    deltaBlocks.AddFirst(blockToAdd);
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
