@@ -61,6 +61,9 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count wrongly.
+    [[#2708]]
+
 ### Dependencies
 
 ### CLI tools
@@ -84,6 +87,7 @@ To be released.
 [#2701]: https://github.com/planetarium/libplanet/pull/2701
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
+[#2708]: https://github.com/planetarium/libplanet/pull/2708
 
 
 Version 0.45.4
