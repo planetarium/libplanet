@@ -78,9 +78,9 @@ namespace Libplanet.Blockchain
 
                 Block<T> oldTip = Tip, newTip = other.Tip;
 
-                ImmutableList<Block<T>> rewindPath =
+                IReadOnlyList<BlockHash> rewindPath =
                     GetRewindPath(this, branchpoint.Hash);
-                ImmutableList<Block<T>> fastForwardPath =
+                IReadOnlyList<BlockHash> fastForwardPath =
                     GetFastForwardPath(other, branchpoint.Hash);
 
                 // If there is no rewind, it is not considered as a reorg.
@@ -154,8 +154,8 @@ namespace Libplanet.Blockchain
             Block<T> oldTip,
             Block<T> newTip,
             Block<T> branchpoint,
-            IReadOnlyList<Block<T>> rewindPath,
-            IReadOnlyList<Block<T>> fastForwardPath,
+            IReadOnlyList<BlockHash> rewindPath,
+            IReadOnlyList<BlockHash> fastForwardPath,
             StateCompleterSet<T> stateCompleters)
         {
             // If there is no rewind, it is not considered as a reorg.
@@ -215,7 +215,7 @@ namespace Libplanet.Blockchain
             Block<T> oldTip,
             Block<T> newTip,
             Block<T> branchpoint,
-            IReadOnlyList<Block<T>> rewindPath,
+            IReadOnlyList<BlockHash> rewindPath,
             StateCompleterSet<T> stateCompleters)
         {
             if (render && ActionRenderers.Any())
@@ -225,8 +225,9 @@ namespace Libplanet.Blockchain
 
                 long count = 0;
 
-                foreach (Block<T> block in rewindPath)
+                foreach (BlockHash hash in rewindPath)
                 {
+                    Block<T> block = Store.GetBlock<T>(hash);
                     ImmutableList<ActionEvaluation> evaluations =
                         ActionEvaluator.Evaluate(block, stateCompleters)
                             .ToImmutableList().Reverse();
@@ -248,7 +249,7 @@ namespace Libplanet.Blockchain
             Block<T> oldTip,
             Block<T> newTip,
             Block<T> branchpoint,
-            IReadOnlyList<Block<T>> fastForwardPath,
+            IReadOnlyList<BlockHash> fastForwardPath,
             StateCompleterSet<T> stateCompleters)
         {
             if (render && ActionRenderers.Any())
@@ -256,8 +257,9 @@ namespace Libplanet.Blockchain
                 _logger.Debug("Rendering actions in new chain.");
 
                 long count = 0;
-                foreach (Block<T> block in fastForwardPath)
+                foreach (BlockHash hash in fastForwardPath)
                 {
+                    Block<T> block = Store.GetBlock<T>(hash);
                     ImmutableList<ActionEvaluation> evaluations =
                         ActionEvaluator.Evaluate(block, stateCompleters).ToImmutableList();
 
@@ -384,15 +386,15 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Generates a list of <see cref="Block{T}"/>s to traverse starting from
+        /// Generates a list of <see cref="BlockHash"/>es to traverse starting from
         /// the tip of <paramref name="chain"/> to reach <paramref name="targetHash"/>.
         /// </summary>
         /// <param name="chain">The <see cref="BlockChain{T}"/> to traverse.</param>
         /// <param name="targetHash">The target <see cref="BlockHash"/> to reach.</param>
         /// <returns>
-        /// An <see cref="ImmutableList"/> of <see cref="Block{T}"/>s to traverse from
+        /// An <see cref="IReadOnlyList{T}"/> of <see cref="BlockHash"/>es to traverse from
         /// the tip of <paramref name="chain"/> to reach <paramref name="targetHash"/> excluding
-        /// the <see cref="Block{T}"/> with <paramref name="targetHash"/> as its hash.
+        /// <paramref name="targetHash"/>.
         /// </returns>
         /// <remarks>
         /// <para>
@@ -402,7 +404,7 @@ namespace Libplanet.Blockchain
         /// As the genesis is always fixed, returned results never include the genesis.
         /// </para>
         /// </remarks>
-        private static ImmutableList<Block<T>> GetRewindPath(
+        private static IReadOnlyList<BlockHash> GetRewindPath(
             BlockChain<T> chain,
             BlockHash targetHash)
         {
@@ -412,35 +414,33 @@ namespace Libplanet.Blockchain
                     $"Given chain {chain.Id} must contain target hash {targetHash}");
             }
 
-            Block<T> target = chain[targetHash];
-            List<Block<T>> path = new List<Block<T>>();
-
-            for (
-                Block<T> current = chain.Tip;
-                current.Index > target.Index && current.PreviousHash is { } ph;
-                current = chain[ph])
+            long target = chain[targetHash].Index;
+            List<BlockHash> path = new List<BlockHash>();
+            for (long idx = chain.Tip.Index; idx > target; idx--)
             {
-                path.Add(current);
+                path.Add(chain.Store.IndexBlockHash(chain.Id, idx) ??
+                    throw new NullReferenceException(
+                        $"Chain {chain.Id} is missing block #{idx}"));
             }
 
-            return path.ToImmutableList();
+            return path;
         }
 
         /// <summary>
-        /// Generates a list of <see cref="Block{T}"/>s to traverse starting from
+        /// Generates a list of <see cref="BlockHash"/>es to traverse starting from
         /// <paramref name="originHash"/> to reach the tip of <paramref name="chain"/>.
         /// </summary>
         /// <param name="chain">The <see cref="BlockChain{T}"/> to traverse.</param>
         /// <param name="originHash">The <see cref="BlockHash"/> to start from.</param>
         /// <returns>
-        /// An <see cref="ImmutableList"/> of <see cref="Block{T}"/>s to traverse
+        /// An <see cref="IReadOnlyList{T}"/> of <see cref="BlockHash"/>es to traverse
         /// to reach the tip of <paramref name="chain"/> from <paramref name="originHash"/>
-        /// excluding the <see cref="Block{T}"/> with <paramref name="originHash"/> as its hash.
+        /// excluding <paramref name="originHash"/>.
         /// </returns>
         /// <remarks>
         /// This is a reverse of <see cref="GetRewindPath"/>.
         /// </remarks>
-        private static ImmutableList<Block<T>> GetFastForwardPath(
+        private static IReadOnlyList<BlockHash> GetFastForwardPath(
             BlockChain<T> chain,
             BlockHash originHash)
         {
@@ -450,7 +450,7 @@ namespace Libplanet.Blockchain
                     $"Given chain {chain.Id} must contain origin hash {originHash}");
             }
 
-            return GetRewindPath(chain, originHash).Reverse();
+            return GetRewindPath(chain, originHash).Reverse().ToList();
         }
 
         /// <summary>
