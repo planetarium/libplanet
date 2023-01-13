@@ -490,16 +490,9 @@ namespace Libplanet.Net
                             break;
                         }
                     }
-                    else if (BlockChain.Policy.CanonicalChainComparer.Compare(
-                        tipCandidate, tempTip) <= 0)
-                    {
-                        blockToAdd = tipCandidate;
-                    }
                     else
                     {
-                        // Received chain's topmost block is not canonical.
-                        _logger.Debug("Received block is not canonical.");
-                        break;
+                        blockToAdd = tipCandidate;
                     }
 
                     deltaBlocks.AddFirst(blockToAdd);
