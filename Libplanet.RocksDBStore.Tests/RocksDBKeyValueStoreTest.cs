@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Libplanet.Tests.Store.Trie;
 using Xunit;
 
@@ -22,6 +23,17 @@ namespace Libplanet.RocksDBStore.Tests
             {
                 throw new SkipException("RocksDB is not available.");
             }
+        }
+
+        [SkippableFact]
+        public void ThrowObjectDisposedExceptionAfterDispose()
+        {
+            _rocksDbKeyValueStore.Dispose();
+            Assert.Throws<ObjectDisposedException>(() => _rocksDbKeyValueStore.Exists(default));
+            Assert.Throws<ObjectDisposedException>(() => _rocksDbKeyValueStore.ListKeys().First());
+            Assert.Throws<ObjectDisposedException>(() => _rocksDbKeyValueStore.Delete(default));
+            Assert.Throws<ObjectDisposedException>(() => _rocksDbKeyValueStore.Get(default));
+            Assert.Throws<ObjectDisposedException>(() => _rocksDbKeyValueStore.Set(default));
         }
 
         public void Dispose()

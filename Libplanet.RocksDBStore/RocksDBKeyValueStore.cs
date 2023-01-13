@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -94,12 +95,19 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())
-            ?? throw new KeyNotFoundException($"No such key: ${key}.");
+        public byte[] Get(in KeyBytes key)
+        {
+            CheckDisposed();
+
+            return _keyValueDb.Get(key.ToByteArray())
+                ?? throw new KeyNotFoundException($"No such key: ${key}.");
+        }
 
         /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
         public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
         {
+            CheckDisposed();
+
             byte[][] keyArray = keys.Select(k => k.ToByteArray()).ToArray();
             KeyValuePair<byte[], byte[]?>[] pairs = _keyValueDb.MultiGet(keyArray);
             var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
@@ -117,12 +125,16 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value)
         {
+            CheckDisposed();
+
             _keyValueDb.Put(key.ToByteArray(), value);
         }
 
         /// <inheritdoc/>
         public void Set(IDictionary<KeyBytes, byte[]> values)
         {
+            CheckDisposed();
+
             using var writeBatch = new WriteBatch();
 
             foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
@@ -136,12 +148,16 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public void Delete(in KeyBytes key)
         {
+            CheckDisposed();
+
             _keyValueDb.Remove(key.ToByteArray());
         }
 
         /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
         public void Delete(IEnumerable<KeyBytes> keys)
         {
+            CheckDisposed();
+
             foreach (KeyBytes key in keys)
             {
                 _keyValueDb.Remove(key.ToByteArray());
@@ -159,16 +175,30 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public bool Exists(in KeyBytes key) =>
-            _keyValueDb.Get(key.ToByteArray()) is { };
+        public bool Exists(in KeyBytes key)
+        {
+            CheckDisposed();
+
+            return _keyValueDb.Get(key.ToByteArray()) is { };
+        }
 
         /// <inheritdoc/>
         public IEnumerable<KeyBytes> ListKeys()
         {
+            CheckDisposed();
+
             using Iterator it = _keyValueDb.NewIterator();
             for (it.SeekToFirst(); it.Valid(); it.Next())
             {
                 yield return new KeyBytes(it.Key());
+            }
+        }
+
+        private void CheckDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(RocksDBKeyValueStore));
             }
         }
     }
