@@ -63,6 +63,9 @@ To be released.
 
  -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count wrongly.
     [[#2708]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore` became to
+    throw `ObjectDisposedException` when accessed after disposing.
+    [[#2677], [#2712]]
 
 ### Dependencies
 
@@ -81,6 +84,7 @@ To be released.
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
 [#2653]: https://github.com/planetarium/libplanet/pull/2653
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
+[#2677]: https://github.com/planetarium/libplanet/pull/2677
 [#2690]: https://github.com/planetarium/libplanet/pull/2690
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
 [#2699]: https://github.com/planetarium/libplanet/pull/2699
@@ -88,6 +92,7 @@ To be released.
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
 [#2708]: https://github.com/planetarium/libplanet/pull/2708
+[#2712]: https://github.com/planetarium/libplanet/pull/2712
 
 
 Version 0.45.4
