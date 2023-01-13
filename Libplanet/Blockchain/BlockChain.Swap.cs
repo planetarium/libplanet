@@ -89,28 +89,17 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    IEnumerable<long> LongRange(long start, long count)
-                    {
-                        for (long i = 0; i < count; i++)
-                        {
-                            yield return start + i;
-                        }
-                    }
+                    HashSet<TxId> GetTxIdsWithRange(
+                        BlockChain<T> chain, IReadOnlyList<BlockHash> hashes) =>
+                            new HashSet<TxId>(hashes.SelectMany(
+                                hash => chain[hash].Transactions.Select(tx => tx.Id)));
 
-                    ImmutableHashSet<Transaction<T>>
-                        GetTxsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end) =>
-                            LongRange(start.Index + 1, end.Index - start.Index)
-                            .SelectMany(index => chain[index].Transactions)
-                            .ToImmutableHashSet();
-
-                    // It assumes reorg is small size. If it was big, this may be heavy task.
-                    ImmutableHashSet<Transaction<T>> txsToStage =
-                        GetTxsWithRange(this, branchpoint, Tip);
-                    ImmutableHashSet<Transaction<T>> txsToUnstage =
-                        GetTxsWithRange(other, branchpoint, other.Tip);
-                    foreach (Transaction<T> tx in txsToStage)
+                    // It assumes reorg is small size.  If it is big, this may be heavy task.
+                    HashSet<TxId> txIdsToStage = GetTxIdsWithRange(this, rewindPath);
+                    HashSet<TxId> txIdsToUnstage = GetTxIdsWithRange(other, fastForwardPath);
+                    foreach (TxId txId in txIdsToStage)
                     {
-                        StagePolicy.Stage(this, tx);
+                        StagePolicy.Stage(this, Store.GetTransaction<T>(txId));
                     }
 
                     Store.SetCanonicalChainId(other.Id);
@@ -118,9 +107,9 @@ namespace Libplanet.Blockchain
                     Id = other.Id;
 
                     _blocks = new BlockSet<T>(Store);
-                    foreach (Transaction<T> tx in txsToUnstage)
+                    foreach (TxId txId in txIdsToUnstage)
                     {
-                        StagePolicy.Unstage(this, tx.Id);
+                        StagePolicy.Unstage(this, txId);
                     }
 
                     TipChanged?.Invoke(this, (oldTip, newTip));
