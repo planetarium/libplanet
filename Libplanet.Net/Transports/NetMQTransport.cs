@@ -504,20 +504,30 @@ namespace Libplanet.Net.Transports
 
             List<BoundPeer> boundPeers = peers.ToList();
             Task.Run(
-                async () =>
-                {
-                    await boundPeers.ParallelForEachAsync(
-                        peer => SendMessageAsync(
-                            peer,
-                            message,
-                            TimeSpan.FromSeconds(1),
-                            CancellationToken.None
-                        ),
-                        CancellationToken.None
-                    );
-                },
+                async () => await boundPeers.ParallelForEachAsync(
+                    async peer =>
+                    {
+                        try
+                        {
+                            await SendMessageAsync(
+                                peer,
+                                message,
+                                TimeSpan.FromSeconds(1),
+                                CancellationToken.None
+                            );
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.Verbose(
+                                e,
+                                $"An unexpected exception occurred on {nameof(BroadcastMessage)}()"
+                            );
+                        }
+                    },
+                    CancellationToken.None
+                ),
                 CancellationToken.None
-            );
+            ).Ignore();
 
             _logger.Debug(
                 "Broadcasting message {Message} as {AsPeer} to {PeerCount} peers",
