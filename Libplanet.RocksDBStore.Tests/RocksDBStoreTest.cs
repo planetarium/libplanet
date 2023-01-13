@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,6 +33,33 @@ namespace Libplanet.RocksDBStore.Tests
                 throw new SkipException("RocksDB is not available.");
             }
         }
+
+        public static IEnumerable<object[]> StoreOps
+            => new List<Action<RocksDBStore>>
+            {
+                s => s.AppendIndex(default, default),
+                s => s.IterateIndexes(default, 0, 1).First(),
+                s => s.ContainsBlock(default),
+                s => s.ContainsTransaction(default),
+                s => s.CountBlocks(),
+                s => s.CountIndex(default),
+                s => s.DeleteBlock(default),
+                s => s.DeleteChainId(default),
+                s => s.ForkBlockIndexes(default, default, default),
+                s => s.ForkTxNonces(default, default),
+                s => s.GetBlockDigest(default),
+                s => s.GetTxExecution(default, default),
+                s => s.GetTxNonce(default, default),
+                s => s.IncreaseTxNonce(default, default),
+                s => s.IndexBlockHash(default, default),
+                s => s.IterateBlockHashes().First(),
+                s => s.ListChainIds().First(),
+                s => s.ListTxNonces(default).First(),
+                s => s.PruneOutdatedChains(),
+                s => s.PutTxExecution(default(TxSuccess)),
+                s => s.PutTxExecution(default(TxFailure)),
+                s => s.GetCanonicalChainId(),
+            }.Select(f => new object[] { f });
 
         protected override ITestOutputHelper TestOutputHelper { get; }
 
@@ -271,6 +299,17 @@ namespace Libplanet.RocksDBStore.Tests
                 chainDb?.Dispose();
                 Directory.Delete(path, true);
             }
+        }
+
+        [SkippableTheory]
+        [MemberData(nameof(StoreOps))]
+        public void ThrowObjecteDisposedExceptionAfterDispose(Action<RocksDBStore> action)
+        {
+            var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
+            var store = new RocksDBStore(path);
+            store.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => action(store));
         }
 
         private long ToInt64(byte[] value)

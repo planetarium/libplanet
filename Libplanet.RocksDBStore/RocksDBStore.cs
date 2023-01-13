@@ -376,6 +376,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<Guid> ListChainIds()
         {
+            CheckDisposed();
+
             foreach (var it in IterateDb(_chainDb, ChainIdKeyPrefix))
             {
                 var guid = new Guid(it.Value());
@@ -391,6 +393,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
+            CheckDisposed();
+
             _indexCache.Remove(chainId);
             if (HasFork(chainId))
             {
@@ -466,6 +470,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc />
         public override Guid? GetCanonicalChainId()
         {
+            CheckDisposed();
+
             try
             {
                 byte[] bytes = _chainDb.Get(CanonicalChainIdIdKey);
@@ -485,6 +491,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc />
         public override void SetCanonicalChainId(Guid chainId)
         {
+            CheckDisposed();
+
             try
             {
                 byte[] bytes = chainId.ToByteArray();
@@ -500,6 +508,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long CountIndex(Guid chainId)
         {
+            CheckDisposed();
+
             try
             {
                 byte[] bytes = _chainDb.Get(IndexCountKey(chainId));
@@ -518,6 +528,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
         public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
         {
+            CheckDisposed();
+
             if (_indexCache.TryGetValue(chainId, out LruCache<(int, int?), List<BlockHash>> ic) &&
                 ic.TryGetValue((offset, limit), out List<BlockHash> cached))
             {
@@ -538,11 +550,17 @@ namespace Libplanet.RocksDBStore
 
         /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
         public override BlockHash? IndexBlockHash(Guid chainId, long index)
-            => IndexBlockHash(chainId, index, false);
+        {
+            CheckDisposed();
+
+            return IndexBlockHash(chainId, index, false);
+        }
 
         /// <inheritdoc cref="BaseStore.AppendIndex(Guid, BlockHash)"/>
         public override long AppendIndex(Guid chainId, BlockHash hash)
         {
+            CheckDisposed();
+
             long index = CountIndex(chainId);
             try
             {
@@ -579,6 +597,8 @@ namespace Libplanet.RocksDBStore
             BlockHash branchpoint
         )
         {
+            CheckDisposed();
+
             BlockHash[] bottoms = IterateIndexes(sourceChainId, 0, 1, true).ToArray();
             BlockHash? genesisHash = bottoms.Any() ? bottoms[0] : (BlockHash?)null;
 
@@ -622,6 +642,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
+            CheckDisposed();
+
             if (_txCache.TryGetValue(txid, out object cachedTx))
             {
                 return (Transaction<T>)cachedTx;
@@ -667,6 +689,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutTransaction<T>(Transaction<T> tx)
         {
+            CheckDisposed();
+
             if (_txCache.ContainsKey(tx.Id))
             {
                 return;
@@ -711,6 +735,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override bool ContainsTransaction(TxId txId)
         {
+            CheckDisposed();
+
             try
             {
                 if (_txCache.ContainsKey(txId))
@@ -733,6 +759,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.IterateBlockHashes()"/>
         public override IEnumerable<BlockHash> IterateBlockHashes()
         {
+            CheckDisposed();
+
             byte[] prefix = BlockKeyPrefix;
 
             foreach (Iterator it in IterateDb(_blockIndexDb, prefix))
@@ -746,6 +774,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
         public override BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
+            CheckDisposed();
+
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
             {
                 return cachedDigest;
@@ -796,6 +826,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
+            CheckDisposed();
+
             if (_blockCache.ContainsKey(block.Hash))
             {
                 return;
@@ -849,6 +881,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.DeleteBlock(BlockHash)"/>
         public override bool DeleteBlock(BlockHash blockHash)
         {
+            CheckDisposed();
+
             byte[] key = BlockKey(blockHash);
 
             if (!(_blockIndexDb.Get(key) is byte[] blockDbNameByte))
@@ -889,6 +923,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.ContainsBlock(BlockHash)"/>
         public override bool ContainsBlock(BlockHash blockHash)
         {
+            CheckDisposed();
+
             try
             {
                 if (_blockCache.ContainsKey(blockHash))
@@ -911,6 +947,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
         public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
+            CheckDisposed();
+
             _txIdBlockHashIndexDb.Put(
                 TxIdBlockHashIndexKey(txId, blockHash),
                 blockHash.ToByteArray()
@@ -920,6 +958,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
         public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
+            CheckDisposed();
+
             _txIdBlockHashIndexDb.Remove(
                 TxIdBlockHashIndexKey(txId, blockHash)
             );
@@ -928,6 +968,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.IterateTxIdBlockHashIndex(TxId)"/>
         public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
         {
+            CheckDisposed();
+
             var prefix = TxIdBlockHashIndexTxIdKey(txId);
             foreach (var it in IterateDb(_txIdBlockHashIndexDb, prefix))
             {
@@ -936,22 +978,32 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
-        public override void PutTxExecution(TxSuccess txSuccess) =>
+        public override void PutTxExecution(TxSuccess txSuccess)
+        {
+            CheckDisposed();
+
             _txExecutionDb.Put(
                 TxExecutionKey(txSuccess),
                 Codec.Encode(SerializeTxExecution(txSuccess))
             );
+        }
 
         /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
-        public override void PutTxExecution(TxFailure txFailure) =>
+        public override void PutTxExecution(TxFailure txFailure)
+        {
+            CheckDisposed();
+
             _txExecutionDb.Put(
                 TxExecutionKey(txFailure),
                 Codec.Encode(SerializeTxExecution(txFailure))
             );
+        }
 
         /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>
         public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
         {
+            CheckDisposed();
+
             byte[] key = TxExecutionKey(blockHash, txid);
             if (_txExecutionDb.Get(key) is { } bytes)
             {
@@ -964,6 +1016,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
+            CheckDisposed();
+
             byte[] prefix = TxNonceKey(chainId);
             foreach (Iterator it in IterateDb(_chainDb, prefix))
             {
@@ -979,6 +1033,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
+            CheckDisposed();
+
             try
             {
                 byte[] key = TxNonceKey(chainId, address);
@@ -998,6 +1054,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
+            CheckDisposed();
+
             try
             {
                 long nextNonce = GetTxNonce(chainId, signer) + delta;
@@ -1018,6 +1076,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long CountBlocks()
         {
+            CheckDisposed();
+
             return IterateBlockHashes().LongCount();
         }
 
@@ -1033,14 +1093,15 @@ namespace Libplanet.RocksDBStore
                     _blockPerceptionDb?.Dispose();
                     _txExecutionDb?.Dispose();
                     _txIdBlockHashIndexDb?.Dispose();
-                    foreach (var db in _txDbCache.Values)
+
+                    foreach (RocksDb db in _txDbCache.Values)
                     {
                         db.Dispose();
                     }
 
                     _txDbCache.Clear();
 
-                    foreach (var db in _blockDbCache.Values)
+                    foreach (RocksDb db in _blockDbCache.Values)
                     {
                         db.Dispose();
                     }
@@ -1058,6 +1119,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
+            CheckDisposed();
+
             var writeBatch = new WriteBatch();
             bool exist = false;
             try
@@ -1094,6 +1157,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc />
         public override void PruneOutdatedChains(bool noopWithoutCanon = false)
         {
+            CheckDisposed();
+
             if (!(GetCanonicalChainId() is { } ccid))
             {
                 if (noopWithoutCanon)
@@ -1453,5 +1518,13 @@ namespace Libplanet.RocksDBStore
 
         private bool IsDeletionMarked(Guid chainId)
             => _chainDb.Get(DeletedChainKey(chainId)) is { };
+
+        private void CheckDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(RocksDBStore));
+            }
+        }
     }
 }
