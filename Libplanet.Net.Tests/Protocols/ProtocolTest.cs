@@ -101,8 +101,8 @@ namespace Libplanet.Net.Tests.Protocols
             }
             finally
             {
-                await transportA.StopAsync(TimeSpan.Zero);
-                await transportB.StopAsync(TimeSpan.Zero);
+                await transportA.StopAsync();
+                await transportB.StopAsync();
             }
         }
 
@@ -131,8 +131,8 @@ namespace Libplanet.Net.Tests.Protocols
             }
             finally
             {
-                await transportA.StopAsync(TimeSpan.Zero);
-                await transportB.StopAsync(TimeSpan.Zero);
+                await transportA.StopAsync();
+                await transportB.StopAsync();
             }
         }
 
@@ -152,7 +152,7 @@ namespace Libplanet.Net.Tests.Protocols
             Assert.Contains(transportB.AsPeer, transportA.Peers);
             Assert.Contains(transportC.AsPeer, transportA.Peers);
 
-            await transportC.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync();
             await Assert.ThrowsAsync<TimeoutException>(
                 () => transportA.AddPeersAsync(
                     new[] { transportC.AsPeer },
@@ -206,7 +206,7 @@ namespace Libplanet.Net.Tests.Protocols
                 transportC.Table.Clear();
 
                 await transportB.AddPeersAsync(new[] { transportC.AsPeer }, null);
-                await transportC.StopAsync(TimeSpan.Zero);
+                await transportC.StopAsync();
                 await transportA.BootstrapAsync(new[] { transportB.AsPeer });
                 Assert.Contains(transportB.AsPeer, transportA.Peers);
                 Assert.DoesNotContain(transportC.AsPeer, transportA.Peers);
@@ -231,7 +231,7 @@ namespace Libplanet.Net.Tests.Protocols
             await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
             Assert.Single(transportA.Peers);
 
-            await transportB.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync();
             await Task.Delay(100);
             await transportA.Protocol.RefreshTableAsync(TimeSpan.Zero, default);
             Assert.Empty(transportA.Peers);
@@ -291,7 +291,7 @@ namespace Libplanet.Net.Tests.Protocols
             Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
             Assert.DoesNotContain(transportC.AsPeer, transport.Peers);
 
-            await transportA.StopAsync(TimeSpan.Zero);
+            await transportA.StopAsync();
             await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default);
             await transport.Protocol.CheckReplacementCacheAsync(default);
 
@@ -326,8 +326,8 @@ namespace Libplanet.Net.Tests.Protocols
             Assert.Contains(transportA.AsPeer, transport.Peers);
             Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
 
-            await transportA.StopAsync(TimeSpan.Zero);
-            await transportB.StopAsync(TimeSpan.Zero);
+            await transportA.StopAsync();
+            await transportB.StopAsync();
 
             await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
             await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default);

@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Transports
                 );
                 Assert.IsType<PongMsg>(reply);
 
-                await transport.StopAsync(TimeSpan.Zero, CancellationToken.None);
+                await transport.StopAsync(CancellationToken.None);
             }
             finally
             {

@@ -137,9 +137,7 @@ namespace Libplanet.Net.Tests.Protocols
             await ProcessRuntime(token);
         }
 
-        public async Task StopAsync(
-            TimeSpan waitFor,
-            CancellationToken cancellationToken = default)
+        public Task StopAsync(CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -153,7 +151,7 @@ namespace Libplanet.Net.Tests.Protocols
                 Running = false;
             }
 
-            await Task.Delay(waitFor, cancellationToken);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc cref="ITransport.WaitForRunningAsync"/>

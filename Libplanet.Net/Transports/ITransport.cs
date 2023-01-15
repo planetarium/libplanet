@@ -68,14 +68,12 @@ namespace Libplanet.Net.Transports
         /// <summary>
         /// Stops running a transport layer as to put it in a not <see cref="Running"/> state.
         /// </summary>
-        /// <param name="waitFor">The <see cref="TimeSpan"/> to delay before actual stopping.
-        /// </param>
         /// <param name="cancellationToken">The cancellation token to propagate a notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable <see cref="Task"/> without a value.</returns>
         /// <exception cref="ObjectDisposedException">Thrown when the instance is already disposed.
         /// </exception>
-        Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default);
+        Task StopAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Waits until this <see cref="ITransport"/> instance gets started to run.

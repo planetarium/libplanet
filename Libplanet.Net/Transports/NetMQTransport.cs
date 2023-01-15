@@ -249,28 +249,23 @@ namespace Libplanet.Net.Transports
         }
 
         /// <inheritdoc/>
-        public async Task StopAsync(
-            TimeSpan waitFor,
-            CancellationToken cancellationToken = default
-        )
+        public async Task StopAsync(CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            _stoppingTokenSource?.Cancel();
-            await _stoppingEvent.WaitAsync(cancellationToken);
+            if (Running)
+            {
+                _stoppingTokenSource?.Cancel();
+                await _stoppingEvent.WaitAsync(cancellationToken);
+            }
         }
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            if (Running)
-            {
-                StopAsync(TimeSpan.Zero).WaitWithoutException();
-            }
-
             if (!_disposed)
             {
                 _requests.Writer.TryComplete();

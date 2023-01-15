@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await InitializeAsync(transport);
                 Assert.True(transport.Running);
-                await transport.StopAsync(TimeSpan.Zero);
+                await transport.StopAsync();
                 Assert.False(transport.Running);
 
                 await InitializeAsync(transport);
@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Transports
                 await Assert.ThrowsAsync<ObjectDisposedException>(
                     async () => await transport.StartAsync());
                 await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.StopAsync(TimeSpan.Zero));
+                    async () => await transport.StopAsync());
                 await Assert.ThrowsAsync<ObjectDisposedException>(
                     async () => await transport.SendMessageAsync(
                         boundPeer,
@@ -318,7 +318,7 @@ namespace Libplanet.Net.Tests.Transports
                 // For context change
                 await Task.Delay(100);
 
-                await transportA.StopAsync(TimeSpan.Zero);
+                await transportA.StopAsync();
                 Assert.False(transportA.Running);
                 await Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
                 Assert.True(t.IsCanceled);

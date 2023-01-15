@@ -80,6 +80,8 @@ Released on Janurary 18th, 2023.
  -  (Libplanet.Net) Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
     `HostOptions` as a combined parameter instead of taking
     `string?`, `IEnumerable<IceServer>?`, and `int?` separately.  [[#2701]]
+ -  (Libplanet.Net) Removed `waitFor` parameter from `ITransport.StopAsync()`
+    and `NetMQTransport.StopAsync()` methods.  [[#2714]]
 
 ### Added APIs
 
@@ -153,8 +155,9 @@ Released on Janurary 18th, 2023.
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
 [#2708]: https://github.com/planetarium/libplanet/pull/2708
-[#2718]: https://github.com/planetarium/libplanet/pull/2718
+[#2714]: https://github.com/planetarium/libplanet/pull/2714
 [#2716]: https://github.com/planetarium/libplanet/pull/2716
+[#2718]: https://github.com/planetarium/libplanet/pull/2718
 [#2719]: https://github.com/planetarium/libplanet/pull/2719
 
 
