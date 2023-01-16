@@ -75,8 +75,6 @@ namespace Libplanet.Net.Tests.Transports
                     await swarm.StopAsync();
                 }
             }
-
-            NetMQConfig.Cleanup(false);
         }
 
         private static int FreeTcpPort()
