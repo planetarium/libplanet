@@ -18,13 +18,8 @@ using static Libplanet.Tests.TestUtils;
 namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
-    public class NetMQMessageCodecTest : IDisposable
+    public class NetMQMessageCodecTest : IAssemblyFixture<NetMQConfigFixture>
     {
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
-        }
-
         [Theory]
         [InlineData(Message.MessageType.Ping)]
         [InlineData(Message.MessageType.Pong)]

@@ -15,10 +15,8 @@ using Xunit.Abstractions;
 namespace Libplanet.Net.Tests.Transports
 {
     [Collection("NetMQConfiguration")]
-    public class NetMQTransportTest : TransportTest, IDisposable
+    public class NetMQTransportTest : TransportTest, IAssemblyFixture<NetMQConfigFixture>
     {
-        private bool _disposed;
-
         public NetMQTransportTest(ITestOutputHelper testOutputHelper)
         {
             TransportConstructor = (
@@ -41,11 +39,6 @@ namespace Libplanet.Net.Tests.Transports
                 .CreateLogger()
                 .ForContext<NetMQTransportTest>();
             Logger = Log.ForContext<NetMQTransportTest>();
-        }
-
-        ~NetMQTransportTest()
-        {
-            Dispose(false);
         }
 
         [SkippableFact]
@@ -117,25 +110,6 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 NetMQConfig.MaxSockets = previousMaxSocket;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
-
-                _disposed = true;
             }
         }
 

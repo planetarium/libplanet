@@ -12,13 +12,8 @@ using Xunit;
 namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
-    public class BlockHashesTest : IDisposable
+    public class BlockHashesTest : IAssemblyFixture<NetMQConfigFixture>
     {
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
-        }
-
         [Fact]
         public void Constructor()
         {

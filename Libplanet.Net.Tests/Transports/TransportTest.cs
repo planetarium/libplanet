@@ -11,7 +11,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Sdk;
@@ -63,10 +62,6 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 transport.Dispose();
-                if (transport is NetMQTransport)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
             }
         }
 

@@ -23,7 +23,6 @@ using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using NetMQ;
 using Nito.AsyncEx.Synchronous;
 using Serilog;
 using xRetry;
@@ -37,7 +36,7 @@ using static Libplanet.Tests.TestUtils;
 namespace Libplanet.Net.Tests
 {
     [Collection("NetMQConfiguration")]
-    public partial class SwarmTest : IDisposable
+    public partial class SwarmTest : IDisposable, IAssemblyFixture<NetMQConfigFixture>
     {
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
@@ -1745,7 +1744,6 @@ namespace Libplanet.Net.Tests
                     }
 
                     _logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
-                    NetMQConfig.Cleanup(false);
                 }
 
                 _disposed = true;

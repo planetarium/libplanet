@@ -14,13 +14,8 @@ using static Libplanet.Tests.TestUtils;
 namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
-    public class MessageTest : IDisposable
+    public class MessageTest : IAssemblyFixture<NetMQConfigFixture>
     {
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
-        }
-
         [Fact]
         public void BlockHeaderMessage()
         {

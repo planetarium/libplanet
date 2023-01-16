@@ -7,7 +7,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using NetMQ;
 using Xunit;
 using Xunit.Sdk;
 using static Libplanet.Tests.TestUtils;
@@ -15,13 +14,8 @@ using static Libplanet.Tests.TestUtils;
 namespace Libplanet.Net.Tests.Transports
 {
     [Collection("NetMQConfiguration")]
-    public class BoundPeerExtensionsTest : IDisposable
+    public class BoundPeerExtensionsTest : IAssemblyFixture<NetMQConfigFixture>
     {
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
-        }
-
         [Fact(Timeout = 60 * 1000)]
         public async Task QueryAppProtocolVersion()
         {
