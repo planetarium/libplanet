@@ -740,7 +740,15 @@ namespace Libplanet.Net.Transports
                 _logger.Debug("Request taken; {Count} requests left.", left);
 
                 _ = SynchronizationContext.Current.PostAsync(
-                    () => ProcessRequest(req, req.CancellationToken)
+                    async () =>
+                    {
+                        using CancellationTokenSource lcts =
+                            CancellationTokenSource.CreateLinkedTokenSource(
+                                cancellationToken,
+                                req.CancellationToken
+                            );
+                        await ProcessRequest(req, lcts.Token);
+                    }
                 );
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
