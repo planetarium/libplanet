@@ -183,7 +183,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB, default);
 
                 cts.CancelAfter(TimeSpan.FromSeconds(1));
-                await Assert.ThrowsAsync<TaskCanceledException>(
+                await Assert.ThrowsAnyAsync<OperationCanceledException>(
                     async () => await transportA.SendMessageAsync(
                         transportB.AsPeer,
                         new PingMsg(),
@@ -320,7 +320,7 @@ namespace Libplanet.Net.Tests.Transports
 
                 await transportA.StopAsync();
                 Assert.False(transportA.Running);
-                await Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
+                await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await t);
                 Assert.True(t.IsCanceled);
             }
             finally

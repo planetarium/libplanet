@@ -467,8 +467,7 @@ namespace Libplanet.Net.Transports
                 _logger.Debug(
                     oce2, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
 
-                // Wrapping to match the previous behavior of `SendMessageAsync()`.
-                throw new TaskCanceledException(dbgMsg, oce2);
+                throw;
             }
             catch (ChannelClosedException ce)
             {

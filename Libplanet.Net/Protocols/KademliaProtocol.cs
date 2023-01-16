@@ -145,7 +145,7 @@ namespace Libplanet.Net.Protocols
             {
                 _logger.Debug(e, "Ping timed out.");
             }
-            catch (TaskCanceledException e)
+            catch (OperationCanceledException e)
             {
                 _logger.Debug(
                     e, "Task cancelled during {FName}().", nameof(AddPeersAsync));
@@ -377,11 +377,6 @@ namespace Libplanet.Net.Protocols
                         {
                             break;
                         }
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        throw new TaskCanceledException(
-                            $"Task is cancelled during {nameof(FindSpecificPeerAsync)}()");
                     }
                     catch (PingTimeoutException)
                     {

@@ -604,7 +604,7 @@ namespace Libplanet.Net.Tests
             {
                 Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
             }
-            catch (AggregateException ae) when (ae.InnerException is TaskCanceledException)
+            catch (AggregateException ae) when (ae.InnerException is OperationCanceledException)
             {
                 Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
             }

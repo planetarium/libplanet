@@ -355,7 +355,7 @@ namespace Libplanet.Net.Tests
             );
 
             cts.Cancel();
-            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await task);
         }
 
         [Fact(Timeout = Timeout)]

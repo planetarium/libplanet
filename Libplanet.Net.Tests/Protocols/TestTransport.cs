@@ -250,7 +250,7 @@ namespace Libplanet.Net.Tests.Protocols
                     _logger.Debug(msg);
                     throw new TimeoutException(msg);
                 }
-                catch (TaskCanceledException)
+                catch (OperationCanceledException)
                 {
                     _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
                 }
