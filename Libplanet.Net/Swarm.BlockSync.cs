@@ -327,9 +327,8 @@ namespace Libplanet.Net
                 long totalBlocksToDownload = 0L;
                 long receivedBlockCount = 0L;
                 Block<T> tipCandidate = initialTip;
-
                 Block<T> tempTip = tipCandidate;
-                Block<T> branchpoint = null;
+                Block<T> branchpoint;
 
                 var demandBlockHashes = GetDemandBlockHashes(
                     workspace,
@@ -437,8 +436,7 @@ namespace Libplanet.Net
                     );
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
-                    if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(block, tempTip) > 0)
+                    if (BlockChain.Policy.CanonicalChainComparer.Compare(block, tempTip) > 0)
                     {
                         tempTip = block;
                     }
@@ -467,108 +465,79 @@ namespace Libplanet.Net
                     tipCandidate?.Index,
                     tipCandidate?.Hash);
 
-                if (tipCandidate is null)
+                if (tipCandidate is { } tc && tc.Index == 0)
                 {
-                    // If there is no blocks in the network (or no consensus at least)
-                    // it doesn't need to receive states from other peers at all.
-                    return renderSwap;
+                    // FIXME: This is here to keep logical equivalence through refactoring.
+                    // This part of the code is likely unreachable and the exception message
+                    // is also likely to be incoherent.
+                    BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
+                    throw new SwarmException(
+                        $"Downloaded tip candidate #{tc.Index} {tc.Hash} " +
+                        $"is unusable for the the existing chain #0 {g}.");
                 }
 
-                var deltaBlocks = new LinkedList<Block<T>>();
+                // NOTE: All blocks in deltaBlocks will have non-null previousHash.
+                var deltaBlocks = new LinkedList<Block<T>>(new[] { tipCandidate });
                 while (true)
                 {
-                    Block<T> blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<Block<T>> node)
+                    Block<T> b = deltaBlocks.First();
+                    if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                     {
-                        Block<T> b = node.Value;
-                        if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
-                        {
-                            blockToAdd = workspace.Store.GetBlock<T>(p);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    else if (BlockChain.Policy.CanonicalChainComparer.Compare(
-                        tipCandidate, tempTip) <= 0)
-                    {
-                        blockToAdd = tipCandidate;
+                        deltaBlocks.AddFirst(workspace.Store.GetBlock<T>(p));
                     }
                     else
                     {
-                        // Received chain's topmost block is not canonical.
-                        _logger.Debug("Received block is not canonical.");
                         break;
                     }
-
-                    deltaBlocks.AddFirst(blockToAdd);
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (deltaBlocks.First is { } deltaBottom)
+                branchpoint = workspace[deltaBlocks.First().PreviousHash.Value];
+                _logger.Debug(
+                    "Branchpoint block is #{Index} {Hash}.",
+                    branchpoint.Index,
+                    branchpoint.Hash);
+                workspace = workspace.Fork(branchpoint.Hash, inheritRenderers: true);
+                chainIds.Add(workspace.Id);
+                renderBlocks = false;
+                renderActions = false;
+
+                try
                 {
-                    Block<T> bottomBlock = deltaBottom.Value;
-                    if (bottomBlock.PreviousHash is { } bp)
+                    long verifiedBlockCount = 0;
+                    foreach (Block<T> deltaBlock in deltaBlocks)
                     {
-                        branchpoint = workspace[bp];
-                        _logger.Debug(
-                            "Branchpoint block is #{Index} {Hash}.",
-                            branchpoint.Index,
-                            branchpoint.Hash);
-                        workspace = workspace.Fork(bp, inheritRenderers: true);
-                        chainIds.Add(workspace.Id);
-                        renderBlocks = false;
-                        renderActions = false;
-
-                        try
-                        {
-                            long verifiedBlockCount = 0;
-                            foreach (Block<T> deltaBlock in deltaBlocks)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-
-                                _logger.Debug(
-                                    "Appending block #{Index} {Hash}",
-                                    deltaBlock.Index,
-                                    deltaBlock.Hash);
-                                workspace.Append(
-                                    deltaBlock,
-                                    evaluateActions: false,
-                                    renderBlocks: renderBlocks,
-                                    renderActions: renderActions
-                                );
-                                progress?.Report(
-                                    new BlockVerificationState
-                                    {
-                                        TotalBlockCount = deltaBlocks.Count,
-                                        VerifiedBlockCount = ++verifiedBlockCount,
-                                        VerifiedBlockHash = deltaBlock.Hash,
-                                    });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(
-                                e,
-                                "An exception occurred during appending blocks.");
-                            throw;
-                        }
-
                         cancellationToken.ThrowIfCancellationRequested();
-                    }
-                    else
-                    {
-                        Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
-                        BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
-                        throw new SwarmException(
-                            $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
-                            $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
+
+                        _logger.Debug(
+                            "Appending block #{Index} {Hash}",
+                            deltaBlock.Index,
+                            deltaBlock.Hash);
+                        workspace.Append(
+                            deltaBlock,
+                            evaluateActions: false,
+                            renderBlocks: renderBlocks,
+                            renderActions: renderActions
                         );
+                        progress?.Report(
+                            new BlockVerificationState
+                            {
+                                TotalBlockCount = deltaBlocks.Count,
+                                VerifiedBlockCount = ++verifiedBlockCount,
+                                VerifiedBlockHash = deltaBlock.Hash,
+                            });
                     }
                 }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "An exception occurred during appending blocks.");
+                    throw;
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
 
                 ExecuteActions(
                     workspace,
