@@ -222,7 +222,7 @@ namespace Libplanet.Net
                     }
                     catch (OperationCanceledException)
                     {
-                        // Ignore rest canellations
+                        // Ignore rest cancellations
                     }
 
                     _backgroundTasks = null;

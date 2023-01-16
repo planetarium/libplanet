@@ -237,15 +237,11 @@ namespace Libplanet.Net.Transports
                     _logger.Error(
                         e, "An unexpected exception occurred during poller.Run().");
                 }
-                finally
-                {
-                    _routerPoller.Dispose();
-                    _stoppingEvent.Set();
-
-                    // Notify cancellation to awaiters
-                    stoppingToken.ThrowIfCancellationRequested();
-                }
             });
+            _stoppingEvent.Set();
+
+            // Notify cancellation to awaiters
+            stoppingToken.ThrowIfCancellationRequested();
         }
 
         /// <inheritdoc/>
@@ -276,13 +272,13 @@ namespace Libplanet.Net.Transports
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
 
-                if (_router is { } router && !router.IsDisposed)
-                {
-                    // We omitted _router.Unbind() with intention due to hangs.
-                    // See also: https://github.com/planetarium/libplanet/pull/2311
-                    _router.Dispose();
-                    _turnClient?.Dispose();
-                }
+                _routerPoller?.Dispose();
+                _replyQueue?.Dispose();
+
+                // We omitted _router.Unbind() with intention due to hangs.
+                // See also: https://github.com/planetarium/libplanet/pull/2311
+                _router?.Dispose();
+                _turnClient?.Dispose();
 
                 _disposed = true;
             }
