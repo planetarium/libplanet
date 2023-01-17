@@ -45,10 +45,10 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
-        /// By default, <see cref="Lifetime"/> is configured to 3 hours.
+        /// By default, <see cref="Lifetime"/> is set to 10 minutes.
         /// </summary>
         public VolatileStagePolicy()
-            : this(TimeSpan.FromHours(3))
+            : this(TimeSpan.FromSeconds(10 * 60))
         {
         }
 
