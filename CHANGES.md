@@ -84,6 +84,9 @@ To be released.
 
  -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count wrongly.
     [[#2708]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()` method
+    hadn't disposed of internal sockets properly when connecting failed.
+    [[#2719]]
 
 ### Dependencies
 
@@ -111,6 +114,7 @@ To be released.
 [#2708]: https://github.com/planetarium/libplanet/pull/2708
 [#2718]: https://github.com/planetarium/libplanet/pull/2718
 [#2716]: https://github.com/planetarium/libplanet/pull/2716
+[#2719]: https://github.com/planetarium/libplanet/pull/2719
 
 
 Version 0.45.4
