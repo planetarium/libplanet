@@ -28,6 +28,16 @@ To be released.
     [[#2653]]
      - `IActionTypeLoader.Load()`.
      - `IActionTypeLoader.LoadAllActionTypes()`.
+ -  Added `IAccountStateDelta.SetValidator(PublicKey, BigInteger)` method.
+    [[#2716]]
+ -  Added `IAccountStateView.GetValidatorSet()` method.  [[#2716]]
+ -  Added `IBlockChainStates.GetValidatorSet(BlockHash,
+    ValidatorSetStateCompleter<T>)` method.  [[#2716]]
+     -  Added `BlockChain.GetValidatorSet(BlockHash,
+        ValidatorSetStateCompleter<T>)` method.
+     -  Added `BlockChainStates.GetValidatorSet(BlockHash,
+        ValidatorSetStateCompleter<T>)` method.
+ -  Added `StateCompleterSet.ValidatorSetStateCompleter` property.  [[#2716]]
  -  (Libplanet.Net) Removed `workers` parameter from `NetMQTransport.Create()`
     method and `Swarm<T>()` constructor.  [[#2690]]
  -  (Libplanet.Net) Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
@@ -56,6 +66,14 @@ To be released.
  -  Added `IActionTypeLoaderContext` interface.  [[#2653]]
  -  Added `AppProtocolVersionOptions` class.  [[#2693]]
  -  Added `HostOptions` class.  [[#2701]]
+ -  Added `Validator` class.  [[#2716]]
+ -  Added `ValidatorSet` class.  [[#2716]]
+ -  Added `SetValidator` class.  [[#2716]]
+ -  Added `ValidatorSetGetter` delegate.  [[#2716]]
+ -  Added `ValidatorSetStateCompleter<T>` delegate.  [[#2716]]
+ -  Added `ValidatorSetStateCompleters<T>` class.  [[#2716]]
+ -  (Libplanet.Explorer) Added `ValidatorType` class.  [[#2716]]
+ -  (Libplanet.Explorer) Added `validators` query in `StateQuery`.  [[#2716]]
 
 ### Behavioral changes
 
@@ -92,6 +110,7 @@ To be released.
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
 [#2708]: https://github.com/planetarium/libplanet/pull/2708
 [#2718]: https://github.com/planetarium/libplanet/pull/2718
+[#2716]: https://github.com/planetarium/libplanet/pull/2716
 
 
 Version 0.45.4
