@@ -7,7 +7,6 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Serilog;
 
 namespace Libplanet.Action
@@ -301,23 +300,23 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power)
+        public IAccountStateDelta SetValidator(Validator validator)
         {
-            Log.Debug("Update {Key} to validator set.", validatorKey);
-            var validatorSet = GetValidatorSet().Remove(validatorKey);
+            Log.Debug("Update {Key} to validator set.", validator.PublicKey);
+            var validatorSet = GetValidatorSet().Remove(validator.PublicKey);
 
-            if (power.Sign < 0)
+            if (validator.Power.Sign < 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(power),
+                    nameof(validator.Power),
                     "The field \"power\" cannot be negative.");
             }
-            else if (power.Sign == 0)
+            else if (validator.Power.Sign == 0)
             {
                 return UpdateValidatorSet(validatorSet);
             }
 
-            return UpdateValidatorSet(validatorSet.Add(new Validator(validatorKey, power)));
+            return UpdateValidatorSet(validatorSet.Add(validator));
         }
 
         /// <summary>

@@ -359,7 +359,7 @@ namespace Libplanet.Tests.Action
         public virtual void SetValidator()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _init.SetValidator(new PrivateKey().PublicKey, -1)
+                _init.SetValidator(new Validator(new PrivateKey().PublicKey, -1))
             );
 
             var initCount = _keys.Length;
@@ -371,29 +371,29 @@ namespace Libplanet.Tests.Action
             Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
 
             // nothing happens trying to delete non existing validator
-            delta = delta.SetValidator(key3, 0);
+            delta = delta.SetValidator(new Validator(key3, 0));
             Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
 
             // add key 3 to the validator set
-            delta = delta.SetValidator(key3, 1);
+            delta = delta.SetValidator(new Validator(key3, 1));
             Assert.Equal(initCount + 1, delta.GetValidatorSet().TotalCount);
             Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
             Assert.False(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
 
             // add key 4 to the validator set
-            delta = delta.SetValidator(key4, 1);
+            delta = delta.SetValidator(new Validator(key4, 1));
             Assert.Equal(initCount + 2, delta.GetValidatorSet().TotalCount);
             Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
             Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
 
             // remove key 3 from the validator set
-            delta = delta.SetValidator(key3, 0);
+            delta = delta.SetValidator(new Validator(key3, 0));
             Assert.Equal(initCount + 1, delta.GetValidatorSet().TotalCount);
             Assert.False(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
             Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
 
             // re-add key 3 to the validator set
-            delta = delta.SetValidator(key3, 1);
+            delta = delta.SetValidator(new Validator(key3, 1));
             Assert.Equal(initCount + 2, delta.GetValidatorSet().TotalCount);
             Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
             Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
@@ -401,9 +401,9 @@ namespace Libplanet.Tests.Action
             // remove all keys from the validator set
             delta = _keys.Aggregate(
                 delta,
-                (current, key) => current.SetValidator(key.PublicKey, 0));
-            delta = delta.SetValidator(key3, 0);
-            delta = delta.SetValidator(key4, 0);
+                (current, key) => current.SetValidator(new Validator(key.PublicKey, 0)));
+            delta = delta.SetValidator(new Validator(key3, 0));
+            delta = delta.SetValidator(new Validator(key4, 0));
             Assert.Equal(0, delta.GetValidatorSet().TotalCount);
         }
 
