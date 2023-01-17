@@ -303,17 +303,10 @@ namespace Libplanet.Action
         public IAccountStateDelta SetValidator(Validator validator)
         {
             Log.Debug(
-                "Write validator {PublicKey} {Power} to validator set.",
+                "Update validator set with validator {PublicKey} {Power}",
                 validator.PublicKey,
                 validator.Power);
-            var validatorSet = GetValidatorSet().Remove(validator.PublicKey);
-
-            if (validator.Power == BigInteger.Zero)
-            {
-                return UpdateValidatorSet(validatorSet);
-            }
-
-            return UpdateValidatorSet(validatorSet.Add(validator));
+            return UpdateValidatorSet(GetValidatorSet().Update(validator));
         }
 
         /// <summary>

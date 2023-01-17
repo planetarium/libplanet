@@ -42,10 +42,10 @@ namespace Libplanet.Consensus
             Power = power;
         }
 
-        public Validator(Bencodex.Types.Dictionary dict)
+        public Validator(Bencodex.Types.Dictionary encoded)
             : this(
-                new PublicKey(dict.GetValue<Binary>(PublicKeyKey).ByteArray),
-                new BigInteger(dict.GetValue<Binary>(PowerKey).ToByteArray()))
+                new PublicKey(encoded.GetValue<Binary>(PublicKeyKey).ByteArray),
+                new BigInteger(encoded.GetValue<Binary>(PowerKey).ToByteArray()))
         {
         }
 
