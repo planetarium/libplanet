@@ -29,19 +29,38 @@ namespace Libplanet.Consensus
         /// to <see cref="Validators"/>.
         /// </summary>
         /// <param name="validators">The <see cref="List{T}"/> of validators to use.</param>
+        /// <exception cref="ArgumentException">Thrown when one of the following is true:
+        /// <list type="bullet">
+        ///     <item><description>There is a duplicate among <see cref="PublicKey"/>s for
+        ///     <paramref name="validators"/>.
+        ///     </description></item>
+        ///     <item><description>There is a <see cref="Validator"/> with zero power.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
         public ValidatorSet(List<Validator> validators)
         {
+            if (validators
+                .Select(validators => validators.PublicKey)
+                .Distinct()
+                .Count() != validators.Count)
+            {
+                throw new ArgumentException("All public keys for validators must be unique.");
+            }
+            else if (validators.Any(validator => validator.Power == BigInteger.Zero))
+            {
+                throw new ArgumentException("All validators must have positive power.");
+            }
+
             Validators = validators
                 .OrderBy(validator => validator.PublicKey.ToAddress())
                 .ToImmutableList();
         }
 
+        // FIXME: Order should be checked when deserializing.
         public ValidatorSet(Bencodex.Types.List encoded)
+            : this(encoded.Select(elem => new Validator((Bencodex.Types.Dictionary)elem)).ToList())
         {
-            Validators = encoded
-                .Select(value => new Validator((Bencodex.Types.Dictionary)value))
-                .OrderBy(validator => validator.PublicKey.ToAddress())
-                .ToImmutableList();
         }
 
         /// <summary>
@@ -120,37 +139,42 @@ namespace Libplanet.Consensus
         public bool Contains(Validator validator) => Validators.Contains(validator);
 
         /// <summary>
-        /// Create new <see cref="ValidatorSet"/> that given validator has been added.
-        /// Original <see cref="ValidatorSet"/> does not change.
+        /// Creates a new <see cref="ValidatorSet"/> that has been updated with
+        /// given <paramref name="validator"/> according to the following rule:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <paramref name="validator"/>'s power is zero, the <see cref="Validator"/>
+        ///         with the same <see cref="PublicKey"/> is removed, if it exists.
+        ///         If no matching <see cref="Validator"/> is found, no change is made.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="validator"/>'s power is positive, the <see cref="Validator"/>
+        ///         with the same <see cref="PublicKey"/> is overwritten, if it exists.
+        ///         If no matching <see cref="Validator"/> is found, <paramref name="validator"/>
+        ///         is added to the set.
+        ///     </description></item>
+        /// </list>
         /// </summary>
-        /// <param name="validator">The validator to be added.</param>
-        /// <returns>New <see cref="ValidatorSet"/> that given validator has been added.</returns>
+        /// <param name="validator">The <see cref="Validator"/> to update.</param>
+        /// <returns>New <see cref="ValidatorSet"/> updated with
+        /// given <paramref name="validator"/>.</returns>
         [Pure]
-        public ValidatorSet Add(Validator validator)
-            => new ValidatorSet(Validators.Add(validator).ToList());
+        public ValidatorSet Update(Validator validator)
+        {
+            var updated = Validators.ToList();
 
-        /// <summary>
-        /// Create new <see cref="ValidatorSet"/> that given validator has been removed.
-        /// Original <see cref="ValidatorSet"/> does not change.
-        /// On removal, check given validator's publickey and power.
-        /// </summary>
-        /// <param name="validator">The validator to be removed.</param>
-        /// <returns>New <see cref="ValidatorSet"/> that given validator has been removed.</returns>
-        [Pure]
-        public ValidatorSet Remove(Validator validator)
-            => new ValidatorSet(Validators.Remove(validator).ToList());
+            updated.RemoveAll(v => v.PublicKey.Equals(validator.PublicKey));
 
-        /// <summary>
-        /// Create new <see cref="ValidatorSet"/>
-        /// that validator of given public key has been removed.
-        /// Original <see cref="ValidatorSet"/> does not change.
-        /// </summary>
-        /// <param name="publicKey">The <see cref="PublicKey"/> of validator to be removed.</param>
-        /// <returns>New <see cref="ValidatorSet"/> that
-        /// validator of given public key has been removed.</returns>
-        [Pure]
-        public ValidatorSet Remove(PublicKey publicKey)
-            => new ValidatorSet(Validators.RemoveAll(v => v.PublicKey.Equals(publicKey)).ToList());
+            if (validator.Power == BigInteger.Zero)
+            {
+                return new ValidatorSet(updated);
+            }
+            else
+            {
+                updated.Add(validator);
+                return new ValidatorSet(updated);
+            }
+        }
 
         /// <inheritdoc/>
         public bool Equals(ValidatorSet? other) =>
