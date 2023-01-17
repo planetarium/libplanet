@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Blocks;
@@ -111,18 +112,87 @@ namespace Libplanet.Consensus
         }
 
         /// <summary>
-        /// Checks if the validator is a member of <see cref="ValidatorSet"/>.
+        /// Checks if given <paramref name="validator"/> is a member of <see cref="ValidatorSet"/>.
+        /// Checks both of <see cref="Validator.PublicKey"/> and <see cref="Validator.Power"/>.
         /// </summary>
-        /// <param name="validator">The validator to check.</param>
+        /// <param name="validator">The <see cref="Validator"/> to check.</param>
         /// <returns><see langword="true"/> if given <paramref name="validator"/>
         /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
         public bool Contains(Validator validator) => Validators.Contains(validator);
 
+        /// <summary>
+        /// Checks if <see cref="Validator"/> of given <paramref name="publicKey"/>
+        /// is a member of <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="publicKey">The <see cref="PublicKey"/> to check.</param>
+        /// <returns><see langword="true"/>
+        /// if <see cref="Validator"/> of given <paramref name="publicKey"/>
+        /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
+        public bool PublicKeyContains(PublicKey publicKey)
+            => Validators.Exists(v => v.PublicKeyEquals(publicKey));
+
+        /// <summary>
+        /// Checks if given <paramref name="validator"/> is a member of <see cref="ValidatorSet"/>.
+        /// Checks only <see cref="Validator.PublicKey"/>.
+        /// </summary>
+        /// <param name="validator">The <see cref="Validator"/> to check.</param>
+        /// <returns><see langword="true"/> if given <paramref name="validator"/>
+        /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
+        public bool PublicKeyContains(Validator validator)
+            => Validators.Exists(v => v.PublicKeyEquals(validator));
+
+        /// <summary>
+        /// Checks if given <paramref name="other"/> is same as this <see cref="ValidatorSet"/>.
+        /// Checks only <see cref="Validator.PublicKey"/>.
+        /// </summary>
+        /// <param name="other">The <see cref="ValidatorSet"/> to check.</param>
+        /// <returns><see langword="true"/>
+        /// if <see cref="PublicKey"/>s of given <paramref name="other"/>
+        /// is equals to <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
+        public bool PublicKeyEquals(ValidatorSet? other) =>
+            other is ValidatorSet validators && PublicKeys.SequenceEqual(validators.PublicKeys);
+
+        /// <summary>
+        /// Create new <see cref="ValidatorSet"/> that given validator has been added.
+        /// Original <see cref="ValidatorSet"/> does not change.
+        /// </summary>
+        /// <param name="validator">The validator to be added.</param>
+        /// <returns>New <see cref="ValidatorSet"/> that given validator has been added.</returns>
+        [Pure]
+        public ValidatorSet Add(Validator validator)
+            => new ValidatorSet(Validators.Add(validator).ToList());
+
+        /// <summary>
+        /// Create new <see cref="ValidatorSet"/> that given validator has been removed.
+        /// Original <see cref="ValidatorSet"/> does not change.
+        /// On removal, check given validator's publickey and power.
+        /// </summary>
+        /// <param name="validator">The validator to be removed.</param>
+        /// <returns>New <see cref="ValidatorSet"/> that given validator has been removed.</returns>
+        [Pure]
+        public ValidatorSet Remove(Validator validator)
+            => new ValidatorSet(Validators.Remove(validator).ToList());
+
+        /// <summary>
+        /// Create new <see cref="ValidatorSet"/>
+        /// that validator of given public key has been removed.
+        /// Original <see cref="ValidatorSet"/> does not change.
+        /// </summary>
+        /// <param name="publicKey">The <see cref="PublicKey"/> of validator to be removed.</param>
+        /// <returns>New <see cref="ValidatorSet"/> that
+        /// validator of given public key has been removed.</returns>
+        [Pure]
+        public ValidatorSet Remove(PublicKey publicKey)
+            => new ValidatorSet(Validators.RemoveAll(v => v.PublicKeyEquals(publicKey)).ToList());
+
+        /// <inheritdoc/>
         public bool Equals(ValidatorSet? other) =>
             other is ValidatorSet validators && Validators.SequenceEqual(validators.Validators);
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj) => obj is ValidatorSet other && Equals(other);
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             int hashCode = 17;
