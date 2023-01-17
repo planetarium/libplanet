@@ -100,21 +100,12 @@ namespace Libplanet.Consensus
             return !(obj == other);
         }
 
-        public static bool operator ==(Validator obj, PublicKey other)
-        {
-            return obj.Equals(other);
-        }
-
-        public static bool operator !=(Validator obj, PublicKey other)
-        {
-            return !(obj == other);
-        }
-
         public byte[] ToByteArray()
         {
             return ByteArray.ToArray();
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is Validator other)
@@ -125,28 +116,52 @@ namespace Libplanet.Consensus
             return false;
         }
 
+        /// <inheritdoc/>
         public bool Equals(Validator? other)
+        {
+            return PublicKey.Equals(other?.PublicKey) && Power.Equals(other?.Power);
+        }
+
+        /// <summary>
+        /// Check if <see cref="Validator"/>'s <see cref="PublicKey"/>
+        /// is equals to <paramref name="other"/>'s <see cref="PublicKey"/>.
+        /// </summary>
+        /// <param name="other"><see cref="Validator"/> to compare.</param>
+        /// <returns><see langword="true"/> if <see cref="PublicKey"/> are same,
+        /// <see langword="false"/> otherwise.</returns>
+        public bool PublicKeyEquals(Validator? other)
         {
             return PublicKey.Equals(other?.PublicKey);
         }
 
-        public bool Equals(PublicKey? other)
+        /// <summary>
+        /// Check if <see cref="Validator"/>'s <see cref="PublicKey"/>
+        /// is equals to <paramref name="other"/>.
+        /// </summary>
+        /// <param name="other"><see cref="Crypto.PublicKey"/> to compare.</param>
+        /// <returns><see langword="true"/> if <see cref="Crypto.PublicKey"/> are same,
+        /// <see langword="false"/> otherwise.</returns>
+        public bool PublicKeyEquals(PublicKey? other)
         {
             return PublicKey.Equals(other);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return PublicKey.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override string ToString() => $"{PublicKey}:{Power}";
 
+        /// <inheritdoc/>
         int IComparable<Validator>.CompareTo(Validator? other)
         {
             return PublicKey.ToAddress().CompareTo(other?.PublicKey.ToAddress());
         }
 
+        /// <inheritdoc/>
         int IComparable.CompareTo(object? obj)
         {
             if (obj is Validator other)
