@@ -65,7 +65,7 @@ namespace Libplanet.Action.Sys
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
         public IAccountStateDelta Execute(IActionContext context)
         {
-            return context.PreviousStates.SetValidator(ValidatorPublicKey, Power);
+            return context.PreviousStates.SetValidator(new Validator(ValidatorPublicKey, Power));
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>

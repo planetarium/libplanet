@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
@@ -233,8 +231,7 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
 
-            public IAccountStateDelta SetValidator(
-                PublicKey validatorKey, BigInteger power) => this;
+            public IAccountStateDelta SetValidator(Validator validator) => this;
         }
     }
 }
