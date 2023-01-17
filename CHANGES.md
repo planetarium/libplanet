@@ -59,6 +59,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed the default `VolatileStagePolicy<T>.Lifetime` from 3 hours
+    to 10 minutes.  [[#2718]]
+
 ### Bug fixes
 
  -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count wrongly.
@@ -88,6 +91,7 @@ To be released.
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
 [#2708]: https://github.com/planetarium/libplanet/pull/2708
+[#2718]: https://github.com/planetarium/libplanet/pull/2718
 
 
 Version 0.45.4
