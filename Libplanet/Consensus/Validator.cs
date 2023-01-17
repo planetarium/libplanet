@@ -100,7 +100,7 @@ namespace Libplanet.Consensus
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return PublicKey.GetHashCode();
+            return HashCode.Combine(PublicKey, Power);
         }
 
         /// <inheritdoc/>
