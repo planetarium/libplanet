@@ -33,7 +33,7 @@ namespace Libplanet.Consensus
         public ValidatorSet(List<Validator> validators)
         {
             Validators = validators
-                .OrderBy(validator => validator)
+                .OrderBy(validator => validator.PublicKey.ToAddress())
                 .ToImmutableList();
         }
 
@@ -41,7 +41,7 @@ namespace Libplanet.Consensus
         {
             Validators = encoded
                 .Select(value => new Validator(((Bencodex.Types.Binary)value).ByteArray))
-                .OrderBy(validator => validator)
+                .OrderBy(validator => validator.PublicKey.ToAddress())
                 .ToImmutableList();
         }
 
@@ -121,38 +121,6 @@ namespace Libplanet.Consensus
         public bool Contains(Validator validator) => Validators.Contains(validator);
 
         /// <summary>
-        /// Checks if <see cref="Validator"/> of given <paramref name="publicKey"/>
-        /// is a member of <see cref="ValidatorSet"/>.
-        /// </summary>
-        /// <param name="publicKey">The <see cref="PublicKey"/> to check.</param>
-        /// <returns><see langword="true"/>
-        /// if <see cref="Validator"/> of given <paramref name="publicKey"/>
-        /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
-        public bool PublicKeyContains(PublicKey publicKey)
-            => Validators.Exists(v => v.PublicKeyEquals(publicKey));
-
-        /// <summary>
-        /// Checks if given <paramref name="validator"/> is a member of <see cref="ValidatorSet"/>.
-        /// Checks only <see cref="Validator.PublicKey"/>.
-        /// </summary>
-        /// <param name="validator">The <see cref="Validator"/> to check.</param>
-        /// <returns><see langword="true"/> if given <paramref name="validator"/>
-        /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
-        public bool PublicKeyContains(Validator validator)
-            => Validators.Exists(v => v.PublicKeyEquals(validator));
-
-        /// <summary>
-        /// Checks if given <paramref name="other"/> is same as this <see cref="ValidatorSet"/>.
-        /// Checks only <see cref="Validator.PublicKey"/>.
-        /// </summary>
-        /// <param name="other">The <see cref="ValidatorSet"/> to check.</param>
-        /// <returns><see langword="true"/>
-        /// if <see cref="PublicKey"/>s of given <paramref name="other"/>
-        /// is equals to <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
-        public bool PublicKeyEquals(ValidatorSet? other) =>
-            other is ValidatorSet validators && PublicKeys.SequenceEqual(validators.PublicKeys);
-
-        /// <summary>
         /// Create new <see cref="ValidatorSet"/> that given validator has been added.
         /// Original <see cref="ValidatorSet"/> does not change.
         /// </summary>
@@ -183,7 +151,7 @@ namespace Libplanet.Consensus
         /// validator of given public key has been removed.</returns>
         [Pure]
         public ValidatorSet Remove(PublicKey publicKey)
-            => new ValidatorSet(Validators.RemoveAll(v => v.PublicKeyEquals(publicKey)).ToList());
+            => new ValidatorSet(Validators.RemoveAll(v => v.PublicKey.Equals(publicKey)).ToList());
 
         /// <inheritdoc/>
         public bool Equals(ValidatorSet? other) =>
