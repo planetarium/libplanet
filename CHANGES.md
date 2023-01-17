@@ -28,7 +28,7 @@ To be released.
     [[#2653]]
      - `IActionTypeLoader.Load()`.
      - `IActionTypeLoader.LoadAllActionTypes()`.
- -  Added `IAccountStateDelta.SetValidator(PublicKey, BigInteger)` method.
+ -  Added `IAccountStateDelta.SetValidator(Validator)` method.
     [[#2716]]
  -  Added `IAccountStateView.GetValidatorSet()` method.  [[#2716]]
  -  Added `IBlockChainStates.GetValidatorSet(BlockHash,
