@@ -22,8 +22,7 @@ namespace Libplanet.Tests.Action.Sys
             var power = new BigInteger(1);
             var validator = new Validator(publicKey, power);
             var action = new SetValidator(validator);
-            Assert.Equal(publicKey, action.ValidatorPublicKey);
-            Assert.Equal(power, action.Power);
+            Assert.Equal(validator, action.Validator);
         }
 
         [Fact]
@@ -34,25 +33,17 @@ namespace Libplanet.Tests.Action.Sys
             var validator = new Validator(publicKey, power);
             var action = new SetValidator(validator);
             AssertBencodexEqual(
-                Bencodex.Types.Dictionary.Empty
-                    .Add("validator_public_key", publicKey.Format(false))
-                    .Add("power", new BigInteger(1).ToByteArray()),
-                action.PlainValue
-            );
+                Bencodex.Types.Dictionary.Empty.Add("validator", validator.Encoded),
+                action.PlainValue);
         }
 
         [Fact]
         public void Deserialize()
         {
-            var publicKey = new PrivateKey().PublicKey;
-            var power = new BigInteger(1);
-            IValue serialized = Bencodex.Types.Dictionary.Empty
-                .Add("validator_public_key", publicKey.Format(false))
-                .Add("power", new BigInteger(1).ToByteArray());
+            var validator = new Validator(new PrivateKey().PublicKey, new BigInteger(1));
             var action = new SetValidator();
-            action.LoadPlainValue(serialized);
-            Assert.Equal(publicKey, action.ValidatorPublicKey);
-            Assert.Equal(power, action.Power);
+            action.LoadPlainValue(Dictionary.Empty.Add("validator", validator.Encoded));
+            Assert.Equal(validator, action.Validator);
         }
 
         [Fact]
@@ -88,12 +79,6 @@ namespace Libplanet.Tests.Action.Sys
             var action = new SetValidator(validator);
             var nextStates = action.Execute(context);
             Assert.True(nextStates.GetValidatorSet().Contains(validator));
-
-            var negativePowerAction = new SetValidator(publicKey, -1);
-            ArgumentException exc = Assert.Throws<ArgumentOutOfRangeException>(
-                () => negativePowerAction.Execute(context)
-            );
-            Assert.Equal("power", exc.ParamName);
         }
 
         [SkippableFact]
@@ -118,9 +103,11 @@ namespace Libplanet.Tests.Action.Sys
             AssertJsonSerializable(action, @"
                 {
                     ""\ufefftype_id"": ""2"",
-                    ""\ufeffvalues"": {
-                        ""\ufeffpower"": ""0x01"",
-                        ""\ufeffvalidator_public_key"": ""0x04b5a24aa2112720423bad39a0205182379d6f2b33e3487c9ab6cc8fc496f8a5483440efbbef0657ac2ef6c6ee05db06a94532fda7ddc44a1695e5ce1a3d3c76db""
+                    ""\uFEFFvalues"": {
+                        ""\uFEFFvalidator"": {
+                        ""\uFEFFpow"": ""0x01"",
+                        ""\uFEFFpubKey"": ""0x03b5a24aa2112720423bad39a0205182379d6f2b33e3487c9ab6cc8fc496f8a548""
+                        }
                     }
                 }
             ");
