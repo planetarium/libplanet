@@ -299,16 +299,13 @@ namespace Libplanet.Action
 
         public IAccountStateDelta SetValidator(Validator validator)
         {
-            Log.Debug("Update {Key} to validator set.", validator.PublicKey);
+            Log.Debug(
+                "Write validator {PublicKey} {Power} to validator set.",
+                validator.PublicKey,
+                validator.Power);
             var validatorSet = GetValidatorSet().Remove(validator.PublicKey);
 
-            if (validator.Power.Sign < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(validator.Power),
-                    "The field \"power\" cannot be negative.");
-            }
-            else if (validator.Power.Sign == 0)
+            if (validator.Power == BigInteger.Zero)
             {
                 return UpdateValidatorSet(validatorSet);
             }

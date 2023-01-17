@@ -94,7 +94,6 @@ namespace Libplanet.Tests.Action.Sys
                 () => negativePowerAction.Execute(context)
             );
             Assert.Equal("power", exc.ParamName);
-            Assert.Contains("The field \"power\" cannot be negative.", exc.Message);
         }
 
         [SkippableFact]

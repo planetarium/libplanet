@@ -161,8 +161,6 @@ namespace Libplanet.Action
         /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
         /// <returns>A new <see cref="IAccountStateDelta"/> instance with
         /// <paramref name="validator"/> set.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when the given <paramref name="validator"/>'s power is negative.</exception>
         [Pure]
         IAccountStateDelta SetValidator(Validator validator);
     }
