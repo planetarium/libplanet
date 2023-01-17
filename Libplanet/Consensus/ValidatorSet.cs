@@ -39,7 +39,7 @@ namespace Libplanet.Consensus
         public ValidatorSet(Bencodex.Types.List encoded)
         {
             Validators = encoded
-                .Select(value => new Validator(((Bencodex.Types.Binary)value).ByteArray))
+                .Select(value => new Validator((Bencodex.Types.Dictionary)value))
                 .OrderBy(validator => validator.PublicKey.ToAddress())
                 .ToImmutableList();
         }
@@ -89,7 +89,7 @@ namespace Libplanet.Consensus
         public BigInteger OneThirdPower => TotalPower / 3;
 
         public Bencodex.Types.List Encoded => new Bencodex.Types.List(
-            Validators.Select(validator => validator.ByteArray));
+            Validators.Select(validator => validator.Encoded));
 
         /// <summary>
         /// Gets the validator at given <paramref name="index"/>.
