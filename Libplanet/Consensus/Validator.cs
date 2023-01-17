@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -17,6 +16,7 @@ namespace Libplanet.Consensus
     {
         private const string PublicKeyKey = "pubKey";
         private const string PowerKey = "pow";
+        private static Codec _codec = new Codec();
 
         /// <summary>
         /// Creates an instance of <see cref="Validator"/>, with given <paramref name="publicKey"/>
@@ -42,21 +42,10 @@ namespace Libplanet.Consensus
             Power = power;
         }
 
-        public Validator(ImmutableArray<byte> marshaled)
-        {
-            var codec = new Codec();
-            Dictionary dict = (Dictionary)codec.Decode(marshaled.ToArray());
-            PublicKey = new PublicKey(dict.GetValue<Binary>(PublicKeyKey).ByteArray);
-            Power = new BigInteger(dict.GetValue<Binary>(PowerKey).ToByteArray());
-        }
-
-        public Validator(byte[] marshaled)
-            : this(marshaled.ToImmutableArray())
-        {
-        }
-
-        public Validator(Binary marshaled)
-            : this(marshaled.ByteArray)
+        public Validator(Bencodex.Types.Dictionary dict)
+            : this(
+                new PublicKey(dict.GetValue<Binary>(PublicKeyKey).ByteArray),
+                new BigInteger(dict.GetValue<Binary>(PowerKey).ToByteArray()))
         {
         }
 
@@ -66,37 +55,20 @@ namespace Libplanet.Consensus
         public PublicKey PublicKey { get; }
 
         /// <summary>
-        /// A <see cref="Address"/> of validator operator's <see cref="PublicKey"/>.
-        /// </summary>
-        public Address OperatorAddress => PublicKey.ToAddress();
-
-        /// <summary>
         /// The <see langword="Power"/> of validator.
         /// </summary>
         public BigInteger Power { get; }
 
         /// <summary>
-        /// The marshaled byte array of <see cref="Validator"/>.
+        /// A <see cref="Address"/> of validator operator's <see cref="PublicKey"/>.
         /// </summary>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                var codec = new Codec();
-                var dict = Dictionary.Empty;
-                dict = dict.Add(PublicKeyKey, PublicKey.Format(true));
-                if (Power is { } power)
-                {
-                    dict = dict.Add(PowerKey, power.ToByteArray());
-                }
-                else
-                {
-                    dict = dict.Add(PowerKey, BigInteger.MinusOne.ToByteArray());
-                }
+        [JsonIgnore]
+        public Address OperatorAddress => PublicKey.ToAddress();
 
-                return codec.Encode(dict).ToImmutableArray();
-            }
-        }
+        [JsonIgnore]
+        public Bencodex.Types.Dictionary Encoded => Dictionary.Empty
+            .Add(PublicKeyKey, PublicKey.Format(true))
+            .Add(PowerKey, Power.ToByteArray());
 
         public static bool operator ==(Validator obj, Validator other)
         {
@@ -106,11 +78,6 @@ namespace Libplanet.Consensus
         public static bool operator !=(Validator obj, Validator other)
         {
             return !(obj == other);
-        }
-
-        public byte[] ToByteArray()
-        {
-            return ByteArray.ToArray();
         }
 
         /// <inheritdoc/>
