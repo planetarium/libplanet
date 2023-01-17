@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "vwP9Vlm7dfo23TEPOXyjpT81NwIUG0LvVlLau28Wd74="
+          "hash": "2Ez84V32AzjBRtftvi9w91ULa3b0N5fGDDQZ10WC+lU="
         }
       },
       "is_incremental": false,
@@ -717,7 +717,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html",
-          "hash": "9UO6LQbQ7ws1ckSiIrrCsgnglClTAlqVYt7hKkKs/nY="
+          "hash": "dXuS7JYYEUce2YcoS52obBMpdQAJTRt+q2UVZEet7g0="
         }
       },
       "is_incremental": false,
