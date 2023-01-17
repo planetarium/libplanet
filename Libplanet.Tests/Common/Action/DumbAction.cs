@@ -8,6 +8,7 @@ using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Boolean = Bencodex.Types.Boolean;
 
@@ -206,7 +207,8 @@ namespace Libplanet.Tests.Common.Action
             {
                 nextState = Validators.Aggregate(
                     nextState,
-                    (current, validator) => current.SetValidator(validator, BigInteger.One));
+                    (current, validator) =>
+                        current.SetValidator(new Validator(validator, BigInteger.One)));
             }
 
             if (ExecuteRecords.Value is null)

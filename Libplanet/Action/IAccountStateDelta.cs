@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
-using Libplanet.Crypto;
+using Libplanet.Consensus;
 
 namespace Libplanet.Action
 {
@@ -156,20 +155,15 @@ namespace Libplanet.Action
         IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value);
 
         /// <summary>
-        /// Sets the power of the given validator of key <paramref name="validatorKey"/> to
-        /// <paramref name="power"/>. If 0 is given as the power, does not add validator to the
-        /// validator set. If the validator is already exist in the validator set,
-        /// remove the validator from the validator set.
+        /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.
+        /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
         /// </summary>
-        /// <param name="validatorKey">The <see cref="PublicKey"/> of the validator to
-        /// modify its power.</param>
-        /// <param name="power">The <see cref="BigInteger"/>-typed value of the power.
-        /// If 0 is given, the validator will be removed from the validator set.</param>
-        /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
-        /// name="power"/> is set to <paramref name="validatorKey"/>'s power.</returns>
+        /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
+        /// <returns>A new <see cref="IAccountStateDelta"/> instance with
+        /// <paramref name="validator"/> set.</returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when the given <paramref name="power"/> is negative.</exception>
+        /// Thrown when the given <paramref name="validator"/>'s power is negative.</exception>
         [Pure]
-        IAccountStateDelta SetValidator(PublicKey validatorKey, BigInteger power);
+        IAccountStateDelta SetValidator(Validator validator);
     }
 }
