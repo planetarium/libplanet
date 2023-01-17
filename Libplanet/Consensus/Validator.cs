@@ -25,10 +25,19 @@ namespace Libplanet.Consensus
         /// <param name="publicKey">The <see cref="Libplanet.Crypto.PublicKey"/>
         /// of validator operator.</param>
         /// <param name="power">The <see langword="Power"/> of validator operator.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="power"/> is
+        /// negative.</exception>
         public Validator(
             PublicKey publicKey,
             BigInteger power)
         {
+            if (power < BigInteger.Zero)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(power),
+                    $"Given {nameof(power)} cannot be negative: {power}");
+            }
+
             PublicKey = publicKey;
             Power = power;
         }
