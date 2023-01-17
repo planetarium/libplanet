@@ -13,8 +13,7 @@ namespace Libplanet.Consensus
     /// A <see cref="Validator"/> consists of operator's <see cref="PublicKey"/>
     /// and its corresponding <see langword="Power"/>.
     /// </summary>
-    public class Validator
-        : IEquatable<Validator>, IComparable<Validator>, IComparable
+    public class Validator : IEquatable<Validator>
     {
         private const string PublicKeyKey = "pubKey";
         private const string PowerKey = "pow";
@@ -122,30 +121,6 @@ namespace Libplanet.Consensus
             return PublicKey.Equals(other?.PublicKey) && Power.Equals(other?.Power);
         }
 
-        /// <summary>
-        /// Check if <see cref="Validator"/>'s <see cref="PublicKey"/>
-        /// is equals to <paramref name="other"/>'s <see cref="PublicKey"/>.
-        /// </summary>
-        /// <param name="other"><see cref="Validator"/> to compare.</param>
-        /// <returns><see langword="true"/> if <see cref="PublicKey"/> are same,
-        /// <see langword="false"/> otherwise.</returns>
-        public bool PublicKeyEquals(Validator? other)
-        {
-            return PublicKey.Equals(other?.PublicKey);
-        }
-
-        /// <summary>
-        /// Check if <see cref="Validator"/>'s <see cref="PublicKey"/>
-        /// is equals to <paramref name="other"/>.
-        /// </summary>
-        /// <param name="other"><see cref="Crypto.PublicKey"/> to compare.</param>
-        /// <returns><see langword="true"/> if <see cref="Crypto.PublicKey"/> are same,
-        /// <see langword="false"/> otherwise.</returns>
-        public bool PublicKeyEquals(PublicKey? other)
-        {
-            return PublicKey.Equals(other);
-        }
-
         /// <inheritdoc/>
         public override int GetHashCode()
         {
@@ -154,27 +129,5 @@ namespace Libplanet.Consensus
 
         /// <inheritdoc/>
         public override string ToString() => $"{PublicKey}:{Power}";
-
-        /// <inheritdoc/>
-        int IComparable<Validator>.CompareTo(Validator? other)
-        {
-            return PublicKey.ToAddress().CompareTo(other?.PublicKey.ToAddress());
-        }
-
-        /// <inheritdoc/>
-        int IComparable.CompareTo(object? obj)
-        {
-            if (obj is Validator other)
-            {
-                return ((IComparable<Validator>)this).CompareTo(other);
-            }
-
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            throw new ArgumentException(nameof(obj));
-        }
     }
 }
