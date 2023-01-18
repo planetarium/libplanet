@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await InitializeAsync(transport);
                 Assert.True(transport.Running);
-                await transport.StopAsync();
+                await transport.StopAsync().ConfigureAwait(false);
                 Assert.False(transport.Running);
 
                 await InitializeAsync(transport);
@@ -159,7 +159,8 @@ namespace Libplanet.Net.Tests.Transports
                     transportB.AsPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(3),
-                    CancellationToken.None);
+                    CancellationToken.None
+                ).ConfigureAwait(false);
 
                 Assert.IsType<PongMsg>(reply);
             }
@@ -188,7 +189,7 @@ namespace Libplanet.Net.Tests.Transports
                         transportB.AsPeer,
                         new PingMsg(),
                         null,
-                        cts.Token));
+                        cts.Token)).ConfigureAwait(false);
             }
             finally
             {
@@ -213,13 +214,13 @@ namespace Libplanet.Net.Tests.Transports
                         {
                             Identity = message.Identity,
                         },
-                        default);
+                        default).ConfigureAwait(false);
                     await transportB.ReplyMessageAsync(
                         new PongMsg
                         {
                             Identity = message.Identity,
                         },
-                        default);
+                        default).ConfigureAwait(false);
                 }
             });
 
@@ -263,7 +264,7 @@ namespace Libplanet.Net.Tests.Transports
                         transportB.AsPeer,
                         new PingMsg(),
                         TimeSpan.FromSeconds(3),
-                        CancellationToken.None));
+                        CancellationToken.None).ConfigureAwait(false));
                 Assert.True(e.InnerException is TimeoutException ie);
             }
             finally
@@ -309,16 +310,20 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportA);
                 await InitializeAsync(transportB);
 
-                Task t = transportA.SendMessageAsync(
+                Task t = Task.Run(() =>
+                {
+                    return transportA.SendMessageAsync(
                         transportB.AsPeer,
                         new PingMsg(),
                         null,
-                        CancellationToken.None);
+                        CancellationToken.None
+                    );
+                });
 
                 // For context change
                 await Task.Delay(100);
 
-                await transportA.StopAsync();
+                await transportA.StopAsync().ConfigureAwait(false);
                 Assert.False(transportA.Running);
                 await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await t);
                 Assert.True(t.IsCanceled);

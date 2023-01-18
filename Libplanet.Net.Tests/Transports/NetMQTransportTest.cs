@@ -102,10 +102,10 @@ namespace Libplanet.Net.Tests.Transports
                     new PingMsg(),
                     TimeSpan.FromSeconds(1),
                     default
-                );
+                ).ConfigureAwait(false);
                 Assert.IsType<PongMsg>(reply);
 
-                await transport.StopAsync(CancellationToken.None);
+                await transport.StopAsync(CancellationToken.None).ConfigureAwait(false);
             }
             finally
             {

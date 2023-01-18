@@ -166,7 +166,7 @@ namespace Libplanet.Net.Transports
                 appProtocolVersionOptions,
                 hostOptions,
                 messageTimestampBuffer);
-            await transport.Initialize();
+            await transport.Initialize().ConfigureAwait(false);
             return transport;
         }
 
@@ -254,7 +254,7 @@ namespace Libplanet.Net.Transports
             if (Running)
             {
                 _stoppingTokenSource?.Cancel();
-                await _stoppingEvent.WaitAsync(cancellationToken);
+                await _stoppingEvent.WaitAsync(cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -555,7 +555,7 @@ namespace Libplanet.Net.Transports
                 )
             );
 
-            await ev.WaitAsync(cancellationToken);
+            await ev.WaitAsync(cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

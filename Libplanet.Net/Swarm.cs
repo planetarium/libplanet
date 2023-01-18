@@ -191,12 +191,9 @@ namespace Libplanet.Net
             }
         }
 
-        public async Task StopAsync(
+        public Task StopAsync(
             CancellationToken cancellationToken = default
-        )
-        {
-            await StopAsync(TimeSpan.FromSeconds(1), cancellationToken);
-        }
+        ) => StopAsync(TimeSpan.FromSeconds(1), cancellationToken);
 
         public async Task StopAsync(
             TimeSpan waitFor,
@@ -218,7 +215,7 @@ namespace Libplanet.Net
                         .Where(t => !t.IsCanceled && !t.IsCompleted && !t.IsFaulted);
                     try
                     {
-                        await Task.WhenAll(remainingTasks);
+                        await Task.WhenAll(remainingTasks).ConfigureAwait(false);
                     }
                     catch (OperationCanceledException)
                     {

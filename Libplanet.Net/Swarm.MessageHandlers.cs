@@ -219,7 +219,7 @@ namespace Libplanet.Net
                     {
                         Identity = getTxs.Identity,
                     };
-                    await Transport.ReplyMessageAsync(response, default);
+                    await Transport.ReplyMessageAsync(response, default).ConfigureAwait(false);
                 }
                 catch (KeyNotFoundException)
                 {
@@ -287,7 +287,7 @@ namespace Libplanet.Net
                         i,
                         total
                     );
-                    await Transport.ReplyMessageAsync(response, default);
+                    await Transport.ReplyMessageAsync(response, default).ConfigureAwait(false);
                     blocks.Clear();
                 }
 
@@ -306,7 +306,7 @@ namespace Libplanet.Net
                     total,
                     identityHex
                 );
-                await Transport.ReplyMessageAsync(response, default);
+                await Transport.ReplyMessageAsync(response, default).ConfigureAwait(false);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
