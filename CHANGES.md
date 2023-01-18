@@ -84,7 +84,7 @@ To be released.
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
 [#2653]: https://github.com/planetarium/libplanet/pull/2653
 [#2664]: https://github.com/planetarium/libplanet/pull/2664
-[#2677]: https://github.com/planetarium/libplanet/pull/2677
+[#2677]: https://github.com/planetarium/libplanet/issues/2677
 [#2690]: https://github.com/planetarium/libplanet/pull/2690
 [#2693]: https://github.com/planetarium/libplanet/pull/2693
 [#2699]: https://github.com/planetarium/libplanet/pull/2699
