@@ -53,7 +53,6 @@ namespace Libplanet.Net.Transports
 
         static NetMQTransport()
         {
-            NetMQConfig.ThreadPoolSize = 3;
             ForceDotNet.Force();
         }
 
