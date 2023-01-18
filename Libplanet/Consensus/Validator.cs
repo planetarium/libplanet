@@ -60,7 +60,7 @@ namespace Libplanet.Consensus
         public BigInteger Power { get; }
 
         /// <summary>
-        /// A <see cref="Address"/> of validator operator's <see cref="PublicKey"/>.
+        /// An <see cref="Address"/> of the validator operator's <see cref="PublicKey"/>.
         /// </summary>
         [JsonIgnore]
         public Address OperatorAddress => PublicKey.ToAddress();
