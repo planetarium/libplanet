@@ -458,11 +458,11 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            if (message.Remote is BoundPeer peer)
+            // Exclude PingMsg because ReceivePingAsync() does AddPeer() if only peer is reachable.
+            // Additional Contains() condition is added to prevent ping spamming.
+            if (message.Remote is BoundPeer peer && !(message is PingMsg) && !_table.Contains(peer))
             {
-                // Should we update peer status for non-protocol related messages?
-                // (i.e. BlockHashes)
-                AddPeer(peer);
+                await PingAsync(peer, _requestTimeout, default);
             }
         }
 
@@ -645,7 +645,17 @@ namespace Libplanet.Net.Protocols
                 Identity = ping.Identity,
             };
 
-            await _transport.ReplyMessageAsync(pong, default).ConfigureAwait(false);
+            try
+            {
+                await _transport.ReplyMessageAsync(pong, default).ConfigureAwait(false);
+                AddPeer(ping.Remote);
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.Debug(
+                    "{FName}: Received pong, but peer didn't respond back.",
+                    nameof(ReceivePingAsync));
+            }
         }
 
         /// <summary>
