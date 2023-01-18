@@ -718,43 +718,6 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private DealerSocket GetRequestDealerSocket(MessageRequest request)
-        {
-            try
-            {
-                var dealer = new DealerSocket();
-                dealer.Options.DisableTimeWait = true;
-                _logger.Debug("Trying to connect {RequestId}.", request.Id);
-                dealer.Connect(request.Peer.ToNetMQAddress());
-                long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "SocketCount")
-                    .Debug(
-                    "{SocketCount} sockets open for processing request {Message} {RequestId}.",
-                    incrementedSocketCount,
-                    request.Message,
-                    request.Id);
-                return dealer;
-            }
-            catch (NetMQException nme)
-            {
-                const string logMsg =
-                    "{SocketCount} sockets open for processing requests; " +
-                    "failed to create an additional socket for request {Message} {RequestId}.";
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "SocketCount")
-                    .Debug(
-                    nme,
-                    logMsg,
-                    Interlocked.Read(ref _socketCount),
-                    request.Message,
-                    request.Id);
-                throw;
-            }
-        }
-
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
@@ -771,53 +734,83 @@ namespace Libplanet.Net.Transports
                 req.Peer
             );
             int receivedCount = 0;
-            DealerSocket dealer = null;
+            long? incrementedSocketCount = null;
 
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                using (dealer = GetRequestDealerSocket(req))
+                using var dealer = new DealerSocket();
+                dealer.Options.DisableTimeWait = true;
+                try
                 {
-                    if (dealer.TrySendMultipartMessage(req.Message))
-                    {
-                        _logger.Debug(
-                            "Request {RequestId} sent to {Peer}.",
-                            req.Id,
-                            req.Peer);
-                    }
-                    else
-                    {
-                        _logger.Debug(
-                            "Failed to send {RequestId} to {Peer}.",
-                            req.Id,
-                            req.Peer);
-
-                        throw new SendMessageFailException(
-                            $"Failed to send {req.Message} to {req.Peer}.",
-                            req.Peer);
-                    }
-
-                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
-                    {
-                        NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                            cancellationToken: cancellationToken
-                        );
-
-                        _logger.Verbose(
-                            "Received a raw message with {FrameCount} frames as a reply to " +
-                            "request {RequestId} from {Peer}.",
-                            raw.FrameCount,
-                            req.Id,
-                            req.Peer
-                        );
-                        await channel.Writer.WriteAsync(raw, cancellationToken);
-                        receivedCount += 1;
-                    }
-
-                    channel.Writer.Complete();
+                    _logger.Debug("Trying to connect {RequestId}.", req.Id);
+                    dealer.Connect(req.Peer.ToNetMQAddress());
+                    incrementedSocketCount = Interlocked.Increment(ref _socketCount);
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "SocketCount")
+                        .Debug(
+                        "{SocketCount} sockets open for processing request {Message} {RequestId}.",
+                        incrementedSocketCount,
+                        req.Message,
+                        req.Id);
                 }
+                catch (NetMQException nme)
+                {
+                    const string logMsg =
+                        "{SocketCount} sockets open for processing requests; " +
+                        "failed to create an additional socket for request {Message} {RequestId}.";
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "SocketCount")
+                        .Debug(
+                        nme,
+                        logMsg,
+                        Interlocked.Read(ref _socketCount),
+                        req.Message,
+                        req.Id);
+                    throw;
+                }
+
+                if (dealer.TrySendMultipartMessage(req.Message))
+                {
+                    _logger.Debug(
+                        "Request {RequestId} sent to {Peer}.",
+                        req.Id,
+                        req.Peer);
+                }
+                else
+                {
+                    _logger.Debug(
+                        "Failed to send {RequestId} to {Peer}.",
+                        req.Id,
+                        req.Peer);
+
+                    throw new SendMessageFailException(
+                        $"Failed to send {req.Message} to {req.Peer}.",
+                        req.Peer);
+                }
+
+                foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                {
+                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
+                        cancellationToken: cancellationToken
+                    );
+
+                    _logger.Verbose(
+                        "Received a raw message with {FrameCount} frames as a reply to " +
+                        "request {RequestId} from {Peer}.",
+                        raw.FrameCount,
+                        req.Id,
+                        req.Peer
+                    );
+                    await channel.Writer.WriteAsync(raw, cancellationToken);
+                    receivedCount += 1;
+                }
+
+                channel.Writer.Complete();
             }
             catch (Exception e)
             {
@@ -837,7 +830,7 @@ namespace Libplanet.Net.Transports
                     await Task.Delay(1000);
                 }
 
-                if (dealer is { })
+                if (incrementedSocketCount is { })
                 {
                     Interlocked.Decrement(ref _socketCount);
                 }
