@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.46.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on Janurary 18th, 2023.
 
 ### Backward-incompatible API changes
 
@@ -53,10 +51,6 @@ To be released.
     `HostOptions` as a combined parameter instead of taking
     `string?`, `IEnumerable<IceServer>?`, and `int?` separately.  [[#2701]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `TxExecution.ActionsLogsList` property.  [[#2474], [#2505]]
@@ -101,8 +95,6 @@ To be released.
  -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()` method
     hadn't disposed of internal sockets properly when connecting failed.
     [[#2719]]
-
-### Dependencies
 
 ### CLI tools
 
