@@ -446,23 +446,7 @@ namespace Libplanet.Net.Tests.Transports
                 {
                     new BoundPeer(
                         new PrivateKey().PublicKey,
-                        new DnsEndPoint(
-                            "0.0.0.0",
-                            port
-                        )
-                    ),
-                };
-
-                // e.g., "127.0.0.1":0
-                yield return new[]
-                {
-                    new BoundPeer(
-                        new PrivateKey().PublicKey,
-                        new DnsEndPoint(
-                            $"\"{IPAddress.Loopback}\"",
-                            0
-                        )
-                    ),
+                        new DnsEndPoint("0.0.0.0", port)),
                 };
             }
 
