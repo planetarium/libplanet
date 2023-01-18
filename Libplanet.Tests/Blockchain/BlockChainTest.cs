@@ -2222,7 +2222,8 @@ namespace Libplanet.Tests.Blockchain
                     BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
 
             blockChain.MakeTransaction(
-                new PrivateKey(), new SetValidator(newValidatorPrivKey.PublicKey, BigInteger.One));
+                new PrivateKey(),
+                new SetValidator(new Validator(newValidatorPrivKey.PublicKey, BigInteger.One)));
             var newBlock = blockChain.ProposeBlock(new PrivateKey());
             var newBlockCommit = new BlockCommit(
                 newBlock.Index, 0, newBlock.Hash, ValidatorPrivateKeys.Select(
@@ -2238,7 +2239,8 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(newBlock, newBlockCommit);
 
             blockChain.MakeTransaction(
-                new PrivateKey(), new SetValidator(new PrivateKey().PublicKey, BigInteger.One));
+                new PrivateKey(),
+                new SetValidator(new Validator(new PrivateKey().PublicKey, BigInteger.One)));
             var nextBlock = blockChain.ProposeBlock(
                 new PrivateKey(), lastCommit: newBlockCommit);
             var nextBlockCommit = new BlockCommit(
@@ -2255,7 +2257,8 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(nextBlock, nextBlockCommit);
 
             blockChain.MakeTransaction(
-                new PrivateKey(), new SetValidator(new PrivateKey().PublicKey, BigInteger.One));
+                new PrivateKey(),
+                new SetValidator(new Validator(new PrivateKey().PublicKey, BigInteger.One)));
             var invalidCommitBlock = blockChain.ProposeBlock(
                 new PrivateKey(), lastCommit: nextBlockCommit);
 
