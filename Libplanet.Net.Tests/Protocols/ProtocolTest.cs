@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
+using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Serilog;
@@ -98,6 +99,77 @@ namespace Libplanet.Net.Tests.Protocols
                 Assert.Single(transportA.ReceivedMessages);
                 Assert.Single(transportB.ReceivedMessages);
                 Assert.Contains(transportA.AsPeer, transportB.Peers);
+            }
+            finally
+            {
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task UnreachablePeer()
+        {
+            var transportA = CreateTestTransport(networkDelay: TimeSpan.MaxValue);
+            var transportB = CreateTestTransport();
+
+            try
+            {
+                var notPingMsg = new TestMessage("Hello");
+                await StartTestTransportAsync(transportA);
+                await StartTestTransportAsync(transportB);
+                try
+                {
+                    await transportB.SendMessageAsync(
+                        transportA.AsPeer,
+                        notPingMsg,
+                        default);
+                }
+                catch (Exception e)
+                {
+                    await transportA.MessageReceived.WaitAsync();
+                    Assert.IsType<CommunicationFailException>(e);
+                    Assert.Empty(transportB.Peers);
+                    Assert.Empty(transportA.Peers);
+                    Assert.Contains(transportA.ReceivedMessages, message => message == notPingMsg);
+                    Assert.Empty(transportB.ReceivedMessages);
+                }
+            }
+            finally
+            {
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task MessageTriggersHandshake()
+        {
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
+
+            try
+            {
+                var notPingMsg = new TestMessage("Hello");
+                await StartTestTransportAsync(transportA);
+                await StartTestTransportAsync(transportB);
+                _ = transportB.SendMessageAsync(
+                    transportA.AsPeer,
+                    notPingMsg,
+                    default);
+
+                await transportB.MessageReceived.WaitAsync();
+                await transportA.MessageReceived.WaitAsync();
+
+                await Libplanet.Tests.TestUtils.AssertThatEventually(
+                    () =>
+                        transportB.Peers.Contains(transportA.AsPeer) &&
+                          transportA.Peers.Contains(transportB.AsPeer),
+                    1000);
+                Assert.Contains(
+                    transportA.ReceivedMessages,
+                    message => message is PingMsg || message is TestMessage);
+                Assert.Single(transportB.ReceivedMessages);
             }
             finally
             {
