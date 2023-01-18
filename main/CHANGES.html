@@ -145,6 +145,9 @@ to 10 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/2718">#2
 <ul>
 <li>(Libplanet.Net) Fixed a bug <code>NetMQTransport</code> log shows socket count wrongly.
 [<a href="https://github.com/planetarium/libplanet/pull/2708">#2708</a>]</li>
+<li>(Libplanet.Net) Fixed a bug where <code>NetMQTransport.SendMessageAsync()</code> method
+hadn't disposed of internal sockets properly when connecting failed.
+[<a href="https://github.com/planetarium/libplanet/pull/2719">#2719</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
