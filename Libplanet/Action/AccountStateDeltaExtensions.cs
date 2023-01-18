@@ -41,21 +41,41 @@ namespace Libplanet.Action
                 .ToImmutableDictionary();
 
         internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(
-            this IAccountStateDelta delta) =>
-            delta.GetUpdatedStates()
-                .Select(pair =>
-                    new KeyValuePair<string, IValue?>(
-                        ToStateKey(pair.Key),
-                        pair.Value))
-                .Union(
-                    delta.GetUpdatedBalances().Select(pair =>
+            this IAccountStateDelta delta)
+        {
+            var dict = delta.GetUpdatedStates()
+                .Select(
+                    pair =>
                         new KeyValuePair<string, IValue?>(
-                            ToFungibleAssetKey(pair.Key),
-                            (Integer)pair.Value.RawValue)))
+                            ToStateKey(pair.Key),
+                            pair.Value))
                 .Union(
-                    delta.GetUpdatedTotalSupplies().Select(pair =>
+                    delta.GetUpdatedBalances()
+                        .Select(
+                            pair =>
+                                new KeyValuePair<string, IValue?>(
+                                    ToFungibleAssetKey(pair.Key),
+                                    (Integer)pair.Value.RawValue)))
+                .Union(
+                    delta.GetUpdatedTotalSupplies()
+                        .Select(
+                            pair =>
+                                new KeyValuePair<string, IValue?>(
+                                    ToTotalSupplyKey(pair.Key),
+                                    (Integer)pair.Value.RawValue)));
+
+            if (delta.GetValidatorSet().Validators.Any())
+            {
+                dict = dict.Union(
+                    new[]
+                    {
                         new KeyValuePair<string, IValue?>(
-                            ToTotalSupplyKey(pair.Key),
-                            (Integer)pair.Value.RawValue))).ToImmutableDictionary();
+                            ValidatorSetKey,
+                            delta.GetValidatorSet().Encoded),
+                    });
+            }
+
+            return dict.ToImmutableDictionary();
+        }
     }
 }

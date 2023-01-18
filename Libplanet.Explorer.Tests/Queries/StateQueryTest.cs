@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -10,6 +11,8 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -149,6 +152,35 @@ public class StateQueryTest
         Assert.Contains("not trackable", result.Errors[0].Message);
     }
 
+    [Fact]
+    public async Task Validators()
+    {
+         (IBlockChainStates<NullAction>, IBlockPolicy<NullAction>) source = (
+            new MockChainStates<NullAction>(),
+            new BlockPolicy<NullAction>()
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        {
+            validators(
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            ) {
+                publicKey
+                power
+            }
+        }
+        ", source: source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        object[] validators = Assert.IsAssignableFrom<object[]>(resultDict["validators"]);
+        IDictionary<string, object> validatorDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(validators[0]);
+        Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
+        Assert.Equal(new BigInteger(1), validatorDict["power"]);
+    }
+
     private class MockChainStates<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
@@ -173,5 +205,15 @@ public class StateQueryTest
             TotalSupplyStateCompleter<T> stateCompleter
         ) =>
             currency * 10000;
+
+        public ValidatorSet GetValidatorSet(BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter)
+            => new ValidatorSet(new List<Validator>
+            {
+                new(
+                    new PublicKey(ByteUtil.ParseHex(
+                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
+                    new BigInteger(1)),
+            });
     }
 }

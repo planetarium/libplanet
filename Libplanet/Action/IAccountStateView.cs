@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Consensus;
 
 namespace Libplanet.Action
 {
@@ -75,5 +76,8 @@ namespace Libplanet.Action
         /// <seealso cref="Currency.MaximumSupply"/>
         [Pure]
         FungibleAssetValue GetTotalSupply(Currency currency);
+
+        [Pure]
+        ValidatorSet GetValidatorSet();
     }
 }

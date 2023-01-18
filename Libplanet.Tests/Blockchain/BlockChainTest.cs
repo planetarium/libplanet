@@ -13,6 +13,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -1852,11 +1853,13 @@ namespace Libplanet.Tests.Blockchain
 
                 return currency * 0;
             };
+            ValidatorSetGetter nullValidatorSetGetter = () => new ValidatorSet();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 b.ProtocolVersion,
                 nullAccountStateGetter,
                 nullAccountBalanceGetter,
                 nullTotalSupplyGetter,
+                nullValidatorSetGetter,
                 b.Miner);
             ActionEvaluation[] evals =
                 chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
@@ -1901,6 +1904,7 @@ namespace Libplanet.Tests.Blockchain
                                 ? totalSupply
                                 : currency * 0;
                         },
+                        () => new ValidatorSet(),
                         b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
