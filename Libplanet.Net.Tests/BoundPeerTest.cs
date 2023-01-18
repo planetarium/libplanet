@@ -91,7 +91,15 @@ namespace Libplanet.Net.Tests
             Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"));
             Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1"));
             Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,999999"));
+            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,.ninodes.com,31234"));
 #pragma warning restore MEN002 // Line is too long
+        }
+
+        [Fact]
+        public void InvalidHostname()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                new BoundPeer(new PrivateKey().PublicKey, new DnsEndPoint(".ninodes.com", 31234)));
         }
     }
 }
