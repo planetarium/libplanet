@@ -50,12 +50,14 @@ namespace Libplanet.Net
             DnsEndPoint endPoint,
             IPAddress? publicIPAddress)
         {
-            PublicKey = publicKey;
             if (Uri.CheckHostName(endPoint.Host) == UriHostNameType.Unknown)
             {
-                throw new ArgumentException(nameof(endPoint));
+                throw new ArgumentException(
+                    $"Given {nameof(endPoint)} has unknown host name type: {endPoint.Host}",
+                    nameof(endPoint));
             }
 
+            PublicKey = publicKey;
             EndPoint = endPoint;
             PublicIPAddress = publicIPAddress;
         }
@@ -142,7 +144,6 @@ namespace Libplanet.Net
             {
                 var pubKey = new PublicKey(ByteUtil.ParseHex(tokens[0]));
                 var host = tokens[1];
-                Uri.CheckHostName(host);
                 var port = int.Parse(tokens[2], CultureInfo.InvariantCulture);
 
                 // FIXME: It might be better to make Peer.AppProtocolVersion property nullable...

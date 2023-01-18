@@ -99,13 +99,7 @@ namespace Libplanet.Net.Tests
         public void InvalidHostname()
         {
             Assert.Throws<ArgumentException>(() =>
-                new BoundPeer(
-#pragma warning disable MEN002 // Line is too long
-                    new PublicKey(ByteUtil.ParseHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
-#pragma warning restore MEN002 // Line is too long
-                    new DnsEndPoint(".ninodes.com", 31234)
-                )
-            );
+                new BoundPeer(new PrivateKey().PublicKey, new DnsEndPoint(".ninodes.com", 31234)));
         }
     }
 }
