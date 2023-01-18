@@ -37,6 +37,13 @@ public class StateQuery<T>
             ),
             resolve: ResolveTotalSupply
         );
+        Field<ListGraphType<NonNullGraphType<ValidatorType>>>(
+            "validators",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+            ),
+            resolve: ResolveValidatorSet
+        );
     }
 
     private static Currency GetNativeTokenFromHash(
@@ -131,5 +138,28 @@ public class StateQuery<T>
             offset,
             TotalSupplyStateCompleters<T>.Reject
         );
+    }
+
+    private static object? ResolveValidatorSet(
+        IResolveFieldContext<(IBlockChainStates<T> ChainStates, IBlockPolicy<T> Policy)> context)
+    {
+        string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
+        BlockHash offset;
+        try
+        {
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
+        }
+
+        return context.Source.ChainStates.GetValidatorSet(
+            offset,
+            ValidatorSetStateCompleters<T>.Reject
+        ).Validators;
     }
 }

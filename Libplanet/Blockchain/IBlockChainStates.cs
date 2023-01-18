@@ -3,6 +3,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 
 namespace Libplanet.Blockchain
 {
@@ -85,5 +86,26 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
         );
+
+        /// <summary>
+        /// Returns the validator set in the
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state.</param>
+        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
+        /// contain states of the block, this delegate is called and its return values are used
+        /// instead.
+        /// <para><see cref="ValidatorSetStateCompleters{T}.Recalculate"/> makes the incomplete
+        /// states recalculated and filled on the fly.</para>
+        /// <para><see cref="ValidatorSetStateCompleters{T}.Reject"/> makes the incomplete states
+        /// (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
+        /// </param>
+        /// <returns>The validator set of type <see cref="ValidatorSet"/> at the
+        /// <paramref name="offset"/>.
+        /// </returns>
+        ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter);
     }
 }

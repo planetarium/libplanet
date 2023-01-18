@@ -44,8 +44,7 @@ namespace Libplanet.Net.Tests
 
         public static readonly IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
-            getMaxTransactionsBytes: _ => 50 * 1024,
-            getValidatorSet: _ => ValidatorSet);
+            getMaxTransactionsBytes: _ => 50 * 1024);
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
             "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
@@ -83,13 +82,10 @@ namespace Libplanet.Net.Tests
 
         public static BlockChain<DumbAction> CreateDummyBlockChain(MemoryStoreFixture fx)
         {
-            var store = new MemoryStore();
-            var blockChain = new BlockChain<DumbAction>(
-                TestUtils.Policy,
-                new VolatileStagePolicy<DumbAction>(),
-                store,
-                new TrieStateStore(new MemoryKeyValueStore()),
-                fx.GenesisBlock);
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
+                Policy,
+                fx.Store,
+                new TrieStateStore(new MemoryKeyValueStore()));
 
             return blockChain;
         }
@@ -262,7 +258,6 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                policy.GetValidatorSet,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, consensusContext);
@@ -275,7 +270,8 @@ namespace Libplanet.Net.Tests
                 long height = 1,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                ContextTimeoutOption? contextTimeoutOptions = null)
+                ContextTimeoutOption? contextTimeoutOptions = null,
+                ValidatorSet? validatorSet = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= PrivateKeys[1];
@@ -301,7 +297,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                policy.GetValidatorSet(height),
+                validatorSet ?? blockChain.GetValidatorSet(blockChain[height - 1].Hash),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);

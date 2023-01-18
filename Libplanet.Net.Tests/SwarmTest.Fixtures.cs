@@ -31,9 +31,7 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var policy = new BlockPolicy<DumbAction>(
-                    new MinerReward(1),
-                    getValidatorSet: _ => ValidatorSet);
+                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
@@ -121,9 +119,7 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            policy = policy ?? new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockchain = MakeBlockChain(
                 policy,

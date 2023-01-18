@@ -88,7 +88,7 @@ namespace Libplanet.Net.Consensus
                         message,
                         message.Height,
                         message.Round,
-                        message.Validator.ToAddress(),
+                        message.ValidatorPublicKey.ToAddress(),
                         message.Remote?.Address,
                         message.BlockHash,
                         _messageLog.GetTotalCount(),

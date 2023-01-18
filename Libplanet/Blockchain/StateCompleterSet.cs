@@ -25,6 +25,7 @@ namespace Libplanet.Blockchain
             StateCompleter = StateCompleters<T>.Recalculate,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.Recalculate,
             TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.Recalculate,
+            ValidatorSetStateCompleter = ValidatorSetStateCompleters<T>.Recalculate,
         };
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace Libplanet.Blockchain
             StateCompleter = StateCompleters<T>.ComplementAll,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.ComplementAll,
             TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.ComplementAll,
+            ValidatorSetStateCompleter = ValidatorSetStateCompleters<T>.ComplementAll,
         };
 
         /// <summary>
@@ -54,6 +56,7 @@ namespace Libplanet.Blockchain
             StateCompleter = StateCompleters<T>.ComplementLatest,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.ComplementLatest,
             TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.ComplementLatest,
+            ValidatorSetStateCompleter = ValidatorSetStateCompleters<T>.ComplementLatest,
         };
 
         /// <summary>
@@ -65,6 +68,7 @@ namespace Libplanet.Blockchain
             StateCompleter = StateCompleters<T>.Reject,
             FungibleAssetStateCompleter = FungibleAssetStateCompleters<T>.Reject,
             TotalSupplyStateCompleter = TotalSupplyStateCompleters<T>.Reject,
+            ValidatorSetStateCompleter = ValidatorSetStateCompleters<T>.Reject,
         };
 
         /// <summary>
@@ -81,5 +85,10 @@ namespace Libplanet.Blockchain
         /// Holds a <see cref="TotalSupplyStateCompleter{T}"/>.
         /// </summary>
         public TotalSupplyStateCompleter<T> TotalSupplyStateCompleter { get; set; }
+
+        /// <summary>
+        /// Holds a <see cref="ValidatorSetStateCompleter{T}"/>.
+        /// </summary>
+        public ValidatorSetStateCompleter<T> ValidatorSetStateCompleter { get; set; }
     }
 }

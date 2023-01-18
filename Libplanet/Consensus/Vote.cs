@@ -20,7 +20,7 @@ namespace Libplanet.Consensus
     {
         private const string SignatureKey = "signature";
 
-        private static Codec _codec = new Codec();
+        private static readonly Codec _codec = new Codec();
         private readonly VoteMetadata _metadata;
 
         public Vote(
@@ -43,7 +43,7 @@ namespace Libplanet.Consensus
                         $"{VoteFlag.PreVote} or {VoteFlag.PreCommit}",
                         nameof(signature));
                 }
-                else if (!metadata.Validator.Verify(metadata.ByteArray, signature))
+                else if (!metadata.ValidatorPublicKey.Verify(metadata.ByteArray, signature))
                 {
                     throw new ArgumentException(
                         $"Given {nameof(signature)} is invalid.",
@@ -97,7 +97,7 @@ namespace Libplanet.Consensus
         public DateTimeOffset Timestamp => _metadata.Timestamp;
 
         /// <inheritdoc/>
-        public PublicKey Validator => _metadata.Validator;
+        public PublicKey ValidatorPublicKey => _metadata.ValidatorPublicKey;
 
         /// <inheritdoc/>
         public VoteFlag Flag => _metadata.Flag;
@@ -128,7 +128,7 @@ namespace Libplanet.Consensus
         [Pure]
         public bool Verify() =>
             !Signature.IsEmpty &&
-            Validator.Verify(_metadata.ByteArray.ToImmutableArray(), Signature);
+            ValidatorPublicKey.Verify(_metadata.ByteArray.ToImmutableArray(), Signature);
 
         /// <inheritdoc/>
         [Pure]
@@ -161,7 +161,7 @@ namespace Libplanet.Consensus
         {
             var dict = new Dictionary<string, object>
             {
-                { "validator", Validator.ToString() },
+                { "validator_public_key", ValidatorPublicKey.ToString() },
                 { "vote_flag", Flag.ToString() },
                 { "block_hash", BlockHash?.ToString() ?? string.Empty },
                 { "height", Height },

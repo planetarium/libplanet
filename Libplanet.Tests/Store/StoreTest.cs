@@ -87,8 +87,8 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = ProposeNextBlock(
-                ProposeGenesisBlock<DumbAction>(GenesisMiner),
-                GenesisMiner,
+                ProposeGenesisBlock<DumbAction>(GenesisProposer),
+                GenesisProposer,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
             Guid arbitraryChainId = Guid.NewGuid();
@@ -1026,7 +1026,7 @@ namespace Libplanet.Tests.Store
             // actual block...
             Block<DumbAction> anotherBlock3 = ProposeNextBlock(
                 Fx.Block2,
-                Fx.Miner,
+                Fx.Proposer,
                 lastCommit: CreateBlockCommit(Fx.Block2.Hash, 2, 0));
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
@@ -1083,16 +1083,15 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullBlockPolicy<DumbAction>(
-                    getValidatorSet: _ => TestUtils.ValidatorSet);
-                var blocks = new BlockChain<DumbAction>(
+                var policy = new NullBlockPolicy<NullAction>();
+                var blocks = new BlockChain<NullAction>(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy<NullAction>(),
                     s1,
                     fx.StateStore,
-                    ProposeGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
+                    ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey)
                         .Evaluate(
-                            privateKey: GenesisMiner,
+                            privateKey: GenesisProposer,
                             blockAction: policy.BlockAction,
                             nativeTokenPredicate: policy.NativeTokens.Contains,
                             stateStore: fx.StateStore)
@@ -1120,8 +1119,8 @@ namespace Libplanet.Tests.Store
                     foreach (BlockHash blockHash in s1.IterateIndexes(chainId))
                     {
                         Assert.Equal(
-                            s1.GetBlock<DumbAction>(blockHash),
-                            s2.GetBlock<DumbAction>(blockHash)
+                            s1.GetBlock<NullAction>(blockHash),
+                            s2.GetBlock<NullAction>(blockHash)
                         );
                     }
                 }
@@ -1139,7 +1138,7 @@ namespace Libplanet.Tests.Store
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
                 Block<DumbAction> block = ProposeNextBlock(
                     genesisBlock,
-                    miner: fx.Miner);
+                    miner: fx.Proposer);
 
                 fx.Store.PutBlock(block);
                 Block<DumbAction> storedBlock =
@@ -1189,16 +1188,16 @@ namespace Libplanet.Tests.Store
                         0,
                         fx.Block1.Hash,
                         DateTimeOffset.UtcNow,
-                        fx.Miner.PublicKey,
-                        VoteFlag.PreCommit).Sign(fx.Miner));
+                        fx.Proposer.PublicKey,
+                        VoteFlag.PreCommit).Sign(fx.Proposer));
                 var votesTwo = ImmutableArray<Vote>.Empty
                     .Add(new VoteMetadata(
                         2,
                         0,
                         fx.Block2.Hash,
                         DateTimeOffset.UtcNow,
-                        fx.Miner.PublicKey,
-                        VoteFlag.PreCommit).Sign(fx.Miner));
+                        fx.Proposer.PublicKey,
+                        VoteFlag.PreCommit).Sign(fx.Proposer));
 
                 BlockCommit[] blockCommits =
                 {

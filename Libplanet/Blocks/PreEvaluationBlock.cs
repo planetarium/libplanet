@@ -251,7 +251,7 @@ namespace Libplanet.Blocks
             IReadOnlyList<ActionEvaluation> actionEvaluations =
                 actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);
             statesDelta = actionEvaluations.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
             ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, statesDelta);
             return trie.Hash;
         }
@@ -314,7 +314,7 @@ namespace Libplanet.Blocks
                     Index
                 );
                 statesDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 logger.Verbose(
                     "Calculated the total delta of states made in block #{BlockIndex}.",
                     Index

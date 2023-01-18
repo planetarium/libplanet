@@ -8,6 +8,8 @@ using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Crypto;
+using Serilog;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action
@@ -24,14 +26,18 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
+        public DumbAction(IEnumerable<PublicKey> validators)
+        {
+            Validators = validators;
+        }
+
         public DumbAction(
             Address targetAddress,
             string item,
             bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false,
-            Tuple<Address, Address, BigInteger> transfer = null
-        )
+            Tuple<Address, Address, BigInteger> transfer = null)
         {
             Idempotent = idempotent;
             TargetAddress = targetAddress;
@@ -81,16 +87,24 @@ namespace Libplanet.Tests.Common.Action
 
         public Tuple<Address, Address, BigInteger> Transfer { get; private set; }
 
+        public IEnumerable<PublicKey> Validators { get; private set; }
+
         public IValue PlainValue
         {
             get
             {
-                var plainValue = new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
+                var plainValue = Bencodex.Types.Dictionary.Empty;
+                if (!(Item is null))
                 {
-                    ["item"] = (Text)Item,
-                    ["target_address"] = new Binary(TargetAddress.ByteArray),
-                    ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
-                });
+                    plainValue = new Bencodex.Types.Dictionary(
+                        new Dictionary<string, IValue>
+                        {
+                            ["item"] = (Text)Item,
+                            ["target_address"] = new Binary(TargetAddress.ByteArray),
+                            ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
+                        });
+                }
+
                 if (RecordRandom)
                 {
                     // In order to avoid changing tx signatures in many test
@@ -109,6 +123,12 @@ namespace Libplanet.Tests.Common.Action
                         .Add("transfer_from", Transfer.Item1.ByteArray)
                         .Add("transfer_to", Transfer.Item2.ByteArray)
                         .Add("transfer_amount", Transfer.Item3);
+                }
+
+                if (!(Validators is null))
+                {
+                    plainValue = plainValue
+                        .Add("validators", new List(Validators.Select(p => p.Format(false))));
                 }
 
                 return plainValue;
@@ -183,6 +203,14 @@ namespace Libplanet.Tests.Common.Action
                 );
             }
 
+            if (!(Validators is null))
+            {
+                nextState = Validators.Aggregate(
+                    nextState,
+                    (current, validator) => current.SetValidator(validator, BigInteger.One));
+                Log.Debug("Execute validator action: SetValidator! {State}", nextState);
+            }
+
             if (ExecuteRecords.Value is null)
             {
                 ExecuteRecords.Value = ImmutableList<ExecuteRecord>.Empty;
@@ -203,9 +231,7 @@ namespace Libplanet.Tests.Common.Action
             LoadPlainValue((Bencodex.Types.Dictionary)plainValue);
         }
 
-        public void LoadPlainValue(
-            Dictionary plainValue
-        )
+        public void LoadPlainValue(Dictionary plainValue)
         {
             Item = plainValue.GetValue<Text>("item");
             TargetAddress = new Address(plainValue.GetValue<Binary>("target_address"));
@@ -228,6 +254,12 @@ namespace Libplanet.Tests.Common.Action
                 a is Integer amount)
             {
                 Transfer = Tuple.Create(new Address(from), new Address(to), amount.Value);
+            }
+
+            if (plainValue.ContainsKey((IKey)(Text)"validators"))
+            {
+                Validators = plainValue.GetValue<List>("validators")
+                    .Select(value => new PublicKey(((Binary)value).ByteArray));
             }
         }
 
@@ -268,6 +300,11 @@ namespace Libplanet.Tests.Common.Action
             string transfer = Transfer is Tuple<Address, Address, BigInteger> t
                 ? $"({t.Item1}, {t.Item2}, {t.Item3})"
                 : "null";
+            string validators = Validators is null
+                ? "none"
+                : Validators
+                    .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
+                    .TrimEnd(',', ' ');
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +
@@ -275,6 +312,7 @@ namespace Libplanet.Tests.Common.Action
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
                 $"{nameof(Idempotent)} = {(Idempotent ? T : F)}, " +
                 $"{nameof(Transfer)} = {transfer} " +
+                $"{nameof(Validators)} = {validators} " +
                 "}";
         }
     }

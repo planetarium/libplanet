@@ -206,7 +206,7 @@ namespace Libplanet.Blocks
                     Votes.Select(
                         v => new Dictionary<string, object>
                         {
-                            { "validator", v.Validator.ToString() },
+                            { "validator_public_key", v.ValidatorPublicKey.ToString() },
                             { "flag", v.Flag },
                             { "timestamp", v.Timestamp.ToString(CultureInfo.InvariantCulture) },
                         })

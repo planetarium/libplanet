@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Consensus;
 using Libplanet.Tests.Common.Action;
 using Serilog;
 using Serilog.Events;
@@ -19,18 +20,23 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IAction _action = new DumbAction();
 
         private static IAccountStateDelta _stateDelta =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
+            new AccountStateDeltaImpl(
+                _ => null,
+                (_, __) => default,
+                _ => default,
+                () => new ValidatorSet(),
+                default);
 
         private static Exception _exception = new Exception();
 
         private static DumbBlock _genesis =
-            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
         private static DumbBlock _blockA =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         private static DumbBlock _blockB =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         private ILogger _logger;
 

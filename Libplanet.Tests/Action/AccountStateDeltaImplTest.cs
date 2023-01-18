@@ -23,10 +23,15 @@ namespace Libplanet.Tests.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
             Address signer
         ) =>
             new AccountStateDeltaImpl(
-                accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer);
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter,
+                signer);
 
         [Fact]
         public override void TransferAsset()

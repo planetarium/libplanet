@@ -522,6 +522,14 @@ namespace Libplanet.Net
 
                 cancellationToken.ThrowIfCancellationRequested();
 
+                var actionExecutionState = new ActionExecutionState()
+                {
+                    TotalBlockCount = (int)(workspace.Count - (branchpoint?.Index + 1 ?? 0)),
+                    ExecutedBlockCount = 0,
+                };
+                long txsCount = 0, actionsCount = 0;
+                TimeSpan spent = TimeSpan.Zero;
+
                 // FIXME: If any of the blocks in deltaBlocks is invalid, the whole process
                 // is aborted, even when an actually valid potential tip block and
                 // all the blocks in the path has been downloaded.
@@ -551,6 +559,24 @@ namespace Libplanet.Net
                                     "Appending block #{Index} {Hash}",
                                     deltaBlock.Index,
                                     deltaBlock.Hash);
+
+                                DateTimeOffset executionStarted = DateTimeOffset.Now;
+                                workspace.ExecuteActions(deltaBlock);
+                                spent += DateTimeOffset.Now - executionStarted;
+
+                                _logger.Debug(
+                                    "Executed actions in block #{Index} {Hash}.",
+                                    deltaBlock.Index,
+                                    deltaBlock.Hash);
+
+                                IEnumerable<Transaction<T>>
+                                    transactions = deltaBlock.Transactions.ToImmutableArray();
+                                txsCount += transactions.Count();
+                                actionsCount += transactions.Sum(
+                                    tx => tx.CustomActions is { } ca ? ca.Count : 1L);
+                                actionExecutionState.ExecutedBlockCount += 1;
+                                actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
+                                progress?.Report(actionExecutionState);
 
                                 workspace.Append(
                                     deltaBlock,
@@ -594,11 +620,12 @@ namespace Libplanet.Net
                     }
                 }
 
-                ExecuteActions(
-                    workspace,
-                    branchpoint,
-                    progress,
-                    cancellationToken);
+                _logger.Verbose(
+                    "Executed totally {0} blocks, {1} txs, {2} actions during {3}",
+                    actionExecutionState.TotalBlockCount,
+                    actionsCount,
+                    txsCount,
+                    spent);
                 complete = true;
             }
             finally
@@ -667,66 +694,6 @@ namespace Libplanet.Net
             }
 
             return renderSwap;
-        }
-#pragma warning restore MEN003
-
-        private void ExecuteActions(
-            BlockChain<T> workspace,
-            Block<T> branchpoint,
-            IProgress<PreloadState> progress,
-            CancellationToken cancellationToken)
-        {
-            if (workspace.Renderers.Any())
-            {
-                throw new ArgumentException(
-                    "The workspace chain must not have any renderers.",
-                    nameof(workspace)
-                );
-            }
-
-            long actionsCount = 0, txsCount = 0, initHeight = branchpoint?.Index + 1 ?? 0;
-            int count = 0, totalCount = (int)(workspace.Count - initHeight);
-            DateTimeOffset executionStarted = DateTimeOffset.Now;
-            _logger.Debug("Starting to execute actions of {BlockCount} blocks.", totalCount);
-            var blockHashes = workspace.IterateBlockHashes((int)initHeight);
-            foreach (BlockHash hash in blockHashes)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                Block<T> block = workspace[hash];
-                if (block.Index < initHeight)
-                {
-                    continue;
-                }
-
-                workspace.ExecuteActions(block);
-                IEnumerable<Transaction<T>>
-                    transactions = block.Transactions.ToImmutableArray();
-                txsCount += transactions.Count();
-                actionsCount +=
-                    transactions.Sum(tx => tx.CustomActions is { } ca ? ca.Count : 1L);
-
-                _logger.Debug(
-                    "Executed actions in block #{Index} {Hash}.",
-                    block.Index,
-                    block.Hash);
-                progress?.Report(new ActionExecutionState()
-                {
-                    TotalBlockCount = totalCount,
-                    ExecutedBlockCount = ++count,
-                    ExecutedBlockHash = block.Hash,
-                });
-            }
-
-            _logger.Debug("Finished to execute actions.");
-
-            TimeSpan spent = DateTimeOffset.Now - executionStarted;
-            _logger.Verbose(
-                "Executed totally {0} blocks, {1} txs, {2} actions during {3}",
-                totalCount,
-                actionsCount,
-                txsCount,
-                spent);
         }
 
         private void OnBlockChainTipChanged(object sender, (Block<T> OldTip, Block<T> NewTip) e)

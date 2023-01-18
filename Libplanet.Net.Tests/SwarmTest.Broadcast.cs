@@ -34,7 +34,7 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlock()
         {
             const int numBlocks = 5;
-            var policy = new NullBlockPolicy<DumbAction>(getValidatorSet: _ => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var swarmA = CreateSwarm(
@@ -90,8 +90,7 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var minerChain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
@@ -186,25 +185,11 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy<DumbAction> policy = receiverChain.Policy;
-            Block<DumbAction> wrongGenesis = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: receiverKey.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null))
-                .Propose()
-                .Evaluate(
-                    privateKey: receiverKey,
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: seedStateStore);
             BlockChain<DumbAction> seedChain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 seedStateStore,
-                genesisBlock: wrongGenesis);
+                privateKey: receiverKey);
             var seedMiner = new PrivateKey();
             Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain, seedMiner);
             try
@@ -707,9 +692,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx1 = new MemoryStoreFixture();
             var blockChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var privateKey = new PrivateKey();
@@ -755,15 +738,15 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> block1 = ProposeNext(
                 blockChain.Genesis,
                 new[] { transactions[0] },
-                miner: GenesisMiner.PublicKey
-            ).Evaluate(GenesisMiner, blockChain);
+                miner: GenesisProposer.PublicKey
+            ).Evaluate(GenesisProposer, blockChain);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true, true, false);
             Block<DumbAction> block2 = ProposeNext(
                 block1,
                 new[] { transactions[1] },
-                miner: GenesisMiner.PublicKey,
+                miner: GenesisProposer.PublicKey,
                 lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)
-            ).Evaluate(GenesisMiner, blockChain);
+            ).Evaluate(GenesisProposer, blockChain);
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true, true, false);
 
             try

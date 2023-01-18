@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -423,8 +424,12 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
-        /// <param name="actions">List of actions will be included in the genesis block.
+        /// <param name="customActions">List of custom actions
+        /// will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
+        /// as default.</param>
+        /// <param name="systemActions">System action that will be included in the genesis block.
+        /// If it's null, no system action will be added.
         /// as default.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
@@ -439,19 +444,34 @@ namespace Libplanet.Blockchain
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> ProposeGenesisBlock(
-            IEnumerable<T> actions = null,
+            IEnumerable<T> customActions = null,
+            IEnumerable<IAction> systemActions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
             privateKey ??= new PrivateKey();
-            actions ??= ImmutableArray<T>.Empty;
+            customActions ??= ImmutableArray<T>.Empty;
+            systemActions ??= ImmutableArray<IAction>.Empty;
+            int nonce = 0;
             Transaction<T>[] transactions =
             {
                 Transaction<T>.Create(
-                    0, privateKey, null, actions, timestamp: timestamp),
+                    nonce, privateKey, null, customActions, timestamp: timestamp),
             };
+            foreach (var systemAction in systemActions)
+            {
+                nonce += 1;
+                transactions = transactions.Concat(
+                    new Transaction<T>[]
+                    {
+                        Transaction<T>.Create(
+                            nonce, privateKey, null, systemAction, timestamp: timestamp),
+                    }).ToArray();
+            }
+
+            transactions = transactions.OrderBy(tx => tx.Id).ToArray();
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
@@ -676,6 +696,21 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
         ) => _blockChainStates.GetTotalSupply(currency, offset, stateCompleter);
+
+        public ValidatorSet GetValidatorSet(
+            BlockHash? offset = null,
+            ValidatorSetStateCompleter<T> stateCompleter = null
+        ) =>
+            GetValidatorSet(
+                offset ?? Tip.Hash,
+                stateCompleter ?? ValidatorSetStateCompleters<T>.Reject
+            );
+
+        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
+        public ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter
+        ) => _blockChainStates.GetValidatorSet(offset, stateCompleter);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
@@ -922,7 +957,11 @@ namespace Libplanet.Blockchain
                 // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 var totalDelta =
-                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    evaluations.GetTotalDelta(
+                        ToStateKey,
+                        ToFungibleAssetKey,
+                        ToTotalSupplyKey,
+                        ValidatorSetKey);
                 const string deltaMsg =
                     "Summarized the states delta with {KeyCount} key changes " +
                     "made by block #{BlockIndex} {BlockHash}.";
@@ -1518,7 +1557,7 @@ namespace Libplanet.Blockchain
             if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 StateStore.Commit(prevStateRootHash, totalDelta);
             }
@@ -1636,10 +1675,18 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            if (!Policy.GetValidatorSet(block.Index).ValidateBlockCommitValidators(blockCommit))
+            var validators = GetValidatorSet(block.PreviousHash ?? Genesis.Hash);
+            if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 return new InvalidBlockCommitException(
-                    "BlockCommit has different validator set with policy's validator set.");
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                    $"in states | \n " +
+                    validators.Validators.Aggregate(
+                        string.Empty, (s, key) => s + key + ", \n") +
+                    $"in blockCommit | \n " +
+                    blockCommit.Votes.Aggregate(
+                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
             }
 
             return null;
@@ -1747,14 +1794,12 @@ namespace Libplanet.Blockchain
                             "is not a block after a PoW block should have lastCommit.");
                     }
                 }
-            }
 
-            if (block.LastCommit is { } commit &&
-                !Policy.GetValidatorSet(commit.Height).ValidateBlockCommitValidators(commit))
-            {
-                return new InvalidBlockLastCommitException(
-                    "The validator set of the block's lastCommit does not match " +
-                    "the validator set given by the policy.");
+                if (ValidateBlockCommit(
+                    this[block.PreviousHash ?? Genesis.Hash], block.LastCommit) is { } e)
+                {
+                    return new InvalidBlockLastCommitException(e.Message);
+                }
             }
 
             return null;

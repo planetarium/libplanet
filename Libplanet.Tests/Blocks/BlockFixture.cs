@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Blocks
 
         public BlockFixture()
         {
-            Miner = TestUtils.GenesisMiner;
+            Miner = TestUtils.GenesisProposer;
             Genesis = TestUtils.ProposeGenesisBlock<PolymorphicAction<BaseAction>>(
                 protocolVersion: ProtocolVersion,
                 miner: Miner,
