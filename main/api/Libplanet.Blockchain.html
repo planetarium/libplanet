@@ -112,6 +112,10 @@ the greatest, i.e., canonical chain.</p>
       <section><p>Predefined built-in state completers that satisfy the
 <a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleter-1.html">TotalSupplyStateCompleter&lt;T&gt;</a> delegate.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blockchain.ValidatorSetStateCompleters-1.html">ValidatorSetStateCompleters&lt;T&gt;</a></h4>
+      <section><p>Predefined built-in state completers that satisfy the
+<a class="xref" href="Libplanet.Blockchain.ValidatorSetStateCompleter-1.html">ValidatorSetStateCompleter&lt;T&gt;</a> delegate.</p>
+</section>
     <h3 id="structs">Structs
   </h3>
       <h4><a class="xref" href="Libplanet.Blockchain.StateCompleterSet-1.html">StateCompleterSet&lt;T&gt;</a></h4>
@@ -141,6 +145,12 @@ delegate's return value instead for such case.</p>
       <section><p>A delegate to be called when <a class="xref" href="Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__">GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter&lt;T&gt;)</a>
 method encounters a block having incomplete dirty states.
 <a class="xref" href="Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__">GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter&lt;T&gt;)</a> method returns this delegate's
+return value instead for such case.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.ValidatorSetStateCompleter-1.html">ValidatorSetStateCompleter&lt;T&gt;</a></h4>
+      <section><p>A delegate to be called when <a class="xref" href="Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__">GetValidatorSet(BlockHash, ValidatorSetStateCompleter&lt;T&gt;)</a>
+method encounters a block having incomplete dirty states.
+<a class="xref" href="Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__">GetValidatorSet(BlockHash, ValidatorSetStateCompleter&lt;T&gt;)</a> method returns this delegate's
 return value instead for such case.</p>
 </section>
 </article>

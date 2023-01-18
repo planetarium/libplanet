@@ -88,6 +88,16 @@ implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2664">
 <li><code>IActionTypeLoader.LoadAllActionTypes()</code>.</li>
 </ul>
 </li>
+<li>Added <code>IAccountStateDelta.SetValidator(Validator)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>IAccountStateView.GetValidatorSet()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>IBlockChainStates.GetValidatorSet(BlockHash, ValidatorSetStateCompleter&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]
+<ul>
+<li>Added <code>BlockChain.GetValidatorSet(BlockHash, ValidatorSetStateCompleter&lt;T&gt;)</code> method.</li>
+<li>Added <code>BlockChainStates.GetValidatorSet(BlockHash, ValidatorSetStateCompleter&lt;T&gt;)</code> method.</li>
+</ul>
+</li>
+<li>Added <code>StateCompleterSet.ValidatorSetStateCompleter</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
 <li>(Libplanet.Net) Removed <code>workers</code> parameter from <code>NetMQTransport.Create()</code>
 method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2690">#2690</a>]</li>
 <li>(Libplanet.Net) Changed <code>Swarm&lt;T&gt;()</code> and <code>NetMQTransport.Create()</code> to take
@@ -117,6 +127,14 @@ method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.
 <li>Added <code>IActionTypeLoaderContext</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2653">#2653</a>]</li>
 <li>Added <code>AppProtocolVersionOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2693">#2693</a>]</li>
 <li>Added <code>HostOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2701">#2701</a>]</li>
+<li>Added <code>Validator</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>ValidatorSet</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>SetValidator</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>ValidatorSetGetter</code> delegate.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>ValidatorSetStateCompleter&lt;T&gt;</code> delegate.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>Added <code>ValidatorSetStateCompleters&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>(Libplanet.Explorer) Added <code>ValidatorType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
+<li>(Libplanet.Explorer) Added <code>validators</code> query in <code>StateQuery</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2716">#2716</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

@@ -389,6 +389,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateDelta.SetState
   nameWithType: IAccountStateDelta.SetState
+- uid: Libplanet.Action.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_SetValidator_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Action.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  fullName: Libplanet.Action.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  nameWithType: IAccountStateDelta.SetValidator(Validator)
+- uid: Libplanet.Action.IAccountStateDelta.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_SetValidator_
+  commentId: Overload:Libplanet.Action.IAccountStateDelta.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateDelta.SetValidator
+  nameWithType: IAccountStateDelta.SetValidator
 - uid: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
   name: StateUpdatedAddresses
   href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_StateUpdatedAddresses
@@ -515,6 +528,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateView.GetTotalSupply
   nameWithType: IAccountStateView.GetTotalSupply
+- uid: Libplanet.Action.IAccountStateView.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetValidatorSet
+  commentId: M:Libplanet.Action.IAccountStateView.GetValidatorSet
+  fullName: Libplanet.Action.IAccountStateView.GetValidatorSet()
+  nameWithType: IAccountStateView.GetValidatorSet()
+- uid: Libplanet.Action.IAccountStateView.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.IAccountStateView.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateView.GetValidatorSet
+  nameWithType: IAccountStateView.GetValidatorSet
 - uid: Libplanet.Action.IAction
   name: IAction
   href: api/Libplanet.Action.IAction.html
@@ -1431,6 +1457,118 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Mint.Recipient
   nameWithType: Mint.Recipient
+- uid: Libplanet.Action.Sys.SetValidator
+  name: SetValidator
+  href: api/Libplanet.Action.Sys.SetValidator.html
+  commentId: T:Libplanet.Action.Sys.SetValidator
+  fullName: Libplanet.Action.Sys.SetValidator
+  nameWithType: SetValidator
+- uid: Libplanet.Action.Sys.SetValidator.#ctor(Libplanet.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator__ctor_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Action.Sys.SetValidator.#ctor(Libplanet.Consensus.Validator)
+  fullName: Libplanet.Action.Sys.SetValidator.SetValidator(Libplanet.Consensus.Validator)
+  nameWithType: SetValidator.SetValidator(Validator)
+- uid: Libplanet.Action.Sys.SetValidator.#ctor*
+  name: SetValidator
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator__ctor_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.SetValidator
+  nameWithType: SetValidator.SetValidator
+- uid: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.IAction)
+  name: Equals(IAction)
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_Libplanet_Action_IAction_
+  commentId: M:Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.IAction)
+  fullName: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.IAction)
+  nameWithType: SetValidator.Equals(IAction)
+- uid: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.Sys.SetValidator)
+  name: Equals(SetValidator)
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_Libplanet_Action_Sys_SetValidator_
+  commentId: M:Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.Sys.SetValidator)
+  fullName: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.Sys.SetValidator)
+  nameWithType: SetValidator.Equals(SetValidator)
+- uid: Libplanet.Action.Sys.SetValidator.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Action.Sys.SetValidator.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Action.Sys.SetValidator.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Action.Sys.SetValidator.Equals(System.Nullable(Of System.Object))
+  nameWithType: SetValidator.Equals(Nullable<Object>)
+  nameWithType.vb: SetValidator.Equals(Nullable(Of Object))
+- uid: Libplanet.Action.Sys.SetValidator.Equals*
+  name: Equals
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.Equals
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.Equals
+  nameWithType: SetValidator.Equals
+- uid: Libplanet.Action.Sys.SetValidator.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.Sys.SetValidator.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.Sys.SetValidator.Execute(Libplanet.Action.IActionContext)
+  nameWithType: SetValidator.Execute(IActionContext)
+- uid: Libplanet.Action.Sys.SetValidator.Execute*
+  name: Execute
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Execute_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.Execute
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.Execute
+  nameWithType: SetValidator.Execute
+- uid: Libplanet.Action.Sys.SetValidator.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_GetHashCode
+  commentId: M:Libplanet.Action.Sys.SetValidator.GetHashCode
+  fullName: Libplanet.Action.Sys.SetValidator.GetHashCode()
+  nameWithType: SetValidator.GetHashCode()
+- uid: Libplanet.Action.Sys.SetValidator.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_GetHashCode_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.GetHashCode
+  nameWithType: SetValidator.GetHashCode
+- uid: Libplanet.Action.Sys.SetValidator.LoadPlainValue(IValue)
+  name: LoadPlainValue(IValue)
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_LoadPlainValue_IValue_
+  commentId: M:Libplanet.Action.Sys.SetValidator.LoadPlainValue(IValue)
+  fullName: Libplanet.Action.Sys.SetValidator.LoadPlainValue(IValue)
+  nameWithType: SetValidator.LoadPlainValue(IValue)
+- uid: Libplanet.Action.Sys.SetValidator.LoadPlainValue*
+  name: LoadPlainValue
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_LoadPlainValue_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.LoadPlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.LoadPlainValue
+  nameWithType: SetValidator.LoadPlainValue
+- uid: Libplanet.Action.Sys.SetValidator.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_PlainValue
+  commentId: P:Libplanet.Action.Sys.SetValidator.PlainValue
+  fullName: Libplanet.Action.Sys.SetValidator.PlainValue
+  nameWithType: SetValidator.PlainValue
+- uid: Libplanet.Action.Sys.SetValidator.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_PlainValue_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.PlainValue
+  nameWithType: SetValidator.PlainValue
+- uid: Libplanet.Action.Sys.SetValidator.Validator
+  name: Validator
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Validator
+  commentId: P:Libplanet.Action.Sys.SetValidator.Validator
+  fullName: Libplanet.Action.Sys.SetValidator.Validator
+  nameWithType: SetValidator.Validator
+- uid: Libplanet.Action.Sys.SetValidator.Validator*
+  name: Validator
+  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Validator_
+  commentId: Overload:Libplanet.Action.Sys.SetValidator.Validator
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.SetValidator.Validator
+  nameWithType: SetValidator.Validator
 - uid: Libplanet.Action.Sys.Transfer
   name: Transfer
   href: api/Libplanet.Action.Sys.Transfer.html
@@ -1710,6 +1848,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.TxId
   nameWithType: UnexpectedlyTerminatedActionException.TxId
+- uid: Libplanet.Action.ValidatorSetGetter
+  name: ValidatorSetGetter
+  href: api/Libplanet.Action.ValidatorSetGetter.html
+  commentId: T:Libplanet.Action.ValidatorSetGetter
+  fullName: Libplanet.Action.ValidatorSetGetter
+  nameWithType: ValidatorSetGetter
 - uid: Libplanet.Address
   name: Address
   href: api/Libplanet.Address.html
@@ -3029,6 +3173,33 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTxExecution
   nameWithType: BlockChain<T>.GetTxExecution
   nameWithType.vb: BlockChain(Of T).GetTxExecution
+- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name: GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name.vb: GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name: GetValidatorSet(Nullable<BlockHash>, ValidatorSetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_ValidatorSetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name.vb: GetValidatorSet(Nullable(Of BlockHash), ValidatorSetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet(System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet(System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetValidatorSet(Nullable<BlockHash>, ValidatorSetStateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetValidatorSet(Nullable(Of BlockHash), ValidatorSetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet
+  nameWithType: BlockChain<T>.GetValidatorSet
+  nameWithType.vb: BlockChain(Of T).GetValidatorSet
 - uid: Libplanet.Blockchain.BlockChain`1.Id
   name: Id
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id
@@ -3329,6 +3500,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetTotalSupply
   nameWithType: BlockChainStates<T>.GetTotalSupply
   nameWithType.vb: BlockChainStates(Of T).GetTotalSupply
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name: GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name.vb: GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
+  nameWithType: BlockChainStates<T>.GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
+  nameWithType.vb: BlockChainStates(Of T).GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetValidatorSet_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetValidatorSet
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetValidatorSet
+  nameWithType: BlockChainStates<T>.GetValidatorSet
+  nameWithType.vb: BlockChainStates(Of T).GetValidatorSet
 - uid: Libplanet.Blockchain.BlockLocator
   name: BlockLocator
   href: api/Libplanet.Blockchain.BlockLocator.html
@@ -3486,6 +3675,24 @@ references:
   fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetTotalSupply
   nameWithType: IBlockChainStates<T>.GetTotalSupply
   nameWithType.vb: IBlockChainStates(Of T).GetTotalSupply
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name: GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
+  name.vb: GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
+  nameWithType: IBlockChainStates<T>.GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
+  nameWithType.vb: IBlockChainStates(Of T).GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetValidatorSet
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetValidatorSet
+  nameWithType: IBlockChainStates<T>.GetValidatorSet
+  nameWithType.vb: IBlockChainStates(Of T).GetValidatorSet
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
@@ -7443,6 +7650,23 @@ references:
   fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).TotalSupplyStateCompleter
   nameWithType: StateCompleterSet<T>.TotalSupplyStateCompleter
   nameWithType.vb: StateCompleterSet(Of T).TotalSupplyStateCompleter
+- uid: Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter
+  name: ValidatorSetStateCompleter
+  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ValidatorSetStateCompleter
+  commentId: P:Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter
+  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ValidatorSetStateCompleter
+  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ValidatorSetStateCompleter
+  nameWithType: StateCompleterSet<T>.ValidatorSetStateCompleter
+  nameWithType.vb: StateCompleterSet(Of T).ValidatorSetStateCompleter
+- uid: Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter*
+  name: ValidatorSetStateCompleter
+  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ValidatorSetStateCompleter_
+  commentId: Overload:Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ValidatorSetStateCompleter
+  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ValidatorSetStateCompleter
+  nameWithType: StateCompleterSet<T>.ValidatorSetStateCompleter
+  nameWithType.vb: StateCompleterSet(Of T).ValidatorSetStateCompleter
 - uid: Libplanet.Blockchain.TotalDifficultyComparer
   name: TotalDifficultyComparer
   href: api/Libplanet.Blockchain.TotalDifficultyComparer.html
@@ -7525,6 +7749,56 @@ references:
   fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).Reject
   nameWithType: TotalSupplyStateCompleters<T>.Reject
   nameWithType.vb: TotalSupplyStateCompleters(Of T).Reject
+- uid: Libplanet.Blockchain.ValidatorSetStateCompleter`1
+  name: ValidatorSetStateCompleter<T>
+  href: api/Libplanet.Blockchain.ValidatorSetStateCompleter-1.html
+  commentId: T:Libplanet.Blockchain.ValidatorSetStateCompleter`1
+  name.vb: ValidatorSetStateCompleter(Of T)
+  fullName: Libplanet.Blockchain.ValidatorSetStateCompleter<T>
+  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleter(Of T)
+  nameWithType: ValidatorSetStateCompleter<T>
+  nameWithType.vb: ValidatorSetStateCompleter(Of T)
+- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1
+  name: ValidatorSetStateCompleters<T>
+  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html
+  commentId: T:Libplanet.Blockchain.ValidatorSetStateCompleters`1
+  name.vb: ValidatorSetStateCompleters(Of T)
+  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>
+  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T)
+  nameWithType: ValidatorSetStateCompleters<T>
+  nameWithType.vb: ValidatorSetStateCompleters(Of T)
+- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementAll
+  name: ComplementAll
+  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_ComplementAll
+  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementAll
+  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.ComplementAll
+  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).ComplementAll
+  nameWithType: ValidatorSetStateCompleters<T>.ComplementAll
+  nameWithType.vb: ValidatorSetStateCompleters(Of T).ComplementAll
+- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementLatest
+  name: ComplementLatest
+  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_ComplementLatest
+  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementLatest
+  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.ComplementLatest
+  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).ComplementLatest
+  nameWithType: ValidatorSetStateCompleters<T>.ComplementLatest
+  nameWithType.vb: ValidatorSetStateCompleters(Of T).ComplementLatest
+- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.Recalculate
+  name: Recalculate
+  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_Recalculate
+  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.Recalculate
+  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.Recalculate
+  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).Recalculate
+  nameWithType: ValidatorSetStateCompleters<T>.Recalculate
+  nameWithType.vb: ValidatorSetStateCompleters(Of T).Recalculate
+- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.Reject
+  name: Reject
+  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_Reject
+  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.Reject
+  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.Reject
+  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).Reject
+  nameWithType: ValidatorSetStateCompleters<T>.Reject
+  nameWithType.vb: ValidatorSetStateCompleters(Of T).Reject
 - uid: Libplanet.Blocks
   name: Libplanet.Blocks
   href: api/Libplanet.Blocks.html
@@ -11091,6 +11365,449 @@ references:
   isSpec: "True"
   fullName: Libplanet.ByteUtil.TimingSafelyCompare
   nameWithType: ByteUtil.TimingSafelyCompare
+- uid: Libplanet.Consensus
+  name: Libplanet.Consensus
+  href: api/Libplanet.Consensus.html
+  commentId: N:Libplanet.Consensus
+  fullName: Libplanet.Consensus
+  nameWithType: Libplanet.Consensus
+- uid: Libplanet.Consensus.Validator
+  name: Validator
+  href: api/Libplanet.Consensus.Validator.html
+  commentId: T:Libplanet.Consensus.Validator
+  fullName: Libplanet.Consensus.Validator
+  nameWithType: Validator
+- uid: Libplanet.Consensus.Validator.#ctor(Bencodex.Types.Dictionary)
+  name: Validator(Bencodex.Types.Dictionary)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Consensus.Validator.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Consensus.Validator.Validator(Bencodex.Types.Dictionary)
+  nameWithType: Validator.Validator(Bencodex.Types.Dictionary)
+- uid: Libplanet.Consensus.Validator.#ctor(Libplanet.Crypto.PublicKey,BigInteger)
+  name: Validator(PublicKey, BigInteger)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator__ctor_Libplanet_Crypto_PublicKey_BigInteger_
+  commentId: M:Libplanet.Consensus.Validator.#ctor(Libplanet.Crypto.PublicKey,BigInteger)
+  fullName: Libplanet.Consensus.Validator.Validator(Libplanet.Crypto.PublicKey, BigInteger)
+  nameWithType: Validator.Validator(PublicKey, BigInteger)
+- uid: Libplanet.Consensus.Validator.#ctor*
+  name: Validator
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator__ctor_
+  commentId: Overload:Libplanet.Consensus.Validator.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.Validator
+  nameWithType: Validator.Validator
+- uid: Libplanet.Consensus.Validator.Encoded
+  name: Encoded
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Encoded
+  commentId: P:Libplanet.Consensus.Validator.Encoded
+  fullName: Libplanet.Consensus.Validator.Encoded
+  nameWithType: Validator.Encoded
+- uid: Libplanet.Consensus.Validator.Encoded*
+  name: Encoded
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Encoded_
+  commentId: Overload:Libplanet.Consensus.Validator.Encoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.Encoded
+  nameWithType: Validator.Encoded
+- uid: Libplanet.Consensus.Validator.Equals(Libplanet.Consensus.Validator)
+  name: Equals(Validator)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Equals_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Consensus.Validator.Equals(Libplanet.Consensus.Validator)
+  fullName: Libplanet.Consensus.Validator.Equals(Libplanet.Consensus.Validator)
+  nameWithType: Validator.Equals(Validator)
+- uid: Libplanet.Consensus.Validator.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Consensus.Validator.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Consensus.Validator.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Consensus.Validator.Equals(System.Nullable(Of System.Object))
+  nameWithType: Validator.Equals(Nullable<Object>)
+  nameWithType.vb: Validator.Equals(Nullable(Of Object))
+- uid: Libplanet.Consensus.Validator.Equals*
+  name: Equals
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Equals_
+  commentId: Overload:Libplanet.Consensus.Validator.Equals
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.Equals
+  nameWithType: Validator.Equals
+- uid: Libplanet.Consensus.Validator.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_GetHashCode
+  commentId: M:Libplanet.Consensus.Validator.GetHashCode
+  fullName: Libplanet.Consensus.Validator.GetHashCode()
+  nameWithType: Validator.GetHashCode()
+- uid: Libplanet.Consensus.Validator.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_GetHashCode_
+  commentId: Overload:Libplanet.Consensus.Validator.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.GetHashCode
+  nameWithType: Validator.GetHashCode
+- uid: Libplanet.Consensus.Validator.op_Equality(Libplanet.Consensus.Validator,Libplanet.Consensus.Validator)
+  name: Equality(Validator, Validator)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_op_Equality_Libplanet_Consensus_Validator_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Consensus.Validator.op_Equality(Libplanet.Consensus.Validator,Libplanet.Consensus.Validator)
+  fullName: Libplanet.Consensus.Validator.Equality(Libplanet.Consensus.Validator, Libplanet.Consensus.Validator)
+  nameWithType: Validator.Equality(Validator, Validator)
+- uid: Libplanet.Consensus.Validator.op_Equality*
+  name: Equality
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_op_Equality_
+  commentId: Overload:Libplanet.Consensus.Validator.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.Equality
+  nameWithType: Validator.Equality
+- uid: Libplanet.Consensus.Validator.op_Inequality(Libplanet.Consensus.Validator,Libplanet.Consensus.Validator)
+  name: Inequality(Validator, Validator)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_op_Inequality_Libplanet_Consensus_Validator_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Consensus.Validator.op_Inequality(Libplanet.Consensus.Validator,Libplanet.Consensus.Validator)
+  fullName: Libplanet.Consensus.Validator.Inequality(Libplanet.Consensus.Validator, Libplanet.Consensus.Validator)
+  nameWithType: Validator.Inequality(Validator, Validator)
+- uid: Libplanet.Consensus.Validator.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_op_Inequality_
+  commentId: Overload:Libplanet.Consensus.Validator.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.Inequality
+  nameWithType: Validator.Inequality
+- uid: Libplanet.Consensus.Validator.OperatorAddress
+  name: OperatorAddress
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_OperatorAddress
+  commentId: P:Libplanet.Consensus.Validator.OperatorAddress
+  fullName: Libplanet.Consensus.Validator.OperatorAddress
+  nameWithType: Validator.OperatorAddress
+- uid: Libplanet.Consensus.Validator.OperatorAddress*
+  name: OperatorAddress
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_OperatorAddress_
+  commentId: Overload:Libplanet.Consensus.Validator.OperatorAddress
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.OperatorAddress
+  nameWithType: Validator.OperatorAddress
+- uid: Libplanet.Consensus.Validator.Power
+  name: Power
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Power
+  commentId: P:Libplanet.Consensus.Validator.Power
+  fullName: Libplanet.Consensus.Validator.Power
+  nameWithType: Validator.Power
+- uid: Libplanet.Consensus.Validator.Power*
+  name: Power
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Power_
+  commentId: Overload:Libplanet.Consensus.Validator.Power
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.Power
+  nameWithType: Validator.Power
+- uid: Libplanet.Consensus.Validator.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_PublicKey
+  commentId: P:Libplanet.Consensus.Validator.PublicKey
+  fullName: Libplanet.Consensus.Validator.PublicKey
+  nameWithType: Validator.PublicKey
+- uid: Libplanet.Consensus.Validator.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_PublicKey_
+  commentId: Overload:Libplanet.Consensus.Validator.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.PublicKey
+  nameWithType: Validator.PublicKey
+- uid: Libplanet.Consensus.Validator.ToString
+  name: ToString()
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_ToString
+  commentId: M:Libplanet.Consensus.Validator.ToString
+  fullName: Libplanet.Consensus.Validator.ToString()
+  nameWithType: Validator.ToString()
+- uid: Libplanet.Consensus.Validator.ToString*
+  name: ToString
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_ToString_
+  commentId: Overload:Libplanet.Consensus.Validator.ToString
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Validator.ToString
+  nameWithType: Validator.ToString
+- uid: Libplanet.Consensus.ValidatorSet
+  name: ValidatorSet
+  href: api/Libplanet.Consensus.ValidatorSet.html
+  commentId: T:Libplanet.Consensus.ValidatorSet
+  fullName: Libplanet.Consensus.ValidatorSet
+  nameWithType: ValidatorSet
+- uid: Libplanet.Consensus.ValidatorSet.#ctor
+  name: ValidatorSet()
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor
+  commentId: M:Libplanet.Consensus.ValidatorSet.#ctor
+  fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet()
+  nameWithType: ValidatorSet.ValidatorSet()
+- uid: Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.List)
+  name: ValidatorSet(Bencodex.Types.List)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor_Bencodex_Types_List_
+  commentId: M:Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.List)
+  fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet(Bencodex.Types.List)
+  nameWithType: ValidatorSet.ValidatorSet(Bencodex.Types.List)
+- uid: Libplanet.Consensus.ValidatorSet.#ctor(List{Libplanet.Consensus.Validator})
+  name: ValidatorSet(List<Validator>)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor_List_Libplanet_Consensus_Validator__
+  commentId: M:Libplanet.Consensus.ValidatorSet.#ctor(List{Libplanet.Consensus.Validator})
+  name.vb: ValidatorSet(List(Of Validator))
+  fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet(List<Libplanet.Consensus.Validator>)
+  fullName.vb: Libplanet.Consensus.ValidatorSet.ValidatorSet(List(Of Libplanet.Consensus.Validator))
+  nameWithType: ValidatorSet.ValidatorSet(List<Validator>)
+  nameWithType.vb: ValidatorSet.ValidatorSet(List(Of Validator))
+- uid: Libplanet.Consensus.ValidatorSet.#ctor*
+  name: ValidatorSet
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet
+  nameWithType: ValidatorSet.ValidatorSet
+- uid: Libplanet.Consensus.ValidatorSet.Contains(Libplanet.Consensus.Validator)
+  name: Contains(Validator)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Contains_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Consensus.ValidatorSet.Contains(Libplanet.Consensus.Validator)
+  fullName: Libplanet.Consensus.ValidatorSet.Contains(Libplanet.Consensus.Validator)
+  nameWithType: ValidatorSet.Contains(Validator)
+- uid: Libplanet.Consensus.ValidatorSet.Contains*
+  name: Contains
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Contains_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Contains
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Contains
+  nameWithType: ValidatorSet.Contains
+- uid: Libplanet.Consensus.ValidatorSet.Encoded
+  name: Encoded
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Encoded
+  commentId: P:Libplanet.Consensus.ValidatorSet.Encoded
+  fullName: Libplanet.Consensus.ValidatorSet.Encoded
+  nameWithType: ValidatorSet.Encoded
+- uid: Libplanet.Consensus.ValidatorSet.Encoded*
+  name: Encoded
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Encoded_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Encoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Encoded
+  nameWithType: ValidatorSet.Encoded
+- uid: Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)
+  name: Equals(ValidatorSet)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Equals_Libplanet_Consensus_ValidatorSet_
+  commentId: M:Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)
+  fullName: Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)
+  nameWithType: ValidatorSet.Equals(ValidatorSet)
+- uid: Libplanet.Consensus.ValidatorSet.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Consensus.ValidatorSet.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Consensus.ValidatorSet.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Consensus.ValidatorSet.Equals(System.Nullable(Of System.Object))
+  nameWithType: ValidatorSet.Equals(Nullable<Object>)
+  nameWithType.vb: ValidatorSet.Equals(Nullable(Of Object))
+- uid: Libplanet.Consensus.ValidatorSet.Equals*
+  name: Equals
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Equals_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Equals
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Equals
+  nameWithType: ValidatorSet.Equals
+- uid: Libplanet.Consensus.ValidatorSet.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetHashCode
+  commentId: M:Libplanet.Consensus.ValidatorSet.GetHashCode
+  fullName: Libplanet.Consensus.ValidatorSet.GetHashCode()
+  nameWithType: ValidatorSet.GetHashCode()
+- uid: Libplanet.Consensus.ValidatorSet.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetHashCode_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.GetHashCode
+  nameWithType: ValidatorSet.GetHashCode
+- uid: Libplanet.Consensus.ValidatorSet.GetProposer(System.Int64,System.Int32)
+  name: GetProposer(Int64, Int32)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetProposer_System_Int64_System_Int32_
+  commentId: M:Libplanet.Consensus.ValidatorSet.GetProposer(System.Int64,System.Int32)
+  fullName: Libplanet.Consensus.ValidatorSet.GetProposer(System.Int64, System.Int32)
+  nameWithType: ValidatorSet.GetProposer(Int64, Int32)
+- uid: Libplanet.Consensus.ValidatorSet.GetProposer*
+  name: GetProposer
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetProposer_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.GetProposer
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.GetProposer
+  nameWithType: ValidatorSet.GetProposer
+- uid: Libplanet.Consensus.ValidatorSet.GetValidator(Libplanet.Crypto.PublicKey)
+  name: GetValidator(PublicKey)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetValidator_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Consensus.ValidatorSet.GetValidator(Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Consensus.ValidatorSet.GetValidator(Libplanet.Crypto.PublicKey)
+  nameWithType: ValidatorSet.GetValidator(PublicKey)
+- uid: Libplanet.Consensus.ValidatorSet.GetValidator*
+  name: GetValidator
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetValidator_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.GetValidator
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.GetValidator
+  nameWithType: ValidatorSet.GetValidator
+- uid: Libplanet.Consensus.ValidatorSet.GetValidators(IEnumerable{Libplanet.Crypto.PublicKey})
+  name: GetValidators(IEnumerable<PublicKey>)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetValidators_IEnumerable_Libplanet_Crypto_PublicKey__
+  commentId: M:Libplanet.Consensus.ValidatorSet.GetValidators(IEnumerable{Libplanet.Crypto.PublicKey})
+  name.vb: GetValidators(IEnumerable(Of PublicKey))
+  fullName: Libplanet.Consensus.ValidatorSet.GetValidators(IEnumerable<Libplanet.Crypto.PublicKey>)
+  fullName.vb: Libplanet.Consensus.ValidatorSet.GetValidators(IEnumerable(Of Libplanet.Crypto.PublicKey))
+  nameWithType: ValidatorSet.GetValidators(IEnumerable<PublicKey>)
+  nameWithType.vb: ValidatorSet.GetValidators(IEnumerable(Of PublicKey))
+- uid: Libplanet.Consensus.ValidatorSet.GetValidators*
+  name: GetValidators
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetValidators_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.GetValidators
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.GetValidators
+  nameWithType: ValidatorSet.GetValidators
+- uid: Libplanet.Consensus.ValidatorSet.GetValidatorsPower(List{Libplanet.Crypto.PublicKey})
+  name: GetValidatorsPower(List<PublicKey>)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetValidatorsPower_List_Libplanet_Crypto_PublicKey__
+  commentId: M:Libplanet.Consensus.ValidatorSet.GetValidatorsPower(List{Libplanet.Crypto.PublicKey})
+  name.vb: GetValidatorsPower(List(Of PublicKey))
+  fullName: Libplanet.Consensus.ValidatorSet.GetValidatorsPower(List<Libplanet.Crypto.PublicKey>)
+  fullName.vb: Libplanet.Consensus.ValidatorSet.GetValidatorsPower(List(Of Libplanet.Crypto.PublicKey))
+  nameWithType: ValidatorSet.GetValidatorsPower(List<PublicKey>)
+  nameWithType.vb: ValidatorSet.GetValidatorsPower(List(Of PublicKey))
+- uid: Libplanet.Consensus.ValidatorSet.GetValidatorsPower*
+  name: GetValidatorsPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetValidatorsPower_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.GetValidatorsPower
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.GetValidatorsPower
+  nameWithType: ValidatorSet.GetValidatorsPower
+- uid: Libplanet.Consensus.ValidatorSet.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Item_System_Int32_
+  commentId: P:Libplanet.Consensus.ValidatorSet.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Libplanet.Consensus.ValidatorSet.Item[System.Int32]
+  fullName.vb: Libplanet.Consensus.ValidatorSet.Item(System.Int32)
+  nameWithType: ValidatorSet.Item[Int32]
+  nameWithType.vb: ValidatorSet.Item(Int32)
+- uid: Libplanet.Consensus.ValidatorSet.Item*
+  name: Item
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Item_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Item
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Item
+  nameWithType: ValidatorSet.Item
+- uid: Libplanet.Consensus.ValidatorSet.OneThirdCount
+  name: OneThirdCount
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_OneThirdCount
+  commentId: P:Libplanet.Consensus.ValidatorSet.OneThirdCount
+  fullName: Libplanet.Consensus.ValidatorSet.OneThirdCount
+  nameWithType: ValidatorSet.OneThirdCount
+- uid: Libplanet.Consensus.ValidatorSet.OneThirdCount*
+  name: OneThirdCount
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_OneThirdCount_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.OneThirdCount
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.OneThirdCount
+  nameWithType: ValidatorSet.OneThirdCount
+- uid: Libplanet.Consensus.ValidatorSet.OneThirdPower
+  name: OneThirdPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_OneThirdPower
+  commentId: P:Libplanet.Consensus.ValidatorSet.OneThirdPower
+  fullName: Libplanet.Consensus.ValidatorSet.OneThirdPower
+  nameWithType: ValidatorSet.OneThirdPower
+- uid: Libplanet.Consensus.ValidatorSet.OneThirdPower*
+  name: OneThirdPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_OneThirdPower_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.OneThirdPower
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.OneThirdPower
+  nameWithType: ValidatorSet.OneThirdPower
+- uid: Libplanet.Consensus.ValidatorSet.PublicKeys
+  name: PublicKeys
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_PublicKeys
+  commentId: P:Libplanet.Consensus.ValidatorSet.PublicKeys
+  fullName: Libplanet.Consensus.ValidatorSet.PublicKeys
+  nameWithType: ValidatorSet.PublicKeys
+- uid: Libplanet.Consensus.ValidatorSet.PublicKeys*
+  name: PublicKeys
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_PublicKeys_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.PublicKeys
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.PublicKeys
+  nameWithType: ValidatorSet.PublicKeys
+- uid: Libplanet.Consensus.ValidatorSet.TotalCount
+  name: TotalCount
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TotalCount
+  commentId: P:Libplanet.Consensus.ValidatorSet.TotalCount
+  fullName: Libplanet.Consensus.ValidatorSet.TotalCount
+  nameWithType: ValidatorSet.TotalCount
+- uid: Libplanet.Consensus.ValidatorSet.TotalCount*
+  name: TotalCount
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TotalCount_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.TotalCount
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.TotalCount
+  nameWithType: ValidatorSet.TotalCount
+- uid: Libplanet.Consensus.ValidatorSet.TotalPower
+  name: TotalPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TotalPower
+  commentId: P:Libplanet.Consensus.ValidatorSet.TotalPower
+  fullName: Libplanet.Consensus.ValidatorSet.TotalPower
+  nameWithType: ValidatorSet.TotalPower
+- uid: Libplanet.Consensus.ValidatorSet.TotalPower*
+  name: TotalPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TotalPower_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.TotalPower
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.TotalPower
+  nameWithType: ValidatorSet.TotalPower
+- uid: Libplanet.Consensus.ValidatorSet.TwoThirdsCount
+  name: TwoThirdsCount
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TwoThirdsCount
+  commentId: P:Libplanet.Consensus.ValidatorSet.TwoThirdsCount
+  fullName: Libplanet.Consensus.ValidatorSet.TwoThirdsCount
+  nameWithType: ValidatorSet.TwoThirdsCount
+- uid: Libplanet.Consensus.ValidatorSet.TwoThirdsCount*
+  name: TwoThirdsCount
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TwoThirdsCount_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.TwoThirdsCount
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.TwoThirdsCount
+  nameWithType: ValidatorSet.TwoThirdsCount
+- uid: Libplanet.Consensus.ValidatorSet.TwoThirdsPower
+  name: TwoThirdsPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TwoThirdsPower
+  commentId: P:Libplanet.Consensus.ValidatorSet.TwoThirdsPower
+  fullName: Libplanet.Consensus.ValidatorSet.TwoThirdsPower
+  nameWithType: ValidatorSet.TwoThirdsPower
+- uid: Libplanet.Consensus.ValidatorSet.TwoThirdsPower*
+  name: TwoThirdsPower
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_TwoThirdsPower_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.TwoThirdsPower
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.TwoThirdsPower
+  nameWithType: ValidatorSet.TwoThirdsPower
+- uid: Libplanet.Consensus.ValidatorSet.Update(Libplanet.Consensus.Validator)
+  name: Update(Validator)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Update_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Consensus.ValidatorSet.Update(Libplanet.Consensus.Validator)
+  fullName: Libplanet.Consensus.ValidatorSet.Update(Libplanet.Consensus.Validator)
+  nameWithType: ValidatorSet.Update(Validator)
+- uid: Libplanet.Consensus.ValidatorSet.Update*
+  name: Update
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Update_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Update
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Update
+  nameWithType: ValidatorSet.Update
+- uid: Libplanet.Consensus.ValidatorSet.Validators
+  name: Validators
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators
+  commentId: P:Libplanet.Consensus.ValidatorSet.Validators
+  fullName: Libplanet.Consensus.ValidatorSet.Validators
+  nameWithType: ValidatorSet.Validators
+- uid: Libplanet.Consensus.ValidatorSet.Validators*
+  name: Validators
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Validators
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Validators
+  nameWithType: ValidatorSet.Validators
 - uid: Libplanet.Crypto
   name: Libplanet.Crypto
   href: api/Libplanet.Crypto.html
