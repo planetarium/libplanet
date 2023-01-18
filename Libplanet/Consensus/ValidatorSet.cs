@@ -54,7 +54,7 @@ namespace Libplanet.Consensus
             }
 
             Validators = validators
-                .OrderBy(validator => validator.PublicKey.ToAddress())
+                .OrderBy(validator => validator.OperatorAddress)
                 .ToImmutableList();
         }
 
