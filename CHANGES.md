@@ -6,6 +6,11 @@ Version 0.45.5
 
 To be released.
 
+  -  Fixed a bug when `Web3KeyStore.Get()` hadn't worked properly on IL2CPP
+     environment.  [[#2727]]
+
+[#2727]: https://github.com/planetarium/libplanet/pull/2727
+
 
 Version 0.45.4
 --------------
