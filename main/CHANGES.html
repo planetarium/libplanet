@@ -67,6 +67,8 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Changed <code>BlockLocator</code> to throw an <code>ArgumentException</code> if an empty set of
+<code>BlockHash</code>es are given during construction.  [<a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
 <li><code>BlockChain&lt;T&gt;()</code> now explicitly requires both <code>store</code> and <code>stateStore</code>
 arguments to be not <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2609">#2609</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Swap()</code> now throws an <code>InvalidOperationException</code> if called
@@ -75,6 +77,9 @@ on a non-canonical chain.  [<a href="https://github.com/planetarium/libplanet/pu
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
 <li>Added <code>actionsLogsList</code> parameter to <code>TxFailure</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
+<li>Removed <code>BlockLocator(Func&lt;long, BlockHash?&gt;, Func&lt;BlockHash, long&gt;, int)</code>
+constructor.  Use <code>BlockLocator.Create()</code> static method instead.
+[<a href="https://github.com/planetarium/libplanet/issues/2580">#2580</a>, <a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
 <li>Replaced <code>IAction?</code>-typed <code>policyBlockAction</code> parameter with
 <code>PolicyBlockActionGetter</code>-typed <code>policyBlockActionGetter</code> parameter
 in <code>ActionEvaluator</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2646">#2646</a>]</li>
@@ -118,6 +123,7 @@ method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
 <li>(Libplanet.Explorer) Added <code>actionsLogsList</code> field to <code>TxResultType</code>.
 [<a href="https://github.com/planetarium/libplanet/discussions/2474">#2474</a>, <a href="https://github.com/planetarium/libplanet/pull/2505">#2505</a>]</li>
+<li>Added <code>BlockLocator.Create()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
 <li>Added <code>PolicyBlockActionGetter</code> delegator type.  [<a href="https://github.com/planetarium/libplanet/pull/2646">#2646</a>]</li>
 <li>Added <code>IActionTypeLoader.LoadAllActionTypes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2646">#2646</a>]
 <ul>
@@ -138,6 +144,14 @@ method and <code>Swarm&lt;T&gt;()</code> constructor.  [<a href="https://github.
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li>Changed <code>BlockChain&lt;T&gt;.FindNextHashes()</code> to return at most <code>count</code>
+number of <code>BlockHash</code>es regardless of the result.
+<code>BlockChain&lt;T&gt;</code>. [<a href="https://github.com/planetarium/libplanet/issues/2581">#2581</a>, <a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;.FindNextHashes()</code> to return zero <code>BlockHash</code>es
+if no branch point <code>BlockHash</code> is found instead of returning
+<code>BlockHash</code>es starting with the genesis <code>BlockHash</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2582">#2582</a>, <a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
+<li>Chnaged the behavior of <code>BlockLocator</code> index selection and sampling when
+creating an instance.  [<a href="https://github.com/planetarium/libplanet/issues/2583">#2583</a>, <a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
 <li>Changed the default <code>VolatileStagePolicy&lt;T&gt;.Lifetime</code> from 3 hours
 to 10 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/2718">#2718</a>]</li>
 </ul>

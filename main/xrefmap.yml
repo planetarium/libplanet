@@ -3524,15 +3524,6 @@ references:
   commentId: T:Libplanet.Blockchain.BlockLocator
   fullName: Libplanet.Blockchain.BlockLocator
   nameWithType: BlockLocator
-- uid: Libplanet.Blockchain.BlockLocator.#ctor(Func{System.Int64,System.Nullable{Libplanet.Blocks.BlockHash}},Func{Libplanet.Blocks.BlockHash,System.Int64},System.Int32)
-  name: BlockLocator(Func<Int64, Nullable<BlockHash>>, Func<BlockHash, Int64>, Int32)
-  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator__ctor_Func_System_Int64_System_Nullable_Libplanet_Blocks_BlockHash___Func_Libplanet_Blocks_BlockHash_System_Int64__System_Int32_
-  commentId: M:Libplanet.Blockchain.BlockLocator.#ctor(Func{System.Int64,System.Nullable{Libplanet.Blocks.BlockHash}},Func{Libplanet.Blocks.BlockHash,System.Int64},System.Int32)
-  name.vb: BlockLocator(Func(Of Int64, Nullable(Of BlockHash)), Func(Of BlockHash, Int64), Int32)
-  fullName: Libplanet.Blockchain.BlockLocator.BlockLocator(Func<System.Int64, System.Nullable<Libplanet.Blocks.BlockHash>>, Func<Libplanet.Blocks.BlockHash, System.Int64>, System.Int32)
-  fullName.vb: Libplanet.Blockchain.BlockLocator.BlockLocator(Func(Of System.Int64, System.Nullable(Of Libplanet.Blocks.BlockHash)), Func(Of Libplanet.Blocks.BlockHash, System.Int64), System.Int32)
-  nameWithType: BlockLocator.BlockLocator(Func<Int64, Nullable<BlockHash>>, Func<BlockHash, Int64>, Int32)
-  nameWithType.vb: BlockLocator.BlockLocator(Func(Of Int64, Nullable(Of BlockHash)), Func(Of BlockHash, Int64), Int32)
 - uid: Libplanet.Blockchain.BlockLocator.#ctor(IEnumerable{Libplanet.Blocks.BlockHash})
   name: BlockLocator(IEnumerable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator__ctor_IEnumerable_Libplanet_Blocks_BlockHash__
@@ -3549,6 +3540,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockLocator.BlockLocator
   nameWithType: BlockLocator.BlockLocator
+- uid: Libplanet.Blockchain.BlockLocator.Create(System.Int64,Func{System.Int64,System.Nullable{Libplanet.Blocks.BlockHash}},System.Int64)
+  name: Create(Int64, Func<Int64, Nullable<BlockHash>>, Int64)
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Blocks_BlockHash___System_Int64_
+  commentId: M:Libplanet.Blockchain.BlockLocator.Create(System.Int64,Func{System.Int64,System.Nullable{Libplanet.Blocks.BlockHash}},System.Int64)
+  name.vb: Create(Int64, Func(Of Int64, Nullable(Of BlockHash)), Int64)
+  fullName: Libplanet.Blockchain.BlockLocator.Create(System.Int64, Func<System.Int64, System.Nullable<Libplanet.Blocks.BlockHash>>, System.Int64)
+  fullName.vb: Libplanet.Blockchain.BlockLocator.Create(System.Int64, Func(Of System.Int64, System.Nullable(Of Libplanet.Blocks.BlockHash)), System.Int64)
+  nameWithType: BlockLocator.Create(Int64, Func<Int64, Nullable<BlockHash>>, Int64)
+  nameWithType.vb: BlockLocator.Create(Int64, Func(Of Int64, Nullable(Of BlockHash)), Int64)
+- uid: Libplanet.Blockchain.BlockLocator.Create*
+  name: Create
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_Create_
+  commentId: Overload:Libplanet.Blockchain.BlockLocator.Create
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockLocator.Create
+  nameWithType: BlockLocator.Create
 - uid: Libplanet.Blockchain.BlockLocator.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_GetEnumerator
