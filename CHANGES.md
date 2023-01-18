@@ -1,6 +1,22 @@
 Libplanet changelog
 ===================
 
+Version 0.47.0
+--------------
+
+To be released.
+
+### Backward-incompatible API changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+
 Version 0.46.0
 --------------
 
