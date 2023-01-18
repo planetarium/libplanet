@@ -1589,8 +1589,8 @@ namespace Libplanet.Net.Tests
             await StartAsync(receiver);
             await StartAsync(sender);
 
-            receiver.FindNextHashesChunkSize = 2;
-            sender.FindNextHashesChunkSize = 2;
+            receiver.FindNextHashesChunkSize = 3;
+            sender.FindNextHashesChunkSize = 3;
             BlockChain<DumbAction> chain = sender.BlockChain;
 
             for (int i = 0; i < 6; i++)
@@ -1616,7 +1616,7 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 sender.BroadcastBlock(sender.BlockChain.Tip);
                 Assert.Equal(
-                    2,
+                    3,
                     receiver.BlockChain.Count);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
@@ -1626,7 +1626,7 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 sender.BroadcastBlock(sender.BlockChain.Tip);
                 Assert.Equal(
-                    4,
+                    5,
                     receiver.BlockChain.Count);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
@@ -1636,7 +1636,7 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 sender.BroadcastBlock(sender.BlockChain.Tip);
                 Assert.Equal(
-                    6,
+                    7,
                     receiver.BlockChain.Count);
             }
             finally

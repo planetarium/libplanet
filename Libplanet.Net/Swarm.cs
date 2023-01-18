@@ -1025,15 +1025,11 @@ namespace Libplanet.Net
                             );
                         }
 
-                        locator = new BlockLocator(
+                        locator = BlockLocator.Create(
+                            startIndex: branchingIndex + downloaded.Count,
                             idx =>
                             {
                                 long arg = idx;
-                                if (idx < 0)
-                                {
-                                    idx = branchingIndex + downloaded.Count + 1 + idx;
-                                }
-
                                 if (idx <= branchingIndex)
                                 {
                                     return blockChain.Store.IndexBlockHash(blockChain.Id, idx);
@@ -1054,13 +1050,6 @@ namespace Libplanet.Net
                                     _logger.Error(e, msg, arg, branchingIndex, downloaded.Count);
                                     return null;
                                 }
-                            },
-                            hash =>
-                            {
-                                Block<T> block = blockChain.Store.GetBlock<T>(hash);
-                                return block is { } b
-                                    ? b.Index
-                                    : branchingIndex + 1 + downloaded.IndexOf(hash);
                             });
                     }
                     while (downloaded.Count < totalBlockHashesToDownload);

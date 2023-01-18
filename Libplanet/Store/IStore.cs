@@ -45,7 +45,7 @@ namespace Libplanet.Store
         long CountIndex(Guid chainId);
 
         /// <summary>
-        /// Lists all block hashes in the <parmaref name="chainId"/>.
+        /// Lists all block hashes in <paramref name="chainId"/>.
         /// </summary>
         /// <param name="chainId">The chain ID of the index that contains block hashes to
         /// iterate.</param>
