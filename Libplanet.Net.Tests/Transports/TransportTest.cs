@@ -278,6 +278,33 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
+        [SkippableFact(Timeout = Timeout)]
+        public async Task SendMessageAsyncNoExpectedMessages()
+        {
+            ITransport transportA = CreateTransport();
+            ITransport transportB = CreateTransport();
+
+            try
+            {
+                await InitializeAsync(transportA);
+                await InitializeAsync(transportB);
+
+                Assert.Empty(
+                    await transportA.SendMessageAsync(
+                        transportB.AsPeer,
+                        new PingMsg(),
+                        TimeSpan.FromSeconds(1),
+                        0,
+                        true,
+                        CancellationToken.None));
+            }
+            finally
+            {
+                transportA.Dispose();
+                transportB.Dispose();
+            }
+        }
+
         [SkippableTheory(Timeout = Timeout)]
         [ClassData(typeof(TransportTestInvalidPeers))]
         public async Task SendMessageToInvalidPeerAsync(BoundPeer invalidPeer)
@@ -327,6 +354,43 @@ namespace Libplanet.Net.Tests.Transports
                 Assert.False(transportA.Running);
                 await Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
                 Assert.True(t.IsCanceled);
+            }
+            finally
+            {
+                transportA.Dispose();
+                transportB.Dispose();
+            }
+        }
+
+        [SkippableFact(Timeout = Timeout)]
+        public async Task SendMessageAsyncReturnFlag()
+        {
+            ITransport transportA = CreateTransport();
+            ITransport transportB = CreateTransport();
+
+            try
+            {
+                await InitializeAsync(transportA);
+
+                Task throwType = transportA.SendMessageAsync(
+                    transportB.AsPeer,
+                    new PingMsg(),
+                    TimeSpan.FromSeconds(1),
+                    1,
+                    false,
+                    CancellationToken.None);
+
+                await Assert.ThrowsAsync<CommunicationFailException>(async () => await throwType);
+
+                Task<IEnumerable<Message>> returnType = transportA.SendMessageAsync(
+                    transportB.AsPeer,
+                    new PingMsg(),
+                    TimeSpan.FromSeconds(1),
+                    1,
+                    true,
+                    CancellationToken.None);
+
+                Assert.Empty(await returnType);
             }
             finally
             {
