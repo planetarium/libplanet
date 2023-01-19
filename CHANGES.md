@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `IAccountStateView.GetValidatorSet()` method.  [[#2733]]
+ -  Removed `IAccountStateDelta.SetValidator(Validator)` method.  [[#2733]]
  -  (Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
     target assemblies.  [[#2732]]
  -  (Libplanet.Extensions.Cocona)  Added .NET 6 target assembly.  [[#2732]]
@@ -29,6 +31,7 @@ To be released.
 ### CLI tools
 
 [[#2732]]: https://github.com/planetarium/libplanet/pull/2732
+[[#2733]]: https://github.com/planetarium/libplanet/pull/2733
 
 
 Version 0.46.0
