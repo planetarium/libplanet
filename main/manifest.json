@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "+oMxsMbg2Ov6cvxaayKVONWgPbLcgI+w3OWGiEgzAzo="
+          "hash": "HWz9ed7lx9hESGllu4ctzc/XQQcYG5JcpEIygnaLubA="
         }
       },
       "is_incremental": false,
@@ -1833,7 +1833,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Extensions.Cocona.Commands.MptCommand.html",
-          "hash": "xbBgDqaVFsKEJTTGIFFdC4LjA8D2u/hB8She4tcDi+k="
+          "hash": "jmdsRBlUnN8CQsflHPqLZi6UnElEisbgomh3dFwtlzM="
         }
       },
       "is_incremental": false,
