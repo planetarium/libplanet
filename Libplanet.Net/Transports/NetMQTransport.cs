@@ -380,6 +380,8 @@ namespace Libplanet.Net.Transports
                     Interlocked.Read(ref _requestCount)
                 );
 
+                await channel.Reader.WaitToReadAsync(linkedCt).ConfigureAwait(false);
+
                 foreach (var i in Enumerable.Range(0, expectedResponses))
                 {
                     NetMQMessage raw = await channel.Reader
@@ -476,7 +478,7 @@ namespace Libplanet.Net.Transports
                     "{Message} {RequestId} from {Peer}.";
                 _logger.Error(
                     e, errMsg, nameof(SendMessageAsync), message, reqId, peer.Address);
-                throw;
+                throw WrapCommunicationFailException(e, peer, message, reqId);
             }
             finally
             {
@@ -503,6 +505,8 @@ namespace Libplanet.Net.Transports
                                 peer,
                                 message,
                                 TimeSpan.FromSeconds(1),
+                                0,
+                                true,
                                 CancellationToken.None
                             );
                         }
@@ -828,24 +832,31 @@ namespace Libplanet.Net.Transports
                         req.Peer);
                 }
 
-                foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                if (req.ExpectedResponses == 0)
                 {
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken
-                    );
+                    await dealer.SkipFrameAsync(cancellationToken);
+                }
+                else
+                {
+                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                    {
+                        NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
+                            cancellationToken: cancellationToken
+                        );
 
-                    _logger.Verbose(
-                        "Received a raw message with {FrameCount} frames as a reply to " +
-                        "request {RequestId} from {Peer}.",
-                        raw.FrameCount,
-                        req.Id,
-                        req.Peer
-                    );
-                    await channel.Writer.WriteAsync(raw, cancellationToken);
-                    receivedCount += 1;
+                        _logger.Verbose(
+                            "Received a raw message with {FrameCount} frames as a reply to " +
+                            "request {RequestId} from {Peer}.",
+                            raw.FrameCount,
+                            req.Id,
+                            req.Peer
+                        );
+                        await channel.Writer.WriteAsync(raw, cancellationToken);
+                        receivedCount += 1;
+                    }
                 }
 
-                channel.Writer.Complete();
+                channel.Writer.TryComplete();
             }
             catch (Exception e)
             {
@@ -859,12 +870,6 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
-                if (req.ExpectedResponses == 0)
-                {
-                    // FIXME: Temporary fix to wait for a message to be sent.
-                    await Task.Delay(1000);
-                }
-
                 if (incrementedSocketCount is { })
                 {
                     Interlocked.Decrement(ref _socketCount);
