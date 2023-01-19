@@ -242,7 +242,7 @@ namespace Libplanet.Net.Tests.Transports
                     CancellationToken.None)).ToArray();
 
                 Assert.Contains(replies, message => message is PingMsg);
-                Assert.Contains(replies, message => message is PongMsg);
+                Assert.Equal(2, replies.Length);
             }
             finally
             {
