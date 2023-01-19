@@ -702,9 +702,7 @@ namespace Libplanet.Net.Transports
             (AsyncManualResetEvent ev, NetMQMessage message) = e.Queue.Dequeue();
             string identityHex = ByteUtil.Hex(message[0].Buffer);
 
-            // FIXME The current timeout value(1 sec) is arbitrary.
-            // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            if (_router.TrySendMultipartMessage(message))
             {
                 _logger.Debug(
                     "{Message} as a reply to {Identity} sent.", message, identityHex);
