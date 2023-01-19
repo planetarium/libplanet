@@ -6,7 +6,17 @@ Version 0.47.0
 
 To be released.
 
+### Deprecated APIs
+
 ### Backward-incompatible API changes
+
+ -  (Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
+    target assemblies.  [[#2732]]
+ -  (Libplanet.Extensions.Cocona)  Added .NET 6 target assembly.  [[#2732]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -14,7 +24,11 @@ To be released.
 
 ### Bug fixes
 
+### Dependencies
+
 ### CLI tools
+
+[[#2732]]: https://github.com/planetarium/libplanet/pull/2732
 
 
 Version 0.46.0
