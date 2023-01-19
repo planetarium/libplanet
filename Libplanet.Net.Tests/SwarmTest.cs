@@ -23,7 +23,6 @@ using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using Nito.AsyncEx.Synchronous;
 using Serilog;
 using xRetry;
 using Xunit;
@@ -1740,7 +1739,7 @@ namespace Libplanet.Net.Tests
                     foreach (Func<Task> finalize in _finalizers)
                     {
                         _logger.Debug("Tries to finalize the resource #{Resource}...", i++);
-                        finalize().WaitAndUnwrapException();
+                        _ = Task.Run(() => finalize());
                     }
 
                     _logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);

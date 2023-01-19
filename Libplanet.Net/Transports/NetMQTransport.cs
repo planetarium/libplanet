@@ -14,7 +14,6 @@ using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
-using Nito.AsyncEx.Synchronous;
 using Serilog;
 
 namespace Libplanet.Net.Transports
@@ -266,7 +265,6 @@ namespace Libplanet.Net.Transports
                 _requests.Writer.TryComplete();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
-                _runtimeProcessor.WaitWithoutException();
 
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
