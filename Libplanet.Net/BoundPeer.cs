@@ -50,6 +50,13 @@ namespace Libplanet.Net
             DnsEndPoint endPoint,
             IPAddress? publicIPAddress)
         {
+            if (Uri.CheckHostName(endPoint.Host) == UriHostNameType.Unknown)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(endPoint)} has unknown host name type: {endPoint.Host}",
+                    nameof(endPoint));
+            }
+
             PublicKey = publicKey;
             EndPoint = endPoint;
             PublicIPAddress = publicIPAddress;
