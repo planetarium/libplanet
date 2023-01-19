@@ -1,0 +1,711 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class NodeUtils&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class NodeUtils&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Node.NodeUtils`1">
+  
+  
+  <h1 id="Libplanet_Node_NodeUtils_1" data-uid="Libplanet.Node.NodeUtils`1" class="text-break">Class NodeUtils&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A helper class for creating a new <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">NodeUtils&lt;T&gt;</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Node.html">Libplanet.Node</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Node.dll</h6>
+  <h5 id="Libplanet_Node_NodeUtils_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class NodeUtils&lt;T&gt; : object where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match to
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> and <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_DefaultBlockPolicy.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.DefaultBlockPolicy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L28">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_DefaultBlockPolicy_" data-uid="Libplanet.Node.NodeUtils`1.DefaultBlockPolicy*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_DefaultBlockPolicy" data-uid="Libplanet.Node.NodeUtils`1.DefaultBlockPolicy">DefaultBlockPolicy</h4>
+  <div class="markdown level1 summary"><p>The default <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IBlockPolicy&lt;T&gt; DefaultBlockPolicy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_DefaultStagePolicy.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.DefaultStagePolicy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L33">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_DefaultStagePolicy_" data-uid="Libplanet.Node.NodeUtils`1.DefaultStagePolicy*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_DefaultStagePolicy" data-uid="Libplanet.Node.NodeUtils`1.DefaultStagePolicy">DefaultStagePolicy</h4>
+  <div class="markdown level1 summary"><p>The default <a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IStagePolicy&lt;T&gt; DefaultStagePolicy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_DefaultStoreUriScheme.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.DefaultStoreUriScheme%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L38">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_DefaultStoreUriScheme_" data-uid="Libplanet.Node.NodeUtils`1.DefaultStoreUriScheme*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_DefaultStoreUriScheme" data-uid="Libplanet.Node.NodeUtils`1.DefaultStoreUriScheme">DefaultStoreUriScheme</h4>
+  <div class="markdown level1 summary"><p>The default scheme used for storage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string DefaultStoreUriScheme { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_CreateGenesisBlock.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.CreateGenesisBlock%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L51">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_CreateGenesisBlock_" data-uid="Libplanet.Node.NodeUtils`1.CreateGenesisBlock*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_CreateGenesisBlock" data-uid="Libplanet.Node.NodeUtils`1.CreateGenesisBlock">CreateGenesisBlock()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> using <a class="xref" href="Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultBlockPolicy">DefaultBlockPolicy</a>
+signed with a random <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; CreateGenesisBlock()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><p>An empty genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> using <a class="xref" href="Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultBlockPolicy">DefaultBlockPolicy</a>
+signed with a random <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Node_NodeUtils_1_CreateGenesisBlock_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> used to sign a newly created genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+is ephemeral, i.e. lost after its creation.  This method is mostly for developmental
+purposes and testing.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_CreateGenesisBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_Policies_IBlockPolicy__0__.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.CreateGenesisBlock(Libplanet.Crypto.PrivateKey%2CLibplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L63">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_CreateGenesisBlock_" data-uid="Libplanet.Node.NodeUtils`1.CreateGenesisBlock*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_CreateGenesisBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_Policies_IBlockPolicy__0__" data-uid="Libplanet.Node.NodeUtils`1.CreateGenesisBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.Policies.IBlockPolicy{`0})">CreateGenesisBlock(PrivateKey, IBlockPolicy&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an empty genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> signed with
+<code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; CreateGenesisBlock(PrivateKey privateKey, IBlockPolicy&lt;T&gt; blockPolicy)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> to sign the genesis
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockPolicy</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a> to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><p>An empty genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> signed with
+<code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.LoadGenesisBlock(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L94">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_" data-uid="Libplanet.Node.NodeUtils`1.LoadGenesisBlock*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_" data-uid="Libplanet.Node.NodeUtils`1.LoadGenesisBlock(System.String)">LoadGenesisBlock(String)</h4>
+  <div class="markdown level1 summary"><p>Loads a saved genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> from <code data-dev-comment-type="paramref" class="paramref">path</code>
+using <a class="xref" href="Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultBlockPolicy">DefaultBlockPolicy</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; LoadGenesisBlock(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The location of which a genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is saved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><p>A genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> loaded from <code data-dev-comment-type="paramref" class="paramref">path</code>
+using <a class="xref" href="Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultBlockPolicy">DefaultBlockPolicy</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_SaveGenesisBlock_System_String_Libplanet_Blocks_Block__0__">SaveGenesisBlock(String, Block&lt;T&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_Libplanet_Blockchain_Policies_IBlockPolicy__0__.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.LoadGenesisBlock(System.String%2CLibplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L114">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_" data-uid="Libplanet.Node.NodeUtils`1.LoadGenesisBlock*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_Libplanet_Blockchain_Policies_IBlockPolicy__0__" data-uid="Libplanet.Node.NodeUtils`1.LoadGenesisBlock(System.String,Libplanet.Blockchain.Policies.IBlockPolicy{`0})">LoadGenesisBlock(String, IBlockPolicy&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Loads a saved genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> from <code data-dev-comment-type="paramref" class="paramref">path</code>
+using <code data-dev-comment-type="paramref" class="paramref">blockPolicy</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; LoadGenesisBlock(string path, IBlockPolicy&lt;T&gt; blockPolicy)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The location of which a genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is saved.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockPolicy</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a> to use when loading
+a saved genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><p>A genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> loaded from <code data-dev-comment-type="paramref" class="paramref">path</code>
+using <code data-dev-comment-type="paramref" class="paramref">blockPolicy</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_Libplanet_Blockchain_Policies_IBlockPolicy__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When loading, <code data-dev-comment-type="paramref" class="paramref">blockPolicy</code> should be applicable, i.e. the saved
+genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> should not violate <code data-dev-comment-type="paramref" class="paramref">blockPolicy</code>.
+Otherwise, this may fail and throw an <see cref="!:Exception"></see>.</p>
+</div>
+  <h5 id="Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_Libplanet_Blockchain_Policies_IBlockPolicy__0___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_SaveGenesisBlock_System_String_Libplanet_Blocks_Block__0__">SaveGenesisBlock(String, Block&lt;T&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_LoadPrivateKey_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.LoadPrivateKey(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L192">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_LoadPrivateKey_" data-uid="Libplanet.Node.NodeUtils`1.LoadPrivateKey*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_LoadPrivateKey_System_String_" data-uid="Libplanet.Node.NodeUtils`1.LoadPrivateKey(System.String)">LoadPrivateKey(String)</h4>
+  <div class="markdown level1 summary"><p>Loads a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> from <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PrivateKey LoadPrivateKey(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The location of which a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> is saved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> loaded from <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_LoadStore_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.LoadStore(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L167">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_LoadStore_" data-uid="Libplanet.Node.NodeUtils`1.LoadStore*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_LoadStore_System_String_" data-uid="Libplanet.Node.NodeUtils`1.LoadStore(System.String)">LoadStore(String)</h4>
+  <div class="markdown level1 summary"><p>Loads a pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
+from <code data-dev-comment-type="paramref" class="paramref">path</code>.  See <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html">StoreLoaderAttribute</a>
+for more information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (IStore Store, IStateStore StateStore) LoadStore(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The location of which <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and
+<a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> are saved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(, )</a>&lt;<a class="xref" href="Libplanet.Store.IStore.html">IStore</a>, <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>&gt;</td>
+        <td><p>A pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
+loaded from <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_LoadStore_Uri_.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.LoadStore(Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L183">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_LoadStore_" data-uid="Libplanet.Node.NodeUtils`1.LoadStore*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_LoadStore_Uri_" data-uid="Libplanet.Node.NodeUtils`1.LoadStore(Uri)">LoadStore(Uri)</h4>
+  <div class="markdown level1 summary"><p>Loads a pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
+with <code data-dev-comment-type="paramref" class="paramref">uri</code>.  See <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html">StoreLoaderAttribute</a>
+for more information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (IStore Store, IStateStore StateStore) LoadStore(Uri uri)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">uri</span></td>
+        <td><p>The <see cref="!:Uri"></see> to use when locating and loading
+<a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(, )</a>&lt;<a class="xref" href="Libplanet.Store.IStore.html">IStore</a>, <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>&gt;</td>
+        <td><p>A pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
+loaded with <code data-dev-comment-type="paramref" class="paramref">uri</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Node_NodeUtils_1_LoadStore_Uri__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html">StoreLoaderAttribute</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_SaveGenesisBlock_System_String_Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.SaveGenesisBlock(System.String%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L134">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_SaveGenesisBlock_" data-uid="Libplanet.Node.NodeUtils`1.SaveGenesisBlock*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_SaveGenesisBlock_System_String_Libplanet_Blocks_Block__0__" data-uid="Libplanet.Node.NodeUtils`1.SaveGenesisBlock(System.String,Libplanet.Blocks.Block{`0})">SaveGenesisBlock(String, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Saves a genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SaveGenesisBlock(string path, Block&lt;T&gt; genesisBlock)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The location of which <code data-dev-comment-type="paramref" class="paramref">genesisBlock</code>
+is to be saved.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">genesisBlock</span></td>
+        <td><p>The genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to save.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1_SavePrivateKey_System_String_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601.SavePrivateKey(System.String%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L209">View Source</a>
+  </span>
+  <a id="Libplanet_Node_NodeUtils_1_SavePrivateKey_" data-uid="Libplanet.Node.NodeUtils`1.SavePrivateKey*"></a>
+  <h4 id="Libplanet_Node_NodeUtils_1_SavePrivateKey_System_String_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Node.NodeUtils`1.SavePrivateKey(System.String,Libplanet.Crypto.PrivateKey)">SavePrivateKey(String, PrivateKey)</h4>
+  <div class="markdown level1 summary"><p>Saves a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> from <code data-dev-comment-type="paramref" class="paramref">path</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SavePrivateKey(string path, PrivateKey privateKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The location of which a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> is to be saved.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> to save.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/488ab558e0ece40e5e781032b8514f0c62c81393/apiSpec/new?filename=Libplanet_Node_NodeUtils_1.md&amp;value=---%0Auid%3A%20Libplanet.Node.NodeUtils%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/488ab558e0ece40e5e781032b8514f0c62c81393/Libplanet.Node/NodeUtils.cs/#L22" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2022 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
