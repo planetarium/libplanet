@@ -8,7 +8,19 @@ To be released.
 
   -  Fixed a bug when `Web3KeyStore.Get()` hadn't worked properly on IL2CPP
      environment.  [[#2727]]
+  -  Back-ported below changes from [Libplanet 0.46.0] release.
+     -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count
+        wrongly. [[#2708]]
+     -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
+        method hadn't disposed of internal sockets properly when connecting
+        failed. [[#2719]]
+     -  (Libplanet.Net) `BoundPeer()` constructor became to validate a hostname
+        of `endPoint` parameter.  [[#2721]]
 
+[Libplanet 0.46.0]: https://www.nuget.org/packages/Libplanet/0.46.0
+[#2708]: https://github.com/planetarium/libplanet/pull/2708
+[#2719]: https://github.com/planetarium/libplanet/pull/2719
+[#2721]: https://github.com/planetarium/libplanet/pull/2721
 [#2727]: https://github.com/planetarium/libplanet/pull/2727
 
 
