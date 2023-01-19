@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.45.5
 --------------
 
-To be released.
+Released on January 19, 2023.
 
   -  Fixed a bug when `Web3KeyStore.Get()` hadn't worked properly on IL2CPP
      environment.  [[#2727]]
