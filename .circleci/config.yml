@@ -439,9 +439,9 @@ jobs:
   linux-netcore-test-ar-SA:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
-    resource_class: xlarge
+    resource_class: large
     working_directory: /mnt/ramdisk
-    parallelism: 2
+    parallelism: 10
     steps:
     - linux_netcore_test_base:
         locale: ar_SA.UTF-8
