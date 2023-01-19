@@ -425,7 +425,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         nonce++,
                         GenesisProposer,
                         null,
-                        systemAction: new SetValidator(validator.PublicKey, BigInteger.One),
+                        systemAction: new SetValidator(
+                            new Validator(validator.PublicKey, BigInteger.One)),
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 

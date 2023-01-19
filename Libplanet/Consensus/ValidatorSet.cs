@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Blocks;
@@ -29,19 +30,38 @@ namespace Libplanet.Consensus
         /// to <see cref="Validators"/>.
         /// </summary>
         /// <param name="validators">The <see cref="List{T}"/> of validators to use.</param>
+        /// <exception cref="ArgumentException">Thrown when one of the following is true:
+        /// <list type="bullet">
+        ///     <item><description>There is a duplicate among <see cref="PublicKey"/>s for
+        ///     <paramref name="validators"/>.
+        ///     </description></item>
+        ///     <item><description>There is a <see cref="Validator"/> with zero power.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
         public ValidatorSet(List<Validator> validators)
         {
+            if (validators
+                .Select(validators => validators.PublicKey)
+                .Distinct()
+                .Count() != validators.Count)
+            {
+                throw new ArgumentException("All public keys for validators must be unique.");
+            }
+            else if (validators.Any(validator => validator.Power == BigInteger.Zero))
+            {
+                throw new ArgumentException("All validators must have positive power.");
+            }
+
             Validators = validators
-                .OrderBy(validator => validator)
+                .OrderBy(validator => validator.OperatorAddress)
                 .ToImmutableList();
         }
 
+        // FIXME: Order should be checked when deserializing.
         public ValidatorSet(Bencodex.Types.List encoded)
+            : this(encoded.Select(elem => new Validator((Bencodex.Types.Dictionary)elem)).ToList())
         {
-            Validators = encoded
-                .Select(value => new Validator(((Bencodex.Types.Binary)value).ByteArray))
-                .OrderBy(validator => validator)
-                .ToImmutableList();
         }
 
         /// <summary>
@@ -89,7 +109,7 @@ namespace Libplanet.Consensus
         public BigInteger OneThirdPower => TotalPower / 3;
 
         public Bencodex.Types.List Encoded => new Bencodex.Types.List(
-            Validators.Select(validator => validator.ByteArray));
+            Validators.Select(validator => validator.Encoded));
 
         /// <summary>
         /// Gets the validator at given <paramref name="index"/>.
@@ -111,18 +131,60 @@ namespace Libplanet.Consensus
         }
 
         /// <summary>
-        /// Checks if the validator is a member of <see cref="ValidatorSet"/>.
+        /// Checks if given <paramref name="validator"/> is a member of <see cref="ValidatorSet"/>.
+        /// Checks both of <see cref="Validator.PublicKey"/> and <see cref="Validator.Power"/>.
         /// </summary>
-        /// <param name="validator">The validator to check.</param>
+        /// <param name="validator">The <see cref="Validator"/> to check.</param>
         /// <returns><see langword="true"/> if given <paramref name="validator"/>
         /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
         public bool Contains(Validator validator) => Validators.Contains(validator);
 
+        /// <summary>
+        /// Creates a new <see cref="ValidatorSet"/> that has been updated with
+        /// given <paramref name="validator"/> according to the following rule:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <paramref name="validator"/>'s power is zero, the <see cref="Validator"/>
+        ///         with the same <see cref="PublicKey"/> is removed, if it exists.
+        ///         If no matching <see cref="Validator"/> is found, no change is made.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="validator"/>'s power is positive, the <see cref="Validator"/>
+        ///         with the same <see cref="PublicKey"/> is overwritten, if it exists.
+        ///         If no matching <see cref="Validator"/> is found, <paramref name="validator"/>
+        ///         is added to the set.
+        ///     </description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="validator">The <see cref="Validator"/> to update.</param>
+        /// <returns>New <see cref="ValidatorSet"/> updated with
+        /// given <paramref name="validator"/>.</returns>
+        [Pure]
+        public ValidatorSet Update(Validator validator)
+        {
+            var updated = Validators.ToList();
+
+            updated.RemoveAll(v => v.PublicKey.Equals(validator.PublicKey));
+
+            if (validator.Power == BigInteger.Zero)
+            {
+                return new ValidatorSet(updated);
+            }
+            else
+            {
+                updated.Add(validator);
+                return new ValidatorSet(updated);
+            }
+        }
+
+        /// <inheritdoc/>
         public bool Equals(ValidatorSet? other) =>
             other is ValidatorSet validators && Validators.SequenceEqual(validators.Validators);
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj) => obj is ValidatorSet other && Equals(other);
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             int hashCode = 17;
