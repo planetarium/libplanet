@@ -1,9 +1,11 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Transports
@@ -54,6 +56,16 @@ namespace Libplanet.Net.Transports
         /// <value>The value indicating whether the instance is running.</value>
         [Pure]
         bool Running { get; }
+
+        /// <inheritdoc cref="AppProtocolVersionOptions.AppProtocolVersion"/>
+        AppProtocolVersion AppProtocolVersion { get; }
+
+        /// <inheritdoc cref="AppProtocolVersionOptions.TrustedAppProtocolVersionSigners"/>
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
+
+        /// <inheritdoc cref="AppProtocolVersionOptions.DifferentAppProtocolVersionEncountered"/>
+        public DifferentAppProtocolVersionEncountered
+            DifferentAppProtocolVersionEncountered { get; }
 
         /// <summary>
         /// Starts running a transport layer as to put it in a <see cref="Running"/> state.

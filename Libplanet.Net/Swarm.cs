@@ -31,7 +31,6 @@ namespace Libplanet.Net
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
 
         private readonly AsyncLock _runningMutex;
 
@@ -74,8 +73,6 @@ namespace Libplanet.Net
 
             _runningMutex = new AsyncLock();
 
-            _appProtocolVersionOptions = appProtocolVersionOptions;
-
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
                 .ForContext<Swarm<T>>()
@@ -92,7 +89,7 @@ namespace Libplanet.Net
             // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = NetMQTransport.Create(
                 _privateKey,
-                _appProtocolVersionOptions,
+                appProtocolVersionOptions,
                 hostOptions,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
@@ -135,18 +132,13 @@ namespace Libplanet.Net
         /// </summary>
         public BlockChain<T> BlockChain { get; private set; }
 
-        /// <summary>
-        /// <see cref="PublicKey"/>s of parties who signed <see cref="AppProtocolVersion"/>s to
-        /// trust.  In case of <see langword="null"/>, any parties are trusted.
-        /// </summary>
+        /// <inheritdoc cref="AppProtocolVersionOptions.TrustedAppProtocolVersionSigners"/>
         public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
-            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
+            Transport.TrustedAppProtocolVersionSigners;
 
-        /// <summary>
-        /// The application protocol version to comply.
-        /// </summary>
+        /// <inheritdoc cref="AppProtocolVersionOptions.AppProtocolVersion"/>
         public AppProtocolVersion AppProtocolVersion =>
-            _appProtocolVersionOptions.AppProtocolVersion;
+            Transport.AppProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
 
