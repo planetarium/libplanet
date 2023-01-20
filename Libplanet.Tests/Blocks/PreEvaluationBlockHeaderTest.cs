@@ -16,11 +16,88 @@ namespace Libplanet.Tests.Blocks
     {
         protected readonly BlockContentFixture _contents;
         protected readonly Codec _codec;
+        protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validGenesisProof;
+        protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validBlock1Proof;
+        protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash)
+            _invalidBlock1Proof;
 
         public PreEvaluationBlockHeaderTest()
         {
             _contents = new BlockContentFixture();
             _codec = new Codec();
+
+            var validGenesisNonce = default(Nonce);
+            byte[] validGenesisBytes =
+                _codec.Encode(_contents.GenesisMetadata.MakeCandidateData(validGenesisNonce));
+            ImmutableArray<byte> validGenesisPreEvalHash =
+                _hashAlgorithmType.Digest(validGenesisBytes).ToImmutableArray();
+            _validGenesisProof = (validGenesisNonce, validGenesisPreEvalHash);
+
+            // Checks if the hard-coded proof of the fixture is up-to-date.  If it's outdated,
+            // throws an exception that prints a regenerated up-to-date one:
+            const int lastCheckedProtocolVersion = 3;
+            if (_contents.Block1Metadata.ProtocolVersion > lastCheckedProtocolVersion)
+            {
+                (Nonce Nonce, ImmutableArray<byte> Digest) regen =
+                    Hashcash.Answer(
+                        n => new[] { _codec.Encode(_contents.Block1Metadata.MakeCandidateData(n)) },
+                        _hashAlgorithmType,
+                        _contents.Block1Metadata.Difficulty,
+                        0
+                    );
+                string nonceLit = string.Join(
+                    ", ",
+                    regen.Nonce.ByteArray.Select(b => b < 0x10 ? $"0x0{b:x}" : $"0x{b:x}")
+                );
+                throw new Exception(
+                    $"As the CurrentProtocolVersion was bumped from {lastCheckedProtocolVersion} " +
+                    $"to {BlockMetadata.CurrentProtocolVersion}, hard-coded nonce proofs in " +
+                    $"the fixture is now outdated.  Check {nameof(PreEvaluationBlockHeaderTest)} " +
+                    "constructor and update the hard-coded nonce to the following up-to-date one:" +
+                    $"\n\n    new {nameof(Nonce)}(new byte[] {{ {nonceLit} }})\n\n"
+                );
+            }
+
+            var validBlock1Nonce = new Nonce(
+                new byte[] { 0xf4, 0xbe, 0xc2, 0x4d, 0x1e, 0x04, 0xeb, 0x4b, 0xb5, 0x98 }
+            );
+            byte[] validBlock1Bytes =
+                _codec.Encode(_contents.Block1Metadata.MakeCandidateData(validBlock1Nonce));
+            ImmutableArray<byte> validBlock1PreEvalHash =
+                _hashAlgorithmType.Digest(validBlock1Bytes).ToImmutableArray();
+            _validBlock1Proof = (validBlock1Nonce, validBlock1PreEvalHash);
+
+            var invalidBlock1Nonce = default(Nonce);
+            byte[] invalidBlock1Bytes =
+                _codec.Encode(_contents.Block1Metadata.MakeCandidateData(invalidBlock1Nonce));
+            ImmutableArray<byte> invalidBlock1PreEvalHash =
+                Hashcash<SHA256>.Digest(invalidBlock1Bytes).ToImmutableArray();
+            _invalidBlock1Proof = (invalidBlock1Nonce, invalidBlock1PreEvalHash);
+        }
+
+        [Fact]
+        public virtual void SafeConstructorWithPreEvaluationHash()
+        {
+            BlockMetadata metadata = _contents.GenesisMetadata;
+            var preEvalBlock = new PreEvaluationBlockHeader(
+                metadata, _validGenesisProof);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
+            AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
+            AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
+
+            metadata = _contents.Block1Metadata;
+            preEvalBlock = new PreEvaluationBlockHeader(metadata, _validBlock1Proof);
+            AssertBlockMetadataEqual(metadata, preEvalBlock);
+            AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
+            AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
+
+            metadata = _contents.Block1Metadata;
+            Assert.Throws<InvalidBlockNonceException>(() =>
+                new PreEvaluationBlockHeader(metadata, _invalidBlock1Proof));
+            Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
+                new PreEvaluationBlockHeader(
+                    metadata,
+                    (_validBlock1Proof.Nonce, _invalidBlock1Proof.PreEvaluationHash)));
         }
 
         [Fact]
@@ -49,6 +126,45 @@ namespace Libplanet.Tests.Blocks
             var preEvaluationBlockHeader = new PreEvaluationBlockHeader(
                 metadata,
                 metadata.DerivePreEvaluationHash(default));
+        }
+
+        [Fact]
+        public virtual void DontCheckPreEvaluationHashWithProtocolVersion0()
+        {
+            // Since PreEvaluationHash comparison between the actual and the expected was not
+            // implemented in ProtocolVersion == 0, we need to maintain this bug on
+            // ProtocolVersion < 1 for backward compatibility:
+            BlockMetadata metadataPv0 = new BlockMetadata(
+                protocolVersion: 0,
+                index: _contents.Block1Metadata.Index,
+                timestamp: _contents.Block1Metadata.Timestamp.AddSeconds(1),
+                miner: _contents.Block1Metadata.Miner,
+                publicKey: null,
+                difficulty: _contents.Block1Metadata.Difficulty,
+                totalDifficulty: _contents.Block1Metadata.TotalDifficulty,
+                previousHash: _contents.Block1Metadata.PreviousHash,
+                txHash: _contents.Block1Metadata.TxHash);
+            var preEvalBlockPv0 = new PreEvaluationBlockHeader(metadataPv0, _validBlock1Proof);
+            AssertBlockMetadataEqual(metadataPv0, preEvalBlockPv0);
+            AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlockPv0.Nonce);
+            AssertBytesEqual(
+                _validBlock1Proof.PreEvaluationHash,
+                preEvalBlockPv0.PreEvaluationHash
+            );
+
+            // However, such bug must be fixed after ProtocolVersion > 0:
+            BlockMetadata metadataPv1 = new BlockMetadata(
+                protocolVersion: 1,
+                index: _contents.Block1Metadata.Index,
+                timestamp: _contents.Block1Metadata.Timestamp.AddSeconds(1),
+                miner: _contents.Block1Metadata.Miner,
+                publicKey: null,
+                difficulty: _contents.Block1Metadata.Difficulty,
+                totalDifficulty: _contents.Block1Metadata.TotalDifficulty,
+                previousHash: _contents.Block1Metadata.PreviousHash,
+                txHash: _contents.Block1Metadata.TxHash);
+            Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
+                new PreEvaluationBlockHeader(metadataPv1, _validBlock1Proof));
         }
 
         [Fact]

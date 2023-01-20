@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.Dispose();
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(4)]
         [InlineData(8)]
         [InlineData(16)]

@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendFailDueToInvalidBytesLength()
         {
             DumbAction[] manyActions =
@@ -361,7 +361,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendWithoutEvaluateActions()
         {
             var miner = new PrivateKey();
@@ -530,7 +530,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
-        [Fact]
+        [SkippableFact]
         public void DoesNotUnstageOnAppendForForkedChain()
         {
             PrivateKey privateKey = new PrivateKey();

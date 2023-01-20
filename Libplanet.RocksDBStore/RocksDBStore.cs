@@ -545,7 +545,41 @@ namespace Libplanet.RocksDBStore
 
         /// <inheritdoc cref="BaseStore.IndexBlockHash(Guid, long)"/>
         public override BlockHash? IndexBlockHash(Guid chainId, long index)
-            => IndexBlockHash(chainId, index, false);
+        {
+            try
+            {
+                if (index < 0)
+                {
+                    index += CountIndex(chainId);
+
+                    if (index < 0)
+                    {
+                        return null;
+                    }
+                }
+
+                if (IsDeletionMarked(chainId))
+                {
+                    return null;
+                }
+
+                (Guid ChainId, long Index)? prevChainInfo = GetPreviousChainInfo(chainId);
+                while (prevChainInfo is { } infoNotNull && infoNotNull.Index >= index)
+                {
+                    chainId = infoNotNull.ChainId;
+                    prevChainInfo = GetPreviousChainInfo(chainId);
+                }
+
+                byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
+                byte[] bytes = _chainDb.Get(IndexKey(chainId, indexBytes));
+                return bytes is null ? (BlockHash?)null : new BlockHash(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(IndexBlockHash), e);
+                return null;
+            }
+        }
 
         /// <inheritdoc cref="BaseStore.AppendIndex(Guid, BlockHash)"/>
         public override long AppendIndex(Guid chainId, BlockHash hash)
@@ -963,47 +997,6 @@ namespace Libplanet.RocksDBStore
             if (_txExecutionDb.Get(key) is { } bytes)
             {
                 return DeserializeTxExecution(blockHash, txid, Codec.Decode(bytes), _logger);
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
-        public override void SetBlockPerceivedTime(
-            BlockHash blockHash,
-            DateTimeOffset perceivedTime
-        )
-        {
-            try
-            {
-                byte[] key = BlockKey(blockHash);
-                _blockPerceptionDb.Put(
-                    key,
-                    RocksDBStoreBitConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
-                );
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(SetBlockPerceivedTime), e);
-                throw;
-            }
-        }
-
-        /// <inheritdoc cref="BaseStore.GetBlockPerceivedTime(BlockHash)"/>
-        public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
-        {
-            try
-            {
-                byte[] key = BlockKey(blockHash);
-                if (_blockPerceptionDb.Get(key) is { } bytes)
-                {
-                    long unixTimeMs = RocksDBStoreBitConverter.ToInt64(bytes);
-                    return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs);
-                }
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(GetBlockPerceivedTime), e);
             }
 
             return null;
@@ -1550,43 +1543,6 @@ namespace Libplanet.RocksDBStore
                 yield return new BlockHash(value);
                 count += 1;
             }
-        }
-
-        private BlockHash? IndexBlockHash(Guid chainId, long index, bool includeDeleted)
-        {
-            try
-            {
-                if (index < 0)
-                {
-                    index += CountIndex(chainId);
-
-                    if (index < 0)
-                    {
-                        return null;
-                    }
-                }
-
-                if (!includeDeleted && IsDeletionMarked(chainId))
-                {
-                    return null;
-                }
-
-                if (GetPreviousChainInfo(chainId) is { } chainInfo &&
-                    chainInfo.Item2 >= index)
-                {
-                    return IndexBlockHash(chainInfo.Item1, index, true);
-                }
-
-                byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
-                byte[] bytes = _chainDb.Get(IndexKey(chainId, indexBytes));
-                return bytes is null ? (BlockHash?)null : new BlockHash(bytes);
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(IndexBlockHash), e);
-            }
-
-            return null;
         }
 
         private void AddFork(Guid chainId, Guid forkedChainId)

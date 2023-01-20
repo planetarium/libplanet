@@ -346,17 +346,29 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(actual.ByteArray, preEvalHash.ByteArray);
         }
 
-        [Fact]
-        public void CancelMineNonce()
+        [Theory]
+        [InlineData(null)]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void CancelMineNonce(int? workers)
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
                 Exception exception = null;
+                Nonce? nonce = null;
+                ImmutableArray<byte>? hash = null;
                 Task task = Task.Run(() =>
                 {
                     try
                     {
-                        Block1Metadata.MineNonce(5_000_000, source.Token);
+                        if (workers is int w)
+                        {
+                            (nonce, hash) = Block1Metadata.MineNonce(w, source.Token);
+                        }
+                        else
+                        {
+                            (nonce, hash) = Block1Metadata.MineNonce(source.Token);
+                        }
                     }
                     catch (OperationCanceledException ce)
                     {
@@ -367,6 +379,8 @@ namespace Libplanet.Tests.Blocks
                 source.Cancel();
                 bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
                 Assert.True(taskEnded);
+                Assert.Null(nonce);
+                Assert.Null(hash);
                 Assert.NotNull(exception);
                 Assert.IsAssignableFrom<OperationCanceledException>(exception);
             }

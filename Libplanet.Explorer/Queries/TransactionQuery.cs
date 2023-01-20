@@ -254,9 +254,11 @@ namespace Libplanet.Explorer.Queries
                                 null,
                                 null,
                                 null,
+                                null,
                                 null)
                             : new TxResult(
                                 TxStatus.INVALID,
+                                null,
                                 null,
                                 null,
                                 null,
@@ -287,7 +289,8 @@ namespace Libplanet.Explorer.Queries
                                 null,
                                 txSuccess.UpdatedStates,
                                 txSuccess.FungibleAssetsDelta,
-                                txSuccess.UpdatedFungibleAssets
+                                txSuccess.UpdatedFungibleAssets,
+                                txSuccess.ActionsLogsList
                             ),
                             TxFailure txFailure => new TxResult(
                                 TxStatus.FAILURE,
@@ -297,7 +300,8 @@ namespace Libplanet.Explorer.Queries
                                 txFailure.ExceptionMetadata,
                                 null,
                                 null,
-                                null
+                                null,
+                                txFailure.ActionsLogsList
                             ),
                             _ => throw new NotSupportedException(
                                 #pragma warning disable format
@@ -310,6 +314,7 @@ namespace Libplanet.Explorer.Queries
                     {
                         return new TxResult(
                             TxStatus.INVALID,
+                            null,
                             null,
                             null,
                             null,

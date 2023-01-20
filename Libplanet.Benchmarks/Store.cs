@@ -82,7 +82,6 @@ namespace Libplanet.Benchmarks
                 nameof(PutBlockOnManyBlocks),
                 nameof(GetOldBlockOutOfManyBlocks),
                 nameof(GetRecentBlockOutOfManyBlocks),
-                nameof(GetCanonicalGenesisBlockOutOfManyBlocks),
             }
         )]
         public void PutManyBlocks()
@@ -124,16 +123,6 @@ namespace Libplanet.Benchmarks
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
             return _store.GetBlock<DumbAction>(Blocks[BlocksCount - 2].Hash);
-        }
-
-        [Benchmark]
-        public Block<DumbAction> GetCanonicalGenesisBlockOutOfManyBlocks()
-        {
-            // Note that why this benchmark method returns something is
-            // because without this JIT can remove the below statement at all
-            // during dead code elimination optimization.
-            // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetCanonicalGenesisBlock<DumbAction>();
         }
 
         [Benchmark]

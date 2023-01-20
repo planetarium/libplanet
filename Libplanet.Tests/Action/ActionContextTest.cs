@@ -133,7 +133,8 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
-                randomSeed: _random.Next()
+                randomSeed: _random.Next(),
+                logs: new List<string>()
             );
 
             // Consume original's random state...
@@ -178,7 +179,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(callPreviousStateRootHash ? 1 : 0, keyValueStore.ListKeys().Count());
         }
 
-        private class DumbAccountStateDelta : IAccountStateDelta
+        private class DumbAccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
         {
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
@@ -213,7 +214,7 @@ namespace Libplanet.Tests.Action
                 return currency * 0;
             }
 
-            public ValidatorSet GetValidatorSet()
+            public virtual ValidatorSet GetValidatorSet()
             {
                 return new ValidatorSet();
             }

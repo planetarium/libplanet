@@ -1,9 +1,8 @@
-namespace Libplanet.Extensions.Cocona.Services
-{
-    public interface IConfigurationService<TConfiguration>
-    {
-        TConfiguration Load();
+namespace Libplanet.Extensions.Cocona.Services;
 
-        void Store(TConfiguration configuration);
-    }
+public interface IConfigurationService<TConfiguration>
+{
+    TConfiguration Load();
+
+    void Store(TConfiguration configuration);
 }

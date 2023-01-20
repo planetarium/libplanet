@@ -182,9 +182,7 @@ namespace Libplanet.Net
 
                     block.ValidateTimestamp();
                     blocks.Add((block, commit));
-                    if (tempTip is null ||
-                        BlockChain.PerceiveBlock(block).Index >
-                            BlockChain.PerceiveBlock(tempTip).Index)
+                    if (tempTip is null || block.Index > tempTip.Index)
                     {
                         tempTip = block;
                     }
@@ -447,9 +445,7 @@ namespace Libplanet.Net
 
                     // FIXME: This simply sets tempTip to the highest indexed block downloaded.
                     // There is no guarantee such block is usable.
-                    if (tempTip.Block is null ||
-                        BlockChain.PerceiveBlock(block).Index >
-                            BlockChain.PerceiveBlock(tempTip.Block).Index)
+                    if (tempTip.Block is null || block.Index > tempTip.Block.Index)
                     {
                         tempTip = (block, commit);
                     }
@@ -476,11 +472,15 @@ namespace Libplanet.Net
                     tipCandidate.Block?.Index,
                     tipCandidate.Block?.Hash);
 
-                if (tipCandidate.Block is null)
+                if (tipCandidate.Block is { } tc && tc.Index == 0)
                 {
-                    // If there is no blocks in the network (or no consensus at least)
-                    // it doesn't need to receive states from other peers at all.
-                    return renderSwap;
+                    // FIXME: This is here to keep logical equivalence through refactoring.
+                    // This part of the code is likely unreachable and the exception message
+                    // is also likely to be incoherent.
+                    BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
+                    throw new SwarmException(
+                        $"Downloaded tip candidate #{tc.Index} {tc.Hash} " +
+                        $"is unusable for the the existing chain #0 {g}.");
                 }
 
                 // FIXME: This simply tries to line up downloaded blocks starting with
@@ -505,8 +505,7 @@ namespace Libplanet.Net
                             break;
                         }
                     }
-                    else if (BlockChain.PerceiveBlock(tipCandidate.Block).Index <=
-                        BlockChain.PerceiveBlock(tempTip.Block).Index)
+                    else if (tipCandidate.Block.Index <= tempTip.Block.Index)
                     {
                         blockToAdd = tipCandidate;
                     }
@@ -651,8 +650,7 @@ namespace Libplanet.Net
                         BlockChain.Tip.Hash
                     );
                 }
-                else if (BlockChain.PerceiveBlock(workspace.Tip).Index <
-                    BlockChain.PerceiveBlock(BlockChain.Tip).Index)
+                else if (workspace.Tip.Index < BlockChain.Tip.Index)
                 {
                     _logger.Debug(
                         $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +

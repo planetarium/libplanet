@@ -19,7 +19,7 @@ create decentralized games powered by [Libplanet].
 Installation
 ------------
 
-There are three ways to install the `planet` command.  Pick the most handy
+There are multiple ways to install the `planet` command.  Pick the most handy
 one for you.
 
 ### `npm` [![npm][npm-badge]][npm]
@@ -39,6 +39,14 @@ dotnet tool install -g Libplanet.Tools
 ~~~~
 
 [.NET Core tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+
+### Homebrew Cask
+
+Install as a Homebrew cask if you use Homebrew on macOS:
+
+~~~~ bash
+brew install planetarium/brew/planet
+~~~~
 
 ### Manual installation [![GitHub Releases][releases-badge]][releases page]
 
@@ -72,3 +80,22 @@ use `dotnet planet` command instead:
 dotnet planet --help
 ~~~~
 
+### Command-line completion
+
+All subcommands and options can be completed in bash and zsh.  You can
+configure command-line completion through `--completion` option.
+
+For bash:
+
+~~~~ bash
+source <(planet --completion bash)
+~~~~
+
+For zsh:
+
+~~~~ zsh
+planet --completion zsh > ~/.zsh/functions
+~~~~
+
+Note you don't configure it by yourself when you installed `planet` using
+Homebrew Cask.

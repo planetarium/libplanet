@@ -1,45 +1,44 @@
+namespace Libplanet.Extensions.Cocona;
+
 using System;
 using System.Text;
 
-namespace Libplanet.Extensions.Cocona
+public class ConsolePasswordReader
 {
-    public class ConsolePasswordReader
+    public static string Read(string prompt)
     {
-        public static string Read(string prompt)
+        var password = new StringBuilder();
+
+        Console.Write(prompt);
+        do
         {
-            var password = new StringBuilder();
+            var key = Console.ReadKey(true).KeyChar;
 
-            Console.Write(prompt);
-            do
+            if (key == '\b')
             {
-                var key = Console.ReadKey(true).KeyChar;
+                if (password.Length <= 0)
+                {
+                    continue;
+                }
 
-                if (key == '\b')
-                {
-                    if (password.Length <= 0)
-                    {
-                        continue;
-                    }
-
-                    password.Remove(password.Length - 1, 1);
-                    Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                    Console.Write(' ');
-                    Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                }
-                else if (key == '\r')
-                {
-                    Console.WriteLine();
-                    break;
-                }
-                else if (!char.IsControl(key))
-                {
-                    password.Append(key);
-                    Console.Write('*');
-                }
+                password.Remove(password.Length - 1, 1);
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                Console.Write(' ');
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             }
-            while (true);
-
-            return password.ToString();
+            else if (key == '\r')
+            {
+                Console.WriteLine();
+                break;
+            }
+            else if (!char.IsControl(key))
+            {
+                password.Append(key);
+                Console.Write('*');
+            }
         }
+        while (true);
+
+        return password.ToString();
     }
 }
