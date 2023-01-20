@@ -194,8 +194,6 @@ namespace Libplanet.Tests.Blockchain
                 "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
             );
 
-            Block<PolymorphicAction<BaseAction>> genesisBlock =
-                BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             BlockChain<PolymorphicAction<BaseAction>> chain = MakeBlockChain(
@@ -2140,7 +2138,6 @@ namespace Libplanet.Tests.Blockchain
 
             _renderer.ResetRecords();
 
-            // Mine block
             Assert.Empty(_renderer.BlockRecords);
             Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
             _blockChain.Append(block, CreateBlockCommit(block));
@@ -2157,7 +2154,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(block, CreateBlockCommit(block)));
             Assert.Empty(_renderer.BlockRecords);
-
         }
 
         [Fact]

@@ -219,7 +219,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public async void GetMinBlockProtocolVersion()
+        public void GetMinBlockProtocolVersion()
         {
             var policy = new BlockPolicy<DumbAction>(
                 getMinBlockProtocolVersion: index => index <= 1 ? 0 : 4);
@@ -230,17 +230,19 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock);
 
-            var block1 = await chain.MineBlock(new PrivateKey(), append: false);
+            var block1 = chain.ProposeBlock(new PrivateKey());
             Assert.Equal(1, block1.Index);
             Assert.Equal(0, policy.GetMinBlockProtocolVersion(block1.Index));
-            chain.Append(block1);
+            chain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
-            var block2 = await chain.MineBlock(new PrivateKey(), append: false);
+            var block2 = chain.ProposeBlock(new PrivateKey());
             Assert.Equal(2, block2.Index);
             Assert.Equal(4, policy.GetMinBlockProtocolVersion(block2.Index));
-            Assert.Throws<BlockPolicyViolationException>(() => chain.Append(block2));
-            await Assert.ThrowsAsync<BlockPolicyViolationException>(
-                async () => await chain.MineBlock(new PrivateKey()));
+            Assert.Throws<BlockPolicyViolationException>(
+                () => chain.Append(block2, TestUtils.CreateBlockCommit(block2)));
+            var block3 = chain.ProposeBlock(new PrivateKey());
+            Assert.Throws<BlockPolicyViolationException>(
+                () => chain.Append(block3, TestUtils.CreateBlockCommit(block3)));
         }
     }
 }

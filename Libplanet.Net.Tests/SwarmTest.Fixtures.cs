@@ -73,12 +73,8 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateConsensusSwarm(
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
+            HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
             Block<DumbAction> genesis = null,
@@ -86,12 +82,8 @@ namespace Libplanet.Net.Tests
         {
             return CreateSwarm(
                 privateKey,
-                appProtocolVersion,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
+                appProtocolVersionOptions,
+                hostOptions,
                 options,
                 policy,
                 genesis,

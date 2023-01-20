@@ -315,15 +315,13 @@ namespace Libplanet.Net.Tests
             key ??= PrivateKeys[1];
             validatorPeers ??= Peers;
 
+            var apvOption = new AppProtocolVersionOptions
+                { AppProtocolVersion = AppProtocolVersion };
+            var hostOption = new HostOptions(host, Array.Empty<IceServer>(), consensusPort);
             var consensusTransport = NetMQTransport.Create(
                 key,
-                AppProtocolVersion,
-                null,
-                8,
-                host,
-                consensusPort,
-                Array.Empty<IceServer>(),
-                null).ConfigureAwait(false).GetAwaiter().GetResult();
+                apvOption,
+                hostOption).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return new ConsensusReactor<DumbAction>(
                 consensusTransport,

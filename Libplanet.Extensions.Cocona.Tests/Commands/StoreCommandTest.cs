@@ -66,7 +66,7 @@ public class StoreCommandTest : IDisposable
                 TestUtils.GenesisProposer,
                 new[] { _transaction2 },
                 lastCommit: TestUtils.CreateBlockCommit(_block1));
-            _block3 = TestUtils.ProposeNextBlock(
+        _block3 = TestUtils.ProposeNextBlock(
                 _block2,
                 TestUtils.GenesisProposer,
                 new[] { _transaction3 },
@@ -76,7 +76,7 @@ public class StoreCommandTest : IDisposable
                 TestUtils.GenesisProposer,
                 new[] { _transaction3 },
                 lastCommit: TestUtils.CreateBlockCommit(_block3));
-            _block5 = TestUtils.ProposeNextBlock(
+        _block5 = TestUtils.ProposeNextBlock(
                 _block4,
                 TestUtils.GenesisProposer,
                 lastCommit: TestUtils.CreateBlockCommit(_block4));
@@ -345,16 +345,15 @@ public class StoreCommandTest : IDisposable
         Console.SetError(_originalError);
     }
 
-        private Transaction<Utils.DummyAction> DummyTransaction()
-        {
-            return Transaction<Utils.DummyAction>.Create(
-                0,
-                new PrivateKey(),
-                _genesisBlock.Hash,
-                new[] { new Utils.DummyAction() },
-                null,
-                DateTimeOffset.UtcNow
-            );
-
+    private Transaction<Utils.DummyAction> DummyTransaction()
+    {
+        return Transaction<Utils.DummyAction>.Create(
+            0,
+            new PrivateKey(),
+            _genesisBlock.Hash,
+            new[] { new Utils.DummyAction() },
+            null,
+            DateTimeOffset.UtcNow
+        );
     }
 }

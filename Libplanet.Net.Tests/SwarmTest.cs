@@ -25,6 +25,7 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using NetMQ;
+using Nito.AsyncEx;
 using Nito.AsyncEx.Synchronous;
 using Serilog;
 using xRetry;
@@ -407,14 +408,19 @@ namespace Libplanet.Net.Tests
                     TargetBlockInterval = TimeSpan.FromSeconds(10),
                     ContextTimeoutOptions = new ContextTimeoutOption(),
                 }).ToList();
-            var swarms = Enumerable.Range(0, 4).Select(i =>
-                CreateSwarm(
-                    privateKey: TestUtils.PrivateKeys[i],
-                    host: "localhost",
-                    listenPort: 9000 + i,
-                    policy: policy,
-                    genesis: genesis,
-                    consensusReactorOption: reactorOpts[i])).ToList();
+            var swarms = Enumerable.Range(0, 4)
+                .Select(
+                    i =>
+                        CreateSwarm(
+                            privateKey: TestUtils.PrivateKeys[i],
+                            hostOptions: new HostOptions(
+                                "localhost",
+                                Array.Empty<IceServer>(),
+                                9000 + i),
+                            policy: policy,
+                            genesis: genesis,
+                            consensusReactorOption: reactorOpts[i]))
+                .ToList();
 
             try
             {
