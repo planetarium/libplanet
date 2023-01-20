@@ -213,10 +213,12 @@ commands:
               --no-restore
               --no-build
               -c Release
+              -l "console;verbosity=normal"
               -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
               --filter "$(cat .test-filter.txt)"
               --dcDisableDefaultFilters
               --dcReportType=DetailedXML
+              --dcLogLevel=TRACE
               --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
             no_output_timeout: 180s
             environment:
@@ -237,6 +239,7 @@ commands:
               --no-restore
               --no-build
               -c Release
+              -l "console;verbosity=normal"
               -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
               --filter "$(cat .test-filter.txt)"
             no_output_timeout: 120s
