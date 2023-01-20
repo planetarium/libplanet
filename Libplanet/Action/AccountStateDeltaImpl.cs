@@ -15,7 +15,7 @@ namespace Libplanet.Action
     /// An internal implementation of <see cref="IAccountStateDelta"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDeltaImpl : IAccountStateDelta
+    internal class AccountStateDeltaImpl : IValidatorSupportStateDelta, IAccountStateDelta
     {
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
@@ -159,6 +159,7 @@ namespace Libplanet.Action
             return TotalSupplyGetter(currency);
         }
 
+        /// <inheritdoc/>
         [Pure]
         public virtual ValidatorSet GetValidatorSet() =>
             UpdatedValidatorSet ?? ValidatorSetGetter();
@@ -297,6 +298,8 @@ namespace Libplanet.Action
             );
         }
 
+        /// <inheritdoc/>
+        [Pure]
         public IAccountStateDelta SetValidator(Validator validator)
         {
             Log.Debug(

@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(callPreviousStateRootHash ? 1 : 0, keyValueStore.ListKeys().Count());
         }
 
-        private class DumbAccountStateDelta : IAccountStateDelta
+        private class DumbAccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
         {
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
@@ -214,7 +214,7 @@ namespace Libplanet.Tests.Action
                 return currency * 0;
             }
 
-            public ValidatorSet GetValidatorSet()
+            public virtual ValidatorSet GetValidatorSet()
             {
                 return new ValidatorSet();
             }
