@@ -389,19 +389,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateDelta.SetState
   nameWithType: IAccountStateDelta.SetState
-- uid: Libplanet.Action.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_SetValidator_Libplanet_Consensus_Validator_
-  commentId: M:Libplanet.Action.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  fullName: Libplanet.Action.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  nameWithType: IAccountStateDelta.SetValidator(Validator)
-- uid: Libplanet.Action.IAccountStateDelta.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_SetValidator_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.SetValidator
-  nameWithType: IAccountStateDelta.SetValidator
 - uid: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
   name: StateUpdatedAddresses
   href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_StateUpdatedAddresses
@@ -528,19 +515,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateView.GetTotalSupply
   nameWithType: IAccountStateView.GetTotalSupply
-- uid: Libplanet.Action.IAccountStateView.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetValidatorSet
-  commentId: M:Libplanet.Action.IAccountStateView.GetValidatorSet
-  fullName: Libplanet.Action.IAccountStateView.GetValidatorSet()
-  nameWithType: IAccountStateView.GetValidatorSet()
-- uid: Libplanet.Action.IAccountStateView.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.IAccountStateView.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateView.GetValidatorSet
-  nameWithType: IAccountStateView.GetValidatorSet
 - uid: Libplanet.Action.IAction
   name: IAction
   href: api/Libplanet.Action.IAction.html
