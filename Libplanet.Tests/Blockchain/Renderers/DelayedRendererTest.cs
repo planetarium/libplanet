@@ -82,7 +82,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         [InlineData(0)]
         [InlineData(-123)]
-        [SkippableTheory]
+        [Theory]
         public virtual void Constructor(int invalidConfirmations)
         {
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>

@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static Block<DumbAction> _blockB =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
-        [SkippableFact]
+        [Fact]
         public void ActionRenderer()
         {
             (IAction, IActionContext, IAccountStateDelta)? record = null;
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_stateDelta, record?.Item3);
         }
 
-        [SkippableFact]
+        [Fact]
         public void ActionUnrenderer()
         {
             (IAction, IActionContext, IAccountStateDelta)? record = null;
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_stateDelta, record?.Item3);
         }
 
-        [SkippableFact]
+        [Fact]
         public void ActionErrorRenderer()
         {
             (IAction, IActionContext, Exception)? record = null;
@@ -124,7 +124,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_exception, record?.Item3);
         }
 
-        [SkippableFact]
+        [Fact]
         public void ActionErrorUnrenderer()
         {
             (IAction, IActionContext, Exception)? record = null;
@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_exception, record?.Item3);
         }
 
-        [SkippableFact]
+        [Fact]
         public void BlockRenderer()
         {
             (Block<DumbAction> Old, Block<DumbAction> New)? record = null;
@@ -182,7 +182,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_blockA, record?.New);
         }
 
-        [SkippableFact]
+        [Fact]
         public void BlockReorg()
         {
             (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? record = null;
@@ -211,7 +211,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_genesis, record?.Bp);
         }
 
-        [SkippableFact]
+        [Fact]
         public void BlockReorgEnd()
         {
             (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? record = null;

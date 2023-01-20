@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Same(_blockA, record?.New);
         }
 
-        [SkippableFact]
+        [Fact]
         public void ReorgRenderer()
         {
             (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? record = null;

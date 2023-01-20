@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         protected override IStagePolicy<DumbAction> StagePolicy => _stagePolicy;
 
-        [SkippableFact]
+        [Fact]
         public void Lifetime()
         {
             TimeSpan timeBuffer = TimeSpan.FromSeconds(2.5);
@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.DoesNotContain(tx, _stagePolicy.Iterate(_chain));
         }
 
-        [SkippableFact]
+        [Fact]
         public void StageUnstage()
         {
             TimeSpan timeBuffer = TimeSpan.FromSeconds(1);

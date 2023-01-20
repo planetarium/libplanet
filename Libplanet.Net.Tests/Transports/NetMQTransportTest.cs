@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Transports
             Dispose(false);
         }
 
-        [SkippableFact]
+        [Fact]
         public async Task SendMessageAsyncNetMQSocketLeak()
         {
             int previousMaxSocket = NetMQConfig.MaxSockets;

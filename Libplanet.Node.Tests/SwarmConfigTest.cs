@@ -39,7 +39,7 @@ namespace Libplanet.Node.Tests
             },
         };
 
-        [SkippableTheory]
+        [Theory]
         [MemberData(nameof(SerializationData))]
         public void Serialization(
             string host,

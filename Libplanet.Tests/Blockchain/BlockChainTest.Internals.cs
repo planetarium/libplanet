@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [SkippableFact]
+        [Fact]
         public void ListStagedTransactions()
         {
             Skip.IfNot(

@@ -26,14 +26,9 @@ namespace Libplanet.Tests.Blocks
             _output = output;
         }
 
-        [SkippableFact]
+        [Fact]
         public void Constructor()
         {
-            Skip.IfNot(
-                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
-                "Flaky test : Libplanet.Blocks.InvalidTxSignatureException"
-            );
-
             var contents = new BlockContentFixture();
             var random = new System.Random();
             var stateRootHash = random.NextHashDigest<SHA256>();

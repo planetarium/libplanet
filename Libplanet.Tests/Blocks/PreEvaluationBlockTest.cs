@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Blocks
             _output = output;
         }
 
-        [SkippableFact]
+        [Fact]
         public void Evaluate()
         {
             Address address = _contents.Block1Tx0.Signer;
