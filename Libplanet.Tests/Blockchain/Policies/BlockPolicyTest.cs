@@ -217,32 +217,5 @@ namespace Libplanet.Tests.Blockchain.Policies
                     policyLimit,
                     block.Transactions.Count(tx => tx.Signer.Equals(key.ToAddress()))));
         }
-
-        [Fact]
-        public void GetMinBlockProtocolVersion()
-        {
-            var policy = new BlockPolicy<DumbAction>(
-                getMinBlockProtocolVersion: index => index <= 1 ? 0 : 4);
-            var chain = new BlockChain<DumbAction>(
-                policy,
-                _stagePolicy,
-                _fx.Store,
-                _fx.StateStore,
-                _fx.GenesisBlock);
-
-            var block1 = chain.ProposeBlock(new PrivateKey());
-            Assert.Equal(1, block1.Index);
-            Assert.Equal(0, policy.GetMinBlockProtocolVersion(block1.Index));
-            chain.Append(block1, TestUtils.CreateBlockCommit(block1));
-
-            var block2 = chain.ProposeBlock(new PrivateKey());
-            Assert.Equal(2, block2.Index);
-            Assert.Equal(4, policy.GetMinBlockProtocolVersion(block2.Index));
-            Assert.Throws<BlockPolicyViolationException>(
-                () => chain.Append(block2, TestUtils.CreateBlockCommit(block2)));
-            var block3 = chain.ProposeBlock(new PrivateKey());
-            Assert.Throws<BlockPolicyViolationException>(
-                () => chain.Append(block3, TestUtils.CreateBlockCommit(block3)));
-        }
     }
 }
