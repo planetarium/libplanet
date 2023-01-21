@@ -7,8 +7,8 @@
 # - https://github.com/planetarium/libplanet/pull/977
 # - https://github.com/planetarium/libplanet/issues/976
 on:
-  push: []
-  pull_request: []
+  push: {}
+  pull_request: {}
 name: check-build
 
 jobs:
