@@ -1,0 +1,12 @@
+name: check-changelog
+on:
+  pull_request: {}
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dangoslen/changelog-enforcer@v3
+      with:
+        changeLogPath: CHANGES.md
+        skipLabels: skip changelog, changelog skip
