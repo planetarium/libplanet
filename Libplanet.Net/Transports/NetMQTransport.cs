@@ -74,7 +74,7 @@ namespace Libplanet.Net.Transports
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
             HostOptions hostOptions,
-            TimeSpan? messageTimestampBuffer = null)
+            TimeSpan messageTimestampBuffer)
         {
             _logger = Log
                 .ForContext<NetMQTransport>()
@@ -170,7 +170,7 @@ namespace Libplanet.Net.Transports
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
             HostOptions hostOptions,
-            TimeSpan? messageTimestampBuffer = null)
+            TimeSpan messageTimestampBuffer)
         {
             var transport = new NetMQTransport(
                 privateKey,

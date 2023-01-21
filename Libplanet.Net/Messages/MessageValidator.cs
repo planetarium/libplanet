@@ -18,7 +18,7 @@ namespace Libplanet.Net.Messages
 
         internal MessageValidator(
             AppProtocolVersionOptions appProtocolVersionOptions,
-            TimeSpan? messageTimestampBuffer)
+            TimeSpan messageTimestampBuffer)
         {
             _appProtocolVersionOptions = appProtocolVersionOptions;
             MessageTimestampBuffer = messageTimestampBuffer;
@@ -75,21 +75,11 @@ namespace Libplanet.Net.Messages
         /// The <see cref="TimeSpan"/> to use as a buffer when decoding <see cref="Message"/>s.
         /// </para>
         /// <para>
-        /// Whether a decoded <see cref="Message"/> is valid or not depends on this value:
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         If <see langword="null"/>, there is no restriction
-        ///         on <see cref="Message.Timestamp"/> for received <see cref="Message"/>s.
-        ///     </description></item>
-        ///     <item><description>
-        ///         If not <see langword="null"/>, the absolute difference between the timestamp of
-        ///         a received <see cref="Message"/> and current time should be less than
-        ///         this value.
-        ///     </description></item>
-        /// </list>
+        /// The absolute difference between the timestamp of a received <see cref="Message"/> and
+        /// current time should be less than this value to be considered valid.
         /// </para>
         /// </summary>
-        public TimeSpan? MessageTimestampBuffer { get; }
+        public TimeSpan MessageTimestampBuffer { get; }
 
         /// <summary>
         /// Validates an <see cref="AppProtocolVersion"/> against <see cref="Apv"/>.
@@ -169,23 +159,22 @@ namespace Libplanet.Net.Messages
         }
 
         private static void ValidateTimestamp(
-            TimeSpan? timestampBuffer,
+            TimeSpan timestampBuffer,
             DateTimeOffset currentTimestamp,
             DateTimeOffset messageTimestamp)
         {
-            if (timestampBuffer is TimeSpan buffer &&
-                (currentTimestamp - messageTimestamp).Duration() > buffer)
+            if ((currentTimestamp - messageTimestamp).Duration() > timestampBuffer)
             {
                 var cultureInfo = CultureInfo.InvariantCulture;
                 throw new InvalidMessageTimestampException(
                     $"The timestamp of a received message is invalid:\n" +
-                    $"Message timestamp buffer: {buffer}\n" +
+                    $"Message timestamp buffer: {timestampBuffer}\n" +
                     $"Current timestamp: " +
                     $"{currentTimestamp.ToString(TimestampFormat, cultureInfo)}\n" +
                     $"Message timestamp: " +
                     $"{messageTimestamp.ToString(TimestampFormat, cultureInfo)}",
                     messageTimestamp,
-                    buffer,
+                    timestampBuffer,
                     currentTimestamp);
             }
         }

@@ -19,7 +19,7 @@ namespace Libplanet.Net
         /// The amount of difference in <see cref="TimeSpan"/> allowed from current local time for
         /// a received <see cref="Message"/>.
         /// </summary>
-        public TimeSpan? MessageTimestampBuffer { get; set; } = TimeSpan.FromSeconds(60);
+        public TimeSpan MessageTimestampBuffer { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
         /// The frequency of <see cref="IProtocol.RefreshTableAsync" />.

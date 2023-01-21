@@ -547,7 +547,8 @@ namespace Libplanet.Net.Tests
             var transport = await NetMQTransport.Create(
                 key,
                 apvOptions,
-                hostOptions);
+                hostOptions,
+                TimeSpan.MaxValue);
             Assert.Throws<ArgumentNullException>(() =>
                 new Swarm<DumbAction>(null, key, transport));
             Assert.Throws<ArgumentNullException>(() =>

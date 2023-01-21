@@ -31,13 +31,6 @@ namespace Libplanet.Net.Tests.Messages
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
                     new PingMsg() { Timestamp = DateTimeOffset.UtcNow - buffer.Multiply(2) }));
-
-            // If buffer is null, no exception gets thrown.
-            messageValidator = new MessageValidator(new AppProtocolVersionOptions(), null);
-            messageValidator.ValidateTimestamp(
-                new PingMsg() { Remote = peer, Timestamp = DateTimeOffset.MaxValue });
-            messageValidator.ValidateTimestamp(
-                new PingMsg() { Remote = peer, Timestamp = DateTimeOffset.MinValue });
         }
 
         [Fact]
@@ -117,7 +110,7 @@ namespace Libplanet.Net.Tests.Messages
                 DifferentAppProtocolVersionEncountered = callback,
             };
 
-            messageValidator = new MessageValidator(appProtocolVersionOptions, null);
+            messageValidator = new MessageValidator(appProtocolVersionOptions, TimeSpan.MaxValue);
 
             // Check trust pings
             messageValidator.ValidateAppProtocolVersion(trustedPing);
@@ -153,7 +146,7 @@ namespace Libplanet.Net.Tests.Messages
                 DifferentAppProtocolVersionEncountered = callback,
             };
 
-            messageValidator = new MessageValidator(appProtocolVersionOptions, null);
+            messageValidator = new MessageValidator(appProtocolVersionOptions, TimeSpan.MaxValue);
 
             // Check trust pings
             messageValidator.ValidateAppProtocolVersion(trustedPing);

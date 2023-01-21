@@ -26,7 +26,7 @@ namespace Libplanet.Net.Tests.Transports
         protected ILogger Logger { get; set; }
 
         #pragma warning disable MEN002
-        protected Func<PrivateKey, AppProtocolVersionOptions, HostOptions, TimeSpan?, Task<ITransport>> TransportConstructor { get; set; }
+        protected Func<PrivateKey, AppProtocolVersionOptions, HostOptions, TimeSpan, Task<ITransport>> TransportConstructor { get; set; }
         #pragma warning restore MEN002
 
         [SkippableFact(Timeout = Timeout)]
@@ -417,8 +417,7 @@ namespace Libplanet.Net.Tests.Transports
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
-            TimeSpan? messageTimestampBuffer = null
-        )
+            TimeSpan? messageTimestampBuffer = null)
         {
             if (TransportConstructor is null)
             {
@@ -431,7 +430,7 @@ namespace Libplanet.Net.Tests.Transports
                 appProtocolVersionOptions ?? new AppProtocolVersionOptions(),
                 hostOptions ?? new HostOptions(
                     IPAddress.Loopback.ToString(), new IceServer[] { }, 0),
-                messageTimestampBuffer);
+                messageTimestampBuffer ?? TimeSpan.MaxValue);
         }
 
         private class TransportTestInvalidPeers : IEnumerable<object[]>

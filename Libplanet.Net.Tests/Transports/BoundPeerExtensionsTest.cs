@@ -39,7 +39,8 @@ namespace Libplanet.Net.Tests.Transports
             var transport = await NetMQTransport.Create(
                 swarmKey,
                 apvOptions,
-                hostOptions);
+                hostOptions,
+                TimeSpan.MaxValue);
             using (var swarm = new Swarm<DumbAction>(
                 blockchain,
                 swarmKey,

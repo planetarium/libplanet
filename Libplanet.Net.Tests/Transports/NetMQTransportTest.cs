@@ -60,8 +60,8 @@ namespace Libplanet.Net.Tests.Transports
                 NetMQTransport transport = await NetMQTransport.Create(
                     new PrivateKey(),
                     new AppProtocolVersionOptions(),
-                    new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { }, 0)
-                ).ConfigureAwait(false);
+                    new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { }, 0),
+                    TimeSpan.MaxValue).ConfigureAwait(false);
                 transport.ProcessMessageHandler.Register(
                     async m =>
                     {
@@ -143,7 +143,7 @@ namespace Libplanet.Net.Tests.Transports
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
             HostOptions hostOptions,
-            TimeSpan? messageTimestampBuffer)
+            TimeSpan messageTimestampBuffer)
         {
             privateKey = privateKey ?? new PrivateKey();
             return NetMQTransport.Create(
