@@ -30,8 +30,8 @@ To be released.
 
 ### CLI tools
 
-[[#2732]]: https://github.com/planetarium/libplanet/pull/2732
-[[#2733]]: https://github.com/planetarium/libplanet/pull/2733
+[#2732]: https://github.com/planetarium/libplanet/pull/2732
+[#2733]: https://github.com/planetarium/libplanet/pull/2733
 
 
 Version 0.46.0
