@@ -55,6 +55,15 @@ To be released.
 
 ### Dependencies
 
+ -  Upgrade *Bencodex* from
+    [0.7.0-dev.20220923062845][Bencodex 0.7.0-dev.20220923062845] to
+    [0.8.0][Bencodex 0.8.0].  [[#2294]]
+ -  Upgrade *Bencodex.Json* from
+    [0.7.0-dev.20220923062845][Bencodex.Json 0.7.0-dev.20220923062845] to
+    [0.8.0][Bencodex.Json 0.8.0].  [[#2294]]
+ -  Upgrade *System.Text.Json* from [6.0.6][System.Text.Json 6.0.6] to
+    [6.0.7][System.Text.Json 6.0.7].  [[#2322]]
+
 ### CLI tools
 
  -  Added `planet block` subcommand group. [[#2758]]
@@ -66,8 +75,12 @@ To be released.
 [#2732]: https://github.com/planetarium/libplanet/pull/2732
 [#2733]: https://github.com/planetarium/libplanet/pull/2733
 [#2743]: https://github.com/planetarium/libplanet/pull/2743
+[#2747]: https://github.com/planetarium/libplanet/pull/2747
 [#2756]: https://github.com/planetarium/libplanet/pull/2756
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
+[Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
+[Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
+[System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.6
 
 
 Version 0.46.0
