@@ -239,7 +239,7 @@ namespace Libplanet.Store
 
                 ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
                     .ToImmutableDictionary(
-                        kv => new Address((Binary)kv.Key),
+                        kv => new Address((IValue)kv.Key),
                         kv => kv.Value is List l && l.Any() ? l[0] : null
                     );
                 IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>
@@ -281,7 +281,7 @@ namespace Libplanet.Store
         private static IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
         DeserializeGroupedFAVs(Bencodex.Types.Dictionary serialized) =>
             serialized.ToImmutableDictionary(
-                kv => new Address((Binary)kv.Key),
+                kv => new Address((IValue)kv.Key),
                 kv => DeserializeFAVs((List)kv.Value)
             );
 

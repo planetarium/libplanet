@@ -157,11 +157,11 @@ namespace Libplanet.Tests
 
             Assert.Equal(
                 new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"),
-                new Address((Binary)addr)
+                new Address((IValue)new Binary(addr))
             );
 
             var invalidAddr = new byte[19];
-            Assert.Throws<ArgumentException>(() => new Address((Binary)invalidAddr));
+            Assert.Throws<ArgumentException>(() => new Address((IValue)new Binary(invalidAddr)));
         }
 
         [Fact]

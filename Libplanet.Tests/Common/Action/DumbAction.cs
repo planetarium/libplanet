@@ -234,7 +234,7 @@ namespace Libplanet.Tests.Common.Action
         public void LoadPlainValue(Dictionary plainValue)
         {
             Item = plainValue.GetValue<Text>("item");
-            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address"));
+            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
             RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
@@ -246,10 +246,8 @@ namespace Libplanet.Tests.Common.Action
                 Idempotent = plainValue.GetValue<Boolean>("idempotent");
             }
 
-            if (plainValue.TryGetValue((Text)"transfer_from", out IValue f) &&
-                f is Binary from &&
-                plainValue.TryGetValue((Text)"transfer_to", out IValue t) &&
-                t is Binary to &&
+            if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
+                plainValue.TryGetValue((Text)"transfer_to", out IValue to) &&
                 plainValue.TryGetValue((Text)"transfer_amount", out IValue a) &&
                 a is Integer amount)
             {

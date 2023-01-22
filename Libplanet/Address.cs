@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
@@ -44,7 +45,7 @@ namespace Libplanet
     [JsonConverter(typeof(AddressJsonConverter))]
     [Serializable]
     public readonly struct Address
-        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable
+        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -135,16 +136,20 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Creates an <see cref="Address"/> instance from the given Bencodex <see cref="Binary"/>
-        /// (i.e., <paramref name="address"/>).
+        /// Creates an <see cref="Address"/> instance from given <paramref name="bencoded"/>.
         /// </summary>
-        /// <param name="address">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
+        /// <param name="bencoded">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
         /// represents an <see cref="Address"/>.
         /// </param>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref name="address"/>
-        /// did not lengthen 20 bytes.</exception>
-        public Address(Binary address)
-            : this(address.ByteArray)
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
+        /// is not an encoding of a <see cref="byte"/> array of length 20.</exception>
+        public Address(IValue bencoded)
+            : this((Binary)bencoded)
+        {
+        }
+
+        private Address(Binary bencoded)
+            : this(bencoded.ByteArray)
         {
         }
 
@@ -175,6 +180,9 @@ namespace Libplanet
                 return _byteArray;
             }
         }
+
+        /// <inheritdoc/>
+        public IValue Bencoded => new Binary(ByteArray);
 
         public static bool operator ==(Address left, Address right) => left.Equals(right);
 
