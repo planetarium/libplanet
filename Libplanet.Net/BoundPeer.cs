@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net;
 using System.Runtime.Serialization;
+using Bencodex;
 using Bencodex.Types;
 using Destructurama.Attributed;
 using Libplanet.Crypto;
@@ -11,7 +12,7 @@ using Libplanet.Serialization;
 namespace Libplanet.Net
 {
     [Serializable]
-    public sealed class BoundPeer : ISerializable, IEquatable<BoundPeer>
+    public sealed class BoundPeer : ISerializable, IEquatable<BoundPeer>, IBencodable
     {
         private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
         private static readonly byte[] EndPointHostKey = { 0x68 }; // 'h'
@@ -32,18 +33,10 @@ namespace Libplanet.Net
         {
         }
 
-#pragma warning disable SA1118 // The parameter spans multiple lines
-        public BoundPeer(Bencodex.Types.Dictionary dictionary)
-            : this(
-                new PublicKey(((Binary)dictionary[PublicKeyKey]).ByteArray),
-                new DnsEndPoint(
-                    (Text)dictionary[EndPointHostKey], (Integer)dictionary[EndPointPortKey]),
-                dictionary[PublicIpAddressKey] is Text text
-                    ? IPAddress.Parse(text)
-                    : null)
+        public BoundPeer(Bencodex.Types.IValue bencoded)
+            : this((Bencodex.Types.Dictionary)bencoded)
         {
         }
-#pragma warning restore SA1118
 
         internal BoundPeer(
             PublicKey publicKey,
@@ -60,6 +53,15 @@ namespace Libplanet.Net
             PublicKey = publicKey;
             EndPoint = endPoint;
             PublicIPAddress = publicIPAddress;
+        }
+
+        private BoundPeer(Bencodex.Types.Dictionary bencoded)
+            : this(
+                new PublicKey(((Binary)bencoded[PublicKeyKey]).ByteArray),
+                new DnsEndPoint(
+                    (Text)bencoded[EndPointHostKey], (Integer)bencoded[EndPointPortKey]),
+                bencoded[PublicIpAddressKey] is Text text ? IPAddress.Parse(text) : null)
+        {
         }
 
         private BoundPeer(SerializationInfo info, StreamingContext context)
@@ -102,6 +104,17 @@ namespace Libplanet.Net
         public IPAddress? PublicIPAddress { get; }
 
         public string PeerString => $"{PublicKey},{EndPoint.Host},{EndPoint.Port}";
+
+        /// <inheritdoc/>
+        [Pure]
+        public Bencodex.Types.IValue Bencoded =>
+            Bencodex.Types.Dictionary.Empty
+                .Add(PublicKeyKey, PublicKey.Format(true))
+                .Add(EndPointHostKey, EndPoint.Host)
+                .Add(EndPointPortKey, EndPoint.Port)
+                .Add(
+                    PublicIpAddressKey,
+                    PublicIPAddress is IPAddress ip ? (IValue)(Text)ip.ToString() : Null.Value);
 
         public static bool operator ==(BoundPeer left, BoundPeer right) => left.Equals(right);
 
@@ -192,15 +205,6 @@ namespace Libplanet.Net
             info.AddValue("end_point_port", EndPoint.Port);
             info.AddValue(nameof(PublicIPAddress), PublicIPAddress?.ToString());
         }
-
-        public Bencodex.Types.Dictionary ToBencodex() =>
-            Bencodex.Types.Dictionary.Empty
-                .Add(PublicKeyKey, PublicKey.Format(true))
-                .Add(EndPointHostKey, EndPoint.Host)
-                .Add(EndPointPortKey, EndPoint.Port)
-                .Add(
-                    PublicIpAddressKey,
-                    PublicIPAddress is IPAddress ip ? (IValue)(Text)ip.ToString() : Null.Value);
 
         /// <inheritdoc/>
         public override string ToString()

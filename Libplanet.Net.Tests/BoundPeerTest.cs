@@ -48,12 +48,12 @@ namespace Libplanet.Net.Tests
 
         [Theory]
         [MemberData(nameof(GetBoundPeers))]
-        public void Serialize(BoundPeer peer)
+        public void Bencode(BoundPeer peer)
         {
-            Bencodex.Types.Dictionary serialized = peer.ToBencodex();
-            var deserialized = new BoundPeer(serialized);
+            Bencodex.Types.IValue bencoded = peer.Bencoded;
+            var decoded = new BoundPeer(bencoded);
 
-            Assert.Equal(peer, deserialized);
+            Assert.Equal(peer, decoded);
         }
 
         [Fact]

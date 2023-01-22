@@ -50,7 +50,7 @@ namespace Libplanet.Net.Messages
 
             // Write headers. (inverse order, version-type-peer-timestamp)
             netMqMessage.Push(timestamp.Ticks);
-            netMqMessage.Push(_codec.Encode(peer.ToBencodex()));
+            netMqMessage.Push(_codec.Encode(peer.Bencoded));
             netMqMessage.Push((int)message.Type);
             netMqMessage.Push(appProtocolVersion.Token);
 

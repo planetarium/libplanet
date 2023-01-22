@@ -40,7 +40,7 @@ namespace Libplanet.Net.Messages
             {
                 var frames = new List<byte[]>();
                 frames.Add(BitConverter.GetBytes(Found.Count));
-                frames.AddRange(Found.Select(boundPeer => Codec.Encode(boundPeer.ToBencodex())));
+                frames.AddRange(Found.Select(boundPeer => Codec.Encode(boundPeer.Bencoded)));
                 return frames;
             }
         }
