@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Bencodex;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Serialization;
@@ -13,6 +14,8 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class InvalidMessageSignatureException : Exception
     {
+        private static Codec _codec = new Codec();
+
         internal InvalidMessageSignatureException(
             string message,
             BoundPeer peer,
@@ -32,7 +35,7 @@ namespace Libplanet.Net.Transports
             StreamingContext context)
             : base(info, context)
         {
-            Peer = info.GetValue<BoundPeer>(nameof(Peer));
+            Peer = new BoundPeer(_codec.Decode(info.GetValue<byte[]>(nameof(Peer))));
             PublicKey = new PublicKey(info.GetValue<byte[]>(nameof(PublicKey)));
             MessageToVerify = info.GetValue<byte[]>(nameof(MessageToVerify));
             Signature = info.GetValue<byte[]>(nameof(Signature));
@@ -50,7 +53,7 @@ namespace Libplanet.Net.Transports
             SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Peer), Peer);
+            info.AddValue(nameof(Peer), _codec.Encode(Peer.Bencoded));
             info.AddValue(nameof(PublicKey), PublicKey.Format(true));
             info.AddValue(nameof(MessageToVerify), MessageToVerify);
             info.AddValue(nameof(Signature), Signature);

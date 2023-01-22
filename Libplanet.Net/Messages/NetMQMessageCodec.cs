@@ -100,9 +100,7 @@ namespace Libplanet.Net.Messages
             var versionToken = remains[(int)Message.MessageFrame.Version].ConvertToString();
 
             AppProtocolVersion remoteVersion = AppProtocolVersion.FromToken(versionToken);
-            var dictionary =
-                (Bencodex.Types.Dictionary)_codec.Decode(
-                    remains[(int)Message.MessageFrame.Peer].ToByteArray());
+            var dictionary = _codec.Decode(remains[(int)Message.MessageFrame.Peer].ToByteArray());
             BoundPeer remotePeer = new BoundPeer(dictionary);
 
             var type =

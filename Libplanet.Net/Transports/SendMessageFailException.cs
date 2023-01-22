@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.Serialization;
+using Bencodex;
 using Libplanet.Net.Messages;
+using Libplanet.Serialization;
 
 namespace Libplanet.Net.Transports
 {
@@ -10,6 +12,8 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class SendMessageFailException : Exception
     {
+        private static Codec _codec = new Codec();
+
         internal SendMessageFailException(
             string message,
             BoundPeer peer)
@@ -30,9 +34,7 @@ namespace Libplanet.Net.Transports
         protected SendMessageFailException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Peer = info.GetValue(nameof(Peer), typeof(BoundPeer)) is BoundPeer peer
-                ? peer
-                : throw new SerializationException($"{nameof(Peer)} is of an invalid type.");
+            Peer = new BoundPeer(_codec.Decode(info.GetValue<byte[]>(nameof(Peer))));
         }
 
         public BoundPeer Peer { get; private set; }
@@ -40,7 +42,7 @@ namespace Libplanet.Net.Transports
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Peer), Peer, typeof(BoundPeer));
+            info.AddValue(nameof(Peer), _codec.Encode(Peer.Bencoded));
         }
     }
 }

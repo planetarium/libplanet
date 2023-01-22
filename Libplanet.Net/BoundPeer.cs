@@ -2,17 +2,14 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net;
-using System.Runtime.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Destructurama.Attributed;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {
-    [Serializable]
-    public sealed class BoundPeer : ISerializable, IEquatable<BoundPeer>, IBencodable
+    public sealed class BoundPeer : IEquatable<BoundPeer>, IBencodable
     {
         private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
         private static readonly byte[] EndPointHostKey = { 0x68 }; // 'h'
@@ -62,18 +59,6 @@ namespace Libplanet.Net
                     (Text)bencoded[EndPointHostKey], (Integer)bencoded[EndPointPortKey]),
                 bencoded[PublicIpAddressKey] is Text text ? IPAddress.Parse(text) : null)
         {
-        }
-
-        private BoundPeer(SerializationInfo info, StreamingContext context)
-        {
-            PublicKey = new PublicKey(info.GetValue<byte[]>(nameof(PublicKey)));
-            EndPoint = new DnsEndPoint(
-                info.GetString("end_point_host"),
-                info.GetInt32("end_point_port"));
-            if (info.GetString(nameof(PublicIPAddress)) is string address)
-            {
-                PublicIPAddress = IPAddress.Parse(address);
-            }
         }
 
         /// <summary>
@@ -195,16 +180,6 @@ namespace Libplanet.Net
 
         public override int GetHashCode() => HashCode.Combine(
             HashCode.Combine(PublicKey.GetHashCode(), PublicIPAddress?.GetHashCode()), EndPoint);
-
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context)
-        {
-            info.AddValue(nameof(PublicKey), PublicKey.Format(true));
-            info.AddValue("end_point_host", EndPoint.Host);
-            info.AddValue("end_point_port", EndPoint.Port);
-            info.AddValue(nameof(PublicIPAddress), PublicIPAddress?.ToString());
-        }
 
         /// <inheritdoc/>
         public override string ToString()
