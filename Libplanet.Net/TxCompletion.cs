@@ -226,7 +226,6 @@ namespace Libplanet.Net
             private readonly Channel<TxId> _txIds;
             private readonly TPeer _peer;
             private readonly ILogger _logger;
-            private readonly ReaderWriterLockSlim _txIdsWriterLock;
 
             private TxFetchJob(TxFetcher txFetcher, TPeer peer)
             {
@@ -238,7 +237,6 @@ namespace Libplanet.Net
                         SingleReader = true,
                     }
                 );
-                _txIdsWriterLock = new ReaderWriterLockSlim();
 
                 _logger = Log
                     .ForContext<TxFetchJob>()
@@ -253,14 +251,19 @@ namespace Libplanet.Net
                 CancellationToken cancellationToken)
             {
                 var task = new TxFetchJob(txFetcher, peer);
-                _ = task.RequestAsync(waitFor, cancellationToken).ContinueWith(continuation);
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(waitFor, cancellationToken);
+                    task._txIds.Writer.TryComplete();
+                    await task.RequestAsync(cancellationToken).ContinueWith(continuation);
+                });
                 return task;
             }
 
             public bool TryAdd(IEnumerable<TxId> txIds, out HashSet<TxId> rest)
             {
                 rest = new HashSet<TxId>(txIds);
-                _txIdsWriterLock.EnterReadLock();
+
                 try
                 {
                     foreach (TxId txId in txIds)
@@ -275,31 +278,12 @@ namespace Libplanet.Net
                 {
                     return false;
                 }
-                finally
-                {
-                    _txIdsWriterLock.ExitReadLock();
-                }
             }
 
             private async Task<ISet<Transaction<TAction>>> RequestAsync(
-                TimeSpan waitFor,
                 CancellationToken cancellationToken
             )
             {
-                _ = Task.Run(async () =>
-                {
-                    await Task.Delay(waitFor);
-                    _txIdsWriterLock.EnterWriteLock();
-                    try
-                    {
-                        _txIds.Writer.TryComplete();
-                    }
-                    finally
-                    {
-                        _txIdsWriterLock.ExitWriteLock();
-                    }
-                });
-
                 try
                 {
                     var txIds = new HashSet<TxId>();
@@ -323,8 +307,7 @@ namespace Libplanet.Net
                                 _peer,
                                 txIds,
                                 cancellationToken)
-                            .ToListAsync(cancellationToken)
-                            .AsTask());
+                            .ToListAsync(cancellationToken));
                     _logger.Debug(
                         "End of _txFetcher from {Peer}. (received: {Count}); " +
                         "Time taken: {Elapsed}",
