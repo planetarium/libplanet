@@ -783,7 +783,7 @@ namespace Libplanet.Net.Transports
                 cancellationToken.ThrowIfCancellationRequested();
 
                 using var dealer = new DealerSocket();
-                dealer.Options.DisableTimeWait = true;
+                dealer.Options.DisableTimeWait = false;
                 try
                 {
                     _logger.Debug("Trying to connect {RequestId}.", req.Id);
