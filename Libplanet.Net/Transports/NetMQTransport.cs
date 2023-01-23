@@ -192,8 +192,15 @@ namespace Libplanet.Net.Transports
                 stoppingToken.Register(
                     () =>
                     {
-                        _routerPoller.RemoveAndDispose(_replyQueue);
-                        _routerPoller.StopAsync();
+                        _routerPoller.Remove(_replyQueue);
+                        _routerPoller.Stop();
+
+                        foreach ((AsyncManualResetEvent ev, NetMQMessage _) in _replyQueue)
+                        {
+                            ev.Set();
+                        }
+
+                        _replyQueue.Dispose();
                         _runningEvent.Reset();
                     },
                     useSynchronizationContext: false);
