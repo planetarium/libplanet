@@ -310,18 +310,10 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            using var timerCts = new CancellationTokenSource();
-            if (timeout is { } timeoutNotNull)
-            {
-                timerCts.CancelAfter(timeoutNotNull);
-            }
-
             using CancellationTokenSource linkedCts =
                 CancellationTokenSource.CreateLinkedTokenSource(
                     _runtimeCancellationTokenSource.Token,
-                    cancellationToken,
-                    timerCts.Token
-                );
+                    cancellationToken);
             CancellationToken linkedCt = linkedCts.Token;
 
             Guid reqId = Guid.NewGuid();
@@ -353,6 +345,7 @@ namespace Libplanet.Net.Transports
                     now,
                     expectedResponses,
                     channel,
+                    timeout ?? TimeSpan.FromSeconds(1),
                     linkedCt
                 );
                 await _requests.Writer.WriteAsync(
@@ -426,36 +419,24 @@ namespace Libplanet.Net.Transports
 
                 return replies;
             }
-            catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
+            catch (OperationCanceledException oce)
+            {
+                const string dbgMsg =
+                    "{FName}() was cancelled while waiting for a reply to " +
+                    "{Message} {RequestId} from {Peer}.";
+                _logger.Debug(
+                    oce, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
+
+                // Wrapping to match the previous behavior of `SendMessageAsync()`.
+                throw new TaskCanceledException(dbgMsg, oce);
+            }
+            catch (ChannelClosedException ce)
             {
                 if (returnWhenTimeout)
                 {
                     return replies;
                 }
 
-                throw WrapCommunicationFailException(
-                    new TimeoutException(
-                        $"The operation was canceled due to timeout {timeout!.ToString()}.",
-                        oce
-                    ),
-                    peer,
-                    message,
-                    reqId
-                );
-            }
-            catch (OperationCanceledException oce2)
-            {
-                const string dbgMsg =
-                    "{FName}() was cancelled while waiting for a reply to " +
-                    "{Message} {RequestId} from {Peer}.";
-                _logger.Debug(
-                    oce2, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
-
-                // Wrapping to match the previous behavior of `SendMessageAsync()`.
-                throw new TaskCanceledException(dbgMsg, oce2);
-            }
-            catch (ChannelClosedException ce)
-            {
                 throw WrapCommunicationFailException(ce.InnerException, peer, message, reqId);
             }
             catch (Exception e)
@@ -784,7 +765,7 @@ namespace Libplanet.Net.Transports
                     throw;
                 }
 
-                if (dealer.TrySendMultipartMessage(req.Message))
+                if (dealer.TrySendMultipartMessage(req.Timeout, req.Message))
                 {
                     _logger.Debug(
                         "Request {RequestId} sent to {Peer}.",
@@ -805,17 +786,32 @@ namespace Libplanet.Net.Transports
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken
-                    );
+                    NetMQMessage raw = new NetMQMessage();
+
+                    if (!dealer.TryReceiveMultipartMessage(req.Timeout, ref raw))
+                    {
+                        _logger.Verbose(
+                            "Should be received a raw message as a reply to " +
+                            "request {RequestId} from {Peer}, but timeout after {Timeout}",
+                            req.Id,
+                            req.Peer,
+                            req.Timeout
+                        );
+
+                        TimeoutException te = new TimeoutException(
+                            $"Should be received a raw message as a reply to " +
+                            $"request {req.Id} from {req.Peer}, but timeout after {req.Timeout}");
+
+                        channel.Writer.TryComplete(te);
+                    }
 
                     _logger.Verbose(
                         "Received a raw message with {FrameCount} frames as a reply to " +
                         "request {RequestId} from {Peer}.",
                         raw.FrameCount,
                         req.Id,
-                        req.Peer
-                    );
+                        req.Peer);
+
                     await channel.Writer.WriteAsync(raw, cancellationToken);
                     receivedCount += 1;
                 }
@@ -837,7 +833,7 @@ namespace Libplanet.Net.Transports
                 if (req.ExpectedResponses == 0)
                 {
                     // FIXME: Temporary fix to wait for a message to be sent.
-                    await Task.Delay(1000);
+                    channel.Writer.TryComplete();
                 }
 
                 if (incrementedSocketCount is { })
@@ -885,7 +881,7 @@ namespace Libplanet.Net.Transports
                     catch (Exception e)
                     {
                         _logger.Error(
-                            e, "An unexpected exception ocurred during poller.Run().");
+                            e, "An unexpected exception occurred during poller.Run().");
                     }
                 },
                 CancellationToken.None,
@@ -922,6 +918,7 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset requestedTime,
                 in int expectedResponses,
                 Channel<NetMQMessage> channel,
+                TimeSpan timeout,
                 CancellationToken cancellationToken)
             {
                 Id = id;
@@ -930,6 +927,7 @@ namespace Libplanet.Net.Transports
                 RequestedTime = requestedTime;
                 ExpectedResponses = expectedResponses;
                 Channel = channel;
+                Timeout = timeout;
                 CancellationToken = cancellationToken;
             }
 
@@ -944,6 +942,8 @@ namespace Libplanet.Net.Transports
             public int ExpectedResponses { get; }
 
             public Channel<NetMQMessage> Channel { get; }
+
+            public TimeSpan Timeout { get; }
 
             public CancellationToken CancellationToken { get; }
         }
