@@ -34,10 +34,12 @@ namespace Libplanet.Net.Transports
         private readonly AsyncManualResetEvent _runningEvent;
         private readonly AsyncAutoResetEvent _stoppingEvent;
         private readonly CancellationTokenSource _runtimeCancellationTokenSource;
+        private readonly AsyncContextThread _routerThread;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
 
         private RouterSocket _router;
+        private string _routerBindAddr;
         private NetMQPoller _routerPoller;
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
@@ -115,6 +117,7 @@ namespace Libplanet.Net.Transports
                 TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
                 TaskScheduler.Default
             );
+            _routerThread = new AsyncContextThread();
 
             _runningEvent = new AsyncManualResetEvent();
             _stoppingEvent = new AsyncAutoResetEvent();
@@ -219,8 +222,7 @@ namespace Libplanet.Net.Transports
                 _runningEvent.Set();
             }).Start(_routerPoller);
 
-            using var thread = new AsyncContextThread();
-            await thread.Factory.Run(() =>
+            await _routerThread.Factory.Run(() =>
             {
                 // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
                 // tests.
@@ -279,9 +281,17 @@ namespace Libplanet.Net.Transports
                 _routerPoller?.Dispose();
                 _replyQueue?.Dispose();
 
-                // We omitted _router.Unbind() with intention due to hangs.
-                // See also: https://github.com/planetarium/libplanet/pull/2311
-                _router?.Dispose();
+                if (_router is { } router)
+                {
+                    _routerThread.Factory.Run(() =>
+                    {
+                        router.Unbind(_routerBindAddr);
+                        router.Dispose();
+                    });
+                }
+
+                _routerThread.Dispose();
+
                 _turnClient?.Dispose();
 
                 _disposed = true;
@@ -575,17 +585,20 @@ namespace Libplanet.Net.Transports
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
             _router.ReceiveReady += ReceiveMessage;
-            int listenPort = 0;
 
-            if (_hostOptions.Port == 0)
+            int listenPort = await _routerThread.Factory.Run(() =>
             {
-                listenPort = _router.BindRandomPort("tcp://*");
-            }
-            else
-            {
-                listenPort = _hostOptions.Port;
-                _router.Bind($"tcp://*:{listenPort}");
-            }
+                if (_hostOptions.Port == 0)
+                {
+                    return _router.BindRandomPort("tcp://*");
+                }
+                else
+                {
+                    _router.Bind($"tcp://*:{_hostOptions.Port}");
+                    return _hostOptions.Port;
+                }
+            });
+            _routerBindAddr = $"tcp://*:{listenPort}";
 
             _logger.Information("Listening on {Port}...", listenPort);
 
