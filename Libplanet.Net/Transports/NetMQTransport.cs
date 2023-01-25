@@ -85,6 +85,7 @@ namespace Libplanet.Net.Transports
 
             // ProcessRequest task + Poller task + Runtime task
             _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(NetMQConfig.MaxSockets + 2);
+            _logger.Verbose("Task Scheduler Id : {TaskSchedulerId}", _taskScheduler.Id);
 
             _socketCount = 0;
             _privateKey = privateKey;
@@ -581,67 +582,10 @@ namespace Libplanet.Net.Transports
                     var copied = new NetMQMessage(raw.Select(f => f.Duplicate()));
 
                     Task.Factory.StartNew(
-                        async () =>
-                        {
-                            try
-                            {
-                                Message message = _messageCodec.Decode(copied, false);
-                                _logger
-                                    .ForContext("Tag", "Metric")
-                                    .ForContext("Subtag", "InboundMessageReport")
-                                    .Debug(
-                                        "Received message {Message} from {Peer}.",
-                                        message,
-                                        message.Remote);
-                                try
-                                {
-                                    _messageValidator.ValidateTimestamp(message);
-                                    _messageValidator.ValidateAppProtocolVersion(message);
-                                    await ProcessMessageHandler.InvokeAsync(message);
-                                }
-                                catch (InvalidMessageTimestampException imte)
-                                {
-                                    _logger.Debug(
-                                        imte,
-                                        "Received {Message} from {Peer} has an invalid timestamp.",
-                                        message,
-                                        message.Remote);
-                                }
-                                catch (DifferentAppProtocolVersionException dapve)
-                                {
-                                    _logger.Debug(
-                                        dapve,
-                                        "Received {Message} from {Peer} has an invalid APV.",
-                                        message,
-                                        message.Remote);
-                                    var diffVersion = new DifferentVersionMsg()
-                                    {
-                                        Identity = message.Identity,
-                                    };
-                                    _logger.Debug(
-                                        "Replying to {Peer} with {Reply}.",
-                                        diffVersion);
-                                    await ReplyMessageAsync(
-                                        diffVersion,
-                                        _runtimeCancellationTokenSource.Token
-                                    );
-                                }
-                            }
-                            catch (InvalidMessageException ex)
-                            {
-                                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
-                            }
-                            catch (Exception exc)
-                            {
-                                _logger.Error(
-                                    exc,
-                                    "Something went wrong during message processing.");
-                            }
-                        },
-                        CancellationToken.None,
+                        () => PostProcessMessage(copied),
+                        _runtimeCancellationTokenSource.Token,
                         TaskCreationOptions.DenyChildAttach,
-                        _taskScheduler
-                    ).Unwrap();
+                        _taskScheduler);
                 }
             }
             catch (Exception ex)
@@ -649,6 +593,62 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     ex,
                     $"An unexpected exception occurred during " + nameof(ReceiveMessage) + "().");
+            }
+        }
+
+        private async Task PostProcessMessage(NetMQMessage copied)
+        {
+            try
+            {
+                Message message = _messageCodec.Decode(copied, false);
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "InboundMessageReport")
+                    .Debug("Received message {Message} from {Peer}.", message, message.Remote);
+                try
+                {
+                    _messageValidator.ValidateTimestamp(message);
+                    _messageValidator.ValidateAppProtocolVersion(message);
+                    await ProcessMessageHandler.InvokeAsync(message);
+                }
+                catch (InvalidMessageTimestampException imte)
+                {
+                    _logger.Debug(
+                        imte,
+                        "Received {Message} from {Peer} has an invalid timestamp.",
+                        message,
+                        message.Remote);
+                }
+                catch (DifferentAppProtocolVersionException dapve)
+                {
+                    _logger.Debug(
+                        dapve,
+                        "Received {Message} from {Peer} has an invalid APV.",
+                        message,
+                        message.Remote);
+                    var diffVersion = new DifferentVersionMsg()
+                    {
+                        Identity = message.Identity,
+                    };
+                    _logger.Debug(
+                        "Replying to {Peer} with {Reply}.",
+                        message.Remote,
+                        diffVersion);
+                    await ReplyMessageAsync(
+                        diffVersion,
+                        _runtimeCancellationTokenSource.Token
+                    );
+                }
+            }
+            catch (InvalidMessageException ex)
+            {
+                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(
+                    exc,
+                    "Something went wrong during message processing.");
             }
         }
 
@@ -883,13 +883,13 @@ namespace Libplanet.Net.Transports
                     catch (Exception e)
                     {
                         _logger.Error(
-                            e, "An unexpected exception occurred during poller.Run().");
+                            e,
+                            "An unexpected exception occurred during poller.Run().");
                     }
                 },
                 CancellationToken.None,
                 taskCreationOptions,
-                _taskScheduler
-            );
+                _taskScheduler);
         }
 
         private CommunicationFailException WrapCommunicationFailException(
