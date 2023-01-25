@@ -53,7 +53,6 @@
         runtime; build; native; contentfiles; analyzers; buildtransitive
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Planetarium.NetMQ" Version="4.0.0.261-planetarium" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
@@ -73,5 +72,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
+    <ProjectReference Include="..\netmq\src\NetMQ\NetMQ.csproj" />
   </ItemGroup>
 </Project>
