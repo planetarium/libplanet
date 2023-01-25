@@ -149,7 +149,7 @@ namespace Libplanet.Net.Tests
 
                     if (actualStates.Count == 10)
                     {
-                        minerChain.Append(blocks[11], CreateBlockCommit(blocks[10]));
+                        minerChain.Append(blocks[11], CreateBlockCommit(blocks[11]));
                     }
                 }
             });

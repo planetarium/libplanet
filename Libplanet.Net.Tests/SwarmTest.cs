@@ -137,6 +137,7 @@ namespace Libplanet.Net.Tests
 
             await StartAsync(swarmA);
             await StartAsync(swarmB);
+            await Task.Delay(1000);
 
             Assert.True(swarmA.Running);
             Assert.True(swarmB.Running);

@@ -82,12 +82,12 @@ namespace Libplanet.Tests.Fixtures
                 stateStore: StateStore);
             Chain = new BlockChain<Arithmetic>(
                 policy,
+                new VolatileStagePolicy<Arithmetic>(),
                 Store,
                 StateStore,
                 Genesis,
                 renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
             );
-            Genesis = Chain.Genesis;
         }
 
         public int Count => Addresses.Count;
