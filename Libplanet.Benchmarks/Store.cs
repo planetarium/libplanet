@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
@@ -25,9 +26,21 @@ namespace Libplanet.Benchmarks
         {
             var blocks = new List<Block<DumbAction>>();
             var txs = new List<Transaction<DumbAction>>();
-            Block<DumbAction> genesis = TestUtils.ProposeGenesisBlock<DumbAction>(
-                TestUtils.GenesisProposer
-            );
+
+            var genTxs = new List<Transaction<DumbAction>>();
+            var content = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: Block<DumbAction>.CurrentProtocolVersion,
+                    index: 0,
+                    timestamp: new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                    miner: TestUtils.GenesisProposer.ToAddress(),
+                    publicKey: TestUtils.GenesisProposer.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent<DumbAction>.DeriveTxHash(genTxs),
+                    lastCommit: null),
+                transactions: genTxs);
+
+            Block<DumbAction> genesis = content.Propose().Sign(TestUtils.GenesisProposer, default);
             blocks.Add(genesis);
             Block<DumbAction> block = genesis;
             var key = new PrivateKey();
