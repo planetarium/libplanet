@@ -1,0 +1,28 @@
+site_name: NetMQ
+
+pages:
+- Home: index.md
+- Introduction: introduction.md
+- Concepts:
+  - Receiving and Sending: receiving-sending.md
+  - Async/Await: async-await.md
+  - Messages: message.md
+  - Transports: transports.md
+  - Cleanup: cleanup.md
+- Components:
+  - Poller: poller.md
+  - Actor: actor.md
+  - Beacon: beacon.md
+  - Timer: timer.md
+  - Queue: queue.md
+  - Proactor: proactor.md
+- Patterns:
+  - Request-Response: request-response.md
+  - Pub-Sub: pub-sub.md
+  - Push-Pull: push-pull.md
+  - Router-Dealer: router-dealer.md
+  - XSub-XPub: xpub-xsub.md
+
+theme: readthedocs
+repo_url: https://github.com/zeromq/netmq/
+markdown_extensions: [codehilite]
