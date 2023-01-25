@@ -229,25 +229,36 @@ namespace Libplanet.Net.Protocols
             for (int i = 0; i < _findConcurrency; i++)
             {
                 _random.NextBytes(buffer);
-                tasks.Add(FindPeerAsync(
-                    history,
-                    dialHistory,
-                    new Address(buffer),
-                    null,
-                    depth,
-                    _requestTimeout,
-                    cancellationToken));
+                tasks.Add(
+                    Task.Run(
+                        () => FindPeerAsync(
+                            history,
+                            dialHistory,
+                            new Address(buffer),
+                            null,
+                            depth,
+                            _requestTimeout,
+                            cancellationToken),
+                        cancellationToken
+                    )
+                );
             }
 
             tasks.Add(
-                FindPeerAsync(
-                    history,
-                    dialHistory,
-                    _address,
-                    null,
-                    depth,
-                    _requestTimeout,
-                    cancellationToken));
+                Task.Run(
+                    () => FindPeerAsync(
+                        history,
+                        dialHistory,
+                        _address,
+                        null,
+                        depth,
+                        _requestTimeout,
+                        cancellationToken
+                    ),
+                    cancellationToken
+                )
+            );
+
             try
             {
                 await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -692,7 +703,10 @@ namespace Libplanet.Net.Protocols
                     peer =>
                     {
                         dialHistory.Add(peer);
-                        return PingAsync(peer, _requestTimeout, cancellationToken);
+                        return Task.Run(
+                            () => PingAsync(peer, _requestTimeout, cancellationToken),
+                            cancellationToken
+                        );
                     }
                 ).ToList();
             Task aggregateTask = Task.WhenAll(tasks);
