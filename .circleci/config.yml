@@ -184,8 +184,6 @@ commands:
             head -n $part .head_tests.txt > .current_tests.txt
           fi
           excluded_tests=(
-            "Libplanet.Net.Tests.Transports.NetMQTransportTest.AsPeer"
-            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
           )
           cat .current_tests.txt
           first=1
@@ -350,18 +348,27 @@ commands:
             xur_path=/tmp/xur/<<parameters.runner_target>>
           fi
           excluded_classes=(
+            Libplanet.Tests.Blockchain.Renderers.AnonymousActionRendererTest
+            Libplanet.Tests.Blockchain.Renderers.AnonymousRendererTest
+            Libplanet.Tests.Blockchain.Renderers.DelayedActionRendererTest
+            Libplanet.Tests.Blockchain.Renderers.DelayedRendererTest
+            Libplanet.Tests.Blockchain.Renderers.LoggedActionRendererTest
+            Libplanet.Tests.Blockchain.Renderers.LoggedRendererTest
+            Libplanet.Tests.Blockchain.Renderers.NonblockRendererTest
+            Libplanet.Tests.Store.MemoryStoreTest
+            Libplanet.Tests.Blockchain.DefaultStoreBlockChainTest
+            Libplanet.Tests.Blockchain.BlockChainTest
+            Libplanet.Tests.Blockchain.Policies.BlockPolicyTest
+            Libplanet.Tests.Blockchain.Policies.VolatileStagePolicyTest
+            Libplanet.Tests.Store.BlockSetTest
+            Libplanet.Tests.Store.StoreTrackerTest
+            Libplanet.Tests.Blocks.PreEvaluationBlockTest
+            Libplanet.Tests.Blocks.PreEvaluationBlockHeaderTest
+            Libplanet.Tests.Blocks.BlockContentTest
+            Libplanet.Tests.Blocks.BlockMetadataExtensionsTest
+            Libplanet.Tests.Blocks.BlockMetadataTest
           )
           excluded_methods=(
-            "Libplanet.Tests.Blockchain.BlockChainTest.MakeTransactionWithSystemAction"
-            "Libplanet.Tests.Blockchain.DefaultStoreBlockChainTest.GetStateWithRecalculation"
-            "Libplanet.Tests.Blockchain.Renderers.LoggedActionRendererTest.RenderReorg"
-            "Libplanet.Tests.Store.DefaultStoreTest.DeleteChainIdWithForks"
-            "Libplanet.Tests.Store.BlockSetTest.CanDetectInvalidHash"
-            "Libplanet.Tests.Blocks.BlockContentTest.TransactionsWithMissingNonce"
-            "Libplanet.Tests.Blockchain.Policies.BlockPolicyTest.GetNextBlockDifficulty"
-            "Libplanet.Node.Tests.SwarmConfigTest.Serialization"
-            "Libplanet.Tests.Blockchain.BlockChainTest.TreatGoingBackwardAsReorg"
-            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
           )
           args=(
             "--hang-seconds=60"
@@ -382,10 +389,9 @@ commands:
           done
           for project in *.Tests; do
             if [[
-              $project != Libplanet.Explorer.Tests
-              && $project != Libplanet.Extensions.Cocona.Tests
-              && $project != Libplanet.RocksDBStore.Tests
-              && $project != Libplanet.Tools.Tests
+              $project == Libplanet.Analyzers.Tests
+              || $project == Libplanet.Tests
+              || $project == Libplanet.Node.Tests
             ]]
             then
               args+=("$PWD/$project/bin/Release/net47/$project.dll")
@@ -425,7 +431,7 @@ jobs:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
     environment:
       TRANSPORT_TYPE: netmq
-    resource_class: large
+    resource_class: xlarge
     working_directory: /mnt/ramdisk
     parallelism: 2
     steps: [linux_netcore_test_base]
@@ -433,7 +439,7 @@ jobs:
   linux-netcore-test-ar-SA:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
-    resource_class: large
+    resource_class: xlarge
     working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
@@ -443,7 +449,7 @@ jobs:
   linux-netcore-test-fr-FR:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
-    resource_class: large
+    resource_class: xlarge
     working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
@@ -453,6 +459,7 @@ jobs:
   macos-netcore-test:
     macos:
       xcode: 13.2.1
+    resource_class: macos.x86.medium.gen2
     parallelism: 4
     steps:
     - macos_netcore_test_base: { code_coverage: false }
@@ -460,14 +467,16 @@ jobs:
   windows-netcore-test:
     executor:
       name: win/server-2022
-      size: large
+      size: xlarge
     parallelism: 3
     steps: [netcore_test_base]
 
   linux-unity-test:
     docker:
     - image: mono:6.12
-    resource_class: large
+    environment:
+      XUNIT_UNITY_RUNNER: 0.5.0
+    resource_class: xlarge
     working_directory: /mnt/ramdisk
     parallelism: 4
     steps:
@@ -479,6 +488,8 @@ jobs:
   macos-unity-test:
     macos:
       xcode: 11.3.0
+    environment:
+      XUNIT_UNITY_RUNNER: 0.5.0
     parallelism: 3
     steps:
     - ulimit: { n: 10240 }
@@ -488,7 +499,9 @@ jobs:
   windows-unity-test:
     executor:
       name: win/default
-      size: large
+      size: xlarge
+    environment:
+      XUNIT_UNITY_RUNNER: 0.5.0
     parallelism: 4
     steps:
     - run:
@@ -501,7 +514,8 @@ workflows:
   main:
     jobs:
     - linux-netcore-build
-    - linux-mono-build
+    # Temporarily tunred off by excluding of linux-unity-test
+    #- linux-mono-build
     - linux-netcore-test-netmq:
         requires: [linux-netcore-build]
     - linux-netcore-test-ar-SA:
@@ -512,8 +526,9 @@ workflows:
         requires: [linux-netcore-build]
     - windows-netcore-test:
         requires: [linux-netcore-build]
-    - linux-unity-test:
-        requires: [linux-mono-build]
+    # Temporarily tunred off due to error on xunity-unity-runner:
+    #- linux-unity-test:
+    #    requires: [linux-mono-build]
     # Temporarily turned off due to CircleCI's slow worker node assignments of
     # macOS and Windows VMs:
     #- macos-unity-test:

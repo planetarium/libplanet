@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Action
                 noStateRootBlock.Evaluate(GenesisProposer, null, _ => true, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
-                    policyBlockAction: null,
+                    policyBlockActionGetter: _ => null,
                     blockChainStates: NullChainStates<RandomAction>.Instance,
                     trieGetter: null,
                     genesisHash: null,
@@ -241,13 +241,13 @@ namespace Libplanet.Tests.Action
 
             // ToList() is required for realization.
             chain.ActionEvaluator.EvaluateTx(
-                block: block,
+                blockHeader: block,
                 tx: tx,
                 previousStates: previousStates,
                 rehearsal: true).ToList();
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.EvaluateTx(
-                    block: block,
+                    blockHeader: block,
                     tx: tx,
                     previousStates: previousStates,
                     rehearsal: false).ToList());
@@ -299,7 +299,7 @@ namespace Libplanet.Tests.Action
             };
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
-                policyBlockAction: null,
+                policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: null,
@@ -355,7 +355,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block1.Miner);
-            var evals = actionEvaluator.EvaluateTxs(
+            var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousStates).ToImmutableArray();
             int randomValue = 0;
@@ -483,7 +483,7 @@ namespace Libplanet.Tests.Action
                 totalSupplyGetter,
                 ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block2.Miner);
-            evals = actionEvaluator.EvaluateTxs(
+            evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
 
@@ -594,7 +594,7 @@ namespace Libplanet.Tests.Action
                     lastCommit: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
-                policyBlockAction: null,
+                policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
@@ -605,7 +605,7 @@ namespace Libplanet.Tests.Action
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
                 var evaluations = actionEvaluator.EvaluateTx(
-                    block: block,
+                    blockHeader: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -685,8 +685,8 @@ namespace Libplanet.Tests.Action
 
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                IAccountStateDelta delta = actionEvaluator.EvaluateTxResult(
-                    block: block,
+                IAccountStateDelta delta = actionEvaluator.EvaluateTx(
+                    blockHeader: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -694,7 +694,8 @@ namespace Libplanet.Tests.Action
                         ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                         tx.Signer),
-                    rehearsal: rehearsal);
+                    rehearsal: rehearsal
+                ).Last().OutputStates;
                 Assert.Equal(
                     evaluations[3].OutputStates.GetUpdatedStates(),
                     delta.GetUpdatedStates());
@@ -728,7 +729,7 @@ namespace Libplanet.Tests.Action
             var txs = new Transaction<ThrowException>[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
-                policyBlockAction: null,
+                policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
@@ -742,8 +743,8 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent<ThrowException>.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0)),
                 transactions: txs).Propose();
-            var nextStates = actionEvaluator.EvaluateTxResult(
-                block: block,
+            var nextStates = actionEvaluator.EvaluateTx(
+                blockHeader: block,
                 tx: tx,
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -751,7 +752,8 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                     ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                     tx.Signer),
-                rehearsal: false);
+                rehearsal: false
+            ).Last().OutputStates;
 
             Assert.Empty(nextStates.GetUpdatedStates());
         }
@@ -967,7 +969,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block.Miner);
-            var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
+            var txEvaluations = chain.ActionEvaluator.EvaluateBlock(
                 block,
                 previousStates).ToList();
             previousStates = txEvaluations.Last().OutputStates;

@@ -10,7 +10,6 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Serilog;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action
@@ -210,7 +209,6 @@ namespace Libplanet.Tests.Common.Action
                     nextState,
                     (current, validator) =>
                         current.SetValidator(new Validator(validator, BigInteger.One)));
-                Log.Debug("Execute validator action: SetValidator! {State}", nextState);
             }
 
             if (ExecuteRecords.Value is null)

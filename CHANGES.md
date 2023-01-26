@@ -33,16 +33,7 @@ Version PBFT
  -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
  -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
- -  Added `IAccountStateDelta.SetValidator(PublicKey, BigInteger)` method.
-    [[#PBFT]]
- -  Added `IAccountStateView.GetValidatorSet()` method.  [[#PBFT]]
- -  Added `IBlockChainStates.GetValidatorSet(BlockHash,
-    ValidatorSetStateCompleter<T>)` method.  [[#PBFT]]
- -  Added `StateCompleterSet<T>.ValidatorSetStateCompleter` property.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
- -  (Libplanet.Net) Added `Swarm<T>.Validators` property.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `peers` and `validators` query
-    in `NodeStateType`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
@@ -67,12 +58,6 @@ Version PBFT
  -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
  -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
  -  Added `BlockChain<T>.ValidateBlockCommit()` method.  [[#PBFT]]
- -  Added `Validator` class.  [[#PBFT]]
- -  Added `ValidatorSet` class.  [[#PBFT]]
- -  Added `SetValidator` class.  [[#PBFT]]
- -  Added `ValidatorSetGetter` delegate.  [[#PBFT]]
- -  Added `ValidatorSetStateCompleter<T>` delegate.  [[#PBFT]]
- -  Added `ValidatorSetStateCompleters<T>` static class.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -114,24 +99,229 @@ Version PBFT
 
  -  (Libplanet.Explorer) Fixed a bug where `stateQuery` hadn't work
     correctly in some situations.  [[#PBFT]]
- -  Fixed validation on `lastCommit` with wrong block's `ValidatorSet`.
-    [[#PBFT]]
 
 ### Dependencies
 
 ### CLI tools
 
 
-Version 0.45.0
+Version 0.47.0
 --------------
 
 To be released.
 
 ### Deprecated APIs
 
+### Backward-incompatible API changes
+
+ -  Removed `IAccountStateView.GetValidatorSet()` method.  [[#2733]]
+ -  Removed `IAccountStateDelta.SetValidator(Validator)` method.  [[#2733]]
+ -  (Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
+    target assemblies.  [[#2732]]
+ -  (Libplanet.Extensions.Cocona)  Added .NET 6 target assembly.  [[#2732]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[[#2732]]: https://github.com/planetarium/libplanet/pull/2732
+[[#2733]]: https://github.com/planetarium/libplanet/pull/2733
+
+
+Version 0.46.0
+--------------
+
+Released on Janurary 18th, 2023.
+
+### Backward-incompatible API changes
+
+ -  Changed `BlockLocator` to throw an `ArgumentException` if an empty set of
+    `BlockHash`es are given during construction.  [[#2584]]
+ -  `BlockChain<T>()` now explicitly requires both `store` and `stateStore`
+    arguments to be not `null`.  [[#2609]]
+ -  `BlockChain<T>.Swap()` now throws an `InvalidOperationException` if called
+    on a non-canonical chain.  [[#2619]]
+ -  Added `actionsLogsList` parameter to `TxSuccess` constructor.
+    [[#2474], [#2505]]
+ -  Added `actionsLogsList` parameter to `TxFailure` constructor.
+    [[#2474], [#2505]]
+ -  Removed `BlockLocator(Func<long, BlockHash?>, Func<BlockHash, long>, int)`
+    constructor.  Use `BlockLocator.Create()` static method instead.
+    [[#2580], [#2584]]
+ -  Replaced `IAction?`-typed `policyBlockAction` parameter with
+    `PolicyBlockActionGetter`-typed `policyBlockActionGetter` parameter
+    in `ActionEvaluator` constructor.  [[#2646]]
+ -  Removed `IStore.GetCanonicalGenesisBlock<T>()` interface method and all its
+    implementations.  [[#2664]]
+ -  Replaced `IPreEvaluationBlockHeader`-typed `blockHeader` parameter with
+    `IActionTypeLoaderContext`-typed `context` parameter in the below methods.
+    [[#2653]]
+     - `IActionTypeLoader.Load()`.
+     - `IActionTypeLoader.LoadAllActionTypes()`.
+ -  Added `IAccountStateDelta.SetValidator(Validator)` method.
+    [[#2716]]
+ -  Added `IAccountStateView.GetValidatorSet()` method.  [[#2716]]
+ -  Added `IBlockChainStates.GetValidatorSet(BlockHash,
+    ValidatorSetStateCompleter<T>)` method.  [[#2716]]
+     -  Added `BlockChain.GetValidatorSet(BlockHash,
+        ValidatorSetStateCompleter<T>)` method.
+     -  Added `BlockChainStates.GetValidatorSet(BlockHash,
+        ValidatorSetStateCompleter<T>)` method.
+ -  Added `StateCompleterSet.ValidatorSetStateCompleter` property.  [[#2716]]
+ -  (Libplanet.Net) Removed `workers` parameter from `NetMQTransport.Create()`
+    method and `Swarm<T>()` constructor.  [[#2690]]
+ -  (Libplanet.Net) Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
+    `AppProtocolVersionOptions` as a combined parameter instead of taking
+    `AppProtocolVersion`, `IImmutableSet<PublicKey>?`, and
+    `DifferentAppProtocolVersionEncountered` separately.  [[#2693]]
+ -  (Libplanet.Net) Changed `Swarm<T>()` and `NetMQTransport.Create()` to take
+    `HostOptions` as a combined parameter instead of taking
+    `string?`, `IEnumerable<IceServer>?`, and `int?` separately.  [[#2701]]
+
+### Added APIs
+
+ -  Added `TxExecution.ActionsLogsList` property.  [[#2474], [#2505]]
+ -  Added `ActionEvaluation.Logs` property.  [[#2474], [#2505]]
+ -  (Libplanet.Explorer) Added `TxResult.ActionsLogsList` property.
+    [[#2474], [#2505]]
+ -  (Libplanet.Explorer) Added `actionsLogsList` field to `TxResultType`.
+    [[#2474], [#2505]]
+ -  Added `BlockLocator.Create()` static method.  [[#2584]]
+ -  Added `PolicyBlockActionGetter` delegator type.  [[#2646]]
+ -  Added `IActionTypeLoader.LoadAllActionTypes()` method.  [[#2646]]
+     -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
+ -  Added `IActionTypeLoaderContext` interface.  [[#2653]]
+ -  Added `AppProtocolVersionOptions` class.  [[#2693]]
+ -  Added `HostOptions` class.  [[#2701]]
+ -  Added `Validator` class.  [[#2716]]
+ -  Added `ValidatorSet` class.  [[#2716]]
+ -  Added `SetValidator` class.  [[#2716]]
+ -  Added `ValidatorSetGetter` delegate.  [[#2716]]
+ -  Added `ValidatorSetStateCompleter<T>` delegate.  [[#2716]]
+ -  Added `ValidatorSetStateCompleters<T>` class.  [[#2716]]
+ -  (Libplanet.Explorer) Added `ValidatorType` class.  [[#2716]]
+ -  (Libplanet.Explorer) Added `validators` query in `StateQuery`.  [[#2716]]
+
+### Behavioral changes
+
+ -  Changed `BlockChain<T>.FindNextHashes()` to return at most `count`
+    number of `BlockHash`es regardless of the result.
+    `BlockChain<T>`. [[#2581], [#2584]]
+ -  Changed `BlockChain<T>.FindNextHashes()` to return zero `BlockHash`es
+    if no branch point `BlockHash` is found instead of returning
+    `BlockHash`es starting with the genesis `BlockHash`.  [[#2582], [#2584]]
+ -  Chnaged the behavior of `BlockLocator` index selection and sampling when
+    creating an instance.  [[#2583], [#2584]]
+ -  Changed the default `VolatileStagePolicy<T>.Lifetime` from 3 hours
+    to 10 minutes.  [[#2718]]
+
+### Bug fixes
+
+ -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count wrongly.
+    [[#2708]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()` method
+    hadn't disposed of internal sockets properly when connecting failed.
+    [[#2719]]
+
+### CLI tools
+
+ -  Fixed a bug `planet store` had not recognized RocksDB store
+    (`rocksdb+file:`).  [[#2699]]
+ -  Added `planet store chain-ids` subcommand.  [[#2699], [#2704]]
+ -  Added `-P`/`--public-key` option to `planet key derive` subcommand.
+    [[#2705]]
+
+[#2474]: https://github.com/planetarium/libplanet/discussions/2474
+[#2505]: https://github.com/planetarium/libplanet/pull/2505
+[#2580]: https://github.com/planetarium/libplanet/issues/2580
+[#2581]: https://github.com/planetarium/libplanet/issues/2581
+[#2582]: https://github.com/planetarium/libplanet/issues/2582
+[#2583]: https://github.com/planetarium/libplanet/issues/2583
+[#2584]: https://github.com/planetarium/libplanet/pull/2584
+[#2609]: https://github.com/planetarium/libplanet/pull/2609
+[#2619]: https://github.com/planetarium/libplanet/pull/2619
+[#2646]: https://github.com/planetarium/libplanet/pull/2646
+[#2653]: https://github.com/planetarium/libplanet/pull/2653
+[#2664]: https://github.com/planetarium/libplanet/pull/2664
+[#2690]: https://github.com/planetarium/libplanet/pull/2690
+[#2693]: https://github.com/planetarium/libplanet/pull/2693
+[#2699]: https://github.com/planetarium/libplanet/pull/2699
+[#2701]: https://github.com/planetarium/libplanet/pull/2701
+[#2704]: https://github.com/planetarium/libplanet/pull/2704
+[#2705]: https://github.com/planetarium/libplanet/pull/2705
+[#2708]: https://github.com/planetarium/libplanet/pull/2708
+[#2718]: https://github.com/planetarium/libplanet/pull/2718
+[#2716]: https://github.com/planetarium/libplanet/pull/2716
+[#2719]: https://github.com/planetarium/libplanet/pull/2719
+
+
+Version 0.45.4
+--------------
+
+Released on January 4, 2023.
+
+  -  Ported changes from [Libplaent 0.44.7] release.  [[#2684]]
+
+[Libplanet 0.44.7]: https://www.nuget.org/packages/Libplanet/0.44.7
+
+
+Version 0.45.3
+--------------
+
+Released on December 26, 2022.
+
+ -  Ported changes from [Libplanet 0.44.6] release.  [[#2667]]
+
+[Libplanet 0.44.6]: https://www.nuget.org/packages/Libplanet/0.44.6
+
+
+Version 0.45.2
+--------------
+
+Released on December 21, 2022.
+
+ -  Ported changes from [Libplanet 0.44.5] release.  [[#2654]]
+
+[Libplanet 0.44.5]: https://www.nuget.org/packages/Libplanet/0.44.5
+
+
+Version 0.45.1
+--------------
+
+Released on December 15, 2022.
+
+ -  Ported changes from [Libplanet 0.44.4] release.  [[#2631]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
+    hadn't been canceled properly.  [[#2641]]
+
+[Libplanet 0.44.4]: https://www.nuget.org/packages/Libplanet/0.44.4
+[#2641]: https://github.com/planetarium/libplanet/pull/2641
+
+
+Version 0.45.0
+--------------
+
+Released on December 3, 2022.
+
+### Deprecated APIs
+
  -  Removed `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, bool, long,
     int, int, IComparer<Transaction<T>>, CancellationToken?)` by making
     it `internal`.  [[#2529]]
+ -  Removed `IStore.SetBlockPerceivedTime()` and
+    `IStore.GetBlockPerceivedTime()` methods.  [[#2575]]
+ -  Removed `BlockPerception` struct.  [[#2575]]
+ -  Removed `BlockChain<T>.PerceiveBlock()` method.  [[#2575]]
 
 ### Backward-incompatible API changes
 
@@ -140,20 +330,25 @@ To be released.
     `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?,
     IComparer<Transaction<T>>, CancellationToken?)` by removing policy
     controlled parameters.  [[#2529]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+ -  Changed `BlockPolicy<T>()` constructor to take additional
+    `Func<long, int>` type parameter named `getMinBlockProtocolVersion`.
+    [[#2593]]
 
 ### Added APIs
 
-- Added `BlockChainStates<T>` class.  [[#2507]]
-- Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
-  and `ActionEvaluator<T>` directly.  [[#2507]]
-
-[#2507]: https://github.com/planetarium/libplanet/pull/2507
-
-### Behavioral changes
+ -  Added `BlockChainStates<T>` class.  [[#2507]]
+ -  Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
+    and `ActionEvaluator<T>` directly.  [[#2507]]
+ -  Added non-generic interfaces.  [[#2539]]
+     -  Added `IPreEvaluationBlock` interface.
+     -  Added `IBlockContent` interface.
+     -  Added `ITransaction` interface.
+ -  Added `IActionTypeLoader` interface.  [[#2539]]
+ -  Added `StaticActionTypeLoader` class.  [[#2539]]
+ -  (Libplanet.Explorer) Added a new GraphQL endpoint on `/graphql/explorer`.
+    [[#2562]]
+ -  Added `IBlockPolicy.GetMinBlockProtocolVersion()` interface method.
+    [[#2593]]
 
 ### Bug fixes
 
@@ -162,11 +357,37 @@ To be released.
 
 ### Dependencies
 
+ -  Replaced *[BouncyCastle.NetCore 1.8.6]* with
+    *[BouncyCastle.Cryptography 2.0.0]*.  [[#2571]]
+
 ### CLI tools
 
+ -  Now `planet` can be installed using Homebrew on macOS: `brew install
+    planetarium/brew/planet`.  [[#2555]]
+ -  Now `planet` supports command-line completion for bash and zsh.
+    See also [Cocona's manual on configuring command-line
+    completion][Cocona command-line completion].  [[#2586]]
+ -  (Libplanet.Explorer) Added `serve` subcommand.  [[#2563]]
+     -  (Libplanet.Explorer) Deprecated primary command.
+        It will be obsoleted in 0.47.0 release.
+        You should use `serve` command instead.  [[#2563]]
+ -  (Libplanet.Explorer) Added `schema` subcommand.  [[#2563]]
+
+[BouncyCastle.NetCore 1.8.6]: https://www.nuget.org/packages/BouncyCastle.NetCore/1.8.6
+[BouncyCastle.Cryptography 2.0.0]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0
+[Cocona command-line completion]: https://github.com/mayuki/Cocona#shell-command-line-completion
+[#2507]: https://github.com/planetarium/libplanet/pull/2507
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
+[#2539]: https://github.com/planetarium/libplanet/pull/2539
+[#2555]: https://github.com/planetarium/libplanet/pull/2555
+[#2562]: https://github.com/planetarium/libplanet/pull/2562
+[#2563]: https://github.com/planetarium/libplanet/pull/2563
+[#2571]: https://github.com/planetarium/libplanet/pull/2571
+[#2575]: https://github.com/planetarium/libplanet/pull/2575
+[#2586]: https://github.com/planetarium/libplanet/pull/2586
+[#2593]: https://github.com/planetarium/libplanet/pull/2593
 
 
 Version 0.44.7
@@ -254,8 +475,6 @@ Version 0.44.0
 
 Released on November 2, 2022.
 
-### Deprecated APIs
-
 ### Backward-incompatible API changes
 
  -  Removed all `TxMetadata.ToBencodex()` overload methods with parameters.
@@ -281,13 +500,6 @@ Released on November 2, 2022.
  - Optimized `ByteUtil.CalculateHash()` method.  [[#2437], [#2459]]
 
 ### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
- -  (Libplanet.Explorer) Added `json` field to `ActionType` GraphQL type.
-    [[#2418]]
 
  -  (Libplanet.Explorer) `Libplanet.Explorer.Executable` became to work again.
     [[#2420]]

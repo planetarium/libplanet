@@ -123,5 +123,16 @@ namespace Libplanet.Blockchain.Policies
         /// a valid <see cref="Block{T}"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
+
+        /// <summary>
+        /// Gets the minimum <see cref="Block{T}.ProtocolVersion"/> allowed for
+        /// a valid <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
+        /// <returns>The minimum value for <see cref="Block{T}.ProtocolVersion"/> allowed for
+        /// a valid <see cref="Block{T}"/>.</returns>
+        [Pure]
+        int GetMinBlockProtocolVersion(long index);
     }
 }

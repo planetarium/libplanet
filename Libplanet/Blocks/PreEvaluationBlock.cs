@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -22,7 +23,7 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
-    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>
+    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>, IPreEvaluationBlock
         where T : IAction, new()
     {
         private BlockContent<T> _content;
@@ -61,6 +62,10 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         public IReadOnlyList<Transaction<T>> Transactions => _content.Transactions;
+
+        /// <inheritdoc cref="IBlockContent.Transactions" />
+        IImmutableSet<ITransaction> IBlockContent.Transactions =>
+            _content.Transactions.Cast<ITransaction>().ToImmutableHashSet();
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;
@@ -242,7 +247,7 @@ namespace Libplanet.Blocks
             }
 
             var actionEvaluator = new ActionEvaluator<T>(
-                blockAction,
+                _ => blockAction,
                 blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null,
                 genesisHash: null,

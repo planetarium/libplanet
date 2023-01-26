@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Libplanet.Assets;
@@ -26,7 +27,8 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
-            Predicate<Currency>? nativeTokenPredicate = null)
+            Predicate<Currency>? nativeTokenPredicate = null,
+            List<string>? logs = null)
         {
             GenesisHash = genesisHash;
             Signer = signer;
@@ -40,6 +42,7 @@ namespace Libplanet.Action
             _previousBlockStatesTrie = previousBlockStatesTrie;
             BlockAction = blockAction;
             _nativeTokenPredicate = nativeTokenPredicate;
+            Logs = logs ?? new List<string>();
         }
 
         public BlockHash? GenesisHash { get; }
@@ -71,6 +74,11 @@ namespace Libplanet.Action
 
         public bool BlockAction { get; }
 
+        internal List<string> Logs { get; }
+
+        /// <inheritdoc cref="IActionContext.PutLog(string)"/>
+        public void PutLog(string log) => Logs.Add(log);
+
         public bool IsNativeToken(Currency currency) =>
             _nativeTokenPredicate is { } && _nativeTokenPredicate(currency);
 
@@ -87,6 +95,7 @@ namespace Libplanet.Action
                 Rehearsal,
                 _previousBlockStatesTrie,
                 BlockAction,
-                _nativeTokenPredicate);
+                _nativeTokenPredicate,
+                new List<string>());
     }
 }

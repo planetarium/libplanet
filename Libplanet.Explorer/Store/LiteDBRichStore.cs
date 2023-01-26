@@ -115,11 +115,6 @@ namespace Libplanet.Explorer.Store
         public void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
             _store.DeleteTxIdBlockHashIndex(txId, blockHash);
 
-        public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
-        {
-            return _store.GetBlockPerceivedTime(blockHash);
-        }
-
         public BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
@@ -257,14 +252,6 @@ namespace Libplanet.Explorer.Store
             _store.SetCanonicalChainId(chainId);
         }
 
-        /// <inheritdoc cref="IStore.GetCanonicalGenesisBlock{T}"/>
-        public Block<T> GetCanonicalGenesisBlock<T>()
-            where T : IAction, new() =>
-            _store.GetCanonicalChainId() is { } canonicalChainId
-            && _store.IndexBlockHash(canonicalChainId, 0) is { } genesisHash
-                ? _store.GetBlock<T>(genesisHash)
-                : null;
-
         /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
         public long CountIndex(Guid chainId)
         {
@@ -326,9 +313,6 @@ namespace Libplanet.Explorer.Store
                 StoreUpdatedAddressReferences(tx.Id, tx.Nonce, updatedAddress);
             }
         }
-
-        public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime) =>
-            _store.SetBlockPerceivedTime(blockHash, perceivedTime);
 
         public void StoreTxReferences(TxId txId, in BlockHash blockHash, long blockIndex)
         {

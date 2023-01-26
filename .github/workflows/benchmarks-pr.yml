@@ -1,0 +1,42 @@
+name: Libplanet benchmark (for pull requests)
+on:
+  pull_request: {}
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    name: Run Benchmark.Net benchmarks
+    continue-on-error: true
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.pull_request.head.sha }}
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Run benchmark
+      run: dotnet run --project Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
+
+    - name: Compare benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        name: Benchmark.Net Benchmark
+        tool: 'benchmarkdotnet'
+        output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
+        save-data-file: false
+        alert-threshold: '150%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc-users: '@libplanet'

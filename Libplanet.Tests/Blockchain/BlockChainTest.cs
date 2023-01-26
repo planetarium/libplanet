@@ -19,7 +19,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Action;
-using Libplanet.Tests.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -102,47 +101,6 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Genesis.Transactions);
             var transactions = _blockChain.Genesis.Transactions.ToList();
             Assert.Equal(TestUtils.ValidatorSet.TotalCount, validatorSet.TotalCount);
-        }
-
-        [Fact]
-        public void PerceiveBlock()
-        {
-            var blockA = new SimpleBlockExcerpt()
-            {
-                ProtocolVersion = BlockMetadata.CurrentProtocolVersion,
-                Index = 604665,
-                Hash = BlockHash.FromString(
-                    "4f612467ed79cb854d1901f131ccfc8a40bba89651e1a9e1dcea1287dd70d8ee"),
-            };
-
-            DateTimeOffset timeA = DateTimeOffset.FromUnixTimeSeconds(1609426800);
-            BlockPerception perceptionA = _blockChain.PerceiveBlock(blockA, timeA);
-            Assert.True(blockA.ExcerptEquals(perceptionA));
-            Assert.Equal(timeA, perceptionA.PerceivedTime);
-
-            perceptionA = _blockChain.PerceiveBlock(blockA);
-            Assert.True(blockA.ExcerptEquals(perceptionA));
-            Assert.Equal(timeA, perceptionA.PerceivedTime);
-
-            var blockB = new SimpleBlockExcerpt
-            {
-                ProtocolVersion = BlockMetadata.CurrentProtocolVersion,
-                Index = 604664,
-                Hash = BlockHash.FromString(
-                    "9a87556f3198d8bd48300d2a6a5957d661c760a7fb72ef4a4b8c01c155b77e99"),
-            };
-
-            DateTimeOffset timeBMin = DateTimeOffset.FromUnixTimeMilliseconds(
-                DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
-            BlockPerception perceptionB = _blockChain.PerceiveBlock(blockB);
-            DateTimeOffset timeBMax = DateTimeOffset.UtcNow;
-            Assert.True(blockB.ExcerptEquals(perceptionB));
-            Assert.InRange(perceptionB.PerceivedTime, timeBMin, timeBMax);
-
-            DateTimeOffset timeB = perceptionB.PerceivedTime;
-            perceptionB = _blockChain.PerceiveBlock(blockB);
-            Assert.True(blockB.ExcerptEquals(perceptionB));
-            Assert.Equal(timeB, perceptionB.PerceivedTime);
         }
 
         [Fact]
@@ -487,9 +445,11 @@ namespace Libplanet.Tests.Blockchain
             long? offsetIndex;
             IReadOnlyList<BlockHash> hashes;
 
-            _blockChain.FindNextHashes(new BlockLocator(new BlockHash[] { }))
+            _blockChain.FindNextHashes(
+                new BlockLocator(new BlockHash[] { _blockChain.Genesis.Hash }))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Single(hashes);
+            Assert.Equal(_blockChain.Genesis.Hash, hashes.First());
             var block0 = _blockChain.Genesis;
             var block1 = _blockChain.ProposeBlock(key);
             _blockChain.Append(block1, CreateBlockCommit(block1));
@@ -843,8 +803,8 @@ namespace Libplanet.Tests.Blockchain
                 blocks[8].Hash,
                 blocks[7].Hash,
                 blocks[6].Hash,
-                blocks[4].Hash,
-                blocks[0].Hash,
+                blocks[5].Hash,
+                blocks[3].Hash,
                 _blockChain.Genesis.Hash,
             });
 
@@ -1489,13 +1449,15 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(b1.PreviousHash, _blockChain.Genesis.Hash);
 
-            var emptyLocator = new BlockLocator(new BlockHash[0]);
-            var locator = new BlockLocator(new[] { b4.Hash, b3.Hash, b1.Hash });
+            var emptyLocator = new BlockLocator(new[] { _blockChain.Genesis.Hash });
+            var invalidLocator = new BlockLocator(
+                new[] { new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)) });
+            var locator = new BlockLocator(
+                new[] { b4.Hash, b3.Hash, b1.Hash, _blockChain.Genesis.Hash });
 
             using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
             using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
             {
-                var genesisBlock = BlockChain<DumbAction>.ProposeGenesisBlock();
                 var emptyChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -1514,14 +1476,20 @@ namespace Libplanet.Tests.Blockchain
                     key, lastCommit: CreateBlockCommit(fork.Tip));
                 fork.Append(b5, CreateBlockCommit(b5));
 
-                Assert.Null(emptyChain.FindBranchpoint(emptyLocator));
-                Assert.Null(emptyChain.FindBranchpoint(locator));
+                // Testing emptyChain
+                Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(emptyLocator));
+                Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(locator));
+                Assert.Null(emptyChain.FindBranchpoint(invalidLocator));
 
-                Assert.Null(_blockChain.FindBranchpoint(emptyLocator));
+                // Testing _blockChain
+                Assert.Equal(_blockChain.Genesis.Hash, _blockChain.FindBranchpoint(emptyLocator));
                 Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
+                Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
 
-                Assert.Null(fork.FindBranchpoint(emptyLocator));
+                // Testing fork
+                Assert.Equal(_blockChain.Genesis.Hash, fork.FindBranchpoint(emptyLocator));
                 Assert.Equal(b1.Hash, fork.FindBranchpoint(locator));
+                Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
             }
         }
 
@@ -1867,7 +1835,7 @@ namespace Libplanet.Tests.Blockchain
                 renderers: renderer is null ? null : new[] { renderer },
                 blockChainStates: chainStates,
                 actionEvaluator: new ActionEvaluator<DumbAction>(
-                    blockPolicy.BlockAction,
+                    _ => blockPolicy.BlockAction,
                     chainStates,
                     trieGetter: hash => stateStore.GetStateRoot(
                         store.GetBlockDigest(hash)?.StateRootHash
@@ -2039,6 +2007,31 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        private void TipChanged()
+        {
+            var genesis = _blockChain.Genesis;
+
+            _renderer.ResetRecords();
+
+            Assert.Empty(_renderer.BlockRecords);
+            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
+            _blockChain.Append(block, CreateBlockCommit(block));
+            IReadOnlyList<RenderRecord<DumbAction>.Block> records = _renderer.BlockRecords;
+            Assert.Equal(2, records.Count);
+            foreach (RenderRecord<DumbAction>.Block record in records)
+            {
+                Assert.Equal(genesis, record.OldTip);
+                Assert.Equal(block, record.NewTip);
+                Assert.Equal(1, record.NewTip.Index);
+            }
+
+            _renderer.ResetRecords();
+            Assert.Throws<InvalidBlockIndexException>(
+                () => _blockChain.Append(block, CreateBlockCommit(block)));
+            Assert.Empty(_renderer.BlockRecords);
+        }
+
+        [Fact]
         private void ConstructWithGenesisBlock()
         {
             var storeFixture = new MemoryStoreFixture();
@@ -2116,7 +2109,6 @@ namespace Libplanet.Tests.Blockchain
         private void FilterLowerNonceTxAfterStaging()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
             var txsA = Enumerable.Range(0, 3)
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))

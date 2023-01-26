@@ -14,16 +14,13 @@ namespace Libplanet.Net.Messages
     public class MessageValidator
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
 
         internal MessageValidator(
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
+            AppProtocolVersionOptions appProtocolVersionOptions,
             TimeSpan? messageTimestampBuffer)
         {
-            Apv = appProtocolVersion;
-            TrustedApvSigners = trustedAppProtocolVersionSigners;
-            DifferentApvEncountered = differentAppProtocolVersionEncountered;
+            _appProtocolVersionOptions = appProtocolVersionOptions;
             MessageTimestampBuffer = messageTimestampBuffer;
         }
 
@@ -45,7 +42,7 @@ namespace Libplanet.Net.Messages
         /// </list>
         /// </para>
         /// </summary>
-        public AppProtocolVersion Apv { get; }
+        public AppProtocolVersion Apv => _appProtocolVersionOptions.AppProtocolVersion;
 
         /// <summary>
         /// <para>
@@ -69,7 +66,8 @@ namespace Libplanet.Net.Messages
         /// </list>
         /// </para>
         /// </summary>
-        public IImmutableSet<PublicKey>? TrustedApvSigners { get; }
+        public IImmutableSet<PublicKey>? TrustedApvSigners =>
+            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
 
         /// <summary>
         /// A callback method that gets invoked when a an <see cref="AppProtocolVersion"/>
@@ -78,7 +76,8 @@ namespace Libplanet.Net.Messages
         /// <remarks>
         /// If <see langword="null"/>, no action is taken.
         /// </remarks>
-        public DifferentAppProtocolVersionEncountered? DifferentApvEncountered { get; }
+        public DifferentAppProtocolVersionEncountered DifferentApvEncountered =>
+            _appProtocolVersionOptions.DifferentAppProtocolVersionEncountered;
 
         /// <summary>
         /// <para>
@@ -136,7 +135,7 @@ namespace Libplanet.Net.Messages
         private static void ValidateAppProtocolVersion(
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             Message message)
         {
             if (message.Remote is BoundPeer peer)
@@ -149,9 +148,10 @@ namespace Libplanet.Net.Messages
                 bool trusted = !(
                     trustedAppProtocolVersionSigners is { } tapvs &&
                     tapvs.All(publicKey => !message.Version.Verify(publicKey)));
-                if (trusted && differentAppProtocolVersionEncountered is { } dapve)
+                if (trusted)
                 {
-                    dapve(peer, message.Version, appProtocolVersion);
+                    differentAppProtocolVersionEncountered(
+                        peer, message.Version, appProtocolVersion);
                 }
 
                 if (!trusted || !message.Version.Version.Equals(appProtocolVersion.Version))

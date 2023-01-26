@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -26,9 +25,7 @@ namespace Libplanet.Net.Tests.Transports
 
         protected ILogger Logger { get; set; }
 
-        protected Func<PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>,
-            string, int?, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered,
-            TimeSpan?, ITransport>
+        protected Func<PrivateKey, AppProtocolVersionOptions, HostOptions, TimeSpan?, ITransport>
             TransportConstructor { get; set; }
 
         [SkippableFact(Timeout = Timeout)]
@@ -124,14 +121,12 @@ namespace Libplanet.Net.Tests.Transports
         {
             var privateKey = new PrivateKey();
             string host = IPAddress.Loopback.ToString();
-            const int listenPort = 50000;
-            ITransport transport = CreateTransport(privateKey: privateKey, listenPort: listenPort);
+            ITransport transport = CreateTransport(privateKey: privateKey);
 
             try
             {
                 var peer = transport.AsPeer;
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
-                Assert.Equal(listenPort, peer.EndPoint.Port);
                 Assert.Equal(host, peer.EndPoint.Host);
             }
             finally
@@ -418,12 +413,8 @@ namespace Libplanet.Net.Tests.Transports
 
         private ITransport CreateTransport(
             PrivateKey privateKey = null,
-            AppProtocolVersion appProtocolVersion = default,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
+            HostOptions hostOptions = null,
             TimeSpan? messageTimestampBuffer = null
         )
         {
@@ -433,16 +424,11 @@ namespace Libplanet.Net.Tests.Transports
             }
 
             privateKey = privateKey ?? new PrivateKey();
-            host = host ?? IPAddress.Loopback.ToString();
-
             return TransportConstructor(
                 privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners ?? ImmutableHashSet<PublicKey>.Empty,
-                host,
-                listenPort,
-                iceServers ?? Enumerable.Empty<IceServer>(),
-                differentAppProtocolVersionEncountered,
+                appProtocolVersionOptions ?? new AppProtocolVersionOptions(),
+                hostOptions ?? new HostOptions(
+                    IPAddress.Loopback.ToString(), new IceServer[] { }, 0),
                 messageTimestampBuffer);
         }
 
@@ -460,23 +446,7 @@ namespace Libplanet.Net.Tests.Transports
                 {
                     new BoundPeer(
                         new PrivateKey().PublicKey,
-                        new DnsEndPoint(
-                            "0.0.0.0",
-                            port
-                        )
-                    ),
-                };
-
-                // e.g., "127.0.0.1":0
-                yield return new[]
-                {
-                    new BoundPeer(
-                        new PrivateKey().PublicKey,
-                        new DnsEndPoint(
-                            $"\"{IPAddress.Loopback}\"",
-                            0
-                        )
-                    ),
+                        new DnsEndPoint("0.0.0.0", port)),
                 };
             }
 

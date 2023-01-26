@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -15,6 +14,7 @@ using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
+using Nito.AsyncEx.Synchronous;
 using Serilog;
 
 namespace Libplanet.Net.Transports
@@ -25,27 +25,24 @@ namespace Libplanet.Net.Transports
     public class NetMQTransport : ITransport
     {
         private readonly PrivateKey _privateKey;
-        private readonly string _host;
-        private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
-        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
+        private readonly HostOptions _hostOptions;
         private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
+        private readonly AsyncManualResetEvent _runningEvent;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
 
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
-        private int _listenPort;
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
 
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
-
-        private TaskCompletionSource<object> _runningEvent;
 
         // Used only for logging.
         private long _requestCount;
@@ -62,67 +59,32 @@ namespace Libplanet.Net.Transports
         /// Creates a <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
-        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
-        /// version of the transport layer.</param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
-        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <see langword="null"/>.</param>
-        /// <param name="workers">The number of background workers (i.e., threads).</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
-        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
-        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
-        /// are ignored.
-        /// </param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
         /// If <see langword="null"/>, any timestamp is accepted.</param>
-        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         private NetMQTransport(
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            int workers,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            AppProtocolVersionOptions appProtocolVersionOptions,
+            HostOptions hostOptions,
             TimeSpan? messageTimestampBuffer = null)
         {
             _logger = Log
                 .ForContext<NetMQTransport>()
                 .ForContext("Source", nameof(NetMQTransport));
 
-            if (host is null && (iceServers is null || !iceServers.Any()))
-            {
-                throw new ArgumentException(
-                    $"Swarm requires either {nameof(host)} or {nameof(iceServers)}.");
-            }
-
-            Running = false;
-
             _socketCount = 0;
             _privateKey = privateKey;
-            _host = host;
-            _iceServers = iceServers?.ToList();
-            _listenPort = listenPort ?? 0;
-            _appProtocolVersion = appProtocolVersion;
+            _hostOptions = hostOptions;
+            _appProtocolVersionOptions = appProtocolVersionOptions;
             _messageValidator = new MessageValidator(
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered,
-                messageTimestampBuffer);
+                _appProtocolVersionOptions, messageTimestampBuffer);
             _messageCodec = new NetMQMessageCodec();
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
@@ -154,6 +116,7 @@ namespace Libplanet.Net.Transports
                 TaskScheduler.Default
             );
 
+            _runningEvent = new AsyncManualResetEvent();
             ProcessMessageHandler = new AsyncDelegate<Message>();
         }
 
@@ -169,56 +132,22 @@ namespace Libplanet.Net.Transports
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
         /// <inheritdoc/>
-        public bool Running
-        {
-            get => _runningEvent.Task.Status == TaskStatus.RanToCompletion;
-
-            private set
-            {
-                if (value)
-                {
-                    _runningEvent.TrySetResult(null);
-                }
-                else
-                {
-                    _runningEvent = new TaskCompletionSource<object>(
-                        TaskCreationOptions.RunContinuationsAsynchronously
-                    );
-                }
-            }
-        }
+        public bool Running => _routerPoller?.IsRunning ?? false;
 
         /// <summary>
         /// Creates an initialized <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
-        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
-        /// version of the transport layer.</param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
-        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <see langword="null"/>.</param>
-        /// <param name="workers">The number of background workers (i.e., threads).</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
-        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
-        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
-        /// are ignored.
-        /// </param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
         /// If <see langword="null"/>, any timestamp is accepted.</param>
-        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         /// <returns>
         /// An awaitable <see cref="Task"/> returning a <see cref="NetMQTransport"/>
         /// when awaited that is ready to send request <see cref="Message"/>s and
@@ -226,24 +155,14 @@ namespace Libplanet.Net.Transports
         /// </returns>
         public static async Task<NetMQTransport> Create(
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            int workers,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            AppProtocolVersionOptions appProtocolVersionOptions,
+            HostOptions hostOptions,
             TimeSpan? messageTimestampBuffer = null)
         {
             var transport = new NetMQTransport(
                 privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                workers,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
+                appProtocolVersionOptions,
+                hostOptions,
                 messageTimestampBuffer);
             await transport.Initialize();
             return transport;
@@ -274,8 +193,15 @@ namespace Libplanet.Net.Transports
             _replyQueue.ReceiveReady += DoReply;
 
             Task pollerTask = RunPoller(_routerPoller);
+            new Task(async () =>
+            {
+                while (!_routerPoller.IsRunning)
+                {
+                    await Task.Yield();
+                }
 
-            Running = true;
+                _runningEvent.Set();
+            }).Start(_routerPoller);
 
             await pollerTask.ConfigureAwait(false);
         }
@@ -306,19 +232,24 @@ namespace Libplanet.Net.Transports
                 _replyQueue.Dispose();
 
                 _runtimeCancellationTokenSource.Cancel();
-                Running = false;
+                _runningEvent.Reset();
             }
         }
 
         /// <inheritdoc/>
         public void Dispose()
         {
+            if (Running)
+            {
+                StopAsync(TimeSpan.Zero).WaitWithoutException();
+            }
+
             if (!_disposed)
             {
                 _requests.Writer.TryComplete();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
-                _runtimeProcessor.Wait();
+                _runtimeProcessor.WaitWithoutException();
 
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
@@ -336,7 +267,7 @@ namespace Libplanet.Net.Transports
         }
 
         /// <inheritdoc/>
-        public Task WaitForRunningAsync() => _runningEvent.Task;
+        public Task WaitForRunningAsync() => _runningEvent.WaitAsync();
 
         /// <inheritdoc/>
         public async Task<Message> SendMessageAsync(
@@ -398,7 +329,7 @@ namespace Libplanet.Net.Transports
                 NetMQMessage rawMessage = _messageCodec.Encode(
                     message,
                     _privateKey,
-                    _appProtocolVersion,
+                    _appProtocolVersionOptions.AppProtocolVersion,
                     AsPeer,
                     DateTimeOffset.UtcNow
                 );
@@ -583,7 +514,7 @@ namespace Libplanet.Net.Transports
                     _messageCodec.Encode(
                         message,
                         _privateKey,
-                        _appProtocolVersion,
+                        _appProtocolVersionOptions.AppProtocolVersion,
                         AsPeer,
                         DateTimeOffset.UtcNow
                     )
@@ -604,30 +535,32 @@ namespace Libplanet.Net.Transports
         {
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
+            int listenPort = 0;
 
-            if (_listenPort == 0)
+            if (_hostOptions.Port == 0)
             {
-                _listenPort = _router.BindRandomPort("tcp://*");
+                listenPort = _router.BindRandomPort("tcp://*");
             }
             else
             {
-                _router.Bind($"tcp://*:{_listenPort}");
+                listenPort = _hostOptions.Port;
+                _router.Bind($"tcp://*:{listenPort}");
             }
 
-            _logger.Information("Listening on {Port}...", _listenPort);
+            _logger.Information("Listening on {Port}...", listenPort);
 
-            if (_host is { } host)
+            if (_hostOptions.Host is { } host)
             {
-                _hostEndPoint = new DnsEndPoint(host, _listenPort);
+                _hostEndPoint = new DnsEndPoint(host, listenPort);
             }
-            else if (_iceServers is { } iceServers)
+            else
             {
-                _turnClient = await TurnClient.Create(_iceServers, cancellationToken);
-                await _turnClient.StartAsync(_listenPort, cancellationToken);
+                _turnClient = await TurnClient.Create(_hostOptions.IceServers, cancellationToken);
+                await _turnClient.StartAsync(listenPort, cancellationToken);
                 if (!_turnClient.BehindNAT)
                 {
                     _hostEndPoint = new DnsEndPoint(
-                        _turnClient.PublicAddress.ToString(), _listenPort);
+                        _turnClient.PublicAddress.ToString(), listenPort);
                 }
             }
         }
@@ -785,43 +718,6 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private DealerSocket GetRequestDealerSocket(MessageRequest request)
-        {
-            try
-            {
-                var dealer = new DealerSocket();
-                dealer.Options.DisableTimeWait = true;
-                _logger.Debug("Trying to connect {RequestId}.", request.Id);
-                dealer.Connect(request.Peer.ToNetMQAddress());
-                long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "SocketCount")
-                    .Debug(
-                    "{SocketCount} sockets open for processing request {Message} {RequestId}.",
-                    incrementedSocketCount,
-                    request.Message,
-                    request.Id);
-                return dealer;
-            }
-            catch (NetMQException nme)
-            {
-                const string logMsg =
-                    "{SocketCount} sockets open for processing requests; " +
-                    "failed to create an additional socket for request {Message} {RequestId}.";
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "SocketCount")
-                    .Debug(
-                    nme,
-                    logMsg,
-                    Interlocked.Read(ref _socketCount),
-                    request.Message,
-                    request.Id);
-                throw;
-            }
-        }
-
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
@@ -838,13 +734,45 @@ namespace Libplanet.Net.Transports
                 req.Peer
             );
             int receivedCount = 0;
+            long? incrementedSocketCount = null;
 
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                using var dealer = GetRequestDealerSocket(req);
+                using var dealer = new DealerSocket();
+                dealer.Options.DisableTimeWait = true;
+                try
+                {
+                    _logger.Debug("Trying to connect {RequestId}.", req.Id);
+                    dealer.Connect(req.Peer.ToNetMQAddress());
+                    incrementedSocketCount = Interlocked.Increment(ref _socketCount);
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "SocketCount")
+                        .Debug(
+                        "{SocketCount} sockets open for processing request {Message} {RequestId}.",
+                        incrementedSocketCount,
+                        req.Message,
+                        req.Id);
+                }
+                catch (NetMQException nme)
+                {
+                    const string logMsg =
+                        "{SocketCount} sockets open for processing requests; " +
+                        "failed to create an additional socket for request {Message} {RequestId}.";
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "SocketCount")
+                        .Debug(
+                        nme,
+                        logMsg,
+                        Interlocked.Read(ref _socketCount),
+                        req.Message,
+                        req.Id);
+                    throw;
+                }
 
                 if (dealer.TrySendMultipartMessage(req.Message))
                 {
@@ -861,7 +789,8 @@ namespace Libplanet.Net.Transports
                         req.Peer);
 
                     throw new SendMessageFailException(
-                        $"Failed to send {req.Message} to {req.Peer}.", req.Peer);
+                        $"Failed to send {req.Message} to {req.Peer}.",
+                        req.Peer);
                 }
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
@@ -901,7 +830,10 @@ namespace Libplanet.Net.Transports
                     await Task.Delay(1000);
                 }
 
-                Interlocked.Decrement(ref _socketCount);
+                if (incrementedSocketCount is { })
+                {
+                    Interlocked.Decrement(ref _socketCount);
+                }
 
                 _logger
                     .ForContext("Tag", "Metric")

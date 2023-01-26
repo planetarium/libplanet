@@ -115,6 +115,11 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainIdWithForks()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             IStore store = Fx.Store;
             Guid chainA = Guid.NewGuid();
             Guid chainB = Guid.NewGuid();
@@ -315,41 +320,6 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void CanonicalGenesisBlock()
-        {
-            var chainId1 = Guid.NewGuid();
-            var chainId2 = Guid.NewGuid();
-            var chainId3 = Guid.NewGuid();
-            var canonicalGenesisBlock = new Func<Block<DumbAction>>(() =>
-                Fx.Store.GetCanonicalGenesisBlock<DumbAction>());
-
-            Assert.Null(canonicalGenesisBlock());
-
-            Fx.Store.SetCanonicalChainId(chainId1);
-            Assert.Null(canonicalGenesisBlock());
-            Fx.Store.PutBlock(Fx.Block1);
-            Assert.Null(canonicalGenesisBlock());
-            Fx.Store.AppendIndex(chainId1, Fx.Block1.Hash);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-
-            Fx.Store.SetCanonicalChainId(chainId2);
-            Assert.Null(canonicalGenesisBlock());
-            Fx.Store.AppendIndex(chainId2, Fx.Block1.Hash);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-            Fx.Store.PutBlock(Fx.Block2);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-            Fx.Store.AppendIndex(chainId2, Fx.Block2.Hash);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-
-            Fx.Store.SetCanonicalChainId(chainId3);
-            Fx.Store.PutBlock(Fx.Block3);
-            Fx.Store.AppendIndex(chainId3, Fx.Block3.Hash);
-            Assert.Equal(Fx.Block3, canonicalGenesisBlock());
-            Fx.Store.SetCanonicalChainId(chainId1);
-            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
-        }
-
-        [SkippableFact]
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
@@ -418,8 +388,10 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
-        [SkippableFact]
-        public void TxExecution()
+        [SkippableTheory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void TxExecution(bool actionsLogsList)
         {
             void AssertTxSuccessesEqual(TxSuccess expected, TxExecution actual)
             {
@@ -427,6 +399,7 @@ namespace Libplanet.Tests.Store
                 var success = (TxSuccess)actual;
                 Assert.Equal(expected.TxId, success.TxId);
                 Assert.Equal(expected.BlockHash, success.BlockHash);
+                Assert.Equal(expected.ActionsLogsList, success.ActionsLogsList);
                 Assert.Equal(expected.UpdatedStates, success.UpdatedStates);
                 Assert.Equal(expected.FungibleAssetsDelta, success.FungibleAssetsDelta);
                 Assert.Equal(expected.UpdatedFungibleAssets, success.UpdatedFungibleAssets);
@@ -438,6 +411,7 @@ namespace Libplanet.Tests.Store
                 var failure = (TxFailure)actual;
                 Assert.Equal(expected.TxId, failure.TxId);
                 Assert.Equal(expected.BlockHash, failure.BlockHash);
+                Assert.Equal(expected.ActionsLogsList, failure.ActionsLogsList);
                 Assert.Equal(expected.ExceptionName, failure.ExceptionName);
                 Assert.Equal(expected.ExceptionMetadata, failure.ExceptionMetadata);
             }
@@ -451,6 +425,15 @@ namespace Libplanet.Tests.Store
             var inputA = new TxSuccess(
                 Fx.Hash1,
                 Fx.TxId1,
+                actionsLogsList
+                    ? new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "LOG",
+                        },
+                    }
+                    : null,
                 ImmutableDictionary<Address, IValue>.Empty.Add(
                     random.NextAddress(),
                     (Text)"state value"
@@ -482,6 +465,7 @@ namespace Libplanet.Tests.Store
             var inputB = new TxFailure(
                 Fx.Hash1,
                 Fx.TxId2,
+                actionsLogsList ? new List<List<string>>() : null,
                 "AnExceptionName",
                 Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
             );
@@ -495,6 +479,7 @@ namespace Libplanet.Tests.Store
             var inputC = new TxFailure(
                 Fx.Hash2,
                 Fx.TxId1,
+                actionsLogsList ? new List<List<string>>() : null,
                 "AnotherExceptionName",
                 null
             );
@@ -554,29 +539,6 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId1));
             Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId2));
             Assert.Null(Fx.Store.GetFirstTxIdBlockHashIndex(Fx.TxId3));
-        }
-
-        [SkippableFact]
-        public void BlockPerceivedTime()
-        {
-            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
-            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
-
-            DateTimeOffset time1 = DateTimeOffset.FromUnixTimeSeconds(1609426800);
-            DateTimeOffset time2 = DateTimeOffset.FromUnixTimeSeconds(1612254976);
-            DateTimeOffset time3 = DateTimeOffset.FromUnixTimeSeconds(1612432420);
-
-            Fx.Store.SetBlockPerceivedTime(Fx.Hash1, time1);
-            Assert.Equal(time1, Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
-            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
-
-            Fx.Store.SetBlockPerceivedTime(Fx.Hash1, time2);
-            Assert.Equal(time2, Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
-            Assert.Null(Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
-
-            Fx.Store.SetBlockPerceivedTime(Fx.Hash2, time3);
-            Assert.Equal(time2, Fx.Store.GetBlockPerceivedTime(Fx.Hash1));
-            Assert.Equal(time3, Fx.Store.GetBlockPerceivedTime(Fx.Hash2));
         }
 
         [SkippableFact]

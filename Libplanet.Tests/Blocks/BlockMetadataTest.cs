@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -344,32 +342,6 @@ namespace Libplanet.Tests.Blocks
             HashDigest<SHA256> actual = HashDigest<SHA256>.DeriveFrom(
                     codec.Encode(GenesisMetadata.MakeCandidateData(nonce)));
             AssertBytesEqual(actual.ByteArray, preEvalHash.ByteArray);
-        }
-
-        [Fact]
-        public void CancelMineNonce()
-        {
-            using (CancellationTokenSource source = new CancellationTokenSource())
-            {
-                Exception exception = null;
-                Task task = Task.Run(() =>
-                {
-                    try
-                    {
-                        Block1Metadata.MineNonce(5_000_000, source.Token);
-                    }
-                    catch (OperationCanceledException ce)
-                    {
-                        exception = ce;
-                    }
-                });
-
-                source.Cancel();
-                bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
-                Assert.True(taskEnded);
-                Assert.NotNull(exception);
-                Assert.IsAssignableFrom<OperationCanceledException>(exception);
-            }
         }
 
         private static Vote GenerateVote(BlockHash? hash, long height, int round, VoteFlag flag)

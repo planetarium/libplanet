@@ -1,0 +1,38 @@
+name: Libplanet benchmark (for merge commits)
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    name: Run Benchmark.Net benchmarks
+    continue-on-error: true
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Run benchmark
+      run: dotnet run -p Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
+
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        name: Benchmark.Net Benchmark
+        tool: 'benchmarkdotnet'
+        output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
+        auto-push: true
