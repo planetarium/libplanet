@@ -106,6 +106,7 @@ namespace NetMQ.Core.Transports.Tcp
         /// <param name="linger">a time (in milliseconds) for this to linger before actually going away. -1 means infinite.</param>
         protected override void ProcessTerm(int linger)
         {
+            Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{this}][{System.Threading.Thread.CurrentThread.ManagedThreadId}]: ProcessTerm()", DateTimeOffset.UtcNow);
             Assumes.NotNull(m_handle);
            
             m_ioObject.SetHandler(this);
@@ -200,7 +201,15 @@ namespace NetMQ.Core.Transports.Tcp
                         // TODO: check TcpFilters
                         var acceptedSocket = m_handle.GetAcceptedSocket();
 
+                        try
+                        {
                             acceptedSocket.NoDelay = true;
+                        }
+                        catch
+                        {
+                            Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{this}][{System.Threading.Thread.CurrentThread.ManagedThreadId}]: SocketError on {acceptedSocket.LocalEndPoint}.", DateTimeOffset.UtcNow);
+                            throw;
+                        }
 
                         if (m_options.TcpKeepalive != -1)
                         {
@@ -264,6 +273,7 @@ namespace NetMQ.Core.Transports.Tcp
             {
                 Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{this}][{System.Threading.Thread.CurrentThread.ManagedThreadId}]: {m_handle}.", DateTimeOffset.UtcNow);
                 Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{this}][{System.Threading.Thread.CurrentThread.ManagedThreadId}]: {m_address}.", DateTimeOffset.UtcNow);
+                Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{this}][{System.Threading.Thread.CurrentThread.ManagedThreadId}]: {socketError}.", DateTimeOffset.UtcNow);
                 throw;
             }
         }
