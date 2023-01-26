@@ -13,7 +13,6 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Messages
 {
-    [Collection("NetMQConfiguration")]
     public class MessageTest : IAssemblyFixture<NetMQConfigFixture>
     {
         [Fact]

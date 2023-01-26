@@ -13,7 +13,6 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Transports
 {
-    [Collection("NetMQConfiguration")]
     public class BoundPeerExtensionsTest : IAssemblyFixture<NetMQConfigFixture>
     {
         [Fact(Timeout = 60 * 1000)]

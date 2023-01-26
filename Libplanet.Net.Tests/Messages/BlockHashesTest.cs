@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Libplanet.Net.Tests.Messages
 {
-    [Collection("NetMQConfiguration")]
     public class BlockHashesTest : IAssemblyFixture<NetMQConfigFixture>
     {
         [Fact]
