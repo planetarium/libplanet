@@ -20,7 +20,11 @@ using Serilog;
 namespace Libplanet.Net.Transports
 {
     /// <summary>
-    /// Implementation of <see cref="ITransport"/> interface using NetMQ.
+    /// Implementation of <see cref="ITransport"/> interface using NetMQ. When the
+    /// <see cref="NetMQTransport"/> is created, it starts a ambient request processor. This will
+    /// allow to send a message to a peer without having to <see cref="StartAsync"/>
+    /// (e.g., Preload). The ambient request processor will be stopped only if when the
+    /// <see cref="NetMQTransport"/> is disposed.
     /// </summary>
     public class NetMQTransport : ITransport
     {
@@ -84,7 +88,8 @@ namespace Libplanet.Net.Transports
                 .ForContext<NetMQTransport>()
                 .ForContext("Source", nameof(NetMQTransport));
 
-            // ProcessRequest task + Poller task
+            // ProcessRequest task + Poller task, This can be interpreted as the maximum number of
+            // requests that can be processed concurrently.
             _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(NetMQConfig.MaxSockets + 1);
             _logger.Verbose("Task Scheduler Id : {TaskSchedulerId}", _taskScheduler.Id);
 
