@@ -33,16 +33,7 @@ Version PBFT
  -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
  -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
- -  Added `IAccountStateDelta.SetValidator(PublicKey, BigInteger)` method.
-    [[#PBFT]]
- -  Added `IAccountStateView.GetValidatorSet()` method.  [[#PBFT]]
- -  Added `IBlockChainStates.GetValidatorSet(BlockHash,
-    ValidatorSetStateCompleter<T>)` method.  [[#PBFT]]
- -  Added `StateCompleterSet<T>.ValidatorSetStateCompleter` property.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
- -  (Libplanet.Net) Added `Swarm<T>.Validators` property.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `peers` and `validators` query
-    in `NodeStateType`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
@@ -67,12 +58,6 @@ Version PBFT
  -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
  -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
  -  Added `BlockChain<T>.ValidateBlockCommit()` method.  [[#PBFT]]
- -  Added `Validator` class.  [[#PBFT]]
- -  Added `ValidatorSet` class.  [[#PBFT]]
- -  Added `SetValidator` class.  [[#PBFT]]
- -  Added `ValidatorSetGetter` delegate.  [[#PBFT]]
- -  Added `ValidatorSetStateCompleter<T>` delegate.  [[#PBFT]]
- -  Added `ValidatorSetStateCompleters<T>` static class.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -114,8 +99,6 @@ Version PBFT
 
  -  (Libplanet.Explorer) Fixed a bug where `stateQuery` hadn't work
     correctly in some situations.  [[#PBFT]]
- -  Fixed validation on `lastCommit` with wrong block's `ValidatorSet`.
-    [[#PBFT]]
 
 ### Dependencies
 
