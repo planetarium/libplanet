@@ -1339,9 +1339,9 @@ namespace Libplanet.Net.Tests
 
                 var block = await swarmA.BlockChain.MineBlock(privateKeyA);
 
-                Task.WaitAll(new[]
+                await Task.WhenAll(new[]
                 {
-                    Task.Run(() => swarmC.BlockAppended.Wait()),
+                    Task.Run(() => swarmC.BlockAppended.WaitAsync()),
                     Task.Run(() => swarmA.BroadcastBlock(block)),
                 });
 
