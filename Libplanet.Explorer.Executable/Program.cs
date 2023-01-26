@@ -285,7 +285,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
                     var hostOptions = new HostOptions(null, new[] { options.IceServer });
 
-                    swarm = new Swarm<NullAction>(
+                    swarm = await Swarm<NullAction>.Create(
                         blockChain,
                         privateKey,
                         apvOptions,

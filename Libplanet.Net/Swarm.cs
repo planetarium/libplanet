@@ -54,14 +54,13 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
         /// to use when handling an <see cref="AppProtocolVersion"/> attached to
         /// a <see cref="Message"/>.</param>
-        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
-        /// to the network.</param>
+        /// <param name="transport">Transport to use.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
-        public Swarm(
+        private Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
-            HostOptions hostOptions,
+            NetMQTransport transport,
             SwarmOptions options = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -87,15 +86,7 @@ namespace Libplanet.Net
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
 
-            // FIXME: after the initialization of NetMQTransport is fully converted to asynchronous
-            // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
-            // fixed. for context, refer to
-            // https://github.com/planetarium/libplanet/discussions/2303.
-            Transport = NetMQTransport.Create(
-                _privateKey,
-                _appProtocolVersionOptions,
-                hostOptions,
-                Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
+            Transport = transport;
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
@@ -172,6 +163,29 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
+
+        public static async Task<Swarm<T>> Create(
+            BlockChain<T> blockChain,
+            PrivateKey privateKey,
+            AppProtocolVersionOptions appProtocolVersionOptions,
+            HostOptions hostOptions,
+            SwarmOptions options = null)
+        {
+            var transport = await NetMQTransport.Create(
+                privateKey,
+                appProtocolVersionOptions,
+                hostOptions,
+                (options ?? new SwarmOptions()).MessageTimestampBuffer
+            );
+
+            return new Swarm<T>(
+                blockChain,
+                privateKey,
+                appProtocolVersionOptions,
+                transport,
+                options
+            );
+        }
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.

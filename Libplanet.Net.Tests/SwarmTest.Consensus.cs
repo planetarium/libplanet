@@ -58,8 +58,8 @@ namespace Libplanet.Net.Tests
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
 
-            Swarm<DumbAction> miner1 = CreateSwarm(chain1, key1);
-            Swarm<DumbAction> miner2 = CreateSwarm(chain2, key2);
+            Swarm<DumbAction> miner1 = await CreateSwarm(chain1, key1).ConfigureAwait(false);
+            Swarm<DumbAction> miner2 = await CreateSwarm(chain2, key2).ConfigureAwait(false);
 
             await chain1.MineBlock(key1);
             await chain1.MineBlock(key2);

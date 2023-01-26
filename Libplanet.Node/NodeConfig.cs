@@ -114,12 +114,13 @@ namespace Libplanet.Node
                 SwarmConfig.InitConfig.IceServers,
                 SwarmConfig.InitConfig.Port);
 
-            return new Swarm<T>(
+            return Swarm<T>.Create(
                 privateKey: _privateKey,
                 blockChain: blockChain,
                 appProtocolVersionOptions: apvOptions,
                 hostOptions: hostOptions,
-                options: SwarmConfig.ToSwarmOptions());
+                options: SwarmConfig.ToSwarmOptions()
+            ).Result;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Libplanet.Net.Tests.Transports
 
             var option = new SwarmOptions();
 
-            using (var swarm = new Swarm<DumbAction>(
+            using (var swarm = await Swarm<DumbAction>.Create(
                 blockchain,
                 swarmKey,
                 apvOptions,
