@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Assets;
@@ -14,7 +15,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
     {
         [Theory]
         [MemberData(nameof(TestCases))]
-        public async void Query(TxResult txResult, IDictionary<string, object> expected)
+        public async Task Query(TxResult txResult, IDictionary<string, object> expected)
         {
             var query =
                 @"{

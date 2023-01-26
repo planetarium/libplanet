@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Action
         }
 
         [SkippableFact]
-        public async void Evaluate()
+        public async Task Evaluate()
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -158,7 +158,7 @@ namespace Libplanet.Tests.Action
         }
 
         [SkippableFact]
-        public async void EvaluateWithException()
+        public async Task EvaluateWithException()
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -1182,7 +1182,7 @@ namespace Libplanet.Tests.Action
         }
 
         [SkippableFact]
-        private async void CheckRandomSeedInAction()
+        private async Task CheckRandomSeedInAction()
         {
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 

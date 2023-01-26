@@ -969,7 +969,7 @@ namespace Libplanet.Net.Tests
         [Theory(Timeout = Timeout)]
         [InlineData(true)]
         [InlineData(false)]
-        public async void RestageTransactionsOnceLocallyMinedAfterReorg(bool restage)
+        public async Task RestageTransactionsOnceLocallyMinedAfterReorg(bool restage)
         {
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();

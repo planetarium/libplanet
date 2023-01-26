@@ -335,7 +335,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public async void GetMinBlockProtocolVersion()
+        public async Task GetMinBlockProtocolVersion()
         {
             var policy = new BlockPolicy<DumbAction>(
                 getMinBlockProtocolVersion: index => index <= 1 ? 0 : 4);

@@ -108,7 +108,7 @@ namespace Libplanet.Net.Tests
         }
 
         [RetryFact(Timeout = Timeout)]
-        public async void EnumerateChunks()
+        public async Task EnumerateChunks()
         {
             // 0, 1: Already existed blocks
             // 2, 3, 4,  5,  6: first chunk

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
@@ -17,7 +18,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
     public class BlockTypeTest
     {
         [Fact]
-        public async void Query()
+        public async Task Query()
         {
             var privateKey = new PrivateKey();
             var preEval = new BlockContent<NullAction>(
