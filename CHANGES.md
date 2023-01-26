@@ -22,6 +22,9 @@ Version PBFT
     methods.  [[#PBFT]]
  -  Removed `HashAlgorithmType` class.  [[#PBFT]]
  -  Removed `PreEvaluationBlock<T>(IBlockContent<T>)` constructor.  [[#PBFT]]
+ -  Removed `IBlockPolicy.GetMinBlockProtocolVersion()` interface method.
+    [[#PBFT]]
+
 
 ### Backward-incompatible API changes
 
@@ -34,6 +37,9 @@ Version PBFT
  -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+ -  Changed `BlockPolicy<T>()` constructor not to take
+    `Func<long, int>` type parameter named `getMinBlockProtocolVersion`.
+    [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
