@@ -56,7 +56,5 @@ namespace Libplanet.Blockchain.Policies
 
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);
-
-        public int GetMinBlockProtocolVersion(long index) => 0;
     }
 }
