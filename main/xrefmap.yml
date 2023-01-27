@@ -18273,15 +18273,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T)
   nameWithType: Swarm<T>
   nameWithType.vb: Swarm(Of T)
-- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.HostOptions,Libplanet.Net.SwarmOptions)
-  name: Swarm(BlockChain<T>, PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_Libplanet_Net_HostOptions_Libplanet_Net_SwarmOptions_
-  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.HostOptions,Libplanet.Net.SwarmOptions)
-  name.vb: Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
-  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, Libplanet.Net.HostOptions, Libplanet.Net.SwarmOptions)
-  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersionOptions, Libplanet.Net.HostOptions, Libplanet.Net.SwarmOptions)
-  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
-  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)
+- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.Transports.ITransport,Libplanet.Net.SwarmOptions)
+  name: Swarm(BlockChain<T>, PrivateKey, ITransport, SwarmOptions)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_Transports_ITransport_Libplanet_Net_SwarmOptions_
+  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.Transports.ITransport,Libplanet.Net.SwarmOptions)
+  name.vb: Swarm(BlockChain(Of T), PrivateKey, ITransport, SwarmOptions)
+  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.Transports.ITransport, Libplanet.Net.SwarmOptions)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.Transports.ITransport, Libplanet.Net.SwarmOptions)
+  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, ITransport, SwarmOptions)
+  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, ITransport, SwarmOptions)
 - uid: Libplanet.Net.Swarm`1.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_
@@ -19515,6 +19515,19 @@ references:
   commentId: T:Libplanet.Net.Transports.ITransport
   fullName: Libplanet.Net.Transports.ITransport
   nameWithType: ITransport
+- uid: Libplanet.Net.Transports.ITransport.AppProtocolVersion
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_AppProtocolVersion
+  commentId: P:Libplanet.Net.Transports.ITransport.AppProtocolVersion
+  fullName: Libplanet.Net.Transports.ITransport.AppProtocolVersion
+  nameWithType: ITransport.AppProtocolVersion
+- uid: Libplanet.Net.Transports.ITransport.AppProtocolVersion*
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_AppProtocolVersion_
+  commentId: Overload:Libplanet.Net.Transports.ITransport.AppProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.ITransport.AppProtocolVersion
+  nameWithType: ITransport.AppProtocolVersion
 - uid: Libplanet.Net.Transports.ITransport.AsPeer
   name: AsPeer
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_AsPeer
@@ -19544,6 +19557,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.BroadcastMessage
   nameWithType: ITransport.BroadcastMessage
+- uid: Libplanet.Net.Transports.ITransport.DifferentAppProtocolVersionEncountered
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_DifferentAppProtocolVersionEncountered
+  commentId: P:Libplanet.Net.Transports.ITransport.DifferentAppProtocolVersionEncountered
+  fullName: Libplanet.Net.Transports.ITransport.DifferentAppProtocolVersionEncountered
+  nameWithType: ITransport.DifferentAppProtocolVersionEncountered
+- uid: Libplanet.Net.Transports.ITransport.DifferentAppProtocolVersionEncountered*
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_DifferentAppProtocolVersionEncountered_
+  commentId: Overload:Libplanet.Net.Transports.ITransport.DifferentAppProtocolVersionEncountered
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.ITransport.DifferentAppProtocolVersionEncountered
+  nameWithType: ITransport.DifferentAppProtocolVersionEncountered
 - uid: Libplanet.Net.Transports.ITransport.LastMessageTimestamp
   name: LastMessageTimestamp
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_LastMessageTimestamp
@@ -19647,6 +19673,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.StopAsync
   nameWithType: ITransport.StopAsync
+- uid: Libplanet.Net.Transports.ITransport.TrustedAppProtocolVersionSigners
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_TrustedAppProtocolVersionSigners
+  commentId: P:Libplanet.Net.Transports.ITransport.TrustedAppProtocolVersionSigners
+  fullName: Libplanet.Net.Transports.ITransport.TrustedAppProtocolVersionSigners
+  nameWithType: ITransport.TrustedAppProtocolVersionSigners
+- uid: Libplanet.Net.Transports.ITransport.TrustedAppProtocolVersionSigners*
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_TrustedAppProtocolVersionSigners_
+  commentId: Overload:Libplanet.Net.Transports.ITransport.TrustedAppProtocolVersionSigners
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.ITransport.TrustedAppProtocolVersionSigners
+  nameWithType: ITransport.TrustedAppProtocolVersionSigners
 - uid: Libplanet.Net.Transports.ITransport.WaitForRunningAsync
   name: WaitForRunningAsync()
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_WaitForRunningAsync
@@ -19666,6 +19705,19 @@ references:
   commentId: T:Libplanet.Net.Transports.NetMQTransport
   fullName: Libplanet.Net.Transports.NetMQTransport
   nameWithType: NetMQTransport
+- uid: Libplanet.Net.Transports.NetMQTransport.AppProtocolVersion
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_AppProtocolVersion
+  commentId: P:Libplanet.Net.Transports.NetMQTransport.AppProtocolVersion
+  fullName: Libplanet.Net.Transports.NetMQTransport.AppProtocolVersion
+  nameWithType: NetMQTransport.AppProtocolVersion
+- uid: Libplanet.Net.Transports.NetMQTransport.AppProtocolVersion*
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_AppProtocolVersion_
+  commentId: Overload:Libplanet.Net.Transports.NetMQTransport.AppProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.NetMQTransport.AppProtocolVersion
+  nameWithType: NetMQTransport.AppProtocolVersion
 - uid: Libplanet.Net.Transports.NetMQTransport.AsPeer
   name: AsPeer
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_AsPeer
@@ -19711,6 +19763,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.Create
   nameWithType: NetMQTransport.Create
+- uid: Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_DifferentAppProtocolVersionEncountered
+  commentId: P:Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered
+  fullName: Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered
+  nameWithType: NetMQTransport.DifferentAppProtocolVersionEncountered
+- uid: Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered*
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_DifferentAppProtocolVersionEncountered_
+  commentId: Overload:Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered
+  nameWithType: NetMQTransport.DifferentAppProtocolVersionEncountered
 - uid: Libplanet.Net.Transports.NetMQTransport.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Dispose
@@ -19827,6 +19892,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.StopAsync
   nameWithType: NetMQTransport.StopAsync
+- uid: Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_TrustedAppProtocolVersionSigners
+  commentId: P:Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners
+  fullName: Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners
+  nameWithType: NetMQTransport.TrustedAppProtocolVersionSigners
+- uid: Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners*
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_TrustedAppProtocolVersionSigners_
+  commentId: Overload:Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners
+  nameWithType: NetMQTransport.TrustedAppProtocolVersionSigners
 - uid: Libplanet.Net.Transports.NetMQTransport.WaitForRunningAsync
   name: WaitForRunningAsync()
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_WaitForRunningAsync

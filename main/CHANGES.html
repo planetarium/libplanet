@@ -72,6 +72,12 @@
 <li>(Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
 target assemblies.  [<a href="https://github.com/planetarium/libplanet/pull/2732">#2732</a>]</li>
 <li>(Libplanet.Extensions.Cocona)  Added .NET 6 target assembly.  [<a href="https://github.com/planetarium/libplanet/pull/2732">#2732</a>]</li>
+<li>(Libplanet.Net) Added <code>ITransport.AppProtocolVersion</code>,
+<code>ITransport.TrustedAppProtocolVersionSigners</code>,
+and <code>ITransport.DifferentAppProtocolVersionEncountered</code> properties.
+[<a href="https://github.com/planetarium/libplanet/pull/2743">#2743</a>]</li>
+<li>(Libplanet.Net) Changed <code>Swarm&lt;T&gt;(BlockChain&lt;T&gt;, PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)</code> to
+<code>Swarm&lt;T&gt;(BlockChain&lt;T&gt;, PrivateKey, ITransport, SwarmOptions)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2743">#2743</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
