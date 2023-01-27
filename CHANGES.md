@@ -40,6 +40,8 @@ To be released.
     [custom converters].  Note that these serializations are unavailable
     on Unity due to its incomplete reflection support.  [[#2756]]
      -  A `Nonce` became represented as a single hexadecimal string in JSON.
+     -  A `PublicKey` became represented as a single hexadecimal string in
+        JSON.
  -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
  -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
 
@@ -47,9 +49,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a JSON serializer bug where a `Transaction<T>` serialized into JSON
+    had lacked the content of its `PublicKey`.  [[#2756]]
+
 ### Dependencies
 
 ### CLI tools
+
+ -  Fixed a bug of `planet tx analyze` subcommand where a serialized transaction
+    had lacked the content of its `"publicKey"`.  [[#2756]]
 
 [#2732]: https://github.com/planetarium/libplanet/pull/2732
 [#2733]: https://github.com/planetarium/libplanet/pull/2733
