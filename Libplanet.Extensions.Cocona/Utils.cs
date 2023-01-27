@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 using Bencodex.Types;
 using global::Cocona;
 using Libplanet.Action;
+using Libplanet.JsonConverters;
 using Libplanet.Store;
 
 public static class Utils
@@ -167,7 +168,7 @@ public static class Utils
                 WriteIndented = true,
                 Converters =
                 {
-                    new ByteArrayStringJsonConverter(),
+                    new ByteArrayJsonConverter(),
                     new DateTimeOffsetJsonConverter(),
                 },
             }
@@ -181,7 +182,7 @@ public static class Utils
             {
                 Converters =
                 {
-                    new ByteArrayStringJsonConverter(),
+                    new ByteArrayJsonConverter(),
                     new DateTimeOffsetJsonConverter(),
                 },
             }
@@ -259,24 +260,6 @@ public static class Utils
         public void LoadPlainValue(IValue plainValue)
         {
             PlainValue = plainValue;
-        }
-    }
-
-    private sealed class ByteArrayStringJsonConverter : JsonConverter<ImmutableArray<byte>>
-    {
-        public override ImmutableArray<byte> Read(
-            ref Utf8JsonReader reader,
-            Type typeToConvert,
-            JsonSerializerOptions options)
-        {
-            var hexString = reader.GetString() ?? throw new JsonException("Expected a string.");
-            return ImmutableArray.Create(ByteUtil.ParseHex(hexString));
-        }
-
-        public override void Write(
-            Utf8JsonWriter writer, ImmutableArray<byte> value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(ByteUtil.Hex(value));
         }
     }
 
