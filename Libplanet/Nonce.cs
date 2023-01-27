@@ -36,7 +36,7 @@ namespace Libplanet
         /// <param name="nonce">An immutable <see cref="byte"/> array to convert to
         /// a <see cref="Nonce"/> instance.</param>
         /// <seealso cref="ByteArray"/>
-        public Nonce(ImmutableArray<byte> nonce) =>
+        public Nonce(in ImmutableArray<byte> nonce) =>
             _byteArray = nonce;
 
         /// <summary>

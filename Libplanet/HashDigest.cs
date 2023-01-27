@@ -163,7 +163,7 @@ namespace Libplanet
                 );
             }
 
-            return new HashDigest<T>(ByteUtil.ParseHex(hexDigest));
+            return new HashDigest<T>(ByteUtil.ParseHexToImmutable(hexDigest));
         }
 
         /// <summary>

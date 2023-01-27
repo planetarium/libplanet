@@ -96,7 +96,7 @@ namespace Libplanet.Store.Trie
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
         /// not a valid hexadecimal string.</exception>
         public static KeyBytes FromHex(string hex) =>
-            new KeyBytes(ByteUtil.ParseHex(hex));
+            new KeyBytes(ByteUtil.ParseHexToImmutable(hex));
 
         /// <summary>
         /// Converts to a mutable byte array.

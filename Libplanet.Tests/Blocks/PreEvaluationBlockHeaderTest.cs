@@ -300,10 +300,10 @@ namespace Libplanet.Tests.Blocks
             );
 
             var block1 = new PreEvaluationBlockHeader(_contents.Block1Metadata, _validBlock1Proof);
-            ImmutableArray<byte> validSig = ByteUtil.ParseHex(
+            ImmutableArray<byte> validSig = ByteUtil.ParseHexToImmutable(
                 "3045022100e0c6bc5ccbde4a6fc0bc255b663972904373543247e6c7ea082817ebe6ae6" +
                 "3f202201a4fa72853caddca4027be60b88652106d096a901521c59d22ec980ff6a8d184"
-            ).ToImmutableArray();
+            );
             Assert.True(block1.VerifySignature(validSig, arbitraryHash));
             Assert.False(block1.VerifySignature(null, arbitraryHash));
             Assert.False(block1.VerifySignature(validSig, default));

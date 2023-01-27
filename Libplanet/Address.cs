@@ -68,7 +68,7 @@ namespace Libplanet
         /// <see cref="Address"/> can be gotten using <see cref="ToByteArray()"
         /// /> method.</remarks>
         /// <seealso cref="ByteArray"/>
-        public Address(ImmutableArray<byte> address)
+        public Address(in ImmutableArray<byte> address)
         {
             if (address.Length != Size)
             {
@@ -302,15 +302,15 @@ namespace Libplanet
             return output;
         }
 
-        private static byte[] DeriveAddress(PublicKey key)
+        private static ImmutableArray<byte> DeriveAddress(PublicKey key)
         {
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
             var output = CalculateHash(hashPayload);
 
-            return output.Skip(output.Length - Size).ToArray();
+            return output.Skip(output.Length - Size).ToImmutableArray();
         }
 
-        private static byte[] DeriveAddress(string hex)
+        private static ImmutableArray<byte> DeriveAddress(string hex)
         {
             if (hex == null)
             {
@@ -346,7 +346,7 @@ namespace Libplanet
 
             try
             {
-                return ByteUtil.ParseHex(hex);
+                return ByteUtil.ParseHexToImmutable(hex);
             }
             catch (FormatException)
             {

@@ -38,7 +38,7 @@ namespace Libplanet.Blocks
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
         /// </exception>
-        public BlockHash(ImmutableArray<byte> blockHash)
+        public BlockHash(in ImmutableArray<byte> blockHash)
         {
             if (blockHash.Length != Size)
             {
@@ -98,7 +98,9 @@ namespace Libplanet.Blocks
         /// <seealso cref="ToString()"/>
         [Pure]
         public static BlockHash FromString(string hex) =>
-            new BlockHash(ByteUtil.ParseHex(hex ?? throw new ArgumentNullException(nameof(hex))));
+            new BlockHash(
+                ByteUtil.ParseHexToImmutable(hex ?? throw new ArgumentNullException(nameof(hex)))
+            );
 
         /// <summary>
         /// Converts a given <see cref="HashDigest{SHA256}"/> into a <see cref="BlockHash"/> value.

@@ -426,10 +426,9 @@ namespace Libplanet.Tests.Blockchain
                 (nonce, genesisContent.Metadata.DerivePreEvaluationHash(nonce)));
             var genesisStateRootHash = HashDigest<SHA256>.FromString(
                 "1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9");
-            var genesisSignature = ByteUtil.ParseHex(
+            var genesisSignature = ByteUtil.ParseHexToImmutable(
                 "30440220453709513c8ca92d3b90f5dd97ecac9c0f1af4b9aa8553ffe4d1b3f7887746" +
-                "8e02206a484c56b9a7c2b6b7c6b26627714d6e14413dce1f3cc1291d48920d82dacb9f")
-                    .ToImmutableArray();
+                "8e02206a484c56b9a7c2b6b7c6b26627714d6e14413dce1f3cc1291d48920d82dacb9f");
             var genesisHash =
                 preEvalGenesis.Header.DeriveBlockHash(genesisStateRootHash, genesisSignature);
             var genesis = new Block<DumbAction>(
@@ -459,10 +458,9 @@ namespace Libplanet.Tests.Blockchain
                 (block1Nonce, block1Content.Metadata.DerivePreEvaluationHash(block1Nonce)));
             var block1StateRootHash = HashDigest<SHA256>.FromString(
                 "1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9");
-            var block1Signature = ByteUtil.ParseHex(
+            var block1Signature = ByteUtil.ParseHexToImmutable(
                 "304502210083898c414d6ab45d380ae56d7f5cc63a6c102354a8c59904942e47a7b3fa9" +
-                "1e2022055ab1c19a11ed980165ce472dac134db580448c5bffb51d0e8dcb4cb5bc71481")
-                    .ToImmutableArray();
+                "1e2022055ab1c19a11ed980165ce472dac134db580448c5bffb51d0e8dcb4cb5bc71481");
             var block1Hash =
                 preEvalBlock1.Header.DeriveBlockHash(block1StateRootHash, block1Signature);
             var block = new Block<DumbAction>(
