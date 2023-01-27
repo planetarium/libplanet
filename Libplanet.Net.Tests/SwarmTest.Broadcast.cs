@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests
                 miner,
                 policy: policy,
                 genesis: minerChain.Genesis
-            );
+            ).ConfigureAwait(false);
             BlockChain<DumbAction> seedChain = seed.BlockChain;
 
             var privateKey = new PrivateKey();
@@ -54,12 +54,12 @@ namespace Libplanet.Net.Tests
                 privateKey: privateKey,
                 policy: policy,
                 genesis: minerChain.Genesis
-            );
+            ).ConfigureAwait(false);
             Swarm<DumbAction> swarmB = await CreateSwarm(
                 privateKey: privateKey,
                 policy: policy,
                 genesis: minerChain.Genesis
-            );
+            ).ConfigureAwait(false);
 
             foreach (BlockHash blockHash in minerChain.BlockHashes.Skip(1).Take(4))
             {

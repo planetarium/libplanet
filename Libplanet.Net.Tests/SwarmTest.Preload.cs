@@ -33,8 +33,8 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
 
-            Swarm<DumbAction> minerSwarm = await CreateSwarm(minerKey);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm();
+            Swarm<DumbAction> minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
+            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
 
             BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
@@ -276,7 +276,7 @@ namespace Libplanet.Net.Tests
                     new TrieStateStore(new MemoryKeyValueStore())
                 ),
                 senderKey
-            );
+            ).ConfigureAwait(false);
 
             int renderCount1 = 0, renderCount2 = 0;
 
