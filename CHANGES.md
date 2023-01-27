@@ -35,6 +35,11 @@ To be released.
 
 ### Added APIs
 
+ -  Many more types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2756]]
+     -  A `Nonce` became represented as a single hexadecimal string in JSON.
  -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
  -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
 
