@@ -42,6 +42,7 @@ To be released.
      -  A `Nonce` became represented as a single hexadecimal string in JSON.
      -  A `PublicKey` became represented as a single hexadecimal string in
         JSON.
+     -  A `Block<T>` became represented as an object with values in JSON.
  -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
  -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
 
