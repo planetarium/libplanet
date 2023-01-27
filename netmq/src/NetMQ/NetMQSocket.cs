@@ -249,6 +249,7 @@ namespace NetMQ
         /// <summary>Closes this socket, rendering it unusable. Equivalent to calling <see cref="Dispose()"/>.</summary>
         public void Close()
         {
+            Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{m_socketHandle}][{System.Threading.Thread.CurrentThread.ManagedThreadId}] Closing...", DateTimeOffset.UtcNow);
             #if NETSTANDARD2_0 || NETSTANDARD2_1 || NET47
             if (m_runtime != null)
             {
@@ -263,7 +264,7 @@ namespace NetMQ
             m_socketHandle.CheckDisposed();
 
             m_socketHandle.Close();
-            
+
             Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{m_socketHandle}][{System.Threading.Thread.CurrentThread.ManagedThreadId}] Closed.", DateTimeOffset.UtcNow);
         }
 
@@ -550,6 +551,7 @@ namespace NetMQ
         /// <summary>Closes this socket, rendering it unusable. Equivalent to calling <see cref="Close"/>.</summary>
         public void Dispose()
         {
+            Console.WriteLine($"{{0:dd.MM.yyyy hh:mm.ss:ffff}}[{m_socketHandle}][{System.Threading.Thread.CurrentThread.ManagedThreadId}] Disposing start.", DateTimeOffset.UtcNow);
             Dispose(true);
             GC.SuppressFinalize(this);
         }
