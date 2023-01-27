@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -27,6 +28,11 @@ namespace Libplanet.Tests.Tx
                 }
 
                 byte[] bytes = GetRandomBytes(size);
+                ImmutableArray<byte> immutableBytes = bytes.ToImmutableArray();
+                Assert.Throws<ArgumentOutOfRangeException>(
+                    "txid",
+                    () => new TxId(immutableBytes)
+                );
                 Assert.Throws<ArgumentOutOfRangeException>(
                     "txid",
                     () => new TxId(bytes)

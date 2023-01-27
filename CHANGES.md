@@ -35,6 +35,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
  -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
 
 ### Behavioral changes

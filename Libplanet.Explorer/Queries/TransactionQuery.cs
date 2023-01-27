@@ -115,9 +115,7 @@ namespace Libplanet.Explorer.Queries
                 ),
                 resolve: context =>
                 {
-                    var id = new TxId(
-                        ByteUtil.ParseHex(context.GetArgument<string>("id"))
-                    );
+                    var id = TxId.FromHex(context.GetArgument<string>("id"));
                     return ExplorerQuery<T>.GetTransaction(id);
                 }
             );
