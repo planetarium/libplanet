@@ -15,6 +15,13 @@ To be released.
  -  (Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
     target assemblies.  [[#2732]]
  -  (Libplanet.Extensions.Cocona)  Added .NET 6 target assembly.  [[#2732]]
+ -  (Libplanet.Net) Added `ITransport.AppProtocolVersion`,
+    `ITransport.TrustedAppProtocolVersionSigners`,
+    and `ITransport.DifferentAppProtocolVersionEncountered` properties.
+    [[#2743]]
+ -  (Libplanet.Net) Changed `Swarm<T>(BlockChain<T>, PrivateKey,
+    AppProtocolVersionOptions, HostOptions, SwarmOptions)` to
+    `Swarm<T>(BlockChain<T>, PrivateKey, ITransport, SwarmOptions)`.  [[#2743]]
 
 ### Backward-incompatible network protocol changes
 
@@ -32,6 +39,7 @@ To be released.
 
 [#2732]: https://github.com/planetarium/libplanet/pull/2732
 [#2733]: https://github.com/planetarium/libplanet/pull/2733
+[#2743]: https://github.com/planetarium/libplanet/pull/2743
 
 
 Version 0.46.0
