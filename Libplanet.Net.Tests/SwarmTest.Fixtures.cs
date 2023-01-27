@@ -68,7 +68,7 @@ namespace Libplanet.Net.Tests
             return (blocks[1].Transactions.First().CustomActions.First().TargetAddress, blocks);
         }
 
-        private Swarm<DumbAction> CreateSwarm(
+        private async Task<Swarm<DumbAction>> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
@@ -87,7 +87,7 @@ namespace Libplanet.Net.Tests
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
-            return CreateSwarm(
+            return await CreateSwarm(
                 blockchain,
                 privateKey,
                 appProtocolVersionOptions,
@@ -95,7 +95,7 @@ namespace Libplanet.Net.Tests
                 options);
         }
 
-        private Swarm<T> CreateSwarm<T>(
+        private async Task<Swarm<T>> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
@@ -107,11 +107,11 @@ namespace Libplanet.Net.Tests
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
             options ??= new SwarmOptions();
             privateKey ??= new PrivateKey();
-            var transport = NetMQTransport.Create(
+            var transport = await NetMQTransport.Create(
                 privateKey,
                 appProtocolVersionOptions,
                 hostOptions,
-                options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
+                options.MessageTimestampBuffer);
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey,
