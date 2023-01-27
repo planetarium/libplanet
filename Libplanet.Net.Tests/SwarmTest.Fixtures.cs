@@ -9,6 +9,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -105,11 +106,16 @@ namespace Libplanet.Net.Tests
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
             options ??= new SwarmOptions();
-            var swarm = new Swarm<T>(
-                blockChain,
-                privateKey ?? new PrivateKey(),
+            privateKey ??= new PrivateKey();
+            var transport = NetMQTransport.Create(
+                privateKey,
                 appProtocolVersionOptions,
                 hostOptions,
+                options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
+            var swarm = new Swarm<T>(
+                blockChain,
+                privateKey,
+                transport,
                 options);
             _finalizers.Add(async () =>
             {

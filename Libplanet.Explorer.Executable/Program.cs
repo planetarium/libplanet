@@ -21,7 +21,7 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Schemas;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
-using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -285,13 +285,17 @@ If omitted (default) explorer only the local blockchain store.")]
 
                     var hostOptions = new HostOptions(null, new[] { options.IceServer });
 
-                    swarm = new Swarm<NullAction>(
-                        blockChain,
+                    var transport = await NetMQTransport.Create(
                         privateKey,
                         apvOptions,
                         hostOptions,
-                        options: swarmOptions
-                    );
+                        swarmOptions.MessageTimestampBuffer);
+
+                    swarm = new Swarm<NullAction>(
+                        blockChain,
+                        privateKey,
+                        transport,
+                        options: swarmOptions);
                 }
 
                 using (var cts = new CancellationTokenSource())

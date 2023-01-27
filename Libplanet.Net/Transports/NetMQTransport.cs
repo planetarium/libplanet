@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -133,6 +134,18 @@ namespace Libplanet.Net.Transports
 
         /// <inheritdoc/>
         public bool Running => _routerPoller?.IsRunning ?? false;
+
+        /// <inheritdoc/>
+        public AppProtocolVersion AppProtocolVersion =>
+            _appProtocolVersionOptions.AppProtocolVersion;
+
+        /// <inheritdoc/>
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
+            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
+
+        /// <inheritdoc/>
+        public DifferentAppProtocolVersionEncountered DifferentAppProtocolVersionEncountered =>
+            _appProtocolVersionOptions.DifferentAppProtocolVersionEncountered;
 
         /// <summary>
         /// Creates an initialized <see cref="NetMQTransport"/> instance.

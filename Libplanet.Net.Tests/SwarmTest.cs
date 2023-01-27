@@ -529,7 +529,7 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public void ThrowArgumentExceptionInConstructor()
+        public async Task ThrowArgumentExceptionInConstructor()
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
@@ -539,11 +539,14 @@ namespace Libplanet.Net.Tests
             var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
             var hostOptions = new HostOptions(
                 IPAddress.Loopback.ToString(), new IceServer[] { });
-
+            var transport = await NetMQTransport.Create(
+                key,
+                apvOptions,
+                hostOptions);
             Assert.Throws<ArgumentNullException>(() =>
-                new Swarm<DumbAction>(null, key, apvOptions, hostOptions));
+                new Swarm<DumbAction>(null, key, transport));
             Assert.Throws<ArgumentNullException>(() =>
-                new Swarm<DumbAction>(blockchain, null, apvOptions, hostOptions));
+                new Swarm<DumbAction>(blockchain, null, transport));
         }
 
         [Fact(Timeout = Timeout)]

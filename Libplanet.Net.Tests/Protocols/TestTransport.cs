@@ -18,9 +18,8 @@ namespace Libplanet.Net.Tests.Protocols
 {
     internal class TestTransport : ITransport
     {
-        private static readonly PrivateKey VersionSigner = new PrivateKey();
-        private static readonly AppProtocolVersion AppProtocolVersion =
-            AppProtocolVersion.Sign(VersionSigner, 1);
+        private static readonly AppProtocolVersion _appProtocolVersion =
+            AppProtocolVersion.Sign(new PrivateKey(), 1);
 
         private readonly Dictionary<Address, TestTransport> _transports;
         private readonly ILogger _logger;
@@ -100,6 +99,13 @@ namespace Libplanet.Net.Tests.Protocols
         }
 
         public ConcurrentQueue<Message> MessageHistory { get; }
+
+        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
+
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners => null;
+
+        public DifferentAppProtocolVersionEncountered DifferentAppProtocolVersionEncountered =>
+            (peer, peerVersion, localVersion) => { };
 
         internal ConcurrentBag<Message> ReceivedMessages { get; }
 
