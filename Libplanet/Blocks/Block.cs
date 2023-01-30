@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using Libplanet.Action;
 using Libplanet.Crypto;
+using Libplanet.JsonConverters;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -98,6 +100,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The <see cref="BlockHeader"/> of the block.
         /// </summary>
+        [JsonIgnore]
         public BlockHeader Header => _header;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
@@ -107,9 +110,12 @@ namespace Libplanet.Blocks
         public BlockHash Hash => Header.Hash;
 
         /// <inheritdoc cref="IBlockHeader.Signature"/>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonConverter(typeof(ByteArrayJsonConverter))]
         public ImmutableArray<byte>? Signature => Header.Signature;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
+        [JsonConverter(typeof(ByteArrayJsonConverter))]
         public ImmutableArray<byte> PreEvaluationHash => _preEvaluationBlock.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
@@ -122,6 +128,7 @@ namespace Libplanet.Blocks
         public long Difficulty => _preEvaluationBlock.Difficulty;
 
         /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
+        [JsonConverter(typeof(BigIntegerJsonConverter))]
         public BigInteger TotalDifficulty => _preEvaluationBlock.TotalDifficulty;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>

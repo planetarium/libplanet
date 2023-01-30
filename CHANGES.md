@@ -10,6 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  The signature of `Address(ImmutableArray<byte>)` constructor became
+    `Address(in ImmutableArray<byte>)`.  [[#2756]]
+ -  The signature of `BlockHash(ImmutableArray<byte>)` constructor became
+    `BlockHash(in ImmutableArray<byte>)`.  [[#2756]]
+ -  The signature of `Nonce(ImmutableArray<byte>)` constructor became
+    `Nonce(in ImmutableArray<byte>)`.  [[#2756]]
  -  Removed `IAccountStateView.GetValidatorSet()` method.  [[#2733]]
  -  Removed `IAccountStateDelta.SetValidator(Validator)` method.  [[#2733]]
  -  (Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
@@ -29,17 +35,35 @@ To be released.
 
 ### Added APIs
 
+ -  Many more types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2756]]
+     -  A `Nonce` became represented as a single hexadecimal string in JSON.
+     -  A `PublicKey` became represented as a single hexadecimal string in
+        JSON.
+     -  A `Block<T>` became represented as an object with values in JSON.
+ -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
+ -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
+
 ### Behavioral changes
 
 ### Bug fixes
+
+ -  Fixed a JSON serializer bug where a `Transaction<T>` serialized into JSON
+    had lacked the content of its `PublicKey`.  [[#2756]]
 
 ### Dependencies
 
 ### CLI tools
 
+ -  Fixed a bug of `planet tx analyze` subcommand where a serialized transaction
+    had lacked the content of its `"publicKey"`.  [[#2756]]
+
 [#2732]: https://github.com/planetarium/libplanet/pull/2732
 [#2733]: https://github.com/planetarium/libplanet/pull/2733
 [#2743]: https://github.com/planetarium/libplanet/pull/2743
+[#2756]: https://github.com/planetarium/libplanet/pull/2756
 
 
 Version 0.46.0

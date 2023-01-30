@@ -305,8 +305,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DerivePreEvaluationHash()
         {
-            ImmutableArray<byte> FromHex(string hex) =>
-                ParseHex(hex).ToImmutableArray();
+            ImmutableArray<byte> FromHex(string hex) => ParseHexToImmutable(hex);
 
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(

@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace Libplanet
 {
@@ -14,7 +15,7 @@ namespace Libplanet
     public static class ByteUtil
     {
         /// <summary>
-        /// Converts a hexadecimal string to a <see cref="byte"/> array.
+        /// Converts a hexadecimal string to a mutable <see cref="byte"/> array.
         /// </summary>
         /// <param name="hex">A <see cref="string"/> which encodes
         /// <see cref="byte"/>s in hexadecimal.  Its length must be zero or
@@ -32,6 +33,8 @@ namespace Libplanet
         /// <exception cref="FormatException">Thrown when the given
         /// <paramref name="hex"/> string is not a valid hexadecimal string.
         /// </exception>
+        /// <seealso cref="ParseHexToImmutable(string)"/>
+        /// <seealso cref="Hex(byte[])"/>
         [Pure]
         public static byte[] ParseHex(string hex)
         {
@@ -58,6 +61,32 @@ namespace Libplanet
         }
 
         /// <summary>
+        /// Converts a hexadecimal string to an immutable <see cref="byte"/> array.
+        /// </summary>
+        /// <param name="hex">A <see cref="string"/> which encodes <see cref="byte"/>s in
+        /// hexadecimal.  Its length must be zero or an even number.  It must not be
+        /// <see langword="null"/>.</param>
+        /// <returns>A <see cref="byte"/> array that the given <paramref name="hex"/> string
+        /// represented in hexadecimal.  It lengthens the half of the given <paramref name="hex"/>
+        /// string.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
+        /// string is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
+        /// <paramref name="hex"/> string is an odd number.</exception>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string
+        /// is not a valid hexadecimal string.</exception>
+        /// <seealso cref="ParseHex(string)"/>
+        /// <seealso cref="Hex(in ImmutableArray{byte})"/>
+        [Pure]
+        public static ImmutableArray<byte> ParseHexToImmutable(string hex)
+        {
+            byte[] bytes = ParseHex(hex);
+            ImmutableArray<byte> movedImmutableArray =
+                Unsafe.As<byte[], ImmutableArray<byte>>(ref bytes);
+            return movedImmutableArray;
+        }
+
+        /// <summary>
         /// Renders a hexadecimal string from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
@@ -67,6 +96,8 @@ namespace Libplanet
         /// <paramref name="bytes"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
         /// <paramref name="bytes"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="Hex(in ImmutableArray{byte})"/>
+        /// <seealso cref="ParseHex(string)"/>
         [Pure]
         public static string Hex(byte[] bytes)
         {
@@ -87,6 +118,8 @@ namespace Libplanet
         /// </param>
         /// <returns>A hexadecimal string which encodes the given
         /// <paramref name="bytes"/>.</returns>
+        /// <seealso cref="Hex(byte[])"/>
+        /// <seealso cref="ParseHexToImmutable(string)"/>
         [Pure]
         public static string Hex(in ImmutableArray<byte> bytes) =>
             bytes.IsDefaultOrEmpty ? string.Empty : Hex(bytes.ToArray());

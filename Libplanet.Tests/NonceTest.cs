@@ -38,6 +38,13 @@ namespace Libplanet.Tests
             Assert.Equal(0x00, nonce.ToByteArray()[0]);
         }
 
+        [SkippableFact]
+        public void JsonSerialization()
+        {
+            var nonce = new Nonce(ByteUtil.ParseHexToImmutable("0beec7b5"));
+            TestUtils.AssertJsonSerializable(nonce, "\"0beec7b5\"");
+        }
+
         [Fact]
         public void ToString_()
         {

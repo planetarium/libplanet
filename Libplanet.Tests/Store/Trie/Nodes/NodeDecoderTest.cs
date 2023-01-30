@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         {
             var list = new List(new IValue[]
             {
-                (Binary)ByteUtil.ParseHex("beef").ToArray(),
+                (Binary)ByteUtil.ParseHexToImmutable("beef"),
                 new List(new IValue[] { Null.Value, (Text)"beef", }),
             });
 
@@ -78,8 +78,8 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         {
             var list = new List(new IValue[]
             {
-                (Binary)ByteUtil.ParseHex("beef").ToArray(),
-                (Binary)default(HashDigest<SHA256>).ToByteArray(),
+                (Binary)ByteUtil.ParseHexToImmutable("beef"),
+                (Binary)default(HashDigest<SHA256>).ByteArray,
             });
 
             INode node = NodeDecoder.Decode(list);
