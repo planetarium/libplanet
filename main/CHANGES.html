@@ -67,6 +67,12 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>The signature of <code>Address(ImmutableArray&lt;byte&gt;)</code> constructor became
+<code>Address(in ImmutableArray&lt;byte&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
+<li>The signature of <code>BlockHash(ImmutableArray&lt;byte&gt;)</code> constructor became
+<code>BlockHash(in ImmutableArray&lt;byte&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
+<li>The signature of <code>Nonce(ImmutableArray&lt;byte&gt;)</code> constructor became
+<code>Nonce(in ImmutableArray&lt;byte&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
 <li>Removed <code>IAccountStateView.GetValidatorSet()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2733">#2733</a>]</li>
 <li>Removed <code>IAccountStateDelta.SetValidator(Validator)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2733">#2733</a>]</li>
 <li>(Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
@@ -82,10 +88,33 @@ and <code>ITransport.DifferentAppProtocolVersionEncountered</code> properties.
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Many more types became serialized and deserialized better with
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer"><code>System.Text.Json.JsonSerializer</code></a> as they now have their own
+<a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to">custom converters</a>.  Note that these serializations are unavailable
+on Unity due to its incomplete reflection support.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]
+<ul>
+<li>A <code>Nonce</code> became represented as a single hexadecimal string in JSON.</li>
+<li>A <code>PublicKey</code> became represented as a single hexadecimal string in
+JSON.</li>
+<li>A <code>Block&lt;T&gt;</code> became represented as an object with values in JSON.</li>
+</ul>
+</li>
+<li>Added <code>TxId(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
+<li>Added <code>ByteUtil.ParseHexToImmutable()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a JSON serializer bug where a <code>Transaction&lt;T&gt;</code> serialized into JSON
+had lacked the content of its <code>PublicKey</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
+</ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li>Fixed a bug of <code>planet tx analyze</code> subcommand where a serialized transaction
+had lacked the content of its <code>&quot;publicKey&quot;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
+</ul>
 <h2 id="version-0460">Version 0.46.0</h2>
 <p>Released on Janurary 18th, 2023.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>

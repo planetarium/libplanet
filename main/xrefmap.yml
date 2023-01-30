@@ -1840,15 +1840,15 @@ references:
   commentId: M:Libplanet.Address.#ctor(Binary)
   fullName: Libplanet.Address.Address(Binary)
   nameWithType: Address.Address(Binary)
-- uid: Libplanet.Address.#ctor(ImmutableArray{System.Byte})
-  name: Address(ImmutableArray<Byte>)
-  href: api/Libplanet.Address.html#Libplanet_Address__ctor_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Address.#ctor(ImmutableArray{System.Byte})
-  name.vb: Address(ImmutableArray(Of Byte))
-  fullName: Libplanet.Address.Address(ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Address.Address(ImmutableArray(Of System.Byte))
-  nameWithType: Address.Address(ImmutableArray<Byte>)
-  nameWithType.vb: Address.Address(ImmutableArray(Of Byte))
+- uid: Libplanet.Address.#ctor(ImmutableArray{System.Byte}@)
+  name: Address(in ImmutableArray<Byte>)
+  href: api/Libplanet.Address.html#Libplanet_Address__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Address.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: Address(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Address.Address(in ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Address.Address(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: Address.Address(in ImmutableArray<Byte>)
+  nameWithType.vb: Address.Address(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.Address.#ctor(Libplanet.Crypto.PublicKey)
   name: Address(PublicKey)
   href: api/Libplanet.Address.html#Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_
@@ -8522,15 +8522,15 @@ references:
   commentId: T:Libplanet.Blocks.BlockHash
   fullName: Libplanet.Blocks.BlockHash
   nameWithType: BlockHash
-- uid: Libplanet.Blocks.BlockHash.#ctor(ImmutableArray{System.Byte})
-  name: BlockHash(ImmutableArray<Byte>)
-  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Blocks.BlockHash.#ctor(ImmutableArray{System.Byte})
-  name.vb: BlockHash(ImmutableArray(Of Byte))
-  fullName: Libplanet.Blocks.BlockHash.BlockHash(ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Blocks.BlockHash.BlockHash(ImmutableArray(Of System.Byte))
-  nameWithType: BlockHash.BlockHash(ImmutableArray<Byte>)
-  nameWithType.vb: BlockHash.BlockHash(ImmutableArray(Of Byte))
+- uid: Libplanet.Blocks.BlockHash.#ctor(ImmutableArray{System.Byte}@)
+  name: BlockHash(in ImmutableArray<Byte>)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Blocks.BlockHash.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: BlockHash(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Blocks.BlockHash.BlockHash(in ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Blocks.BlockHash.BlockHash(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: BlockHash.BlockHash(in ImmutableArray<Byte>)
+  nameWithType.vb: BlockHash.BlockHash(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.Blocks.BlockHash.#ctor(System.Byte[])
   name: BlockHash(Byte[])
   href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_System_Byte___
@@ -11314,6 +11314,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.ByteUtil.ParseHex
   nameWithType: ByteUtil.ParseHex
+- uid: Libplanet.ByteUtil.ParseHexToImmutable(System.String)
+  name: ParseHexToImmutable(String)
+  href: api/Libplanet.ByteUtil.html#Libplanet_ByteUtil_ParseHexToImmutable_System_String_
+  commentId: M:Libplanet.ByteUtil.ParseHexToImmutable(System.String)
+  fullName: Libplanet.ByteUtil.ParseHexToImmutable(System.String)
+  nameWithType: ByteUtil.ParseHexToImmutable(String)
+- uid: Libplanet.ByteUtil.ParseHexToImmutable*
+  name: ParseHexToImmutable
+  href: api/Libplanet.ByteUtil.html#Libplanet_ByteUtil_ParseHexToImmutable_
+  commentId: Overload:Libplanet.ByteUtil.ParseHexToImmutable
+  isSpec: "True"
+  fullName: Libplanet.ByteUtil.ParseHexToImmutable
+  nameWithType: ByteUtil.ParseHexToImmutable
 - uid: Libplanet.ByteUtil.Satisfies(IReadOnlyList{System.Byte},System.Int64)
   name: Satisfies(IReadOnlyList<Byte>, Int64)
   href: api/Libplanet.ByteUtil.html#Libplanet_ByteUtil_Satisfies_IReadOnlyList_System_Byte__System_Int64_
@@ -21425,15 +21438,15 @@ references:
   commentId: T:Libplanet.Nonce
   fullName: Libplanet.Nonce
   nameWithType: Nonce
-- uid: Libplanet.Nonce.#ctor(ImmutableArray{System.Byte})
-  name: Nonce(ImmutableArray<Byte>)
-  href: api/Libplanet.Nonce.html#Libplanet_Nonce__ctor_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Nonce.#ctor(ImmutableArray{System.Byte})
-  name.vb: Nonce(ImmutableArray(Of Byte))
-  fullName: Libplanet.Nonce.Nonce(ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Nonce.Nonce(ImmutableArray(Of System.Byte))
-  nameWithType: Nonce.Nonce(ImmutableArray<Byte>)
-  nameWithType.vb: Nonce.Nonce(ImmutableArray(Of Byte))
+- uid: Libplanet.Nonce.#ctor(ImmutableArray{System.Byte}@)
+  name: Nonce(in ImmutableArray<Byte>)
+  href: api/Libplanet.Nonce.html#Libplanet_Nonce__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Nonce.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: Nonce(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Nonce.Nonce(in ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Nonce.Nonce(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: Nonce.Nonce(in ImmutableArray<Byte>)
+  nameWithType.vb: Nonce.Nonce(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.Nonce.#ctor(System.Byte[])
   name: Nonce(Byte[])
   href: api/Libplanet.Nonce.html#Libplanet_Nonce__ctor_System_Byte___
@@ -29402,6 +29415,15 @@ references:
   commentId: T:Libplanet.Tx.TxId
   fullName: Libplanet.Tx.TxId
   nameWithType: TxId
+- uid: Libplanet.Tx.TxId.#ctor(ImmutableArray{System.Byte}@)
+  name: TxId(in ImmutableArray<Byte>)
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Tx.TxId.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: TxId(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Tx.TxId.TxId(in ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Tx.TxId.TxId(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: TxId.TxId(in ImmutableArray<Byte>)
+  nameWithType.vb: TxId.TxId(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.Tx.TxId.#ctor(SerializationInfo,StreamingContext)
   name: TxId(SerializationInfo, StreamingContext)
   href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId__ctor_SerializationInfo_StreamingContext_
