@@ -4,14 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet
@@ -43,9 +41,8 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     [JsonConverter(typeof(AddressJsonConverter))]
-    [Serializable]
     public readonly struct Address
-        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
+        : IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -153,14 +150,6 @@ namespace Libplanet
         {
         }
 
-        private Address(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info?.GetValue<byte[]>("address") ??
-                throw new SerializationException("Missing the address field."))
-        {
-        }
-
         /// <summary>
         /// An immutable array of 20 <see cref="byte"/>s that represent this
         /// <see cref="Address"/>.
@@ -168,18 +157,10 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    return _defaultByteArray.ToImmutableArray();
-                }
-
-                return _byteArray;
-            }
-        }
+        public ImmutableArray<byte> ByteArray =>
+            _byteArray.IsDefault
+                ? _defaultByteArray.ToImmutableArray()
+                : _byteArray;
 
         /// <inheritdoc/>
         public IValue Bencoded => new Binary(ByteArray);
@@ -252,12 +233,6 @@ namespace Libplanet
         public override string ToString()
         {
             return $"0x{ToHex()}";
-        }
-
-        /// <inheritdoc />
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("address", ToByteArray());
         }
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>

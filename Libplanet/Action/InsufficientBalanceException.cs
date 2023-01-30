@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Bencodex;
 using Libplanet.Assets;
 using Libplanet.Serialization;
 
@@ -14,6 +15,8 @@ namespace Libplanet.Action
     [Serializable]
     public sealed class InsufficientBalanceException : Exception
     {
+        private static Codec _codec = new Codec();
+
         /// <summary>
         /// Creates a new <see cref="InsufficientBalanceException"/> object.
         /// </summary>
@@ -36,7 +39,7 @@ namespace Libplanet.Action
         private InsufficientBalanceException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Address = info.GetValue<Address>(nameof(Address));
+            Address = new Address(_codec.Decode(info.GetValue<byte[]>(nameof(Address))));
             Balance = info.GetValue<FungibleAssetValue>(nameof(Balance));
         }
 
@@ -54,7 +57,7 @@ namespace Libplanet.Action
         {
             base.GetObjectData(info, context);
 
-            info.AddValue(nameof(Address), Address);
+            info.AddValue(nameof(Address), _codec.Encode(Address.Bencoded));
             info.AddValue(nameof(Balance), Balance);
         }
     }
