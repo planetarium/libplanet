@@ -59,6 +59,7 @@ To be released.
 
  -  Added `planet block` subcommand group. [[#2758]]
      -  Added `planet block analyze` subcommand.
+     -  Added `planet block generate-genesis` subcommand.
  -  Fixed a bug of `planet tx analyze` subcommand where a serialized transaction
     had lacked the content of its `"publicKey"`.  [[#2756]]
 

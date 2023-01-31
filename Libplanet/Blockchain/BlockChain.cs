@@ -444,6 +444,8 @@ namespace Libplanet.Blockchain
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
+        // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction and
+        // nativeTokenPredicate.  (Or at least there should be such an overload.)
         public static Block<T> MakeGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
