@@ -50,6 +50,7 @@ public class ApvCommand
             );
         }
 
+        // FIXME: Declare a ICommandParameterSet type taking key ID and keystore path instead:
         PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase, ignoreStdin: true);
         IValue? extraValue = null;
         if (extraFile is string path)
