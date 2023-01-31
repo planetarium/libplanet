@@ -24,7 +24,8 @@ public class UtilsTest
 
         var serialized = Utils.SerializeHumanReadable(dummyClass);
         var dummyClass2 = Utils.DeserializeHumanReadable<DummyClass>(serialized);
-        Assert.True(dummyClass.SampleByteArray.SequenceEqual(dummyClass2.SampleByteArray));
+        Assert.NotNull(dummyClass2);
+        Assert.True(dummyClass.SampleByteArray.SequenceEqual(dummyClass2!.SampleByteArray));
         Assert.Equal(dummyClass.SampleDateTimeOffset, dummyClass2.SampleDateTimeOffset);
     }
 

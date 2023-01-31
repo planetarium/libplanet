@@ -1,3 +1,4 @@
+#nullable disable
 namespace Libplanet.Tools.Tests;
 
 using System;

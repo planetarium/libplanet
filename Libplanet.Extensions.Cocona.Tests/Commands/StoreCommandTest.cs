@@ -1,3 +1,4 @@
+#nullable disable
 namespace Libplanet.Extensions.Cocona.Tests.Commands;
 
 using System;
