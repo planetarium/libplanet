@@ -13,6 +13,7 @@ using Libplanet.Extensions.Cocona.Extensions;
 [HasSubCommands(typeof(StoreCommand), "store", Description = "Store utilities.")]
 [HasSubCommands(typeof(StatsCommand), "stats", Description = "Stats utilities.")]
 [HasSubCommands(typeof(TxCommand), "tx", Description = "Transaction utilities.")]
+[HasSubCommands(typeof(BlockCommand), "block", Description = "Block utilities.")]
 public class Program
 {
     private static readonly string FileConfigurationServiceRoot = Path.Combine(

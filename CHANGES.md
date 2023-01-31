@@ -57,6 +57,8 @@ To be released.
 
 ### CLI tools
 
+ -  Added `planet block` subcommand group. [[#2758]]
+     -  Added `planet block analyze` subcommand.
  -  Fixed a bug of `planet tx analyze` subcommand where a serialized transaction
     had lacked the content of its `"publicKey"`.  [[#2756]]
 
@@ -64,6 +66,7 @@ To be released.
 [#2733]: https://github.com/planetarium/libplanet/pull/2733
 [#2743]: https://github.com/planetarium/libplanet/pull/2743
 [#2756]: https://github.com/planetarium/libplanet/pull/2756
+[#2758]: https://github.com/planetarium/libplanet/pull/2758
 
 
 Version 0.46.0
