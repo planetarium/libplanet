@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "7Wvm62zScBpNMcc09A36g1FVbsbCbFryx9mBDL4Yh1M="
+          "hash": "M4NtHSdw0VzsC6nznQK6X/Eb3a+EmY9BUkC54qCF6w0="
         }
       },
       "is_incremental": false,
@@ -585,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "888I7LocrtEPMXHr/RYljjh6ZrOlONVqoVqjhcYzrZ0="
+          "hash": "TIXz5X6Zjba2XCct2/XRaHRCIYzeUv6aZi9DiLP+VH8="
         }
       },
       "is_incremental": false,
@@ -1805,11 +1805,47 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Extensions.Cocona.BlockPolicyParams.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Extensions.Cocona.BlockPolicyParams.html",
+          "hash": "S7A6cHrY17HomLhRFCnoyRLcgTf3iM9EMUQRp1npGcY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Extensions.Cocona.Commands.ApvCommand.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html",
-          "hash": "8pHyMvtdD6fMCLMuPli9yc2rUZ3NhfwcvwsBhMCDJzw="
+          "hash": "nAGsie3CsNNtdHIvnHmwhamJ7hQ3WW9uamX7QS6uJSU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.html",
+          "hash": "QXYueGjvRhmZwPrUjGGhg18XHjBlhZZBs51WvoDCDwU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Extensions.Cocona.Commands.BlockCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html",
+          "hash": "yS2gqArEpQxcjgHWehpLt8vVs+BmktBLHc9nP20ObNw="
         }
       },
       "is_incremental": false,
@@ -1821,7 +1857,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html",
-          "hash": "VtBhi96eJYnVCSnrct/9OJWb6Gto2HdAb4JVk1cPNHo="
+          "hash": "NumvPg9sCawcjGeEWrcZnub2xwovI9t1LGlL3xzxBXo="
         }
       },
       "is_incremental": false,
@@ -1881,7 +1917,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Extensions.Cocona.Commands.html",
-          "hash": "ULRKxevXS0uL7DoqNAER2J6aKD/I9VueHU/jlNMGLVk="
+          "hash": "IzOxT6yClzi0gj+osan3i8RVt0fkqtoGQzls6xgg5is="
         }
       },
       "is_incremental": false,
@@ -2037,7 +2073,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Extensions.Cocona.html",
-          "hash": "9zzC0tFRi60b9ECB1tHL6r9W2FyndOrSaL34jGEdpcE="
+          "hash": "yKN3XPdDi8CdlmZ7ezjKpYGwUrSJ90qHedymTGSw8U0="
         }
       },
       "is_incremental": false,
@@ -4389,7 +4425,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "0/hWBVinXEbQfr4fdUbmmP0dF9MK8muNhr4gmXby7Tc="
+          "hash": "0XL5aGIBHy34K+A8T3EuJpIOA0TgaTubqjL1qntcD+Q="
         }
       },
       "is_incremental": false,
@@ -4401,7 +4437,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/design.html",
-          "hash": "0uaB33uRdECCHn05hlVkIYtkDLSeb5x8hAYLxwY0wIY="
+          "hash": "UPkV/BQs1iM0eTcM9tM1eTx48M6vZCNDrVJmrwy42+U="
         }
       },
       "is_incremental": false,
@@ -4498,7 +4534,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 355,
+          "total_file_count": 358,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

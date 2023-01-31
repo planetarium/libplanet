@@ -12549,6 +12549,90 @@ references:
   commentId: N:Libplanet.Extensions.Cocona
   fullName: Libplanet.Extensions.Cocona
   nameWithType: Libplanet.Extensions.Cocona
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams
+  name: BlockPolicyParams
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html
+  commentId: T:Libplanet.Extensions.Cocona.BlockPolicyParams
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams
+  nameWithType: BlockPolicyParams
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.AssembliesToLoad
+  name: AssembliesToLoad
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_AssembliesToLoad
+  commentId: P:Libplanet.Extensions.Cocona.BlockPolicyParams.AssembliesToLoad
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.AssembliesToLoad
+  nameWithType: BlockPolicyParams.AssembliesToLoad
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.AssembliesToLoad*
+  name: AssembliesToLoad
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_AssembliesToLoad_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.AssembliesToLoad
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.AssembliesToLoad
+  nameWithType: BlockPolicyParams.AssembliesToLoad
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockAction
+  name: GetBlockAction()
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetBlockAction
+  commentId: M:Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockAction
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockAction()
+  nameWithType: BlockPolicyParams.GetBlockAction()
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockAction*
+  name: GetBlockAction
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetBlockAction_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockAction
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockAction
+  nameWithType: BlockPolicyParams.GetBlockAction
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy
+  name: GetBlockPolicy()
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetBlockPolicy
+  commentId: M:Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy()
+  nameWithType: BlockPolicyParams.GetBlockPolicy()
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy*
+  name: GetBlockPolicy
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetBlockPolicy_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy
+  nameWithType: BlockPolicyParams.GetBlockPolicy
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
+  name: GetNativeTokens()
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetNativeTokens
+  commentId: M:Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens()
+  nameWithType: BlockPolicyParams.GetNativeTokens()
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens*
+  name: GetNativeTokens
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetNativeTokens_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
+  nameWithType: BlockPolicyParams.GetNativeTokens
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies
+  name: LoadAssemblies()
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_LoadAssemblies
+  commentId: M:Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies()
+  nameWithType: BlockPolicyParams.LoadAssemblies()
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies*
+  name: LoadAssemblies
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_LoadAssemblies_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies
+  nameWithType: BlockPolicyParams.LoadAssemblies
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.PolicyFactory
+  name: PolicyFactory
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_PolicyFactory
+  commentId: P:Libplanet.Extensions.Cocona.BlockPolicyParams.PolicyFactory
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.PolicyFactory
+  nameWithType: BlockPolicyParams.PolicyFactory
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.PolicyFactory*
+  name: PolicyFactory
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_PolicyFactory_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.PolicyFactory
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.PolicyFactory
+  nameWithType: BlockPolicyParams.PolicyFactory
 - uid: Libplanet.Extensions.Cocona.Commands
   name: Libplanet.Extensions.Cocona.Commands
   href: api/Libplanet.Extensions.Cocona.Commands.html
@@ -12622,6 +12706,56 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify
   nameWithType: ApvCommand.Verify
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand
+  name: BlockCommand
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html
+  commentId: T:Libplanet.Extensions.Cocona.Commands.BlockCommand
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand
+  nameWithType: BlockCommand
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze(System.String,System.String)
+  name: Analyze(String, String)
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_Analyze_System_String_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze(System.String,System.String)
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze(System.String, System.String)
+  nameWithType: BlockCommand.Analyze(String, String)
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze*
+  name: Analyze
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_Analyze_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze
+  nameWithType: BlockCommand.Analyze
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,Libplanet.Extensions.Cocona.BlockPolicyParams,Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  name: GenerateGenesis(Guid, PassphraseParameters, String, BlockPolicyParams, BlockCommand.OutputFormat)
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_GenerateGenesis_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_Libplanet_Extensions_Cocona_BlockPolicyParams_Libplanet_Extensions_Cocona_Commands_BlockCommand_OutputFormat_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,Libplanet.Extensions.Cocona.BlockPolicyParams,Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.String, Libplanet.Extensions.Cocona.BlockPolicyParams, Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  nameWithType: BlockCommand.GenerateGenesis(Guid, PassphraseParameters, String, BlockPolicyParams, BlockCommand.OutputFormat)
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis*
+  name: GenerateGenesis
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_GenerateGenesis_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis
+  nameWithType: BlockCommand.GenerateGenesis
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat
+  name: BlockCommand.OutputFormat
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.html
+  commentId: T:Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat
+  nameWithType: BlockCommand.OutputFormat
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.Bencodex
+  name: Bencodex
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_OutputFormat_Bencodex
+  commentId: F:Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.Bencodex
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.Bencodex
+  nameWithType: BlockCommand.OutputFormat.Bencodex
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.Json
+  name: Json
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_OutputFormat_Json
+  commentId: F:Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.Json
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat.Json
+  nameWithType: BlockCommand.OutputFormat.Json
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand
   name: KeyCommand
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html
