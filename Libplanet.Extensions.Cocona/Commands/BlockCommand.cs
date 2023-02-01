@@ -79,7 +79,7 @@ public class BlockCommand
 
         using Stream outputStream = output == "-"
             ? Console.OpenStandardOutput()
-            : File.OpenWrite(file);
+            : File.Open(file, FileMode.Create);
         var writerOptions = new JsonWriterOptions { Indented = true };
         using (var writer = new Utf8JsonWriter(outputStream, writerOptions))
         {
@@ -121,7 +121,7 @@ public class BlockCommand
         );
         using Stream stream = file == "-"
             ? Console.OpenStandardOutput()
-            : File.OpenWrite(file);
+            : File.Open(file, FileMode.Create);
         switch (format)
         {
             // FIXME: Configure JsonConverter for Block<T>:

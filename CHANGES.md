@@ -54,7 +54,10 @@ To be released.
     had lacked the content of its `PublicKey`.  [[#2756]]
  -  (Libplanet.Explorer) Fixed a bug where the query `stateQuery` hadn't work
     correctly.  [[#2757]]
-
+ -  Fixed a bug of `DefaultStore.PutTxExecution()` where sometimes `TxExecution`
+    data is in undefined state due to data corruption.  [[#2761]]
+ -  (Libplanet.Node) Fixed a bug of `NodeUtils<T>.CreateGenesisBlock()` where
+    sometimes block data is in undefined state due to data corruption. [[#2761]]
 
 ### Dependencies
 
@@ -82,6 +85,7 @@ To be released.
 [#2756]: https://github.com/planetarium/libplanet/pull/2756
 [#2757]: https://github.com/planetarium/libplanet/pull/2757
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
+[#2761]: https://github.com/planetarium/libplanet/pull/2761
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
