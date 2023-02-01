@@ -12,7 +12,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<NonNullGraphType<LongGraphType>>(
                 "Height",
-                description: "Hight of the consensus voted.",
+                description: "Height of the consensus voted.",
                 resolve: ctx => ctx.Source.Height);
             Field<NonNullGraphType<IntGraphType>>(
                 "Round",
