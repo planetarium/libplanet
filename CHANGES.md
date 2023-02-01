@@ -52,6 +52,9 @@ To be released.
 
  -  Fixed a JSON serializer bug where a `Transaction<T>` serialized into JSON
     had lacked the content of its `PublicKey`.  [[#2756]]
+ -  (Libplanet.Explorer) Fixed a bug where the query `stateQuery` hadn't work
+    correctly.  [[#2757]]
+
 
 ### Dependencies
 
@@ -77,6 +80,7 @@ To be released.
 [#2743]: https://github.com/planetarium/libplanet/pull/2743
 [#2747]: https://github.com/planetarium/libplanet/pull/2747
 [#2756]: https://github.com/planetarium/libplanet/pull/2756
+[#2757]: https://github.com/planetarium/libplanet/pull/2757
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
