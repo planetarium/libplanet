@@ -486,7 +486,7 @@ namespace Libplanet.Store
             UPath dirPath = path.GetDirectory();
             CreateDirectoryRecursively(_txExecutions, dirPath);
             using Stream f =
-                _txExecutions.OpenFile(path, System.IO.FileMode.OpenOrCreate, FileAccess.Write);
+                _txExecutions.OpenFile(path, System.IO.FileMode.Create, FileAccess.Write);
             Codec.Encode(SerializeTxExecution(txSuccess), f);
         }
 
@@ -497,7 +497,7 @@ namespace Libplanet.Store
             UPath dirPath = path.GetDirectory();
             CreateDirectoryRecursively(_txExecutions, dirPath);
             using Stream f =
-                _txExecutions.OpenFile(path, System.IO.FileMode.OpenOrCreate, FileAccess.Write);
+                _txExecutions.OpenFile(path, System.IO.FileMode.Create, FileAccess.Write);
             Codec.Encode(SerializeTxExecution(txFailure), f);
         }
 
