@@ -102,7 +102,8 @@ namespace Libplanet.Net.Tests.Protocols
 
         public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
-        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners => null;
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
+            ImmutableHashSet<PublicKey>.Empty;
 
         public DifferentAppProtocolVersionEncountered DifferentAppProtocolVersionEncountered =>
             (peer, peerVersion, localVersion) => { };

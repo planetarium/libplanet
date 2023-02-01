@@ -56,11 +56,13 @@ namespace Libplanet.Node
 
         /// <summary>
         /// The set of <see cref="PublicKey"/>s to trust when a node encounters
-        /// an <see cref="Libplanet.Net.AppProtocolVersion"/> that is different from
-        /// <see cref="NetworkConfig{T}.AppProtocolVersion"/>.  To trust any party,
-        /// set this to <see langword="null"/>.  Set to <see langword="null"/> by default.
+        /// an <see cref="Net.AppProtocolVersion"/> that is different from
+        /// <see cref="AppProtocolVersion"/>.  Set to an empty set of <see cref="PublicKey"/>s
+        /// by default, i.e. not to trust any <see cref="Net.AppProtocolVersion"/> that
+        /// is different from <see cref="AppProtocolVersion"/>.
         /// </summary>
-        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners { get; set; } = null;
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; set; } =
+            ImmutableHashSet<PublicKey>.Empty;
 
         /// <summary>
         /// The event triggered when a node encounters

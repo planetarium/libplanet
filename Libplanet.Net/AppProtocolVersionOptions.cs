@@ -19,10 +19,12 @@ namespace Libplanet.Net
         /// The set of <see cref="PublicKey"/>s to trust when a node encounters
         /// a <see cref="Message"/> with an <see cref="Net.AppProtocolVersion"/> that is different
         /// from <see cref="AppProtocolVersion"/>.  Any <see cref="Message"/> with an untrusted
-        /// <see cref="Net.AppProtocolVersion"/> is ignored by the node.  To trust any party,
-        /// set this to <see langword="null"/>.  Set to <see langword="null"/> by default.
+        /// <see cref="Net.AppProtocolVersion"/> is ignored by the node.  Set to an
+        /// empty set of <see cref="PublicKey"/>s by default, i.e. not to trust any
+        /// <see cref="Message"/> with a different <see cref="Net.AppProtocolVersion"/>.
         /// </summary>
-        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners { get; set; } = null;
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; set; } =
+            ImmutableHashSet<PublicKey>.Empty;
 
         /// <summary>
         /// The callback triggered when a node encounters

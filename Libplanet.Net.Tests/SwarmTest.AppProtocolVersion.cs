@@ -62,6 +62,8 @@ namespace Libplanet.Net.Tests
             AppProtocolVersionOptions v1 = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = AppProtocolVersion.Sign(signer, 1),
+                TrustedAppProtocolVersionSigners =
+                    new HashSet<PublicKey>() { signer.PublicKey }.ToImmutableHashSet(),
                 DifferentAppProtocolVersionEncountered = (_, ver, __) => { isCalled = true; },
             };
             AppProtocolVersionOptions v2 = new AppProtocolVersionOptions()
