@@ -110,6 +110,10 @@ JSON.</li>
 had lacked the content of its <code>PublicKey</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
 <li>(Libplanet.Explorer) Fixed a bug where the query <code>stateQuery</code> hadn't work
 correctly.  [<a href="https://github.com/planetarium/libplanet/pull/2757">#2757</a>]</li>
+<li>Fixed a bug of <code>DefaultStore.PutTxExecution()</code> where sometimes <code>TxExecution</code>
+data is in undefined state due to data corruption.  [<a href="https://github.com/planetarium/libplanet/pull/2761">#2761</a>]</li>
+<li>(Libplanet.Node) Fixed a bug of <code>NodeUtils&lt;T&gt;.CreateGenesisBlock()</code> where
+sometimes block data is in undefined state due to data corruption. [<a href="https://github.com/planetarium/libplanet/pull/2761">#2761</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
