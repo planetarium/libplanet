@@ -504,8 +504,10 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            string identityHex = ByteUtil.Hex(message.Identity);
-            _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
+            string reqId = !(message.Identity is null) && message.Identity.Length == 16 ?
+                new Guid(message.Identity).ToString() : "unknown";
+
+            _logger.Debug("Reply {Message} to {Identity}...", message, reqId);
 
             var ev = new AsyncManualResetEvent();
             _replyQueue.Enqueue(
@@ -600,11 +602,14 @@ namespace Libplanet.Net.Transports
                             try
                             {
                                 Message message = _messageCodec.Decode(copied, false);
+                                string reqId = copied[0].Buffer.Length == 16 ?
+                                    new Guid(copied[0].ToByteArray()).ToString() : "unknown";
                                 _logger
                                     .ForContext("Tag", "Metric")
                                     .ForContext("Subtag", "InboundMessageReport")
                                     .Debug(
-                                        "Received message {Message} from {Peer}.",
+                                        "Received Request {RequestId} {Message} from {Peer}.",
+                                        reqId,
                                         message,
                                         message.Remote);
                                 try
@@ -615,17 +620,25 @@ namespace Libplanet.Net.Transports
                                 }
                                 catch (InvalidMessageTimestampException imte)
                                 {
+                                    const string logMsg =
+                                        "Received {RequestId} {Message} from " +
+                                        "{Peer} has an invalid timestamp.";
                                     _logger.Debug(
                                         imte,
-                                        "Received {Message} from {Peer} has an invalid timestamp.",
+                                        logMsg,
+                                        reqId,
                                         message,
                                         message.Remote);
                                 }
                                 catch (DifferentAppProtocolVersionException dapve)
                                 {
+                                    const string logMsg =
+                                        "Received Request {RequestId} {Message} " +
+                                        "from {Peer} has an invalid APV.";
                                     _logger.Debug(
                                         dapve,
-                                        "Received {Message} from {Peer} has an invalid APV.",
+                                        logMsg,
+                                        reqId,
                                         message,
                                         message.Remote);
                                     var diffVersion = new DifferentVersionMsg()
@@ -633,7 +646,9 @@ namespace Libplanet.Net.Transports
                                         Identity = message.Identity,
                                     };
                                     _logger.Debug(
-                                        "Replying to {Peer} with {Reply}.",
+                                        "Replying to Request {RequestId} {Peer} with {Reply}.",
+                                        reqId,
+                                        message.Remote,
                                         diffVersion);
                                     await ReplyMessageAsync(
                                         diffVersion,
@@ -672,19 +687,20 @@ namespace Libplanet.Net.Transports
         )
         {
             (AsyncManualResetEvent ev, NetMQMessage message) = e.Queue.Dequeue();
-            string identityHex = ByteUtil.Hex(message[0].Buffer);
+            string reqId = message[0].Buffer.Length == 16 ?
+                new Guid(message[0].ToByteArray()).ToString() : "unknown";
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
             if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
             {
                 _logger.Debug(
-                    "{Message} as a reply to {Identity} sent.", message, identityHex);
+                    "{Message} as a reply to {Identity} sent.", message, reqId);
             }
             else
             {
                 _logger.Debug(
-                    "Failed to send {Message} as a reply to {Identity}.", message, identityHex);
+                    "Failed to send {Message} as a reply to {Identity}.", message, reqId);
             }
 
             ev.Set();
@@ -743,6 +759,7 @@ namespace Libplanet.Net.Transports
 
                 using var dealer = new DealerSocket();
                 dealer.Options.DisableTimeWait = true;
+                dealer.Options.Identity = req.Id.ToByteArray();
                 try
                 {
                     _logger.Debug("Trying to connect {RequestId}.", req.Id);
