@@ -28,6 +28,10 @@ To be released.
  -  (Libplanet.Net) Changed `Swarm<T>(BlockChain<T>, PrivateKey,
     AppProtocolVersionOptions, HostOptions, SwarmOptions)` to
     `Swarm<T>(BlockChain<T>, PrivateKey, ITransport, SwarmOptions)`.  [[#2743]]
+ -  (Libplanet.Net) Changed the type for
+    `AppProtocolVersionOptions.TrustedAppProtocolVersionSigners` from
+    `IImmutableHashSet<PublicKey>?` to `IImmutableHashSet<PublicKey>`.
+    [[#2759]]
 
 ### Backward-incompatible network protocol changes
 
@@ -85,6 +89,7 @@ To be released.
 [#2756]: https://github.com/planetarium/libplanet/pull/2756
 [#2757]: https://github.com/planetarium/libplanet/pull/2757
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
+[#2759]: https://github.com/planetarium/libplanet/pull/2759
 [#2761]: https://github.com/planetarium/libplanet/pull/2761
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
