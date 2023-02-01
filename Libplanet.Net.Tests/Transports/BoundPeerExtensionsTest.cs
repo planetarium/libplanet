@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -30,26 +29,26 @@ namespace Libplanet.Net.Tests.Transports
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
-            var apvKey = new PrivateKey();
             var swarmKey = new PrivateKey();
             var consensusKey = new PrivateKey();
             var validators = new List<PublicKey>()
             {
                 swarmKey.PublicKey,
             };
-            AppProtocolVersion apv = AppProtocolVersion.Sign(apvKey, 1);
-
+            var apv = AppProtocolVersion.Sign(new PrivateKey(), 1);
+            var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
             string host = IPAddress.Loopback.ToString();
             int port = FreeTcpPort();
+            var hostOptions = new HostOptions(
+                IPAddress.Loopback.ToString(), new IceServer[] { }, port);
 
             var option = new SwarmOptions();
 
             using (var swarm = new Swarm<DumbAction>(
                 blockchain,
                 swarmKey,
-                apv,
-                host: host,
-                listenPort: port,
+                apvOptions,
+                hostOptions,
                 options: option))
             {
                 var peer = new BoundPeer(swarmKey.PublicKey, new DnsEndPoint(host, port));

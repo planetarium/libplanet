@@ -39,16 +39,16 @@ namespace Libplanet.Blockchain.Policies
         where T : IAction, new()
     {
         private readonly ConcurrentDictionary<TxId, Transaction<T>> _staged;
-        private readonly ConcurrentBag<TxId> _ignored;
+        private readonly HashSet<TxId> _ignored;
         private readonly ReaderWriterLockSlim _lock;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
-        /// By default, <see cref="Lifetime"/> is configured to 3 hours.
+        /// By default, <see cref="Lifetime"/> is set to 10 minutes.
         /// </summary>
         public VolatileStagePolicy()
-            : this(TimeSpan.FromHours(3))
+            : this(TimeSpan.FromSeconds(10 * 60))
         {
         }
 
@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain.Policies
             _logger = Log.ForContext<VolatileStagePolicy<T>>();
             Lifetime = lifetime;
             _staged = new ConcurrentDictionary<TxId, Transaction<T>>();
-            _ignored = new ConcurrentBag<TxId>();
+            _ignored = new HashSet<TxId>();
             _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
@@ -189,39 +189,14 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
         {
-            Transaction<T>? transaction = null;
-
-            _lock.EnterWriteLock();
+            _lock.EnterReadLock();
             try
             {
-                _staged.TryGetValue(id, out transaction);
-
-                if (transaction is Transaction<T> tx)
-                {
-                    if (Expired(tx) || _ignored.Contains(tx.Id))
-                    {
-                        _staged.TryRemove(id, out _);
-                        return null;
-                    }
-                    else if (filtered)
-                    {
-                        return blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer) <= tx.Nonce
-                            ? tx
-                            : null;
-                    }
-                    else
-                    {
-                        return tx;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
+                return GetInner(blockChain, id, filtered);
             }
             finally
             {
-                _lock.ExitWriteLock();
+                _lock.ExitReadLock();
             }
         }
 
@@ -230,13 +205,13 @@ namespace Libplanet.Blockchain.Policies
         {
             List<Transaction<T>> transactions = new List<Transaction<T>>();
 
-            _lock.EnterUpgradeableReadLock();
+            _lock.EnterReadLock();
             try
             {
                 List<TxId> txIds = _staged.Keys.ToList();
                 foreach (TxId txId in txIds)
                 {
-                    if (Get(blockChain, txId, filtered) is Transaction<T> tx)
+                    if (GetInner(blockChain, txId, filtered) is Transaction<T> tx)
                     {
                         transactions.Add(tx);
                     }
@@ -244,7 +219,7 @@ namespace Libplanet.Blockchain.Policies
             }
             finally
             {
-                _lock.ExitUpgradeableReadLock();
+                _lock.ExitReadLock();
             }
 
             return transactions;
@@ -275,5 +250,35 @@ namespace Libplanet.Blockchain.Policies
 
         private bool Expired(Transaction<T> transaction) =>
             transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
+
+        /// <remarks>
+        /// It has been intended to avoid recursive lock, hence doesn't hold any synchronous scope.
+        /// Therefore, we should manage the lock from its caller side.
+        /// </remarks>
+        private Transaction<T>? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
+        {
+            if (_staged.TryGetValue(id, out Transaction<T>? tx) && tx is { })
+            {
+                if (Expired(tx) || _ignored.Contains(tx.Id))
+                {
+                    _staged.TryRemove(id, out _);
+                    return null;
+                }
+                else if (filtered)
+                {
+                    return blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer) <= tx.Nonce
+                        ? tx
+                        : null;
+                }
+                else
+                {
+                    return tx;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

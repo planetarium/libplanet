@@ -2,5 +2,5 @@
 <Menees.Analyzers.Settings>
   <MaxLineColumns>100</MaxLineColumns>
   <MaxMethodLines>300</MaxMethodLines>
-  <MaxFileLines>2450</MaxFileLines>
+  <MaxFileLines>2470</MaxFileLines>
 </Menees.Analyzers.Settings>

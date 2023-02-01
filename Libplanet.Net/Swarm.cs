@@ -31,7 +31,7 @@ namespace Libplanet.Net
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
 
         private readonly AsyncLock _runningMutex;
 
@@ -51,36 +51,19 @@ namespace Libplanet.Net
         /// <param name="blockChain">A blockchain to publicize on the network.</param>
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
-        /// <param name="appProtocolVersion">An app protocol to comply.</param>
-        /// <param name="workers">The number of background workers (i.e., threads).</param>
-        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
-        /// they connect to this node.  Note that this is not a hostname to listen to;
-        /// <see cref="Swarm{T}"/> always listens to 0.0.0.0 &amp; ::/0.</param>
-        /// <param name="listenPort">A port number to listen to.</param>
-        /// <param name="iceServers">
-        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
-        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when this
-        /// node encounters a peer with one different from <paramref name="appProtocolVersion"/>,
-        /// and their version is signed by a trusted party (i.e.,
-        /// <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// </param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties who
-        /// signed <see cref="AppProtocolVersion"/>s to trust.  To trust any party, pass
-        /// <see langword="null"/>, which is the default.</param>
+        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
+        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
+        /// a <see cref="Message"/>.</param>
+        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
+        /// to the network.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         /// <param name="consensusOption"><see cref="ConsensusReactorOption"/> for
         /// initialize <see cref="ConsensusReactor{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            int workers = 100,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            AppProtocolVersionOptions appProtocolVersionOptions,
+            HostOptions hostOptions,
             SwarmOptions options = null,
             ConsensusReactorOption? consensusOption = null)
         {
@@ -95,9 +78,7 @@ namespace Libplanet.Net
 
             _runningMutex = new AsyncLock();
 
-            _appProtocolVersion = appProtocolVersion;
-            TrustedAppProtocolVersionSigners =
-                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
+            _appProtocolVersionOptions = appProtocolVersionOptions;
 
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
@@ -115,28 +96,22 @@ namespace Libplanet.Net
             // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = NetMQTransport.Create(
                 _privateKey,
-                _appProtocolVersion,
-                TrustedAppProtocolVersionSigners,
-                workers,
-                host,
-                listenPort,
-                iceServers ?? new List<IceServer>(),
-                differentAppProtocolVersionEncountered,
+                _appProtocolVersionOptions,
+                hostOptions,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
             if (consensusOption is { } consensusReactorOption)
             {
+                var consensusHostOptions = new HostOptions(
+                    hostOptions.Host,
+                    hostOptions.IceServers,
+                    consensusReactorOption.ConsensusPort);
                 NetMQTransport consensusTransport = NetMQTransport.Create(
                     privateKey: _privateKey,
-                    appProtocolVersion: _appProtocolVersion,
-                    trustedAppProtocolVersionSigners: TrustedAppProtocolVersionSigners,
-                    workers: consensusReactorOption.ConsensusWorkers,
-                    host: host,
-                    listenPort: consensusReactorOption.ConsensusPort,
-                    iceServers: iceServers ?? new List<IceServer>(),
-                    differentAppProtocolVersionEncountered: differentAppProtocolVersionEncountered,
+                    appProtocolVersionOptions: _appProtocolVersionOptions,
+                    hostOptions: consensusHostOptions,
                     messageTimestampBuffer: Options.MessageTimestampBuffer)
                         .ConfigureAwait(false).GetAwaiter().GetResult();
                 _consensusReactor = new ConsensusReactor<T>(
@@ -148,43 +123,6 @@ namespace Libplanet.Net
                     consensusReactorOption.TargetBlockInterval,
                     consensusReactorOption.ContextTimeoutOptions);
             }
-        }
-
-        internal Swarm(
-            BlockChain<T> blockChain,
-            PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            RoutingTable routingTable,
-            ITransport transport,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
-        {
-            BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
-            _store = BlockChain.Store;
-            _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
-            LastSeenTimestamps =
-                new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
-            BlockHeaderReceived = new AsyncAutoResetEvent();
-            BlockAppended = new AsyncAutoResetEvent();
-            BlockReceived = new AsyncAutoResetEvent();
-
-            _runningMutex = new AsyncLock();
-            _appProtocolVersion = appProtocolVersion;
-            TrustedAppProtocolVersionSigners =
-                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
-
-            string loggerId = _privateKey.ToAddress().ToHex();
-            _logger = Log
-                .ForContext<Swarm<T>>()
-                .ForContext("Source", nameof(Swarm<T>))
-                .ForContext("SwarmId", loggerId);
-
-            Options = options ?? new SwarmOptions();
-            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
-            RoutingTable = routingTable;
-            Transport = transport;
-            Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
-            PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
 
         ~Swarm()
@@ -220,6 +158,12 @@ namespace Libplanet.Net
         public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
 
         /// <summary>
+        /// Returns list of the validators that consensus has in its routing table.
+        /// If the node is not joining consensus, returns <c>null</c>.
+        /// </summary>
+        public IReadOnlyList<BoundPeer> Validators => _consensusReactor?.Validators;
+
+        /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
         /// synchronizes with.
         /// </summary>
@@ -229,12 +173,14 @@ namespace Libplanet.Net
         /// <see cref="PublicKey"/>s of parties who signed <see cref="AppProtocolVersion"/>s to
         /// trust.  In case of <see langword="null"/>, any parties are trusted.
         /// </summary>
-        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
+            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
 
         /// <summary>
         /// The application protocol version to comply.
         /// </summary>
-        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
+        public AppProtocolVersion AppProtocolVersion =>
+            _appProtocolVersionOptions.AppProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
 
@@ -374,53 +320,70 @@ namespace Libplanet.Net
             TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken = default)
         {
-            var tasks = new List<Task>();
-            _workerCancellationTokenSource = new CancellationTokenSource();
-            _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
+            Task<Task> runner;
+            using (await _runningMutex.LockAsync().ConfigureAwait(false))
+            {
+                _workerCancellationTokenSource = new CancellationTokenSource();
+                _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
-            if (Transport.Running)
-            {
-                throw new SwarmException("Swarm is already running.");
-            }
+                BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+                BlockCandidateTable = new BlockCandidateTable<T>();
 
-            _logger.Debug("Starting swarm...");
-            _logger.Debug("Peer information : {Peer}", AsPeer);
+                if (Transport.Running)
+                {
+                    throw new SwarmException("Swarm is already running.");
+                }
 
-            _logger.Debug("Watching the " + nameof(BlockChain) + " for tip changes...");
-            BlockChain.TipChanged += OnBlockChainTipChanged;
+                _logger.Debug("Starting swarm...");
+                _logger.Debug("Peer information : {Peer}", AsPeer);
 
-            try
-            {
-                tasks.Add(
-                    RefreshTableAsync(
-                        Options.RefreshPeriod,
-                        Options.RefreshLifespan,
-                        _cancellationToken));
-                tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
-                tasks.Add(Transport.StartAsync(_cancellationToken));
-                tasks.Add(BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken));
-                tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(FillBlocksAsync(_cancellationToken));
-                tasks.Add(ConsumeBlockCandidates(_cancellationToken));
-                tasks.Add(
-                    PollBlocksAsync(
+                _logger.Debug("Watching the " + nameof(BlockChain) + " for tip changes...");
+                BlockChain.TipChanged += OnBlockChainTipChanged;
+
+                var tasks = new List<Func<Task>>
+                {
+                    () => Transport.StartAsync(_cancellationToken),
+                    () => BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken),
+                    () => BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
+                    () => FillBlocksAsync(_cancellationToken),
+                    () => PollBlocksAsync(
                         dialTimeout,
                         Options.TipLifespan,
                         Options.MaximumPollPeers,
                         _cancellationToken
-                    )
-                );
+                    ),
+                    () => ConsumeBlockCandidates(_cancellationToken),
+                    () => RefreshTableAsync(
+                        Options.RefreshPeriod,
+                        Options.RefreshLifespan,
+                        _cancellationToken),
+                    () => RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken),
+                };
+
                 if (_consensusReactor is { })
                 {
-                    tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
+                    tasks.Add(() => _consensusReactor.StartAsync(_cancellationToken));
                 }
 
-                _logger.Debug("Swarm started.");
+                if (Options.StaticPeers.Any())
+                {
+                    tasks.Add(
+                        () => MaintainStaticPeerAsync(
+                            Options.StaticPeersMaintainPeriod,
+                            _cancellationToken
+                        )
+                    );
+                }
 
-                await await Task.WhenAny(tasks);
+                runner = Task.WhenAny(tasks.Select(CreateLongRunningTask));
+                await Transport.WaitForRunningAsync().ConfigureAwait(false);
+            }
+
+            try
+            {
+                _logger.Debug("Swarm started.");
+                await await runner;
             }
             catch (OperationCanceledException e)
             {
@@ -451,7 +414,8 @@ namespace Libplanet.Net
                 seedPeers: Options.BootstrapOptions.SeedPeers,
                 dialTimeout: Options.BootstrapOptions.DialTimeout,
                 searchDepth: Options.BootstrapOptions.SearchDepth,
-                cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -483,7 +447,7 @@ namespace Libplanet.Net
                 seedPeers,
                 dialTimeout,
                 searchDepth,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             if (!Transport.Running)
             {
@@ -755,7 +719,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        public async Task AddPeersAsync(
+        public Task AddPeersAsync(
             IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
@@ -770,7 +734,7 @@ namespace Libplanet.Net
                 cancellationToken = _cancellationToken;
             }
 
-            await PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
+            return PeerDiscovery.AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
@@ -802,12 +766,21 @@ namespace Libplanet.Net
                 nameof(Messages.GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
-            Message parsedMessage = await Transport.SendMessageAsync(
-                peer,
-                request,
-                timeout: transportTimeout,
-                cancellationToken: cancellationToken
-            );
+
+            Message parsedMessage;
+            try
+            {
+                parsedMessage = await Transport.SendMessageAsync(
+                    peer,
+                    request,
+                    timeout: transportTimeout,
+                    cancellationToken: cancellationToken
+                ).ConfigureAwait(false);
+            }
+            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            {
+                yield break;
+            }
 
             if (parsedMessage is BlockHashesMsg blockHashes)
             {
@@ -871,14 +844,22 @@ namespace Libplanet.Net
                 blockRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
-            IEnumerable<Message> replies = await Transport.SendMessageAsync(
-                peer,
-                request,
-                blockRecvTimeout,
-                ((hashCount - 1) / request.ChunkSize) + 1,
-                false,
-                cancellationToken
-            );
+            IEnumerable<Message> replies;
+            try
+            {
+                replies = await Transport.SendMessageAsync(
+                    peer,
+                    request,
+                    blockRecvTimeout,
+                    ((hashCount - 1) / request.ChunkSize) + 1,
+                    false,
+                    cancellationToken
+                ).ConfigureAwait(false);
+            }
+            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            {
+                yield break;
+            }
 
             _logger.Debug("Received replies from {Peer}.", peer);
             int count = 0;
@@ -887,7 +868,7 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (message is Messages.BlocksMsg blockMessage)
+                if (message is BlocksMsg blockMessage)
                 {
                     List<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
@@ -940,14 +921,22 @@ namespace Libplanet.Net
                 txRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
-            IEnumerable<Message> replies = await Transport.SendMessageAsync(
-                peer,
-                request,
-                txRecvTimeout,
-                txCount,
-                true,
-                cancellationToken
-            );
+            IEnumerable<Message> replies;
+            try
+            {
+                replies = await Transport.SendMessageAsync(
+                    peer,
+                    request,
+                    txRecvTimeout,
+                    txCount,
+                    true,
+                    cancellationToken
+                ).ConfigureAwait(false);
+            }
+            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            {
+                yield break;
+            }
 
             foreach (Message message in replies)
             {
@@ -1117,15 +1106,11 @@ namespace Libplanet.Net
                             );
                         }
 
-                        locator = new BlockLocator(
+                        locator = BlockLocator.Create(
+                            startIndex: branchingIndex + downloaded.Count,
                             idx =>
                             {
                                 long arg = idx;
-                                if (idx < 0)
-                                {
-                                    idx = branchingIndex + downloaded.Count + 1 + idx;
-                                }
-
                                 if (idx <= branchingIndex)
                                 {
                                     return blockChain.Store.IndexBlockHash(blockChain.Id, idx);
@@ -1146,13 +1131,6 @@ namespace Libplanet.Net
                                     _logger.Error(e, msg, arg, branchingIndex, downloaded.Count);
                                     return null;
                                 }
-                            },
-                            hash =>
-                            {
-                                Block<T> block = blockChain.Store.GetBlock<T>(hash);
-                                return block is { } b
-                                    ? b.Index
-                                    : branchingIndex + 1 + downloaded.IndexOf(hash);
                             });
                     }
                     while (downloaded.Count < totalBlockHashesToDownload);
@@ -1273,7 +1251,7 @@ namespace Libplanet.Net
                     case CommunicationFailException cfe:
                         _logger.Debug(
                             cfe,
-                            "Failed to dail {Peer}.",
+                            "Failed to dial {Peer}.",
                             peer);
                         break;
                     case Exception e:
@@ -1471,6 +1449,36 @@ namespace Libplanet.Net
                     _logger.Warning(e, msg, e);
                 }
             }
+        }
+
+        private async Task MaintainStaticPeerAsync(
+            TimeSpan period,
+            CancellationToken cancellationToken)
+        {
+            TimeSpan timeout = TimeSpan.FromSeconds(3);
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var tasks = Options.StaticPeers
+                    .Where(peer => !RoutingTable.Contains(peer))
+                    .Select(async peer =>
+                    {
+                        try
+                        {
+                            await AddPeersAsync(new[] { peer }, timeout, cancellationToken);
+                        }
+                        catch (TimeoutException)
+                        {
+                        }
+                    });
+                await Task.WhenAll(tasks);
+                await Task.Delay(period, cancellationToken);
+            }
+        }
+
+        private async Task CreateLongRunningTask(Func<Task> f)
+        {
+            using var thread = new AsyncContextThread();
+            await thread.Factory.Run(f).WaitAsync(_cancellationToken);
         }
     }
 }

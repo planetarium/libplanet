@@ -72,7 +72,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.ValidatorSet[i],
+                    TestUtils.ValidatorSet[i].PublicKey,
                     VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(
                     new ConsensusPreVoteMsg(expectedVotes[i])
@@ -90,7 +90,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.ValidatorSet[i],
+                    TestUtils.ValidatorSet[i].PublicKey,
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(
                     new ConsensusPreCommitMsg(expectedVotes[i])
@@ -280,16 +280,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-
-            // Creates a lastCommit of height 1 and put it to the store.
             var createdLastCommit = TestUtils.CreateBlockCommit(block);
-            blockChain.Store.PutBlockCommit(createdLastCommit);
+            blockChain.Append(block, createdLastCommit);
 
-            // Starts height 2. Node 2 is the proposer.
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            // Context for height #2 where node #2 is the proposer is automatically started
+            // by watching blockchain's Tip.
             await heightTwoProposalSent.WaitAsync();
             Assert.NotNull(proposedBlock);
+            Assert.Equal(2, proposedBlock!.Index);
             Assert.Equal(createdLastCommit, proposedBlock!.LastCommit);
         }
 

@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blocks
                 {
                     GenesisHash = GenesisHash,
                     Timestamp = new DateTimeOffset(
-                        2021, 9, 7, 10, 23, 12, 345, TimeSpan.FromHours(9)),
+                        2021, 9, 7, 10, 23, 12, 345, default),
                 },
                 customActions: Array.Empty<Arithmetic>(),
                 signature: ByteUtil.ParseHex(
@@ -177,7 +177,6 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void TxHash()
         {
-            Assert.Null(GenesisContent.TxHash);
             var expected = new HashDigest<SHA256>(new byte[]
             {
                 0x65, 0x46, 0x98, 0xd3, 0x4b, 0x6d, 0x9a, 0x55, 0xb0, 0xc9, 0x3e,

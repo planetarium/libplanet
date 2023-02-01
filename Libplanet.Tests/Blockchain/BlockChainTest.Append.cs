@@ -398,8 +398,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void AppendWhenActionEvaluationFailed()
         {
-            var policy = new NullBlockPolicy<ThrowException>(
-                getValidatorSet: idx => TestUtils.ValidatorSet);
+            var policy = new NullBlockPolicy<ThrowException>();
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
@@ -434,14 +433,12 @@ namespace Libplanet.Tests.Blockchain
                 BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress)
+                return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(
-                validateNextBlockTx: IsSignerValid,
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(

@@ -112,18 +112,25 @@ namespace Libplanet.Node
         public Swarm<T> GetSwarm()
         {
             BlockChain<T> blockChain = GetBlockChain();
-#pragma warning disable MEN002
+            var apvOptions = new AppProtocolVersionOptions()
+            {
+                AppProtocolVersion = NetworkConfig.AppProtocolVersion,
+                TrustedAppProtocolVersionSigners =
+                    NetworkConfig.TrustedAppProtocolVersionSigners,
+                DifferentAppProtocolVersionEncountered =
+                    NetworkConfig.DifferentAppProtocolVersionEncountered,
+            };
+            var hostOptions = new HostOptions(
+                SwarmConfig.InitConfig.Host,
+                SwarmConfig.InitConfig.IceServers,
+                SwarmConfig.InitConfig.Port);
+
             return new Swarm<T>(
-                blockChain: blockChain,
                 privateKey: _privateKey,
-                appProtocolVersion: NetworkConfig.AppProtocolVersion,
-                trustedAppProtocolVersionSigners: NetworkConfig.TrustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered: NetworkConfig.DifferentAppProtocolVersionEncountered,
-                host: SwarmConfig.InitConfig.Host,
-                listenPort: SwarmConfig.InitConfig.Port,
-                iceServers: SwarmConfig.InitConfig.IceServers,
+                blockChain: blockChain,
+                appProtocolVersionOptions: apvOptions,
+                hostOptions: hostOptions,
                 options: SwarmConfig.ToSwarmOptions());
-#pragma warning restore MEN002
         }
     }
 }

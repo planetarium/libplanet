@@ -42,14 +42,24 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
+                TestUtils.PrivateKeys[3]);
 
-            AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent heightThreeStepChangedToEndCommit = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent heightFourStepChangedToPropose = new AsyncAutoResetEvent();
             consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
+                if (eventArgs.Height == 3 && eventArgs.Step == Step.Propose)
                 {
-                    stepChangedToEndCommit.Set();
+                    heightThreeStepChangedToPropose.Set();
+                }
+                else if (eventArgs.Height == 3 && eventArgs.Step == Step.EndCommit)
+                {
+                    heightThreeStepChangedToEndCommit.Set();
+                }
+                else if (eventArgs.Height == 4 && eventArgs.Step == Step.Propose)
+                {
+                    heightFourStepChangedToPropose.Set();
                 }
             };
             consensusContext.MessageBroadcasted += (_, eventArgs) =>
@@ -61,30 +71,38 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            // The given height is equal to the consensus context's height.
-            Assert.Throws<InvalidHeightIncreasingException>(
-                () => consensusContext.NewHeight(blockChain.Tip.Index));
-            // The given height is not the same tip's index + 1.
-            Assert.Throws<InvalidHeightIncreasingException>(
-                () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var blockCommit = TestUtils.CreateBlockCommit(block);
+            blockChain.Append(block, blockCommit);
+            block = blockChain.ProposeBlock(TestUtils.PrivateKeys[2], lastCommit: blockCommit);
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            Assert.Equal(2, blockChain.Tip.Index);
 
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            // Wait for context of height 3 to start.
+            await heightThreeStepChangedToPropose.WaitAsync();
+            Assert.Equal(3, consensusContext.Height);
+
+            // Cannot call NewHeight() with invalid heights.
+            Assert.Throws<InvalidHeightIncreasingException>(() => consensusContext.NewHeight(2));
+            Assert.Throws<InvalidHeightIncreasingException>(() => consensusContext.NewHeight(3));
+
             await proposalMessageSent.WaitAsync();
             Assert.NotNull(proposal?.BlockHash);
 
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[0], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[0], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[2], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[1], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[3], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
-            await stepChangedToEndCommit.WaitAsync();
-            Assert.Equal(1, blockChain.Tip.Index);
+            await heightThreeStepChangedToEndCommit.WaitAsync();
+            Assert.Equal(3, blockChain.Tip.Index);
 
-            // Next NewHeight is not called yet.
-            Assert.Equal(1, consensusContext.Height);
+            // Next height starts normally.
+            await heightFourStepChangedToPropose.WaitAsync();
+            Assert.Equal(4, consensusContext.Height);
             Assert.Equal(0, consensusContext.Round);
         }
 
@@ -127,12 +145,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
-            Assert.Throws<InvalidConsensusMessageException>(
-                () => consensusContext.HandleMessage(
-                    TestUtils.CreateConsensusPropose(
-                        blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
-                        TestUtils.PrivateKeys[0],
-                        0)));
+            Assert.False(consensusContext.HandleMessage(
+                TestUtils.CreateConsensusPropose(
+                    blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
+                    TestUtils.PrivateKeys[0],
+                    0)));
         }
 
         [Fact(Timeout = Timeout)]
@@ -226,58 +243,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var blockCommit = consensusContext.Contexts[1].GetBlockCommit();
             Assert.NotNull(blockCommit);
             Assert.NotEqual(votes[0], blockCommit!.Votes.First(x =>
-                x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
+                x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             var actualVotesWithoutInvalid =
                 HashSetExtensions.ToHashSet(blockCommit.Votes.Where(x =>
-                    !x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
+                    !x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             var expectedVotes = HashSetExtensions.ToHashSet(votes.Where(x =>
-                !x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
+                !x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
-        }
-
-        [Fact(Timeout = Timeout)]
-        public void Commit()
-        {
-            var stepChangedToPreVote = new AsyncAutoResetEvent();
-            var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            var stepChangedToEndCommit = new AsyncAutoResetEvent();
-
-            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
-
-            consensusContext.StateChanged += (sender, eventArgs) =>
-            {
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreVote)
-                {
-                    stepChangedToPreVote.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreCommit)
-                {
-                    stepChangedToPreCommit.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.EndCommit)
-                {
-                    stepChangedToEndCommit.Set();
-                }
-            };
-
-            // Height 1 does not have lastCommit, so skipping height 1.
-            var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1], lastCommit: null);
-            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-
-            var block2 = blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[2],
-                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
-            consensusContext.Commit(block2, TestUtils.CreateBlockCommit(block2));
-            Assert.Equal(blockChain.Tip, block2);
-            Assert.NotNull(blockChain.Store.GetBlockCommit(block2.Hash));
         }
     }
 }

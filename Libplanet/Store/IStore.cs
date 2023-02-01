@@ -42,19 +42,10 @@ namespace Libplanet.Store
         /// <seealso cref="GetCanonicalChainId()"/>
         void SetCanonicalChainId(Guid chainId);
 
-        /// <summary>
-        /// Returns the genesis block of the current canonical chain.
-        /// </summary>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-        /// <returns>The genesis block of the current canonical chain.</returns>
-        Block<T> GetCanonicalGenesisBlock<T>()
-            where T : IAction, new();
-
         long CountIndex(Guid chainId);
 
         /// <summary>
-        /// Lists all block hashes in the <parmaref name="chainId"/>.
+        /// Lists all block hashes in <paramref name="chainId"/>.
         /// </summary>
         /// <param name="chainId">The chain ID of the index that contains block hashes to
         /// iterate.</param>
@@ -255,22 +246,6 @@ namespace Libplanet.Store
         void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
         /// <summary>
-        /// Records the perceived time of a block.  If there is already a record, it is overwritten.
-        /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to record its perceived time.
-        /// </param>
-        /// <param name="perceivedTime">The perceived time to record.</param>
-        void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime);
-
-        /// <summary>
-        /// Queries the perceived time of a block, if it has been recorded.
-        /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.</param>
-        /// <returns>The perceived time of a block, if it exists.  Otherwise,
-        /// <see langword="null"/>.</returns>
-        DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
-
-        /// <summary>
         /// Lists all <see cref="Address"/>es that have ever signed <see cref="Transaction{T}"/>,
         /// and their corresponding <see cref="Transaction{T}"/> nonces.
         /// </summary>
@@ -351,7 +326,7 @@ namespace Libplanet.Store
         void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <summary>
-        /// Gets a <see cref="BlockCommit"/> of given height from store.
+        /// Gets a <see cref="BlockCommit"/> for given <see cref="BlockHash"/> from store.
         /// </summary>
         /// <param name="blockHash">The <see cref="BlockHash"/> of a <see cref="BlockCommit"/>
         /// to get.</param>

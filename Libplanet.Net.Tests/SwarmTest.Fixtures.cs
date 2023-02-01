@@ -31,9 +31,7 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var policy = new BlockPolicy<DumbAction>(
-                    new MinerReward(1),
-                    getValidatorSet: _ => ValidatorSet);
+                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
@@ -75,12 +73,8 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateConsensusSwarm(
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
+            HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
             Block<DumbAction> genesis = null,
@@ -88,12 +82,8 @@ namespace Libplanet.Net.Tests
         {
             return CreateSwarm(
                 privateKey,
-                appProtocolVersion,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
+                appProtocolVersionOptions,
+                hostOptions,
                 options,
                 policy,
                 genesis,
@@ -110,20 +100,14 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
+            HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
             Block<DumbAction> genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            policy = policy ?? new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockchain = MakeBlockChain(
                 policy,
@@ -131,15 +115,14 @@ namespace Libplanet.Net.Tests
                 fx.StateStore,
                 genesisBlock: genesis
             );
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
+            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
+
             return CreateSwarm(
                 blockchain,
                 privateKey,
-                appProtocolVersion,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
+                appProtocolVersionOptions,
+                hostOptions,
                 options,
                 consensusReactorOption: consensusReactorOption);
         }
@@ -147,36 +130,22 @@ namespace Libplanet.Net.Tests
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
+            HostOptions hostOptions = null,
             SwarmOptions options = null,
             ConsensusReactorOption? consensusReactorOption = null
         )
             where T : IAction, new()
         {
-            if (host is null && !(iceServers?.Any() ?? false))
-            {
-                host = IPAddress.Loopback.ToString();
-            }
-
+            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
+            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
             options ??= new SwarmOptions();
-            privateKey ??= new PrivateKey();
-
             var swarm = new Swarm<T>(
                 blockChain,
-                privateKey,
-                appProtocolVersion ?? DefaultAppProtocolVersion,
-                workers: 5,
-                host: host,
-                listenPort: listenPort,
-                iceServers: iceServers,
-                differentAppProtocolVersionEncountered: differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners: trustedAppProtocolVersionSigners,
-                options: options,
+                privateKey ?? new PrivateKey(),
+                appProtocolVersionOptions,
+                hostOptions,
+                options,
                 consensusOption: consensusReactorOption);
             _finalizers.Add(async () =>
             {

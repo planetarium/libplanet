@@ -5,6 +5,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Consensus;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
@@ -132,7 +133,8 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
-                randomSeed: _random.Next()
+                randomSeed: _random.Next(),
+                logs: new List<string>()
             );
 
             // Consume original's random state...
@@ -157,7 +159,7 @@ namespace Libplanet.Tests.Action
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             ITrie previousBlockStatesTrie = new MerkleTrie(keyValueStore);
-            previousBlockStatesTrie = previousBlockStatesTrie.Set(default, Null.Value);
+            previousBlockStatesTrie = previousBlockStatesTrie.Set(new KeyBytes(0x01), Null.Value);
             var actionContext = new ActionContext(
                 genesisHash: null,
                 signer: _address,
@@ -177,7 +179,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(callPreviousStateRootHash ? 1 : 0, keyValueStore.ListKeys().Count());
         }
 
-        private class DumbAccountStateDelta : IAccountStateDelta
+        private class DumbAccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
         {
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
@@ -212,6 +214,11 @@ namespace Libplanet.Tests.Action
                 return currency * 0;
             }
 
+            public virtual ValidatorSet GetValidatorSet()
+            {
+                return new ValidatorSet();
+            }
+
             public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value) =>
                 this;
 
@@ -223,6 +230,8 @@ namespace Libplanet.Tests.Action
             ) => this;
 
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
+
+            public IAccountStateDelta SetValidator(Validator validator) => this;
         }
     }
 }

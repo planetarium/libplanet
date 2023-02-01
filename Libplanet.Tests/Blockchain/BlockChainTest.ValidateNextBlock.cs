@@ -23,10 +23,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -40,11 +40,11 @@ namespace Libplanet.Tests.Blockchain
                     protocolVersion: protocolVersion,
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
-                    publicKey: protocolVersion >= 2 ? _fx.Miner.PublicKey : null,
+                    miner: _fx.Proposer.PublicKey.ToAddress(),
+                    publicKey: protocolVersion >= 2 ? _fx.Proposer.PublicKey : null,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
@@ -52,11 +52,11 @@ namespace Libplanet.Tests.Blockchain
                     protocolVersion: protocolVersion - 1,
                     index: 2L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
-                    publicKey: protocolVersion - 1 >= 2 ? _fx.Miner.PublicKey : null,
+                    miner: _fx.Proposer.PublicKey.ToAddress(),
+                    publicKey: protocolVersion - 1 >= 2 ? _fx.Proposer.PublicKey : null,
                     previousHash: block1.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
@@ -67,11 +67,11 @@ namespace Libplanet.Tests.Blockchain
                         protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
                         index: 2L,
                         timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
-                        miner: _fx.Miner.PublicKey.ToAddress(),
-                        publicKey: _fx.Miner.PublicKey,
+                        miner: _fx.Proposer.PublicKey.ToAddress(),
+                        publicKey: _fx.Proposer.PublicKey,
                         previousHash: block1.Hash,
                         txHash: null,
-                        lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                        lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
                 _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             });
         }
@@ -86,10 +86,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: prev.Index,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: prev.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
                     blockWithAlreadyUsedIndex,
@@ -100,11 +100,11 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: prev.Index + 2,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: prev.Hash,
                     txHash: null,
                     lastCommit: TestUtils.CreateBlockCommit(prev.Hash, prev.Index + 1, 0)))
-                    .Propose().Evaluate(_fx.Miner, _blockChain);
+                    .Propose().Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
                     blockWithIndexAfterNonexistentIndex,
@@ -121,13 +121,13 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 2,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     // Should be _validNext.Hash instead
                     previousHash: _validNext.PreviousHash,
                     txHash: null,
                     // ReSharper disable once PossibleInvalidOperationException
                     lastCommit: TestUtils.CreateBlockCommit(_validNext.PreviousHash.Value, 1, 0)))
-                .Propose().Evaluate(_fx.Miner, _blockChain);
+                .Propose().Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(
                         invalidPreviousHashBlock,
@@ -143,11 +143,11 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 2,
                     timestamp: _validNext.Timestamp.AddSeconds(-1),
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _validNext.Hash,
                     txHash: null,
                     lastCommit: TestUtils.CreateBlockCommit(_validNext)))
-                .Propose().Evaluate(_fx.Miner, _blockChain);
+                .Propose().Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(
                         invalidPreviousTimestamp,
@@ -159,15 +159,14 @@ namespace Libplanet.Tests.Blockchain
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
             var policy = new BlockPolicy<DumbAction>(
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
-                getValidatorSet: idx => TestUtils.ValidatorSet
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
             var genesisBlock = TestUtils.ProposeGenesis<DumbAction>(
-                TestUtils.GenesisMiner.PublicKey
+                TestUtils.GenesisProposer.PublicKey
             ).Evaluate(
-                TestUtils.GenesisMiner,
+                TestUtils.GenesisProposer,
                 policy.BlockAction,
                 policy.NativeTokens.Contains,
                 stateStore
@@ -188,16 +187,15 @@ namespace Libplanet.Tests.Blockchain
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1,
                     timestamp: genesisBlock.Timestamp.AddSeconds(1),
-                    miner: TestUtils.GenesisMiner.PublicKey.ToAddress(),
-                    publicKey: TestUtils.GenesisMiner.PublicKey,
+                    miner: TestUtils.GenesisProposer.PublicKey.ToAddress(),
+                    publicKey: TestUtils.GenesisProposer.PublicKey,
                     previousHash: genesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(TestUtils.GenesisMiner, chain1);
+                    lastCommit: null)).Propose().Evaluate(TestUtils.GenesisProposer, chain1);
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
-                policy.BlockInterval,
-                getValidatorSet: idx => TestUtils.ValidatorSet
+                policy.BlockInterval
             );
             var chain2 = new BlockChain<DumbAction>(
                 policyWithBlockAction,
@@ -217,10 +215,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -232,10 +230,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var blockCommit = TestUtils.CreateBlockCommit(block1);
@@ -243,10 +241,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 2L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
-                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(_blockChain.Tip, block2);
         }
@@ -258,10 +256,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var invalidValidator = new PrivateKey();
@@ -279,10 +277,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 2L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
-                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
@@ -294,10 +292,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var keysExceptPeer0 = TestUtils.ValidatorPrivateKeys.Where(
@@ -314,10 +312,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 2,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
-                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
@@ -354,10 +352,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(
@@ -375,10 +373,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(
@@ -396,10 +394,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(
@@ -426,10 +424,10 @@ namespace Libplanet.Tests.Blockchain
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    publicKey: _fx.Miner.PublicKey,
+                    publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(validNextBlock, null));

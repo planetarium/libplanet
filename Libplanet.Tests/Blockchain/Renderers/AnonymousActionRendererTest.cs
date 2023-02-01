@@ -2,6 +2,7 @@ using System;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 
@@ -12,7 +13,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IAction _action = new DumbAction();
 
         private static IAccountStateDelta _stateDelta =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
+            new AccountStateDeltaImpl(
+                _ => null,
+                (_, __) => default,
+                _ => default,
+                () => new ValidatorSet(),
+                default);
 
         private static IActionContext _actionContext =
             new ActionContext(default, default, default, default, default, _stateDelta, default);
@@ -20,13 +26,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static Exception _exception = new Exception();
 
         private static Block<DumbAction> _genesis =
-            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
         private static Block<DumbAction> _blockA =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         private static Block<DumbAction> _blockB =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         [Fact]
         public void ActionRenderer()

@@ -1,8 +1,10 @@
+using System;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 using Random = System.Random;
@@ -69,6 +71,7 @@ namespace Libplanet.Tests.Action.Sys
                 accountStateGetter: addr => new IValue[addr.Count],
                 accountBalanceGetter: (addr, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
+                validatorSetGetter: () => new ValidatorSet(),
                 signer: signer
             );
             BlockHash genesisHash = random.NextBlockHash();

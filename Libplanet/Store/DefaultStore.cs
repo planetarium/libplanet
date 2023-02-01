@@ -567,32 +567,6 @@ namespace Libplanet.Store
             }
         }
 
-        /// <inheritdoc cref="BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
-        public override void SetBlockPerceivedTime(
-            BlockHash blockHash,
-            DateTimeOffset perceivedTime
-        )
-        {
-            UPath path = BlockPath(blockHash);
-            if (!_blockPerceptions.FileExists(path))
-            {
-                UPath dirPath = path.GetDirectory();
-                CreateDirectoryRecursively(_blockPerceptions, dirPath);
-                _blockPerceptions.WriteAllBytes(path, new byte[0]);
-            }
-
-            _blockPerceptions.SetLastWriteTime(path, perceivedTime.LocalDateTime);
-        }
-
-        /// <inheritdoc cref="BaseStore.GetBlockPerceivedTime(BlockHash)"/>
-        public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
-        {
-            UPath path = BlockPath(blockHash);
-            return _blockPerceptions.FileExists(path)
-                ? (DateTimeOffset?)_blockPerceptions.GetLastWriteTime(path)
-                : null;
-        }
-
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {

@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Cocona;
+using GraphQL.Server;
+using GraphQL.Utilities;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -17,6 +19,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Schemas;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
@@ -25,6 +28,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using NetMQ;
 using Serilog;
 using Serilog.Events;
@@ -38,15 +42,51 @@ namespace Libplanet.Explorer.Executable
     {
         public static async Task Main(string[] args)
         {
+            if (args.Length > 0 && !new string[]
+            {
+                "serve",
+                "schema",
+            }.Contains(args[0]))
+            {
+                Console.Error.WriteLine(
+                    "NOTICE: the root primary command has been deprecated and moved " +
+                    "to the `serve` command. Currently the root primary command forwards " +
+                    "to the `serve` command but it'll be obsoleted in the 0.47.0 release.");
+            }
+
             await CoconaLiteApp.RunAsync<Program>(args);
         }
+
+        [Command(Description = "Show GraphQL schema")]
+        public void Schema()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddGraphQL()
+                .AddGraphTypes(typeof(LibplanetExplorerSchema<NullAction>));
+
+            serviceCollection.AddSingleton<IBlockChainContext<NullAction>, Startup>();
+            serviceCollection.AddSingleton<IStore, MemoryStore>();
+
+            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            var schema = new LibplanetExplorerSchema<NullAction>(serviceProvider);
+            var printer = new SchemaPrinter(schema);
+
+            Console.WriteLine(printer.Print());
+        }
+
+        // This command has been deprecated. The `serve` command should be used instead.
+        // FIXME: Obsolete this command in 0.47.0 release.
+        [CommandMethodForwardedTo(typeof(Program), nameof(Serve))]
+        [PrimaryCommand]
+        public void Run()
+            => throw new NotSupportedException();
 
         [Command(Description = "Run libplanet-explorer with options.")]
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "MEN003",
             Justification = "Many lines are required for running the method.")]
-        public async Task Run(
+        public async Task Serve(
             [Option(
                 "store-path",
                 new[] { 'P' },
@@ -81,11 +121,6 @@ consecutive blocks.")]
                 new[] { 'D' },
                 Description = "A bound divisor to determine precision of block difficulties.")]
             int difficultyBoundDivisor = 128,
-            [Option(
-                "workers",
-                new[] { 'W' },
-                Description = "The number of swarm workers.")]
-            int workers = 100,
             [Option(
                 "app-protocol-version",
                 new[] { 'V' },
@@ -147,7 +182,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 port,
                 blockIntervalMilliseconds,
                 difficultyBoundDivisor,
-                workers,
                 appProtocolVersionToken,
                 mysqlServer,
                 mysqlPort,
@@ -238,18 +272,25 @@ If omitted (default) explorer only the local blockchain store.")]
                         },
                     };
 
+                    var apvOptions = new AppProtocolVersionOptions()
+                    {
+                        AppProtocolVersion = options.AppProtocolVersionToken is string t
+                            ? AppProtocolVersion.FromToken(t)
+                            : default(AppProtocolVersion),
+                    };
+
+                    var hostOptions = new HostOptions(null, new[] { options.IceServer });
+
                     swarm = new Swarm<NullAction>(
                         blockChain,
                         privateKey,
-                        options.AppProtocolVersionToken is string t
-                            ? AppProtocolVersion.FromToken(t)
-                            : default(AppProtocolVersion),
-                        differentAppProtocolVersionEncountered: (p, pv, lv) => { },
-                        workers: options.Workers,
-                        iceServers: new[] { options.IceServer },
+                        apvOptions,
+                        hostOptions,
                         options: swarmOptions
                     );
                 }
+
+                Startup.SwarmSingleton = swarm;
 
                 using (var cts = new CancellationTokenSource())
                 using (swarm)
@@ -407,29 +448,20 @@ If omitted (default) explorer only the local blockchain store.")]
             public long GetMaxTransactionsBytes(long index) =>
                 _impl.GetMaxTransactionsBytes(index);
 
-            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
-            {
-                return 0;
-            }
+            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks) => 0;
 
             public TxPolicyViolationException ValidateNextBlockTx(
-                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
-            {
-                return _impl.ValidateNextBlockTx(blockChain, transaction);
-            }
+                BlockChain<NullAction> blockChain,
+                Transaction<NullAction> transaction) =>
+                _impl.ValidateNextBlockTx(blockChain, transaction);
 
             public BlockPolicyViolationException ValidateNextBlock(
-                BlockChain<NullAction> blockChain, Block<NullAction> nextBlock
-            )
-            {
-                return _impl.ValidateNextBlock(blockChain, nextBlock);
-            }
+                BlockChain<NullAction> blockChain,
+                Block<NullAction> nextBlock
+            ) => _impl.ValidateNextBlock(blockChain, nextBlock);
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
-
-            public ValidatorSet GetValidatorSet(long index) =>
-                new ValidatorSet(new List<PublicKey>());
         }
 
         internal class Startup : IBlockChainContext<NullAction>
@@ -440,11 +472,15 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IStore Store => StoreSingleton;
 
+            public Swarm<NullAction> Swarm => SwarmSingleton;
+
             internal static bool PreloadedSingleton { get; set; }
 
             internal static BlockChain<NullAction> BlockChainSingleton { get; set; }
 
             internal static IStore StoreSingleton { get; set; }
+
+            internal static Swarm<NullAction> SwarmSingleton { get; set; }
         }
 
         private class NoOpStateStore : IStateStore

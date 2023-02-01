@@ -24,7 +24,9 @@ using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using NetMQ;
 using Nito.AsyncEx;
+using Nito.AsyncEx.Synchronous;
 using Serilog;
 using xRetry;
 using Xunit;
@@ -45,6 +47,8 @@ namespace Libplanet.Net.Tests
         private readonly ITestOutputHelper _output;
         private readonly ILogger _logger;
 
+        private bool _disposed = false;
+
         public SwarmTest(ITestOutputHelper output)
         {
             const string outputTemplate =
@@ -62,17 +66,15 @@ namespace Libplanet.Net.Tests
             _finalizers = new List<Func<Task>>();
         }
 
+        ~SwarmTest()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            Log.Logger.Debug("Starts to finalize {Resources} resources...", _finalizers.Count);
-            int i = 1;
-            foreach (Func<Task> finalize in _finalizers)
-            {
-                Log.Logger.Debug("Tries to finalize the resource #{Resource}...", i++);
-                finalize().Wait(DisposeTimeout);
-            }
-
-            Log.Logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         [Fact(Timeout = Timeout)]
@@ -135,6 +137,7 @@ namespace Libplanet.Net.Tests
 
             await StartAsync(swarmA);
             await StartAsync(swarmB);
+            await Task.Delay(1000);
 
             Assert.True(swarmA.Running);
             Assert.True(swarmB.Running);
@@ -304,6 +307,65 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task MaintainStaticPeers()
+        {
+            var keyA = new PrivateKey();
+            var hostOptionsA = new HostOptions(
+                IPAddress.Loopback.ToString(), new IceServer[] { }, 20_000);
+            var hostOptionsB = new HostOptions(
+                IPAddress.Loopback.ToString(), new IceServer[] { }, 20_001);
+
+            Swarm<DumbAction> swarmA = CreateSwarm(keyA, hostOptions: hostOptionsA);
+            Swarm<DumbAction> swarmB = CreateSwarm(hostOptions: hostOptionsB);
+            await StartAsync(swarmA);
+            await StartAsync(swarmB);
+
+            Swarm<DumbAction> swarm = CreateSwarm(
+                options: new SwarmOptions
+                {
+                    StaticPeers = new[]
+                    {
+                        swarmA.AsPeer,
+                        swarmB.AsPeer,
+                        // Unreachable peer:
+                        new BoundPeer(
+                            new PrivateKey().PublicKey,
+                            new DnsEndPoint("127.0.0.1", 65535)
+                        ),
+                    }.ToImmutableHashSet(),
+                    StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
+                });
+
+            await StartAsync(swarm);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+
+            _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
+            await StopAsync(swarmA);
+            swarmA.Dispose();
+            await Task.Delay(100);
+            await swarm.PeerDiscovery.RefreshTableAsync(
+                TimeSpan.Zero,
+                default);
+            // Invoke once more in case of swarmA and swarmB is in the same bucket,
+            // and swarmA is last updated.
+            await swarm.PeerDiscovery.RefreshTableAsync(
+                TimeSpan.Zero,
+                default);
+            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+            Assert.Contains(swarmB.AsPeer, swarm.Peers);
+
+            Swarm<DumbAction> swarmC = CreateSwarm(keyA, hostOptions: hostOptionsA);
+            await StartAsync(swarmC);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
+
+            await StopAsync(swarm);
+            await StopAsync(swarmB);
+            await StopAsync(swarmC);
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task Cancel()
         {
             Swarm<DumbAction> swarm = CreateSwarm();
@@ -316,31 +378,20 @@ namespace Libplanet.Net.Tests
 
             await Task.Delay(100);
             cts.Cancel();
-            bool canceled = false;
-            try
-            {
-                await task;
-            }
-            catch (OperationCanceledException)
-            {
-                canceled = true;
-            }
-
-            Assert.True(canceled);
+            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task BootstrapContext()
         {
-            var stepChangedToPreVotes = Enumerable.Range(0, 4).Select(i =>
+            var collectedTwoMessages = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var stepChangedToPreCommits = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var roundChangedToOnes = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
@@ -358,14 +409,19 @@ namespace Libplanet.Net.Tests
                     TargetBlockInterval = TimeSpan.FromSeconds(10),
                     ContextTimeoutOptions = new ContextTimeoutOption(),
                 }).ToList();
-            var swarms = Enumerable.Range(0, 4).Select(i =>
-                CreateSwarm(
-                    privateKey: TestUtils.PrivateKeys[i],
-                    host: "localhost",
-                    listenPort: 9000 + i,
-                    policy: policy,
-                    genesis: genesis,
-                    consensusReactorOption: reactorOpts[i])).ToList();
+            var swarms = Enumerable.Range(0, 4)
+                .Select(
+                    i =>
+                        CreateSwarm(
+                            privateKey: TestUtils.PrivateKeys[i],
+                            hostOptions: new HostOptions(
+                                "localhost",
+                                Array.Empty<IceServer>(),
+                                9000 + i),
+                            policy: policy,
+                            genesis: genesis,
+                            consensusReactorOption: reactorOpts[i]))
+                .ToList();
 
             try
             {
@@ -376,22 +432,14 @@ namespace Libplanet.Net.Tests
 
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreVote)
+                    if (eventArgs.MessageLogSize == 2)
                     {
-                        stepChangedToPreVotes[0].Set();
-                    }
-                };
-                swarms[3].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
-                {
-                    if (eventArgs.Step == Step.PreVote)
-                    {
-                        stepChangedToPreVotes[3].Set();
+                        collectedTwoMessages[0].Set();
                     }
                 };
 
-                // Make sure both swarms time out.
-                await Task.WhenAll(
-                    stepChangedToPreVotes[0].WaitAsync(), stepChangedToPreVotes[3].WaitAsync());
+                // Make sure both swarms time out and swarm[0] collects two PreVotes.
+                await collectedTwoMessages[0].WaitAsync();
 
                 // Dispose swarm[3] to simulate shutdown during bootstrap.
                 swarms[3].Dispose();
@@ -400,7 +448,7 @@ namespace Libplanet.Net.Tests
                 _ = swarms[2].StartAsync();
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreVote)
+                    if (eventArgs.Step == Step.PreCommit)
                     {
                         stepChangedToPreCommits[0].Set();
                     }
@@ -429,7 +477,7 @@ namespace Libplanet.Net.Tests
                 {
                     if (eventArgs.Message is ConsensusProposalMsg proposalMsg &&
                         proposalMsg.Round == 1 &&
-                        proposalMsg.Validator.Equals(TestUtils.PrivateKeys[2].PublicKey))
+                        proposalMsg.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[2].PublicKey))
                     {
                         roundOneProposed.Set();
                     }
@@ -453,17 +501,13 @@ namespace Libplanet.Net.Tests
         public async Task GetBlocks()
         {
             var keyA = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
-            Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
-                privateKey: new PrivateKey(), blockAction: policy.BlockAction);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
 
-            Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
+            Swarm<DumbAction> swarmA = CreateSwarm(keyA, policy: policy);
+            Block<DumbAction> genesis = swarmA.BlockChain.Genesis;
             Swarm<DumbAction> swarmB = CreateSwarm(genesis: genesis, policy: policy);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
-            BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
             Block<DumbAction> block1 = chainA.ProposeBlock(keyA);
             chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
@@ -527,12 +571,9 @@ namespace Libplanet.Net.Tests
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
 
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
-            Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
-                privateKey: new PrivateKey(), blockAction: policy.BlockAction);
-            Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            Swarm<DumbAction> swarmA = CreateSwarm(keyA, policy: policy);
+            Block<DumbAction> genesis = swarmA.BlockChain.Genesis;
             Swarm<DumbAction> swarmB = CreateSwarm(keyB, genesis: genesis, policy: policy);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
@@ -593,12 +634,9 @@ namespace Libplanet.Net.Tests
         {
             var keyB = new PrivateKey();
 
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: idx => ValidatorSet);
-            Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
-                privateKey: new PrivateKey(), blockAction: policy.BlockAction);
-            Swarm<DumbAction> swarmA = CreateSwarm(genesis: genesis, policy: policy);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            Swarm<DumbAction> swarmA = CreateSwarm(policy: policy);
+            Block<DumbAction> genesis = swarmA.BlockChain.Genesis;
             Swarm<DumbAction> swarmB = CreateSwarm(keyB, genesis: genesis, policy: policy);
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
@@ -642,50 +680,24 @@ namespace Libplanet.Net.Tests
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
-            var consensusPrivateKey = new PrivateKey();
-            AppProtocolVersion ver = AppProtocolVersion.Sign(key, 1);
+            var apv = AppProtocolVersion.Sign(key, 1);
+            var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
+            var hostOptions = new HostOptions(
+                IPAddress.Loopback.ToString(), new IceServer[] { });
+
             // TODO: Check Consensus Parameters.
             Assert.Throws<ArgumentNullException>(() =>
-            {
-                new Swarm<DumbAction>(
-                    null,
-                    key,
-                    ver);
-            });
-
+                new Swarm<DumbAction>(null, key, apvOptions, hostOptions));
             Assert.Throws<ArgumentNullException>(() =>
-            {
-                new Swarm<DumbAction>(
-                    blockchain,
-                    null,
-                    ver);
-            });
-
-            // Swarm<DumbAction> needs host or iceServers.
-            Assert.Throws<ArgumentException>(() =>
-            {
-                new Swarm<DumbAction>(
-                    blockchain,
-                    key,
-                    ver);
-            });
-
-            // Swarm<DumbAction> needs host or iceServers.
-            Assert.Throws<ArgumentException>(() =>
-            {
-                new Swarm<DumbAction>(
-                    blockchain,
-                    key,
-                    ver,
-                    iceServers: new IceServer[] { });
-            });
+                new Swarm<DumbAction>(blockchain, null, apvOptions, hostOptions));
         }
 
         [Fact(Timeout = Timeout)]
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
-            using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
+            var hostOptions = new HostOptions("1.2.3.4", new IceServer[] { }, 5678);
+            using (Swarm<DumbAction> s = CreateSwarm(hostOptions: hostOptions))
             {
                 Assert.Equal(expected, s.EndPoint);
                 Assert.Equal(expected, s.AsPeer?.EndPoint);
@@ -726,9 +738,11 @@ namespace Libplanet.Net.Tests
         public async Task ExchangeWithIceServer()
         {
             var iceServers = FactOnlyTurnAvailableAttribute.GetIceServers();
-            var seed = CreateSwarm(host: "localhost");
-            var swarmA = CreateSwarm(iceServers: iceServers);
-            var swarmB = CreateSwarm(iceServers: iceServers);
+            var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
+            var swarmHostOptions = new HostOptions(null, iceServers);
+            var seed = CreateSwarm(hostOptions: seedHostOptions);
+            var swarmA = CreateSwarm(hostOptions: swarmHostOptions);
+            var swarmB = CreateSwarm(hostOptions: swarmHostOptions);
 
             try
             {
@@ -781,18 +795,16 @@ namespace Libplanet.Net.Tests
             string username = userInfo[0];
             string password = userInfo[1];
             var proxyUri = new Uri($"turn://{username}:{password}@localhost:{port}/");
-
-            IEnumerable<IceServer> iceServers = new[]
-            {
-                new IceServer(url: proxyUri),
-            };
+            IEnumerable<IceServer> iceServers = new[] { new IceServer(url: proxyUri) };
 
             var cts = new CancellationTokenSource();
             var proxyTask = TurnProxy(port, turnUrl, cts.Token);
 
             var seedKey = new PrivateKey();
-            var seed = CreateSwarm(seedKey, host: "localhost");
-            var swarmA = CreateSwarm(iceServers: iceServers);
+            var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
+            var swarmHostOptions = new HostOptions(null, iceServers, 0);
+            var seed = CreateSwarm(seedKey, hostOptions: seedHostOptions);
+            var swarmA = CreateSwarm(hostOptions: swarmHostOptions);
 
             async Task RefreshTableAsync(CancellationToken cancellationToken)
             {
@@ -862,9 +874,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var renderer = new RecordingActionRenderer<DumbAction>();
             var chain = MakeBlockChain(
                 policy,
@@ -1096,7 +1106,8 @@ namespace Libplanet.Net.Tests
                 BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress)
+                return tx.Signer.Equals(validAddress) ||
+                       tx.Signer.Equals(GenesisProposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -1155,7 +1166,8 @@ namespace Libplanet.Net.Tests
                 BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress)
+                return tx.Signer.Equals(validAddress) ||
+                       tx.Signer.Equals(GenesisProposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -1220,37 +1232,33 @@ namespace Libplanet.Net.Tests
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
-            var policyA = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
-            var policyB = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
-            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
-                keyC,
-                stateRootHash: MerkleTrie.EmptyRootHash);
+            var policy = new NullBlockPolicy<DumbAction>();
+            var policyA = new NullBlockPolicy<DumbAction>();
+            var policyB = new NullBlockPolicy<DumbAction>();
+            var fx = new DefaultStoreFixture();
+            var genesis = fx.GenesisBlock;
             Block<DumbAction> aBlock1 = ProposeNextBlock(
                 genesis,
                 keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash);
+                stateRootHash: genesis.StateRootHash);
             Block<DumbAction> aBlock2 = ProposeNextBlock(
                 aBlock1,
                 keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash,
+                stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(aBlock1));
             Block<DumbAction> aBlock3 = ProposeNextBlock(
                 aBlock2,
                 keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash,
+                stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(aBlock2));
             Block<DumbAction> bBlock1 = ProposeNextBlock(
                 genesis,
                 keyB,
-                stateRootHash: MerkleTrie.EmptyRootHash);
+                stateRootHash: genesis.StateRootHash);
             Block<DumbAction> bBlock2 = ProposeNextBlock(
                 bBlock1,
                 keyB,
-                stateRootHash: MerkleTrie.EmptyRootHash,
+                stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(bBlock1));
 
             policyA.BlockedMiners.Add(keyB.ToAddress());
@@ -1341,31 +1349,24 @@ namespace Libplanet.Net.Tests
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock(actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock(actionsB, privateKeyB);
-
-            BlockChain<DumbAction> MakeGenesisChain(
-                IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
-                new BlockChain<DumbAction>(
-                    new BlockPolicy<DumbAction>(
-                        getValidatorSet: idx => ValidatorSet),
-                    new VolatileStagePolicy<DumbAction>(),
-                    store,
-                    stateStore,
-                    genesisBlock);
-
-            var genesisChainA = MakeGenesisChain(
+            var genesisChainA = MakeBlockChain(
+                new BlockPolicy<DumbAction>(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                genesisBlockA);
-            var genesisChainB = MakeGenesisChain(
+                actionsA,
+                privateKeyA);
+            var genesisBlockA = genesisChainA.Genesis;
+            var genesisChainB = MakeBlockChain(
+                new BlockPolicy<DumbAction>(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                genesisBlockB);
-            var genesisChainC = MakeGenesisChain(
+                actionsB,
+                privateKeyB);
+            var genesisChainC = MakeBlockChain(
+                new BlockPolicy<DumbAction>(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                genesisBlockA);
+                genesisBlock: genesisBlockA);
 
             var swarmA = CreateSwarm(genesisChainA, privateKeyA);
             var swarmB = CreateSwarm(genesisChainB, privateKeyB);
@@ -1639,8 +1640,8 @@ namespace Libplanet.Net.Tests
             await StartAsync(receiver);
             await StartAsync(sender);
 
-            receiver.FindNextHashesChunkSize = 2;
-            sender.FindNextHashesChunkSize = 2;
+            receiver.FindNextHashesChunkSize = 3;
+            sender.FindNextHashesChunkSize = 3;
             BlockChain<DumbAction> chain = sender.BlockChain;
 
             for (int i = 0; i < 6; i++)
@@ -1666,7 +1667,7 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 sender.BroadcastBlock(sender.BlockChain.Tip);
                 Assert.Equal(
-                    2,
+                    3,
                     receiver.BlockChain.Count);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
@@ -1676,7 +1677,7 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 sender.BroadcastBlock(sender.BlockChain.Tip);
                 Assert.Equal(
-                    4,
+                    5,
                     receiver.BlockChain.Count);
 
                 sender.BroadcastBlock(sender.BlockChain.Tip);
@@ -1686,7 +1687,7 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 sender.BroadcastBlock(sender.BlockChain.Tip);
                 Assert.Equal(
-                    6,
+                    7,
                     receiver.BlockChain.Count);
             }
             finally
@@ -1778,6 +1779,28 @@ namespace Libplanet.Net.Tests
             {
                 await StopAsync(swarm1);
                 await StopAsync(swarm2);
+            }
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _logger.Debug("Starts to finalize {Resources} resources...", _finalizers.Count);
+                    int i = 1;
+                    foreach (Func<Task> finalize in _finalizers)
+                    {
+                        _logger.Debug("Tries to finalize the resource #{Resource}...", i++);
+                        finalize().WaitAndUnwrapException();
+                    }
+
+                    _logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
+                    NetMQConfig.Cleanup(false);
+                }
+
+                _disposed = true;
             }
         }
 

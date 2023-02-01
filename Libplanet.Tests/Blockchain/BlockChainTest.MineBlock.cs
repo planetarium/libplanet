@@ -25,7 +25,9 @@ namespace Libplanet.Tests.Blockchain
         {
             Func<long, long> getMaxTransactionsBytes = _blockChain.Policy.GetMaxTransactionsBytes;
             Assert.Equal(1, _blockChain.Count);
-            AssertBencodexEqual((Text)$"{GenesisMiner.ToAddress()}", _blockChain.GetState(default));
+            AssertBencodexEqual(
+                (Text)$"{GenesisProposer.ToAddress()}",
+                _blockChain.GetState(default));
 
             var minerA = new PrivateKey();
             Block<DumbAction> block = _blockChain.ProposeBlock(minerA);
@@ -35,7 +37,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(
                 block.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block.Index));
             AssertBencodexEqual(
-                (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()}",
+                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()}",
                 _blockChain.GetState(default)
             );
 
@@ -50,7 +52,7 @@ namespace Libplanet.Tests.Blockchain
                 anotherBlock.MarshalBlock().EncodingLength <=
                     getMaxTransactionsBytes(anotherBlock.Index));
             AssertBencodexEqual(
-                (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
+                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
                 _blockChain.GetState(default)
             );
 
@@ -62,7 +64,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(
                 block3.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block3.Index));
             AssertBencodexEqual(
-                (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
+                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
                 _blockChain.GetState(default)
             );
 
@@ -103,7 +105,7 @@ namespace Libplanet.Tests.Blockchain
                 block4.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block4.Index));
             Assert.Equal(3, block4.Transactions.Count());
             AssertBencodexEqual(
-                (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
+                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
                 _blockChain.GetState(default)
             );
         }
@@ -230,14 +232,12 @@ namespace Libplanet.Tests.Blockchain
                 BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress)
+                return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(
-                validateNextBlockTx: IsSignerValid,
-                getValidatorSet: idx => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(
@@ -345,8 +345,7 @@ namespace Libplanet.Tests.Blockchain
             var address2 = privateKey2.ToAddress();
 
             var blockAction = new DumbAction(address1, "foo");
-            BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(
-                blockAction, getValidatorSet: _ => TestUtils.ValidatorSet);
+            BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(blockAction);
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,

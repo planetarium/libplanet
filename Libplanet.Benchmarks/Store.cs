@@ -26,7 +26,7 @@ namespace Libplanet.Benchmarks
             var blocks = new List<Block<DumbAction>>();
             var txs = new List<Transaction<DumbAction>>();
             Block<DumbAction> genesis = TestUtils.ProposeGenesisBlock<DumbAction>(
-                TestUtils.GenesisMiner
+                TestUtils.GenesisProposer
             );
             blocks.Add(genesis);
             Block<DumbAction> block = genesis;
@@ -41,7 +41,7 @@ namespace Libplanet.Benchmarks
                         nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
                 block = TestUtils.ProposeNextBlock(
-                    block, TestUtils.GenesisMiner, blockTxs);
+                    block, TestUtils.GenesisProposer, blockTxs);
                 blocks.Add(block);
                 txs.AddRange(blockTxs);
             }
@@ -82,7 +82,6 @@ namespace Libplanet.Benchmarks
                 nameof(PutBlockOnManyBlocks),
                 nameof(GetOldBlockOutOfManyBlocks),
                 nameof(GetRecentBlockOutOfManyBlocks),
-                nameof(GetCanonicalGenesisBlockOutOfManyBlocks),
             }
         )]
         public void PutManyBlocks()
@@ -124,16 +123,6 @@ namespace Libplanet.Benchmarks
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
             return _store.GetBlock<DumbAction>(Blocks[BlocksCount - 2].Hash);
-        }
-
-        [Benchmark]
-        public Block<DumbAction> GetCanonicalGenesisBlockOutOfManyBlocks()
-        {
-            // Note that why this benchmark method returns something is
-            // because without this JIT can remove the below statement at all
-            // during dead code elimination optimization.
-            // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetCanonicalGenesisBlock<DumbAction>();
         }
 
         [Benchmark]

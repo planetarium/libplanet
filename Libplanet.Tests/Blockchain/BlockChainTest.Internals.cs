@@ -21,6 +21,11 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ListStagedTransactions()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "This test causes timeout"
+            );
+
             Transaction<DumbAction> MkTx(PrivateKey key, long nonce, DateTimeOffset? ts = null) =>
                 Transaction<DumbAction>.Create(
                     nonce,
@@ -106,8 +111,8 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = ProposeNext(
                 genesis,
                 txs,
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                miner: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
 
             _blockChain.Append(
                 block1,
@@ -182,6 +187,7 @@ namespace Libplanet.Tests.Blockchain
             var inputA = new TxSuccess(
                 _fx.Hash1,
                 _fx.TxId1,
+                null,
                 ImmutableDictionary<Address, IValue>.Empty.Add(
                     random.NextAddress(),
                     (Text)"state value"
@@ -206,12 +212,14 @@ namespace Libplanet.Tests.Blockchain
             var inputB = new TxFailure(
                 _fx.Hash1,
                 _fx.TxId2,
+                null,
                 "AnExceptionName",
                 Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
             );
             var inputC = new TxFailure(
                 _fx.Hash2,
                 _fx.TxId1,
+                null,
                 "AnotherExceptionName",
                 null
             );

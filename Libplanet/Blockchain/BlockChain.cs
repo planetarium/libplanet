@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -80,6 +81,8 @@ namespace Libplanet.Blockchain
         /// events made by unsuccessful transactions too; see also
         /// <see cref="AtomicActionRenderer{T}"/> for workaround.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
+        /// <exception cref="ArgumentNullException">Thrown when either of <paramref name="store"/>
+        /// or <paramref name="stateStore"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
@@ -127,7 +130,7 @@ namespace Libplanet.Blockchain
                 renderers,
                 blockChainStates,
                 new ActionEvaluator<T>(
-                    policy.BlockAction,
+                    _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     trieGetter: hash => stateStore.GetStateRoot(
                         store.GetBlockDigest(hash)?.StateRootHash
@@ -208,22 +211,25 @@ namespace Libplanet.Blockchain
             IBlockChainStates<T> blockChainStates,
             ActionEvaluator<T> actionEvaluator)
         {
+            if (store is null)
+            {
+                throw new ArgumentNullException(nameof(store));
+            }
+            else if (stateStore is null)
+            {
+                throw new ArgumentNullException(nameof(stateStore));
+            }
+
             Id = id;
             Policy = policy;
             StagePolicy = stagePolicy;
             Store = store;
-            _blockChainStates = blockChainStates;
+            StateStore = stateStore;
 
+            _blockChainStates = blockChainStates;
             if (_blockChainStates is BlockChainStates<T> bindableImpl)
             {
                 bindableImpl.Bind(this);
-            }
-
-            // It expects store is DefaultStore or RocksDBStore.
-            StateStore = stateStore ?? store as IStateStore;
-            if (StateStore is null)
-            {
-                throw new ArgumentNullException(nameof(stateStore));
             }
 
             _blocks = new BlockSet<T>(store);
@@ -242,7 +248,7 @@ namespace Libplanet.Blockchain
             _logger = Log
                 .ForContext<BlockChain<T>>()
                 .ForContext("Source", nameof(BlockChain<T>))
-                .ForContext("CanonicalChainId", Id);
+                .ForContext("ChainId", Id);
             ActionEvaluator = actionEvaluator;
 
             if (Count == 0)
@@ -423,8 +429,12 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
-        /// <param name="actions">List of actions will be included in the genesis block.
+        /// <param name="customActions">List of custom actions
+        /// will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
+        /// as default.</param>
+        /// <param name="systemActions">System action that will be included in the genesis block.
+        /// If it's null, no system action will be added.
         /// as default.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
@@ -439,19 +449,34 @@ namespace Libplanet.Blockchain
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> ProposeGenesisBlock(
-            IEnumerable<T> actions = null,
+            IEnumerable<T> customActions = null,
+            IEnumerable<IAction> systemActions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
             privateKey ??= new PrivateKey();
-            actions ??= ImmutableArray<T>.Empty;
+            customActions ??= ImmutableArray<T>.Empty;
+            systemActions ??= ImmutableArray<IAction>.Empty;
+            int nonce = 0;
             Transaction<T>[] transactions =
             {
                 Transaction<T>.Create(
-                    0, privateKey, null, actions, timestamp: timestamp),
+                    nonce, privateKey, null, customActions, timestamp: timestamp),
             };
+            foreach (var systemAction in systemActions)
+            {
+                nonce += 1;
+                transactions = transactions.Concat(
+                    new Transaction<T>[]
+                    {
+                        Transaction<T>.Create(
+                            nonce, privateKey, null, systemAction, timestamp: timestamp),
+                    }).ToArray();
+            }
+
+            transactions = transactions.OrderBy(tx => tx.Id).ToArray();
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
@@ -677,6 +702,21 @@ namespace Libplanet.Blockchain
             TotalSupplyStateCompleter<T> stateCompleter
         ) => _blockChainStates.GetTotalSupply(currency, offset, stateCompleter);
 
+        public ValidatorSet GetValidatorSet(
+            BlockHash? offset = null,
+            ValidatorSetStateCompleter<T> stateCompleter = null
+        ) =>
+            GetValidatorSet(
+                offset ?? Tip.Hash,
+                stateCompleter ?? ValidatorSetStateCompleters<T>.Reject
+            );
+
+        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
+        public ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter
+        ) => _blockChainStates.GetValidatorSet(offset, stateCompleter);
+
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
         /// <see cref="Transaction{T}"/> within a <see cref="Block{T}"/>.
@@ -780,37 +820,6 @@ namespace Libplanet.Blockchain
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
             => StagePolicy.GetNextTxNonce(this, address);
-
-        /// <summary>
-        /// Records and queries the <paramref name="perceivedTime"/> of the given
-        /// <paramref name="blockExcerpt"/>.
-        /// <para>Although blocks have their own <see cref="Block{T}.Timestamp"/>, but these values
-        /// are untrustworthy as they are arbitrarily determined by their miners.</para>
-        /// <para>On the other hand, this method returns the subjective time according to the local
-        /// node's perception.</para>
-        /// <para>If the local node has never perceived the <paramref name="blockExcerpt"/> yet,
-        /// it is perceived at that moment and the current time is returned instead. (However, you
-        /// can replace the current time with the <paramref name="perceivedTime"/> option.)
-        /// In other words, this method is idempotent.</para>
-        /// </summary>
-        /// <param name="blockExcerpt">The perceived block.</param>
-        /// <param name="perceivedTime">The time the local node perceived the given <paramref
-        /// name="blockExcerpt"/>.  The current time by default.</param>
-        /// <returns>A pair of a block and the time it was perceived.</returns>
-        public BlockPerception PerceiveBlock(
-            IBlockExcerpt blockExcerpt,
-            DateTimeOffset? perceivedTime = null
-        )
-        {
-            if (!(Store.GetBlockPerceivedTime(blockExcerpt.Hash) is { } time))
-            {
-                time = perceivedTime ?? DateTimeOffset.FromUnixTimeMilliseconds(
-                    DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
-                Store.SetBlockPerceivedTime(blockExcerpt.Hash, time);
-            }
-
-            return new BlockPerception(blockExcerpt, time);
-        }
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> with a system action and stage it.
@@ -922,7 +931,11 @@ namespace Libplanet.Blockchain
                 // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 var totalDelta =
-                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    evaluations.GetTotalDelta(
+                        ToStateKey,
+                        ToFungibleAssetKey,
+                        ToTotalSupplyKey,
+                        ValidatorSetKey);
                 const string deltaMsg =
                     "Summarized the states delta with {KeyCount} key changes " +
                     "made by block #{BlockIndex} {BlockHash}.";
@@ -970,14 +983,20 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Find the branching point between this blockchain and <paramref name="locator"/>, and
-        /// the hashes of subsequent blocks from the point.</summary>
+        /// Finds the branch point <see cref="BlockHash"/> between this <see cref="BlockChain{T}"/>
+        /// and <paramref name="locator"/> and returns the list of <see cref="BlockHash"/>es of
+        /// successive <see cref="Block{T}"/>s starting from the branch point
+        /// <see cref="BlockHash"/>.</summary>
         /// <param name="locator">The <see cref="BlockLocator"/> to find the branching point
         /// from.</param>
-        /// <param name="stop">A block hash to stop looking for subsequent blocks once encountered.
+        /// <param name="stop">The <see cref="BlockHash"/> to stop looking for subsequent blocks
+        /// once encountered.
         /// </param>
-        /// <param name="count">Maximum number of block hashes to return.</param>
-        /// <returns>A tuple of the index of the branching point and block hashes.</returns>
+        /// <param name="count">The Maximum number of <see cref="BlockHash"/>es to return.</param>
+        /// <returns>A tuple of the index of the branch point and <see cref="BlockHash"/>es
+        /// including the branch point <see cref="BlockHash"/>.  If no branch point is found,
+        /// returns a tuple of <see langword="null"/> and an empty array of
+        /// <see cref="BlockHash"/>es.</returns>
         public Tuple<long?, IReadOnlyList<BlockHash>> FindNextHashes(
             BlockLocator locator,
             BlockHash? stop = null,
@@ -995,21 +1014,18 @@ namespace Libplanet.Blockchain
                 return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
             }
 
-            BlockHash? branchpoint = FindBranchpoint(locator);
-            var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
-
-            // FIXME: Currently, increasing count by one to satisfy
-            // the number defined by FindNextHashesChunkSize variable
-            // when branchPointIndex didn't indicate genesis block.
-            // Since branchPointIndex is same as the latest block of
-            // requesting peer.
-            if (branchpointIndex > 0)
+            if (!(FindBranchpoint(locator) is BlockHash branchpoint))
             {
-                count++;
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+            }
+
+            if (!(Store.GetBlockIndex(branchpoint) is long branchpointIndex))
+            {
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
             }
 
             var result = new List<BlockHash>();
-            foreach (BlockHash hash in Store.IterateIndexes(Id, branchpointIndex, count))
+            foreach (BlockHash hash in Store.IterateIndexes(Id, (int)branchpointIndex, count))
             {
                 if (count == 0)
                 {
@@ -1017,13 +1033,12 @@ namespace Libplanet.Blockchain
                 }
 
                 result.Add(hash);
+                count--;
 
                 if (hash.Equals(stop))
                 {
                     break;
                 }
-
-                count--;
             }
 
             TimeSpan duration = DateTimeOffset.Now - startTime;
@@ -1126,20 +1141,23 @@ namespace Libplanet.Blockchain
         /// <returns>A instance of block locator.</returns>
         public BlockLocator GetBlockLocator(int threshold = 10)
         {
+            long startIndex;
+            Guid id;
+            _rwlock.EnterReadLock();
             try
             {
-                _rwlock.EnterReadLock();
-
-                return new BlockLocator(
-                    indexBlockHash: idx => Store.IndexBlockHash(Id, idx),
-                    indexByBlockHash: hash => _blocks[hash].Index,
-                    sampleAfter: threshold
-                );
+                startIndex = Tip.Index;
+                id = Id;
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
+
+            return BlockLocator.Create(
+                startIndex: startIndex,
+                indexToBlockHash: idx => Store.IndexBlockHash(Id, idx),
+                sampleAfter: threshold);
         }
 
         /// <summary>
@@ -1330,7 +1348,11 @@ namespace Libplanet.Blockchain
                     if (block.Index != 0 && blockCommit is { })
                     {
                         Store.PutBlockCommit(blockCommit);
-                        CleanupBlockCommitStore(blockCommit.Height);
+                    }
+
+                    if (block.PreviousHash is { } prevHash)
+                    {
+                        Store.DeleteBlockCommit(prevHash);
                     }
                 }
                 finally
@@ -1508,7 +1530,7 @@ namespace Libplanet.Blockchain
             if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
                 var totalDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
+                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 StateStore.Commit(prevStateRootHash, totalDelta);
             }
@@ -1554,22 +1576,13 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Clean up <see cref="BlockCommit"/>s in the store. The <paramref name="limit"/> height
-        /// of <see cref="BlockCommit"/> will not be removed. If the stored
-        /// <see cref="BlockCommit"/> count is not over <paramref name="maxCacheSize"/>, the removal
-        /// is skipped.
+        /// Cleans up every <see cref="BlockCommit"/> in the store with
+        /// <see cref="BlockCommit.Height"/> less than <paramref name="limit"/>.
         /// </summary>
         /// <param name="limit">A exceptional index that is not to be removed.</param>
-        /// <param name="maxCacheSize">A maximum count value of <see cref="BlockCommit"/> cache.
-        /// </param>
-        internal void CleanupBlockCommitStore(long limit, long maxCacheSize = 30)
+        internal void CleanupBlockCommitStore(long limit)
         {
             List<BlockHash> hashes = Store.GetBlockCommitHashes().ToList();
-
-            if (hashes.Count < maxCacheSize)
-            {
-                return;
-            }
 
             _logger.Debug("Removing old BlockCommits with heights lower than {Limit}...", limit);
             foreach (var hash in hashes)
@@ -1635,10 +1648,18 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            if (!Policy.GetValidatorSet(block.Index).ValidateBlockCommitValidators(blockCommit))
+            var validators = GetValidatorSet(block.PreviousHash ?? Genesis.Hash);
+            if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 return new InvalidBlockCommitException(
-                    "BlockCommit has different validator set with policy's validator set.");
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                    $"in states | \n " +
+                    validators.Validators.Aggregate(
+                        string.Empty, (s, key) => s + key + ", \n") +
+                    $"in blockCommit | \n " +
+                    blockCommit.Votes.Aggregate(
+                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
             }
 
             return null;
@@ -1746,14 +1767,12 @@ namespace Libplanet.Blockchain
                             "is not a block after a PoW block should have lastCommit.");
                     }
                 }
-            }
 
-            if (block.LastCommit is { } commit &&
-                !Policy.GetValidatorSet(commit.Height).ValidateBlockCommitValidators(commit))
-            {
-                return new InvalidBlockLastCommitException(
-                    "The validator set of the block's lastCommit does not match " +
-                    "the validator set given by the policy.");
+                if (ValidateBlockCommit(
+                    this[block.PreviousHash ?? Genesis.Hash], block.LastCommit) is { } e)
+                {
+                    return new InvalidBlockLastCommitException(e.Message);
+                }
             }
 
             return null;

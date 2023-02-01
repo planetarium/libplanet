@@ -25,7 +25,7 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Round = round;
             Step = Step.Propose;
-            if (_validatorSet.GetProposer(Height, Round) == _privateKey.PublicKey)
+            if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
                 _logger.Debug(
                     "Starting round {NewRound} and is a proposer.",
@@ -88,7 +88,7 @@ namespace Libplanet.Net.Consensus
                         message,
                         message.Height,
                         message.Round,
-                        message.Validator.ToAddress(),
+                        message.ValidatorPublicKey.ToAddress(),
                         message.Remote?.Address,
                         message.BlockHash,
                         _messageLog.GetTotalCount(),
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
             }
 
@@ -253,7 +253,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
             }
 
@@ -267,12 +267,31 @@ namespace Libplanet.Net.Consensus
                 Step = Step.EndCommit;
                 _decision = block4;
                 _committedRound = round;
-                _logger.Debug(
-                    "Committed block in round {Round}. (context: {Context})",
-                    Round,
-                    ToString());
 
-                ConsensusContext.Commit(block4, GetBlockCommit());
+                try
+                {
+                    _logger.Debug(
+                        "Committing block #{Index} {Hash} (context: {Context})",
+                        block4.Index,
+                        block4.Hash,
+                        ToString());
+                    _blockChain.Append(block4, GetBlockCommit());
+                }
+                catch (Exception e)
+                {
+                    _logger.Debug(
+                        e,
+                        "Failed to commit block #{Index} {Hash}",
+                        block4.Index,
+                        block4.Hash);
+                    ExceptionOccurred?.Invoke(this, e);
+                    return;
+                }
+
+                _logger.Debug(
+                    "Committed block #{Index} {Hash}",
+                    block4.Index,
+                    block4.Hash);
                 return;
             }
 
@@ -333,7 +352,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
             }
 

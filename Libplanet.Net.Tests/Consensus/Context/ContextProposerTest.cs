@@ -230,7 +230,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var nilPreVoteSent = new AsyncAutoResetEvent();
             var (_, context) = TestUtils.CreateDummyContext(
-                height: 5); // Peer1 should be a proposer
+                height: 5,
+                validatorSet: Libplanet.Tests.TestUtils.ValidatorSet); // Peer1 should be a proposer
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -304,7 +305,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Exception? exception = null;
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[2],
-                height: 2);
+                height: 2,
+                validatorSet: TestUtils.ValidatorSet);
             context.ExceptionOccurred += (sender, e) =>
             {
                 exception = e;
@@ -314,7 +316,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = blockChain.ProposeBlock(new PrivateKey(), DateTimeOffset.UtcNow);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
-                TestUtils.PrivateKeys[2].PublicKey, TestUtils.ValidatorSet.GetProposer(2, 0));
+                TestUtils.PrivateKeys[2].PublicKey,
+                TestUtils.ValidatorSet.GetProposer(2, 0).PublicKey);
 
             context.Start();
             await exceptionOccurred.WaitAsync();

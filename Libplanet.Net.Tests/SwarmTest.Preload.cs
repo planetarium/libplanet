@@ -125,7 +125,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             var blocks = new List<Block<DumbAction>>();
-            foreach (int i in Enumerable.Range(0, 11))
+            foreach (int i in Enumerable.Range(0, 12))
             {
                 Block<DumbAction> block = ProposeNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
@@ -133,7 +133,7 @@ namespace Libplanet.Net.Tests
                     lastCommit: CreateBlockCommit(minerChain.Tip)
                 ).Evaluate(ChainPrivateKey, minerChain);
                 blocks.Add(block);
-                if (i != 10)
+                if (i != 11)
                 {
                     minerChain.Append(blocks[i], TestUtils.CreateBlockCommit(blocks[i]));
                 }
@@ -147,9 +147,9 @@ namespace Libplanet.Net.Tests
                 {
                     actualStates.Add(state);
 
-                    if (actualStates.Count == 9)
+                    if (actualStates.Count == 10)
                     {
-                        minerChain.Append(blocks[10], CreateBlockCommit(blocks[10]));
+                        minerChain.Append(blocks[11], CreateBlockCommit(blocks[11]));
                     }
                 }
             });
@@ -169,7 +169,7 @@ namespace Libplanet.Net.Tests
                     receiverChain
                 );
 
-                minerSwarm.FindNextHashesChunkSize = 2;
+                minerSwarm.FindNextHashesChunkSize = 3;
                 await receiverSwarm.PreloadAsync(progress);
 
                 // Await 1 second to make sure all progresses is reported.
@@ -185,6 +185,7 @@ namespace Libplanet.Net.Tests
                     "Receiver chain",
                     receiverChain
                 );
+
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
                 var expectedStates = new List<PreloadState>();
@@ -207,7 +208,7 @@ namespace Libplanet.Net.Tests
                     var state = new BlockDownloadState
                     {
                         ReceivedBlockHash = b.Hash,
-                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
+                        TotalBlockCount = i == 10 || i == 11 ? 12 : 11,
                         ReceivedBlockCount = i,
                         SourcePeer = minerSwarm.AsPeer,
                     };
@@ -217,25 +218,21 @@ namespace Libplanet.Net.Tests
                 for (var i = 1; i < minerChain.Count; i++)
                 {
                     var b = minerChain[i];
-                    var state = new BlockVerificationState
+                    var state1 = new ActionExecutionState
+                    {
+                        ExecutedBlockHash = b.Hash,
+                        TotalBlockCount = 12,
+                        ExecutedBlockCount = i,
+                    };
+                    expectedStates.Add(state1);
+
+                    var state2 = new BlockVerificationState
                     {
                         VerifiedBlockHash = b.Hash,
                         TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
                         VerifiedBlockCount = i,
                     };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
-                    var state = new ActionExecutionState
-                    {
-                        ExecutedBlockHash = b.Hash,
-                        TotalBlockCount = 11,
-                        ExecutedBlockCount = i,
-                    };
-                    expectedStates.Add(state);
+                    expectedStates.Add(state2);
                 }
 
                 _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
@@ -254,18 +251,16 @@ namespace Libplanet.Net.Tests
             }
         }
 
-        [Fact(Timeout = Timeout)]
+        [Fact(
+            Skip = "Scenario is no more possible since validator set has moved to state.",
+            Timeout = Timeout)]
         public async Task PreloadWithMaliciousPeer()
         {
             const int initialSharedTipHeight = 3;
             const int maliciousTipHeight = 5;
             const int honestTipHeight = 7;
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => TestUtils.ValidatorSet);
-            var fakeValidatorSet = new ValidatorSet(
-                new List<PublicKey> { TestUtils.PrivateKeys[0].PublicKey });
-            var policyB = new NullBlockPolicy<DumbAction>(getValidatorSet: index =>
-                index == maliciousTipHeight ? fakeValidatorSet : TestUtils.ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
+            var policyB = new NullBlockPolicy<DumbAction>();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var swarmA = CreateSwarm(
@@ -384,9 +379,7 @@ namespace Libplanet.Net.Tests
         [RetryFact(Timeout = Timeout)]
         public async Task RenderInPreload()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var renderer1 = new RecordingActionRenderer<DumbAction>();
             var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain1 = MakeBlockChain(
@@ -454,8 +447,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task PreloadWithFailedActions()
         {
-            var policy = new BlockPolicy<ThrowException>(
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<ThrowException>();
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
             var minerChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
@@ -519,9 +511,7 @@ namespace Libplanet.Net.Tests
             Swarm<DumbAction> minerSwarm = CreateSwarm(minerKey);
             Swarm<DumbAction> receiverSwarm = CreateSwarm();
             var fxForNominers = new StoreFixture[2];
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             fxForNominers[0] = new MemoryStoreFixture(policy.BlockAction);
             fxForNominers[1] = new MemoryStoreFixture(policy.BlockAction);
             var blockChainsForNominers = new[]
@@ -605,31 +595,25 @@ namespace Libplanet.Net.Tests
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var state = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = minerChain[i].Hash,
-                        TotalBlockCount = 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var state = new ActionExecutionState
+                    var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ExecutedBlockCount = i,
                     };
-                    expectedStates.Add(state);
+                    expectedStates.Add(state1);
+
+                    var state2 = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = minerChain[i].Hash,
+                        TotalBlockCount = 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state2);
                 }
 
                 // FIXME: this test does not ensures block download in order
-                Assert.Equal(
-                    new HashSet<PreloadState>(expectedStates),
-                    new HashSet<PreloadState>(actualStates)
-                );
+                Assert.True(expectedStates.SequenceEqual(actualStates));
             }
             finally
             {
@@ -867,7 +851,7 @@ namespace Libplanet.Net.Tests
                 minerChain.Append(block, CreateBlockCommit(block));
             }
 
-            minerSwarm.FindNextHashesChunkSize = 1;
+            minerSwarm.FindNextHashesChunkSize = 2;
             try
             {
                 await StartAsync(minerSwarm);
@@ -1021,49 +1005,24 @@ namespace Libplanet.Net.Tests
         {
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(getValidatorSet: _ => TestUtils.ValidatorSet);
-            var genesisContent1 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: key1.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null));
-            var genesisContent2 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 0,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: key2.PublicKey,
-                    previousHash: null,
-                    txHash: null,
-                    lastCommit: null));
-            var genesisBlock1 = genesisContent1.Propose();
-            var genesisBlock2 = genesisContent2.Propose();
+            var policy = new BlockPolicy<DumbAction>();
 
-            BlockChain<DumbAction> MakeBlockChainWithGenesis(
-                PreEvaluationBlock<DumbAction> genesisBlock,
-                PrivateKey privateKey)
-            {
-                var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-                return MakeBlockChain(
-                    policy,
-                    new MemoryStore(),
-                    stateStore,
-                    genesisBlock: genesisBlock.Evaluate(
-                        privateKey: privateKey,
-                        blockAction: policy.BlockAction,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
-                        stateStore: stateStore)
-                );
-            }
-
-            BlockChain<DumbAction> receiverChain = MakeBlockChainWithGenesis(
-                genesisBlock1, key1);
-            BlockChain<DumbAction> validSeedChain = MakeBlockChainWithGenesis(
-                genesisBlock1, key1);
-            BlockChain<DumbAction> invalidSeedChain = MakeBlockChainWithGenesis(
-                genesisBlock2, key2);
+            BlockChain<DumbAction> receiverChain = MakeBlockChain(
+                policy,
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                privateKey: key1);
+            BlockChain<DumbAction> validSeedChain = MakeBlockChain(
+                policy,
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                privateKey: key1,
+                genesisBlock: receiverChain.Genesis);
+            BlockChain<DumbAction> invalidSeedChain = MakeBlockChain(
+                policy,
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                privateKey: key2);
             Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
             Swarm<DumbAction> validSeedSwarm = CreateSwarm(validSeedChain);
             Swarm<DumbAction> invalidSeedSwarm = CreateSwarm(invalidSeedChain);
@@ -1112,9 +1071,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task ActionExecutionWithBranchpoint()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
@@ -1172,9 +1129,7 @@ namespace Libplanet.Net.Tests
         public async Task UpdateTxExecution()
         {
             PrivateKey seedKey = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);

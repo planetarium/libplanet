@@ -1,0 +1,75 @@
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "*"
+name: Build artifact and push
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - if: github.ref_type == 'tag'
+      run: |
+        set -evx
+        pushd /tmp
+        wget $WEB_FLOW_KEY_URL
+        popd
+        gpg --import /tmp/web-flow.gpg
+        if ! git verify-commit "$GITHUB_REF_NAME" && \
+           [[ "$( git cat-file -p "$GITHUB_REF_NAME" \
+                | grep -Ei '^parent\s+[0-9a-f]{40}$' | wc -l )" -lt 2 ]]; then
+          echo "::error title=Invalid tag commit::Tags must refer to a merge" \
+               "commit or a commit signed by GitHub @web-flow" \
+               "($WEB_FLOW_KEY_URL).  The tag $GITHUB_REF_NAME refers to " \
+               "a commit $(git rev-parse $GITHUB_REF_NAME) which is neither" \
+               "a merge commit nor signed by GitHub @web-flow."
+          exit 1
+        fi
+      env:
+        WEB_FLOW_KEY_URL: https://github.com/web-flow.gpg
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        scope: '@planetarium'
+        node-version: 18
+    - run: .github/bin/dist-version.ps1
+      shell: pwsh
+    - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
+    - uses: actions/upload-artifact@main
+      with:
+        name: dist-obj
+        path: obj/
+    - run: .github/bin/dist-pack.sh
+    - run: |
+        . .github/bin/constants.sh
+        mkdir -p /tmp/dist-bin/
+        for project in "${projects[@]}"; do
+          cp -r "$project/bin/$configuration"/* /tmp/dist-bin/
+        done
+        for npmpkg in "${npm_packages[@]}"; do
+          cp "$npmpkg"/*.tgz /tmp/dist-bin/
+        done
+    - uses: actions/upload-artifact@main
+      with:
+        name: dist-bin
+        path: /tmp/dist-bin/
+    - if: startsWith(github.ref, 'refs/tags/')
+      run: .github/bin/dist-github-release.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - if: env.NUGET_API_KEY != ''
+      run: .github/bin/dist-nuget.sh
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    - if: startsWith(github.ref, 'refs/tags/') && env.NODE_AUTH_TOKEN != ''
+      run: .github/bin/dist-npm.sh
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+

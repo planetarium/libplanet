@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -122,7 +120,10 @@ namespace Libplanet.Tests.Blocks
                     "public_key",
                     ParseHex("0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f")
                 )
-                .Add("protocol_version", 4);
+                .Add("protocol_version", 4)
+                .Add(
+                    "transaction_fingerprint",
+                    ParseHex("eae2c77210d9a1a4ce4fdd68479e5b49d91c341ac071e51f3a525030a131270b"));
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
@@ -239,7 +240,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
-                FromHex("089b110e22d007fe66ad5078864ee0b5fdba4de487712b1c4175fd78ae8eecb9"),
+                FromHex("5a1284960596e71bd90b089741af3f44b4fc04f829acf836d52c8da5bd070166"),
                 hash.ByteArray);
 
             hash = Block1Metadata.DerivePreEvaluationHash(
@@ -341,32 +342,6 @@ namespace Libplanet.Tests.Blocks
             HashDigest<SHA256> actual = HashDigest<SHA256>.DeriveFrom(
                     codec.Encode(GenesisMetadata.MakeCandidateData(nonce)));
             AssertBytesEqual(actual.ByteArray, preEvalHash.ByteArray);
-        }
-
-        [Fact]
-        public void CancelMineNonce()
-        {
-            using (CancellationTokenSource source = new CancellationTokenSource())
-            {
-                Exception exception = null;
-                Task task = Task.Run(() =>
-                {
-                    try
-                    {
-                        Block1Metadata.MineNonce(5_000_000, source.Token);
-                    }
-                    catch (OperationCanceledException ce)
-                    {
-                        exception = ce;
-                    }
-                });
-
-                source.Cancel();
-                bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
-                Assert.True(taskEnded);
-                Assert.NotNull(exception);
-                Assert.IsAssignableFrom<OperationCanceledException>(exception);
-            }
         }
 
         private static Vote GenerateVote(BlockHash? hash, long height, int round, VoteFlag flag)

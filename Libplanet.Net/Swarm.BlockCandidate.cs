@@ -83,8 +83,7 @@ namespace Libplanet.Net
 
             if (synced is { } syncedB
                 && !syncedB.Id.Equals(BlockChain?.Id)
-                && (BlockChain.PerceiveBlock(BlockChain.Tip).Index <
-                    BlockChain.PerceiveBlock(syncedB.Tip).Index))
+                && BlockChain.Tip.Index < syncedB.Tip.Index)
             {
                 _logger.Debug(
                     "Swapping chain {ChainIdA} with chain {ChainIdB}...",
@@ -285,8 +284,7 @@ namespace Libplanet.Net
 
             BoundPeer peer = demand.Peer;
 
-            if (BlockChain.PerceiveBlock(demand).Index <=
-                BlockChain.PerceiveBlock(BlockChain.Tip).Index)
+            if (demand.Index <= BlockChain.Tip.Index)
             {
                 return false;
             }

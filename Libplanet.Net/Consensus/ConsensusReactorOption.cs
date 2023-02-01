@@ -38,7 +38,6 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// A time delay in starting the consensus for the next height block.
-        /// <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
         /// </summary>
         public TimeSpan TargetBlockInterval { get; set; }
 

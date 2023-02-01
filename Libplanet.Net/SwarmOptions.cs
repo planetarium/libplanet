@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Libplanet.Blockchain;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -30,6 +31,20 @@ namespace Libplanet.Net
         /// <seealso cref="IProtocol.RefreshTableAsync" />
         /// </summary>
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
+
+        /// <summary>
+        /// The list of <see cref="BoundPeer"/>s to keep in routing table permanently.
+        /// The <see cref="BoundPeer"/>s in the list will be maintained periodically within
+        /// <see cref="StaticPeersMaintainPeriod"/>.
+        /// </summary>
+        public IImmutableSet<BoundPeer> StaticPeers { get; set; } =
+            ImmutableHashSet<BoundPeer>.Empty;
+
+        /// <summary>
+        /// The period of <c>Task</c> maintains static peer.
+        /// </summary>
+        /// <seealso cref="StaticPeers"/>
+        public TimeSpan StaticPeersMaintainPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// The threshold for detecting branchpoint when block synchronization.

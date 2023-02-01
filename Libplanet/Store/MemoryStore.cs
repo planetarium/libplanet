@@ -74,13 +74,6 @@ namespace Libplanet.Store
         void IStore.SetCanonicalChainId(Guid chainId) =>
             _canonicalChainId = chainId;
 
-        Block<T> IStore.GetCanonicalGenesisBlock<T>() =>
-            _canonicalChainId is { } canonicalChainId
-            && _indices.TryGetValue(canonicalChainId, out ImmutableTrieList<BlockHash> indices)
-            && indices.Count > 0
-                ? ((IStore)this).GetBlock<T>(indices[0])
-                : null;
-
         long IStore.CountIndex(Guid chainId) =>
             _indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> index) ? index.Count : 0;
 
@@ -225,14 +218,6 @@ namespace Libplanet.Store
                 _txBlockIndices.TryUpdate(txId, removed, set);
             }
         }
-
-        void IStore.SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime) =>
-            _blockPerceivedTimes[blockHash] = perceivedTime;
-
-        DateTimeOffset? IStore.GetBlockPerceivedTime(BlockHash blockHash) =>
-            _blockPerceivedTimes.TryGetValue(blockHash, out DateTimeOffset t)
-                ? t
-                : (DateTimeOffset?)null;
 
         IEnumerable<KeyValuePair<Address, long>> IStore.ListTxNonces(Guid chainId) =>
             _txNonces.TryGetValue(chainId, out ConcurrentDictionary<Address, long> dict)

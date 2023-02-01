@@ -227,15 +227,22 @@ namespace Libplanet.Net.Tests.Consensus
             PrivateKey? privateKey = null,
             int? port = null)
         {
+            var apvOptions = new AppProtocolVersionOptions
+                { AppProtocolVersion = TestUtils.AppProtocolVersion };
+            HostOptions hostOptions;
+            if (port is { } p)
+            {
+                hostOptions = new HostOptions("localhost", Array.Empty<IceServer>(), p);
+            }
+            else
+            {
+                hostOptions = new HostOptions("localhost", Array.Empty<IceServer>());
+            }
+
             return NetMQTransport.Create(
                 privateKey ?? new PrivateKey(),
-                TestUtils.AppProtocolVersion,
-                null,
-                500,
-                "localhost",
-                port,
-                null,
-                null).ConfigureAwait(false).GetAwaiter().GetResult();
+                apvOptions,
+                hostOptions).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
