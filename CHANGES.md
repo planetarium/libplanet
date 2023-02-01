@@ -80,7 +80,7 @@ To be released.
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
-[System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.6
+[System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
 
 
 Version 0.46.0
