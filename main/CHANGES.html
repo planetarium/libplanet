@@ -84,6 +84,10 @@ and <code>ITransport.DifferentAppProtocolVersionEncountered</code> properties.
 [<a href="https://github.com/planetarium/libplanet/pull/2743">#2743</a>]</li>
 <li>(Libplanet.Net) Changed <code>Swarm&lt;T&gt;(BlockChain&lt;T&gt;, PrivateKey, AppProtocolVersionOptions, HostOptions, SwarmOptions)</code> to
 <code>Swarm&lt;T&gt;(BlockChain&lt;T&gt;, PrivateKey, ITransport, SwarmOptions)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2743">#2743</a>]</li>
+<li>(Libplanet.Net) Changed the type for
+<code>AppProtocolVersionOptions.TrustedAppProtocolVersionSigners</code> from
+<code>IImmutableHashSet&lt;PublicKey&gt;?</code> to <code>IImmutableHashSet&lt;PublicKey&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2759">#2759</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

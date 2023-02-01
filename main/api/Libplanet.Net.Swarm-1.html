@@ -513,8 +513,9 @@ It can be <span class="xref">null</span> if no message has been arrived yet.</p>
   <div class="markdown level1 summary"><p>The set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s to trust when a node encounters
 a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different
 from <a class="xref" href="Libplanet.Net.AppProtocolVersionOptions.html#Libplanet_Net_AppProtocolVersionOptions_AppProtocolVersion">AppProtocolVersion</a>.  Any <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with an untrusted
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is ignored by the node.  To trust any party,
-set this to <span class="xref">null</span>.  Set to <span class="xref">null</span> by default.</p>
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is ignored by the node.  Set to an
+empty set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s by default, i.e. not to trust any
+<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with a different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
