@@ -91,9 +91,6 @@ Version PBFT
  -  (Libplanet.Explorer) Added `BlockCommitType` class.  [[#PBFT]]
  -  (Libplanet.Explorer) Added `VoteFlagType` class.  [[#PBFT]]
  -  (Libplanet.Explorer) Added `VoteType` class.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `VoteCount` class.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `VoteCountType` class.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `VoteQuery` class.  [[#PBFT]]
  -  (Libplanet.Explorer) Added `BlockCommitType` as a return of `BlockQuery`.
     [[#PBFT]]
 
