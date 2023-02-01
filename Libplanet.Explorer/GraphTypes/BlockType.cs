@@ -61,6 +61,10 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "transactions",
                 description: "Transactions belonging to the block."
             );
+            Field<BlockCommitType>(
+                name: "LastCommit",
+                description: "The LastCommit of the block.",
+                resolve: ctx => ctx.Source.LastCommit);
 
             Name = "Block";
         }
