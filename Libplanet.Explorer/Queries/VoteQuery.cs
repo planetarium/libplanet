@@ -8,7 +8,6 @@ using Libplanet.Blockchain;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
-using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
 
 namespace Libplanet.Explorer.Queries
@@ -51,7 +50,7 @@ namespace Libplanet.Explorer.Queries
             );
 
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<VoteType>>>>(
-                "validatorVotes",
+                "votesWhere",
                 arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType>
                     {
@@ -69,7 +68,7 @@ namespace Libplanet.Explorer.Queries
                     },
                     new QueryArgument<PublicKeyType>
                     {
-                        Name = "validator",
+                        Name = "validatorPublicKey",
                     }
                 ),
                 resolve: context =>
@@ -77,9 +76,9 @@ namespace Libplanet.Explorer.Queries
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
-                    PublicKey validator = context.GetArgument<PublicKey>("validator");
+                    PublicKey validator = context.GetArgument<PublicKey>("validatorPublicKey");
                     return ListVotes(desc, offset, limit).Where(
-                        vote => vote.Validator.Equals(validator));
+                        vote => vote.ValidatorPublicKey.Equals(validator));
                 }
             );
 
@@ -111,7 +110,7 @@ namespace Libplanet.Explorer.Queries
             );
 
             Field<NonNullGraphType<VoteCountType>>(
-                "countValidatorVotes",
+                "countVotesWhere",
                 arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType>
                     {
@@ -129,7 +128,7 @@ namespace Libplanet.Explorer.Queries
                     },
                     new QueryArgument<PublicKeyType>
                     {
-                        Name = "validator",
+                        Name = "validatorPublicKey",
                     }
                 ),
                 resolve: context =>
@@ -137,9 +136,9 @@ namespace Libplanet.Explorer.Queries
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
-                    PublicKey validator = context.GetArgument<PublicKey>("validator");
+                    PublicKey validator = context.GetArgument<PublicKey>("validatorPublicKey");
                     return CountVotes(ListVotes(desc, offset, limit).Where(
-                        vote => vote.Validator.Equals(validator))).First();
+                        vote => vote.ValidatorPublicKey.Equals(validator))).First();
                 }
             );
         }
@@ -201,7 +200,7 @@ namespace Libplanet.Explorer.Queries
         internal IEnumerable<VoteCount> CountVotes(
             IEnumerable<Vote> votes)
         {
-            var voteGroups = votes.GroupBy(vote => vote.Validator);
+            var voteGroups = votes.GroupBy(vote => vote.ValidatorPublicKey);
             var countList = new List<VoteCount>();
             foreach (var voteGroup in voteGroups)
             {

@@ -11,9 +11,9 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "VoteCount";
 
             Field<NonNullGraphType<PublicKeyType>>(
-                "Validator",
+                "ValidatorPublicKey",
                 description: "Public key of the validator which is subject of the votes.",
-                resolve: ctx => ctx.Source.Validator);
+                resolve: ctx => ctx.Source.ValidatorPublicKey);
             Field<NonNullGraphType<IntGraphType>>(
                 "CountNull",
                 description: "Count of the null votes.",

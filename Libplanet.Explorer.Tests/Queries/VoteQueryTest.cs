@@ -42,7 +42,7 @@ namespace Libplanet.Explorer.Tests.Queries
                         round
                         blockHash
                         timestamp
-                        validator
+                        validatorPublicKey
                         flag
                         signature
                     }}
@@ -61,7 +61,7 @@ namespace Libplanet.Explorer.Tests.Queries
                 ["round"] = vote.Round,
                 ["blockHash"] = vote.BlockHash.ToString(),
                 ["timestamp"] = new DateTimeOffsetGraphType().Serialize(vote.Timestamp),
-                ["validator"] = vote.Validator.ToString(),
+                ["validatorPublicKey"] = vote.ValidatorPublicKey.ToString(),
                 ["flag"] = vote.Flag.ToString(),
                 ["signature"] = ByteUtil.Hex(vote.Signature)
             });
@@ -75,19 +75,19 @@ namespace Libplanet.Explorer.Tests.Queries
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public async Task ValidatorVotesQuery(int validatorIdx)
+        public async Task VotesWherePublicKeyQuery(int validatorIdx)
         {
             var queryValidator = _source.ValidatorPrivateKeys[validatorIdx];
             var query =
                 $@"{{
-                    validatorVotes(
-                        validator: ""{queryValidator.PublicKey}"")
+                    votesWhere(
+                        validatorPublicKey: ""{queryValidator.PublicKey}"")
                     {{
                         height
                         round
                         blockHash
                         timestamp
-                        validator
+                        validatorPublicKey
                         flag
                         signature
                     }}
@@ -98,17 +98,17 @@ namespace Libplanet.Explorer.Tests.Queries
                 _queryGraph
             );
             var resultData = (Dictionary<string, object>)((ExecutionNode)result.Data!)?.ToValue()!;
-            var actualResult = ((object[])resultData["validatorVotes"]).ToList();
+            var actualResult = ((object[])resultData["votesWhere"]).ToList();
             var votes = _source.BlockChain.GetBlockCommit(1).Votes.Concat(
                 _source.BlockChain.GetBlockCommit(2).Votes).Where(
-                vote => vote.Validator.Equals(queryValidator.PublicKey));
+                vote => vote.ValidatorPublicKey.Equals(queryValidator.PublicKey));
             var expectedResult = votes.Select(vote => new Dictionary<string, object>
             {
                 ["height"] = vote.Height,
                 ["round"] = vote.Round,
                 ["blockHash"] = vote.BlockHash.ToString(),
                 ["timestamp"] = new DateTimeOffsetGraphType().Serialize(vote.Timestamp),
-                ["validator"] = vote.Validator.ToString(),
+                ["validatorPublicKey"] = vote.ValidatorPublicKey.ToString(),
                 ["flag"] = vote.Flag.ToString(),
                 ["signature"] = ByteUtil.Hex(vote.Signature)
             });
@@ -124,7 +124,7 @@ namespace Libplanet.Explorer.Tests.Queries
                 $@"{{
                     countVotes
                     {{
-                        validator
+                        validatorPublicKey
                         countNull
                         countPreCommit
                         countTotal
@@ -139,25 +139,25 @@ namespace Libplanet.Explorer.Tests.Queries
             var actualResult = ((object[])resultData["countVotes"]).ToList();
             var expectedResult = new List<Dictionary<string, object>>{
                 new Dictionary<string, object> {
-                    ["validator"] = _source.ValidatorPrivateKeys[0].PublicKey.ToString(),
+                    ["validatorPublicKey"] = _source.ValidatorPrivateKeys[0].PublicKey.ToString(),
                     ["countNull"] = 0,
                     ["countPreCommit"] = 2,
                     ["countTotal"] = 2,
                 },
                 new Dictionary<string, object> {
-                    ["validator"] = _source.ValidatorPrivateKeys[1].PublicKey.ToString(),
+                    ["validatorPublicKey"] = _source.ValidatorPrivateKeys[1].PublicKey.ToString(),
                     ["countNull"] = 0,
                     ["countPreCommit"] = 2,
                     ["countTotal"] = 2,
                 },
                 new Dictionary<string, object> {
-                    ["validator"] = _source.ValidatorPrivateKeys[2].PublicKey.ToString(),
+                    ["validatorPublicKey"] = _source.ValidatorPrivateKeys[2].PublicKey.ToString(),
                     ["countNull"] = 0,
                     ["countPreCommit"] = 2,
                     ["countTotal"] = 2,
                 },
                 new Dictionary<string, object> {
-                    ["validator"] = _source.ValidatorPrivateKeys[3].PublicKey.ToString(),
+                    ["validatorPublicKey"] = _source.ValidatorPrivateKeys[3].PublicKey.ToString(),
                     ["countNull"] = 2,
                     ["countPreCommit"] = 0,
                     ["countTotal"] = 2,
@@ -178,10 +178,10 @@ namespace Libplanet.Explorer.Tests.Queries
             var queryValidator = _source.ValidatorPrivateKeys[validatorIdx];
             var query =
                 $@"{{
-                    countValidatorVotes(
-                        validator: ""{queryValidator.PublicKey}"")
+                    countVotesWhere(
+                        validatorPublicKey: ""{queryValidator.PublicKey}"")
                     {{
-                        validator
+                        validatorPublicKey
                         countNull
                         countPreCommit
                         countTotal
@@ -193,11 +193,11 @@ namespace Libplanet.Explorer.Tests.Queries
                 _queryGraph
             );
             var resultData = (Dictionary<string, object>)((ExecutionNode)result.Data!)?.ToValue()!;
-            var actualResult = resultData["countValidatorVotes"];
+            var actualResult = resultData["countVotesWhere"];
             var isNullVal = queryValidator.Equals(_source.NullCommitValidator);
             var expectedResult = new Dictionary<string, object>
             {
-                ["validator"] = queryValidator.PublicKey.ToString(),
+                ["validatorPublicKey"] = queryValidator.PublicKey.ToString(),
                 ["countNull"] = isNullVal ? 2 : 0,
                 ["countPreCommit"] = isNullVal? 0 : 2,
                 ["countTotal"] = 2,
@@ -231,14 +231,18 @@ namespace Libplanet.Explorer.Tests.Queries
                         previousHash: null,
                         txHash: null,
                         lastCommit: null));
-                Block<T> genesis = genesisContent.Propose().Evaluate(
-                    ProposerGenesis,
-                    null,
-                    _ => true,
-                    stateStore);
+
+                Block<T> genesis = Libplanet.Tests.TestUtils.ProposeGenesis<T>(
+                    proposer: ProposerGenesis.PublicKey
+                ).Evaluate(
+                    privateKey: ProposerGenesis,
+                    blockAction: null,
+                    nativeTokenPredicate: _ => true,
+                    stateStore: stateStore
+                );
+
                 BlockChain = new BlockChain<T>(
-                    new BlockPolicy<T>(
-                        getValidatorSet: index => Libplanet.Tests.TestUtils.ValidatorSet),
+                    new BlockPolicy<T>(),
                     new VolatileStagePolicy<T>(),
                     Store,
                     stateStore,

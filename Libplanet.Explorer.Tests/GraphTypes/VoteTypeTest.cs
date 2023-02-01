@@ -35,7 +35,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     round
                     blockHash
                     timestamp
-                    validator
+                    validatorPublicKey
                     flag
                     signature
                 }";
@@ -53,7 +53,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(vote.Round, resultData["round"]);
             Assert.Equal(vote.BlockHash.ToString(), resultData["blockHash"]);
             Assert.Equal(new DateTimeOffsetGraphType().Serialize(vote.Timestamp), resultData["timestamp"]);
-            Assert.Equal(vote.Validator.ToString(), resultData["validator"]);
+            Assert.Equal(vote.ValidatorPublicKey.ToString(), resultData["validatorPublicKey"]);
             Assert.Equal(vote.Flag.ToString(), resultData["flag"]);
             Assert.Equal(ByteUtil.Hex(vote.Signature), resultData["signature"]);
         }

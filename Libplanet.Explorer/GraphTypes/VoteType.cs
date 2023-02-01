@@ -27,9 +27,9 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The time this vote was created and signed.",
                 resolve: ctx => ctx.Source.Timestamp);
             Field<NonNullGraphType<PublicKeyType>>(
-                "Validator",
+                "ValidatorPublicKey",
                 description: "Public key of the validator which is subject of the vote.",
-                resolve: ctx => ctx.Source.Validator);
+                resolve: ctx => ctx.Source.ValidatorPublicKey);
             Field<NonNullGraphType<VoteFlagType>>(
                 "Flag",
                 description: "Flag of the vote",

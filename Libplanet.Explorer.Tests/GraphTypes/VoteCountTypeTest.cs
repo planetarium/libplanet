@@ -24,7 +24,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
 
             var query =
                 @"{
-                    validator
+                    validatorPublicKey
                     countNull
                     countPreCommit
                     countTotal
@@ -39,7 +39,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Dictionary<string, object> resultData =
                 (Dictionary<string, object>)((ExecutionNode)result.Data!)?.ToValue()!;
             Assert.Null(result.Errors);
-            Assert.Equal(voteCount.Validator.ToString(), resultData["validator"]);
+            Assert.Equal(voteCount.ValidatorPublicKey.ToString(), resultData["validatorPublicKey"]);
             Assert.Equal(voteCount.CountNull, resultData["countNull"]);
             Assert.Equal(voteCount.CountPreCommit, resultData["countPreCommit"]);
             Assert.Equal(voteCount.CountTotal, resultData["countTotal"]);

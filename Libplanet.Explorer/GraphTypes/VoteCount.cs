@@ -5,19 +5,19 @@ namespace Libplanet.Explorer.GraphTypes
     public class VoteCount
     {
         public VoteCount(
-            PublicKey validator,
+            PublicKey validatorPublicKey,
             int countNull,
             int countPreCommit,
             int countTotal
         )
         {
-            Validator = validator;
+            ValidatorPublicKey = validatorPublicKey;
             CountNull = countNull;
             CountPreCommit = countPreCommit;
             CountTotal = countTotal;
         }
 
-        public PublicKey Validator { get; }
+        public PublicKey ValidatorPublicKey { get; }
 
         public int CountNull { get; }
 
