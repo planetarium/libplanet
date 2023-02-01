@@ -594,68 +594,60 @@ namespace Libplanet.Net.Transports
                     // Duplicate received message before distributing.
                     var copied = new NetMQMessage(raw.Select(f => f.Duplicate()));
 
-                    Task.Factory.StartNew(
-                        async () =>
+                    try
+                    {
+                        Message message = _messageCodec.Decode(copied, false);
+                        _logger
+                            .ForContext("Tag", "Metric")
+                            .ForContext("Subtag", "InboundMessageReport")
+                            .Debug(
+                                "Received message {Message} from {Peer}.",
+                                message,
+                                message.Remote);
+                        try
                         {
-                            try
+                            _messageValidator.ValidateTimestamp(message);
+                            _messageValidator.ValidateAppProtocolVersion(message);
+                            _ = ProcessMessageHandler.InvokeAsync(message);
+                        }
+                        catch (InvalidMessageTimestampException imte)
+                        {
+                            _logger.Debug(
+                                imte,
+                                "Received {Message} from {Peer} has an invalid timestamp.",
+                                message,
+                                message.Remote);
+                        }
+                        catch (DifferentAppProtocolVersionException dapve)
+                        {
+                            _logger.Debug(
+                                dapve,
+                                "Received {Message} from {Peer} has an invalid APV.",
+                                message,
+                                message.Remote);
+                            var diffVersion = new DifferentVersionMsg()
                             {
-                                Message message = _messageCodec.Decode(copied, false);
-                                _logger
-                                    .ForContext("Tag", "Metric")
-                                    .ForContext("Subtag", "InboundMessageReport")
-                                    .Debug(
-                                        "Received message {Message} from {Peer}.",
-                                        message,
-                                        message.Remote);
-                                try
-                                {
-                                    _messageValidator.ValidateTimestamp(message);
-                                    _messageValidator.ValidateAppProtocolVersion(message);
-                                    await ProcessMessageHandler.InvokeAsync(message);
-                                }
-                                catch (InvalidMessageTimestampException imte)
-                                {
-                                    _logger.Debug(
-                                        imte,
-                                        "Received {Message} from {Peer} has an invalid timestamp.",
-                                        message,
-                                        message.Remote);
-                                }
-                                catch (DifferentAppProtocolVersionException dapve)
-                                {
-                                    _logger.Debug(
-                                        dapve,
-                                        "Received {Message} from {Peer} has an invalid APV.",
-                                        message,
-                                        message.Remote);
-                                    var diffVersion = new DifferentVersionMsg()
-                                    {
-                                        Identity = message.Identity,
-                                    };
-                                    _logger.Debug(
-                                        "Replying to {Peer} with {Reply}.",
-                                        diffVersion);
-                                    await ReplyMessageAsync(
-                                        diffVersion,
-                                        _runtimeCancellationTokenSource.Token
-                                    );
-                                }
-                            }
-                            catch (InvalidMessageException ex)
-                            {
-                                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
-                            }
-                            catch (Exception exc)
-                            {
-                                _logger.Error(
-                                    exc,
-                                    "Something went wrong during message processing.");
-                            }
-                        },
-                        CancellationToken.None,
-                        TaskCreationOptions.HideScheduler | TaskCreationOptions.DenyChildAttach,
-                        TaskScheduler.Default
-                    ).Unwrap();
+                                Identity = message.Identity,
+                            };
+                            _logger.Debug(
+                                "Replying to {Peer} with {Reply}.",
+                                diffVersion);
+                            _ = ReplyMessageAsync(
+                                diffVersion,
+                                _runtimeCancellationTokenSource.Token
+                            );
+                        }
+                    }
+                    catch (InvalidMessageException ex)
+                    {
+                        _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+                    }
+                    catch (Exception exc)
+                    {
+                        _logger.Error(
+                            exc,
+                            "Something went wrong during message processing.");
+                    }
                 }
             }
             catch (Exception ex)
