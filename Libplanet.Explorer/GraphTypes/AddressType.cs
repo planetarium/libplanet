@@ -29,6 +29,12 @@ namespace Libplanet.Explorer.GraphTypes
                 case null:
                     return null;
                 case string hex:
+                    if (hex.Length < 2)
+                    {
+                        throw new ArgumentException(
+                            "The given value is too short to be an address.", nameof(value));
+                    }
+
                     if (hex.Substring(0, 2).ToLower().Equals("0x"))
                     {
                         hex = hex.Substring(2);
