@@ -372,7 +372,7 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "A reply to request {Message} {RequestId} from {Peer} " +
                         "has parsed: {Reply}.",
-                        req.Message,
+                        message,
                         req.Id,
                         reply.Remote,
                         reply);
