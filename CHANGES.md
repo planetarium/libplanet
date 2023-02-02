@@ -87,6 +87,7 @@ Version PBFT
  -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
  -  (Libplaent.Net) Added `ProposalMetadata` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `NetMQMessageCodec.ParseMessageType()`.  [[#PBFT]]
  -  (Libplanet.Explorer) Added `BoundPeerType` class.  [[#PBFT]]
  -  (Libplanet.Explorer) Added `BlockCommitType` class.  [[#PBFT]]
  -  (Libplanet.Explorer) Added `VoteFlagType` class.  [[#PBFT]]

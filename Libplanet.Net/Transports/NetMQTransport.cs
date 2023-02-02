@@ -372,7 +372,7 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "A reply to request {Message} {RequestId} from {Peer} " +
                         "has parsed: {Reply}.",
-                        req.Message,
+                        message,
                         req.Id,
                         reply.Remote,
                         reply);
@@ -682,18 +682,19 @@ namespace Libplanet.Net.Transports
             (AsyncManualResetEvent ev, NetMQMessage message) = e.Queue.Dequeue();
             string reqId = message[0].Buffer.Length == 16 ?
                 new Guid(message[0].ToByteArray()).ToString() : "unknown";
+            string messageType = _messageCodec.ParseMessageType(message, false).ToString();
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
             if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
             {
                 _logger.Debug(
-                    "{Message} as a reply to {Identity} sent.", message, reqId);
+                    "{Message} as a reply to {Identity} sent.", messageType, reqId);
             }
             else
             {
                 _logger.Debug(
-                    "Failed to send {Message} as a reply to {Identity}.", message, reqId);
+                    "Failed to send {Message} as a reply to {Identity}.", messageType, reqId);
             }
 
             ev.Set();
@@ -729,16 +730,20 @@ namespace Libplanet.Net.Transports
 
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
+            string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
+
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
             _logger.Debug(
-                "Request {RequestId} is ready to be processed in {TimeSpan}.",
+                "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
+                messageType,
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
             Channel<NetMQMessage> channel = req.Channel;
 
             _logger.Debug(
-                "Trying to send request {RequestId} to {Peer}",
+                "Trying to send request {Message} {RequestId} to {Peer}",
+                messageType,
                 req.Id,
                 req.Peer
             );
@@ -764,7 +769,7 @@ namespace Libplanet.Net.Transports
                         .Debug(
                         "{SocketCount} sockets open for processing request {Message} {RequestId}.",
                         incrementedSocketCount,
-                        req.Message,
+                        messageType,
                         req.Id);
                 }
                 catch (NetMQException nme)
@@ -779,7 +784,7 @@ namespace Libplanet.Net.Transports
                         nme,
                         logMsg,
                         Interlocked.Read(ref _socketCount),
-                        req.Message,
+                        messageType,
                         req.Id);
                     throw;
                 }
@@ -787,19 +792,21 @@ namespace Libplanet.Net.Transports
                 if (dealer.TrySendMultipartMessage(req.Message))
                 {
                     _logger.Debug(
-                        "Request {RequestId} sent to {Peer}.",
+                        "Request {RequestId} {Message} sent to {Peer}.",
                         req.Id,
+                        messageType,
                         req.Peer);
                 }
                 else
                 {
                     _logger.Debug(
-                        "Failed to send {RequestId} to {Peer}.",
+                        "Failed to send {RequestId} {Message} to {Peer}.",
                         req.Id,
+                        messageType,
                         req.Peer);
 
                     throw new SendMessageFailException(
-                        $"Failed to send {req.Message} to {req.Peer}.",
+                        $"Failed to send {messageType} to {req.Peer}.",
                         req.Peer);
                 }
 
@@ -826,7 +833,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Failed to process {RequestId}; discarding it. {e}",
+                    "Failed to process {RequestId} {Message}; discarding it. {e}",
+                    messageType,
                     req.Id,
                     e
                 );
@@ -849,10 +857,11 @@ namespace Libplanet.Net.Transports
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "OutboundMessageReport")
                     .Debug(
-                        "Request {RequestId} " +
+                        "Request {RequestId} {Message} " +
                         "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies.",
                         req.Id,
+                        messageType,
                         (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds,
                         receivedCount,
                         req.ExpectedResponses);
