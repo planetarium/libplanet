@@ -372,7 +372,7 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "A reply to request {Message} {RequestId} from {Peer} " +
                         "has parsed: {Reply}.",
-                        req.Message,
+                        message,
                         req.Id,
                         reply.Remote,
                         reply);
@@ -506,7 +506,6 @@ namespace Libplanet.Net.Transports
 
             string reqId = !(message.Identity is null) && message.Identity.Length == 16 ?
                 new Guid(message.Identity).ToString() : "unknown";
-
             _logger.Debug("Reply {Message} to {Identity}...", message, reqId);
 
             var ev = new AsyncManualResetEvent();
