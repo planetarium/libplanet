@@ -52,6 +52,9 @@ To be released.
 
 ### Behavioral changes
 
+ - If the length of the given hexadecimal string is less than 2,
+   `AddressType.ParseValue(object)` will throw `ArgumentException`. [[#2764]]
+
 ### Bug fixes
 
  -  Fixed a JSON serializer bug where a `Transaction<T>` serialized into JSON
