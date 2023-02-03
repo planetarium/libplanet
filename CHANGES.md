@@ -134,10 +134,8 @@ Released on Janurary 18th, 2023.
 [#2701]: https://github.com/planetarium/libplanet/pull/2701
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
-[#2708]: https://github.com/planetarium/libplanet/pull/2708
 [#2718]: https://github.com/planetarium/libplanet/pull/2718
 [#2716]: https://github.com/planetarium/libplanet/pull/2716
-[#2719]: https://github.com/planetarium/libplanet/pull/2719
 
 
 Version 0.45.5
