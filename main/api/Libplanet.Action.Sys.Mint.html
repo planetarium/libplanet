@@ -1,31 +1,30 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class Mint
-   | Libplanet </title>
+ | Libplanet </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Mint
-   | Libplanet ">
-    <meta name="generator" content="docfx 2.58.2.0">
-    
+ | Libplanet ">
+  
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    
-    
+  
+  
+  
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -49,7 +48,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,7 +58,7 @@
         </div>
       </header>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -69,10 +68,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="Libplanet.Action.Sys.Mint">
-  
-  
+
+
   <h1 id="Libplanet_Action_Sys_Mint" data-uid="Libplanet.Action.Sys.Mint" class="text-break">Class Mint
-  </h1>
+</h1>
   <div class="markdown level0 summary"><p>A system action that mints specified <a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount">Amount</a> of tokens to a given
 <a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient">Recipient</a>.</p>
 </div>
@@ -82,26 +81,45 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">Mint</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
-    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Action.Sys.Mint.html">Mint</a>&gt;</div>
-    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Action.Sys.Mint.html">Mint</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.Sys.html">Libplanet.Action.Sys</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Action_Sys_Mint_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Mint : object, IAction, IEquatable&lt;Mint&gt;, IEquatable&lt;IAction&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonConverter(typeof(SysActionJsonConverter))]
+public sealed class Mint : IAction, IEquatable&lt;Mint&gt;, IEquatable&lt;IAction&gt;</code></pre>
   </div>
   <h5 id="Libplanet_Action_Sys_Mint_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Only native tokens can be minted.</p>
 </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.%23ctor(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.%23ctor(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L22">View Source</a>
@@ -111,7 +129,7 @@
   <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="Libplanet.Action.Sys.Mint.html">Mint</a> action.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Mint(Address recipient, FungibleAssetValue amount)</code></pre>
   </div>
@@ -139,11 +157,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_Sys_Mint__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Amount.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Amount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Amount.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Amount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L41">View Source</a>
@@ -153,7 +174,7 @@
   <div class="markdown level1 summary"><p>The amount of the asset to be minted.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public FungibleAssetValue Amount { get; }</code></pre>
   </div>
@@ -172,9 +193,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_Sys_Mint_Amount_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.PlainValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L44">View Source</a>
@@ -185,10 +209,10 @@
 (or fields) of an action, so that they can be transmitted over
 network or saved to persistent storage.</p>
 <p>Serialized values are deserialized by
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IValue_">LoadPlainValue(IValue)</a> method later.</p>
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue(IValue)</a> method later.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IValue PlainValue { get; }</code></pre>
   </div>
@@ -202,20 +226,23 @@ network or saved to persistent storage.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IValue</span></td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><p>A Bencodex value which encodes this action's bound values (held
 by properties or fields).</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_Sys_Mint_PlainValue_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <h5 id="Libplanet_Action_Sys_Mint_PlainValue_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IValue_">LoadPlainValue</a>(<span class="xref">IValue</span>)</div>
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue</a>(<span class="xref">Bencodex.Types.IValue</span>)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Recipient.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Recipient%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Recipient.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Recipient%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L36">View Source</a>
@@ -225,7 +252,7 @@ by properties or fields).</p>
   <div class="markdown level1 summary"><p>The address of the recipient to receive the minted tokens.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Address Recipient { get; }</code></pre>
   </div>
@@ -244,20 +271,25 @@ by properties or fields).</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_Sys_Mint_Recipient_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.IAction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.IAction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Mint_Equals_" data-uid="Libplanet.Action.Sys.Mint.Equals*"></a>
   <h4 id="Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_IAction_" data-uid="Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.IAction)">Equals(IAction)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A system action that mints specified <a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount">Amount</a> of tokens to a given
+<a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient">Recipient</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Equals(IAction other)</code></pre>
   </div>
@@ -293,18 +325,23 @@ by properties or fields).</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_IAction__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_Sys_Mint_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.Sys.Mint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_Sys_Mint_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.Sys.Mint)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L75">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Mint_Equals_" data-uid="Libplanet.Action.Sys.Mint.Equals*"></a>
   <h4 id="Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_Sys_Mint_" data-uid="Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.Sys.Mint)">Equals(Mint)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A system action that mints specified <a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount">Amount</a> of tokens to a given
+<a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient">Recipient</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Equals(Mint other)</code></pre>
   </div>
@@ -340,20 +377,25 @@ by properties or fields).</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_Sys_Mint__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L82">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Mint_Equals_" data-uid="Libplanet.Action.Sys.Mint.Equals*"></a>
-  <h4 id="Libplanet_Action_Sys_Mint_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Action.Sys.Mint.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Libplanet_Action_Sys_Mint_Equals_System_Object_" data-uid="Libplanet.Action.Sys.Mint.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>A system action that mints specified <a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount">Amount</a> of tokens to a given
+<a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient">Recipient</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -366,7 +408,7 @@ by properties or fields).</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -387,9 +429,14 @@ by properties or fields).</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a></div>
+  <h5 id="Libplanet_Action_Sys_Mint_Equals_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L61">View Source</a>
@@ -408,7 +455,7 @@ object in itself, as its properties (or fields).</p>
 a delta which shifts from previous states to next states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IAccountStateDelta Execute(IActionContext context)</code></pre>
   </div>
@@ -458,7 +505,7 @@ than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
 implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface separately and
 attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance.</p>
-<p>For randomness, <em>never</em> use <see cref="!:System.Random"></see>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
 <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> guarantees the same action
@@ -471,14 +518,14 @@ could be logged multiple times.</p>
 underspecified so that it can make different results on different
 machines, platforms, runtimes, compilers, and builds</a>.</p>
 <p>Lastly, you need to be aware and keep in mind that there
-is a global state named <see cref="!:System.Globalization.CultureInfo.CurrentCulture"></see> on .NET;
+is a global state named <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#system-globalization-cultureinfo-currentculture">CurrentCulture</a> on .NET;
 if you format numbers, dates and times, currencies, or other such
 things into strings and parse these strings back these can rely on
-<see cref="!:System.Globalization.CultureInfo.CurrentCulture"></see>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#system-globalization-cultureinfo-currentculture">CurrentCulture</a>,
 so that the same action make different results on two differently
 configured systems like Thai language and French language.
 In order to make these types of conversions deterministic,
-you have to explicitly pass <see cref="!:System.Globalization.CultureInfo.InvariantCulture"></see>.</p>
+you have to explicitly pass <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo.invariantculture#system-globalization-cultureinfo-invariantculture">InvariantCulture</a>.</p>
 <p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
 <p>Lastly, you can conduct static analysis on your code
 using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
@@ -491,16 +538,18 @@ your project as a dependency.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L85">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Mint_GetHashCode_" data-uid="Libplanet.Action.Sys.Mint.GetHashCode*"></a>
   <h4 id="Libplanet_Action_Sys_Mint_GetHashCode" data-uid="Libplanet.Action.Sys.Mint.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A system action that mints specified <a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount">Amount</a> of tokens to a given
+<a class="xref" href="Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient">Recipient</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
   </div>
@@ -519,21 +568,26 @@ your project as a dependency.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
+  <h5 id="Libplanet_Action_Sys_Mint_GetHashCode_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.LoadPlainValue(IValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint_LoadPlainValue_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint.LoadPlainValue(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Mint_LoadPlainValue_" data-uid="Libplanet.Action.Sys.Mint.LoadPlainValue*"></a>
-  <h4 id="Libplanet_Action_Sys_Mint_LoadPlainValue_IValue_" data-uid="Libplanet.Action.Sys.Mint.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
+  <h4 id="Libplanet_Action_Sys_Mint_LoadPlainValue_Bencodex_Types_IValue_" data-uid="Libplanet.Action.Sys.Mint.LoadPlainValue(Bencodex.Types.IValue)">LoadPlainValue(IValue)</h4>
   <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property made), and then fills this action's properties (or fields)
 with the deserialized values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void LoadPlainValue(IValue plainValue)</code></pre>
   </div>
@@ -548,7 +602,7 @@ with the deserialized values.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IValue</span></td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><span class="parametername">plainValue</span></td>
         <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property) to be deserialized and assigned to this action's
@@ -557,7 +611,10 @@ properties (or fields).</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_Sys_Mint_LoadPlainValue_IValue__seealso">See Also</h5>
+  <h5 id="Libplanet_Action_Sys_Mint_LoadPlainValue_Bencodex_Types_IValue__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native tokens can be minted.</p>
+</div>
+  <h5 id="Libplanet_Action_Sys_Mint_LoadPlainValue_Bencodex_Types_IValue__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
   </div>
@@ -566,20 +623,20 @@ properties (or fields).</p>
       <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
   </div>
   <div>
-      <span class="xref">IEquatable&lt;&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
-      <span class="xref">IEquatable&lt;&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Mint.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Mint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Mint.cs/#L13" class="contribution-link">View Source</a>
@@ -594,7 +651,7 @@ properties (or fields).</p>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -602,13 +659,13 @@ properties (or fields).</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
-            
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
           </div>
         </div>
       </footer>
     </div>
-    
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>

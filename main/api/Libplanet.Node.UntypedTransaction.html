@@ -1,31 +1,30 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class UntypedTransaction
-   | Libplanet </title>
+ | Libplanet </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UntypedTransaction
-   | Libplanet ">
-    <meta name="generator" content="docfx 2.58.2.0">
-    
+ | Libplanet ">
+  
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    
-    
+  
+  
+  
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -49,7 +48,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,7 +58,7 @@
         </div>
       </header>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -69,10 +68,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="Libplanet.Node.UntypedTransaction">
-  
-  
+
+
   <h1 id="Libplanet_Node_UntypedTransaction" data-uid="Libplanet.Node.UntypedTransaction" class="text-break">Class UntypedTransaction
-  </h1>
+</h1>
   <div class="markdown level0 summary"><p>Untyped equivalent of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.  It's guaranteed that the transaction
 is properly signed.</p>
 </div>
@@ -82,35 +81,59 @@ is properly signed.</p>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">UntypedTransaction</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Tx.ITxExcerpt.html">ITxExcerpt</a></div>
     <div><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Node.html">Libplanet.Node</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Node.dll</h6>
   <h5 id="Libplanet_Node_UntypedTransaction_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class UntypedTransaction : object, ITxExcerpt, ITxMetadata</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class UntypedTransaction : ITxExcerpt, ITxMetadata</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L86">View Source</a>
   </span>
   <a id="Libplanet_Node_UntypedTransaction__ctor_" data-uid="Libplanet.Node.UntypedTransaction.#ctor*"></a>
-  <h4 id="Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Node.UntypedTransaction.#ctor(Bencodex.Types.Dictionary)">UntypedTransaction(Bencodex.Types.Dictionary)</h4>
+  <h4 id="Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Node.UntypedTransaction.#ctor(Bencodex.Types.Dictionary)">UntypedTransaction(Dictionary)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Node.UntypedTransaction.html">UntypedTransaction</a> instance from a Bencodex
 <code data-dev-comment-type="paramref" class="paramref">dictionary</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UntypedTransaction(Bencodex.Types.Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public UntypedTransaction(Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -141,6 +164,18 @@ method.</p>
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">dictionary</code> lacks some fields.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidcastexception">InvalidCastException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">dictionary</code> has some invalid values.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
         <td><p>Thrown when the signature is invalid.</p>
 </td>
@@ -150,22 +185,23 @@ method.</p>
   <h5 id="Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_ToBencodex">ToBencodex()</a></div>
+      <div><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToBencodex_System_Boolean_">ToBencodex(Boolean)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction__ctor_Libplanet_Tx_ITxMetadata_System_Nullable_IValue__System_Nullable_IValue__ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.%23ctor(Libplanet.Tx.ITxMetadata%2CSystem.Nullable%7BIValue%7D%2CSystem.Nullable%7BIValue%7D%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction__ctor_Libplanet_Tx_ITxMetadata_Bencodex_Types_IValue_Bencodex_Types_IValue_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.%23ctor(Libplanet.Tx.ITxMetadata%2CBencodex.Types.IValue%2CBencodex.Types.IValue%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L39">View Source</a>
   </span>
   <a id="Libplanet_Node_UntypedTransaction__ctor_" data-uid="Libplanet.Node.UntypedTransaction.#ctor*"></a>
-  <h4 id="Libplanet_Node_UntypedTransaction__ctor_Libplanet_Tx_ITxMetadata_System_Nullable_IValue__System_Nullable_IValue__ImmutableArray_System_Byte__" data-uid="Libplanet.Node.UntypedTransaction.#ctor(Libplanet.Tx.ITxMetadata,System.Nullable{IValue},System.Nullable{IValue},ImmutableArray{System.Byte})">UntypedTransaction(ITxMetadata, Nullable&lt;IValue&gt;, Nullable&lt;IValue&gt;, ImmutableArray&lt;Byte&gt;)</h4>
+  <h4 id="Libplanet_Node_UntypedTransaction__ctor_Libplanet_Tx_ITxMetadata_Bencodex_Types_IValue_Bencodex_Types_IValue_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Node.UntypedTransaction.#ctor(Libplanet.Tx.ITxMetadata,Bencodex.Types.IValue,Bencodex.Types.IValue,System.Collections.Immutable.ImmutableArray{System.Byte})">UntypedTransaction(ITxMetadata, IValue, IValue, ImmutableArray&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Node.UntypedTransaction.html">UntypedTransaction</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UntypedTransaction(ITxMetadata metadata, IValue? systemActionValue, IValue? customActionsValue, ImmutableArray&lt;byte&gt; signature)</code></pre>
+    <pre><code class="lang-csharp hljs">public UntypedTransaction(ITxMetadata metadata, IValue systemActionValue, IValue customActionsValue, ImmutableArray&lt;byte&gt; signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -184,21 +220,21 @@ method.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><span class="parametername">systemActionValue</span></td>
         <td><p>The <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a> representing
 a <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction">SystemAction</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><span class="parametername">customActionsValue</span></td>
-        <td><p>The <see cref="!:Bencodex.Types.List"></see> representation
+        <td><p>The <span class="xref">Bencodex.Types.List</span> representation
 of a <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions">CustomActions</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">signature</span></td>
         <td><p>A signature made by transaction's signer.</p>
 </td>
@@ -220,26 +256,33 @@ of a <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transact
 the <code data-dev-comment-type="paramref" class="paramref">signature</code> is invalid.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when
+<code data-dev-comment-type="paramref" class="paramref">systemActionValue</code> and <code data-dev-comment-type="paramref" class="paramref">customActionsValue</code> are
+both <span class="xref">null</span> or are both not <span class="xref">null</span>.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_CustomActionsValue.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.CustomActionsValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_CustomActionsValue.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.CustomActionsValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L148">View Source</a>
   </span>
   <a id="Libplanet_Node_UntypedTransaction_CustomActionsValue_" data-uid="Libplanet.Node.UntypedTransaction.CustomActionsValue*"></a>
   <h4 id="Libplanet_Node_UntypedTransaction_CustomActionsValue" data-uid="Libplanet.Node.UntypedTransaction.CustomActionsValue">CustomActionsValue</h4>
-  <div class="markdown level1 summary"><p>The <see cref="!:Bencodex.Types.List"></see> representation of
+  <div class="markdown level1 summary"><p>The <span class="xref">Bencodex.Types.List</span> representation of
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions">CustomActions</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IValue? CustomActionsValue { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IValue CustomActionsValue { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -251,14 +294,14 @@ the <code data-dev-comment-type="paramref" class="paramref">signature</code> is 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_GenesisHash.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.GenesisHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_GenesisHash.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.GenesisHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L136">View Source</a>
@@ -270,7 +313,7 @@ from.  This can be <span class="xref">null</span> iff the transaction is contain
 the genesis block.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public BlockHash? GenesisHash { get; }</code></pre>
   </div>
@@ -291,7 +334,7 @@ the genesis block.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Id.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Id.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Id%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L103">View Source</a>
@@ -302,7 +345,7 @@ the genesis block.</p>
 signature.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public TxId Id { get; }</code></pre>
   </div>
@@ -327,7 +370,7 @@ signature.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Nonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Nonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L121">View Source</a>
@@ -339,7 +382,7 @@ the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata
 replay attack.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public long Nonce { get; }</code></pre>
   </div>
@@ -363,7 +406,7 @@ replay attack.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.PublicKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L133">View Source</a>
@@ -375,7 +418,7 @@ The <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata
 for each transaction.  This cannot be <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public PublicKey PublicKey { get; }</code></pre>
   </div>
@@ -396,7 +439,7 @@ for each transaction.  This cannot be <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Signature%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L153">View Source</a>
@@ -406,7 +449,7 @@ for each transaction.  This cannot be <span class="xref">null</span>.</p>
   <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_Signer">Signer</a>'s signature on this transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; Signature { get; }</code></pre>
   </div>
@@ -420,14 +463,14 @@ for each transaction.  This cannot be <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Signer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Signer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L124">View Source</a>
@@ -438,7 +481,7 @@ for each transaction.  This cannot be <span class="xref">null</span>.</p>
 This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Address Signer { get; }</code></pre>
   </div>
@@ -459,7 +502,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_SystemActionValue.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.SystemActionValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_SystemActionValue.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.SystemActionValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L142">View Source</a>
@@ -469,9 +512,9 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
   <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a> of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction">SystemAction</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IValue? SystemActionValue { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IValue SystemActionValue { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -483,7 +526,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -494,7 +537,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Timestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L130">View Source</a>
@@ -504,7 +547,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
   <div class="markdown level1 summary"><p>The time this transaction is created and signed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
   </div>
@@ -518,14 +561,14 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">DateTimeOffset</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.UpdatedAddresses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.UpdatedAddresses%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L127">View Source</a>
@@ -536,7 +579,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
 transaction.  However, it could be wrong.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IImmutableSet&lt;Address&gt; UpdatedAddresses { get; }</code></pre>
   </div>
@@ -550,16 +593,16 @@ transaction.  However, it could be wrong.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.ToBencodex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L165">View Source</a>
@@ -569,9 +612,10 @@ transaction.  However, it could be wrong.</p>
   <div class="markdown level1 summary"><p>Builds a Bencodex dictionary used for calculating <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Bencodex.Types.Dictionary ToBencodex()</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public Dictionary ToBencodex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -586,15 +630,16 @@ transaction.  However, it could be wrong.</p>
         <td><span class="xref">Bencodex.Types.Dictionary</span></td>
         <td><p>A Bencodex dictionary that this transaction turns into.
 This can be deserialized using
-<a class="xref" href="Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_">UntypedTransaction(Bencodex.Types.Dictionary)</a> method or
-<see cref="!:Transaction&lt;T>(Bencodex.Types.Dictionary)"></see> method.</p>
+<a class="xref" href="Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_">UntypedTransaction(Dictionary)</a> method or
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Bencodex_Types_Dictionary_">Transaction(Dictionary)</a> method.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Node_UntypedTransaction_ToBencodex_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_">UntypedTransaction(Bencodex.Types.Dictionary)</a></div>
+      <div><a class="xref" href="Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_Bencodex_Types_Dictionary_">UntypedTransaction(Dictionary)</a></div>
+      <div><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Bencodex_Types_Dictionary_">Transaction(Dictionary)</a></div>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
@@ -605,13 +650,13 @@ This can be deserialized using
   </div>
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Node_UntypedTransaction.md&amp;value=---%0Auid%3A%20Libplanet.Node.UntypedTransaction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Node/UntypedTransaction.cs/#L19" class="contribution-link">View Source</a>
@@ -626,7 +671,7 @@ This can be deserialized using
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -634,13 +679,13 @@ This can be deserialized using
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
-            
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
           </div>
         </div>
       </footer>
     </div>
-    
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>

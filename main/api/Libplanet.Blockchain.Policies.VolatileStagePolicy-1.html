@@ -1,31 +1,30 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class VolatileStagePolicy&lt;T&gt;
-   | Libplanet </title>
+ | Libplanet </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class VolatileStagePolicy&lt;T&gt;
-   | Libplanet ">
-    <meta name="generator" content="docfx 2.58.2.0">
-    
+ | Libplanet ">
+  
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    
-    
+  
+  
+  
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -49,7 +48,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,7 +58,7 @@
         </div>
       </header>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -69,10 +68,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1">
-  
-  
+
+
   <h1 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1" class="text-break">Class VolatileStagePolicy&lt;T&gt;
-  </h1>
+</h1>
   <div class="markdown level0 summary"><p>
 An in memory implementation of the <a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy&lt;T&gt;</a>.
 </p>
@@ -82,7 +81,7 @@ for the following reasons:
 <ul><li>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has been specifically marked to
         be ignored due to <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> not being valid.</li><li>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has expired due to its staleness.
 </li></ul>
-</p>
+
 <p>
 Additionally, any <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> with a lower nonce than that of returned by
 the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> is masked and filtered by default.
@@ -94,15 +93,39 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">VolatileStagePolicy&lt;T&gt;</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy</a>&lt;T&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VolatileStagePolicy&lt;T&gt; : object, IStagePolicy&lt;T&gt; where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public class VolatileStagePolicy&lt;T&gt; : IStagePolicy&lt;T&gt; where T : IAction, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -122,10 +145,10 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;
     </tbody>
   </table>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L50">View Source</a>
@@ -136,23 +159,23 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;
 By default, <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a> is set to 10 minutes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public VolatileStagePolicy()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor(TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_System_TimeSpan_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.%23ctor(System.TimeSpan)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L60">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_TimeSpan_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(TimeSpan)">VolatileStagePolicy(TimeSpan)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1__ctor_System_TimeSpan_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.#ctor(System.TimeSpan)">VolatileStagePolicy(TimeSpan)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html">VolatileStagePolicy&lt;T&gt;</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public VolatileStagePolicy(TimeSpan lifetime)</code></pre>
   </div>
@@ -167,19 +190,19 @@ By default, <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePol
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TimeSpan</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
         <td><span class="parametername">lifetime</span></td>
         <td><p>Volatilizes staged transactions older than this
-<see cref="!:TimeSpan"></see>.  See also <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a>.</p>
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>.  See also <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html#Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime">Lifetime</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Lifetime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Lifetime%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L76">View Source</a>
@@ -187,10 +210,10 @@ By default, <a class="xref" href="Libplanet.Blockchain.Policies.VolatileStagePol
   <a id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime_" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime*"></a>
   <h4 id="Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Lifetime" data-uid="Libplanet.Blockchain.Policies.VolatileStagePolicy`1.Lifetime">Lifetime</h4>
   <div class="markdown level1 summary"><p>Lifespan for <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.  Any <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> older
-than this <see cref="!:TimeSpan"></see> will be considered expired.</p>
+than this <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> will be considered expired.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public TimeSpan Lifetime { get; }</code></pre>
   </div>
@@ -204,7 +227,7 @@ than this <see cref="!:TimeSpan"></see> will be considered expired.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TimeSpan</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -213,10 +236,10 @@ than this <see cref="!:TimeSpan"></see> will be considered expired.</p>
   <div class="markdown level1 remarks"><p>Expired <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be staged.</p>
 </div>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Get_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Get(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Get_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Get(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L190">View Source</a>
@@ -226,7 +249,7 @@ than this <see cref="!:TimeSpan"></see> will be considered expired.</p>
   <div class="markdown level1 summary"><p>Retrieves a staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> by its <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Transaction&lt;T&gt; Get(BlockChain&lt;T&gt; blockChain, TxId id, bool filtered = true)</code></pre>
   </div>
@@ -280,7 +303,7 @@ if found,  <span class="xref">null</span> otherwise.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_Libplanet_Blockchain_BlockChain__0__Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.GetNextTxNonce(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_GetNextTxNonce_Libplanet_Blockchain_BlockChain__0__Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.GetNextTxNonce(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L229">View Source</a>
@@ -290,7 +313,7 @@ if found,  <span class="xref">null</span> otherwise.</p>
   <div class="markdown level1 summary"><p>Calculates the next nonce according for given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public long GetNextTxNonce(BlockChain&lt;T&gt; blockChain, Address address)</code></pre>
   </div>
@@ -336,7 +359,7 @@ if found,  <span class="xref">null</span> otherwise.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Ignore(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Ignore(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L149">View Source</a>
@@ -346,7 +369,7 @@ if found,  <span class="xref">null</span> otherwise.</p>
   <div class="markdown level1 summary"><p>Marks given <code data-dev-comment-type="paramref" class="paramref">id</code> as ignored.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Ignore(BlockChain&lt;T&gt; blockChain, TxId id)</code></pre>
   </div>
@@ -380,7 +403,7 @@ staged, this also unstages the <a class="xref" href="Libplanet.Tx.Transaction-1.
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Ignores(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Ignores(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L176">View Source</a>
@@ -390,7 +413,7 @@ staged, this also unstages the <a class="xref" href="Libplanet.Tx.Transaction-1.
   <div class="markdown level1 summary"><p>Checks if given <code data-dev-comment-type="paramref" class="paramref">id</code> is marked as ignored.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Ignores(BlockChain&lt;T&gt; blockChain, TxId id)</code></pre>
   </div>
@@ -437,7 +460,7 @@ staged, this also unstages the <a class="xref" href="Libplanet.Tx.Transaction-1.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Iterate(Libplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Iterate(Libplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L204">View Source</a>
@@ -447,7 +470,7 @@ staged, this also unstages the <a class="xref" href="Libplanet.Tx.Transaction-1.
   <div class="markdown level1 summary"><p>Enumerates all staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerable&lt;Transaction&lt;T&gt;&gt; Iterate(BlockChain&lt;T&gt; blockChain, bool filtered = true)</code></pre>
   </div>
@@ -486,7 +509,7 @@ or not.  Set to <span class="xref">true</span> by default.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
         <td><p>All staged transactions.  No ordering is guaranteed.</p>
 </td>
       </tr>
@@ -494,7 +517,7 @@ or not.  Set to <span class="xref">true</span> by default.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Stage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Stage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L79">View Source</a>
@@ -504,7 +527,7 @@ or not.  Set to <span class="xref">true</span> by default.</p>
   <div class="markdown level1 summary"><p>Stages a <code data-dev-comment-type="paramref" class="paramref">transaction</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Stage(BlockChain&lt;T&gt; blockChain, Transaction&lt;T&gt; transaction)</code></pre>
   </div>
@@ -561,7 +584,7 @@ as ignored, <code data-dev-comment-type="paramref" class="paramref">transaction<
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Unstage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601.Unstage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L132">View Source</a>
@@ -571,7 +594,7 @@ as ignored, <code data-dev-comment-type="paramref" class="paramref">transaction<
   <div class="markdown level1 summary"><p>Unstages a transaction <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Unstage(BlockChain&lt;T&gt; blockChain, TxId id)</code></pre>
   </div>
@@ -626,13 +649,13 @@ successfully unstaged or not.</p>
   </div>
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_VolatileStagePolicy_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.VolatileStagePolicy%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/VolatileStagePolicy.cs/#L38" class="contribution-link">View Source</a>
@@ -647,7 +670,7 @@ successfully unstaged or not.</p>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -655,13 +678,13 @@ successfully unstaged or not.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
-            
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
           </div>
         </div>
       </footer>
     </div>
-    
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
