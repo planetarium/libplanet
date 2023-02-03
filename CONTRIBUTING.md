@@ -99,6 +99,11 @@ on GitHub consists of several projects:
  -  *Libplanet.Stun*: The project dedicated to implement [TURN & STUN].
     This is distributed as a distinct NuGet package: *[Libplanet.Stun]*.
 
+ -  *Libplanet.Crypto.Secp256k1*: The `ICryptoBackend<T>` implementation built
+    on native [libsecp256k1].  As this depends on a platform-dependent library
+    (which is written in C), this is distributed as a distinct NuGet package:
+    *[Libplanet.Crypto.Secp256k1]*.
+
  -  *Libplanet.RocksDBStore*: The `IStore` implementation built on [RocksDB].
     As this depends on platform-dependent libraries (which is written in C/C++),
     this is distributed as a distinct NuGet package: *[Libplanet.RocksDBStore]*.
@@ -137,6 +142,9 @@ on GitHub consists of several projects:
 
  -  *Libplanet.Stun.Tests*: Unit tests of the *Libplanet.Stun* project.
 
+ -  *Libplanet.Crypto.Secp256k1.Tests*: Unit tests of
+    the *Libplanet.Crypto.Secp256k1* project.
+
  -  *Libplanet.RocksDBStore.Tests*: Unit tests of the *Libplanet.RocksDBStore*
     project.
 
@@ -154,8 +162,10 @@ on GitHub consists of several projects:
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
 [Libplanet.Node]: https://www.nuget.org/packages/Libplanet.Node/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
+[libsecp256k1]: https://github.com/bitcoin-core/secp256k1
 [RocksDB]: https://rocksdb.org/
 [Libplanet.Stun]: https://www.nuget.org/packages/Libplanet.Stun/
+[Libplanet.Crypto.Secp256k1]: https://www.nuget.org/packages/Libplanet.Crypto.Secp256k1/
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
 [Libplanet.Analyzers]: https://www.nuget.org/packages/Libplanet.Analyzers/
 [Cocona]: https://www.nuget.org/packages/Cocona
