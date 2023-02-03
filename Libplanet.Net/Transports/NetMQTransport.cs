@@ -596,74 +596,82 @@ namespace Libplanet.Net.Transports
                     // Duplicate received message before distributing.
                     var copied = new NetMQMessage(raw.Select(f => f.Duplicate()));
 
-                    try
-                    {
-                        Message message = _messageCodec.Decode(copied, false);
-                        string reqId = copied[0].Buffer.Length == 16 ?
-                            new Guid(copied[0].ToByteArray()).ToString() : "unknown";
-
-                        _logger
-                            .ForContext("Tag", "Metric")
-                            .ForContext("Subtag", "InboundMessageReport")
-                            .Debug(
-                                "Received Request {RequestId} {Message} from {Peer}.",
-                                reqId,
-                                message,
-                                message.Remote);
-                        try
+                    Task.Factory.StartNew(
+                        async () =>
                         {
-                            _messageValidator.ValidateTimestamp(message);
-                            _messageValidator.ValidateAppProtocolVersion(message);
-                            _ = ProcessMessageHandler.InvokeAsync(message);
-                        }
-                        catch (InvalidMessageTimestampException imte)
-                        {
-                            const string logMsg =
-                                "Received {RequestId} {Message} from " +
-                                "{Peer} has an invalid timestamp.";
-                            _logger.Debug(
-                                imte,
-                                logMsg,
-                                reqId,
-                                message,
-                                message.Remote);
-                        }
-                        catch (DifferentAppProtocolVersionException dapve)
-                        {
-                            const string logMsg =
-                                "Received Request {RequestId} {Message} " +
-                                "from {Peer} has an invalid APV.";
-                            _logger.Debug(
-                                dapve,
-                                logMsg,
-                                reqId,
-                                message,
-                                message.Remote);
-                            var diffVersion = new DifferentVersionMsg()
+                            try
                             {
-                                Identity = message.Identity,
-                            };
-                            _logger.Debug(
-                                "Replying to Request {RequestId} {Peer} with {Reply}.",
-                                reqId,
-                                message.Remote,
-                                diffVersion);
-                            _ = ReplyMessageAsync(
-                                diffVersion,
-                                _runtimeCancellationTokenSource.Token
-                            );
-                        }
-                    }
-                    catch (InvalidMessageException ex)
-                    {
-                        _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
-                    }
-                    catch (Exception exc)
-                    {
-                        _logger.Error(
-                            exc,
-                            "Something went wrong during message processing.");
-                    }
+                                Message message = _messageCodec.Decode(copied, false);
+                                string reqId = copied[0].Buffer.Length == 16 ?
+                                    new Guid(copied[0].ToByteArray()).ToString() : "unknown";
+
+                                _logger
+                                    .ForContext("Tag", "Metric")
+                                    .ForContext("Subtag", "InboundMessageReport")
+                                    .Debug(
+                                        "Received Request {RequestId} {Message} from {Peer}.",
+                                        reqId,
+                                        message,
+                                        message.Remote);
+                                try
+                                {
+                                    _messageValidator.ValidateTimestamp(message);
+                                    _messageValidator.ValidateAppProtocolVersion(message);
+                                    await ProcessMessageHandler.InvokeAsync(message);
+                                }
+                                catch (InvalidMessageTimestampException imte)
+                                {
+                                    const string logMsg =
+                                        "Received {RequestId} {Message} from " +
+                                        "{Peer} has an invalid timestamp.";
+                                    _logger.Debug(
+                                        imte,
+                                        logMsg,
+                                        reqId,
+                                        message,
+                                        message.Remote);
+                                }
+                                catch (DifferentAppProtocolVersionException dapve)
+                                {
+                                    const string logMsg =
+                                        "Received Request {RequestId} {Message} " +
+                                        "from {Peer} has an invalid APV.";
+                                    _logger.Debug(
+                                        dapve,
+                                        logMsg,
+                                        reqId,
+                                        message,
+                                        message.Remote);
+                                    var diffVersion = new DifferentVersionMsg()
+                                    {
+                                        Identity = message.Identity,
+                                    };
+                                    _logger.Debug(
+                                        "Replying to Request {RequestId} {Peer} with {Reply}.",
+                                        reqId,
+                                        message.Remote,
+                                        diffVersion);
+                                    await ReplyMessageAsync(
+                                        diffVersion,
+                                        _runtimeCancellationTokenSource.Token
+                                    );
+                                }
+                            }
+                            catch (InvalidMessageException ex)
+                            {
+                                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+                            }
+                            catch (Exception exc)
+                            {
+                                _logger.Error(
+                                    exc,
+                                    "Something went wrong during message processing.");
+                            }
+                        },
+                        CancellationToken.None,
+                        TaskCreationOptions.HideScheduler | TaskCreationOptions.DenyChildAttach,
+                        TaskScheduler.Default
+                    ).Unwrap();
                 }
             }
             catch (Exception ex)

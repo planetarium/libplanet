@@ -150,7 +150,7 @@ namespace Libplanet.Net.Messages
             return message;
         }
 
-        private Message CreateMessage(Message.MessageType type, byte[][] dataframes)
+        internal static Message CreateMessage(Message.MessageType type, byte[][] dataframes)
         {
             switch (type)
             {

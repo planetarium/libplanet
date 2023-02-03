@@ -88,7 +88,8 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the message with <paramref name="id"/> if it exists in the message cache.
+        /// Gets the message with <paramref name="id"/> if it exists in the message cache. Returned
+        /// message contains no original metadata from <see cref="Message"/>.
         /// </summary>
         /// <param name="id">A <see cref="MessageId"/> of the <see cref="Message"/> to get.</param>
         /// <returns>A message with id <paramref name="id"/>.</returns>
@@ -101,7 +102,9 @@ namespace Libplanet.Net.Consensus
             {
                 if (_messages.TryGetValue(id, out Message? msg))
                 {
-                    return msg;
+                    // FIXME: This is a workaround for preventing any message modification in
+                    // message dictionary.
+                    return NetMQMessageCodec.CreateMessage(msg.Type, msg.DataFrames.ToArray());
                 }
 
                 throw new KeyNotFoundException($"A message of id {id} does not exist.");
