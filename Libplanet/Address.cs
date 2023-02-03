@@ -118,14 +118,12 @@ namespace Libplanet
         /// Derives the corresponding <see cref="Address"/> from a hexadecimal
         /// address string.
         /// </summary>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> was
-        /// passed to <paramref name="hex"/>.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> did not lengthen 40 characters except 0x prefix.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> is mixed-case and the checksum is invalid.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> does not consist of ASCII characters.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// is neither 40 chars long nor 42 chars long with 0x prefix.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// is mixed-case and the checksum is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// does not consist of ASCII characters.</exception>
         /// <param name="hex">A 40 characters or included 0x prefix hexadecimal
         /// address string to derive the corresponding <see cref="Address"/> from.
         /// The string should be all lower-case or mixed-case which follows <a
