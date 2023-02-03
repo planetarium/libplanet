@@ -17265,6 +17265,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode
   nameWithType: NetMQMessageCodec.Encode
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQ.NetMQMessage,System.Boolean)
+  name: ParseMessageType(NetMQMessage, Boolean)
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQ_NetMQMessage_System_Boolean_
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQ.NetMQMessage,System.Boolean)
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQ.NetMQMessage, System.Boolean)
+  nameWithType: NetMQMessageCodec.ParseMessageType(NetMQMessage, Boolean)
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType*
+  name: ParseMessageType
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_
+  commentId: Overload:Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType
+  nameWithType: NetMQMessageCodec.ParseMessageType
 - uid: Libplanet.Net.Messages.PingMsg
   name: PingMsg
   href: api/Libplanet.Net.Messages.PingMsg.html

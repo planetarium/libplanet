@@ -140,6 +140,12 @@ sometimes block data is in undefined state due to data corruption. [<a href="htt
 <li>Fixed a bug of <code>planet tx analyze</code> subcommand where a serialized transaction
 had lacked the content of its <code>&quot;publicKey&quot;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
 </ul>
+<h2 id="version-0461">Version 0.46.1</h2>
+<p>Released on February 3th, 2023.</p>
+<ul>
+<li>Ported changes from [Libplaent 0.45.5] release.</li>
+<li>General changes to log output for readability.  [<a href="https://github.com/planetarium/libplanet/pull/2769">#2769</a>]</li>
+</ul>
 <h2 id="version-0460">Version 0.46.0</h2>
 <p>Released on Janurary 18th, 2023.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
@@ -245,6 +251,23 @@ hadn't disposed of internal sockets properly when connecting failed.
 <li>Added <code>planet store chain-ids</code> subcommand.  [<a href="https://github.com/planetarium/libplanet/pull/2699">#2699</a>, <a href="https://github.com/planetarium/libplanet/pull/2704">#2704</a>]</li>
 <li>Added <code>-P</code>/<code>--public-key</code> option to <code>planet key derive</code> subcommand.
 [<a href="https://github.com/planetarium/libplanet/pull/2705">#2705</a>]</li>
+</ul>
+<h2 id="version-0455">Version 0.45.5</h2>
+<p>Released on January 19, 2023.</p>
+<ul>
+<li>Fixed a bug when <code>Web3KeyStore.Get()</code> hadn't worked properly on IL2CPP
+environment.  [<a href="https://github.com/planetarium/libplanet/pull/2727">#2727</a>]</li>
+<li>Back-ported below changes from <a href="https://www.nuget.org/packages/Libplanet/0.46.0">Libplanet 0.46.0</a> release.
+<ul>
+<li>(Libplanet.Net) Fixed a bug <code>NetMQTransport</code> log shows socket count
+wrongly. [<a href="https://github.com/planetarium/libplanet/pull/2708">#2708</a>]</li>
+<li>(Libplanet.Net) Fixed a bug where <code>NetMQTransport.SendMessageAsync()</code>
+method hadn't disposed of internal sockets properly when connecting
+failed. [<a href="https://github.com/planetarium/libplanet/pull/2719">#2719</a>]</li>
+<li>(Libplanet.Net) <code>BoundPeer()</code> constructor became to validate a hostname
+of <code>endPoint</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/2721">#2721</a>]</li>
+</ul>
+</li>
 </ul>
 <h2 id="version-0454">Version 0.45.4</h2>
 <p>Released on January 4, 2023.</p>
