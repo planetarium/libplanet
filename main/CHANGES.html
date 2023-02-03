@@ -116,7 +116,10 @@ correctly.  [<a href="https://github.com/planetarium/libplanet/pull/2757">#2757<
 <li>Fixed a bug of <code>DefaultStore.PutTxExecution()</code> where sometimes <code>TxExecution</code>
 data is in undefined state due to data corruption.  [<a href="https://github.com/planetarium/libplanet/pull/2761">#2761</a>]</li>
 <li>(Libplanet.Node) Fixed a bug of <code>NodeUtils&lt;T&gt;.CreateGenesisBlock()</code> where
-sometimes block data is in undefined state due to data corruption. [<a href="https://github.com/planetarium/libplanet/pull/2761">#2761</a>]</li>
+sometimes block data is in undefined state due to data corruption.
+[<a href="https://github.com/planetarium/libplanet/pull/2761">#2761</a>]</li>
+<li>Fixed where <code>Address(string)</code> could accept 42 chars with a wrong prefix.
+[<a href="https://github.com/planetarium/libplanet/pull/2781">#2781</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
