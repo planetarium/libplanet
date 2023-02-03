@@ -95,14 +95,18 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void HexMustBe40Characters()
+        public void DeriveFromHex()
         {
             Assert.Throws<ArgumentException>(
-                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDE")
-            );
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDE"));      // 39 chars
             Assert.Throws<ArgumentException>(
-                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF")
-            );
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF"));    // 41 chars
+            Assert.Throws<ArgumentException>(
+                () => new Address("1x0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"));   // bad prefix
+            Assert.Throws<ArgumentException>(
+                () => new Address("0x0123456789ABcdefABcdEfABcdEFabcDEFabCDE"));    // 41 chars
+            Assert.Throws<ArgumentException>(
+                () => new Address("0x0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF"));  // 43 chars
         }
 
         [Fact]

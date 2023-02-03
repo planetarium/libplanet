@@ -312,47 +312,42 @@ namespace Libplanet
 
         private static ImmutableArray<byte> DeriveAddress(string hex)
         {
-            if (hex == null)
+            if (hex.Length != 40 && hex.Length != 42)
             {
-                throw new ArgumentNullException(nameof(hex));
+                throw new ArgumentException(
+                    $"Address hex must be either 42 chars or 40 chars, " +
+                    $"but given {nameof(hex)} is of length {hex.Length}: {hex}",
+                    nameof(hex));
             }
 
             if (hex.Length == 42)
             {
-                int pos = hex.IndexOf('x');
-                if (pos >= 0)
+                if (hex.StartsWith("0x"))
                 {
-                    hex = hex.Remove(0, pos + 1);
+                    hex = hex.Substring(2);
                 }
-            }
-
-            if (hex.Length != 40)
-            {
-                throw new ArgumentException(
-                    "Address hex must be 40 bytes, but " +
-                    $"{hex.Length} bytes were passed.",
-                    nameof(hex)
-                );
+                else
+                {
+                    throw new ArgumentException(
+                        $"Address hex of length 42 chars must start with \"0x\" prefix: {hex}",
+                        nameof(hex));
+                }
             }
 
             if (hex.ToLower(CultureInfo.InvariantCulture) != hex &&
                 ToChecksumAddress(hex.ToLower(CultureInfo.InvariantCulture)) != hex)
             {
-                throw new ArgumentException(
-                    "address checksum is invalid",
-                    nameof(hex)
-                );
+                throw new ArgumentException("Address checksum is invalid", nameof(hex));
             }
 
             try
             {
                 return ByteUtil.ParseHexToImmutable(hex);
             }
-            catch (FormatException)
+            catch (FormatException fe)
             {
                 throw new ArgumentException(
-                    "address hex must only consist of ASCII characters"
-                );
+                    "Address hex must only consist of ASCII characters", fe);
             }
         }
     }
