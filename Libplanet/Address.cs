@@ -118,14 +118,12 @@ namespace Libplanet
         /// Derives the corresponding <see cref="Address"/> from a hexadecimal
         /// address string.
         /// </summary>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> was
-        /// passed to <paramref name="hex"/>.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> did not lengthen 40 characters except 0x prefix.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> is mixed-case and the checksum is invalid.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> does not consist of ASCII characters.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// is neither 40 chars long nor 42 chars long with 0x prefix.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// is mixed-case and the checksum is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// does not consist of ASCII characters.</exception>
         /// <param name="hex">A 40 characters or included 0x prefix hexadecimal
         /// address string to derive the corresponding <see cref="Address"/> from.
         /// The string should be all lower-case or mixed-case which follows <a
@@ -312,47 +310,42 @@ namespace Libplanet
 
         private static ImmutableArray<byte> DeriveAddress(string hex)
         {
-            if (hex == null)
+            if (hex.Length != 40 && hex.Length != 42)
             {
-                throw new ArgumentNullException(nameof(hex));
+                throw new ArgumentException(
+                    $"Address hex must be either 42 chars or 40 chars, " +
+                    $"but given {nameof(hex)} is of length {hex.Length}: {hex}",
+                    nameof(hex));
             }
 
             if (hex.Length == 42)
             {
-                int pos = hex.IndexOf('x');
-                if (pos >= 0)
+                if (hex.StartsWith("0x"))
                 {
-                    hex = hex.Remove(0, pos + 1);
+                    hex = hex.Substring(2);
                 }
-            }
-
-            if (hex.Length != 40)
-            {
-                throw new ArgumentException(
-                    "Address hex must be 40 bytes, but " +
-                    $"{hex.Length} bytes were passed.",
-                    nameof(hex)
-                );
+                else
+                {
+                    throw new ArgumentException(
+                        $"Address hex of length 42 chars must start with \"0x\" prefix: {hex}",
+                        nameof(hex));
+                }
             }
 
             if (hex.ToLower(CultureInfo.InvariantCulture) != hex &&
                 ToChecksumAddress(hex.ToLower(CultureInfo.InvariantCulture)) != hex)
             {
-                throw new ArgumentException(
-                    "address checksum is invalid",
-                    nameof(hex)
-                );
+                throw new ArgumentException("Address checksum is invalid", nameof(hex));
             }
 
             try
             {
                 return ByteUtil.ParseHexToImmutable(hex);
             }
-            catch (FormatException)
+            catch (FormatException fe)
             {
                 throw new ArgumentException(
-                    "address hex must only consist of ASCII characters"
-                );
+                    "Address hex must only consist of ASCII characters", fe);
             }
         }
     }

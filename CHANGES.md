@@ -61,7 +61,10 @@ To be released.
  -  Fixed a bug of `DefaultStore.PutTxExecution()` where sometimes `TxExecution`
     data is in undefined state due to data corruption.  [[#2761]]
  -  (Libplanet.Node) Fixed a bug of `NodeUtils<T>.CreateGenesisBlock()` where
-    sometimes block data is in undefined state due to data corruption. [[#2761]]
+    sometimes block data is in undefined state due to data corruption.
+    [[#2761]]
+ -  Fixed where `Address(string)` could accept 42 chars with a wrong prefix.
+    [[#2781]]
 
 ### Dependencies
 
@@ -91,6 +94,7 @@ To be released.
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
 [#2759]: https://github.com/planetarium/libplanet/pull/2759
 [#2761]: https://github.com/planetarium/libplanet/pull/2761
+[#2781]: https://github.com/planetarium/libplanet/pull/2781
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
