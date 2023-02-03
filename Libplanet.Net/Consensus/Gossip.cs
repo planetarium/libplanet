@@ -360,6 +360,10 @@ namespace Libplanet.Net.Consensus
                 Message ret = _cache.Get(id);
                 ret.Remote = _transport.AsPeer;
                 ret.Identity = msg.Identity;
+                ret.Timestamp = DateTimeOffset.UtcNow;
+
+                // FIXME: This assumes if we receives a message, then version would match.
+                ret.Version = msg.Version;
                 return ret;
             }).ToArray();
             MessageId[] ids = messages.Select(m => m.Id).ToArray();
