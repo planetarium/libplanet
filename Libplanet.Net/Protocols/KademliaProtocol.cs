@@ -69,6 +69,14 @@ namespace Libplanet.Net.Protocols
             var history = new ConcurrentBag<BoundPeer>();
             var dialHistory = new ConcurrentBag<BoundPeer>();
 
+            if (!bootstrapPeers.Any())
+            {
+                throw new PeerDiscoveryException(
+                    "No seeds are provided.  If it is intended you should conditionally invoke " +
+                    $"{nameof(BootstrapAsync)}() only when there are seed peers."
+                );
+            }
+
             foreach (BoundPeer peer in bootstrapPeers.Where(peer => !peer.Address.Equals(_address)))
             {
                 // Guarantees at least one connection (seed peer)

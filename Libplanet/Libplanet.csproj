@@ -93,6 +93,9 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="System.Linq.Async" Version="4.0.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.7" />
     <PackageReference Include="Zio" Version="0.7.4" />
+    <PackageReference Include="Bencodex" Version="0.8.0" />
+    <PackageReference Include="Bencodex.Json" Version="0.8.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
