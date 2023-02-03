@@ -39,6 +39,7 @@ To be released.
 
 ### Added APIs
 
+ -  Introduced *Libplanet.Crypto.Secp256k1* package.  [[#2780]]
  -  Many more types became serialized and deserialized better with
     [`System.Text.Json.JsonSerializer`] as they now have their own
     [custom converters].  Note that these serializations are unavailable
@@ -91,6 +92,7 @@ To be released.
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
 [#2759]: https://github.com/planetarium/libplanet/pull/2759
 [#2761]: https://github.com/planetarium/libplanet/pull/2761
+[#2780]: https://github.com/planetarium/libplanet/pull/2780
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7

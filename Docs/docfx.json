@@ -7,6 +7,7 @@
             "Libplanet/Libplanet.csproj",
             "Libplanet.Net/Libplanet.Net.csproj",
             "Libplanet.Node/Libplanet.Node.csproj",
+            "Libplanet.Crypto.Secp256k1/Libplanet.Crypto.Secp256k1.csproj",
             "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",
             "Libplanet.Extensions.Cocona/Libplanet.Extensions.Cocona.csproj",
             "Libplanet.Stun/Libplanet.Stun.csproj"
