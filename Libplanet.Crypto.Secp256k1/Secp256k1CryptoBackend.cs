@@ -1,11 +1,16 @@
 namespace Libplanet.Crypto.Secp256k1;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet;
 using Secp256k1Net;
 using Libplanet.Crypto;
 
+[SuppressMessage(
+    "Minor Code Smell",
+    "S101:Types should be named in PascalCase",
+    Justification = "Term \"secp256k1\" is a single word.")]
 public class Secp256k1CryptoBackend<T> : ICryptoBackend<T>
     where T : HashAlgorithm
 {
