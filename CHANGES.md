@@ -7,8 +7,10 @@ Version 0.46.1
 To be released.
 
  -  Ported changes from [Libplaent 0.45.5] release.
+ -  General changes to log output for readability.  [[#2769]]
 
 [Libplanet 0.45.5]: https://www.nuget.org/packages/Libplanet/0.45.5
+[#2769]: https://github.com/planetarium/libplanet/pull/2769
 
 
 Version 0.46.0
