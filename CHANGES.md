@@ -7,8 +7,10 @@ Version 0.46.1
 To be released.
 
  -  Ported changes from [Libplaent 0.45.5] release.
+ -  General changes to log output for readability.  [[#2769]]
 
 [Libplanet 0.45.5]: https://www.nuget.org/packages/Libplanet/0.45.5
+[#2769]: https://github.com/planetarium/libplanet/pull/2769
 
 
 Version 0.46.0
@@ -132,10 +134,8 @@ Released on Janurary 18th, 2023.
 [#2701]: https://github.com/planetarium/libplanet/pull/2701
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
-[#2708]: https://github.com/planetarium/libplanet/pull/2708
 [#2718]: https://github.com/planetarium/libplanet/pull/2718
 [#2716]: https://github.com/planetarium/libplanet/pull/2716
-[#2719]: https://github.com/planetarium/libplanet/pull/2719
 
 
 Version 0.45.5
