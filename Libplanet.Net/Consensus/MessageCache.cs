@@ -88,7 +88,8 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the message with <paramref name="id"/> if it exists in the message cache.
+        /// Gets the message with <paramref name="id"/> if it exists in the message cache. Returned
+        /// message contains no original metadata from <see cref="Message"/>.
         /// </summary>
         /// <param name="id">A <see cref="MessageId"/> of the <see cref="Message"/> to get.</param>
         /// <returns>A message with id <paramref name="id"/>.</returns>
