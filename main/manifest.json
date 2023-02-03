@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "7vE0xUf2JaVG4c+eB8PNDxeLaxZgHDdOXvJM1aaVHg8="
+          "hash": "QvrEacpSg4e/f5MjgqGo3myZDhWut4xEiM1q+ix0HfU="
         }
       },
       "is_incremental": false,
@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "CONTRIBUTING.html",
-          "hash": "pnzCVwyY2PCY1GTBN6Pik0x7D11nvQsM0DUbbFVO3zM="
+          "hash": "wxDVfmWlaZDQ6DC5nvhcQrCFF5xEmMWOxD90TlCwank="
         }
       },
       "is_incremental": false,
@@ -1762,6 +1762,30 @@
         ".html": {
           "relative_path": "api/Libplanet.Crypto.PublicKey.html",
           "hash": "twC2Dqemfaz7UcuPSxypCBoWGPGgpCi8OeafUX8rIY4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.html",
+          "hash": "l8AGYzj1A6bGlkLShjE9I7/vOnocV2kQsI6vQGNhsBY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Crypto.Secp256k1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Crypto.Secp256k1.html",
+          "hash": "ZLjH9xMVa9Tr6ew7565ZEHry1yi+MElMQiaXxWixb/I="
         }
       },
       "is_incremental": false,
@@ -4425,7 +4449,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "nC3dE2l29M/Nf/0p1JN296Ugg6nnLnJkyFPj4XjdPdc="
+          "hash": "k1tEk2mtd7lOSvgOGkJcOKxN0fca6alYSuSqO3Jb/qU="
         }
       },
       "is_incremental": false,
@@ -4534,7 +4558,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 358,
+          "total_file_count": 360,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

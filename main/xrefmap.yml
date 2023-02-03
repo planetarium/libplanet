@@ -12351,6 +12351,57 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.Verify
   nameWithType: PublicKey.Verify
+- uid: Libplanet.Crypto.Secp256k1
+  name: Libplanet.Crypto.Secp256k1
+  href: api/Libplanet.Crypto.Secp256k1.html
+  commentId: N:Libplanet.Crypto.Secp256k1
+  fullName: Libplanet.Crypto.Secp256k1
+  nameWithType: Libplanet.Crypto.Secp256k1
+- uid: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1
+  name: Secp256k1CryptoBackend<T>
+  href: api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.html
+  commentId: T:Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1
+  name.vb: Secp256k1CryptoBackend(Of T)
+  fullName: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend<T>
+  fullName.vb: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend(Of T)
+  nameWithType: Secp256k1CryptoBackend<T>
+  nameWithType.vb: Secp256k1CryptoBackend(Of T)
+- uid: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Sign(Libplanet.HashDigest{`0},Libplanet.Crypto.PrivateKey)
+  name: Sign(HashDigest<T>, PrivateKey)
+  href: api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.html#Libplanet_Crypto_Secp256k1_Secp256k1CryptoBackend_1_Sign_Libplanet_HashDigest__0__Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Sign(Libplanet.HashDigest{`0},Libplanet.Crypto.PrivateKey)
+  name.vb: Sign(HashDigest(Of T), PrivateKey)
+  fullName: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend<T>.Sign(Libplanet.HashDigest<T>, Libplanet.Crypto.PrivateKey)
+  fullName.vb: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend(Of T).Sign(Libplanet.HashDigest(Of T), Libplanet.Crypto.PrivateKey)
+  nameWithType: Secp256k1CryptoBackend<T>.Sign(HashDigest<T>, PrivateKey)
+  nameWithType.vb: Secp256k1CryptoBackend(Of T).Sign(HashDigest(Of T), PrivateKey)
+- uid: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Sign*
+  name: Sign
+  href: api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.html#Libplanet_Crypto_Secp256k1_Secp256k1CryptoBackend_1_Sign_
+  commentId: Overload:Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Sign
+  isSpec: "True"
+  fullName: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend<T>.Sign
+  fullName.vb: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend(Of T).Sign
+  nameWithType: Secp256k1CryptoBackend<T>.Sign
+  nameWithType.vb: Secp256k1CryptoBackend(Of T).Sign
+- uid: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Verify(Libplanet.HashDigest{`0},System.Byte[],Libplanet.Crypto.PublicKey)
+  name: Verify(HashDigest<T>, Byte[], PublicKey)
+  href: api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.html#Libplanet_Crypto_Secp256k1_Secp256k1CryptoBackend_1_Verify_Libplanet_HashDigest__0__System_Byte___Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Verify(Libplanet.HashDigest{`0},System.Byte[],Libplanet.Crypto.PublicKey)
+  name.vb: Verify(HashDigest(Of T), Byte(), PublicKey)
+  fullName: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend<T>.Verify(Libplanet.HashDigest<T>, System.Byte[], Libplanet.Crypto.PublicKey)
+  fullName.vb: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend(Of T).Verify(Libplanet.HashDigest(Of T), System.Byte(), Libplanet.Crypto.PublicKey)
+  nameWithType: Secp256k1CryptoBackend<T>.Verify(HashDigest<T>, Byte[], PublicKey)
+  nameWithType.vb: Secp256k1CryptoBackend(Of T).Verify(HashDigest(Of T), Byte(), PublicKey)
+- uid: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Verify*
+  name: Verify
+  href: api/Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend-1.html#Libplanet_Crypto_Secp256k1_Secp256k1CryptoBackend_1_Verify_
+  commentId: Overload:Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend`1.Verify
+  isSpec: "True"
+  fullName: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend<T>.Verify
+  fullName.vb: Libplanet.Crypto.Secp256k1.Secp256k1CryptoBackend(Of T).Verify
+  nameWithType: Secp256k1CryptoBackend<T>.Verify
+  nameWithType.vb: Secp256k1CryptoBackend(Of T).Verify
 - uid: Libplanet.Crypto.SymmetricKey
   name: SymmetricKey
   href: api/Libplanet.Crypto.SymmetricKey.html

@@ -127,6 +127,11 @@ peer-to-peer network.  This is distributed as a distinct NuGet package:
 <li><p><em>Libplanet.Stun</em>: The project dedicated to implement <a href="https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/">TURN &amp; STUN</a>.
 This is distributed as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.Stun/">Libplanet.Stun</a></em>.</p>
 </li>
+<li><p><em>Libplanet.Crypto.Secp256k1</em>: The <code>ICryptoBackend&lt;T&gt;</code> implementation built
+on native <a href="https://github.com/bitcoin-core/secp256k1">libsecp256k1</a>.  As this depends on a platform-dependent library
+(which is written in C), this is distributed as a distinct NuGet package:
+<em><a href="https://www.nuget.org/packages/Libplanet.Crypto.Secp256k1/">Libplanet.Crypto.Secp256k1</a></em>.</p>
+</li>
 <li><p><em>Libplanet.RocksDBStore</em>: The <code>IStore</code> implementation built on <a href="https://rocksdb.org/">RocksDB</a>.
 As this depends on platform-dependent libraries (which is written in C/C++),
 this is distributed as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.RocksDBStore/">Libplanet.RocksDBStore</a></em>.</p>
@@ -164,6 +169,9 @@ section below.</p>
 <li><p><em>Libplanet.Node.Tests</em>: Unit tests of the <em>Libplanet.Node</em> project.</p>
 </li>
 <li><p><em>Libplanet.Stun.Tests</em>: Unit tests of the <em>Libplanet.Stun</em> project.</p>
+</li>
+<li><p><em>Libplanet.Crypto.Secp256k1.Tests</em>: Unit tests of
+the <em>Libplanet.Crypto.Secp256k1</em> project.</p>
 </li>
 <li><p><em>Libplanet.RocksDBStore.Tests</em>: Unit tests of the <em>Libplanet.RocksDBStore</em>
 project.</p>
