@@ -22,7 +22,7 @@ namespace Libplanet.Net
                     BlockHeader tipHeader = BlockChain.Tip.Header;
                     SortedList<long, Block<T>> blocks =
                         BlockCandidateTable.GetCurrentRoundCandidate(tipHeader);
-                    if (!(blocks is null))
+                    if (!(blocks is null) && blocks.Count > 0)
                     {
                         var latest = blocks.Last();
                         _logger.Debug(

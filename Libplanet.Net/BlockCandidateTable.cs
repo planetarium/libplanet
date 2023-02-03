@@ -49,7 +49,10 @@ namespace Libplanet.Net
             {
                 var sortedBlocks =
                     new SortedList<long, Block<T>>(blocks.ToDictionary(i => i.Index));
-                _blocks.TryAdd(blockHeader, sortedBlocks);
+                if (sortedBlocks.Count > 0)
+                {
+                    _blocks.TryAdd(blockHeader, sortedBlocks);
+                }
             }
             catch (ArgumentException e)
             {
