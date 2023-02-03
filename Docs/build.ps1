@@ -26,39 +26,8 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 $BaseDir = Split-Path -Path $MyInvocation.MyCommand.Source
 Set-Location $BaseDir
 
-# https://github.com/PowerShell/PowerShell/pull/1901#issuecomment-240847078
-if (Get-Alias Curl -ErrorAction SilentlyContinue) {
-  Remove-Item Alias:Curl
-}
-if (Get-Alias WGet -ErrorAction SilentlyContinue) {
-  Remove-Item Alias:WGet
-}
-
-function Download-File ($From, $To) {
-  # Why we prefer curl/wget here?  Because in some environments
-  # (e.g., Travis CI) .NET's root certificates are seemingly outdated,
-  # or at least, an error "Could not create SSL/TLS secure channel" occurs.
-  if (Get-Command wget -ErrorAction SilentlyContinue) {
-    wget -O "$To" "$From"
-  } elseif (Get-Command curl -ErrorAction SilentlyContinue) {
-    curl -L -o "$To" "$From"
-  } else {
-    Invoke-WebRequest -OutFile "$To" "$From"
-  }
-}
-
-# Download docfx if not exist yet.
-if (-not (Test-Path "$BaseDir/docfx")) {
-  Download-File `
-    "https://github.com/dotnet/docfx/releases/download/v2.58.2/docfx.zip" `
-    -To "$BaseDir/docfx.zip"
-  New-Item -ItemType directory -Path "$BaseDir/docfx"
-  [System.IO.Compression.ZipFile]::ExtractToDirectory(
-    "$BaseDir/docfx.zip",
-    "$BaseDir/docfx"
-  )
-  Remove-Item "$BaseDir/docfx.zip"
-}
+# Install docfx with `dotnet tool`. 
+dotnet tool restore
 
 # As DocFX requires the Git remote named "origin", which is hard-coded in
 # the DocFX internals (see also: # https://github.com/dotnet/docfx/issues/5547),
@@ -76,34 +45,7 @@ try {
 # the native way on Windows, it should be interpreted by Mono VM on other POSIX
 # systems.
 Set-Location $BaseDir
-if (Get-Command mono -ErrorAction SilentlyContinue) {
-  mono "$BaseDir/docfx/docfx.exe" "$BaseDir/docfx.json" @args
-} else {
-  $platform = [System.Environment]::OSVersion.Platform;
-  $unix = [System.PlatformId]::Unix;
-  $macos = [System.PlatformId]::MacOSX;
-  if (@($unix, $macos).Contains($platform)) {
-    if (Get-Command docker -ErrorAction SilentlyContinue) {
-      $DocsDir = Split-Path -Leaf $BaseDir
-      $RepoDir = Split-Path -Parent $BaseDir
-      docker run `
-        -v "${RepoDir}:/app" `
-        -v "$HOME/.nuget:/root/.nuget" `
-        -w "/app/$DocsDir" `
-        mono `
-        mono "docfx/docfx.exe" "docfx.json" @args
-    } else {
-      Write-Error @"
-Failed to find the command: mono
-You need to install Mono on your system.
-See also: https://www.mono-project.com/
-"@
-      exit 127
-    }
-  } else {
-    & "$BaseDir\docfx\docfx.exe" "$BaseDir/docfx.json" @args
-  }
-}
+dotnet tool run docfx docfx.json @args
 
 if (-not (Test-Path "$BaseDir/_site/api/Libplanet.html")) {
       Write-Error @"
