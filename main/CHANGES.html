@@ -129,6 +129,9 @@ sometimes block data is in undefined state due to data corruption.
 [<a href="https://github.com/planetarium/libplanet/pull/2761">#2761</a>]</li>
 <li>Fixed where <code>Address(string)</code> could accept 42 chars with a wrong prefix.
 [<a href="https://github.com/planetarium/libplanet/pull/2781">#2781</a>]</li>
+<li>Fixed where <code>VolatileStagePolicy&lt;T&gt;(TimeSpan)</code> created with
+<code>TimeSpan.MaxValue</code> as its argument would not behave properly and throw an
+<code>ArgumentOutOfRangeException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2783">#2783</a>, <a href="https://github.com/planetarium/libplanet/pull/2784">#2784</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
