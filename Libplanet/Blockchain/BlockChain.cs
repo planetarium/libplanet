@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
@@ -1660,6 +1661,20 @@ namespace Libplanet.Blockchain
                     $"in blockCommit | \n " +
                     blockCommit.Votes.Aggregate(
                         string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
+            }
+
+            // TODO: Add an unit case for this method.
+            BigInteger commitPower = blockCommit.Votes.Aggregate(
+                BigInteger.Zero,
+                (power, vote) => power + (vote.Flag == VoteFlag.PreCommit
+                    ? validators.GetValidator(vote.ValidatorPublicKey).Power
+                    : BigInteger.Zero));
+            if (validators.TwoThirdsPower >= commitPower)
+            {
+                return new InvalidBlockCommitException(
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has insufficient vote power {commitPower} compared to 2/3 of " +
+                    $"the total power {validators.TotalPower}");
             }
 
             return null;
