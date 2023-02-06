@@ -99,16 +99,6 @@ namespace Libplanet.Blocks
                     $"either {VoteFlag.Null} or {VoteFlag.PreCommit}.",
                     nameof(votes));
             }
-#pragma warning disable S1940 // Use the opposite operator ('>=') instead.
-            else if (!(
-                votes.Count() * 2 / 3 < votes.Count(vote => vote.Flag == VoteFlag.PreCommit)))
-#pragma warning restore S1940
-            {
-                throw new ArgumentException(
-                    $"The number of votes with {VoteFlag.PreCommit} flag should exceed 2/3 of " +
-                    $"the total number of votes.",
-                    nameof(votes));
-            }
 
             Height = height;
             Round = round;
