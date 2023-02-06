@@ -47,9 +47,9 @@ namespace Libplanet.Net.Transports
                 : throw new SerializationException($"{nameof(MessageType)} is of an invalid type.");
         }
 
-        public BoundPeer Peer { get; private set; }
+        public BoundPeer Peer { get; }
 
-        public Message.MessageType MessageType { get; private set; }
+        public Message.MessageType MessageType { get; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

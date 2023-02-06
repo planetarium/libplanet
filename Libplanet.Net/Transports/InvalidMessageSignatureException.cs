@@ -41,13 +41,13 @@ namespace Libplanet.Net.Transports
             Signature = info.GetValue<byte[]>(nameof(Signature));
         }
 
-        public BoundPeer Peer { get; private set; }
+        public BoundPeer Peer { get; }
 
-        public PublicKey PublicKey { get; private set; }
+        public PublicKey PublicKey { get; }
 
-        public byte[] MessageToVerify { get; private set; }
+        public byte[] MessageToVerify { get; }
 
-        public byte[] Signature { get; private set; }
+        public byte[] Signature { get; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)

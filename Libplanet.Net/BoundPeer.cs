@@ -31,7 +31,12 @@ namespace Libplanet.Net
         }
 
         public BoundPeer(Bencodex.Types.IValue bencoded)
-            : this((Bencodex.Types.Dictionary)bencoded)
+            : this(bencoded is Bencodex.Types.Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
         {
         }
 

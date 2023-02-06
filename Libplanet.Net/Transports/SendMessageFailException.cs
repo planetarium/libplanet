@@ -37,7 +37,7 @@ namespace Libplanet.Net.Transports
             Peer = new BoundPeer(_codec.Decode(info.GetValue<byte[]>(nameof(Peer))));
         }
 
-        public BoundPeer Peer { get; private set; }
+        public BoundPeer Peer { get; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

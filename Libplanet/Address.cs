@@ -139,9 +139,14 @@ namespace Libplanet
         /// represents an <see cref="Address"/>.
         /// </param>
         /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
-        /// is not an encoding of a <see cref="byte"/> array of length 20.</exception>
+        /// is not of type <see cref="Binary"/>.</exception>
         public Address(IValue bencoded)
-            : this((Binary)bencoded)
+            : this(bencoded is Binary binary
+                ? (Binary)bencoded
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
         {
         }
 
