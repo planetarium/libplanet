@@ -50,7 +50,8 @@ namespace Libplanet
         /// </summary>
         public const int Size = 20;
 
-        private static readonly byte[] _defaultByteArray = new byte[Size];
+        private static readonly ImmutableArray<byte> _defaultByteArray =
+            ImmutableArray.Create<byte>(new byte[Size]);
 
         private readonly ImmutableArray<byte> _byteArray;
 
@@ -162,10 +163,9 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray =>
-            _byteArray.IsDefault
-                ? _defaultByteArray.ToImmutableArray()
-                : _byteArray;
+        public ImmutableArray<byte> ByteArray => _byteArray.IsDefault
+            ? _defaultByteArray
+            : _byteArray;
 
         /// <inheritdoc/>
         public IValue Bencoded => new Binary(ByteArray);
@@ -191,9 +191,7 @@ namespace Libplanet
         /// <seealso cref="ByteArray"/>
         /// <seealso cref="Address(byte[])"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray.IsDefault
-            ? _defaultByteArray
-            : ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray.ToArray();
 
         /// <summary>
         /// Gets a mixed-case hexadecimal string of 40 letters that represent

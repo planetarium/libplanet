@@ -22,7 +22,7 @@ namespace Libplanet.Tx
     /// <seealso cref="Transaction{T}.Id"/>
     [JsonConverter(typeof(TxIdJsonConverter))]
     [Serializable]
-    public struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
+    public readonly struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -31,7 +31,10 @@ namespace Libplanet.Tx
         /// </summary>
         public const int Size = 32;
 
-        private ImmutableArray<byte> _byteArray;
+        private static readonly ImmutableArray<byte> _defaultByteArray =
+            ImmutableArray.Create<byte>(new byte[Size]);
+
+        private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
         /// Converts an immutable <see cref="byte"/> array into a <see cref="TxId"/>.
@@ -88,18 +91,9 @@ namespace Libplanet.Tx
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    _byteArray = new byte[Size].ToImmutableArray();
-                }
-
-                return _byteArray;
-            }
-        }
+        public ImmutableArray<byte> ByteArray => _byteArray.IsDefault
+            ? _defaultByteArray
+            : _byteArray;
 
         public static bool operator ==(TxId left, TxId right) => left.Equals(right);
 
