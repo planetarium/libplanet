@@ -74,6 +74,9 @@ To be released.
     [[#2761]]
  -  Fixed where `Address(string)` could accept 42 chars with a wrong prefix.
     [[#2781]]
+ -  Fixed where `VolatileStagePolicy<T>(TimeSpan)` created with
+    `TimeSpan.MaxValue` as its argument would not behave properly and throw an
+    `ArgumentOutOfRangeException`.  [[#2783], [#2784]]
 
 ### Dependencies
 
@@ -106,6 +109,8 @@ To be released.
 [#2778]: https://github.com/planetarium/libplanet/pull/2778
 [#2780]: https://github.com/planetarium/libplanet/pull/2780
 [#2781]: https://github.com/planetarium/libplanet/pull/2781
+[#2783]: https://github.com/planetarium/libplanet/issues/2783
+[#2784]: https://github.com/planetarium/libplanet/pull/2784
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7

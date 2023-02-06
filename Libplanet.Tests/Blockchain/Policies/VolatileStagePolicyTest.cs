@@ -15,11 +15,10 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         protected override IStagePolicy<DumbAction> StagePolicy => _stagePolicy;
 
-        [SkippableFact]
+        [Fact]
         public void Lifetime()
         {
-            TimeSpan timeBuffer = TimeSpan.FromSeconds(2.5);
-
+            TimeSpan timeBuffer = TimeSpan.FromSeconds(1);
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
                 _key,
@@ -27,7 +26,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 Enumerable.Empty<DumbAction>(),
                 timestamp: (DateTimeOffset.UtcNow - _stagePolicy.Lifetime) + timeBuffer
             );
-            _stagePolicy.Stage(_chain, tx);
+            Assert.True(_stagePolicy.Stage(_chain, tx));
             Assert.Equal(tx, _stagePolicy.Get(_chain, tx.Id));
             Assert.Contains(tx, _stagePolicy.Iterate(_chain));
 
@@ -38,7 +37,20 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.DoesNotContain(tx, _stagePolicy.Iterate(_chain));
         }
 
-        [SkippableFact]
+        [Fact]
+        public void MaxLifetime()
+        {
+            var stagePolicy = new VolatileStagePolicy<DumbAction>(TimeSpan.MaxValue);
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                0,
+                _key,
+                _fx.GenesisBlock.Hash,
+                Enumerable.Empty<DumbAction>(),
+                timestamp: DateTimeOffset.UtcNow);
+            Assert.True(stagePolicy.Stage(_chain, tx));
+        }
+
+        [Fact]
         public void StageUnstage()
         {
             TimeSpan timeBuffer = TimeSpan.FromSeconds(1);
