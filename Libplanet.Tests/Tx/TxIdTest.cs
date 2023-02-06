@@ -12,12 +12,6 @@ namespace Libplanet.Tests.Tx
     public class TxIdTest
     {
         [Fact]
-        public void ConstructorDoesNotTakeNullValue()
-        {
-            Assert.Throws<ArgumentNullException>(() => new TxId(null));
-        }
-
-        [Fact]
         public void TxIdMustBe32Bytes()
         {
             for (int size = 0; size < 36; size++)
@@ -31,12 +25,10 @@ namespace Libplanet.Tests.Tx
                 ImmutableArray<byte> immutableBytes = bytes.ToImmutableArray();
                 Assert.Throws<ArgumentOutOfRangeException>(
                     "txid",
-                    () => new TxId(immutableBytes)
-                );
+                    () => new TxId(immutableBytes));
                 Assert.Throws<ArgumentOutOfRangeException>(
                     "txid",
-                    () => new TxId(bytes)
-                );
+                    () => new TxId(bytes));
             }
         }
 
@@ -61,18 +53,16 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<ArgumentOutOfRangeException>("hex", () => TxId.FromHex("1"));
             Assert.Throws<ArgumentOutOfRangeException>(
                 "hex",
-                () => TxId.FromHex("45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9c")
-            );
+                () => TxId.FromHex(
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9c"));
             Assert.Throws<ArgumentOutOfRangeException>(
                 "hex",
-                () =>
-                TxId.FromHex("45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc0")
-            );
+                () => TxId.FromHex(
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc0"));
             Assert.Throws<ArgumentOutOfRangeException>(
                 "hex",
-                () =>
-                TxId.FromHex("45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc00")
-            );
+                () => TxId.FromHex(
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc00"));
         }
 
         [Fact]

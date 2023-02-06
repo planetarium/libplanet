@@ -71,7 +71,8 @@ namespace Libplanet
         {
             if (address.Length != Size)
             {
-                throw new ArgumentException("address must be 20 bytes", nameof(address));
+                throw new ArgumentException(
+                    $"Given {nameof(address)} must be 20 bytes", nameof(address));
             }
 
             _byteArray = address;
@@ -82,10 +83,7 @@ namespace Libplanet
         /// cref="byte"/> array (i.e., <paramref name="address"/>).
         /// </summary>
         /// <param name="address">An array of 20 <see cref="byte"/>s which
-        /// represents an <see cref="Address"/>.  This must not be <see langword="null"/>.
-        /// </param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> was
-        /// passed to <paramref name="address"/>.</exception>
+        /// represents an <see cref="Address"/>.</param>
         /// <exception cref="ArgumentException">Thrown when the given <paramref
         /// name="address"/> array did not lengthen 20 bytes.</exception>
         /// <remarks>A valid <see cref="byte"/> array which represents an
@@ -93,7 +91,7 @@ namespace Libplanet
         /// /> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
         public Address(byte[] address)
-            : this(address?.ToImmutableArray() ?? throw new ArgumentNullException(nameof(address)))
+            : this(address.ToImmutableArray())
         {
         }
 
@@ -141,9 +139,10 @@ namespace Libplanet
         /// </param>
         /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
         /// is not of type <see cref="Binary"/>.</exception>
+        /// <seealso cref="Address(in ImmutableArray{byte})"/>
         public Address(IValue bencoded)
             : this(bencoded is Binary binary
-                ? (Binary)bencoded
+                ? binary
                 : throw new ArgumentException(
                     $"Given {nameof(bencoded)} must be of type " +
                     $"{typeof(Bencodex.Types.Binary)}: {bencoded.GetType()}",
@@ -210,11 +209,7 @@ namespace Libplanet
         /// method instead.</remarks>
         /// <seealso cref="ToString()"/>
         [Pure]
-        public string ToHex()
-        {
-            string hex = ByteUtil.Hex(ToByteArray());
-            return ToChecksumAddress(hex);
-        }
+        public string ToHex() => ToChecksumAddress(ByteUtil.Hex(ToByteArray()));
 
         /// <summary>
         /// Gets a <c>0x</c>-prefixed mixed-case hexadecimal string of
@@ -233,10 +228,7 @@ namespace Libplanet
         /// instead.</remarks>
         /// <seealso cref="ToHex()"/>
         [Pure]
-        public override string ToString()
-        {
-            return $"0x{ToHex()}";
-        }
+        public override string ToString() => $"0x{ToHex()}";
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         public int CompareTo(Address other)
@@ -349,10 +341,10 @@ namespace Libplanet
             JsonSerializerOptions options
         )
         {
-            string? hex = reader.GetString();
+            string hex = reader.GetString() ?? throw new JsonException("Expected a string.");
             try
             {
-                return new Address(hex!);
+                return new Address(hex);
             }
             catch (ArgumentException e)
             {

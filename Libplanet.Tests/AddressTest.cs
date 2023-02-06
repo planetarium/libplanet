@@ -11,14 +11,6 @@ namespace Libplanet.Tests
     public class AddressTest
     {
         [Fact]
-        public void ConstructorDoesNotTakeNullValue()
-        {
-            Assert.Throws<ArgumentNullException>(
-                () => new Address((byte[])null)
-            );
-        }
-
-        [Fact]
         public void ConstructWithImmutableArray()
         {
             byte[] addr = new byte[20]

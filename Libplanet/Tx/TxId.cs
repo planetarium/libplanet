@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
@@ -50,9 +49,7 @@ namespace Libplanet.Tx
             if (txid.Length != Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(txid),
-                    $"{nameof(TxId)} must be {Size} bytes."
-                );
+                    nameof(txid), $"Given {nameof(txid)} must be {Size} bytes.");
             }
 
             _byteArray = txid;
@@ -65,15 +62,11 @@ namespace Libplanet.Tx
         /// a <see cref="TxId"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="txid"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not
         /// the same to the required <see cref="Size"/>.</exception>
         public TxId(byte[] txid)
-            : this(txid is null
-                ? throw new ArgumentNullException(nameof(txid))
-                : txid.ToImmutableArray())
+            : this(txid.ToImmutableArray())
         {
         }
 
@@ -106,8 +99,6 @@ namespace Libplanet.Tx
         /// This has to contain 64 hexadecimal digits and must not be <see langword="null"/>
         /// This is usually made by <see cref="ToHex()"/> method.</param>
         /// <returns>A corresponding <see cref="TxId"/> value.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
-        /// string is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hex"/> is shorter or longer than 64 characters.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
@@ -115,11 +106,6 @@ namespace Libplanet.Tx
         /// <seealso cref="ToHex()"/>
         public static TxId FromHex(string hex)
         {
-            if (hex is null)
-            {
-                throw new ArgumentNullException(nameof(hex));
-            }
-
             ImmutableArray<byte> bytes = ByteUtil.ParseHexToImmutable(hex);
             try
             {
@@ -129,14 +115,13 @@ namespace Libplanet.Tx
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(hex),
-                    $"Expected {Size * 2} characters, but {hex.Length} characters given."
-                );
+                    $"Expected {Size * 2} characters, but {hex.Length} characters given.");
             }
         }
 
         public bool Equals(TxId other) => ByteArray.SequenceEqual(other.ByteArray);
 
-        public override bool Equals(object obj) => obj is TxId other && Equals(other);
+        public override bool Equals(object? obj) => obj is TxId other && Equals(other);
 
         public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
@@ -185,7 +170,7 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc cref="IComparable.CompareTo(object)"/>
-        public int CompareTo(object obj) => obj is TxId other
+        public int CompareTo(object? obj) => obj is TxId other
             ? this.CompareTo(other)
             : throw new ArgumentException(
                 $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
@@ -199,7 +184,6 @@ namespace Libplanet.Tx
         }
     }
 
-#nullable enable
     [SuppressMessage(
         "StyleCop.CSharp.MaintainabilityRules",
         "SA1402:FileMayOnlyContainASingleClass",
@@ -213,7 +197,7 @@ namespace Libplanet.Tx
             JsonSerializerOptions options
         )
         {
-            string? hex = reader.GetString();
+            string hex = reader.GetString() ?? throw new JsonException("Expected a string.");
             try
             {
                 return TxId.FromHex(hex);
