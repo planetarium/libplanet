@@ -32,6 +32,14 @@ To be released.
     `AppProtocolVersionOptions.TrustedAppProtocolVersionSigners` from
     `IImmutableHashSet<PublicKey>?` to `IImmutableHashSet<PublicKey>`.
     [[#2759]]
+ -  (Libplanet.Net) Changed `BoundPeer` to implement `IBencodable` interface
+    and removed `[Serializable]` attribute from `BoundPeer`.  [[#2778]]
+ -  (Libplanet.Net) Changed `BoundPeer(Dictionary)` constructor's signature to
+    `BoundPeer(IValue)`.  [[#2778]]
+ -  Changed `Address` to implement `IBencodable` interface and removed
+    `[Serializable]` attribute from `Address`.  [[#2778]]
+ -  Changed `Address(Binary)` constructor's signature to `Address(IValue)`.
+    [[#2778]]
 
 ### Backward-incompatible network protocol changes
 
@@ -95,6 +103,7 @@ To be released.
 [#2758]: https://github.com/planetarium/libplanet/pull/2758
 [#2759]: https://github.com/planetarium/libplanet/pull/2759
 [#2761]: https://github.com/planetarium/libplanet/pull/2761
+[#2778]: https://github.com/planetarium/libplanet/pull/2778
 [#2780]: https://github.com/planetarium/libplanet/pull/2780
 [#2781]: https://github.com/planetarium/libplanet/pull/2781
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0

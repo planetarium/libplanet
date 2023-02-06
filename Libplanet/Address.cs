@@ -4,13 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet
@@ -42,9 +41,8 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     [JsonConverter(typeof(AddressJsonConverter))]
-    [Serializable]
     public readonly struct Address
-        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable
+        : IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -135,24 +133,25 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Creates an <see cref="Address"/> instance from the given Bencodex <see cref="Binary"/>
-        /// (i.e., <paramref name="address"/>).
+        /// Creates an <see cref="Address"/> instance from given <paramref name="bencoded"/>.
         /// </summary>
-        /// <param name="address">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
+        /// <param name="bencoded">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
         /// represents an <see cref="Address"/>.
         /// </param>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref name="address"/>
-        /// did not lengthen 20 bytes.</exception>
-        public Address(Binary address)
-            : this(address.ByteArray)
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
+        /// is not of type <see cref="Binary"/>.</exception>
+        public Address(IValue bencoded)
+            : this(bencoded is Binary binary
+                ? (Binary)bencoded
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
         {
         }
 
-        private Address(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info?.GetValue<byte[]>("address") ??
-                throw new SerializationException("Missing the address field."))
+        private Address(Binary bencoded)
+            : this(bencoded.ByteArray)
         {
         }
 
@@ -163,18 +162,13 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    return _defaultByteArray.ToImmutableArray();
-                }
+        public ImmutableArray<byte> ByteArray =>
+            _byteArray.IsDefault
+                ? _defaultByteArray.ToImmutableArray()
+                : _byteArray;
 
-                return _byteArray;
-            }
-        }
+        /// <inheritdoc/>
+        public IValue Bencoded => new Binary(ByteArray);
 
         public static bool operator ==(Address left, Address right) => left.Equals(right);
 
@@ -244,12 +238,6 @@ namespace Libplanet
         public override string ToString()
         {
             return $"0x{ToHex()}";
-        }
-
-        /// <inheritdoc />
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("address", ToByteArray());
         }
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>

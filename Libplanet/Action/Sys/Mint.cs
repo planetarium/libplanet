@@ -50,7 +50,7 @@ namespace Libplanet.Action.Sys
         public void LoadPlainValue(IValue plainValue)
         {
             var dict = (Bencodex.Types.Dictionary)plainValue;
-            Recipient = new Address(dict.GetValue<Binary>("recipient"));
+            Recipient = new Address(dict.GetValue<IValue>("recipient"));
             Amount = new FungibleAssetValue(
                 new Currency(dict["currency"]),
                 dict.GetValue<Bencodex.Types.Integer>("amount")

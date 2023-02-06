@@ -1,9 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Xunit;
 
@@ -32,28 +30,12 @@ namespace Libplanet.Net.Tests
 
         [Theory]
         [MemberData(nameof(GetBoundPeers))]
-        public void Serializable(BoundPeer peer)
+        public void Bencode(BoundPeer peer)
         {
-            var formatter = new BinaryFormatter();
-            using (var stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, peer);
-                byte[] serialized = stream.ToArray();
-                stream.Seek(0, SeekOrigin.Begin);
-                BoundPeer deserialized = (BoundPeer)formatter.Deserialize(stream);
-                Assert.IsType(peer.GetType(), deserialized);
-                Assert.Equal(peer, deserialized);
-            }
-        }
+            Bencodex.Types.IValue bencoded = peer.Bencoded;
+            var decoded = new BoundPeer(bencoded);
 
-        [Theory]
-        [MemberData(nameof(GetBoundPeers))]
-        public void Serialize(BoundPeer peer)
-        {
-            Bencodex.Types.Dictionary serialized = peer.ToBencodex();
-            var deserialized = new BoundPeer(serialized);
-
-            Assert.Equal(peer, deserialized);
+            Assert.Equal(peer, decoded);
         }
 
         [Fact]
