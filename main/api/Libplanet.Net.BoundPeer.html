@@ -81,8 +81,8 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</div>
+    <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -103,25 +103,24 @@
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_BoundPeer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class BoundPeer : ISerializable, IEquatable&lt;BoundPeer&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class BoundPeer : IEquatable&lt;BoundPeer&gt;, IBencodable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L36">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L33">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer__ctor_" data-uid="Libplanet.Net.BoundPeer.#ctor*"></a>
-  <h4 id="Libplanet_Net_BoundPeer__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.Dictionary)">BoundPeer(Dictionary)</h4>
+  <h4 id="Libplanet_Net_BoundPeer__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.IValue)">BoundPeer(IValue)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BoundPeer(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public BoundPeer(IValue bencoded)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -134,8 +133,8 @@ public sealed class BoundPeer : ISerializable, IEquatable&lt;BoundPeer&gt;</code
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.Dictionary</span></td>
-        <td><span class="parametername">dictionary</span></td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -145,7 +144,7 @@ public sealed class BoundPeer : ISerializable, IEquatable&lt;BoundPeer&gt;</code
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.%23ctor(Libplanet.Crypto.PublicKey%2CSystem.Net.DnsEndPoint)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L28">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer__ctor_" data-uid="Libplanet.Net.BoundPeer.#ctor*"></a>
   <h4 id="Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_" data-uid="Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)">BoundPeer(PublicKey, DnsEndPoint)</h4>
@@ -189,7 +188,7 @@ host and port of the <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPe
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_Address.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.Address%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L89">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_Address_" data-uid="Libplanet.Net.BoundPeer.Address*"></a>
   <h4 id="Libplanet_Net_BoundPeer_Address" data-uid="Libplanet.Net.BoundPeer.Address">Address</h4>
@@ -224,10 +223,41 @@ public Address Address { get; }</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Net_BoundPeer_Bencoded_" data-uid="Libplanet.Net.BoundPeer.Bencoded*"></a>
+  <h4 id="Libplanet_Net_BoundPeer_Bencoded" data-uid="Libplanet.Net.BoundPeer.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_EndPoint.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.EndPoint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L96">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_EndPoint_" data-uid="Libplanet.Net.BoundPeer.EndPoint*"></a>
   <h4 id="Libplanet_Net_BoundPeer_EndPoint" data-uid="Libplanet.Net.BoundPeer.EndPoint">EndPoint</h4>
@@ -260,7 +290,7 @@ public DnsEndPoint EndPoint { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_PeerString.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.PeerString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L104">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_PeerString_" data-uid="Libplanet.Net.BoundPeer.PeerString*"></a>
   <h4 id="Libplanet_Net_BoundPeer_PeerString" data-uid="Libplanet.Net.BoundPeer.PeerString">PeerString</h4>
@@ -290,7 +320,7 @@ public DnsEndPoint EndPoint { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_PublicIPAddress.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.PublicIPAddress%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L100">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L92">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_PublicIPAddress_" data-uid="Libplanet.Net.BoundPeer.PublicIPAddress*"></a>
   <h4 id="Libplanet_Net_BoundPeer_PublicIPAddress" data-uid="Libplanet.Net.BoundPeer.PublicIPAddress">PublicIPAddress</h4>
@@ -322,7 +352,7 @@ public IPAddress PublicIPAddress { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L73">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_PublicKey_" data-uid="Libplanet.Net.BoundPeer.PublicKey*"></a>
   <h4 id="Libplanet_Net_BoundPeer_PublicKey" data-uid="Libplanet.Net.BoundPeer.PublicKey">PublicKey</h4>
@@ -358,7 +388,7 @@ public PublicKey PublicKey { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_Equals_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.Equals(Libplanet.Net.BoundPeer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L164">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L167">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_Equals_" data-uid="Libplanet.Net.BoundPeer.Equals*"></a>
   <h4 id="Libplanet_Net_BoundPeer_Equals_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.BoundPeer.Equals(Libplanet.Net.BoundPeer)">Equals(BoundPeer)</h4>
@@ -405,7 +435,7 @@ public PublicKey PublicKey { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L181">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L184">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_Equals_" data-uid="Libplanet.Net.BoundPeer.Equals*"></a>
   <h4 id="Libplanet_Net_BoundPeer_Equals_System_Object_" data-uid="Libplanet.Net.BoundPeer.Equals(System.Object)">Equals(Object)</h4>
@@ -454,7 +484,7 @@ public PublicKey PublicKey { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L183">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L186">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_GetHashCode_" data-uid="Libplanet.Net.BoundPeer.GetHashCode*"></a>
   <h4 id="Libplanet_Net_BoundPeer_GetHashCode" data-uid="Libplanet.Net.BoundPeer.GetHashCode">GetHashCode()</h4>
@@ -483,47 +513,10 @@ public PublicKey PublicKey { get; }</code></pre>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L186">View Source</a>
-  </span>
-  <a id="Libplanet_Net_BoundPeer_GetObjectData_" data-uid="Libplanet.Net.BoundPeer.GetObjectData*"></a>
-  <h4 id="Libplanet_Net_BoundPeer_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_ParsePeer_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.ParsePeer(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L118">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L121">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_ParsePeer_" data-uid="Libplanet.Net.BoundPeer.ParsePeer*"></a>
   <h4 id="Libplanet_Net_BoundPeer_ParsePeer_System_String_" data-uid="Libplanet.Net.BoundPeer.ParsePeer(System.String)">ParsePeer(String)</h4>
@@ -587,40 +580,10 @@ comma-separated string.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L196">View Source</a>
-  </span>
-  <a id="Libplanet_Net_BoundPeer_ToBencodex_" data-uid="Libplanet.Net.BoundPeer.ToBencodex*"></a>
-  <h4 id="Libplanet_Net_BoundPeer_ToBencodex" data-uid="Libplanet.Net.BoundPeer.ToBencodex">ToBencodex()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary ToBencodex()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Bencodex.Types.Dictionary</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L206">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L190">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_ToString_" data-uid="Libplanet.Net.BoundPeer.ToString*"></a>
   <h4 id="Libplanet_Net_BoundPeer_ToString" data-uid="Libplanet.Net.BoundPeer.ToString">ToString()</h4>
@@ -654,7 +617,7 @@ comma-separated string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_op_Equality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer%2CLibplanet.Net.BoundPeer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L106">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L109">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_op_Equality_" data-uid="Libplanet.Net.BoundPeer.op_Equality*"></a>
   <h4 id="Libplanet_Net_BoundPeer_op_Equality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)">Equality(BoundPeer, BoundPeer)</h4>
@@ -706,7 +669,7 @@ comma-separated string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer_op_Inequality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.op_Inequality(Libplanet.Net.BoundPeer%2CLibplanet.Net.BoundPeer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L108">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L111">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer_op_Inequality_" data-uid="Libplanet.Net.BoundPeer.op_Inequality*"></a>
   <h4 id="Libplanet_Net_BoundPeer_op_Inequality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.BoundPeer.op_Inequality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)">Inequality(BoundPeer, BoundPeer)</h4>
@@ -755,10 +718,10 @@ comma-separated string.</p>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">Bencodex.IBencodable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -775,7 +738,7 @@ comma-separated string.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_BoundPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/BoundPeer.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

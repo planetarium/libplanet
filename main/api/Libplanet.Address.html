@@ -92,10 +92,10 @@ can be used by Libplanet-backed games/apps too.</p>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -114,8 +114,7 @@ can be used by Libplanet-backed games/apps too.</p>
   <h5 id="Libplanet_Address_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonConverter(typeof(AddressJsonConverter))]
-[Serializable]
-public readonly struct Address : ISerializable, IEquatable&lt;Address&gt;, IComparable&lt;Address&gt;, IComparable</code></pre>
+public readonly struct Address : IEquatable&lt;Address&gt;, IComparable&lt;Address&gt;, IComparable, IBencodable</code></pre>
   </div>
   <h5 id="Libplanet_Address_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
@@ -124,20 +123,19 @@ public readonly struct Address : ISerializable, IEquatable&lt;Address&gt;, IComp
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address__ctor_Bencodex_Types_Binary_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(Bencodex.Types.Binary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L146">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L143">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
-  <h4 id="Libplanet_Address__ctor_Bencodex_Types_Binary_" data-uid="Libplanet.Address.#ctor(Bencodex.Types.Binary)">Address(Binary)</h4>
-  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from the given Bencodex <span class="xref">Bencodex.Types.Binary</span>
-(i.e., <code data-dev-comment-type="paramref" class="paramref">address</code>).</p>
+  <h4 id="Libplanet_Address__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Address.#ctor(Bencodex.Types.IValue)">Address(IValue)</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from given <code data-dev-comment-type="paramref" class="paramref">bencoded</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Address(Binary address)</code></pre>
+    <pre><code class="lang-csharp hljs">public Address(IValue bencoded)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -150,15 +148,15 @@ public readonly struct Address : ISerializable, IEquatable&lt;Address&gt;, IComp
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.Binary</span></td>
-        <td><span class="parametername">address</span></td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
         <td><p>A Bencodex <span class="xref">Bencodex.Types.Binary</span> of 20 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s which
 represents an <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Address__ctor_Bencodex_Types_Binary__remarks">Remarks</h5>
+  <h5 id="Libplanet_Address__ctor_Bencodex_Types_IValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -172,13 +170,13 @@ represents an <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">address</code>
-did not lengthen 20 bytes.</p>
+        <td><p>Thrown when given <code data-dev-comment-type="paramref" class="paramref">bencoded</code>
+is not of type <span class="xref">Bencodex.Types.Binary</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Address__ctor_Bencodex_Types_Binary__seealso">See Also</h5>
+  <h5 id="Libplanet_Address__ctor_Bencodex_Types_IValue__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
   </div>
@@ -187,7 +185,7 @@ did not lengthen 20 bytes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(Libplanet.Crypto.PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L112">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L110">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Address.#ctor(Libplanet.Crypto.PublicKey)">Address(PublicKey)</h4>
@@ -233,7 +231,7 @@ the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L96">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_Byte___" data-uid="Libplanet.Address.#ctor(System.Byte[])">Address(Byte[])</h4>
@@ -298,7 +296,7 @@ passed to <code data-dev-comment-type="paramref" class="paramref">address</code>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L71">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L69">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Address.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">Address(in ImmutableArray&lt;Byte&gt;)</h4>
@@ -357,7 +355,7 @@ represents an <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L132">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L130">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_String_" data-uid="Libplanet.Address.#ctor(System.String)">Address(String)</h4>
@@ -432,7 +430,7 @@ does not consist of ASCII characters.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_Size.md&amp;value=---%0Auid%3A%20Libplanet.Address.Size%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L53">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L51">View Source</a>
   </span>
   <h4 id="Libplanet_Address_Size" data-uid="Libplanet.Address.Size">Size</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Address.html">Address</a> takes.</p>
@@ -469,10 +467,63 @@ does not consist of ASCII characters.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Address.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L171">View Source</a>
+  </span>
+  <a id="Libplanet_Address_Bencoded_" data-uid="Libplanet.Address.Bencoded*"></a>
+  <h4 id="Libplanet_Address_Bencoded" data-uid="Libplanet.Address.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p>An identifier of 20 bytes (or 40 letters in hexadecimal, commonly with
+a prefix <code>0x</code>) that refers to a unique account.</p>
+<p>It is derived from the corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>
+of an account, but as a derivation loses information, it is always
+unidirectional.</p>
+<p>The address derivation from a public key is as follows:</p>
+<ol><li>Calculates the Keccak-256, which is a previous form
+of SHA-3 before NIST standardized it and does not follow
+<a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">FIPS-202</a>, of the corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.
+</li><li>Takes only the last 20 bytes of the calculated
+Keccak-256 hash.</li><li>When the address needs to be shown to end users,
+displays these 20 bytes in hexadecimal, with a prefix <code>0x</code>.
+</li></ol>
+<p>Since the scheme of the address derivation and the <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>/<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> is the same to
+<a href="https://www.ethereum.org/">Ethereum</a>, Ethereum addresses
+can be used by Libplanet-backed games/apps too.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address_Bencoded_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
+</div>
+  <h5 id="Libplanet_Address_Bencoded_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L166">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L165">View Source</a>
   </span>
   <a id="Libplanet_Address_ByteArray_" data-uid="Libplanet.Address.ByteArray*"></a>
   <h4 id="Libplanet_Address_ByteArray" data-uid="Libplanet.Address.ByteArray">ByteArray</h4>
@@ -513,7 +564,7 @@ does not consist of ASCII characters.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_CompareTo_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.CompareTo(Libplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L256">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L244">View Source</a>
   </span>
   <a id="Libplanet_Address_CompareTo_" data-uid="Libplanet.Address.CompareTo*"></a>
   <h4 id="Libplanet_Address_CompareTo_Libplanet_Address_" data-uid="Libplanet.Address.CompareTo(Libplanet.Address)">CompareTo(Address)</h4>
@@ -583,7 +634,7 @@ can be used by Libplanet-backed games/apps too.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Address.CompareTo(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L273">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L261">View Source</a>
   </span>
   <a id="Libplanet_Address_CompareTo_" data-uid="Libplanet.Address.CompareTo*"></a>
   <h4 id="Libplanet_Address_CompareTo_System_Object_" data-uid="Libplanet.Address.CompareTo(System.Object)">CompareTo(Object)</h4>
@@ -653,7 +704,7 @@ can be used by Libplanet-backed games/apps too.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_Equals_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.Equals(Libplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L183">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_Address_Equals_" data-uid="Libplanet.Address.Equals*"></a>
   <h4 id="Libplanet_Address_Equals_Libplanet_Address_" data-uid="Libplanet.Address.Equals(Libplanet.Address)">Equals(Address)</h4>
@@ -723,7 +774,7 @@ can be used by Libplanet-backed games/apps too.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Address.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L185">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L179">View Source</a>
   </span>
   <a id="Libplanet_Address_Equals_" data-uid="Libplanet.Address.Equals*"></a>
   <h4 id="Libplanet_Address_Equals_System_Object_" data-uid="Libplanet.Address.Equals(System.Object)">Equals(Object)</h4>
@@ -795,7 +846,7 @@ can be used by Libplanet-backed games/apps too.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L187">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L181">View Source</a>
   </span>
   <a id="Libplanet_Address_GetHashCode_" data-uid="Libplanet.Address.GetHashCode*"></a>
   <h4 id="Libplanet_Address_GetHashCode" data-uid="Libplanet.Address.GetHashCode">GetHashCode()</h4>
@@ -847,70 +898,10 @@ can be used by Libplanet-backed games/apps too.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L250">View Source</a>
-  </span>
-  <a id="Libplanet_Address_GetObjectData_" data-uid="Libplanet.Address.GetObjectData*"></a>
-  <h4 id="Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>An identifier of 20 bytes (or 40 letters in hexadecimal, commonly with
-a prefix <code>0x</code>) that refers to a unique account.</p>
-<p>It is derived from the corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>
-of an account, but as a derivation loses information, it is always
-unidirectional.</p>
-<p>The address derivation from a public key is as follows:</p>
-<ol><li>Calculates the Keccak-256, which is a previous form
-of SHA-3 before NIST standardized it and does not follow
-<a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">FIPS-202</a>, of the corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.
-</li><li>Takes only the last 20 bytes of the calculated
-Keccak-256 hash.</li><li>When the address needs to be shown to end users,
-displays these 20 bytes in hexadecimal, with a prefix <code>0x</code>.
-</li></ol>
-<p>Since the scheme of the address derivation and the <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>/<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> is the same to
-<a href="https://www.ethereum.org/">Ethereum</a>, Ethereum addresses
-can be used by Libplanet-backed games/apps too.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
-</div>
-  <h5 id="Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L199">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L193">View Source</a>
   </span>
   <a id="Libplanet_Address_ToByteArray_" data-uid="Libplanet.Address.ToByteArray*"></a>
   <h4 id="Libplanet_Address_ToByteArray" data-uid="Libplanet.Address.ToByteArray">ToByteArray()</h4>
@@ -955,7 +946,7 @@ this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToHex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L220">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L214">View Source</a>
   </span>
   <a id="Libplanet_Address_ToHex_" data-uid="Libplanet.Address.ToHex*"></a>
   <h4 id="Libplanet_Address_ToHex" data-uid="Libplanet.Address.ToHex">ToHex()</h4>
@@ -1005,7 +996,7 @@ method instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L243">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L237">View Source</a>
   </span>
   <a id="Libplanet_Address_ToString_" data-uid="Libplanet.Address.ToString*"></a>
   <h4 id="Libplanet_Address_ToString" data-uid="Libplanet.Address.ToString">ToString()</h4>
@@ -1059,7 +1050,7 @@ instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.op_Equality(Libplanet.Address%2CLibplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L179">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L173">View Source</a>
   </span>
   <a id="Libplanet_Address_op_Equality_" data-uid="Libplanet.Address.op_Equality*"></a>
   <h4 id="Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_" data-uid="Libplanet.Address.op_Equality(Libplanet.Address,Libplanet.Address)">Equality(Address, Address)</h4>
@@ -1134,7 +1125,7 @@ can be used by Libplanet-backed games/apps too.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address_op_Inequality_Libplanet_Address_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.op_Inequality(Libplanet.Address%2CLibplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L181">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L175">View Source</a>
   </span>
   <a id="Libplanet_Address_op_Inequality_" data-uid="Libplanet.Address.op_Inequality*"></a>
   <h4 id="Libplanet_Address_op_Inequality_Libplanet_Address_Libplanet_Address_" data-uid="Libplanet.Address.op_Inequality(Libplanet.Address,Libplanet.Address)">Inequality(Address, Address)</h4>
@@ -1206,9 +1197,6 @@ can be used by Libplanet-backed games/apps too.</p>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
-  </div>
-  <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
@@ -1216,6 +1204,9 @@ can be used by Libplanet-backed games/apps too.</p>
   </div>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <div>
+      <span class="xref">Bencodex.IBencodable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
@@ -1232,7 +1223,7 @@ can be used by Libplanet-backed games/apps too.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Address.md&amp;value=---%0Auid%3A%20Libplanet.Address%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L44" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Address.cs/#L43" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

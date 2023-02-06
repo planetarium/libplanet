@@ -1813,12 +1813,12 @@ references:
   commentId: T:Libplanet.Address
   fullName: Libplanet.Address
   nameWithType: Address
-- uid: Libplanet.Address.#ctor(Bencodex.Types.Binary)
-  name: Address(Binary)
-  href: api/Libplanet.Address.html#Libplanet_Address__ctor_Bencodex_Types_Binary_
-  commentId: M:Libplanet.Address.#ctor(Bencodex.Types.Binary)
-  fullName: Libplanet.Address.Address(Bencodex.Types.Binary)
-  nameWithType: Address.Address(Binary)
+- uid: Libplanet.Address.#ctor(Bencodex.Types.IValue)
+  name: Address(IValue)
+  href: api/Libplanet.Address.html#Libplanet_Address__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Address.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Address.Address(Bencodex.Types.IValue)
+  nameWithType: Address.Address(IValue)
 - uid: Libplanet.Address.#ctor(Libplanet.Crypto.PublicKey)
   name: Address(PublicKey)
   href: api/Libplanet.Address.html#Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_
@@ -1856,6 +1856,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Address.Address
   nameWithType: Address.Address
+- uid: Libplanet.Address.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Address.html#Libplanet_Address_Bencoded
+  commentId: P:Libplanet.Address.Bencoded
+  fullName: Libplanet.Address.Bencoded
+  nameWithType: Address.Bencoded
+- uid: Libplanet.Address.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Address.html#Libplanet_Address_Bencoded_
+  commentId: Overload:Libplanet.Address.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Address.Bencoded
+  nameWithType: Address.Bencoded
 - uid: Libplanet.Address.ByteArray
   name: ByteArray
   href: api/Libplanet.Address.html#Libplanet_Address_ByteArray
@@ -1920,19 +1933,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Address.GetHashCode
   nameWithType: Address.GetHashCode
-- uid: Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Address.html#Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: Address.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Address.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Address.html#Libplanet_Address_GetObjectData_
-  commentId: Overload:Libplanet.Address.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Address.GetObjectData
-  nameWithType: Address.GetObjectData
 - uid: Libplanet.Address.op_Equality(Libplanet.Address,Libplanet.Address)
   name: Equality(Address, Address)
   href: api/Libplanet.Address.html#Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_
@@ -16353,12 +16353,12 @@ references:
   commentId: T:Libplanet.Net.BoundPeer
   fullName: Libplanet.Net.BoundPeer
   nameWithType: BoundPeer
-- uid: Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.Dictionary)
-  name: BoundPeer(Dictionary)
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.Dictionary)
-  fullName: Libplanet.Net.BoundPeer.BoundPeer(Bencodex.Types.Dictionary)
-  nameWithType: BoundPeer.BoundPeer(Dictionary)
+- uid: Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.IValue)
+  name: BoundPeer(IValue)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Net.BoundPeer.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Net.BoundPeer.BoundPeer(Bencodex.Types.IValue)
+  nameWithType: BoundPeer.BoundPeer(IValue)
 - uid: Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)
   name: BoundPeer(PublicKey, DnsEndPoint)
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_
@@ -16385,6 +16385,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.Address
   nameWithType: BoundPeer.Address
+- uid: Libplanet.Net.BoundPeer.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_Bencoded
+  commentId: P:Libplanet.Net.BoundPeer.Bencoded
+  fullName: Libplanet.Net.BoundPeer.Bencoded
+  nameWithType: BoundPeer.Bencoded
+- uid: Libplanet.Net.BoundPeer.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_Bencoded_
+  commentId: Overload:Libplanet.Net.BoundPeer.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.Bencoded
+  nameWithType: BoundPeer.Bencoded
 - uid: Libplanet.Net.BoundPeer.EndPoint
   name: EndPoint
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_EndPoint
@@ -16430,19 +16443,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.GetHashCode
   nameWithType: BoundPeer.GetHashCode
-- uid: Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: BoundPeer.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.BoundPeer.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_GetObjectData_
-  commentId: Overload:Libplanet.Net.BoundPeer.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.BoundPeer.GetObjectData
-  nameWithType: BoundPeer.GetObjectData
 - uid: Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
   name: Equality(BoundPeer, BoundPeer)
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Equality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_
@@ -16521,19 +16521,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.PublicKey
   nameWithType: BoundPeer.PublicKey
-- uid: Libplanet.Net.BoundPeer.ToBencodex
-  name: ToBencodex()
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToBencodex
-  commentId: M:Libplanet.Net.BoundPeer.ToBencodex
-  fullName: Libplanet.Net.BoundPeer.ToBencodex()
-  nameWithType: BoundPeer.ToBencodex()
-- uid: Libplanet.Net.BoundPeer.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToBencodex_
-  commentId: Overload:Libplanet.Net.BoundPeer.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Net.BoundPeer.ToBencodex
-  nameWithType: BoundPeer.ToBencodex
 - uid: Libplanet.Net.BoundPeer.ToString
   name: ToString()
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToString

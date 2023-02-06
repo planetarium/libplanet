@@ -87,6 +87,14 @@ and <code>ITransport.DifferentAppProtocolVersionEncountered</code> properties.
 <code>AppProtocolVersionOptions.TrustedAppProtocolVersionSigners</code> from
 <code>IImmutableHashSet&lt;PublicKey&gt;?</code> to <code>IImmutableHashSet&lt;PublicKey&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/2759">#2759</a>]</li>
+<li>(Libplanet.Net) Changed <code>BoundPeer</code> to implement <code>IBencodable</code> interface
+and removed <code>[Serializable]</code> attribute from <code>BoundPeer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2778">#2778</a>]</li>
+<li>(Libplanet.Net) Changed <code>BoundPeer(Dictionary)</code> constructor's signature to
+<code>BoundPeer(IValue)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2778">#2778</a>]</li>
+<li>Changed <code>Address</code> to implement <code>IBencodable</code> interface and removed
+<code>[Serializable]</code> attribute from <code>Address</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2778">#2778</a>]</li>
+<li>Changed <code>Address(Binary)</code> constructor's signature to <code>Address(IValue)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2778">#2778</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
