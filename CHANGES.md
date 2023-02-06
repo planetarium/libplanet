@@ -6,8 +6,6 @@ Version 0.47.0
 
 To be released.
 
-### Deprecated APIs
-
 ### Backward-incompatible API changes
 
  -  The signature of `Address(ImmutableArray<byte>)` constructor became
@@ -41,10 +39,6 @@ To be released.
  -  Changed `Address(Binary)` constructor's signature to `Address(IValue)`.
     [[#2778]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Introduced *Libplanet.Crypto.Secp256k1* package.  [[#2780]]
@@ -58,8 +52,6 @@ To be released.
      -  A `Block<T>` became represented as an object with values in JSON.
  -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
  -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
-
-### Behavioral changes
 
 ### Bug fixes
 
@@ -121,7 +113,7 @@ Version 0.46.1
 
 Released on February 3th, 2023.
 
- -  Ported changes from [Libplaent 0.45.5] release.
+ -  Ported changes from [Libplanet 0.45.5] release.
  -  General changes to log output for readability.  [[#2769]]
 
 [Libplanet 0.45.5]: https://www.nuget.org/packages/Libplanet/0.45.5
