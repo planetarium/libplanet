@@ -145,7 +145,7 @@ namespace Libplanet
                 ? binary
                 : throw new ArgumentException(
                     $"Given {nameof(bencoded)} must be of type " +
-                    $"{typeof(Bencodex.Types.Binary)}: {bencoded.GetType()}",
+                    $"{typeof(Binary)}: {bencoded.GetType()}",
                     nameof(bencoded)))
         {
         }
