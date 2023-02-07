@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using Bencodex;
 using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -11,6 +10,8 @@ namespace Libplanet.Tests.Tx
 {
     public class TxIdTest
     {
+        public static Codec _codec = new Codec();
+
         [Fact]
         public void TxIdMustBe32Bytes()
         {
@@ -168,7 +169,7 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
-        public void CanSerializeAndDeserialize()
+        public void Bencodable()
         {
             // Serialize and deserialize to and from memory
             var expectedTxId = new TxId(
@@ -178,17 +179,8 @@ namespace Libplanet.Tests.Tx
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                     0x9c, 0xcc,
-                }
-            );
-            TxId deserializedTxId;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (var memoryStream = new MemoryStream())
-            {
-                formatter.Serialize(memoryStream, expectedTxId);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                deserializedTxId = (TxId)formatter.Deserialize(memoryStream);
-            }
-
+                });
+            TxId deserializedTxId = new TxId(expectedTxId.Bencoded);
             Assert.Equal(deserializedTxId, expectedTxId);
         }
 

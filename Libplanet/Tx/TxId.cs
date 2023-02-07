@@ -3,10 +3,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Libplanet.Serialization;
+using Bencodex;
+using Bencodex.Types;
 
 namespace Libplanet.Tx
 {
@@ -20,8 +20,7 @@ namespace Libplanet.Tx
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
     [JsonConverter(typeof(TxIdJsonConverter))]
-    [Serializable]
-    public readonly struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
+    public readonly struct TxId : IEquatable<TxId>, IComparable<TxId>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -70,10 +69,27 @@ namespace Libplanet.Tx
         {
         }
 
-        public TxId(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info.GetValue<byte[]>("tx_id"))
+        /// <summary>
+        /// Creates a <see cref="TxId"/> instance from given <paramref name="bencoded"/>.
+        /// </summary>
+        /// <param name="bencoded">A Bencodex <see cref="Binary"/> of 32 <see cref="byte"/>s which
+        /// represents an <see cref="TxId"/>.
+        /// </param>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
+        /// is not of type <see cref="Binary"/>.</exception>
+        /// <seealso cref="TxId(in ImmutableArray{byte})"/>
+        public TxId(IValue bencoded)
+            : this(bencoded is Binary binary
+                ? binary
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private TxId(Binary bencoded)
+            : this(bencoded.ByteArray)
         {
         }
 
@@ -87,6 +103,9 @@ namespace Libplanet.Tx
         public ImmutableArray<byte> ByteArray => _byteArray.IsDefault
             ? _defaultByteArray
             : _byteArray;
+
+        /// <inheritdoc/>
+        public IValue Bencoded => new Binary(ByteArray);
 
         public static bool operator ==(TxId left, TxId right) => left.Equals(right);
 
@@ -174,14 +193,6 @@ namespace Libplanet.Tx
             ? this.CompareTo(other)
             : throw new ArgumentException(
                 $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
-
-        /// <inheritdoc />
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context)
-        {
-            info.AddValue("tx_id", _byteArray.ToArray());
-        }
     }
 
     [SuppressMessage(

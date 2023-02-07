@@ -71,7 +71,7 @@ namespace Libplanet.Tx
             ExceptionName = info.GetString(nameof(ExceptionName)) ?? string.Empty;
             ExceptionMetadata
                 = info.GetValue<byte[]?>(nameof(ExceptionMetadata)) is { } bytes
-                ? Codec.Decode(bytes)
+                ? _codec.Decode(bytes)
                 : null;
         }
 
@@ -94,7 +94,7 @@ namespace Libplanet.Tx
             info.AddValue(nameof(ExceptionName), ExceptionName);
             info.AddValue(
                 nameof(ExceptionMetadata),
-                ExceptionMetadata is { } m ? Codec.Encode(m) : null
+                ExceptionMetadata is { } m ? _codec.Encode(m) : null
             );
         }
     }

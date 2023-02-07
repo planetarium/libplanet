@@ -57,7 +57,7 @@ namespace Libplanet.Tx
             : base(info, context)
         {
             var updatedStates =
-                (Dictionary)Codec.Decode(info.GetValue<byte[]>(nameof(UpdatedStates)));
+                (Dictionary)_codec.Decode(info.GetValue<byte[]>(nameof(UpdatedStates)));
             UpdatedStates = updatedStates.ToImmutableDictionary(
                 kv => new Address(kv.Key),
                 kv => kv.Value is List l && l.Any() ? l[0] : null
@@ -110,7 +110,7 @@ namespace Libplanet.Tx
             base.GetObjectData(info, context);
             info.AddValue(
                 nameof(UpdatedStates),
-                Codec.Encode(
+                _codec.Encode(
                     new Dictionary(
                         UpdatedStates.Select(kv =>
                             new KeyValuePair<IKey, IValue>(
@@ -134,7 +134,7 @@ namespace Libplanet.Tx
         private static byte[] EncodeFungibleAssetGroups(
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> g
         ) =>
-            Codec.Encode(
+            _codec.Encode(
                 new Dictionary(
                     g.Select(kv =>
                         new KeyValuePair<Binary, List>(
@@ -153,7 +153,7 @@ namespace Libplanet.Tx
 
         private static IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
         DecodeFungibleAssetGroups(byte[] encoded) =>
-            ((Dictionary)Codec.Decode(encoded)).ToImmutableDictionary(
+            ((Dictionary)_codec.Decode(encoded)).ToImmutableDictionary(
                 kv => new Address(kv.Key),
                 kv => (IImmutableDictionary<Currency, FAV>)((List)kv.Value)
                     .Cast<List>()

@@ -17,14 +17,13 @@ namespace Libplanet.Tx
     /// <seealso cref="TxFailure"/>
     public abstract class TxExecution : ISerializable
     {
-        protected static readonly Codec Codec = new Codec();
+        protected static readonly Codec _codec = new Codec();
 
         protected TxExecution(SerializationInfo info, StreamingContext context)
             : this(
                 info.GetValue<BlockHash>(nameof(BlockHash)),
-                info.GetValue<TxId>(nameof(TxId)),
-                info.GetValue<List<List<string>>>(nameof(ActionsLogsList))
-            )
+                new TxId(_codec.Decode(info.GetValue<byte[]>(nameof(TxId)))),
+                info.GetValue<List<List<string>>>(nameof(ActionsLogsList)))
         {
         }
 
@@ -62,7 +61,7 @@ namespace Libplanet.Tx
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(BlockHash), BlockHash);
-            info.AddValue(nameof(TxId), TxId);
+            info.AddValue(nameof(TxId), _codec.Encode(TxId.Bencoded));
             info.AddValue(nameof(ActionsLogsList), ActionsLogsList);
         }
     }

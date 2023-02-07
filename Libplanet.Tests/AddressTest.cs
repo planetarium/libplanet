@@ -233,7 +233,7 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void Bencode()
+        public void Bencodable()
         {
             // Serialize and deserialize to and from memory
             var expectedAddress = new Address(
