@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
 
@@ -13,6 +12,12 @@ namespace Libplanet
     /// </summary>
     public static class ByteUtil
     {
+        private static readonly char[] _hexCharLookup =
+        {
+            '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+        };
+
         /// <summary>
         /// Converts a hexadecimal string to a <see cref="byte"/> array.
         /// </summary>
@@ -61,35 +66,36 @@ namespace Libplanet
         /// Renders a hexadecimal string from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
-        /// the corresponding hexadecimal string.  It must not be <see langword="null"/>.
+        /// the corresponding hexadecimal string.
         /// </param>
         /// <returns>A hexadecimal string which encodes the given
         /// <paramref name="bytes"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="bytes"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="Hex(in ImmutableArray{byte})"/>
+        /// <seealso cref="ParseHex(string)"/>
         [Pure]
         public static string Hex(byte[] bytes)
         {
-            if (bytes == null)
+            char[] chars = new char[bytes.Length * 2];
+            for (int i = 0; i < bytes.Length; i++)
             {
-                throw new ArgumentNullException(nameof(bytes));
+                chars[i * 2] = _hexCharLookup[bytes[i] >> 4];
+                chars[i * 2 + 1] = _hexCharLookup[bytes[i] & 0xf];
             }
 
-            string s = BitConverter.ToString(bytes);
-            return s.Replace("-", string.Empty).ToLower(CultureInfo.InvariantCulture);
+            return new string(chars);
         }
 
         /// <summary>
         /// Renders a hexadecimal string from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
-        /// the corresponding hexadecimal string.  It must not be <see langword="null"/>.
+        /// the corresponding hexadecimal string.
         /// </param>
         /// <returns>A hexadecimal string which encodes the given
         /// <paramref name="bytes"/>.</returns>
         [Pure]
         public static string Hex(in ImmutableArray<byte> bytes) =>
-            bytes.IsDefaultOrEmpty ? string.Empty : Hex(bytes.ToArray());
+            Hex(bytes.IsDefaultOrEmpty ? new byte[0] : bytes.ToArray());
 
         /// <summary>
         /// Calculates a deterministic hash code from a given
