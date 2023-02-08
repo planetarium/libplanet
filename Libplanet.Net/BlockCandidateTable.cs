@@ -23,19 +23,17 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>> _blocks;
+        private readonly ConcurrentDictionary<BlockHeader, List<Block<T>>> _blocks;
 
         public BlockCandidateTable()
         {
-            _blocks = new ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>>();
+            _blocks = new ConcurrentDictionary<BlockHeader, List<Block<T>>>();
         }
 
         public long Count
         {
             get => _blocks.Count;
         }
-
-        public bool Any() => !_blocks.IsEmpty;
 
         /// <summary>
         /// <para>
@@ -84,9 +82,7 @@ namespace Libplanet.Net
                 return;
             }
 
-            var sortedBlocks =
-                new SortedList<long, Block<T>>(blocks.ToDictionary(block => block.Index));
-            _blocks.TryAdd(blockHeader, sortedBlocks);
+            _blocks.TryAdd(blockHeader, blocks.OrderBy(block => block.Index).ToList());
         }
 
         /// <summary>
@@ -94,9 +90,11 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
         /// tip of this round.</param>
-        /// <returns><see cref="Block{T}"/>s by <paramref name="thisRoundTip"/> if found,
-        /// otherwise <see langword="null"/>.</returns>
-        public SortedList<long, Block<T>>? GetCurrentRoundCandidate(
+        /// <returns>A <see cref="List{T}"/> of <see cref="Block{T}"/>s associated with
+        /// <paramref name="thisRoundTip"/> if found, otherwise <see langword="null"/>.
+        /// The result is guaranteed to be non-empty and sorted by <see cref="Block{T}.Index"/>.
+        /// </returns>
+        public List<Block<T>>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
             return _blocks.TryGetValue(thisRoundTip, out var blocks)
@@ -115,7 +113,7 @@ namespace Libplanet.Net
             {
                 if (!predicate(blockHeader))
                 {
-                    _blocks.TryRemove(blockHeader, out _);
+                    TryRemove(blockHeader);
                 }
             }
         }
