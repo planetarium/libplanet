@@ -10,8 +10,13 @@ using Serilog;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A class which table data structure that stores <see cref="Block{T}"/>s
-    /// received from <see cref="BoundPeer"/>.
+    /// <para>
+    /// A class for storing downloaded <see cref="Block{T}"/>s as <see cref="Dictionary{K, V}"/>.
+    /// A <see cref="BlockHeader"/> is used as a key for storing downloading context.
+    /// </para>
+    /// <para>
+    /// This is designed to be exception free.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
@@ -33,45 +38,64 @@ namespace Libplanet.Net
         public bool Any() => !_blocks.IsEmpty;
 
         /// <summary>
-        /// Adds a <see cref="Block{T}"/>s to the table.
+        /// <para>
+        /// Adds given <paramref name="blocks"/> to the table.
+        /// </para>
+        /// <para>
+        /// The internal table is only updated if a given pair satisfy both of the following:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         Given <paramref name="blocks"/> is non-empty.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Given <paramref name="blocks"/> have unique indices.
+        ///     </description></item>
+        ///     <item><description>
+        ///         The internal dictionary does not already contain <paramref name="blockHeader"/>
+        ///         as its key.
+        ///     </description></item>
+        /// </list>
+        /// </para>
         /// </summary>
         /// <param name="blockHeader">This is the header of the <see cref="BlockChain{T}"/>
         /// tip at the time of downloading the blocks.</param>
-        /// <param name="blocks">List of downloaded <see cref="Block{T}"/>.</param>
+        /// <param name="blocks">The list of downloaded <see cref="Block{T}"/>s.</param>
         public void Add(BlockHeader blockHeader, IEnumerable<Block<T>> blocks)
         {
             if (_blocks.ContainsKey(blockHeader))
             {
+                Log.Debug(
+                    "Given blocks will not be added as the table already contains " +
+                    "blockheader #{Index} {BlockHash} as a key",
+                    blockHeader.Index,
+                    blockHeader.Hash);
+                return;
+            }
+            else if (!blocks.Any())
+            {
+                Log.Debug(
+                    "Given blocks will not be added as empty set of blocks is not allowed");
+                return;
+            }
+            else if (blocks.GroupBy(block => block.Index).Count() != blocks.Count())
+            {
+                Log.Debug(
+                    "Given blocks will not be added as given blocks have duplicate indices");
                 return;
             }
 
-            try
-            {
-                var sortedBlocks =
-                    new SortedList<long, Block<T>>(blocks.ToDictionary(i => i.Index));
-                if (sortedBlocks.Count > 0)
-                {
-                    _blocks.TryAdd(blockHeader, sortedBlocks);
-                }
-            }
-            catch (ArgumentException e)
-            {
-                Log.Debug(
-                    "Among the previous blocks of BlockHeader " +
-                    "#{Index} {BlockHash}, there is a block with the wrong index. " +
-                    "InnerMessage: {InnerMessage}",
-                    blockHeader.Index,
-                    blockHeader.Hash,
-                    e.Message);
-            }
+            var sortedBlocks =
+                new SortedList<long, Block<T>>(blocks.ToDictionary(block => block.Index));
+            _blocks.TryAdd(blockHeader, sortedBlocks);
         }
 
         /// <summary>
-        /// Get the <see cref="Block{T}"/>s which are in the table.
+        /// Get the <see cref="Block{T}"/>s which are in the table by <see cref="BlockHeader"/>.
         /// </summary>
         /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
         /// tip of this round.</param>
-        /// <returns><see cref="Block{T}"/>s by <paramref name="thisRoundTip"/>.</returns>
+        /// <returns><see cref="Block{T}"/>s by <paramref name="thisRoundTip"/> if found,
+        /// otherwise <see langword="null"/>.</returns>
         public SortedList<long, Block<T>>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
