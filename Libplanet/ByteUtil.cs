@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 
@@ -28,9 +29,6 @@ namespace Libplanet
         /// <paramref name="hex"/> string represented in hexadecimal.
         /// It lengthens the half of the given <paramref name="hex"/> string.
         /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hex"/> string is <see langword="null"/>.
-        /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length
         /// of the given <paramref name="hex"/> string is an odd number.
         /// </exception>
@@ -40,11 +38,6 @@ namespace Libplanet
         [Pure]
         public static byte[] ParseHex(string hex)
         {
-            if (hex == null)
-            {
-                throw new ArgumentNullException(nameof(hex));
-            }
-
             if (hex.Length % 2 > 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -56,7 +49,8 @@ namespace Libplanet
             var bytes = new byte[hex.Length / 2];
             for (var i = 0; i < hex.Length / 2; i++)
             {
-                bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+                bytes[i] = byte.Parse(
+                    hex.Substring(i * 2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             }
 
             return bytes;
