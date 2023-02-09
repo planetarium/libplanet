@@ -31,14 +31,20 @@ namespace Libplanet.Net.Tests
             table.Add(header, duplicateSet);
             Assert.Equal(0, table.Count);
 
-            // Ignore non-consecutive
-            var nonConsecutiveSet = new List<Block<DumbAction>>()
+            // Ignore non-consecutive indices
+            var nonConsecutiveIndexSet = new List<Block<DumbAction>>()
                 { _fx.Block1, _fx.Block2, _fx.Block4 };
-            table.Add(header, nonConsecutiveSet);
+            table.Add(header, nonConsecutiveIndexSet);
+            Assert.Equal(0, table.Count);
+
+            // Ignore non-consecutive blocks
+            var nonConsecutiveHashSet = new List<Block<DumbAction>>()
+                { _fx.Block2, _fx.Block3Alt, _fx.Block4 };
+            table.Add(header, nonConsecutiveHashSet);
             Assert.Equal(0, table.Count);
 
             // Ignore existing key
-            var firstSet = new List<Block<DumbAction>>() { _fx.Block1, _fx.Block2 };
+            var firstSet = new List<Block<DumbAction>>() { _fx.Block2, _fx.Block3, _fx.Block4 };
             var secondSet = new List<Block<DumbAction>>() { _fx.Block3, _fx.Block4 };
             table.Add(header, firstSet);
             Assert.Equal(1, table.Count);
