@@ -25,7 +25,6 @@ Version PBFT
  -  Removed `IBlockPolicy.GetMinBlockProtocolVersion()` interface method.
     [[#PBFT]]
 
-
 ### Backward-incompatible API changes
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
@@ -36,6 +35,10 @@ Version PBFT
  -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
  -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
+ -  `BlockMetadata.MakeCandidateData()` now uses a SHA256 hash of `LastCommit`
+    for creating a candidate data for `PreEvaluationBlockHeader<T>`. Due to this
+    change, `PreEvaluationHash` results different with previous block hash
+    computation if the `BlockMetadata.LastCommit` is not null.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
  -  Changed `BlockPolicy<T>()` constructor not to take
     `Func<long, int>` type parameter named `getMinBlockProtocolVersion`.
