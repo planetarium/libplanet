@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -39,6 +40,28 @@ namespace Libplanet.Tests.Blocks
             var unMarshaled = new BlockCommit(marshaled);
 
             Assert.Equal(blockCommit, unMarshaled);
+        }
+
+        [Fact]
+        public void ToHash()
+        {
+            var randomHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
+            var votes = keys.Select(key =>
+                    new VoteMetadata(
+                        1,
+                        0,
+                        randomHash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        VoteFlag.PreCommit).Sign(key))
+                .ToImmutableArray();
+            var blockCommit = new BlockCommit(1, 0, randomHash, votes);
+
+            var commitHash = blockCommit.ToHash();
+            var expected = HashDigest<SHA256>.DeriveFrom(blockCommit.ToByteArray());
+
+            Assert.Equal(commitHash, expected);
         }
 
         [Fact]
