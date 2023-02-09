@@ -73,6 +73,7 @@ namespace Libplanet.Tests.Fixtures
             var preEval = TestUtils.ProposeGenesis(
                 Miner.PublicKey,
                 Txs,
+                null,
                 DateTimeOffset.UtcNow,
                 Block<Arithmetic>.CurrentProtocolVersion);
             Genesis = preEval.Evaluate(

@@ -1354,6 +1354,7 @@ namespace Libplanet.Net.Tests
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 actionsA,
+                null,
                 privateKeyA);
             var genesisBlockA = genesisChainA.Genesis;
             var genesisChainB = MakeBlockChain(
@@ -1361,6 +1362,7 @@ namespace Libplanet.Net.Tests
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 actionsB,
+                null,
                 privateKeyB);
             var genesisChainC = MakeBlockChain(
                 new BlockPolicy<DumbAction>(),

@@ -412,6 +412,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static PreEvaluationBlock<T> ProposeGenesis<T>(
             PublicKey proposer = null,
             IReadOnlyList<Transaction<T>> transactions = null,
+            ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion
         )
@@ -419,14 +420,15 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             var txs = transactions?.ToList() ?? new List<Transaction<T>>();
             long nonce = 0;
+            validatorSet = validatorSet ?? ValidatorSet;
             txs.AddRange(
-                ValidatorSet.Validators.Select(
+                validatorSet.Validators.Select(
                     validator => Transaction<T>.Create(
                         nonce++,
                         GenesisProposer,
                         null,
                         systemAction: new SetValidator(
-                            new Validator(validator.PublicKey, BigInteger.One)),
+                            new Validator(validator.PublicKey, validator.Power)),
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 
@@ -477,6 +479,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PreEvaluationBlock<T> preEval = ProposeGenesis(
                 miner?.PublicKey,
                 transactions,
+                null,
                 timestamp,
                 protocolVersion
             );
@@ -540,11 +543,33 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval.Sign(miner, stateRootHash);
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockChain{T}"/> instance.
+        /// </summary>
+        /// <param name="policy">A <see cref="BlockPolicy{T}"/> of the chain.</param>
+        /// <param name="store">An <see cref="IStore"/> instance to store blocks and txs.</param>
+        /// <param name="stateStore">An <see cref="IStateStore"/> instance to store states.</param>
+        /// <param name="actions"><see cref="Action{T}"/>s to be included in genesis block.
+        /// Works only if <paramref name="genesisBlock"/> is null.</param>
+        /// <param name="validatorSet"><see cref="ValidatorSet"/> to be included in genesis block.
+        /// Works only if <paramref name="genesisBlock"/> is null.</param>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> to sign genesis actions.
+        /// Works only if <paramref name="genesisBlock"/> is null.</param>
+        /// <param name="timestamp"><see cref="DateTimeOffset"/> of the genesis block.
+        /// Works only if <paramref name="genesisBlock"/> is null.</param>
+        /// <param name="renderers">
+        /// An <see cref="IEnumerable{T}"/> of <see cref="IRenderer{T}"/>s.</param>
+        /// <param name="genesisBlock">Genesis <see cref="Block{T}"/> of the chain.
+        /// If null is given, a genesis will be generated.</param>
+        /// <param name="protocolVersion">Block protocol version of genesis block.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
+        /// <returns>A <see cref="BlockChain{T}"/> instance.</returns>
         public static BlockChain<T> MakeBlockChain<T>(
             IBlockPolicy<T> policy,
             IStore store,
             IStateStore stateStore,
             IEnumerable<T> actions = null,
+            ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer<T>> renderers = null,
@@ -571,6 +596,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var preEval = ProposeGenesis(
                     GenesisProposer.PublicKey,
                     txs,
+                    validatorSet,
                     timestamp,
                     protocolVersion);
                 var stateRootHash = preEval.DetermineStateRootHash(
