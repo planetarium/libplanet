@@ -285,6 +285,11 @@ namespace Libplanet.Blocks
                 dict = dict.Add("transaction_fingerprint", txHash.ByteArray);
             }
 
+            if (LastCommit is { } lastCommit)
+            {
+                dict = dict.Add("last_commit", lastCommit.ToHash().ByteArray);
+            }
+
             // As blocks hadn't been signed before ProtocolVersion <= 1, the PublicKey property
             // is nullable type-wise.  Blocks with ProtocolVersion <= 1 had a `reward_beneficiary`
             // field, which referred to the Miner address.  On the other hand, blocks with
