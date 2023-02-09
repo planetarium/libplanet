@@ -1663,7 +1663,6 @@ namespace Libplanet.Blockchain
                         string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
             }
 
-            // TODO: Add an unit case for this method.
             BigInteger commitPower = blockCommit.Votes.Aggregate(
                 BigInteger.Zero,
                 (power, vote) => power + (vote.Flag == VoteFlag.PreCommit

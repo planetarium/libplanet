@@ -432,5 +432,99 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(validNextBlock, null));
         }
+
+        [Fact]
+        public void ValidateBlockCommitFailsInsufficientPower()
+        {
+            var privateKey1 = new PrivateKey();
+            var privateKey2 = new PrivateKey();
+            var privateKey3 = new PrivateKey();
+            var privateKey4 = new PrivateKey();
+            var validator1 = new Validator(privateKey1.PublicKey, 10);
+            var validator2 = new Validator(privateKey2.PublicKey, 1);
+            var validator3 = new Validator(privateKey3.PublicKey, 1);
+            var validator4 = new Validator(privateKey4.PublicKey, 1);
+            var validatorSet = new ValidatorSet(
+                new[] { validator1, validator2, validator3, validator4 }.ToList());
+            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
+                new NullBlockPolicy<DumbAction>(),
+                new MemoryStore(),
+                new TrieStateStore(new MemoryKeyValueStore()),
+                validatorSet: validatorSet);
+            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: blockChain.Genesis.Timestamp.AddDays(1),
+                    publicKey: _fx.Proposer.PublicKey,
+                    previousHash: blockChain.Genesis.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, blockChain);
+
+            Vote GenerateVote(PrivateKey key, VoteFlag flag)
+            {
+                var metadata = new VoteMetadata(
+                        1,
+                        0,
+                        validNextBlock.Hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        flag);
+                return metadata.Sign(flag == VoteFlag.Null ? null : key);
+            }
+
+            ImmutableArray<Vote> GenerateVotes(
+                VoteFlag flag1,
+                VoteFlag flag2,
+                VoteFlag flag3,
+                VoteFlag flag4)
+            {
+                return new[]
+                {
+                    GenerateVote(privateKey1, flag1),
+                    GenerateVote(privateKey2, flag2),
+                    GenerateVote(privateKey3, flag3),
+                    GenerateVote(privateKey4, flag4),
+                }.OrderBy(vote => vote.ValidatorPublicKey.ToAddress()).ToImmutableArray();
+            }
+
+            var fullBlockCommit = new BlockCommit(
+                1,
+                0,
+                validNextBlock.Hash,
+                GenerateVotes(
+                    VoteFlag.PreCommit,
+                    VoteFlag.PreCommit,
+                    VoteFlag.PreCommit,
+                    VoteFlag.PreCommit)
+            );
+            Assert.Null(blockChain.ValidateBlockCommit(validNextBlock, fullBlockCommit));
+
+            // Can propose if power is big enough even count condition is not met.
+            var validBlockCommit = new BlockCommit(
+                1,
+                0,
+                validNextBlock.Hash,
+                GenerateVotes(
+                    VoteFlag.PreCommit,
+                    VoteFlag.Null,
+                    VoteFlag.Null,
+                    VoteFlag.Null)
+            );
+            Assert.Null(blockChain.ValidateBlockCommit(validNextBlock, validBlockCommit));
+
+            // Can not propose if power isn't big enough even count condition is met.
+            var invalidBlockCommit = new BlockCommit(
+                1,
+                0,
+                validNextBlock.Hash,
+                GenerateVotes(
+                    VoteFlag.Null,
+                    VoteFlag.PreCommit,
+                    VoteFlag.PreCommit,
+                    VoteFlag.PreCommit)
+            );
+            Assert.IsType<InvalidBlockCommitException>(
+                blockChain.ValidateBlockCommit(validNextBlock, invalidBlockCommit));
+        }
     }
 }
