@@ -10,6 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `BlockCandidateTable<T>.Any()` method.  [[#2794]]
+ -  Changed the return type from `SortedList<long, Block<T>>?` to
+    `List<Block<T>>?` for `BlockCandidateTable<T>.GetCurrentRoundCandidate()`
+    method.  [[#2794]]
+ -  Changed the behavior of `BlockCandidateTable<T>.Add()` method.  [[#2794]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +29,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2794]: https://github.com/planetarium/libplanet/pull/2794
 
 
 Version 0.47.0

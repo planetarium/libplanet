@@ -23,16 +23,16 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<BlockHeader, List<Block<T>>> _blocks;
+        private readonly ConcurrentDictionary<BlockHeader, List<Block<T>>> _table;
 
         public BlockCandidateTable()
         {
-            _blocks = new ConcurrentDictionary<BlockHeader, List<Block<T>>>();
+            _table = new ConcurrentDictionary<BlockHeader, List<Block<T>>>();
         }
 
         public long Count
         {
-            get => _blocks.Count;
+            get => _table.Count;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Libplanet.Net
         /// <param name="blocks">The list of downloaded <see cref="Block{T}"/>s.</param>
         public void Add(BlockHeader blockHeader, IEnumerable<Block<T>> blocks)
         {
-            if (_blocks.ContainsKey(blockHeader))
+            if (_table.ContainsKey(blockHeader))
             {
                 Log.Debug(
                     "Given blocks will not be added as the table already contains " +
@@ -91,7 +91,7 @@ namespace Libplanet.Net
                 return;
             }
 
-            _blocks.TryAdd(blockHeader, sorted);
+            _table.TryAdd(blockHeader, sorted);
         }
 
         /// <summary>
@@ -108,19 +108,19 @@ namespace Libplanet.Net
         public List<Block<T>>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
-            return _blocks.TryGetValue(thisRoundTip, out var blocks)
+            return _table.TryGetValue(thisRoundTip, out var blocks)
                 ? blocks
                 : null;
         }
 
         public bool TryRemove(BlockHeader header)
         {
-            return _blocks.TryRemove(header, out _);
+            return _table.TryRemove(header, out _);
         }
 
         public void Cleanup(Func<IBlockExcerpt, bool> predicate)
         {
-            foreach (var blockHeader in _blocks.Keys)
+            foreach (var blockHeader in _table.Keys)
             {
                 if (!predicate(blockHeader))
                 {
