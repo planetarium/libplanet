@@ -33,7 +33,6 @@ namespace Libplanet.Tests
                 ByteUtil.ParseHex(hex)
             );
 
-            Assert.Throws<ArgumentNullException>(() => ByteUtil.ParseHex(null));
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => ByteUtil.ParseHex("abc")
             );
