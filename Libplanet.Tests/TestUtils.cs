@@ -355,17 +355,20 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static BlockCommit CreateBlockCommit<T>(Block<T> block)
+        public static BlockCommit CreateBlockCommit<T>(
+            Block<T> block,
+            bool deterministicTimestamp = false)
             where T : IAction, new() =>
                 block.Index > 0 &&
                 block.ProtocolVersion > BlockMetadata.PoWProtocolVersion
-                    ? CreateBlockCommit(block.Hash, block.Index, 0)
+                    ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
                     : null;
 
         public static BlockCommit CreateBlockCommit(
             BlockHash blockHash,
             long height,
-            int round)
+            int round,
+            bool deterministicTimestamp = false)
         {
             // Index #1 block cannot have lastCommit: There was no consensus of genesis block.
             if (height == 0)
@@ -373,11 +376,13 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 return null;
             }
 
+            // Using the unix epoch time as the timestamp of the vote if deterministicTimestamp is
+            // flagged for getting a deterministic random value from PreEvaluationHash.
             var votes = ValidatorPrivateKeys.Select(key => new VoteMetadata(
                 height,
                 round,
                 blockHash,
-                DateTimeOffset.UtcNow,
+                deterministicTimestamp ? DateTimeOffset.UnixEpoch : DateTimeOffset.UtcNow,
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 

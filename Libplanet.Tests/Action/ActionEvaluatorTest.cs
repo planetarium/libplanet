@@ -464,11 +464,13 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
 
+            // Same as above, use the same timestamp of last commit for each to get a deterministic
+            // test result.
             Block<DumbAction> block2 = ProposeNextBlock(
                 block1,
                 GenesisProposer,
                 block2Txs,
-                lastCommit: CreateBlockCommit(block1));
+                lastCommit: CreateBlockCommit(block1, true));
             AccountStateGetter accountStateGetter = addrs =>
                 addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)
