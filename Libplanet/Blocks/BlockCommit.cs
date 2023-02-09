@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -181,6 +182,12 @@ namespace Libplanet.Blocks
         {
             return HashCode.Combine(Height, Round, BlockHash, Votes);
         }
+
+        /// <summary>
+        /// Gets a <see cref="SHA256"/> digested <see cref="BlockCommit"/> hash value.
+        /// </summary>
+        /// <returns>Returns a <see cref="SHA256"/> digested <see cref="BlockCommit"/>.</returns>
+        public HashDigest<SHA256> ToHash() => HashDigest<SHA256>.DeriveFrom(ToByteArray());
 
         /// <inheritdoc/>
         [Pure]
