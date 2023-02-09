@@ -40,17 +40,19 @@ namespace Libplanet.Net
         /// Adds given <paramref name="blocks"/> to the table.
         /// </para>
         /// <para>
-        /// The internal table is only updated if a given pair satisfy both of the following:
+        /// The internal table is only updated if a given pair satisfy all of the following:
         /// <list type="bullet">
+        ///     <item><description>
+        ///         The internal dictionary does not already contain <paramref name="blockHeader"/>
+        ///         as its key.
+        ///     </description></item>
         ///     <item><description>
         ///         Given <paramref name="blocks"/> is non-empty.
         ///     </description></item>
         ///     <item><description>
-        ///         Given <paramref name="blocks"/> have unique indices.
-        ///     </description></item>
-        ///     <item><description>
-        ///         The internal dictionary does not already contain <paramref name="blockHeader"/>
-        ///         as its key.
+        ///         Given <paramref name="blocks"/> are consecutive in the sense that indices
+        ///         are unique consecutive and every <see cref="Block{T}.PreviousHash"/> match
+        ///         the <see cref="Block{T}.Hash"/> of the previous <see cref="Block{T}"/>.
         ///     </description></item>
         /// </list>
         /// </para>
@@ -69,20 +71,27 @@ namespace Libplanet.Net
                     blockHeader.Hash);
                 return;
             }
-            else if (!blocks.Any())
+
+            List<Block<T>> sorted = blocks.OrderBy(block => block.Index).ToList();
+            if (!sorted.Any())
             {
                 Log.Debug(
-                    "Given blocks will not be added as empty set of blocks is not allowed");
+                    "Given blocks will not be added to the table as an empty set of blocks " +
+                    "is not allowed",
+                    sorted.Count);
                 return;
             }
-            else if (blocks.GroupBy(block => block.Index).Count() != blocks.Count())
+            else if (!sorted
+                .Zip(sorted.Skip(1), (prev, next) =>
+                    prev.Index + 1 == next.Index && prev.Hash.Equals(next.PreviousHash))
+                .All(pred => pred))
             {
                 Log.Debug(
-                    "Given blocks will not be added as given blocks have duplicate indices");
+                    "Given blocks will not be added as given blocks are not consecutive");
                 return;
             }
 
-            _blocks.TryAdd(blockHeader, blocks.OrderBy(block => block.Index).ToList());
+            _blocks.TryAdd(blockHeader, sorted);
         }
 
         /// <summary>
@@ -92,8 +101,10 @@ namespace Libplanet.Net
         /// tip of this round.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="Block{T}"/>s associated with
         /// <paramref name="thisRoundTip"/> if found, otherwise <see langword="null"/>.
-        /// The result is guaranteed to be non-empty and sorted by <see cref="Block{T}.Index"/>.
+        /// The result is guaranteed to be non-empty and consecutive sorted by
+        /// <see cref="Block{T}.Index"/>.
         /// </returns>
+        /// <seealso cref="Add"/>
         public List<Block<T>>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
