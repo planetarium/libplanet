@@ -15647,23 +15647,6 @@ references:
   fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Add
   nameWithType: BlockCandidateTable<T>.Add
   nameWithType.vb: BlockCandidateTable(Of T).Add
-- uid: Libplanet.Net.BlockCandidateTable`1.Any
-  name: Any()
-  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Any
-  commentId: M:Libplanet.Net.BlockCandidateTable`1.Any
-  fullName: Libplanet.Net.BlockCandidateTable<T>.Any()
-  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Any()
-  nameWithType: BlockCandidateTable<T>.Any()
-  nameWithType.vb: BlockCandidateTable(Of T).Any()
-- uid: Libplanet.Net.BlockCandidateTable`1.Any*
-  name: Any
-  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Any_
-  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.Any
-  isSpec: "True"
-  fullName: Libplanet.Net.BlockCandidateTable<T>.Any
-  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Any
-  nameWithType: BlockCandidateTable<T>.Any
-  nameWithType.vb: BlockCandidateTable(Of T).Any
 - uid: Libplanet.Net.BlockCandidateTable`1.Cleanup(System.Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean})
   name: Cleanup(Func<IBlockExcerpt, Boolean>)
   href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Cleanup_System_Func_Libplanet_Blocks_IBlockExcerpt_System_Boolean__
