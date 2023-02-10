@@ -233,21 +233,6 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void Bencodable()
-        {
-            // Serialize and deserialize to and from memory
-            var expectedAddress = new Address(
-                new byte[]
-                {
-                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
-                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-                }
-            );
-            Address deserializedAddress = new Address(expectedAddress.Bencoded);
-            Assert.Equal(deserializedAddress, expectedAddress);
-        }
-
-        [Fact]
         public void SerializeAndDeserializeWithDefault()
         {
             var defaultAddress = default(Address);
@@ -302,6 +287,28 @@ namespace Libplanet.Tests
             Assert.Throws<ArgumentException>(() =>
                  new Address("0X0123456789ABcdefABcdEfABcdEFabcDEFabCDEF")
             );
+        }
+
+        [Fact]
+        public void Bencoded()
+        {
+            var expected = new Address(TestUtils.GetRandomBytes(Address.Size));
+            var deserialized = new Address(expected.Bencoded);
+            Assert.Equal(expected, deserialized);
+            expected = default(Address);
+            deserialized = new Address(expected.Bencoded);
+            Assert.Equal(expected, deserialized);
+        }
+
+        [Fact]
+        public void Serializable()
+        {
+            var expected = new Address(TestUtils.GetRandomBytes(Address.Size));
+            Address deserialized = TestUtils.BinarySerializeDeserialize<Address>(expected);
+            Assert.Equal(expected, deserialized);
+            expected = default(Address);
+            deserialized = TestUtils.BinarySerializeDeserialize<Address>(expected);
+            Assert.Equal(expected, deserialized);
         }
 
         [SkippableFact]
