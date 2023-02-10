@@ -243,7 +243,7 @@ namespace Libplanet
         [Pure]
         public override string ToString() => $"0x{ToHex()}";
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
