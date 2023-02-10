@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -19,8 +20,10 @@ namespace Libplanet.Tx
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
+    [Serializable]
     [JsonConverter(typeof(TxIdJsonConverter))]
-    public readonly struct TxId : IEquatable<TxId>, IComparable<TxId>, IComparable, IBencodable
+    public readonly struct TxId
+        : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -28,6 +31,8 @@ namespace Libplanet.Tx
         /// </para>
         /// </summary>
         public const int Size = 32;
+
+        private static readonly Codec _codec = new Codec();
 
         private static readonly ImmutableArray<byte> _defaultByteArray =
             ImmutableArray.Create<byte>(new byte[Size]);
@@ -85,6 +90,15 @@ namespace Libplanet.Tx
                     $"Given {nameof(bencoded)} must be of type " +
                     $"{typeof(Binary)}: {bencoded.GetType()}",
                     nameof(bencoded)))
+        {
+        }
+
+        public TxId(SerializationInfo info, StreamingContext context)
+            : this(_codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
+                byte[] bytes
+                    ? bytes
+                    : throw new SerializationException(
+                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
         {
         }
 
@@ -193,6 +207,12 @@ namespace Libplanet.Tx
             ? this.CompareTo(other)
             : throw new ArgumentException(
                 $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
+
+        /// <inheritdoc />
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
+        }
     }
 
     [SuppressMessage(

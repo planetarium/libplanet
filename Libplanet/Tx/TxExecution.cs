@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
@@ -15,6 +16,7 @@ namespace Libplanet.Tx
     /// </summary>
     /// <seealso cref="TxSuccess"/>
     /// <seealso cref="TxFailure"/>
+    [Serializable]
     public abstract class TxExecution : ISerializable
     {
         protected static readonly Codec _codec = new Codec();
@@ -22,7 +24,7 @@ namespace Libplanet.Tx
         protected TxExecution(SerializationInfo info, StreamingContext context)
             : this(
                 info.GetValue<BlockHash>(nameof(BlockHash)),
-                new TxId(_codec.Decode(info.GetValue<byte[]>(nameof(TxId)))),
+                info.GetValue<TxId>(nameof(TxId)),
                 info.GetValue<List<List<string>>>(nameof(ActionsLogsList)))
         {
         }
@@ -30,8 +32,7 @@ namespace Libplanet.Tx
         private protected TxExecution(
             BlockHash blockHash,
             TxId txId,
-            List<List<string>>? actionsLogsList
-        )
+            List<List<string>>? actionsLogsList)
         {
             BlockHash = blockHash;
             TxId = txId;
@@ -61,7 +62,7 @@ namespace Libplanet.Tx
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(BlockHash), BlockHash);
-            info.AddValue(nameof(TxId), _codec.Encode(TxId.Bencoded));
+            info.AddValue(nameof(TxId), TxId);
             info.AddValue(nameof(ActionsLogsList), ActionsLogsList);
         }
     }

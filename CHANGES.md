@@ -15,8 +15,7 @@ To be released.
     `List<Block<T>>?` for `BlockCandidateTable<T>.GetCurrentRoundCandidate()`
     method.  [[#2794]]
  -  Changed the behavior of `BlockCandidateTable<T>.Add()` method.  [[#2794]]
- -  Changed `TxId` to implement `IBencodable` interface
-    and removed `[Serializable]` attribute from `TxId`.  [[#2795]]
+ -  Changed `TxId` to implement `IBencodable` interface.  [[#2795]]
 
 ### Backward-incompatible network protocol changes
 
