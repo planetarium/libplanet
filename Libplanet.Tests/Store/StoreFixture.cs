@@ -103,7 +103,8 @@ namespace Libplanet.Tests.Store
                     : (HashDigest<SHA256>?)null;
             Proposer = TestUtils.GenesisProposer;
             GenesisBlock = TestUtils.ProposeGenesis<DumbAction>(
-                proposer: Proposer.PublicKey
+                proposer: Proposer.PublicKey,
+                validatorSet: TestUtils.ValidatorSet
             ).Evaluate(
                 privateKey: Proposer,
                 blockAction: blockAction,
