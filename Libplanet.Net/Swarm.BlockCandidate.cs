@@ -17,20 +17,20 @@ namespace Libplanet.Net
             var checkInterval = TimeSpan.FromMilliseconds(10);
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (BlockCandidateTable.Any())
+                if (BlockCandidateTable.Count > 0)
                 {
                     BlockHeader tipHeader = BlockChain.Tip.Header;
-                    SortedList<long, Block<T>> blocks =
+                    List<Block<T>> blocks =
                         BlockCandidateTable.GetCurrentRoundCandidate(tipHeader);
-                    if (!(blocks is null) && blocks.Count > 0)
+                    if (blocks is { } && blocks.Count > 0)
                     {
                         var latest = blocks.Last();
                         _logger.Debug(
                             "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
                             nameof(ConsumeBlockCandidates),
-                            latest.Value.Index,
-                            latest.Value.Hash,
+                            latest.Index,
+                            latest.Hash,
                             nameof(BlockCandidateTable),
                             BlockCandidateTable.Count);
                         _ = BlockCandidateProcess(
@@ -50,7 +50,7 @@ namespace Libplanet.Net
         }
 
         private bool BlockCandidateProcess(
-            SortedList<long, Block<T>> candidate,
+            List<Block<T>> candidate,
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
@@ -111,7 +111,7 @@ namespace Libplanet.Net
 
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
-            SortedList<long, Block<T>> candidate,
+            List<Block<T>> candidate,
             bool evaluateActions)
         {
              BlockChain<T> workspace = blockChain;
@@ -120,8 +120,8 @@ namespace Libplanet.Net
              bool renderBlocks = true;
 
              Block<T> oldTip = workspace.Tip;
-             Block<T> newTip = candidate.Last().Value;
-             List<Block<T>> blocks = candidate.Values.ToList();
+             Block<T> newTip = candidate.Last();
+             List<Block<T>> blocks = candidate.ToList();
              Block<T> branchpoint = FindBranchpoint(oldTip, newTip, blocks);
 
              if (oldTip is null || branchpoint.Equals(oldTip))

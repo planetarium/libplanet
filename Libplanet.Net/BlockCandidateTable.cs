@@ -10,88 +10,121 @@ using Serilog;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A class which table data structure that stores <see cref="Block{T}"/>s
-    /// received from <see cref="BoundPeer"/>.
+    /// <para>
+    /// A class for storing downloaded <see cref="Block{T}"/>s as <see cref="Dictionary{K, V}"/>.
+    /// A <see cref="BlockHeader"/> is used as a key for storing downloading context.
+    /// </para>
+    /// <para>
+    /// This is designed to be exception free.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>> _blocks;
+        private readonly ConcurrentDictionary<BlockHeader, List<Block<T>>> _table;
 
         public BlockCandidateTable()
         {
-            _blocks = new ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>>();
+            _table = new ConcurrentDictionary<BlockHeader, List<Block<T>>>();
         }
 
         public long Count
         {
-            get => _blocks.Count;
+            get => _table.Count;
         }
 
-        public bool Any() => !_blocks.IsEmpty;
-
         /// <summary>
-        /// Adds a <see cref="Block{T}"/>s to the table.
+        /// <para>
+        /// Adds given <paramref name="blocks"/> to the table.
+        /// </para>
+        /// <para>
+        /// The internal table is only updated if a given pair satisfy all of the following:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         The internal dictionary does not already contain <paramref name="blockHeader"/>
+        ///         as its key.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Given <paramref name="blocks"/> is non-empty.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Given <paramref name="blocks"/> are consecutive in the sense that indices
+        ///         are unique consecutive and every <see cref="Block{T}.PreviousHash"/> match
+        ///         the <see cref="Block{T}.Hash"/> of the previous <see cref="Block{T}"/>.
+        ///     </description></item>
+        /// </list>
+        /// </para>
         /// </summary>
         /// <param name="blockHeader">This is the header of the <see cref="BlockChain{T}"/>
         /// tip at the time of downloading the blocks.</param>
-        /// <param name="blocks">List of downloaded <see cref="Block{T}"/>.</param>
+        /// <param name="blocks">The list of downloaded <see cref="Block{T}"/>s.</param>
         public void Add(BlockHeader blockHeader, IEnumerable<Block<T>> blocks)
         {
-            if (_blocks.ContainsKey(blockHeader))
+            if (_table.ContainsKey(blockHeader))
             {
+                Log.Debug(
+                    "Given blocks will not be added as the table already contains " +
+                    "blockheader #{Index} {BlockHash} as a key",
+                    blockHeader.Index,
+                    blockHeader.Hash);
                 return;
             }
 
-            try
-            {
-                var sortedBlocks =
-                    new SortedList<long, Block<T>>(blocks.ToDictionary(i => i.Index));
-                if (sortedBlocks.Count > 0)
-                {
-                    _blocks.TryAdd(blockHeader, sortedBlocks);
-                }
-            }
-            catch (ArgumentException e)
+            List<Block<T>> sorted = blocks.OrderBy(block => block.Index).ToList();
+            if (!sorted.Any())
             {
                 Log.Debug(
-                    "Among the previous blocks of BlockHeader " +
-                    "#{Index} {BlockHash}, there is a block with the wrong index. " +
-                    "InnerMessage: {InnerMessage}",
-                    blockHeader.Index,
-                    blockHeader.Hash,
-                    e.Message);
+                    "Given blocks will not be added to the table as an empty set of blocks " +
+                    "is not allowed",
+                    sorted.Count);
+                return;
             }
+            else if (!sorted
+                .Zip(sorted.Skip(1), (prev, next) =>
+                    prev.Index + 1 == next.Index && prev.Hash.Equals(next.PreviousHash))
+                .All(pred => pred))
+            {
+                Log.Debug(
+                    "Given blocks will not be added as given blocks are not consecutive");
+                return;
+            }
+
+            _table.TryAdd(blockHeader, sorted);
         }
 
         /// <summary>
-        /// Get the <see cref="Block{T}"/>s which are in the table.
+        /// Get the <see cref="Block{T}"/>s which are in the table by <see cref="BlockHeader"/>.
         /// </summary>
         /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
         /// tip of this round.</param>
-        /// <returns><see cref="Block{T}"/>s by <paramref name="thisRoundTip"/>.</returns>
-        public SortedList<long, Block<T>>? GetCurrentRoundCandidate(
+        /// <returns>A <see cref="List{T}"/> of <see cref="Block{T}"/>s associated with
+        /// <paramref name="thisRoundTip"/> if found, otherwise <see langword="null"/>.
+        /// The result is guaranteed to be non-empty and consecutive sorted by
+        /// <see cref="Block{T}.Index"/>.
+        /// </returns>
+        /// <seealso cref="Add"/>
+        public List<Block<T>>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
-            return _blocks.TryGetValue(thisRoundTip, out var blocks)
+            return _table.TryGetValue(thisRoundTip, out var blocks)
                 ? blocks
                 : null;
         }
 
         public bool TryRemove(BlockHeader header)
         {
-            return _blocks.TryRemove(header, out _);
+            return _table.TryRemove(header, out _);
         }
 
         public void Cleanup(Func<IBlockExcerpt, bool> predicate)
         {
-            foreach (var blockHeader in _blocks.Keys)
+            foreach (var blockHeader in _table.Keys)
             {
                 if (!predicate(blockHeader))
                 {
-                    _blocks.TryRemove(blockHeader, out _);
+                    TryRemove(blockHeader);
                 }
             }
         }
