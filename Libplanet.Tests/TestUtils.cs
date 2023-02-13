@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -591,6 +593,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 output,
                 conditionLabel
             );
+
+        public static T BinarySerializeDeserialize<T>(T obj)
+            where T : ISerializable
+        {
+            var formatter = new BinaryFormatter();
+            using (var memoryStream = new MemoryStream())
+            {
+                formatter.Serialize(memoryStream, obj);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return (T)formatter.Deserialize(memoryStream);
+            }
+        }
 
         public static void AssertJsonSerializable<T>(T obj, string expectedJson)
             where T : IEquatable<T>

@@ -15,6 +15,7 @@ To be released.
     `List<Block<T>>?` for `BlockCandidateTable<T>.GetCurrentRoundCandidate()`
     method.  [[#2794]]
  -  Changed the behavior of `BlockCandidateTable<T>.Add()` method.  [[#2794]]
+ -  Changed `TxId` to implement `IBencodable` interface.  [[#2795]]
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +32,7 @@ To be released.
 ### CLI tools
 
 [#2794]: https://github.com/planetarium/libplanet/pull/2794
+[#2795]: https://github.com/planetarium/libplanet/pull/2795
 
 
 Version 0.47.0

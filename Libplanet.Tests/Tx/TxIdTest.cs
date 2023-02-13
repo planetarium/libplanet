@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -11,12 +9,6 @@ namespace Libplanet.Tests.Tx
 {
     public class TxIdTest
     {
-        [Fact]
-        public void ConstructorDoesNotTakeNullValue()
-        {
-            Assert.Throws<ArgumentNullException>(() => new TxId(null));
-        }
-
         [Fact]
         public void TxIdMustBe32Bytes()
         {
@@ -31,12 +23,10 @@ namespace Libplanet.Tests.Tx
                 ImmutableArray<byte> immutableBytes = bytes.ToImmutableArray();
                 Assert.Throws<ArgumentOutOfRangeException>(
                     "txid",
-                    () => new TxId(immutableBytes)
-                );
+                    () => new TxId(immutableBytes));
                 Assert.Throws<ArgumentOutOfRangeException>(
                     "txid",
-                    () => new TxId(bytes)
-                );
+                    () => new TxId(bytes));
             }
         }
 
@@ -56,23 +46,20 @@ namespace Libplanet.Tests.Tx
             );
             Assert.Equal(expected, actual);
 
-            Assert.Throws<ArgumentNullException>("hex", () => TxId.FromHex(null));
             Assert.Throws<FormatException>(() => TxId.FromHex("0g"));
             Assert.Throws<ArgumentOutOfRangeException>("hex", () => TxId.FromHex("1"));
             Assert.Throws<ArgumentOutOfRangeException>(
                 "hex",
-                () => TxId.FromHex("45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9c")
-            );
+                () => TxId.FromHex(
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9c"));
             Assert.Throws<ArgumentOutOfRangeException>(
                 "hex",
-                () =>
-                TxId.FromHex("45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc0")
-            );
+                () => TxId.FromHex(
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc0"));
             Assert.Throws<ArgumentOutOfRangeException>(
                 "hex",
-                () =>
-                TxId.FromHex("45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc00")
-            );
+                () => TxId.FromHex(
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc00"));
         }
 
         [Fact]
@@ -178,31 +165,6 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
-        public void CanSerializeAndDeserialize()
-        {
-            // Serialize and deserialize to and from memory
-            var expectedTxId = new TxId(
-                new byte[]
-                {
-                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
-                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-                    0x9c, 0xcc,
-                }
-            );
-            TxId deserializedTxId;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (var memoryStream = new MemoryStream())
-            {
-                formatter.Serialize(memoryStream, expectedTxId);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                deserializedTxId = (TxId)formatter.Deserialize(memoryStream);
-            }
-
-            Assert.Equal(deserializedTxId, expectedTxId);
-        }
-
-        [Fact]
         public void Compare()
         {
             var random = new Random();
@@ -229,6 +191,28 @@ namespace Libplanet.Tests.Tx
 
             Assert.Throws<ArgumentException>(() => txIds[0].CompareTo(null));
             Assert.Throws<ArgumentException>(() => txIds[0].CompareTo("invalid"));
+        }
+
+        [Fact]
+        public void Bencoded()
+        {
+            var expected = new TxId(TestUtils.GetRandomBytes(TxId.Size));
+            var deserialized = new TxId(expected.Bencoded);
+            Assert.Equal(expected, deserialized);
+            expected = default(TxId);
+            deserialized = new TxId(expected.Bencoded);
+            Assert.Equal(expected, deserialized);
+        }
+
+        [Fact]
+        public void Serializable()
+        {
+            var expected = new TxId(TestUtils.GetRandomBytes(TxId.Size));
+            var deserialized = TestUtils.BinarySerializeDeserialize<TxId>(expected);
+            Assert.Equal(expected, deserialized);
+            expected = default(TxId);
+            deserialized = TestUtils.BinarySerializeDeserialize<TxId>(expected);
+            Assert.Equal(expected, deserialized);
         }
 
         [SkippableFact]
