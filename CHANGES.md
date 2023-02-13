@@ -23,6 +23,10 @@ To be released.
 
 ### Added APIs
 
+ -  Added `Serializable` attribute back to `Address`.  [[#2798]]
+ -  (Libplanet.Net) Added `Serializable` attribute back to `BoundPeer`.
+    [[#2798]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -33,6 +37,7 @@ To be released.
 
 [#2794]: https://github.com/planetarium/libplanet/pull/2794
 [#2795]: https://github.com/planetarium/libplanet/pull/2795
+[#2798]: https://github.com/planetarium/libplanet/pull/2798
 
 
 Version 0.47.0

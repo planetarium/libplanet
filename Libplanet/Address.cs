@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -40,15 +41,18 @@ namespace Libplanet
     /// </summary>
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
+    [Serializable]
     [JsonConverter(typeof(AddressJsonConverter))]
     public readonly struct Address
-        : IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
+        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
         /// <para>It is 20 <see cref="byte"/>s.</para>
         /// </summary>
         public const int Size = 20;
+
+        private static readonly Codec _codec = new Codec();
 
         private static readonly ImmutableArray<byte> _defaultByteArray =
             ImmutableArray.Create<byte>(new byte[Size]);
@@ -155,6 +159,15 @@ namespace Libplanet
         {
         }
 
+        private Address(SerializationInfo info, StreamingContext context)
+            : this(_codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
+                byte[] bytes
+                    ? bytes
+                    : throw new SerializationException(
+                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
+        {
+        }
+
         /// <summary>
         /// An immutable array of 20 <see cref="byte"/>s that represent this
         /// <see cref="Address"/>.
@@ -229,6 +242,12 @@ namespace Libplanet
         /// <seealso cref="ToHex()"/>
         [Pure]
         public override string ToString() => $"0x{ToHex()}";
+
+        /// <inheritdoc/>
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
+        }
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         public int CompareTo(Address other)
