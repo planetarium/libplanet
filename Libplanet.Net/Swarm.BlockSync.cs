@@ -9,6 +9,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 using Nito.AsyncEx;
+using BlockChainSlice = System.Collections.Generic.List<Libplanet.Blocks.BlockHash>;
 
 namespace Libplanet.Net
 {
@@ -465,7 +466,7 @@ namespace Libplanet.Net
                     tipCandidate?.Index,
                     tipCandidate?.Hash);
 
-                if (tipCandidate is { } tc && tc.Index == 0)
+                if (tipCandidate is { Index: 0 } tc)
                 {
                     // FIXME: This is here to keep logical equivalence through refactoring.
                     // This part of the code is likely unreachable and the exception message
@@ -476,26 +477,47 @@ namespace Libplanet.Net
                         $"is unusable for the the existing chain #0 {g}.");
                 }
 
+                if (!(tipCandidate is { }))
+                {
+                    throw new SwarmException(
+                        $"Tip candidate is null.");
+                }
+
                 // NOTE: All blocks in deltaBlocks will have non-null previousHash.
-                var deltaBlocks = new LinkedList<Block<T>>(new[] { tipCandidate });
+                BlockChainSlice blockChainSlice = new BlockChainSlice(new[] { tipCandidate.Hash });
                 while (true)
                 {
-                    Block<T> b = deltaBlocks.First();
+                    BlockHash bh = blockChainSlice.Last();
+                    if (!workspace.Store.ContainsBlock(bh))
+                    {
+                        break;
+                    }
+
+                    Block<T> b = workspace.Store.GetBlock<T>(bh);
                     if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                     {
-                        deltaBlocks.AddFirst(workspace.Store.GetBlock<T>(p));
+                        blockChainSlice.Add(p);
                     }
                     else
                     {
                         break;
                     }
+
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
 
-                cancellationToken.ThrowIfCancellationRequested();
+                blockChainSlice.Reverse();
+                Block<T> firstBlock = workspace.Store.GetBlock<T>(blockChainSlice.First());
 
-                branchpoint = workspace[deltaBlocks.First().PreviousHash.Value];
+                if (!(firstBlock.PreviousHash is { }))
+                {
+                    throw new SwarmException(
+                        "A genesis block cannot be a preload target block.");
+                }
+
+                branchpoint = workspace[firstBlock.PreviousHash.Value];
                 _logger.Debug(
-                    "Branchpoint block is #{Index} {Hash}.",
+                    "Branchpoint block is #{Index} {Hash}",
                     branchpoint.Index,
                     branchpoint.Hash);
                 workspace = workspace.Fork(branchpoint.Hash, inheritRenderers: true);
@@ -506,10 +528,11 @@ namespace Libplanet.Net
                 try
                 {
                     long verifiedBlockCount = 0;
-                    foreach (Block<T> deltaBlock in deltaBlocks)
+                    foreach (BlockHash deltaBlockHash in blockChainSlice)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
+                        Block<T> deltaBlock = workspace.Store.GetBlock<T>(deltaBlockHash);
                         _logger.Debug(
                             "Appending block #{Index} {Hash}",
                             deltaBlock.Index,
@@ -523,7 +546,7 @@ namespace Libplanet.Net
                         progress?.Report(
                             new BlockVerificationState
                             {
-                                TotalBlockCount = deltaBlocks.Count,
+                                TotalBlockCount = blockChainSlice.Count,
                                 VerifiedBlockCount = ++verifiedBlockCount,
                                 VerifiedBlockHash = deltaBlock.Hash,
                             });
