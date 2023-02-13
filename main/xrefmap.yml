@@ -1933,6 +1933,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Address.GetHashCode
   nameWithType: Address.GetHashCode
+- uid: Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Address.html#Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: Address.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Address.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Address.html#Libplanet_Address_GetObjectData_
+  commentId: Overload:Libplanet.Address.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Address.GetObjectData
+  nameWithType: Address.GetObjectData
 - uid: Libplanet.Address.op_Equality(Libplanet.Address,Libplanet.Address)
   name: Equality(Address, Address)
   href: api/Libplanet.Address.html#Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_
@@ -9432,6 +9445,12 @@ references:
   commentId: T:Libplanet.Blocks.BlockPolicyViolationException
   fullName: Libplanet.Blocks.BlockPolicyViolationException
   nameWithType: BlockPolicyViolationException
+- uid: Libplanet.Blocks.BlockPolicyViolationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: BlockPolicyViolationException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.BlockPolicyViolationException.html#Libplanet_Blocks_BlockPolicyViolationException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.BlockPolicyViolationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.BlockPolicyViolationException.BlockPolicyViolationException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: BlockPolicyViolationException.BlockPolicyViolationException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Blocks.BlockPolicyViolationException.#ctor(System.String)
   name: BlockPolicyViolationException(String)
   href: api/Libplanet.Blocks.BlockPolicyViolationException.html#Libplanet_Blocks_BlockPolicyViolationException__ctor_System_String_
@@ -16426,6 +16445,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.GetHashCode
   nameWithType: BoundPeer.GetHashCode
+- uid: Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.BoundPeer.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: BoundPeer.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.BoundPeer.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_GetObjectData_
+  commentId: Overload:Libplanet.Net.BoundPeer.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.GetObjectData
+  nameWithType: BoundPeer.GetObjectData
 - uid: Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
   name: Equality(BoundPeer, BoundPeer)
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Equality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_
