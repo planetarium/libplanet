@@ -117,7 +117,8 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_TxExecution_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class TxExecution : ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class TxExecution : ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -126,7 +127,7 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxExecution__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxExecution.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxExecution__ctor_" data-uid="Libplanet.Tx.TxExecution.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxExecution__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">TxExecution(SerializationInfo, StreamingContext)</h4>
@@ -171,12 +172,12 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxExecution_Codec.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxExecution.Codec%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxExecution__codec.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxExecution._codec%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L20">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L22">View Source</a>
   </span>
-  <h4 id="Libplanet_Tx_TxExecution_Codec" data-uid="Libplanet.Tx.TxExecution.Codec">Codec</h4>
+  <h4 id="Libplanet_Tx_TxExecution__codec" data-uid="Libplanet.Tx.TxExecution._codec">_codec</h4>
   <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
 <p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
@@ -185,7 +186,7 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static readonly Codec Codec</code></pre>
+    <pre><code class="lang-csharp hljs">protected static readonly Codec _codec</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,7 +203,7 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxExecution_Codec_seealso">See Also</h5>
+  <h5 id="Libplanet_Tx_TxExecution__codec_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a></div>
       <div><a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a></div>
@@ -389,7 +390,7 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxExecution.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxExecution%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

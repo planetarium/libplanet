@@ -29417,6 +29417,12 @@ references:
   commentId: T:Libplanet.Tx.TxExecution
   fullName: Libplanet.Tx.TxExecution
   nameWithType: TxExecution
+- uid: Libplanet.Tx.TxExecution._codec
+  name: _codec
+  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution__codec
+  commentId: F:Libplanet.Tx.TxExecution._codec
+  fullName: Libplanet.Tx.TxExecution._codec
+  nameWithType: TxExecution._codec
 - uid: Libplanet.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: TxExecution(SerializationInfo, StreamingContext)
   href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
@@ -29456,12 +29462,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxExecution.BlockHash
   nameWithType: TxExecution.BlockHash
-- uid: Libplanet.Tx.TxExecution.Codec
-  name: Codec
-  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_Codec
-  commentId: F:Libplanet.Tx.TxExecution.Codec
-  fullName: Libplanet.Tx.TxExecution.Codec
-  nameWithType: TxExecution.Codec
 - uid: Libplanet.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: GetObjectData(SerializationInfo, StreamingContext)
   href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
@@ -29564,6 +29564,12 @@ references:
   commentId: T:Libplanet.Tx.TxId
   fullName: Libplanet.Tx.TxId
   nameWithType: TxId
+- uid: Libplanet.Tx.TxId.#ctor(Bencodex.Types.IValue)
+  name: TxId(IValue)
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Tx.TxId.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Tx.TxId.TxId(Bencodex.Types.IValue)
+  nameWithType: TxId.TxId(IValue)
 - uid: Libplanet.Tx.TxId.#ctor(System.Byte[])
   name: TxId(Byte[])
   href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId__ctor_System_Byte___
@@ -29595,6 +29601,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxId.TxId
   nameWithType: TxId.TxId
+- uid: Libplanet.Tx.TxId.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Bencoded
+  commentId: P:Libplanet.Tx.TxId.Bencoded
+  fullName: Libplanet.Tx.TxId.Bencoded
+  nameWithType: TxId.Bencoded
+- uid: Libplanet.Tx.TxId.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Bencoded_
+  commentId: Overload:Libplanet.Tx.TxId.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxId.Bencoded
+  nameWithType: TxId.Bencoded
 - uid: Libplanet.Tx.TxId.ByteArray
   name: ByteArray
   href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_ByteArray
