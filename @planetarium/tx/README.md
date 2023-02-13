@@ -1,7 +1,7 @@
 `@planetarium/tx`
 =================
 
-[![npm][npm-badge]][npm]
+[![npm][npm-badge]][npm] ![](https://img.shields.io/node/v-lts/@planetarium/tx)
 
 This npm package provides functions to build transactions equivalent to
 [Libplanet]:

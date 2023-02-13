@@ -37,6 +37,10 @@ To be released.
 
 ### Dependencies
 
+ -  (@planetarium/tx) Because `globalThis.crypto` API is available since
+    Node.js version 19.0.0, it now explicitly requires 19.0.0 or later.
+    [[#2805]]
+
 ### CLI tools
 
 [#2794]: https://github.com/planetarium/libplanet/pull/2794

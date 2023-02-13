@@ -4,6 +4,9 @@
   "description": "Creating Libplanet transactions from JavaScript/TypeScript",
   "main": "dist/pkg.cjs.js",
   "module": "dist/pkg.esm.js",
+  "engines": {
+    "node" : ">=19.0.0"
+  },
   "scripts": {
     "prebuild": "npm install --include=dev",
     "build": "bunchee --target es2020 --dts src/index.ts",
