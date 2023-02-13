@@ -252,12 +252,12 @@ namespace Libplanet.Net
 
         private async Task TransferBlocksAsync(GetBlocksMsg getData)
         {
-            string identityHex = ByteUtil.Hex(getData.Identity);
+            string reqId = !(getData.Identity is null) && getData.Identity.Length == 16 ?
+                new Guid(getData.Identity).ToString() : "unknown";
             _logger.Verbose(
                 "Preparing a {MessageType} message to reply to {Identity}...",
                 nameof(Messages.BlocksMsg),
-                identityHex
-            );
+                reqId);
 
             var blocks = new List<byte[]>();
 
@@ -269,7 +269,7 @@ namespace Libplanet.Net
                 "a reply to {Identity}...";
             foreach (BlockHash hash in hashes)
             {
-                _logger.Verbose(logMsg, i, total, hash, identityHex);
+                _logger.Verbose(logMsg, i, total, hash, reqId);
                 if (_store.GetBlock<T>(hash) is { } block)
                 {
                     byte[] payload = Codec.Encode(block.MarshalBlock());
@@ -304,12 +304,11 @@ namespace Libplanet.Net
                     "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
                     total,
                     total,
-                    identityHex
-                );
+                    reqId);
                 await Transport.ReplyMessageAsync(response, default);
             }
 
-            _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
+            _logger.Debug("Blocks were transferred to {Identity}.", reqId);
         }
     }
 }
