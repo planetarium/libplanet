@@ -12,9 +12,18 @@ export {
   encodeMint,
   encodeSystemAction,
   encodeTransfer,
+  type CustomAction,
   type Mint,
   type SystemAction,
   type Transfer,
 } from "./action";
-export type { TxMetadata, UnsignedTxWithSystemAction } from "./tx";
-export { encodeTxMetadata, encodeUnsignedTxWithSystemAction } from "./tx";
+export type {
+  TxMetadata,
+  UnsignedTxWithSystemAction,
+  UnsignedTxWithCustomActions,
+} from "./tx";
+export {
+  encodeTxMetadata,
+  encodeUnsignedTxWithSystemAction,
+  encodeUnsignedTxWithCustomActions,
+} from "./tx";

@@ -26,6 +26,10 @@ To be released.
  -  Added `Serializable` attribute back to `Address`.  [[#2798]]
  -  (Libplanet.Net) Added `Serializable` attribute back to `BoundPeer`.
     [[#2798]]
+ -  (@planetarium/tx) Added `encodeUnsignedTxWithCustomActions()` function.
+    [[#2805]]
+ -  (@planetarium/tx) Added `CustomAction` type.  [[#2805]]
+ -  (@planetarium/tx) Added `UnsignedTxWithCustomActions` type.  [[#2805]]
 
 ### Behavioral changes
 
@@ -33,11 +37,16 @@ To be released.
 
 ### Dependencies
 
+ -  (@planetarium/tx) Because `globalThis.crypto` API is available since
+    Node.js version 19.0.0, it now explicitly requires 19.0.0 or later.
+    [[#2805]]
+
 ### CLI tools
 
 [#2794]: https://github.com/planetarium/libplanet/pull/2794
 [#2795]: https://github.com/planetarium/libplanet/pull/2795
 [#2798]: https://github.com/planetarium/libplanet/pull/2798
+[#2805]: https://github.com/planetarium/libplanet/pull/2805
 
 
 Version 0.47.0
