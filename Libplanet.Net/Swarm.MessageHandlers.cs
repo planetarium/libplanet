@@ -262,18 +262,19 @@ namespace Libplanet.Net
             var blocks = new List<byte[]>();
 
             List<BlockHash> hashes = getData.BlockHashes.ToList();
-            int i = 1;
+            int count = 0;
             int total = hashes.Count;
             const string logMsg =
                 "Fetching block {Index}/{Total} {Hash} to include in " +
                 "a reply to {Identity}...";
             foreach (BlockHash hash in hashes)
             {
-                _logger.Verbose(logMsg, i, total, hash, reqId);
+                _logger.Verbose(logMsg, count, total, hash, reqId);
                 if (_store.GetBlock<T>(hash) is { } block)
                 {
                     byte[] payload = Codec.Encode(block.MarshalBlock());
                     blocks.Add(payload);
+                    count++;
                 }
 
                 if (blocks.Count == getData.ChunkSize)
@@ -283,15 +284,13 @@ namespace Libplanet.Net
                         Identity = getData.Identity,
                     };
                     _logger.Verbose(
-                        "Enqueuing a blocks reply (...{Index}/{Total})...",
-                        i,
+                        "Enqueuing a blocks reply (...{Count}/{Total})...",
+                        count,
                         total
                     );
                     await Transport.ReplyMessageAsync(response, default);
                     blocks.Clear();
                 }
-
-                i++;
             }
 
             if (blocks.Any())
@@ -301,14 +300,28 @@ namespace Libplanet.Net
                     Identity = getData.Identity,
                 };
                 _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
-                    total,
+                    "Enqueuing a blocks reply (...{Count}/{Total}) to {Identity}...",
+                    count,
                     total,
                     reqId);
                 await Transport.ReplyMessageAsync(response, default);
             }
 
-            _logger.Debug("Blocks were transferred to {Identity}.", reqId);
+            if (count == 0)
+            {
+                var response = new Messages.BlocksMsg(blocks)
+                {
+                    Identity = getData.Identity,
+                };
+                _logger.Verbose(
+                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
+                    count,
+                    total,
+                    reqId);
+                await Transport.ReplyMessageAsync(response, default);
+            }
+
+            _logger.Debug("{Count} blocks were transferred to {Identity}.", count, reqId);
         }
     }
 }
