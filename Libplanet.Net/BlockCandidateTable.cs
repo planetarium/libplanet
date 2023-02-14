@@ -79,8 +79,7 @@ namespace Libplanet.Net
                     "Given blocks associated with blockheader #{Index} {BlockHash} will " +
                     "not be added to the table as an empty set of blocks is not allowed",
                     blockHeader.Index,
-                    blockHeader.Hash,
-                    sorted.Count);
+                    blockHeader.Hash);
                 return;
             }
             else if (!sorted
