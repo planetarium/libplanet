@@ -86,6 +86,11 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/2794">#2794</a>
 <li>(@planetarium/tx) Added <code>UnsignedTxWithCustomActions</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/2805">#2805</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Net) Changed <code>Swarm&lt;T&gt;</code> to respond to a <code>GetBlocksMsg</code> request
+with an empty <code>BlocksMsg</code> if no requested <code>Block&lt;T&gt;</code>s are found.
+[<a href="https://github.com/planetarium/libplanet/issues/2800">#2800</a>, <a href="https://github.com/planetarium/libplanet/pull/2803">#2803</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
