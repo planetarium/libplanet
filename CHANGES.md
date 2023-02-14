@@ -33,6 +33,10 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Net) Changed `Swarm<T>` to respond to a `GetBlocksMsg` request
+    with an empty `BlocksMsg` if no requested `Block<T>`s are found.
+    [[#2800], [#2803]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -46,6 +50,8 @@ To be released.
 [#2794]: https://github.com/planetarium/libplanet/pull/2794
 [#2795]: https://github.com/planetarium/libplanet/pull/2795
 [#2798]: https://github.com/planetarium/libplanet/pull/2798
+[#2800]: https://github.com/planetarium/libplanet/issues/2800
+[#2803]: https://github.com/planetarium/libplanet/pull/2803
 [#2805]: https://github.com/planetarium/libplanet/pull/2805
 
 
