@@ -9,14 +9,15 @@ using Libplanet.Tests.Store;
 
 namespace Libplanet.Benchmarks
 {
-    public class ProposeBlock
+    public class AppendBlock
     {
         private BlockChain<DumbAction> _blockChain;
         private PrivateKey _privateKey;
         private BlockCommit _lastCommit;
         private Block<DumbAction> _block;
+        private BlockCommit _commit;
 
-        public ProposeBlock()
+        public AppendBlock()
         {
             var fx = new DefaultStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
@@ -29,47 +30,25 @@ namespace Libplanet.Benchmarks
             _privateKey = new PrivateKey();
         }
 
-        [IterationSetup(Target = nameof(ProposeBlockEmpty))]
-        public void PreparePropose()
+        [IterationSetup(Target = nameof(AppendBlockOneTransactionNoAction))]
+        public void PrepareAppendMakeOneTransactionNoAction()
         {
-            _lastCommit = TestUtils.CreateBlockCommit(_blockChain.Tip);
-        }
-
-        [IterationCleanup(
-            Targets = new []
-            {
-                nameof(ProposeBlockEmpty),
-                nameof(ProposeBlockOneTransactionNoAction),
-                nameof(ProposeBlockTenTransactionsNoAction),
-                nameof(ProposeBlockOneTransactionWithActions),
-                nameof(ProposeBlockTenTransactionsWithActions),
-            }
-        )]
-        public void CleanupPropose()
-        {
-            // To unstaging transactions, a block is appended to blockchain.
-            _blockChain.Append(_block, TestUtils.CreateBlockCommit(_block));
-        }
-
-        [IterationSetup(Target = nameof(ProposeBlockOneTransactionNoAction))]
-        public void MakeOneTransactionNoAction()
-        {
-            PreparePropose();
             _blockChain.MakeTransaction(_privateKey, new DumbAction[] { });
+            PrepareAppend();
         }
 
-        [IterationSetup(Target = nameof(ProposeBlockTenTransactionsNoAction))]
-        public void MakeTenTransactionsNoAction()
+        [IterationSetup(Target = nameof(AppendBlockTenTransactionsNoAction))]
+        public void PrepareAppendMakeTenTransactionsNoAction()
         {
             for (var i = 0; i < 10; i++)
             {
                 _blockChain.MakeTransaction(new PrivateKey(), new DumbAction[] { });
             }
-            PreparePropose();
+            PrepareAppend();
         }
 
-        [IterationSetup(Target = nameof(ProposeBlockOneTransactionWithActions))]
-        public void MakeOneTransactionWithActions()
+        [IterationSetup(Target = nameof(AppendBlockOneTransactionWithActions))]
+        public void PrepareAppendMakeOneTransactionWithActions()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -81,11 +60,11 @@ namespace Libplanet.Benchmarks
                 new DumbAction(address, "qux"),
             };
             _blockChain.MakeTransaction(privateKey, actions);
-            PreparePropose();
+            PrepareAppend();
         }
 
-        [IterationSetup(Target = nameof(ProposeBlockTenTransactionsWithActions))]
-        public void MakeTenTransactionsWithActions()
+        [IterationSetup(Target = nameof(AppendBlockTenTransactionsWithActions))]
+        public void PrepareAppendMakeTenTransactionsWithActions()
         {
             for (var i = 0; i < 10; i++)
             {
@@ -100,37 +79,38 @@ namespace Libplanet.Benchmarks
                 };
                 _blockChain.MakeTransaction(privateKey, actions);
             }
-            PreparePropose();
+            PrepareAppend();
         }
 
         [Benchmark]
-        public void ProposeBlockEmpty()
+        public void AppendBlockOneTransactionNoAction()
         {
-            _block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            _blockChain.Append(_block, blockCommit: _commit);
         }
 
         [Benchmark]
-        public void ProposeBlockOneTransactionNoAction()
+        public void AppendBlockTenTransactionsNoAction()
         {
-            _block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            _blockChain.Append(_block, blockCommit: _commit);
         }
 
         [Benchmark]
-        public void ProposeBlockTenTransactionsNoAction()
+        public void AppendBlockOneTransactionWithActions()
         {
-            _block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            _blockChain.Append(_block, blockCommit: _commit);
         }
 
         [Benchmark]
-        public void ProposeBlockOneTransactionWithActions()
+        public void AppendBlockTenTransactionsWithActions()
         {
-            _block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            _blockChain.Append(_block, blockCommit: _commit);
         }
 
-        [Benchmark]
-        public void ProposeBlockTenTransactionsWithActions()
+        private void PrepareAppend()
         {
+            _lastCommit = TestUtils.CreateBlockCommit(_blockChain.Tip);
             _block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            _commit = TestUtils.CreateBlockCommit(_block);
         }
     }
 }
