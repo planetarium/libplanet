@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Action
             _txFx = new TxFixture(null);
         }
 
-        [SkippableFact]
+        [Fact]
         public void Idempotent()
         {
             // NOTE: This test checks that blocks can be evaluated idempotently. Also it checks
@@ -109,14 +109,9 @@ namespace Libplanet.Tests.Action
             }
         }
 
-        [SkippableFact]
+        [Fact]
         public async void Evaluate()
         {
-            Skip.IfNot(
-                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
-                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
-            );
-
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
             long blockIndex = 1;
@@ -157,14 +152,9 @@ namespace Libplanet.Tests.Action
             Assert.Equal((long)(Integer)state, blockIndex);
         }
 
-        [SkippableFact]
+        [Fact]
         public async void EvaluateWithException()
         {
-            Skip.IfNot(
-                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
-                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
-            );
-
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
 
@@ -197,7 +187,7 @@ namespace Libplanet.Tests.Action
                 evaluations.Single().Exception.InnerException);
         }
 
-        [SkippableFact]
+        [Fact]
         public void EvaluateWithCriticalException()
         {
             var privateKey = new PrivateKey();
@@ -261,7 +251,7 @@ namespace Libplanet.Tests.Action
                     stateCompleterSet: StateCompleterSet<ThrowException>.Recalculate).ToList());
         }
 
-        [SkippableFact]
+        [Fact]
         public void EvaluateTxs()
         {
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null)
@@ -557,7 +547,7 @@ namespace Libplanet.Tests.Action
                 dirty2);
         }
 
-        [SkippableFact]
+        [Fact]
         public void EvaluateTx()
         {
             PrivateKey[] keys = { new PrivateKey(), new PrivateKey(), new PrivateKey() };
@@ -722,7 +712,7 @@ namespace Libplanet.Tests.Action
             }
         }
 
-        [SkippableFact]
+        [Fact]
         public void EvaluateTxResultThrowingException()
         {
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
@@ -766,7 +756,7 @@ namespace Libplanet.Tests.Action
             Assert.Empty(nextStates.GetUpdatedStates());
         }
 
-        [SkippableTheory]
+        [Theory]
         [InlineData(false)]
         [InlineData(true)]
         public async Task EvaluateActions(bool rehearsal)
@@ -887,7 +877,7 @@ namespace Libplanet.Tests.Action
             }
         }
 
-        [SkippableFact]
+        [Fact]
         public void EvaluatePolicyBlockAction()
         {
             var chain = MakeBlockChain(
@@ -989,7 +979,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
         }
 
-        [SkippableTheory]
+        [Theory]
         [ClassData(typeof(OrderTxsForEvaluationData))]
         public void OrderTxsForEvaluation(
             int protocolVersion,
@@ -1117,14 +1107,9 @@ namespace Libplanet.Tests.Action
             return (addresses, txs);
         }
 
-        [SkippableFact]
+        [Fact]
         private async Task CheckGenesisHashInAction()
         {
-            Skip.IfNot(
-                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
-                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
-            );
-
             var chain = MakeBlockChain<EvaluateTestAction>(
                     policy: new BlockPolicy<EvaluateTestAction>(),
                     store: _storeFx.Store,
@@ -1151,7 +1136,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
         }
 
-        [SkippableFact]
+        [Fact]
         private void GenerateRandomSeed()
         {
             byte[] preEvaluationHashBytes =
@@ -1181,7 +1166,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(353767086, seed);
         }
 
-        [SkippableFact]
+        [Fact]
         private async void CheckRandomSeedInAction()
         {
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });

@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal("confirmations", e.ParamName);
         }
 
-        [SkippableFact]
+        [Fact]
         public override void BlocksBeingAppended()
         {
             // FIXME: Eliminate duplication between this and DelayedRendererTest

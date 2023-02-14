@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Store
             _fx?.Dispose();
         }
 
-        [SkippableFact]
+        [Fact]
         public void ConstructorAcceptsRelativePath()
         {
             string tmpDir = System.IO.Path.GetTempPath();
@@ -65,7 +65,7 @@ namespace Libplanet.Tests.Store
             );
         }
 
-        [SkippableFact]
+        [Fact]
         public void Loader()
         {
             // TODO: Test query parameters as well.
