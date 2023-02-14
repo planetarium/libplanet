@@ -484,7 +484,7 @@ namespace Libplanet.Net
                 }
 
                 // NOTE: All blocks in deltaBlocks will have non-null previousHash.
-                BlockChainSlice blockChainSlice = new BlockChainSlice(new[] { tipCandidate.Hash });
+                var blockChainSlice = new BlockChainSlice(new[] { tipCandidate.Hash });
                 while (true)
                 {
                     BlockHash bh = blockChainSlice.Last();
