@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.48.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on Februrary 14, 2023.
 
 ### Backward-incompatible API changes
 
@@ -16,10 +14,6 @@ To be released.
     method.  [[#2794]]
  -  Changed the behavior of `BlockCandidateTable<T>.Add()` method.  [[#2794]]
  -  Changed `TxId` to implement `IBencodable` interface.  [[#2795]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -37,15 +31,11 @@ To be released.
     with an empty `BlocksMsg` if no requested `Block<T>`s are found.
     [[#2800], [#2803]]
 
-### Bug fixes
-
 ### Dependencies
 
  -  (@planetarium/tx) Because `globalThis.crypto` API is available since
     Node.js version 19.0.0, it now explicitly requires 19.0.0 or later.
     [[#2805]]
-
-### CLI tools
 
 [#2794]: https://github.com/planetarium/libplanet/pull/2794
 [#2795]: https://github.com/planetarium/libplanet/pull/2795
@@ -165,7 +155,7 @@ Released on February 6, 2023.
 Version 0.46.1
 --------------
 
-Released on February 3th, 2023.
+Released on February 3, 2023.
 
  -  Ported changes from [Libplanet 0.45.5] release.
  -  General changes to log output for readability.  [[#2769]]
