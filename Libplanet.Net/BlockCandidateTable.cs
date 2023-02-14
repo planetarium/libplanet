@@ -76,8 +76,10 @@ namespace Libplanet.Net
             if (!sorted.Any())
             {
                 Log.Debug(
-                    "Given blocks will not be added to the table as an empty set of blocks " +
-                    "is not allowed",
+                    "Given blocks associated with blockheader #{Index} {BlockHash} will " +
+                    "not be added to the table as an empty set of blocks is not allowed",
+                    blockHeader.Index,
+                    blockHeader.Hash,
                     sorted.Count);
                 return;
             }
@@ -87,7 +89,10 @@ namespace Libplanet.Net
                 .All(pred => pred))
             {
                 Log.Debug(
-                    "Given blocks will not be added as given blocks are not consecutive");
+                    "Given blocks associated with blockheader #{Index} {BlockHash} will " +
+                    "not be added as given blocks are not consecutive",
+                    blockHeader.Index,
+                    blockHeader.Hash);
                 return;
             }
 
