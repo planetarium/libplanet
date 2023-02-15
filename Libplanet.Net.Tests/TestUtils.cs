@@ -262,7 +262,8 @@ namespace Libplanet.Net.Tests
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
                 ContextTimeoutOption? contextTimeoutOptions = null,
-                ValidatorSet? validatorSet = null)
+                ValidatorSet? validatorSet = null,
+                ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= PrivateKeys[1];
@@ -278,7 +279,7 @@ namespace Libplanet.Net.Tests
                 TimeSpan.FromSeconds(1),
                 policy,
                 PrivateKeys[1],
-                broadcastMessage: BroadcastMessage);
+                broadcastMessage: broadcastMessage ?? BroadcastMessage);
 
             context = new Context<DumbAction>(
                 consensusContext,
@@ -294,7 +295,7 @@ namespace Libplanet.Net.Tests
         public static ConsensusReactor<DumbAction> CreateDummyConsensusReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            string host = "127.0.0.1",
+            string host = "localhost",
             int consensusPort = 5101,
             List<BoundPeer>? validatorPeers = null,
             int newHeightDelayMilliseconds = 10_000,
