@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
@@ -11,6 +12,7 @@ using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
@@ -1004,6 +1006,100 @@ namespace Libplanet.Net.Tests
                 await StopAsync(swarm2);
                 swarm1.Dispose();
                 swarm2.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task DoNotSpawnMultipleTaskForSinglePeer()
+        {
+            var key = new PrivateKey();
+            var apv = new AppProtocolVersionOptions();
+            Swarm<DumbAction> receiver = CreateSwarm(appProtocolVersionOptions: apv);
+            ITransport mockTransport = await NetMQTransport.Create(
+                new PrivateKey(),
+                apv,
+                new HostOptions(
+                    IPAddress.Loopback.ToString(),
+                    Array.Empty<IceServer>()));
+            int requestCount = 0;
+
+            async Task MessageHandler(Message message)
+            {
+                _logger.Debug("Received message: {Message}", message);
+                switch (message)
+                {
+                    case PingMsg ping:
+                        await mockTransport.ReplyMessageAsync(
+                            new PongMsg { Identity = ping.Identity },
+                            default);
+                        break;
+
+                    case GetBlockHashesMsg gbhm:
+                        requestCount++;
+                        break;
+                }
+            }
+
+            mockTransport.ProcessMessageHandler.Register(MessageHandler);
+
+            Block<DumbAction> block1 = ProposeNextBlock(
+                receiver.BlockChain.Genesis,
+                key,
+                new Transaction<DumbAction>[] { });
+            Block<DumbAction> block2 = ProposeNextBlock(
+                block1,
+                key,
+                new Transaction<DumbAction>[] { });
+
+            try
+            {
+                await StartAsync(receiver);
+                _ = mockTransport.StartAsync();
+                await mockTransport.WaitForRunningAsync();
+
+                // Send block header for block 1.
+                var blockHeaderMsg1 = new BlockHeaderMsg(
+                    receiver.BlockChain.Genesis.Hash,
+                    block1.Header);
+                await mockTransport.SendMessageAsync(
+                    receiver.AsPeer,
+                    blockHeaderMsg1,
+                    TimeSpan.FromSeconds(5),
+                    default);
+                await receiver.BlockHeaderReceived.WaitAsync();
+
+                // Wait until FillBlockAsync task has spawned block demand task.
+                await Task.Delay(1000);
+
+                // Re-send block header for block 1, make sure it does not spawn new task.
+                await mockTransport.SendMessageAsync(
+                    receiver.AsPeer,
+                    blockHeaderMsg1,
+                    TimeSpan.FromSeconds(5),
+                    default);
+                await receiver.BlockHeaderReceived.WaitAsync();
+                await Task.Delay(1000);
+
+                // Send block header for block 2, make sure it does not spawn new task.
+                var blockHeaderMsg2 = new BlockHeaderMsg(
+                    receiver.BlockChain.Genesis.Hash,
+                    block2.Header);
+                await mockTransport.SendMessageAsync(
+                    receiver.AsPeer,
+                    blockHeaderMsg2,
+                    TimeSpan.FromSeconds(5),
+                    default);
+                await receiver.BlockHeaderReceived.WaitAsync();
+                await Task.Delay(1000);
+
+                Assert.Equal(1, requestCount);
+            }
+            finally
+            {
+                await StopAsync(receiver);
+                await mockTransport.StopAsync(TimeSpan.FromMilliseconds(10));
+                receiver.Dispose();
+                mockTransport.Dispose();
             }
         }
     }
