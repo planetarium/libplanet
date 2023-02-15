@@ -4,15 +4,18 @@ Libplanet changelog
 Version 0.46.2
 --------------
 
-To be released.
+Released on February 16th, 2023.
 
+ -  Fix memory issues when preloading.  [[#2804]]
+
+[#2804]: https://github.com/planetarium/libplanet/pull/2804
 
 Version 0.46.1
 --------------
 
 Released on February 3th, 2023.
 
- -  Ported changes from [Libplaent 0.45.5] release.
+ -  Ported changes from [Libplanet 0.45.5] release.
  -  General changes to log output for readability.  [[#2769]]
 
 [Libplanet 0.45.5]: https://www.nuget.org/packages/Libplanet/0.45.5
