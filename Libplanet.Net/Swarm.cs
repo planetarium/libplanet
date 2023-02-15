@@ -84,6 +84,7 @@ namespace Libplanet.Net
             // fixed. for context, refer to
             // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = transport;
+            _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
