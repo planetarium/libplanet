@@ -23,12 +23,16 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `NetMQTransport`'s overall throughput had been dropped
+    when hostname resolving for some peers was delayed.  [[#2817]]
+
 ### Dependencies
 
 ### CLI tools
 
 [#2808]: https://github.com/planetarium/libplanet/issues/2808
 [#2814]: https://github.com/planetarium/libplanet/pull/2814
+[#2817]: https://github.com/planetarium/libplanet/pull/2817
 
 
 Version 0.48.0

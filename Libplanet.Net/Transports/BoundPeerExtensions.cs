@@ -1,6 +1,8 @@
 #nullable disable
 using System;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using NetMQ;
@@ -63,6 +65,22 @@ namespace Libplanet.Net.Transports
         internal static string ToNetMQAddress(this BoundPeer peer)
         {
             return $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
+        }
+
+        internal static async Task<string> ResolveNetMQAddressAsync(this BoundPeer peer)
+        {
+            string addr = peer.EndPoint.Host;
+
+            IPAddress[] addresses = await Dns.GetHostAddressesAsync(addr).ConfigureAwait(false);
+
+            // FIXME Dns.GetHostAddressesAsync() seems to always return at least one ip or throw
+            // `SocketException`. if we can be sure, also should fix it to always assume there
+            // is at least one instead of throwing additional `TransportException`.
+            string ip = addresses.FirstOrDefault()?.ToString()
+                ?? throw new TransportException($"Failed to resolve for {addr}");
+            int port = peer.EndPoint.Port;
+
+            return $"tcp://{ip}:{port}";
         }
     }
 }
