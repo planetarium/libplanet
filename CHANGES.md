@@ -18,11 +18,17 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>` became not to spawn multiple task for process `BlockDemand`
+    for the same `BoundPeer`.  [[#2808], [#2814]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#2808]: https://github.com/planetarium/libplanet/issues/2808
+[#2814]: https://github.com/planetarium/libplanet/pull/2814
 
 
 Version 0.48.0
