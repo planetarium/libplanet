@@ -7,9 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tx;
 using Nito.AsyncEx;
-using BlockChainSlice = System.Collections.Generic.List<Libplanet.Blocks.BlockHash>;
+using BlockChainSlice = System.Collections.Generic.LinkedList<Libplanet.Blocks.BlockHash>;
 
 namespace Libplanet.Net
 {
@@ -487,35 +488,37 @@ namespace Libplanet.Net
                 var blockChainSlice = new BlockChainSlice(new[] { tipCandidate.Hash });
                 while (true)
                 {
-                    BlockHash bh = blockChainSlice.Last();
-                    if (!workspace.Store.ContainsBlock(bh))
+                    BlockHash bh = blockChainSlice.First();
+                    BlockDigest? b = workspace.Store.GetBlockDigest(bh);
+                    if (b?.PreviousHash is { } p && !workspace.ContainsBlock(p))
                     {
-                        break;
-                    }
-
-                    Block<T> b = workspace.Store.GetBlock<T>(bh);
-                    if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
-                    {
-                        blockChainSlice.Add(p);
+                        blockChainSlice.AddFirst(p);
                     }
                     else
                     {
                         break;
                     }
 
+                    _logger.Debug(
+                        "The starting tip is {TipCandidate}," +
+                        " and we are currently passing tip {CurrentTip}." +
+                        " The target tip is {WorkspaceTip}",
+                        tipCandidate.Index,
+                        b?.Index,
+                        workspace.Tip.Index);
+
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 
-                blockChainSlice.Reverse();
-                Block<T> firstBlock = workspace.Store.GetBlock<T>(blockChainSlice.First());
+                BlockDigest? firstBlock = workspace.Store.GetBlockDigest(blockChainSlice.First());
 
-                if (!(firstBlock.PreviousHash is { }))
+                if (!(firstBlock?.PreviousHash is { } previousHash))
                 {
                     throw new SwarmException(
                         "A genesis block cannot be a preload target block.");
                 }
 
-                branchpoint = workspace[firstBlock.PreviousHash.Value];
+                branchpoint = workspace[previousHash];
                 _logger.Debug(
                     "Branchpoint block is #{Index} {Hash}",
                     branchpoint.Index,
