@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -11,6 +12,8 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
+        private readonly ConcurrentDictionary<BoundPeer, int> _processBlockDemandSessions;
+
         private async Task ConsumeBlockCandidates(
             CancellationToken cancellationToken)
         {
@@ -279,12 +282,18 @@ namespace Libplanet.Net
             BlockDemand demand,
             CancellationToken cancellationToken)
         {
+            BoundPeer peer = demand.Peer;
+
+            if (_processBlockDemandSessions.ContainsKey(peer))
+            {
+                // Another task has spawned for the peer.
+                return false;
+            }
+
             var sessionRandom = new Random();
             IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
 
             int sessionId = sessionRandom.Next();
-
-            BoundPeer peer = demand.Peer;
 
             if (canonComparer.Compare(demand, BlockChain.Tip) <= 0)
             {
@@ -304,6 +313,7 @@ namespace Libplanet.Net
 
             try
             {
+                _processBlockDemandSessions.TryAdd(peer, sessionId);
                 var result = await BlockCandidateDownload(
                     peer: peer,
                     blockChain: BlockChain,
@@ -350,6 +360,12 @@ namespace Libplanet.Net
                     nameof(ProcessBlockDemandAsync) + "() from {Peer}: {Exception}";
                 _logger.Error(e, msg, sessionId, peer, e);
                 return false;
+            }
+            finally
+            {
+                // Maybe demand table can be cleaned up here, but it will be eventually
+                // cleaned up in FillBlocksAsync()
+                _processBlockDemandSessions.TryRemove(peer, out _);
             }
         }
 
