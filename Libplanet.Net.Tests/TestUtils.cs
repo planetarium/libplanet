@@ -193,30 +193,6 @@ namespace Libplanet.Net.Tests
             }
         }
 
-        public static void HandleFourPeersPreVoteMessages(
-            ConsensusContext<DumbAction> consensusContext,
-            PrivateKey nodePrivateKey,
-            BlockHash roundBlockHash)
-        {
-            foreach (PrivateKey privateKey in PrivateKeys)
-            {
-                if (privateKey == nodePrivateKey)
-                {
-                    continue;
-                }
-
-                consensusContext.HandleMessage(
-                    new ConsensusPreVoteMsg(
-                        new VoteMetadata(
-                            consensusContext.Height,
-                            (int)consensusContext.Round,
-                            roundBlockHash,
-                            DateTimeOffset.UtcNow,
-                            privateKey.PublicKey,
-                            VoteFlag.PreVote).Sign(privateKey)));
-            }
-        }
-
         public static (
             BlockChain<DumbAction> BlockChain,
             ConsensusContext<DumbAction> ConsensusContext)
