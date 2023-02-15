@@ -99,6 +99,7 @@ namespace Libplanet.Net
                 _appProtocolVersionOptions,
                 hostOptions,
                 Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
+            _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
