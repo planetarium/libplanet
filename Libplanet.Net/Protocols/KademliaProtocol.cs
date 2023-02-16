@@ -147,7 +147,7 @@ namespace Libplanet.Net.Protocols
 
                 _logger.Verbose("Trying to ping {PeerCount} peers", tasks.Count);
                 await Task.WhenAll(tasks).ConfigureAwait(false);
-                _logger.Verbose("Update complete.");
+                _logger.Verbose("Update complete");
             }
             catch (PingTimeoutException e)
             {

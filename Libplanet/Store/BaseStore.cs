@@ -259,9 +259,8 @@ namespace Libplanet.Store
             catch (Exception e)
             {
                 const string msg =
-                    "Uncaught exception during deserializing a " + nameof(TxExecution) +
-                    ": {Exception}";
-                logger?.Error(e, msg, e);
+                    "Uncaught exception during deserializing a " + nameof(TxExecution);
+                logger?.Error(e, msg);
                 return null;
             }
         }
