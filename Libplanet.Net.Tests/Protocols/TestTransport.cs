@@ -125,7 +125,7 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new ObjectDisposedException(nameof(TestTransport));
             }
 
-            _logger.Debug("Starting transport of {Peer}.", AsPeer);
+            _logger.Debug("Starting transport of {Peer}", AsPeer);
             _swarmCancellationTokenSource = new CancellationTokenSource();
             CancellationToken token = cancellationToken.Equals(CancellationToken.None)
                 ? _swarmCancellationTokenSource.Token
@@ -148,7 +148,7 @@ namespace Libplanet.Net.Tests.Protocols
 
             if (Running)
             {
-                _logger.Debug("Stopping transport of {Peer}.", AsPeer);
+                _logger.Debug("Stopping transport of {Peer}", AsPeer);
                 _swarmCancellationTokenSource.Cancel();
                 Running = false;
             }
@@ -237,30 +237,30 @@ namespace Libplanet.Net.Tests.Protocols
                         }
                     }
 
-                    _logger.Verbose("Trying to ping all {PeersNumber} peers.", tasks.Count);
+                    _logger.Verbose("Trying to ping all {PeersNumber} peers", tasks.Count);
                     await Task.WhenAll(tasks);
-                    _logger.Verbose("Update complete.");
+                    _logger.Verbose("Update complete");
                 }
                 catch (DifferentAppProtocolVersionException)
                 {
-                    _logger.Debug("Different version encountered during AddPeersAsync().");
+                    _logger.Debug("Different version encountered during AddPeersAsync()");
                 }
                 catch (PingTimeoutException)
                 {
                     var msg =
-                        $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.";
+                        $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}";
                     _logger.Debug(msg);
                     throw new TimeoutException(msg);
                 }
                 catch (TaskCanceledException)
                 {
-                    _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
+                    _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}()");
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
                         e,
-                        $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
+                        $"Unexpected exception occurred during {nameof(AddPeersAsync)}()");
                     throw;
                 }
             }
@@ -358,7 +358,7 @@ namespace Libplanet.Net.Tests.Protocols
             _random.NextBytes(bytes);
             message.Identity = _privateKey.ToAddress().ByteArray.Concat(bytes).ToArray();
             var sendTime = DateTimeOffset.UtcNow;
-            _logger.Debug("Adding request of {Message} of {Identity}.", message, message.Identity);
+            _logger.Debug("Adding request of {Message} of {Identity}", message, message.Identity);
             await _requests.AddAsync(
                 new Request()
                 {
@@ -374,7 +374,7 @@ namespace Libplanet.Net.Tests.Protocols
                 {
                     _logger.Error(
                         "Reply of {Message} of {identity} did not received in " +
-                        "expected timespan {TimeSpan}.",
+                        "expected timespan {TimeSpan}",
                         message,
                         message.Identity,
                         timeout ?? TimeSpan.MaxValue);
@@ -396,7 +396,7 @@ namespace Libplanet.Net.Tests.Protocols
             if (_replyToReceive.TryRemove(message.Identity, out Message reply))
             {
                 _logger.Debug(
-                    "Received reply {Reply} of message with identity {identity}.",
+                    "Received reply {Reply} of message with identity {identity}",
                     reply,
                     message.Identity);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
@@ -495,11 +495,11 @@ namespace Libplanet.Net.Tests.Protocols
             {
                 if (_ignoreTestMessageWithData.Contains(testMessage.Data))
                 {
-                    _logger.Debug("Ignore received test message {Data}.", testMessage.Data);
+                    _logger.Debug("Ignore received test message {Data}", testMessage.Data);
                 }
                 else
                 {
-                    _logger.Debug("Received test message with {Data}.", testMessage.Data);
+                    _logger.Debug("Received test message with {Data}", testMessage.Data);
                     _ignoreTestMessageWithData.Add(testMessage.Data);
                     // If this transport is blocked for testing, do not broadcast.
                     if (!_blockBroadcast)
@@ -533,7 +533,7 @@ namespace Libplanet.Net.Tests.Protocols
                 if (req.RequestTime + _networkDelay <= DateTimeOffset.UtcNow)
                 {
                     _logger.Debug(
-                        "Send {Message} with {Identity} to {Peer}.",
+                        "Send {Message} with {Identity} to {Peer}",
                         req.Message,
                         req.Message.Identity,
                         req.Target);

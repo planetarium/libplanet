@@ -136,7 +136,7 @@ namespace Libplanet.Blockchain.Renderers
                             {
                                 Logger.Warning(
                                     "The existing {Count} buffered action unrenders for " +
-                                    "the block {BlockHash} were overwritten.",
+                                    "the block {BlockHash} were overwritten",
                                     l.Count,
                                     block
                                 );
@@ -145,7 +145,7 @@ namespace Libplanet.Blockchain.Renderers
 
                         Logger.Debug(
                             "Committed {Count} buffered action unrenders from " +
-                            "the block {BlockHash}.",
+                            "the block {BlockHash}",
                             b?.Count ?? 0,
                             block
                         );
@@ -235,7 +235,7 @@ namespace Libplanet.Blockchain.Renderers
                     {
                         Logger.Warning(
                             "The existing {Count} buffered action renders for the block " +
-                            "{BlockHash} were overwritten.",
+                            "{BlockHash} were overwritten",
                             l.Count,
                             block
                         );
@@ -243,7 +243,7 @@ namespace Libplanet.Blockchain.Renderers
                 }
 
                 Logger.Debug(
-                    "Committed {Count} buffered action renders from the block {BlockHash}.",
+                    "Committed {Count} buffered action renders from the block {BlockHash}",
                     b?.Count ?? 0,
                     block
                 );
@@ -399,7 +399,7 @@ namespace Libplanet.Blockchain.Renderers
 
             list.Add(eval);
             Logger.Verbose(
-                "Delayed an action render from #{BlockIndex} {BlockHash} (buffer: {Buffer}).",
+                "Delayed an action render from #{BlockIndex} {BlockHash} (buffer: {Buffer})",
                 blockIndex,
                 blockHash,
                 list.Count
@@ -421,7 +421,7 @@ namespace Libplanet.Blockchain.Renderers
 
                 list.Add(eval);
                 Logger.Verbose(
-                    "Delayed an action unrender from #{BlockIndex} {BlockHash} (buffer: {Buffer}).",
+                    "Delayed an action unrender from #{BlockIndex} {BlockHash} (buffer: {Buffer})",
                     blockIndex,
                     blockHash,
                     list.Count
@@ -431,7 +431,7 @@ namespace Libplanet.Blockchain.Renderers
             {
                 const string msg =
                     "An action unrender {@Action} from the block #{BlockIndex} was ignored due " +
-                    "unexpected internal state.";
+                    "unexpected internal state";
                 Logger.Warning(msg, eval.Action, eval.InputContext.BlockIndex);
             }
         }
@@ -458,7 +458,7 @@ namespace Libplanet.Blockchain.Renderers
             else
             {
                 Logger.Debug(
-                    $"There are no buffered actions to {verb} for the block {{BlockHash}}.",
+                    $"There are no buffered actions to {verb} for the block {{BlockHash}}",
                     blockHash
                 );
             }

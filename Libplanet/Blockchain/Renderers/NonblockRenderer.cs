@@ -243,7 +243,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     _logger.Error(
                         e,
-                        "The rendering thread #{WorkerThreadId} failed to start.",
+                        "The rendering thread #{WorkerThreadId} failed to start",
                         _worker.ManagedThreadId
                     );
                 }

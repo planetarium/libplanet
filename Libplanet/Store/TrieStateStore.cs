@@ -56,7 +56,7 @@ namespace Libplanet.Store
                     new HashNode(stateRootHash),
                     Secure
                 );
-                _logger.Debug("Started to iterate hash nodes.");
+                _logger.Debug("Started to iterate hash nodes");
                 stopwatch.Start();
                 foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
                 {
@@ -64,16 +64,16 @@ namespace Libplanet.Store
                 }
 
                 _logger.Debug(
-                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms).",
+                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms)",
                     stopwatch.ElapsedMilliseconds);
                 stopwatch.Stop();
             }
 
-            _logger.Debug("{Count} hash nodes will survive.", survivalNodes.Count);
+            _logger.Debug("{Count} hash nodes will survive", survivalNodes.Count);
 
             // Clean up nodes.
             long deleteCount = 0;
-            _logger.Debug("Started to clean up states.");
+            _logger.Debug("Started to clean up states...");
             stopwatch.Restart();
             foreach (var stateKey in StateKeyValueStore.ListKeys())
             {
@@ -91,7 +91,7 @@ namespace Libplanet.Store
 
             _logger.Debug(
                 "Finished to clean up {DeleteCount} state hashes " +
-                "(elapsed: {ElapsedMilliseconds} ms).",
+                "(elapsed: {ElapsedMilliseconds} ms)",
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
@@ -127,7 +127,7 @@ namespace Libplanet.Store
 
             stopwatch.Stop();
             _logger.Debug(
-                "Finished to copy all states {ElapsedMilliseconds} ms",
+                "Finished to copy all states {ElapsedMilliseconds}ms",
                 stopwatch.ElapsedMilliseconds);
             _logger.Verbose($"Finished {nameof(CopyStates)}()");
         }

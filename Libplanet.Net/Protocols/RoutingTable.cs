@@ -122,7 +122,7 @@ namespace Libplanet.Net.Protocols
                 );
             }
 
-            _logger.Debug("Removing peer {Peer} from the routing table.", peer);
+            _logger.Debug("Removing peer {Peer} from the routing table", peer);
             return BucketOf(peer).RemovePeer(peer);
         }
 
