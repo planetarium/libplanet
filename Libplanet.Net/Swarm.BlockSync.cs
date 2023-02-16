@@ -214,14 +214,22 @@ namespace Libplanet.Net
             }
             finally
             {
-                if (blocks.Count != 0)
+                try
                 {
-                    BlockCandidateTable.Add(BlockChain.Tip.Header, blocks);
+                    var branch = new Branch<T>(blocks);
+                    BlockCandidateTable.Add(BlockChain.Tip.Header, branch);
                     BlockReceived.Set();
+                }
+                catch (ArgumentException ae)
+                {
+                    _logger.Error(
+                        ae,
+                        "An Unexpected exception occurred during {FName}",
+                        nameof(PullBlocksAsync));
                 }
 
                 ProcessFillBlocksFinished.Set();
-                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully.");
+                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully");
             }
         }
 

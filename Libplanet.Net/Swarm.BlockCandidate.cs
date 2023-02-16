@@ -23,11 +23,9 @@ namespace Libplanet.Net
                 if (BlockCandidateTable.Count > 0)
                 {
                     BlockHeader tipHeader = BlockChain.Tip.Header;
-                    List<Block<T>> blocks =
-                        BlockCandidateTable.GetCurrentRoundCandidate(tipHeader);
-                    if (blocks is { } && blocks.Count > 0)
+                    if (BlockCandidateTable.GetCurrentRoundCandidate(tipHeader) is { } branch)
                     {
-                        var latest = blocks.Last();
+                        var latest = branch.Blocks.Last();
                         _logger.Debug(
                             "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
@@ -37,7 +35,7 @@ namespace Libplanet.Net
                             nameof(BlockCandidateTable),
                             BlockCandidateTable.Count);
                         _ = BlockCandidateProcess(
-                            blocks,
+                            branch,
                             cancellationToken);
                         BlockAppended.Set();
                     }
@@ -53,7 +51,7 @@ namespace Libplanet.Net
         }
 
         private bool BlockCandidateProcess(
-            List<Block<T>> candidate,
+            Branch<T> candidate,
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
@@ -114,7 +112,7 @@ namespace Libplanet.Net
 
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
-            List<Block<T>> candidate,
+            Branch<T> candidate,
             bool evaluateActions)
         {
              BlockChain<T> workspace = blockChain;
@@ -123,8 +121,8 @@ namespace Libplanet.Net
              bool renderBlocks = true;
 
              Block<T> oldTip = workspace.Tip;
-             Block<T> newTip = candidate.Last();
-             List<Block<T>> blocks = candidate.ToList();
+             Block<T> newTip = candidate.Blocks.Last();
+             List<Block<T>> blocks = candidate.Blocks.ToList();
              Block<T> branchpoint = FindBranchpoint(oldTip, newTip, blocks);
 
              if (oldTip is null || branchpoint.Equals(oldTip))
@@ -400,9 +398,20 @@ namespace Libplanet.Net
                 peer,
                 hashes.Select(pair => pair.Item2),
                 cancellationToken);
-            var blocks = await blocksAsync.ToArrayAsync(cancellationToken);
-            BlockCandidateTable.Add(tip.Header, blocks);
-            return true;
+            try
+            {
+                var branch = new Branch<T>(await blocksAsync.ToArrayAsync(cancellationToken));
+                BlockCandidateTable.Add(tip.Header, branch);
+                return true;
+            }
+            catch (ArgumentException ae)
+            {
+                _logger.Error(
+                    ae,
+                    "An unexpected exception occurred during {FName}",
+                    nameof(BlockCandidateDownload));
+                return false;
+            }
         }
     }
 }
