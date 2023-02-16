@@ -7,8 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tx;
 using Nito.AsyncEx;
+using BlockChainSlice = System.Collections.Generic.LinkedList<
+    (Libplanet.Blocks.BlockHash, Libplanet.Blocks.BlockCommit)
+>;
 
 namespace Libplanet.Net
 {
@@ -488,26 +492,26 @@ namespace Libplanet.Net
                 // after workspace's tip.  However, there is no guarantee that there is
                 // a connected path using downloaded blocks, in which case,
                 // deltaBlocks will result in being unusable.
-                var deltaBlocks = new LinkedList<(Block<T> Block, BlockCommit Commit)>();
+                var blockChainSlice = new BlockChainSlice();
                 while (true)
                 {
-                    (Block<T> Block, BlockCommit Commit) blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<(Block<T>, BlockCommit)> node)
+                    (BlockHash Block, BlockCommit Commit) blockToAdd;
+                    if (blockChainSlice.First is LinkedListNode<(BlockHash, BlockCommit)> node)
                     {
-                        (Block<T> b, BlockCommit c) = node.Value;
-                        if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
+                        (BlockHash bh, BlockCommit c) = node.Value;
+                        Block<T> b = BlockChain.Store.GetBlock<T>(bh);
+                        if (b?.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            Block<T> prevBlock = workspace.Store.GetBlock<T>(p);
-                            blockToAdd = (prevBlock, b.LastCommit);
+                            blockToAdd = (p, b.LastCommit);
                         }
                         else
                         {
                             break;
                         }
                     }
-                    else if (tipCandidate.Block.Index <= tempTip.Block.Index)
+                    else if (tipCandidate.Block?.Index <= tempTip.Block.Index)
                     {
-                        blockToAdd = tipCandidate;
+                        blockToAdd = (tipCandidate.Block.Hash, tipCandidate.Commit);
                     }
                     else
                     {
@@ -516,7 +520,7 @@ namespace Libplanet.Net
                         break;
                     }
 
-                    deltaBlocks.AddFirst(blockToAdd);
+                    blockChainSlice.AddFirst(blockToAdd);
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -532,91 +536,94 @@ namespace Libplanet.Net
                 // FIXME: If any of the blocks in deltaBlocks is invalid, the whole process
                 // is aborted, even when an actually valid potential tip block and
                 // all the blocks in the path has been downloaded.
-                if (deltaBlocks.First is { } deltaBottom)
+                if (blockChainSlice.First is { } deltaBottom)
                 {
-                    Block<T> bottomBlock = deltaBottom.Value.Block;
-                    if (bottomBlock.PreviousHash is { } bp)
+                    BlockDigest? bottomBlock =
+                        workspace.Store.GetBlockDigest(deltaBottom.Value.Item1);
+                    if (!(bottomBlock?.PreviousHash is { } bp))
                     {
-                        branchpoint = workspace[bp];
-                        _logger.Debug(
-                            "Branchpoint block is #{Index} {Hash}.",
-                            branchpoint.Index,
-                            branchpoint.Hash);
-                        workspace = workspace.Fork(bp, inheritRenderers: true);
-                        chainIds.Add(workspace.Id);
-                        renderBlocks = false;
-                        renderActions = false;
-
-                        try
-                        {
-                            long verifiedBlockCount = 0;
-                            foreach ((Block<T> deltaBlock, BlockCommit deltaCommit) in deltaBlocks)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-
-                                _logger.Debug(
-                                    "Appending block #{Index} {Hash}",
-                                    deltaBlock.Index,
-                                    deltaBlock.Hash);
-
-                                DateTimeOffset executionStarted = DateTimeOffset.Now;
-                                workspace.ExecuteActions(deltaBlock);
-                                spent += DateTimeOffset.Now - executionStarted;
-
-                                _logger.Debug(
-                                    "Executed actions in block #{Index} {Hash}.",
-                                    deltaBlock.Index,
-                                    deltaBlock.Hash);
-
-                                IEnumerable<Transaction<T>>
-                                    transactions = deltaBlock.Transactions.ToImmutableArray();
-                                txsCount += transactions.Count();
-                                actionsCount += transactions.Sum(
-                                    tx => tx.CustomActions is { } ca ? ca.Count : 1L);
-                                actionExecutionState.ExecutedBlockCount += 1;
-                                actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
-                                progress?.Report(actionExecutionState);
-
-                                workspace.Append(
-                                    deltaBlock,
-                                    deltaCommit,
-                                    evaluateActions: false,
-                                    renderBlocks: renderBlocks,
-                                    renderActions: renderActions
-                                );
-                                progress?.Report(
-                                    new BlockVerificationState
-                                    {
-                                        TotalBlockCount = deltaBlocks.Count,
-                                        VerifiedBlockCount = ++verifiedBlockCount,
-                                        VerifiedBlockHash = deltaBlock.Hash,
-                                    });
-                            }
-
-                            workspace.CleanupBlockCommitStore(workspace.Tip.Index);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(
-                                e,
-                                "An exception occurred during appending blocks.");
-                            throw;
-                        }
-
-                        cancellationToken.ThrowIfCancellationRequested();
+                         BlockDigest? first = workspace.Store.GetBlockDigest(
+                             blockChainSlice.First.Value.Item1);
+                         BlockDigest? last = workspace.Store.GetBlockDigest(
+                             blockChainSlice.Last.Value.Item1);
+                         BlockHash? g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
+                         throw new SwarmException(
+                             $"Downloaded blocks (#{first?.Index} {first?.Hash}\u2013" +
+                             $"#{last?.Index} {last?.Hash}) are incompatible with the existing " +
+                             $"chain (#0 {g}\u2013#{initialTip.Block.Index} " +
+                             $"{initialTip.Block.Hash})."
+                         );
                     }
-                    else
+
+                    branchpoint = workspace[bp];
+                    _logger.Debug(
+                        "Branchpoint block is #{Index} {Hash}",
+                        branchpoint.Index,
+                        branchpoint.Hash);
+                    workspace = workspace.Fork(bp, inheritRenderers: true);
+                    chainIds.Add(workspace.Id);
+                    renderBlocks = false;
+                    renderActions = false;
+
+                    try
                     {
-                        Block<T> first = deltaBlocks.First.Value.Block;
-                        Block<T> last = deltaBlocks.Last.Value.Block;
-                        BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
-                        throw new SwarmException(
-                            $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
-                            $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Block.Index} " +
-                            $"{initialTip.Block.Hash})."
-                        );
+                        long verifiedBlockCount = 0;
+                        foreach ((BlockHash deltaBlockHash, BlockCommit deltaCommit)
+                                 in blockChainSlice)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+
+                            Block<T> deltaBlock = workspace.Store.GetBlock<T>(deltaBlockHash);
+                            _logger.Debug(
+                                "Appending block #{Index} {Hash}",
+                                deltaBlock.Index,
+                                deltaBlock.Hash);
+
+                            DateTimeOffset executionStarted = DateTimeOffset.Now;
+                            workspace.ExecuteActions(deltaBlock);
+                            spent += DateTimeOffset.Now - executionStarted;
+
+                            _logger.Debug(
+                                "Executed actions in block #{Index} {Hash}",
+                                deltaBlock.Index,
+                                deltaBlock.Hash);
+
+                            IEnumerable<Transaction<T>>
+                                transactions = deltaBlock.Transactions.ToImmutableArray();
+                            txsCount += transactions.Count();
+                            actionsCount += transactions.Sum(
+                                tx => tx.CustomActions is { } ca ? ca.Count : 1L);
+                            actionExecutionState.ExecutedBlockCount += 1;
+                            actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
+                            progress?.Report(actionExecutionState);
+
+                            workspace.Append(
+                                deltaBlock,
+                                deltaCommit,
+                                evaluateActions: false,
+                                renderBlocks: renderBlocks,
+                                renderActions: renderActions
+                            );
+                            progress?.Report(
+                                new BlockVerificationState
+                                {
+                                    TotalBlockCount = blockChainSlice.Count,
+                                    VerifiedBlockCount = ++verifiedBlockCount,
+                                    VerifiedBlockHash = deltaBlock.Hash,
+                                });
+                        }
+
+                        workspace.CleanupBlockCommitStore(workspace.Tip.Index);
                     }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            e,
+                            "An exception occurred during appending blocks");
+                        throw;
+                    }
+
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
 
                 _logger.Verbose(
