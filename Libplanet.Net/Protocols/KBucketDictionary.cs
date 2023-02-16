@@ -306,7 +306,7 @@ namespace Libplanet.Net.Protocols
                     {
                         _dictionary[address] = peerState;
                         _logger.Verbose(
-                            "Added {Address} to the dictionary.", address);
+                            "Added {Address} to the dictionary", address);
                         return true;
                     }
                     else
@@ -322,7 +322,7 @@ namespace Libplanet.Net.Protocols
                         {
                             _logger.Verbose(
                                 "Cannot add {Address}; " +
-                                "the dictionary size is already at its limit of {Size}.",
+                                "the dictionary size is already at its limit of {Size}",
                                 address,
                                 _size);
                             return false;

@@ -598,15 +598,15 @@ namespace Libplanet.Net.Tests
             {
                 await receiverSwarm.PreloadAsync(cancellationToken: cts.Token);
                 canceled = false;
-                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() normally finished.");
+                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() normally finished");
             }
             catch (OperationCanceledException)
             {
-                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
+                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted");
             }
             catch (AggregateException ae) when (ae.InnerException is TaskCanceledException)
             {
-                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
+                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted");
             }
 
             cts.Dispose();

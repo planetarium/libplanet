@@ -172,7 +172,7 @@ namespace Libplanet.Stun
                     {
                         _logger.Error(
                             e,
-                            "Failed to initialize due to error ({Exception}); retry...",
+                            "Failed to initialize due to an error ({Exception}); retry...",
                             e
                         );
                         await Task.Delay(1000, cancellationToken);
@@ -264,7 +264,7 @@ namespace Libplanet.Stun
                 {
                     _logger.Warning(
                         e,
-                        "The connection seems to disconnect before parsing; ignored."
+                        "The connection seems to disconnect before parsing; ignored"
                     );
                 }
             }
@@ -329,7 +329,7 @@ namespace Libplanet.Stun
         {
             _logger.Debug($"Disposing {nameof(TurnClient)}...");
             ClearSession();
-            _logger.Debug($"{nameof(TurnClient)} is disposed.");
+            _logger.Debug($"{nameof(TurnClient)} is disposed");
         }
 
         private async Task<bool> IsConnectable(
@@ -412,7 +412,7 @@ namespace Libplanet.Stun
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
+                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled");
                     throw;
                 }
                 catch (Exception e)

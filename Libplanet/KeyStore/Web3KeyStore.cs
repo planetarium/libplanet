@@ -59,7 +59,7 @@ namespace Libplanet.KeyStore
             {
                 Directory.CreateDirectory(path);
                 _logger.Debug(
-                    "Created a directory {DirectoryPath} as it did not exist.",
+                    "Created a directory {DirectoryPath} as it did not exist",
                     path
                 );
             }

@@ -131,7 +131,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Verbose(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} is tried to be updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from null).",
+                        "#{NewTipIndex} {NewTipHash} (from null)",
                         newTip.Index,
                         newTip.Hash
                     );
@@ -140,7 +140,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Verbose(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} is tried to be updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash}).",
+                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash})",
                         newTip.Index,
                         newTip.Hash,
                         _tip.Index,
@@ -154,7 +154,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Debug(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} was updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from null).",
+                        "#{NewTipIndex} {NewTipHash} (from null)",
                         newTip.Index,
                         newTip.Hash
                     );
@@ -163,7 +163,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Debug(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} was updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash}).",
+                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash})",
                         newTip.Index,
                         newTip.Hash,
                         oldTip.Index,
@@ -282,7 +282,7 @@ namespace Libplanet.Blockchain.Renderers
                 uint c = Confirmed.AddOrUpdate(hash, k => 0U, (k, v) => ac);
 
                 Logger.Verbose(
-                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations. ",
+                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations",
                     index,
                     hash,
                     c
@@ -312,7 +312,7 @@ namespace Libplanet.Blockchain.Renderers
                         Logger.Verbose(
                             "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its total " +
                             "difficulty is more than the previous tip #{PreviousTipIndex} " +
-                            "{PreviousTipHash} ({NewDifficulty} > {PreviousDifficulty}).",
+                            "{PreviousTipHash} ({NewDifficulty} > {PreviousDifficulty})",
                             confirmedBlock.Index,
                             confirmedBlock.Hash,
                             t.Index,
@@ -327,7 +327,7 @@ namespace Libplanet.Blockchain.Renderers
                         Logger.Verbose(
                             "Although #{BlockIndex} {BlockHash} has been confirmed enough," +
                             "its difficulty is less than the current tip #{TipIndex} {TipHash} " +
-                            "({Difficulty} < {TipDifficulty}).",
+                            "({Difficulty} < {TipDifficulty})",
                             confirmedBlock.Index,
                             confirmedBlock.Hash,
                             t.Index,

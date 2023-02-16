@@ -61,7 +61,7 @@ namespace Libplanet.Net
             {
                 FillBlocksAsyncStarted.Set();
                 _logger.Debug(
-                    methodName + " starts to append. Current tip: #{BlockIndex}.",
+                    methodName + " starts to append. Current tip: #{BlockIndex}",
                     BlockChain.Tip.Index
                 );
                 synced = AppendPreviousBlocks(
@@ -70,13 +70,13 @@ namespace Libplanet.Net
                     evaluateActions: true);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
-                    methodName + " finished appending blocks. Synced tip: #{BlockIndex}.",
+                    methodName + " finished appending blocks. Synced tip: #{BlockIndex}",
                     synced.Tip.Index
                 );
             }
             catch (Exception e)
             {
-                _logger.Error(e, methodName + " failed to append blocks.");
+                _logger.Error(e, methodName + " failed to append blocks");
                 FillBlocksAsyncFailed.Set();
                 return false;
             }
@@ -98,7 +98,7 @@ namespace Libplanet.Net
                     render: true,
                     stateCompleters: null);
                 _logger.Debug(
-                    "Swapped chain {ChainIdA} with chain {ChainIdB}.",
+                    "Swapped chain {ChainIdA} with chain {ChainIdB}",
                     BlockChain.Id,
                     synced.Id
                 );
@@ -293,7 +293,7 @@ namespace Libplanet.Net
 
             const string downloadStartLogMsg =
                 "{SessionId}: Downloading blocks from {Peer}; started " +
-                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}.";
+                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}";
             _logger.Debug(
                 downloadStartLogMsg,
                 sessionId,
@@ -318,28 +318,28 @@ namespace Libplanet.Net
             {
                 const string msg =
                     "{SessionId}: Timeout occurred during " + nameof(ProcessBlockDemandAsync) +
-                    "() from {Peer}.";
+                    "() from {Peer}";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
             catch (InvalidBlockIndexException)
             {
                 const string msg =
-                    "{SessionId}: {Peer} sent an invalid block index.";
+                    "{SessionId}: {Peer} sent an invalid block index";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
             catch (InvalidBlockHashException)
             {
                 const string msg =
-                    "{SessionId}: {Peer} sent an invalid block hash.";
+                    "{SessionId}: {Peer} sent an invalid block hash";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
             catch (InvalidBlockException)
             {
                 const string msg =
-                    "{SessionId}: {Peer} sent an invalid block.";
+                    "{SessionId}: {Peer} sent an invalid block";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
