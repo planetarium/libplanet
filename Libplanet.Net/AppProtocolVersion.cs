@@ -166,7 +166,7 @@ namespace Libplanet.Net
             }
             catch (Exception e) when (e is OverflowException || e is FormatException)
             {
-                throw new FormatException($"Failed to parse a version number: {e}", e);
+                throw new FormatException("Failed to parse a version number", e);
             }
 
             pos++;
@@ -183,7 +183,7 @@ namespace Libplanet.Net
             }
             catch (ArgumentException e)
             {
-                throw new FormatException($"Failed to parse a signer address: {e}", e);
+                throw new FormatException("Failed to parse a signer address", e);
             }
 
             pos2++;
@@ -197,7 +197,7 @@ namespace Libplanet.Net
             }
             catch (FormatException e)
             {
-                throw new FormatException($"Failed to parse a signature: {e}", e);
+                throw new FormatException("Failed to parse a signature", e);
             }
 
             IValue extra = null;
@@ -213,9 +213,7 @@ namespace Libplanet.Net
                 catch (DecodingException e)
                 {
                     throw new FormatException(
-                        $"Failed to parse extra data (offset = {pos}): {e}",
-                        e
-                    );
+                        $"Failed to parse extra data (offset = {pos})", e);
                 }
             }
 
