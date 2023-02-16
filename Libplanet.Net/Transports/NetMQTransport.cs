@@ -347,7 +347,7 @@ namespace Libplanet.Net.Transports
                     DateTimeOffset.UtcNow
                 );
                 _logger.Verbose(
-                    "Enqueue a request {RequestId} to {Peer}: {@Message}.",
+                    "Enqueue a request {RequestId} to {Peer}: {@Message}",
                     reqId,
                     peer,
                     message
@@ -852,11 +852,9 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Failed to process {RequestId} {Message}; discarding it. {e}",
+                    "Failed to process {RequestId} {Message}; discarding it",
                     messageType,
-                    req.Id,
-                    e
-                );
+                    req.Id);
                 channel.Writer.TryComplete(e);
             }
             finally

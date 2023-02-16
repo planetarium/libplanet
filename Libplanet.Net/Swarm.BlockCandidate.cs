@@ -355,8 +355,8 @@ namespace Libplanet.Net
             {
                 const string msg =
                     "{SessionId}: Unexpected exception occurred during " +
-                    nameof(ProcessBlockDemandAsync) + "() from {Peer}: {Exception}";
-                _logger.Error(e, msg, sessionId, peer, e);
+                    nameof(ProcessBlockDemandAsync) + "() from {Peer}";
+                _logger.Error(e, msg, sessionId, peer);
                 return false;
             }
             finally

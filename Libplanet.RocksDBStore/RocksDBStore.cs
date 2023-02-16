@@ -1332,8 +1332,8 @@ namespace Libplanet.RocksDBStore
 
         private void LogUnexpectedException(string methodName, Exception e)
         {
-            string msg = $"An unexpected exception occurred on {methodName}: {{Message}}";
-            _logger.Error(e, msg, e.Message);
+            string msg = $"An unexpected exception occurred on {methodName}";
+            _logger.Error(e, msg);
         }
 
         private (Guid, long)? GetPreviousChainInfo(Guid chainId)

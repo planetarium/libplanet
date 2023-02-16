@@ -1057,8 +1057,8 @@ namespace Libplanet.Net
                 {
                     const string message =
                         "Failed to fetch demand block hashes from {Peer}; " +
-                        "retry with another peer...\n";
-                    _logger.Debug(error, message, peer, error);
+                        "retry with another peer...";
+                    _logger.Debug(error, message, peer);
                     exceptions.Add(error);
                 }
             }
@@ -1161,10 +1161,8 @@ namespace Libplanet.Net
                             peer);
                         break;
                     case Exception e:
-                        string msg =
-                            "An unexpected exception occurred while dialing " +
-                            "({Peer})";
-                        _logger.Error(e, msg, peer);
+                        _logger.Error(
+                            e, "An unexpected exception occurred while dialing {Peer}", peer);
                         break;
                     default:
                         break;
