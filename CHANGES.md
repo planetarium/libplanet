@@ -10,11 +10,21 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) Changed `BlockCandidateTable<T>.Add(BlockHeader,
+    IEnumerable<Block<T>>)` to `BlockCandidateTable<T>.Add(BlockHeader,
+    Branch<T>)`.  [[#2822]]
+ -  (Libplanet.Net) Changed the return type of
+    `BlockCandidateTable<T>.GetCurrentRoundCandidate()` from `List<Block<T>>?`
+    to `Branch<T>?`.  [[#2822]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `Branch<T>` class to represent a sequence of consecutive `Block<T>`s.
+    [[#2822]]
 
 ### Behavioral changes
 
@@ -33,6 +43,7 @@ To be released.
 [#2808]: https://github.com/planetarium/libplanet/issues/2808
 [#2814]: https://github.com/planetarium/libplanet/pull/2814
 [#2817]: https://github.com/planetarium/libplanet/pull/2817
+[#2822]: https://github.com/planetarium/libplanet/pull/2822
 
 
 Version 0.48.0
