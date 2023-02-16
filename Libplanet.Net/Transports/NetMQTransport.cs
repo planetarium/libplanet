@@ -780,7 +780,7 @@ namespace Libplanet.Net.Transports
                 try
                 {
                     _logger.Debug("Trying to connect {RequestId}.", req.Id);
-                    dealer.Connect(req.Peer.ToNetMQAddress());
+                    dealer.Connect(await req.Peer.ResolveNetMQAddressAsync());
                     incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                     _logger
                         .ForContext("Tag", "Metric")
