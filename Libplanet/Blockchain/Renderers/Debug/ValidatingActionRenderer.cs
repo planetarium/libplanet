@@ -53,27 +53,31 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public override void UnrenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         )
         {
-            base.UnrenderAction(action, context, nextStates);
+            base.UnrenderAction(action, context, nextStates, logs);
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
         public override void UnrenderActionError(
             IAction action,
             IActionContext context,
-            Exception exception
+            Exception exception,
+            List<string> logs
         )
         {
-            base.UnrenderActionError(action, context, exception);
+            base.UnrenderActionError(action, context, exception, logs);
             Validate();
         }
 
@@ -84,27 +88,31 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public override void RenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         )
         {
-            base.RenderAction(action, context, nextStates);
+            base.RenderAction(action, context, nextStates, logs);
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
         public override void RenderActionError(
             IAction action,
             IActionContext context,
-            Exception exception
+            Exception exception,
+            List<string> logs
         )
         {
-            base.RenderActionError(action, context, exception);
+            base.RenderActionError(action, context, exception, logs);
             Validate();
         }
 

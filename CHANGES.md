@@ -74,6 +74,13 @@ Released on February 20, 2023.
  -  (Libplanet.Net) Changed the return type of
     `BlockCandidateTable<T>.GetCurrentRoundCandidate()` from `List<Block<T>>?`
     to `Branch<T>?`.  [[#2822]]
+ -  Added a `logs` parameter to the below methods in `IActionRenderer<T>`
+    interface and its implementations.  [[#2826]]
+
+     - `IActionRenderer<T>.RenderAction()`.
+     - `IActionRenderer<T>.UnrenderAction()`.
+     - `IActionRenderer<T>.RenderActionError()`.
+     - `IActionRenderer<T>.UnrenderActionError()`.
 
 ### Added APIs
 
@@ -94,6 +101,7 @@ Released on February 20, 2023.
 [#2814]: https://github.com/planetarium/libplanet/pull/2814
 [#2817]: https://github.com/planetarium/libplanet/pull/2817
 [#2822]: https://github.com/planetarium/libplanet/pull/2822
+[#2826]: https://github.com/planetarium/libplanet/pull/2826
 
 
 Version 0.48.0

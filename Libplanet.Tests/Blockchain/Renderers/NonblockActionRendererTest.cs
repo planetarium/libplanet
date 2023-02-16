@@ -23,6 +23,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 () => new ValidatorSet(),
                 default);
 
+        private static List<string> _logs = new List<string>();
+
         private static IActionContext _actionContext =
             new ActionContext(default, default, default, default, 1, _stateDelta, default);
 
@@ -72,22 +74,22 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"ReorgEnd({oldTip.Index}, {newTip.Index}, {branchpoint.Index})");
                 },
-                ActionRenderer = (IAction act, IActionContext ctx, IAccountStateDelta delta) =>
+                ActionRenderer = (act, ctx, delta, logs) =>
                 {
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"Action({act.GetType().Name}, {ctx.BlockIndex})");
                 },
-                ActionErrorRenderer = (IAction act, IActionContext ctx, Exception e) =>
+                ActionErrorRenderer = (act, ctx, e, logs) =>
                 {
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"ActionError({act.GetType().Name}, {ctx.BlockIndex}, {e.Message})");
                 },
-                ActionUnrenderer = (IAction act, IActionContext ctx, IAccountStateDelta delta) =>
+                ActionUnrenderer = (act, ctx, delta, logs) =>
                 {
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"~Action({act.GetType().Name}, {ctx.BlockIndex})");
                 },
-                ActionErrorUnrenderer = (IAction act, IActionContext ctx, Exception e) =>
+                ActionErrorUnrenderer = (act, ctx, e, logs) =>
                 {
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"~ActionError({act.GetType().Name}, {ctx.BlockIndex}, {e.Message})");
@@ -99,13 +101,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 DateTimeOffset start = DateTimeOffset.UtcNow;
                 renderer.RenderReorg(_blockA, _blockB, _genesis);
                 Assert.Empty(log);
-                renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+                renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
                 Assert.Empty(log);
-                renderer.UnrenderActionError(_action, _actionContext, _exception);
+                renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
                 Assert.Empty(log);
                 renderer.RenderBlock(_blockA, _blockB);
-                renderer.RenderActionError(_action, _actionContext, _exception);
-                renderer.RenderAction(_action, _actionContext, _stateDelta);
+                renderer.RenderActionError(_action, _actionContext, _exception, _logs);
+                renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
                 renderer.RenderBlockEnd(_blockA, _blockB);
                 renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
                 DateTimeOffset end = DateTimeOffset.UtcNow;

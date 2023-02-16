@@ -319,7 +319,7 @@ namespace Libplanet.Tests.Blockchain
                 new LoggedActionRenderer<DumbAction>(
                     new AnonymousActionRenderer<DumbAction>
                     {
-                        ActionRenderer = (act, context, nextStates) =>
+                        ActionRenderer = (act, context, nextStates, logs) =>
                             // Consuming the random state through IRandom.Next() should not
                             // affect contexts passed to other action renderers.
                             generatedRandomValueLogs.Add(context.Random.Next()),
@@ -392,7 +392,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
             {
-                ActionRenderer = (_, __, nextStates) =>
+                ActionRenderer = (_, __, nextStates, logs) =>
                     throw new SomeException("thrown by renderer"),
             };
             renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);

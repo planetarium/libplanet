@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -20,6 +21,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 () => new ValidatorSet(),
                 default);
 
+        private static List<string> _logs = new List<string>();
+
         private static IActionContext _actionContext =
             new ActionContext(default, default, default, default, default, _stateDelta, default);
 
@@ -37,18 +40,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionRenderer()
         {
-            (IAction, IActionContext, IAccountStateDelta)? record = null;
+            (IAction, IActionContext, IAccountStateDelta, List<string>)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
-                ActionRenderer = (action, context, nextStates) =>
-                    record = (action, context, nextStates),
+                ActionRenderer = (action, context, nextStates, logs) =>
+                    record = (action, context, nextStates, logs),
             };
 
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -57,7 +60,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
@@ -67,18 +70,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionUnrenderer()
         {
-            (IAction, IActionContext, IAccountStateDelta)? record = null;
+            (IAction, IActionContext, IAccountStateDelta, List<string>)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
-                ActionUnrenderer = (action, context, nextStates) =>
-                    record = (action, context, nextStates),
+                ActionUnrenderer = (action, context, nextStates, logs) =>
+                    record = (action, context, nextStates, logs),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -87,7 +90,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
@@ -97,18 +100,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionErrorRenderer()
         {
-            (IAction, IActionContext, Exception)? record = null;
+            (IAction, IActionContext, Exception, List<string>)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
-                ActionErrorRenderer = (action, context, exception) =>
-                    record = (action, context, exception),
+                ActionErrorRenderer = (action, context, exception, logs) =>
+                    record = (action, context, exception, logs),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -117,7 +120,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
@@ -127,18 +130,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionErrorUnrenderer()
         {
-            (IAction, IActionContext, Exception)? record = null;
+            (IAction, IActionContext, Exception, List<string>)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
-                ActionErrorUnrenderer = (action, context, exception) =>
-                    record = (action, context, exception),
+                ActionErrorUnrenderer = (action, context, exception, logs) =>
+                    record = (action, context, exception, logs),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -147,7 +150,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
@@ -163,13 +166,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderReorg(_blockA, _blockB, _genesis);
             Assert.Null(record);
@@ -191,13 +194,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 ReorgRenderer = (oldTip, newTip, bp) => record = (oldTip, newTip, bp),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -220,13 +223,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 ReorgEndRenderer = (oldTip, newTip, bp) => record = (oldTip, newTip, bp),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
+            renderer.UnrenderAction(_action, _actionContext, _stateDelta, _logs);
             Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
+            renderer.RenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
+            renderer.UnrenderActionError(_action, _actionContext, _exception, _logs);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);

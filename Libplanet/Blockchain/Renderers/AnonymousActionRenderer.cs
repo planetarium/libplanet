@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
@@ -16,7 +17,7 @@ namespace Libplanet.Blockchain.Renderers
     /// <code><![CDATA[
     /// var actionRenderer = new AnonymousActionRenderer<ExampleAction>
     /// {
-    ///     ActionRenderer = (action, context, nextStates) =>
+    ///     ActionRenderer = (action, context, nextStates, logs) =>
     ///     {
     ///         // Implement RenderAction() here.
     ///     };
@@ -30,27 +31,43 @@ namespace Libplanet.Blockchain.Renderers
     {
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>.
+        /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>.
         /// </summary>
-        public Action<IAction, IActionContext, IAccountStateDelta>? ActionRenderer { get; set; }
+        public Action<IAction, IActionContext, IAccountStateDelta, List<string>>? ActionRenderer
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>.
+        /// <see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>.
         /// </summary>
-        public Action<IAction, IActionContext, IAccountStateDelta>? ActionUnrenderer { get; set; }
+        public Action<IAction, IActionContext, IAccountStateDelta, List<string>>? ActionUnrenderer
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderActionError(IAction, IActionContext, Exception)"/>.
+        /// <see cref="RenderActionError(IAction, IActionContext, Exception, List{string})"/>.
         /// </summary>
-        public Action<IAction, IActionContext, Exception>? ActionErrorRenderer { get; set; }
+        public Action<IAction, IActionContext, Exception, List<string>>? ActionErrorRenderer
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/>.
+        /// <see cref="UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>.
         /// </summary>
-        public Action<IAction, IActionContext, Exception>? ActionErrorUnrenderer { get; set; }
+        public Action<IAction, IActionContext, Exception, List<string>>? ActionErrorUnrenderer
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// A callback function to be invoked together with
@@ -58,33 +75,47 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public Action<Block<T>, Block<T>>? BlockEndRenderer { get; set; }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void RenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
-            ActionRenderer?.Invoke(action, context, nextStates);
+            ActionRenderer?.Invoke(action, context, nextStates, logs);
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void UnrenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
-            ActionUnrenderer?.Invoke(action, context, nextStates);
+            ActionUnrenderer?.Invoke(action, context, nextStates, logs);
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
-        public void RenderActionError(IAction action, IActionContext context, Exception exception)
-            => ActionErrorRenderer?.Invoke(action, context, exception);
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
+        public void RenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        ) => ActionErrorRenderer?.Invoke(action, context, exception, logs);
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-            => ActionErrorUnrenderer?.Invoke(action, context, exception);
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
+        public void UnrenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        ) => ActionErrorUnrenderer?.Invoke(action, context, exception, logs);
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
         public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>

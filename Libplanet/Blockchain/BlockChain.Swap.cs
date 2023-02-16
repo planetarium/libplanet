@@ -306,14 +306,18 @@ namespace Libplanet.Blockchain
                         renderer.RenderAction(
                             evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputStates);
+                            evaluation.OutputStates,
+                            evaluation.Logs
+                        );
                     }
                     else
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.Exception);
+                            evaluation.Exception,
+                            evaluation.Logs
+                        );
                     }
 
                     count++;
@@ -359,14 +363,18 @@ namespace Libplanet.Blockchain
                         renderer.UnrenderAction(
                             evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputStates);
+                            evaluation.OutputStates,
+                            evaluation.Logs
+                        );
                     }
                     else
                     {
                         renderer.UnrenderActionError(
                             evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.Exception);
+                            evaluation.Exception,
+                            evaluation.Logs
+                        );
                     }
                 }
 

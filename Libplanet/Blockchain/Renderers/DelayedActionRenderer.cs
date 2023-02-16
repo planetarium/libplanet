@@ -164,39 +164,63 @@ namespace Libplanet.Blockchain.Renderers
             _localRenderBuffer.Value = new Dictionary<BlockHash, List<ActionEvaluation>>();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void UnrenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
-            DelayUnrenderingAction(new ActionEvaluation(action, context, nextStates));
+            DelayUnrenderingAction(new ActionEvaluation(action, context, nextStates, logs: logs));
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-        {
-            var eval = new ActionEvaluation(action, context, context.PreviousStates, exception);
-            DelayUnrenderingAction(eval);
-        }
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
+        public void UnrenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        ) => DelayUnrenderingAction(
+                new ActionEvaluation(
+                    action,
+                    context,
+                    context.PreviousStates,
+                    exception,
+                    logs: logs
+                )
+            );
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void RenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
-            DelayRenderingAction(new ActionEvaluation(action, context, nextStates));
+            DelayRenderingAction(new ActionEvaluation(action, context, nextStates, logs: logs));
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
-        public void RenderActionError(IAction action, IActionContext context, Exception exception)
-        {
-            var eval = new ActionEvaluation(action, context, context.PreviousStates, exception);
-            DelayRenderingAction(eval);
-        }
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
+        public void RenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        ) => DelayRenderingAction(
+                new ActionEvaluation(
+                    action,
+                    context,
+                    context.PreviousStates,
+                    exception,
+                    logs: logs
+                )
+            );
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
         public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip)
@@ -475,11 +499,21 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     if (unrender)
                     {
-                        ActionRenderer.UnrenderActionError(eval.Action, eval.InputContext, e);
+                        ActionRenderer.UnrenderActionError(
+                            eval.Action,
+                            eval.InputContext,
+                            e,
+                            eval.Logs
+                        );
                     }
                     else
                     {
-                        ActionRenderer.RenderActionError(eval.Action, eval.InputContext, e);
+                        ActionRenderer.RenderActionError(
+                            eval.Action,
+                            eval.InputContext,
+                            e,
+                            eval.Logs
+                        );
                     }
                 }
                 else
@@ -489,7 +523,8 @@ namespace Libplanet.Blockchain.Renderers
                         ActionRenderer.UnrenderAction(
                             eval.Action,
                             eval.InputContext,
-                            eval.OutputStates
+                            eval.OutputStates,
+                            eval.Logs
                         );
                     }
                     else
@@ -497,7 +532,8 @@ namespace Libplanet.Blockchain.Renderers
                         ActionRenderer.RenderAction(
                             eval.Action,
                             eval.InputContext,
-                            eval.OutputStates
+                            eval.OutputStates,
+                            eval.Logs
                         );
                     }
                 }

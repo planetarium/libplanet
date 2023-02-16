@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -15,15 +16,17 @@ namespace Libplanet.Blockchain.Renderers
     /// <list type="number">
     /// <item><description><see cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
     /// (one time)</description></item>
-    /// <item><description><see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-    /// &amp; <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/> (zero or more
-    /// times)</description>
+    /// <item><description>
+    /// <see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+    /// &amp; <see cref="UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>
+    /// (zero or more times)</description>
     /// </item>
     /// <item><description><see cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> (one time)
     /// </description></item>
-    /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-    /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/> (zero or more
-    /// times)</description>
+    /// <item><description>
+    /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+    /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception, List{string})"/>
+    /// (zero or more times)</description>
     /// </item>
     /// <item><description><see cref="RenderBlockEnd(Block{T}, Block{T})"/> (one time)</description>
     /// </item>
@@ -61,12 +64,13 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="nextStates">The states right <em>after</em> this action executed,
         /// which means it is equivalent to the states <paramref name="action"/>'s
         /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
+        /// <param name="logs">Collected logs while execution.</param>
         /// <remarks>
         /// It is guaranteed to be called only once for an <paramref name="action"/>,
         /// and only after applied to the blockchain, unless an exception is thrown during executing
         /// the <paramref name="action"/> (in that case <see
-        /// cref="RenderActionError(IAction, IActionContext, Exception)"/> is called instead) or
-        /// once the <paramref name="action"/> has been unrendered.
+        /// cref="RenderActionError(IAction, IActionContext, Exception, List{string})"/> is called
+        /// instead) or once the <paramref name="action"/> has been unrendered.
         /// <para>Also note that this method is invoked after <see
         /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
@@ -76,14 +80,20 @@ namespace Libplanet.Blockchain.Renderers
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</para>
         /// </remarks>
-        void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
+        void RenderAction(
+            IAction action,
+            IActionContext context,
+            IAccountStateDelta nextStates,
+            List<string> logs
+        );
 
         /// <summary>
         /// Does things that should be undone right after the given <paramref name="action"/> is
         /// invalidated (mostly due to reorg, i.e., a block which the action has belonged to becomes
         /// considered stale).
         /// <para>This method takes the equivalent arguments to <see
-        /// cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/> method.</para>
+        /// cref="RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+        /// method.</para>
         /// </summary>
         /// <param name="action">A stale action.</param>
         /// <param name="context">The equivalent context object to an object passed to
@@ -94,19 +104,25 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="nextStates">The states right <em>after</em> this action executed,
         /// which means it is equivalent to the states <paramref name="action"/>'s
         /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
+        /// <param name="logs">Collected logs while execution.</param>
         /// <remarks>As a rule of thumb, this should be the inverse of
-        /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/> method
-        /// with redrawing the graphics on the display at the finish.</remarks>
+        /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+        /// method with redrawing the graphics on the display at the finish.</remarks>
         /// <remarks>The reason why the parameter <paramref name="action"/> takes
         /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
-        void UnrenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
+        void UnrenderAction(
+            IAction action,
+            IActionContext context,
+            IAccountStateDelta nextStates,
+            List<string> logs
+        );
 
         /// <summary>
         /// Does the similar things to <see cref=
-        /// "RenderAction(IAction, IActionContext, IAccountStateDelta)"/>, except that this method
-        /// is invoked when <paramref name="action"/> has terminated with an exception.
+        /// "RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>, except that
+        /// this method is invoked when <paramref name="action"/> has terminated with an exception.
         /// </summary>
         /// <param name="action">An action which threw an exception during execution.</param>
         /// <param name="context">The equivalent context object to an object passed to
@@ -115,6 +131,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <em>before</em> this action executed.</param>
         /// <param name="exception">The exception thrown during executing the <paramref
         /// name="action"/>.</param>
+        /// <param name="logs">Collected logs while execution.</param>
         /// <remarks>
         /// Also note that this method is invoked after <see
         /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
@@ -125,14 +142,21 @@ namespace Libplanet.Blockchain.Renderers
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</para>
         /// </remarks>
-        void RenderActionError(IAction action, IActionContext context, Exception exception);
+        void RenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        );
 
         /// <summary>
         /// Does the similar things to <see
-        /// cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>, except that
-        /// this method is invoked when <paramref name="action"/> has terminated with an exception.
+        /// cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>,
+        /// except that this method is invoked when <paramref name="action"/> has terminated with an
+        /// exception.
         /// <para>This method takes the equivalent arguments to <see
-        /// cref="RenderActionError(IAction, IActionContext, Exception)"/> method.</para>
+        /// cref="RenderActionError(IAction, IActionContext, Exception, List{string})"/> method.
+        /// </para>
         /// </summary>
         /// <param name="action">An action which threw an exception during execution.</param>
         /// <param name="context">The equivalent context object to an object passed to
@@ -141,11 +165,17 @@ namespace Libplanet.Blockchain.Renderers
         /// <em>before</em> this action executed.</param>
         /// <param name="exception">The exception thrown during executing the <paramref
         /// name="action"/>.</param>
+        /// <param name="logs">Collected logs while execution.</param>
         /// <remarks>The reason why the parameter <paramref name="action"/> takes
         /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
-        void UnrenderActionError(IAction action, IActionContext context, Exception exception);
+        void UnrenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        );
 
         /// <summary>
         /// Does things that should be done right all actions in a new <see cref="Block{T}"/> are

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
@@ -76,41 +77,49 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void RenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
-            Queue(() => ActionRenderer.RenderAction(action, context, nextStates));
+            Queue(() => ActionRenderer.RenderAction(action, context, nextStates, logs));
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void UnrenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
-            Queue(() => ActionRenderer.UnrenderAction(action, context, nextStates));
+            Queue(() => ActionRenderer.UnrenderAction(action, context, nextStates, logs));
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
         public void RenderActionError(
             IAction action,
             IActionContext context,
-            Exception exception
+            Exception exception,
+            List<string> logs
         ) =>
-            Queue(() => ActionRenderer.RenderActionError(action, context, exception));
+            Queue(() => ActionRenderer.RenderActionError(action, context, exception, logs));
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
         public void UnrenderActionError(
             IAction action,
             IActionContext context,
-            Exception exception
+            Exception exception,
+            List<string> logs
         ) =>
-            Queue(() => ActionRenderer.UnrenderActionError(action, context, exception));
+            Queue(() => ActionRenderer.UnrenderActionError(action, context, exception, logs));
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
         public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>

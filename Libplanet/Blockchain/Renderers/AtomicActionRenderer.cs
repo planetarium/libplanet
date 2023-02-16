@@ -22,7 +22,9 @@ namespace Libplanet.Blockchain.Renderers
     public sealed class AtomicActionRenderer<T> : IActionRenderer<T>
         where T : IAction, new()
     {
-        private readonly List<(IAction, IActionContext, IAccountStateDelta)> _eventBuffer;
+        private readonly List<(IAction, IActionContext, IAccountStateDelta, List<string>)>
+            _eventBuffer;
+
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -37,7 +39,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IAction, IActionContext, IAccountStateDelta)>();
+            _eventBuffer = new List<(IAction, IActionContext, IAccountStateDelta, List<string>)>();
             _errored = false;
         }
 
@@ -73,12 +75,14 @@ namespace Libplanet.Blockchain.Renderers
             ActionRenderer.RenderReorgEnd(oldTip, newTip, branchpoint);
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void RenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         )
         {
             if (!context.TxId.Equals(_lastTxId))
@@ -88,20 +92,22 @@ namespace Libplanet.Blockchain.Renderers
 
             if (context.TxId is null)
             {
-                ActionRenderer.RenderAction(action, context, nextStates);
+                ActionRenderer.RenderAction(action, context, nextStates, logs);
             }
             else if (!_errored)
             {
-                _eventBuffer.Add((action, context, nextStates));
+                _eventBuffer.Add((action, context, nextStates, logs));
             }
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta, List{string})"/>
+#pragma warning restore MEN002
         public void UnrenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         )
         {
             if (!context.TxId.Equals(_lastTxId))
@@ -111,17 +117,23 @@ namespace Libplanet.Blockchain.Renderers
 
             if (context.TxId is null)
             {
-                ActionRenderer.UnrenderAction(action, context, nextStates);
+                ActionRenderer.UnrenderAction(action, context, nextStates, logs);
             }
             else if (!_errored)
             {
-                _eventBuffer.Add((action, context, nextStates));
+                _eventBuffer.Add((action, context, nextStates, logs));
             }
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
-        public void RenderActionError(IAction action, IActionContext context, Exception exception)
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
+        public void RenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        )
         {
             if (!context.TxId.Equals(_lastTxId))
             {
@@ -130,7 +142,7 @@ namespace Libplanet.Blockchain.Renderers
 
             if (context.TxId is null)
             {
-                ActionRenderer.RenderActionError(action, context, exception);
+                ActionRenderer.RenderActionError(action, context, exception, logs);
             }
             else
             {
@@ -138,9 +150,15 @@ namespace Libplanet.Blockchain.Renderers
             }
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception, List{string})"/>
+#pragma warning restore MEN002
+        public void UnrenderActionError(
+            IAction action,
+            IActionContext context,
+            Exception exception,
+            List<string> logs
+        )
         {
             if (!context.TxId.Equals(_lastTxId))
             {
@@ -149,7 +167,7 @@ namespace Libplanet.Blockchain.Renderers
 
             if (context.TxId is null)
             {
-                ActionRenderer.RenderActionError(action, context, exception);
+                ActionRenderer.RenderActionError(action, context, exception, logs);
             }
             else
             {
@@ -159,14 +177,14 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IAction, IActionContext, IAccountStateDelta> render
+            Action<IAction, IActionContext, IAccountStateDelta, List<string>> render
         )
         {
             if (!_errored)
             {
-                foreach (var (act, ctx, delta) in _eventBuffer)
+                foreach (var (act, ctx, delta, logs) in _eventBuffer)
                 {
-                    render(act, ctx, delta);
+                    render(act, ctx, delta, logs);
                 }
             }
 

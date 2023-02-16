@@ -64,7 +64,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public virtual void RenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         )
         {
             _records.Add(
@@ -84,7 +85,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public virtual void RenderActionError(
             IAction action,
             IActionContext context,
-            Exception exception
+            Exception exception,
+            List<string> logs
         ) =>
             _records.Add(
                 new RenderRecord<T>.ActionError(
@@ -100,7 +102,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public virtual void UnrenderAction(
             IAction action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccountStateDelta nextStates,
+            List<string> logs
         ) =>
             _records.Add(
                 new RenderRecord<T>.ActionSuccess(
@@ -117,7 +120,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public virtual void UnrenderActionError(
             IAction action,
             IActionContext context,
-            Exception exception
+            Exception exception,
+            List<string> logs
         ) =>
             _records.Add(
                 new RenderRecord<T>.ActionError(

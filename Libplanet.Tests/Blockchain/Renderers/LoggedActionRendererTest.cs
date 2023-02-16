@@ -27,6 +27,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 () => new ValidatorSet(),
                 default);
 
+        private static List<string> _logs = new List<string>();
+
         private static Exception _exception = new Exception();
 
         private static DumbBlock _genesis =
@@ -88,20 +90,21 @@ namespace Libplanet.Tests.Blockchain.Renderers
             IActionRenderer<DumbAction> actionRenderer;
             if (error)
             {
-                Action<IAction, IActionContext, Exception> render = (action, cxt, e) =>
-                {
-                    LogEvent[] logs = LogEvents.ToArray();
-                    Assert.Single(logs);
-                    firstLog = logs[0];
-                    Assert.Same(_action, action);
-                    Assert.Same(actionContext, cxt);
-                    Assert.Same(actionError, e);
-                    called = true;
-                    if (exception)
+                Action<IAction, IActionContext, Exception, List<string>> render =
+                    (action, cxt, e, logs) =>
                     {
-                        throw new ThrowException.SomeException(string.Empty);
-                    }
-                };
+                        LogEvent[] events = LogEvents.ToArray();
+                        Assert.Single(events);
+                        firstLog = events[0];
+                        Assert.Same(_action, action);
+                        Assert.Same(actionContext, cxt);
+                        Assert.Same(actionError, e);
+                        called = true;
+                        if (exception)
+                        {
+                            throw new ThrowException.SomeException(string.Empty);
+                        }
+                    };
                 actionRenderer = new AnonymousActionRenderer<DumbAction>
                 {
                     ActionErrorRenderer = unrender ? null : render,
@@ -110,20 +113,21 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
             else
             {
-                Action<IAction, IActionContext, IAccountStateDelta> render = (action, cxt, next) =>
-                {
-                    LogEvent[] logs = LogEvents.ToArray();
-                    Assert.Single(logs);
-                    firstLog = logs[0];
-                    Assert.Same(_action, action);
-                    Assert.Same(actionContext, cxt);
-                    Assert.Same(_stateDelta, next);
-                    called = true;
-                    if (exception)
+                Action<IAction, IActionContext, IAccountStateDelta, List<string>> render =
+                    (action, cxt, next, logs) =>
                     {
-                        throw new ThrowException.SomeException(string.Empty);
-                    }
-                };
+                        LogEvent[] events = LogEvents.ToArray();
+                        Assert.Single(events);
+                        firstLog = events[0];
+                        Assert.Same(_action, action);
+                        Assert.Same(actionContext, cxt);
+                        Assert.Same(_stateDelta, next);
+                        called = true;
+                        if (exception)
+                        {
+                            throw new ThrowException.SomeException(string.Empty);
+                        }
+                    };
                 actionRenderer = new AnonymousActionRenderer<DumbAction>
                 {
                     ActionRenderer = unrender ? null : render,
@@ -151,22 +155,32 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 {
                     if (unrender)
                     {
-                        actionRenderer.UnrenderActionError(_action, actionContext, actionError);
+                        actionRenderer.UnrenderActionError(
+                            _action,
+                            actionContext,
+                            actionError,
+                            _logs
+                        );
                     }
                     else
                     {
-                        actionRenderer.RenderActionError(_action, actionContext, actionError);
+                        actionRenderer.RenderActionError(
+                            _action,
+                            actionContext,
+                            actionError,
+                            _logs
+                        );
                     }
                 }
                 else
                 {
                     if (unrender)
                     {
-                        actionRenderer.UnrenderAction(_action, actionContext, _stateDelta);
+                        actionRenderer.UnrenderAction(_action, actionContext, _stateDelta, _logs);
                     }
                     else
                     {
-                        actionRenderer.RenderAction(_action, actionContext, _stateDelta);
+                        actionRenderer.RenderAction(_action, actionContext, _stateDelta, _logs);
                     }
                 }
             }

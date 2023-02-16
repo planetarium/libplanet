@@ -29,6 +29,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 () => new ValidatorSet(),
                 default);
 
+        private static readonly List<string> _emptyLogs = new List<string>();
+
         public DelayedActionRendererTest(ITestOutputHelper output)
             : base(output)
         {
@@ -61,23 +63,25 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ActionRenderer = (action, context, nextStates) =>
-                    actionEvaluations.Add(new ActionEvaluation(action, context, nextStates)),
-                ActionErrorRenderer = (action, context, e) =>
+                ActionRenderer = (action, context, nextStates, logs) =>
                     actionEvaluations.Add(
-                        new ActionEvaluation(action, context, context.PreviousStates, e)
+                        new ActionEvaluation(action, context, nextStates, logs: logs)
+                    ),
+                ActionErrorRenderer = (action, context, e, logs) =>
+                    actionEvaluations.Add(
+                        new ActionEvaluation(action, context, context.PreviousStates, e, logs: logs)
                     ),
                 ReorgRenderer = (oldTip, newTip, bp) =>
                 {
                     // Note that this callback should not be invoked in this test case.
                     unintendedCalls++;
                 },
-                ActionUnrenderer = (action, context, nextStates) =>
+                ActionUnrenderer = (action, context, nextStates, logs) =>
                 {
                     // Note that this callback should not be invoked in this test case.
                     unintendedCalls++;
                 },
-                ActionErrorUnrenderer = (action, context, nextStates) =>
+                ActionErrorUnrenderer = (action, context, nextStates, logs) =>
                 {
                     // Note that this callback should not be invoked in this test case.
                     unintendedCalls++;
@@ -97,8 +101,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             // #0 -> 1 confirm; #1 -> no confirms; #2 -> no confirms
             renderer.RenderBlock(_chainA[0], _chainA[1]);
-            renderer.RenderAction(new DumbAction(default, "#1.1"), FakeContext(), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#1.2"), FakeContext(), _emptyStates);
+            renderer.RenderAction(Action("#1.1"), FakeContext(), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#1.2"), FakeContext(), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainA[0], _chainA[1]);
             Assert.Null(renderer.Tip);
             Assert.Empty(blockLogs);
@@ -108,11 +112,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #0 -> 2 confirms; #1 -> 1 confirm; #2 -> no confirms
             renderer.RenderBlock(_chainA[1], _chainA[2]);
             renderer.RenderActionError(
-                new DumbAction(default, "#2.1"),
+                Action("#2.1"),
                 FakeContext(),
-                new ThrowException.SomeException("#2.1")
+                new ThrowException.SomeException("#2.1"),
+                _emptyLogs
             );
-            renderer.RenderAction(new DumbAction(default, "#2.2"), FakeContext(), _emptyStates);
+            renderer.RenderAction(
+                Action("#2.2"), FakeContext(), _emptyStates, _emptyLogs
+            );
             renderer.RenderBlockEnd(_chainA[1], _chainA[2]);
             Assert.Null(renderer.Tip);
             Assert.Empty(blockLogs);
@@ -121,7 +128,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             // #0 -> 3 confirms; #1 -> 2 confirms; #2 -> 1 confirm; tip changed -> #0
             renderer.RenderBlock(_chainA[2], _chainA[3]);
-            renderer.RenderAction(new DumbAction(default, "#3.1"), FakeContext(), _emptyStates);
+            renderer.RenderAction(Action("#3.1"), FakeContext(), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainA[2], _chainA[3]);
             Assert.Equal(_chainA[0], renderer.Tip);
             Assert.Empty(blockLogs);
@@ -130,7 +137,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             // #0 -> gone; #1 -> 3 confirms; #2 -> 2 confirms; tip changed -> #1; render(#0, #1)
             renderer.RenderBlock(_chainA[3], _chainA[4]);
-            renderer.RenderAction(new DumbAction(default, "#4.1"), FakeContext(), _emptyStates);
+            renderer.RenderAction(Action("#4.1"), FakeContext(), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainA[3], _chainA[4]);
             Assert.Equal(_chainA[1], renderer.Tip);
             Assert.Single(blockLogs);
@@ -177,14 +184,22 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
                 ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
-                ActionRenderer = (action, context, nextStates) =>
-                    renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorRenderer = (act, ctx, e) =>
-                    renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
+                ActionRenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorRenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
+                ActionUnrenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorUnrenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -226,7 +241,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> no confirms
             // #5' -> no confirms
             renderer.RenderBlock(_chainA[4], _chainA[5]);
-            renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.RenderAction(
+                Action("#5.1"),
+                FakeContext(5),
+                _emptyStates,
+                _emptyLogs
+            );
             renderer.RenderBlockEnd(_chainA[4], _chainA[5]);
             var expectedBlockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>
             {
@@ -241,13 +261,24 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> no confirms
             // #5' -> no confirms
             renderer.RenderReorg(_chainA[5], _chainB[5], _branchpoint);
-            renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
-            renderer.RenderBlock(_chainA[5], _chainB[5]);
-            renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
-            renderer.RenderActionError(
-                new DumbAction(default, "#5'.2"),
+            renderer.UnrenderAction(
+                Action("#5.1"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                _emptyStates,
+                _emptyLogs
+            );
+            renderer.RenderBlock(_chainA[5], _chainB[5]);
+            renderer.RenderAction(
+                Action("#5'.1"),
+                FakeContext(5),
+                _emptyStates,
+                _emptyLogs
+            );
+            renderer.RenderActionError(
+                Action("#5'.2"),
+                FakeContext(5),
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
             renderer.RenderBlockEnd(_chainA[5], _chainB[5]);
             renderer.RenderReorgEnd(_chainA[5], _chainB[5], _branchpoint);
@@ -261,14 +292,20 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5' -> no confirms
             renderer.RenderReorg(_chainB[5], _chainA[6], _branchpoint);
             renderer.UnrenderActionError(
-                new DumbAction(default, "#5'.2"),
+                Action("#5'.2"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
-            renderer.UnrenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.UnrenderAction(Action("#5'.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderBlock(_chainB[5], _chainA[6]);
-            renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
+            renderer.RenderAction(Action("#5.1"), FakeContext(5), _emptyStates, _emptyLogs);
+            renderer.RenderAction(
+                Action("#6.1"),
+                FakeContext(6),
+                _emptyStates,
+                _emptyLogs
+            );
             renderer.RenderBlockEnd(_chainB[5], _chainA[6]);
             renderer.RenderReorgEnd(_chainB[5], _chainA[6], _branchpoint);
             expectedBlockLogs.Add((_chainA[2], _chainA[3]));
@@ -281,16 +318,17 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 1 confirm; #6  -> no confirm
             // #5' -> 1 confirm; #6' -> no confirm
             renderer.RenderReorg(_chainA[6], _chainB[6], _branchpoint);
-            renderer.UnrenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.UnrenderAction(Action("#6.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#5.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderBlock(_chainA[6], _chainB[6]);
-            renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.RenderAction(Action("#5'.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderActionError(
-                new DumbAction(default, "#5'.2"),
+                Action("#5'.2"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
-            renderer.RenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
+            renderer.RenderAction(Action("#6'.1"), FakeContext(6), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainA[6], _chainB[6]);
             renderer.RenderReorgEnd(_chainA[6], _chainB[6], _branchpoint);
             Assert.Equal(_chainA[3], delayedRenderer.Tip);
@@ -302,17 +340,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 2 confirms; #6  -> 1 confirm; #7 -> no confirm
             // #5' -> 1 confirm;  #6' -> no confirm
             renderer.RenderReorg(_chainB[6], _chainA[7], _branchpoint);
-            renderer.UnrenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
+            renderer.UnrenderAction(Action("#6'.1"), FakeContext(6), _emptyStates, _emptyLogs);
             renderer.UnrenderActionError(
-                new DumbAction(default, "#5'.2"),
+                Action("#5'.2"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
-            renderer.UnrenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.UnrenderAction(Action("#5'.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderBlock(_chainB[6], _chainA[7]);
-            renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
+            renderer.RenderAction(Action("#5.1"), FakeContext(5), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#6.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#7.1"), FakeContext(7), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainB[6], _chainA[7]);
             renderer.RenderReorgEnd(_chainB[6], _chainA[7], _branchpoint);
             expectedBlockLogs.Add((_chainA[3], _chainA[4]));
@@ -325,18 +364,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 2 confirms; #6  -> 1 confirm; #7  -> no confirm
             // #5' -> 2 confirms; #6' -> 1 confirm; #7' -> no confirm
             renderer.RenderReorg(_chainA[7], _chainB[7], _branchpoint);
-            renderer.UnrenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.UnrenderAction(Action("#7.1"), FakeContext(7), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#6.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#5.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderBlock(_chainA[7], _chainB[7]);
-            renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.RenderAction(Action("#5'.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderActionError(
-                new DumbAction(default, "#5'.2"),
+                Action("#5'.2"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
-            renderer.RenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#7'.1"), FakeContext(7), _emptyStates);
+            renderer.RenderAction(Action("#6'.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#7'.1"), FakeContext(7), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainA[7], _chainB[7]);
             renderer.RenderReorgEnd(_chainA[7], _chainB[7], _branchpoint);
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
@@ -348,19 +388,20 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 3 confirms; #6  -> 2 confirms; #7  -> 1 confirm; #8 -> no confirm
             // #5' -> 2 confirms; #6' -> 1 confirm;  #7' -> no confirm
             renderer.RenderReorg(_chainB[7], _chainA[8], _branchpoint);
-            renderer.UnrenderAction(new DumbAction(default, "#7'.1"), FakeContext(7), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
+            renderer.UnrenderAction(Action("#7'.1"), FakeContext(7), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#6'.1"), FakeContext(6), _emptyStates, _emptyLogs);
             renderer.UnrenderActionError(
-                new DumbAction(default, "#5'.2"),
+                Action("#5'.2"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
-            renderer.UnrenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.UnrenderAction(Action("#5'.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderBlock(_chainB[7], _chainA[8]);
-            renderer.RenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#8.1"), FakeContext(8), _emptyStates);
+            renderer.RenderAction(Action("#5.1"), FakeContext(5), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#6.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#7.1"), FakeContext(7), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#8.1"), FakeContext(8), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainB[7], _chainA[8]);
             renderer.RenderReorgEnd(_chainB[7], _chainA[8], _branchpoint);
             expectedBlockLogs.Add((_chainA[4], _chainA[5]));
@@ -376,20 +417,21 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // #5  -> 3 confirms; #6  -> 2 confirms; #7  -> 1 confirm; #8  -> no confirm
             // #5' -> 3 confirms; #6' -> 2 confirms; #7' -> 1 confirm; #8' -> no confirm
             renderer.RenderReorg(_chainA[8], _chainB[8], _branchpoint);
-            renderer.UnrenderAction(new DumbAction(default, "#8.1"), FakeContext(8), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#7.1"), FakeContext(7), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#6.1"), FakeContext(6), _emptyStates);
-            renderer.UnrenderAction(new DumbAction(default, "#5.1"), FakeContext(5), _emptyStates);
+            renderer.UnrenderAction(Action("#8.1"), FakeContext(8), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#7.1"), FakeContext(7), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#6.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.UnrenderAction(Action("#5.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderBlock(_chainA[8], _chainB[8]);
-            renderer.RenderAction(new DumbAction(default, "#5'.1"), FakeContext(5), _emptyStates);
+            renderer.RenderAction(Action("#5'.1"), FakeContext(5), _emptyStates, _emptyLogs);
             renderer.RenderActionError(
-                new DumbAction(default, "#5'.2"),
+                Action("#5'.2"),
                 FakeContext(5),
-                new ThrowException.SomeException("#5'.2")
+                new ThrowException.SomeException("#5'.2"),
+                _emptyLogs
             );
-            renderer.RenderAction(new DumbAction(default, "#6'.1"), FakeContext(6), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#7'.1"), FakeContext(7), _emptyStates);
-            renderer.RenderAction(new DumbAction(default, "#8'.1"), FakeContext(8), _emptyStates);
+            renderer.RenderAction(Action("#6'.1"), FakeContext(6), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#7'.1"), FakeContext(7), _emptyStates, _emptyLogs);
+            renderer.RenderAction(Action("#8'.1"), FakeContext(8), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainA[8], _chainB[8]);
             renderer.RenderReorgEnd(_chainA[8], _chainB[8], _branchpoint);
             expectedBlockLogs.Add((_chainA[5], _chainB[5]));
@@ -410,7 +452,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // tip changed -> #6'; render(#5', #6')
             // #5' -> gone; #6' -> 3 confirms; #7' -> 2 confirm; #8' -> 1 confirm; #9' -> 1 confirm
             renderer.RenderBlock(_chainB[8], _chainB[9]);
-            renderer.RenderAction(new DumbAction(default, "#9'.1"), FakeContext(9), _emptyStates);
+            renderer.RenderAction(Action("#9'.1"), FakeContext(9), _emptyStates, _emptyLogs);
             renderer.RenderBlockEnd(_chainB[8], _chainB[9]);
             expectedBlockLogs.Add((_chainB[5], _chainB[6]));
             Assert.Equal(_chainB[6], delayedRenderer.Tip);
@@ -461,14 +503,22 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
                 ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
-                ActionRenderer = (action, context, nextStates) =>
-                    renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorRenderer = (act, ctx, e) =>
-                    renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
+                ActionRenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorRenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
+                ActionUnrenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorUnrenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -534,14 +584,22 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
                 ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
-                ActionRenderer = (action, context, nextStates) =>
-                    renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorRenderer = (act, ctx, e) =>
-                    renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
+                ActionRenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorRenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
+                ActionUnrenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorUnrenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -653,14 +711,22 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
                 ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
-                ActionRenderer = (action, context, nextStates) =>
-                    renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorRenderer = (act, ctx, e) =>
-                    renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
+                ActionRenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorRenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
+                ActionUnrenderer = (action, context, nextStates, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(action, context, nextStates, logs: logs))
+                    ),
+                ActionErrorUnrenderer = (act, ctx, e, logs) =>
+                    renderLogs.Add(
+                        (true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e, logs: logs))
+                    ),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -744,6 +810,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);
             Assert.Equal(4, renderLogs.Count);
         }
+
+        private DumbAction Action(string label) => new DumbAction(default, label);
 
         private IActionContext FakeContext(long blockIndex = 1) =>
             new ActionContext(default, default, default, default, blockIndex, _emptyStates, 0);
