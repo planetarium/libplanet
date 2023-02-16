@@ -87,7 +87,8 @@ namespace Libplanet.Action
 #pragma warning restore MEN002
 #pragma warning restore CS1573
         {
-            _logger = Log.ForContext<ActionEvaluator<T>>();
+            _logger = Log.ForContext<ActionEvaluator<T>>()
+                .ForContext("Source", nameof(ActionEvaluator<T>));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
@@ -138,7 +139,7 @@ namespace Libplanet.Action
             IPreEvaluationBlock block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            _logger.Debug(
+            _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
                 "pre-evaluation hash: {PreEvaluationHash}...",
                 block.Index,
@@ -184,7 +185,7 @@ namespace Libplanet.Action
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "BlockEvaluationDuration")
-                    .Debug(
+                    .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
                         "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms.",
                         block.Transactions.Count,
@@ -573,7 +574,7 @@ namespace Libplanet.Action
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
-                logger.Debug(
+                logger.Information(
                     "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
                     "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
                     actions.Count,
@@ -644,7 +645,7 @@ namespace Libplanet.Action
                 throw new InvalidOperationException(message);
             }
 
-            _logger.Debug(
+            _logger.Information(
                 $"Evaluating policy block action for block #{blockHeader.Index} " +
                 $"{ByteUtil.Hex(blockHeader.PreEvaluationHash)}");
 
