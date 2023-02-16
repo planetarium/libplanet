@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "8be06dbJygf8NKEYi18evBPlHCboT0/3bw3mEBk7MDY="
+          "hash": "+Igp3Ax69AnhUC4E1C9uT5u0RhC5F28xLENbqXdBbGE="
         }
       },
       "is_incremental": false,
@@ -617,6 +617,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Branch-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Branch-1.html",
+          "hash": "g9a2o/MWBScZywiPTsItkqTieTHa11fKGQnZ7efgQFw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blockchain.FungibleAssetStateCompleter-1.yml",
       "output": {
         ".html": {
@@ -1161,7 +1173,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.html",
-          "hash": "py1sFXosFseh/IwIlZ2sHeD3/LAzKfLmLLR4zpi8iEA="
+          "hash": "Db4A1Kroumk1qu+zHdOpDFaTAItntRvm6LlTeK5E7/Y="
         }
       },
       "is_incremental": false,
@@ -2469,7 +2481,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BlockCandidateTable-1.html",
-          "hash": "0RhLVxYjxEu6MfYdOu7KDVqi3HYDzmZakkGHFlXjwoo="
+          "hash": "Wy/s+Udb1yZ8lBUBrLNmq1OFizAoQZfGIQBcoFPIJys="
         }
       },
       "is_incremental": false,
@@ -4449,7 +4461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "k1tEk2mtd7lOSvgOGkJcOKxN0fca6alYSuSqO3Jb/qU="
+          "hash": "CK5Sh3nnOHpJCmN5LXOG17v4lTtYTLyQS3fWTnbCXm8="
         }
       },
       "is_incremental": false,
@@ -4558,7 +4570,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 360,
+          "total_file_count": 361,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

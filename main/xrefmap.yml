@@ -3568,6 +3568,50 @@ references:
   fullName: Libplanet.Blockchain.BlockLocator.System.Collections.IEnumerable.GetEnumerator
   nameWithType: BlockLocator.IEnumerable.GetEnumerator
   nameWithType.vb: BlockLocator.System.Collections.IEnumerable.GetEnumerator
+- uid: Libplanet.Blockchain.Branch`1
+  name: Branch<T>
+  href: api/Libplanet.Blockchain.Branch-1.html
+  commentId: T:Libplanet.Blockchain.Branch`1
+  name.vb: Branch(Of T)
+  fullName: Libplanet.Blockchain.Branch<T>
+  fullName.vb: Libplanet.Blockchain.Branch(Of T)
+  nameWithType: Branch<T>
+  nameWithType.vb: Branch(Of T)
+- uid: Libplanet.Blockchain.Branch`1.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})
+  name: Branch(IEnumerable<Block<T>>)
+  href: api/Libplanet.Blockchain.Branch-1.html#Libplanet_Blockchain_Branch_1__ctor_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___
+  commentId: M:Libplanet.Blockchain.Branch`1.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})
+  name.vb: Branch(IEnumerable(Of Block(Of T)))
+  fullName: Libplanet.Blockchain.Branch<T>.Branch(System.Collections.Generic.IEnumerable<Libplanet.Blocks.Block<T>>)
+  fullName.vb: Libplanet.Blockchain.Branch(Of T).Branch(System.Collections.Generic.IEnumerable(Of Libplanet.Blocks.Block(Of T)))
+  nameWithType: Branch<T>.Branch(IEnumerable<Block<T>>)
+  nameWithType.vb: Branch(Of T).Branch(IEnumerable(Of Block(Of T)))
+- uid: Libplanet.Blockchain.Branch`1.#ctor*
+  name: Branch
+  href: api/Libplanet.Blockchain.Branch-1.html#Libplanet_Blockchain_Branch_1__ctor_
+  commentId: Overload:Libplanet.Blockchain.Branch`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Branch<T>.Branch
+  fullName.vb: Libplanet.Blockchain.Branch(Of T).Branch
+  nameWithType: Branch<T>.Branch
+  nameWithType.vb: Branch(Of T).Branch
+- uid: Libplanet.Blockchain.Branch`1.Blocks
+  name: Blocks
+  href: api/Libplanet.Blockchain.Branch-1.html#Libplanet_Blockchain_Branch_1_Blocks
+  commentId: P:Libplanet.Blockchain.Branch`1.Blocks
+  fullName: Libplanet.Blockchain.Branch<T>.Blocks
+  fullName.vb: Libplanet.Blockchain.Branch(Of T).Blocks
+  nameWithType: Branch<T>.Blocks
+  nameWithType.vb: Branch(Of T).Blocks
+- uid: Libplanet.Blockchain.Branch`1.Blocks*
+  name: Blocks
+  href: api/Libplanet.Blockchain.Branch-1.html#Libplanet_Blockchain_Branch_1_Blocks_
+  commentId: Overload:Libplanet.Blockchain.Branch`1.Blocks
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Branch<T>.Blocks
+  fullName.vb: Libplanet.Blockchain.Branch(Of T).Blocks
+  nameWithType: Branch<T>.Blocks
+  nameWithType.vb: Branch(Of T).Blocks
 - uid: Libplanet.Blockchain.FungibleAssetStateCompleter`1
   name: FungibleAssetStateCompleter<T>
   href: api/Libplanet.Blockchain.FungibleAssetStateCompleter-1.html
@@ -15648,15 +15692,15 @@ references:
   fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).BlockCandidateTable
   nameWithType: BlockCandidateTable<T>.BlockCandidateTable
   nameWithType.vb: BlockCandidateTable(Of T).BlockCandidateTable
-- uid: Libplanet.Net.BlockCandidateTable`1.Add(Libplanet.Blocks.BlockHeader,System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})
-  name: Add(BlockHeader, IEnumerable<Block<T>>)
-  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Add_Libplanet_Blocks_BlockHeader_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___
-  commentId: M:Libplanet.Net.BlockCandidateTable`1.Add(Libplanet.Blocks.BlockHeader,System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})
-  name.vb: Add(BlockHeader, IEnumerable(Of Block(Of T)))
-  fullName: Libplanet.Net.BlockCandidateTable<T>.Add(Libplanet.Blocks.BlockHeader, System.Collections.Generic.IEnumerable<Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Add(Libplanet.Blocks.BlockHeader, System.Collections.Generic.IEnumerable(Of Libplanet.Blocks.Block(Of T)))
-  nameWithType: BlockCandidateTable<T>.Add(BlockHeader, IEnumerable<Block<T>>)
-  nameWithType.vb: BlockCandidateTable(Of T).Add(BlockHeader, IEnumerable(Of Block(Of T)))
+- uid: Libplanet.Net.BlockCandidateTable`1.Add(Libplanet.Blocks.BlockHeader,Libplanet.Blockchain.Branch{`0})
+  name: Add(BlockHeader, Branch<T>)
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Add_Libplanet_Blocks_BlockHeader_Libplanet_Blockchain_Branch__0__
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.Add(Libplanet.Blocks.BlockHeader,Libplanet.Blockchain.Branch{`0})
+  name.vb: Add(BlockHeader, Branch(Of T))
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Add(Libplanet.Blocks.BlockHeader, Libplanet.Blockchain.Branch<T>)
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Add(Libplanet.Blocks.BlockHeader, Libplanet.Blockchain.Branch(Of T))
+  nameWithType: BlockCandidateTable<T>.Add(BlockHeader, Branch<T>)
+  nameWithType.vb: BlockCandidateTable(Of T).Add(BlockHeader, Branch(Of T))
 - uid: Libplanet.Net.BlockCandidateTable`1.Add*
   name: Add
   href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Add_
