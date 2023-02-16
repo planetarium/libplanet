@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain.Policies
                                 .ForContext("Subtag", "TxStageTimestamp")
                                 .Debug(
                                     "Transaction {TxId} by {Signer} " +
-                                    "with timestamp {TxTimestamp} staged at {StagedTimestamp}.",
+                                    "with timestamp {TxTimestamp} staged at {StagedTimestamp}",
                                     transaction.Id,
                                     transaction.Signer,
                                     transaction.Timestamp.ToString(

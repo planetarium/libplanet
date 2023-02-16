@@ -81,7 +81,7 @@ namespace Libplanet.Net
                             kv.Value || chunk.Contains(kv.Key))))
                 {
                     yield return chunk.ToImmutableArray();
-                    _logger.Verbose("A chunk of {Window} demands have made.", chunk.Count);
+                    _logger.Verbose("A chunk of {Window} demands have made", chunk.Count);
 
                     chunk.Clear();
                 }
@@ -107,7 +107,7 @@ namespace Libplanet.Net
                 yield return chunk;
             }
 
-            _logger.Verbose("The stream of demand chunks finished.");
+            _logger.Verbose("The stream of demand chunks finished");
 
             cancellationToken.ThrowIfCancellationRequested();
         }
@@ -142,8 +142,8 @@ namespace Libplanet.Net
             if (_satisfiedBlocks.TryUpdate(block.Hash, true, false))
             {
                 _logger.Verbose(
-                    "Completed block #{BlockIndex} {BlockHash}. " +
-                    "(Remaining incomplete demands: {IncompleteDemands})",
+                    "Completed block #{BlockIndex} {BlockHash}; " +
+                    "remaining incomplete demands: {IncompleteDemands}",
                     block.Index,
                     block.Hash,
                     _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
@@ -154,8 +154,8 @@ namespace Libplanet.Net
             if (_satisfiedBlocks.ContainsKey(block.Hash))
             {
                 _logger.Verbose(
-                    "Block #{BlockIndex} {BlockHash} is already complete. " +
-                    "(Remaining incomplete demands: {IncompleteDemands})",
+                    "Block #{BlockIndex} {BlockHash} is already complete; " +
+                    "remaining incomplete demands: {IncompleteDemands}",
                     block.Index,
                     block.Hash,
                     _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
@@ -164,8 +164,8 @@ namespace Libplanet.Net
             }
 
             _logger.Verbose(
-                "Block #{BlockIndex} {BlockHash} was never demanded. " +
-                "(Remaining incomplete demands: {IncompleteDemands})",
+                "Block #{BlockIndex} {BlockHash} was never demanded; " +
+                "remaining incomplete demands: {IncompleteDemands}",
                 block.Index,
                 block.Hash,
                 _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
@@ -242,7 +242,7 @@ namespace Libplanet.Net
 
                 yield return pair;
                 _logger.Verbose(
-                    "Completed block #{BlockIndex} {BlockHash} from {Peer}.",
+                    "Completed block #{BlockIndex} {BlockHash} from {Peer}",
                     pair.Item1.Index,
                     pair.Item1.Hash,
                     pair.Item2
@@ -314,7 +314,7 @@ namespace Libplanet.Net
                         await foreach (Block<TAction> block in blocks)
                         {
                             _logger.Debug(
-                                "Downloaded block #{BlockIndex} {BlockHash} from {Peer}.",
+                                "Downloaded block #{BlockIndex} {BlockHash} from {Peer}",
                                 block.Index,
                                 block.Hash,
                                 peer
@@ -337,7 +337,7 @@ namespace Libplanet.Net
                         {
                             _logger.Error(
                                 e,
-                                "A blockFetcher job (peer: {Peer}) is cancelled.",
+                                "A blockFetcher job (peer: {Peer}) is cancelled",
                                 peer
                             );
                             throw;
@@ -345,13 +345,13 @@ namespace Libplanet.Net
 
                         _logger.Debug(
                             e,
-                            "Timed out while waiting for a response from {Peer}.",
+                            "Timed out while waiting for a response from {Peer}",
                             peer
                         );
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(e, "A blockFetcher job (peer: {Peer}) has failed.", peer);
+                        _logger.Error(e, "A blockFetcher job (peer: {Peer}) has failed", peer);
                     }
                 }
                 finally
@@ -361,7 +361,7 @@ namespace Libplanet.Net
                         _logger.Verbose(
                             "Fetched blocks from {Peer}, but there are still " +
                             "unsatisfied demands ({UnsatisfiedDemandsNumber}) so " +
-                            "enqueue them again: {UnsatisfiedDemands}.",
+                            "enqueue them again: {UnsatisfiedDemands}",
                             peer,
                             demands.Count,
                             demands
@@ -370,7 +370,7 @@ namespace Libplanet.Net
                     }
                     else
                     {
-                        _logger.Verbose("Fetched blocks from {Peer}.", peer);
+                        _logger.Verbose("Fetched blocks from {Peer}", peer);
                     }
                 }
             };

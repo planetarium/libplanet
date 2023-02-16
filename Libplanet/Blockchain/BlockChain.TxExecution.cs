@@ -76,7 +76,7 @@ namespace Libplanet.Blockchain
 
             _logger.Verbose(
                 "Prepared " + nameof(TxExecution) +
-                "s for {Txs} transactions within the block #{BlockIndex} {BlockHash}.",
+                "s for {Txs} transactions within the block #{BlockIndex} {BlockHash}",
                 count,
                 block.Index,
                 block.Hash
@@ -97,7 +97,7 @@ namespace Libplanet.Blockchain
                         Store.PutTxExecution(s);  // IStore.PutTxExecution(TxSuccess)
                         _logger.Verbose(
                             "Updated " + nameof(TxSuccess) +
-                            " for tx {TxId} within block {BlockHash}.",
+                            " for tx {TxId} within block {BlockHash}",
                             s.TxId,
                             s.BlockHash
                         );
@@ -106,7 +106,7 @@ namespace Libplanet.Blockchain
                         Store.PutTxExecution(f);  // IStore.PutTxExecution(TxFailure)
                         _logger.Verbose(
                             "Updated " + nameof(TxFailure) +
-                            " for tx {TxId} within block {BlockHash}.",
+                            " for tx {TxId} within block {BlockHash}",
                             f.TxId,
                             f.BlockHash
                         );
@@ -127,7 +127,7 @@ namespace Libplanet.Blockchain
             }
 
             _logger.Verbose(
-                "Updated " + nameof(TxExecution) + "s for {Txs} transactions.",
+                "Updated " + nameof(TxExecution) + "s for {Txs} transactions",
                 count
             );
         }

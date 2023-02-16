@@ -126,7 +126,7 @@ namespace Libplanet.Net.Tests
                 }
                 catch (ObjectDisposedException)
                 {
-                    _logger.Debug("Swarm {Swarm} is already disposed.", swarm);
+                    _logger.Debug("Swarm {Swarm} is already disposed", swarm);
                 }
             });
             return swarm;
