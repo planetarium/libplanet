@@ -182,6 +182,15 @@ Released on February 6, 2023.
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
 
 
+Version 0.46.2
+--------------
+
+Released on February 16th, 2023.
+
+ -  Fix memory issues when preloading.  [[#2804]]
+
+[#2804]: https://github.com/planetarium/libplanet/pull/2804
+
 Version 0.46.1
 --------------
 
