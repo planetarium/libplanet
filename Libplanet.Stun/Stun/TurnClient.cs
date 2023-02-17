@@ -408,7 +408,7 @@ namespace Libplanet.Stun
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled");
+                    _logger.Warning(e, "{MethodName}() was cancelled", nameof(RefreshAllocate));
                     throw;
                 }
                 catch (Exception e)

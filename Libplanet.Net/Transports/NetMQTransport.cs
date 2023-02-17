@@ -440,7 +440,7 @@ namespace Libplanet.Net.Transports
             catch (OperationCanceledException oce2)
             {
                 const string dbgMsg =
-                    "{FName}() was cancelled while waiting for a reply to " +
+                    "{MethodName}() was cancelled while waiting for a reply to " +
                     "{Message} {RequestId} from {Peer}";
                 _logger.Debug(
                     oce2, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
@@ -455,8 +455,8 @@ namespace Libplanet.Net.Transports
             catch (Exception e)
             {
                 const string errMsg =
-                    "{FName}() encountered an unexpected exception while waiting for a reply to " +
-                    "{Message} {RequestId} from {Peer}";
+                    "{MethodName}() encountered an unexpected exception while waiting for " +
+                    "a reply to {Message} {RequestId} from {Peer}";
                 _logger.Error(
                     e, errMsg, nameof(SendMessageAsync), message, reqId, peer.Address);
                 throw;
@@ -676,7 +676,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     ex,
-                    $"An unexpected exception occurred during " + nameof(ReceiveMessage) + "()");
+                    "An unexpected exception occurred during {MethodName}()",
+                    nameof(ReceiveMessage));
             }
         }
 
