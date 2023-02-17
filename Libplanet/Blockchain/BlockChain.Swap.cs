@@ -228,7 +228,8 @@ namespace Libplanet.Blockchain
                 }
 
                 _logger.Debug(
-                    $"{nameof(Swap)}() completed unrendering {{Actions}} actions",
+                    "{MethodName}() completed unrendering {Actions} actions",
+                    nameof(Swap),
                     count);
             }
         }
@@ -259,7 +260,8 @@ namespace Libplanet.Blockchain
                 }
 
                 _logger.Debug(
-                    $"{nameof(Swap)}() completed rendering {{Count}} actions",
+                    "{MethodName}() completed rendering {Count} actions",
+                    nameof(Swap),
                     count);
 
                 foreach (IActionRenderer<T> renderer in ActionRenderers)

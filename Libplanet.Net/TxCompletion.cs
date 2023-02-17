@@ -196,7 +196,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    "An error occurred during {FName} from {Peer}",
+                    "An error occurred during {MethodName}() from {Peer}",
                     nameof(ProcessFetchedTxIds),
                     peer);
                 throw;
@@ -204,7 +204,7 @@ namespace Libplanet.Net
             finally
             {
                 _logger.Debug(
-                    "End of {FName} from {Peer}",
+                    "End of {MethodName}() from {Peer}",
                     nameof(ProcessFetchedTxIds),
                     peer);
             }
@@ -337,7 +337,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        "An error occurred during {FName} from {Peer}",
+                        "An error occurred during {MethodName}() from {Peer}",
                         nameof(RequestAsync),
                         _peer);
                     throw;
@@ -345,7 +345,7 @@ namespace Libplanet.Net
                 finally
                 {
                     _logger.Debug(
-                        "End of {FName} from {Peer}",
+                        "End of {MethodName}() from {Peer}",
                         nameof(RequestAsync),
                         _peer);
                 }

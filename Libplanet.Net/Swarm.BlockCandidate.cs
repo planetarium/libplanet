@@ -27,7 +27,7 @@ namespace Libplanet.Net
                     {
                         var latest = branch.Blocks.Last();
                         _logger.Debug(
-                            "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
+                            "{MethodName}() has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
                             nameof(ConsumeBlockCandidates),
                             latest.Index,
@@ -128,7 +128,7 @@ namespace Libplanet.Net
              if (oldTip is null || branchpoint.Equals(oldTip))
              {
                  _logger.Debug(
-                     "No need to fork. at {MethodName}",
+                     "No need to fork. at {MethodName}()",
                      nameof(AppendPreviousBlocks)
                  );
              }
@@ -152,7 +152,7 @@ namespace Libplanet.Net
              else
              {
                  _logger.Debug(
-                     "Trying to fork... at {MethodName}",
+                     "Trying to fork... at {MethodName}()",
                      nameof(AppendPreviousBlocks)
                  );
                  workspace = workspace.Fork(branchpoint.Hash);
@@ -160,7 +160,7 @@ namespace Libplanet.Net
                  renderBlocks = false;
                  scope.Add(workspace.Id);
                  _logger.Debug(
-                     "Fork finished. at {MethodName}",
+                     "Fork finished. at {MethodName}()",
                      nameof(AppendPreviousBlocks)
                  );
              }
@@ -204,7 +204,8 @@ namespace Libplanet.Net
                  }
 
                  _logger.Debug(
-                     "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). at {MethodName}",
+                     "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
+                     "at {MethodName}()",
                      workspace?.Id,
                      workspace?.Tip?.Index,
                      workspace?.Tip?.Hash,
@@ -298,11 +299,9 @@ namespace Libplanet.Net
                 return false;
             }
 
-            const string downloadStartLogMsg =
-                "{SessionId}: Downloading blocks from {Peer}; started " +
-                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}";
             _logger.Debug(
-                downloadStartLogMsg,
+                "{SessionId}: Downloading blocks from {Peer}; started " +
+                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}()",
                 sessionId,
                 peer,
                 demand.Header.Index,
@@ -324,10 +323,11 @@ namespace Libplanet.Net
             }
             catch (TimeoutException)
             {
-                const string msg =
-                    "{SessionId}: Timeout occurred during " + nameof(ProcessBlockDemandAsync) +
-                    "() from {Peer}";
-                _logger.Debug(msg, sessionId, peer);
+                _logger.Debug(
+                    "{SessionId}: Timeout occurred during {MethodName}() from {Peer}",
+                    sessionId,
+                    nameof(ProcessBlockDemandAsync),
+                    peer);
                 return false;
             }
             catch (InvalidBlockIndexException)

@@ -229,7 +229,7 @@ namespace Libplanet.Net
                 }
 
                 ProcessFillBlocksFinished.Set();
-                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully");
+                _logger.Debug("{MethodName}() has finished successfully", nameof(PullBlocksAsync));
             }
         }
 
@@ -243,7 +243,7 @@ namespace Libplanet.Net
                 if (BlockDemandTable.Any())
                 {
                     _logger.Debug(
-                        "{MethodName} blockDemand count: {BlockDemandCount}",
+                        "{MethodName}() blockDemand count: {BlockDemandCount}",
                         nameof(FillBlocksAsync),
                         BlockDemandTable.Demands.Count);
                     foreach (var blockDemand in BlockDemandTable.Demands.Values)
@@ -263,7 +263,7 @@ namespace Libplanet.Net
                 BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
             }
 
-            _logger.Debug($"{nameof(FillBlocksAsync)} has finished");
+            _logger.Debug("{MethodName}() has finished", nameof(FillBlocksAsync));
         }
 
         private async Task PollBlocksAsync(
@@ -325,7 +325,7 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Debug($"Start to {nameof(CompleteBlocksAsync)}()");
+                _logger.Debug("Start to {MethodName}()", nameof(CompleteBlocksAsync));
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
@@ -583,7 +583,7 @@ namespace Libplanet.Net
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled");
+                    _logger.Information("{MethodName}() is canceled", nameof(CompleteBlocksAsync));
                 }
 
                 IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
@@ -593,9 +593,11 @@ namespace Libplanet.Net
                     || cancellationToken.IsCancellationRequested)
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)}() is aborted. Complete? {complete}; " +
+                        "{MethodName}() is aborted. Complete? {Complete}; " +
                         "delete the temporary working chain ({TId}: #{TIndex} {THash}), " +
                         "and make the existing chain ({EId}: #{EIndex} {EHash}) remains",
+                        nameof(CompleteBlocksAsync),
+                        complete,
                         workspace.Id,
                         workspace.Tip.Index,
                         workspace.Tip.Hash,
@@ -607,9 +609,10 @@ namespace Libplanet.Net
                 else if (canonComparer.Compare(workspace.Tip, BlockChain.Tip) < 0)
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +
+                        "{MethodName}() is aborted since existing chain " +
                         "({EId}: #{EIndex} {EHash}) already has proper tip than " +
                         "temporary working chain ({TId}: #{TIndex} {THash})",
+                        nameof(CompleteBlocksAsync),
                         BlockChain.Id,
                         BlockChain.Tip.Index,
                         BlockChain.Tip.Hash,
@@ -621,9 +624,10 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)} finished; " +
+                        "{MethodName}() finished; " +
                         "replace the existing chain ({0}: {1}) with " +
                         "the working chain ({2}: {3})",
+                        nameof(CompleteBlocksAsync),
                         BlockChain.Id,
                         BlockChain.Tip,
                         workspace.Id,
