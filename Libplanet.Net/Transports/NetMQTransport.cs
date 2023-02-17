@@ -346,13 +346,6 @@ namespace Libplanet.Net.Transports
                     AsPeer,
                     DateTimeOffset.UtcNow
                 );
-                _logger.Verbose(
-                    "Enqueue a request {RequestId} to {Peer}: {@Message}",
-                    reqId,
-                    peer,
-                    message
-                );
-                Interlocked.Increment(ref _requestCount);
                 var req = new MessageRequest(
                     reqId,
                     rawMessage,
@@ -360,12 +353,11 @@ namespace Libplanet.Net.Transports
                     now,
                     expectedResponses,
                     channel,
-                    linkedCt
-                );
+                    linkedCt);
                 await _requests.Writer.WriteAsync(
                     req,
-                    linkedCt
-                ).ConfigureAwait(false);
+                    linkedCt).ConfigureAwait(false);
+                Interlocked.Increment(ref _requestCount);
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
                     "{LeftRequests} left",
@@ -382,13 +374,12 @@ namespace Libplanet.Net.Transports
                         .ConfigureAwait(false);
                     Message reply = _messageCodec.Decode(raw, true);
 
-                    _logger.Debug(
-                        "A reply to request {Message} {RequestId} from {Peer} " +
-                        "has parsed: {Reply}",
+                    _logger.Information(
+                        "Received {Reply} as a reply to request {Message} {RequestId} from {Peer}",
+                        reply,
                         message,
                         req.Id,
-                        reply.Remote,
-                        reply);
+                        reply.Remote);
                     try
                     {
                         _messageValidator.ValidateTimestamp(reply);
@@ -426,11 +417,13 @@ namespace Libplanet.Net.Transports
                     replies.Add(reply);
                 }
 
-                const string dbgMsg =
+                _logger.Information(
                     "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                    "from {Peer}: {ReplyMessages}";
-                _logger.Debug(dbgMsg, replies.Count, reqId, peer, replies);
-
+                    "from {Peer}: {ReplyMessages}",
+                    replies.Count,
+                    reqId,
+                    peer,
+                    replies);
                 return replies;
             }
             catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
@@ -619,7 +612,7 @@ namespace Libplanet.Net.Transports
                                 _logger
                                     .ForContext("Tag", "Metric")
                                     .ForContext("Subtag", "InboundMessageReport")
-                                    .Debug(
+                                    .Information(
                                         "Received Request {RequestId} {Message} from {Peer}",
                                         reqId,
                                         message,
@@ -736,7 +729,7 @@ namespace Libplanet.Net.Transports
                 MessageRequest req = await reader.ReadAsync(cancellationToken);
 #endif
                 long left = Interlocked.Decrement(ref _requestCount);
-                _logger.Debug("Request taken; {Count} requests left", left);
+                _logger.Information("Request taken; {Count} requests left", left);
 
                 _ = SynchronizationContext.Current.PostAsync(
                     () => ProcessRequest(req, req.CancellationToken)
@@ -787,10 +780,11 @@ namespace Libplanet.Net.Transports
                         .ForContext("Tag", "Metric")
                         .ForContext("Subtag", "SocketCount")
                         .Debug(
-                        "{SocketCount} sockets open for processing request {Message} {RequestId}",
-                        incrementedSocketCount,
-                        messageType,
-                        req.Id);
+                            "{SocketCount} sockets open for processing request " +
+                            "{Message} {RequestId}",
+                            incrementedSocketCount,
+                            messageType,
+                            req.Id);
                 }
                 catch (NetMQException nme)
                 {
@@ -801,11 +795,11 @@ namespace Libplanet.Net.Transports
                         .ForContext("Tag", "Metric")
                         .ForContext("Subtag", "SocketCount")
                         .Debug(
-                        nme,
-                        logMsg,
-                        Interlocked.Read(ref _socketCount),
-                        messageType,
-                        req.Id);
+                            nme,
+                            logMsg,
+                            Interlocked.Read(ref _socketCount),
+                            messageType,
+                            req.Id);
                     throw;
                 }
 
@@ -874,7 +868,7 @@ namespace Libplanet.Net.Transports
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "OutboundMessageReport")
-                    .Debug(
+                    .Information(
                         "Request {RequestId} {Message} " +
                         "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies",
