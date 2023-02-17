@@ -473,12 +473,12 @@ namespace Libplanet.Net.Tests
                     2,
                     false,
                     default)).ToArray();
-                var blockMessage = (Libplanet.Net.Messages.BlocksMsg)responses[0];
+                var blockMessage = (BlocksMsg)responses[0].Content;
 
                 Assert.Equal(2, responses.Length);
                 Assert.Equal(2, blockMessage.Payloads.Count);
 
-                blockMessage = (Libplanet.Net.Messages.BlocksMsg)responses[1];
+                blockMessage = (BlocksMsg)responses[1].Content;
 
                 Assert.Single(blockMessage.Payloads);
             }

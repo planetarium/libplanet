@@ -11,7 +11,7 @@ namespace Libplanet.Net.Messages
     /// Message containing nearby peers. A reply to <see cref="FindNeighborsMsg"/>.
     /// </summary>
     /// <seealso cref="FindNeighborsMsg"/>
-    public class NeighborsMsg : Message
+    public class NeighborsMsg : MessageContent
     {
         private static readonly Codec Codec = new Codec();
 

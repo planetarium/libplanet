@@ -6,7 +6,7 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class ChainStatusMsg : Message, IBlockExcerpt
+    internal class ChainStatusMsg : MessageContent, IBlockExcerpt
     {
         public ChainStatusMsg(
             int protocolVersion,

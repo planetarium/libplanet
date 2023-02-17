@@ -727,7 +727,7 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            if (parsedMessage is BlockHashesMsg blockHashes)
+            if (parsedMessage.Content is BlockHashesMsg blockHashes)
             {
                 if (blockHashes.StartIndex is long idx)
                 {
@@ -758,7 +758,7 @@ namespace Libplanet.Net
             string errorMessage =
                 $"The response of {nameof(GetBlockHashes)} is expected to be " +
                 $"{nameof(BlockHashesMsg)}, not {parsedMessage.GetType().Name}: {parsedMessage}";
-            throw new InvalidMessageException(errorMessage, parsedMessage);
+            throw new InvalidMessageContentException(errorMessage, parsedMessage.Content);
         }
 
         internal async IAsyncEnumerable<Block<T>> GetBlocksAsync(
@@ -812,7 +812,7 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (message is BlocksMsg blockMessage)
+                if (message.Content is BlocksMsg blockMessage)
                 {
                     IList<byte[]> payloads = blockMessage.Payloads;
                     _logger.Information(
@@ -836,7 +836,7 @@ namespace Libplanet.Net
                         $"Expected a {nameof(Blocks)} message as a response of " +
                         $"the {nameof(GetBlocksMsg)} message, but got a {message.GetType().Name} " +
                         $"message instead: {message}";
-                    throw new InvalidMessageException(errorMessage, message);
+                    throw new InvalidMessageContentException(errorMessage, message.Content);
                 }
             }
 
@@ -880,7 +880,7 @@ namespace Libplanet.Net
 
             foreach (Message message in replies)
             {
-                if (message is Messages.TxMsg parsed)
+                if (message.Content is TxMsg parsed)
                 {
                     Transaction<T> tx = Transaction<T>.Deserialize(parsed.Payload);
                     yield return tx;
@@ -891,7 +891,7 @@ namespace Libplanet.Net
                         $"Expected {nameof(Tx)} messages as response of " +
                         $"the {nameof(GetTxsMsg)} message, but got a {message.GetType().Name} " +
                         $"message instead: {message}";
-                    throw new InvalidMessageException(errorMessage, message);
+                    throw new InvalidMessageContentException(errorMessage, message.Content);
                 }
             }
         }
@@ -1089,7 +1089,7 @@ namespace Libplanet.Net
             BroadcastTxIds(except?.Address, txIds);
         }
 
-        private void BroadcastMessage(Address? except, Message message)
+        private void BroadcastMessage(Address? except, MessageContent message)
         {
             Transport.BroadcastMessage(
                 RoutingTable.PeersToBroadcast(except, Options.MinimumBroadcastTarget),
@@ -1183,7 +1183,7 @@ namespace Libplanet.Net
                         task =>
                         {
                             if (task.IsFaulted || task.IsCanceled ||
-                                !(task.Result is ChainStatusMsg chainStatus))
+                                !(task.Result.Content is ChainStatusMsg chainStatus))
                             {
                                 // Log and mark to skip
                                 LogException(peer, task);

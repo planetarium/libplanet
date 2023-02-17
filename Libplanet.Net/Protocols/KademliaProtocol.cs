@@ -426,18 +426,14 @@ namespace Libplanet.Net.Protocols
                     timeout,
                     cancellationToken
                 ).ConfigureAwait(false);
-                if (!(reply is PongMsg pong))
+                if (!(reply.Content is PongMsg pong))
                 {
-                    throw new InvalidMessageException(
-                        $"Expected pong, but received {reply.Type}.", reply);
+                    throw new InvalidMessageContentException(
+                        $"Expected pong, but received {reply.Content.Type}.", reply.Content);
                 }
-                else if (!(pong.Remote is BoundPeer remote))
+                else if (reply.Remote.Address.Equals(_address))
                 {
-                    throw new InvalidMessageException($"Received pong's remote is null.", pong);
-                }
-                else if (remote.Address.Equals(_address))
-                {
-                    throw new InvalidMessageException("Cannot receive pong from self", pong);
+                    throw new InvalidMessageContentException("Cannot receive pong from self", pong);
                 }
 
                 AddPeer(peer);
@@ -452,28 +448,22 @@ namespace Libplanet.Net.Protocols
 
         private async Task ProcessMessageHandler(Message message)
         {
-            switch (message)
+            switch (message.Content)
             {
                 case PingMsg ping:
                 {
-                    await ReceivePingAsync(ping).ConfigureAwait(false);
+                    await ReceivePingAsync(message).ConfigureAwait(false);
                     break;
                 }
 
                 case FindNeighborsMsg findNeighbors:
                 {
-                    await ReceiveFindPeerAsync(findNeighbors)
-                        .ConfigureAwait(false);
+                    await ReceiveFindPeerAsync(message).ConfigureAwait(false);
                     break;
                 }
             }
 
-            if (message.Remote is BoundPeer peer)
-            {
-                // Should we update peer status for non-protocol related messages?
-                // (i.e. BlockHashes)
-                AddPeer(peer);
-            }
+            AddPeer(message.Remote);
         }
 
         /// <summary>
@@ -620,11 +610,11 @@ namespace Libplanet.Net.Protocols
                     timeout,
                     cancellationToken
                 ).ConfigureAwait(false);
-                if (!(reply is NeighborsMsg neighbors))
+                if (!(reply.Content is NeighborsMsg neighbors))
                 {
-                    throw new InvalidMessageException(
+                    throw new InvalidMessageContentException(
                         $"Reply to {nameof(Messages.FindNeighborsMsg)} is invalid.",
-                        reply);
+                        reply.Content);
                 }
 
                 return neighbors.Found;
@@ -638,23 +628,18 @@ namespace Libplanet.Net.Protocols
         }
 
         // Send pong back to remote
-        private async Task ReceivePingAsync(PingMsg ping)
+        private async Task ReceivePingAsync(Message message)
         {
-            if (!(ping.Remote is BoundPeer remote))
+            var ping = (PingMsg)message.Content;
+            if (message.Remote.Address.Equals(_address))
             {
-                throw new InvalidMessageException("Received ping's remote is null.", ping);
-            }
-            else if (remote.Address.Equals(_address))
-            {
-                throw new InvalidMessageException("Cannot receive ping from self.", ping);
+                throw new InvalidMessageContentException("Cannot receive ping from self.", ping);
             }
 
-            var pong = new PongMsg
-            {
-                Identity = ping.Identity,
-            };
+            var pong = new PongMsg();
 
-            await _transport.ReplyMessageAsync(pong, default).ConfigureAwait(false);
+            await _transport.ReplyMessageAsync(pong, message.Identity, default)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -777,17 +762,16 @@ namespace Libplanet.Net.Protocols
 
         // FIXME: this method is not safe from amplification attack
         // maybe ping/pong/ping/pong is required
-        private async Task ReceiveFindPeerAsync(Messages.FindNeighborsMsg findNeighbors)
+        private async Task ReceiveFindPeerAsync(Message message)
         {
+            var findNeighbors = (FindNeighborsMsg)message.Content;
             IEnumerable<BoundPeer> found =
                 _table.Neighbors(findNeighbors.Target, _table.BucketSize, true);
 
-            Messages.NeighborsMsg neighbors = new Messages.NeighborsMsg(found)
-            {
-                Identity = findNeighbors.Identity,
-            };
+            var neighbors = new NeighborsMsg(found);
 
-            await _transport.ReplyMessageAsync(neighbors, default).ConfigureAwait(false);
+            await _transport.ReplyMessageAsync(neighbors, message.Identity, default)
+                .ConfigureAwait(false);
         }
     }
 }

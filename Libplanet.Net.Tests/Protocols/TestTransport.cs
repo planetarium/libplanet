@@ -197,11 +197,11 @@ namespace Libplanet.Net.Tests.Protocols
 
         public Task SendMessageAsync(
             BoundPeer peer,
-            Message message,
+            MessageContent content,
             CancellationToken cancellationToken)
             => SendMessageAsync(
                 peer,
-                message,
+                content,
                 TimeSpan.FromSeconds(3),
                 cancellationToken);
 
@@ -313,12 +313,12 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new TransportException("Start transport before use.");
             }
 
-            var message = new TestMessage(data) { Remote = AsPeer };
+            var message = new TestMessage(data);
             _ignoreTestMessageWithData.Add(data);
             BroadcastMessage(Table.PeersToBroadcast(except), message);
         }
 
-        public void BroadcastMessage(IEnumerable<BoundPeer> peers, Message message)
+        public void BroadcastMessage(IEnumerable<BoundPeer> peers, MessageContent content)
         {
             if (_disposed)
             {
@@ -329,24 +329,19 @@ namespace Libplanet.Net.Tests.Protocols
             var peersString = string.Join(", ", peersList.Select(peer => peer.Address));
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers which are: {Peers}",
-                ((TestMessage)message).Data,
+                ((TestMessage)content).Data,
                 peersList.Count,
                 peersString);
             foreach (var peer in peersList)
             {
-                _requests.Add(new Request()
-                {
-                    RequestTime = DateTimeOffset.UtcNow,
-                    Message = message,
-                    Target = peer,
-                });
+                _ = SendMessageAsync(peer, content, null, _swarmCancellationTokenSource.Token);
             }
         }
 
 #pragma warning disable S4457 // Cannot split the method since method is in interface
         public async Task<Message> SendMessageAsync(
             BoundPeer peer,
-            Message message,
+            MessageContent content,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
@@ -360,39 +355,38 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new TransportException("Start transport before use.");
             }
 
-            if (!(peer is BoundPeer boundPeer))
-            {
-                throw new ArgumentException("Target peer is not a BoundPeer.");
-            }
-
-            message.Remote = AsPeer;
             var bytes = new byte[10];
             _random.NextBytes(bytes);
-            message.Identity = _privateKey.ToAddress().ByteArray.Concat(bytes).ToArray();
             var sendTime = DateTimeOffset.UtcNow;
-            _logger.Debug("Adding request of {Message} of {Identity}", message, message.Identity);
+            var identity = _privateKey.ToAddress().ByteArray.Concat(bytes).ToArray();
+            _logger.Debug("Adding request of {Content} of {Identity}", content, identity);
             await _requests.AddAsync(
-                new Request()
+                new Request
                 {
-                    RequestTime = sendTime,
-                    Message = message,
+                    Message = new Message(
+                        content,
+                        AppProtocolVersion,
+                        AsPeer,
+                        sendTime,
+                        identity),
                     Target = peer,
-                }, cancellationToken);
+                },
+                cancellationToken);
 
             while (!cancellationToken.IsCancellationRequested &&
-                   !_replyToReceive.ContainsKey(message.Identity))
+                   !_replyToReceive.ContainsKey(identity))
             {
                 if (DateTimeOffset.UtcNow - sendTime > (timeout ?? TimeSpan.MaxValue))
                 {
                     _logger.Error(
-                        "Reply of {Message} of {identity} did not received in " +
+                        "Reply of {Content} of {identity} did not received in " +
                         "expected timespan {TimeSpan}",
-                        message,
-                        message.Identity,
+                        content,
+                        identity,
                         timeout ?? TimeSpan.MaxValue);
                     throw new CommunicationFailException(
                         $"Timeout occurred during {nameof(SendMessageAsync)}().",
-                        message.Type,
+                        content.Type,
                         peer);
                 }
 
@@ -405,12 +399,12 @@ namespace Libplanet.Net.Tests.Protocols
                     $"Operation is canceled during {nameof(SendMessageAsync)}().");
             }
 
-            if (_replyToReceive.TryRemove(message.Identity, out Message reply))
+            if (_replyToReceive.TryRemove(identity, out Message reply))
             {
                 _logger.Debug(
-                    "Received reply {Reply} of message with identity {identity}",
-                    reply,
-                    message.Identity);
+                    "Received reply {Content} of message with identity {identity}",
+                    reply.Content,
+                    identity);
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
                 ReceivedMessages.Add(reply);
                 MessageHistory.Enqueue(reply);
@@ -429,7 +423,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public async Task<IEnumerable<Message>> SendMessageAsync(
             BoundPeer peer,
-            Message message,
+            MessageContent content,
             TimeSpan? timeout,
             int expectedResponses,
             bool returnWhenTimeout,
@@ -437,11 +431,14 @@ namespace Libplanet.Net.Tests.Protocols
         {
             return new[]
             {
-                await SendMessageAsync(peer, message, timeout, cancellationToken),
+                await SendMessageAsync(peer, content, timeout, cancellationToken),
             };
         }
 
-        public async Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)
+        public async Task ReplyMessageAsync(
+            MessageContent content,
+            byte[] identity,
+            CancellationToken cancellationToken)
         {
             if (_disposed)
             {
@@ -453,11 +450,16 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new TransportException("Start transport before use.");
             }
 
-            _logger.Debug("Replying {Message}...", message);
-            message.Remote = AsPeer;
+            _logger.Debug("Replying {Content}...", content);
+            var message = new Message(
+                content,
+                AppProtocolVersion,
+                AsPeer,
+                DateTimeOffset.UtcNow,
+                identity);
             await Task.Delay(_networkDelay, cancellationToken);
-            _transports[_peersToReply[message.Identity]].ReceiveReply(message);
-            _peersToReply.TryRemove(message.Identity, out Address addr);
+            _transports[_peersToReply[identity]].ReceiveReply(message);
+            _peersToReply.TryRemove(identity, out Address addr);
         }
 
         public async Task WaitForTestMessageWithData(
@@ -487,7 +489,9 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new ObjectDisposedException(nameof(TestTransport));
             }
 
-            return ReceivedMessages.OfType<TestMessage>().Any(msg => msg.Data == data);
+            return ReceivedMessages.Select(m => m.Content)
+                .OfType<TestMessage>()
+                .Any(c => c.Data == data);
         }
 
         private void ReceiveMessage(Message message)
@@ -497,13 +501,8 @@ namespace Libplanet.Net.Tests.Protocols
                 return;
             }
 
-            if (!(message.Remote is BoundPeer boundPeer))
-            {
-                throw new ArgumentException("Sender of message is not a BoundPeer.");
-            }
-
             MessageHistory.Enqueue(message);
-            if (message is TestMessage testMessage)
+            if (message.Content is TestMessage testMessage)
             {
                 if (_ignoreTestMessageWithData.Contains(testMessage.Data))
                 {
@@ -516,13 +515,18 @@ namespace Libplanet.Net.Tests.Protocols
                     // If this transport is blocked for testing, do not broadcast.
                     if (!_blockBroadcast)
                     {
-                        BroadcastTestMessage(testMessage.Remote.Address, testMessage.Data);
+                        BroadcastTestMessage(message.Remote.Address, testMessage.Data);
                     }
                 }
             }
             else
             {
-                _peersToReply[message.Identity] = boundPeer.Address;
+                if (message.Identity is null)
+                {
+                    throw new ArgumentNullException("message.Identity");
+                }
+
+                _peersToReply[message.Identity] = message.Remote.Address;
             }
 
             LastMessageTimestamp = DateTimeOffset.UtcNow;
@@ -533,6 +537,11 @@ namespace Libplanet.Net.Tests.Protocols
 
         private void ReceiveReply(Message message)
         {
+            if (message.Identity is null)
+            {
+                throw new ArgumentNullException("message.Identity");
+            }
+
             _replyToReceive[message.Identity] = message;
         }
 
@@ -542,11 +551,11 @@ namespace Libplanet.Net.Tests.Protocols
             {
                 Request req = await _requests.TakeAsync(cancellationToken);
 
-                if (req.RequestTime + _networkDelay <= DateTimeOffset.UtcNow)
+                if (req.Message.Timestamp + _networkDelay <= DateTimeOffset.UtcNow)
                 {
                     _logger.Debug(
-                        "Send {Message} with {Identity} to {Peer}",
-                        req.Message,
+                        "Send {Content} with identity {Identity} to {Peer}",
+                        req.Message.Content,
                         req.Message.Identity,
                         req.Target);
                     _transports[req.Target.Address].ReceiveMessage(req.Message);
@@ -561,8 +570,6 @@ namespace Libplanet.Net.Tests.Protocols
 
         private struct Request
         {
-            public DateTimeOffset RequestTime;
-
             public BoundPeer Target;
 
             public Message Message;
