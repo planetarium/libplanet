@@ -340,15 +340,15 @@ namespace Libplanet.Net
             }
             catch (OperationCanceledException e)
             {
-                _logger.Warning(e, $"{nameof(StartAsync)}() is canceled");
+                _logger.Warning(e, "{MethodName}() is canceled", nameof(StartAsync));
                 throw;
             }
             catch (Exception e)
             {
                 _logger.Error(
                     e,
-                    $"An unexpected exception occurred during {nameof(StartAsync)}()"
-                );
+                    "An unexpected exception occurred during {MethodName}()",
+                    nameof(StartAsync));
                 throw;
             }
         }
@@ -1243,15 +1243,13 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{fname}() is canceled");
+                    _logger.Warning(e, "{MethodName}() was canceled", fname);
                     throw;
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
-                        e,
-                        $"An unexpected exception occurred during {fname}()"
-                    );
+                        e, "An unexpected exception occurred during {MethodName}()", fname);
                 }
             }
         }
@@ -1284,15 +1282,15 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(BroadcastTxAsync)}() is canceled");
+                    _logger.Warning(e, "{MethodName}() was canceled", nameof(BroadcastTxAsync));
                     throw;
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occurred during {nameof(BroadcastTxAsync)}()"
-                    );
+                        "An unexpected exception occurred during {MethodName}()",
+                        nameof(BroadcastTxAsync));
                 }
             }
         }
@@ -1332,14 +1330,15 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled");
+                    _logger.Warning(e, "{MethodName}() was cancelled", nameof(RefreshTableAsync));
                     throw;
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unexpected exception occurred during " +
-                              $"{nameof(RefreshTableAsync)}(): {{0}}";
-                    _logger.Warning(e, msg, e);
+                    _logger.Warning(
+                        e,
+                        "An unexpected exception occurred during {MethodName}()",
+                        nameof(RefreshTableAsync));
                 }
             }
         }
@@ -1364,9 +1363,10 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unexpected exception occurred during " +
-                              $"{nameof(RebuildConnectionAsync)}(): {{0}}";
-                    _logger.Warning(e, msg, e);
+                    _logger.Warning(
+                        e,
+                        "Unexpected exception occurred during {MethodName}()",
+                        nameof(RebuildConnectionAsync));
                 }
             }
         }

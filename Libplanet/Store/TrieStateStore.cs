@@ -47,7 +47,7 @@ namespace Libplanet.Store
             // Bencodex values), it needs to be fixed so that it can prune offloaded Bencodex
             // values too.  https://github.com/planetarium/libplanet/issues/1653
             var stopwatch = new Stopwatch();
-            _logger.Verbose($"Started {nameof(PruneStates)}()");
+            _logger.Verbose("Started {MethodName}()", nameof(PruneStates));
             var survivalNodes = new HashSet<HashDigest<SHA256>>();
             foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
             {
@@ -108,7 +108,7 @@ namespace Libplanet.Store
         {
             IKeyValueStore targetKeyValueStore = targetStateStore.StateKeyValueStore;
             var stopwatch = new Stopwatch();
-            _logger.Verbose($"Started {nameof(CopyStates)}()");
+            _logger.Verbose("Started {MethodName}()", nameof(CopyStates));
             stopwatch.Start();
 
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
@@ -129,7 +129,7 @@ namespace Libplanet.Store
             _logger.Debug(
                 "Finished to copy all states {ElapsedMilliseconds}ms",
                 stopwatch.ElapsedMilliseconds);
-            _logger.Verbose($"Finished {nameof(CopyStates)}()");
+            _logger.Verbose("Finished {MethodName}()", nameof(CopyStates));
         }
 
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?)"/>

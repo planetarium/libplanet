@@ -156,12 +156,14 @@ namespace Libplanet.Net.Protocols
             catch (TaskCanceledException e)
             {
                 _logger.Debug(
-                    e, "Task cancelled during {FName}()", nameof(AddPeersAsync));
+                    e, "Task cancelled during {MethodName}()", nameof(AddPeersAsync));
             }
             catch (Exception e)
             {
                 _logger.Error(
-                    e, "Unexpected exception occurred during {FName}()", nameof(AddPeersAsync));
+                    e,
+                    "Unexpected exception occurred during {MethodName}()",
+                    nameof(AddPeersAsync));
                 throw;
             }
         }
@@ -312,8 +314,8 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                $"{nameof(FindSpecificPeerAsync)}() with {{Target}}. " +
-                "(depth: {Depth})",
+                "{MethodName}() with {Target}. (depth: {Depth})",
+                nameof(FindSpecificPeerAsync),
                 target,
                 depth);
 
@@ -545,8 +547,8 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                $"{nameof(FindPeerAsync)}() with {{Target}} to {{Peer}}. " +
-                "(depth: {Depth})",
+                "{MethodName}() with {Target} to {Peer}. (depth: {Depth})",
+                nameof(FindPeerAsync),
                 target,
                 viaPeer,
                 depth);
