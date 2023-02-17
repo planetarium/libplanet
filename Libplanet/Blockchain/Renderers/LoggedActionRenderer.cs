@@ -44,7 +44,7 @@ namespace Libplanet.Blockchain.Renderers
         public LoggedActionRenderer(
             IActionRenderer<T> renderer,
             ILogger logger,
-            LogEventLevel level = LogEventLevel.Information
+            LogEventLevel level = LogEventLevel.Debug
         )
             : base(renderer, logger, level)
         {
