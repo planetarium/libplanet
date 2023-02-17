@@ -25,8 +25,8 @@ namespace Libplanet.Net
                     if (blocks is { } && blocks.Count > 0)
                     {
                         var latest = blocks.Last();
-                        _logger.Debug(
-                            "{MethodName}() has started. Excerpt: #{BlockIndex} {BlockHash} " +
+                        _logger.Information(
+                            "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
                             nameof(ConsumeBlockCandidates),
                             latest.Index,
@@ -60,7 +60,7 @@ namespace Libplanet.Net
             try
             {
                 FillBlocksAsyncStarted.Set();
-                _logger.Debug(
+                _logger.Information(
                     methodName + " starts to append. Current tip: #{BlockIndex}",
                     BlockChain.Tip.Index
                 );
@@ -69,7 +69,7 @@ namespace Libplanet.Net
                     candidate: candidate,
                     evaluateActions: true);
                 ProcessFillBlocksFinished.Set();
-                _logger.Debug(
+                _logger.Information(
                     methodName + " finished appending blocks. Synced tip: #{BlockIndex}",
                     synced.Tip.Index
                 );
@@ -126,7 +126,7 @@ namespace Libplanet.Net
 
              if (oldTip is null || branchpoint.Equals(oldTip))
              {
-                 _logger.Debug(
+                 _logger.Information(
                      "No need to fork. at {MethodName}()",
                      nameof(AppendPreviousBlocks)
                  );
@@ -183,7 +183,7 @@ namespace Libplanet.Net
              }
              catch (Exception)
              {
-                 _logger.Debug(
+                 _logger.Information(
                      "Delete Chain Id: {ChainId}",
                      workspace.Id
                  );
@@ -202,7 +202,7 @@ namespace Libplanet.Net
                      _store.DeleteChainId(id);
                  }
 
-                 _logger.Debug(
+                 _logger.Information(
                      "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
                      "at {MethodName}()",
                      workspace?.Id,

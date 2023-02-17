@@ -939,7 +939,7 @@ namespace Libplanet.Blockchain
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "StateUpdateDuration")
-                    .Debug(
+                    .Information(
                         "Finished updating the states with {KeyCount} key changes affected by " +
                         "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
                         totalDelta.Count,
@@ -1021,7 +1021,7 @@ namespace Libplanet.Blockchain
             _logger
                 .ForContext("Tag", "Metric")
                 .ForContext("Subtag", "FindHashesDuration")
-                .Debug(
+                .Information(
                     "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
                     "in {DurationMs:F0}ms",
                     result.Count,
@@ -1073,7 +1073,7 @@ namespace Libplanet.Blockchain
                 _blockChainStates,
                 ActionEvaluator);
             Guid forkedId = forked.Id;
-            _logger.Debug(
+            _logger.Information(
                 "Trying to fork chain at {branchPoint}" +
                 "(prevId: {prevChainId}) (forkedId: {forkedChainId})",
                 point,
@@ -1161,7 +1161,7 @@ namespace Libplanet.Blockchain
             // are incomplete they are complemented anyway:
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
-            _logger.Debug(
+            _logger.Information(
                 "Trying to append block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
 
             block.ValidateTimestamp();
@@ -1197,7 +1197,7 @@ namespace Libplanet.Blockchain
 
                     if (!expectedNonce.Equals(tx1.Nonce))
                     {
-                        _logger.Debug("Failed to append invalid tx {TxId}", tx1.Id);
+                        _logger.Information("Failed to append invalid tx {TxId}", tx1.Id);
                         throw new InvalidTxNonceException(
                             "Transaction nonce is invalid.",
                             tx1.Id,
@@ -1214,13 +1214,13 @@ namespace Libplanet.Blockchain
                 {
                     if (evaluateActions && actionEvaluations is null)
                     {
-                        _logger.Debug(
+                        _logger.Information(
                             "Executing actions in the block #{BlockIndex} {BlockHash}...",
                             block.Index,
                             block.Hash
                         );
                         actionEvaluations = ExecuteActions(block);
-                        _logger.Debug(
+                        _logger.Information(
                             "Executed actions in the block #{BlockIndex} {BlockHash}",
                             block.Index,
                             block.Hash
@@ -1231,7 +1231,7 @@ namespace Libplanet.Blockchain
                         _logger
                             .ForContext("Tag", "Metric")
                             .ForContext("Subtag", "BlockAppendTimestamp")
-                            .Debug(
+                            .Information(
                                 "Block #{BlockIndex} {BlockHash} with " +
                                 "timestamp {BlockTimestamp} appended at {AppendTimestamp}",
                                 block.Index,
@@ -1262,7 +1262,7 @@ namespace Libplanet.Blockchain
 
                 if (IsCanonical)
                 {
-                    _logger.Debug(
+                    _logger.Information(
                         "Unstaging {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
                         block.Transactions.Count(),
                         block.Index,
@@ -1272,7 +1272,7 @@ namespace Libplanet.Blockchain
                         UnstageTransaction(tx);
                     }
 
-                    _logger.Debug(
+                    _logger.Information(
                         "Unstaged {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
                         block.Transactions.Count(),
                         block.Index,
@@ -1280,7 +1280,7 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    _logger.Debug(
+                    _logger.Information(
                         "Skipping unstaging transactions from block #{BlockIndex} {BlockHash} " +
                         "for non-canonical chain {ChainID}",
                         block.Index,
@@ -1289,7 +1289,7 @@ namespace Libplanet.Blockchain
                 }
 
                 TipChanged?.Invoke(this, (prevTip, block));
-                _logger.Debug(
+                _logger.Information(
                     "Appended the block #{BlockIndex} {BlockHash}",
                     block.Index,
                     block.Hash);
@@ -1299,7 +1299,7 @@ namespace Libplanet.Blockchain
                     const string startMsg =
                         "Invoking renderers for #{BlockIndex} {BlockHash}... " +
                         "({Renderers} renderer(s), {ActionRenderers} action renderer(s))";
-                    _logger.Debug(
+                    _logger.Information(
                         startMsg,
                         block.Index,
                         block.Hash,
@@ -1330,7 +1330,7 @@ namespace Libplanet.Blockchain
                     const string endMsg =
                         "Invoked renderers for #{BlockIndex} {BlockHash}... " +
                         "({Renderers} renderer(s), {ActionRenderers} action renderer(s))";
-                    _logger.Debug(
+                    _logger.Information(
                         endMsg,
                         block.Index,
                         block.Hash,
@@ -1359,7 +1359,7 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                _logger.Debug(
+                _logger.Information(
                     "Finding a branchpoint with locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
                 foreach (BlockHash hash in locator)
@@ -1368,7 +1368,7 @@ namespace Libplanet.Blockchain
                         && _blocks[hash] is Block<T> block
                         && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
-                        _logger.Debug(
+                        _logger.Information(
                             "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}",
                             locator.FirstOrDefault(),
                             hash
@@ -1377,7 +1377,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                _logger.Debug(
+                _logger.Information(
                     "Failed to find a branchpoint locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
                 return null;

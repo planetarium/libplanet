@@ -179,7 +179,7 @@ namespace Libplanet.Net
 
             if (!needed)
             {
-                _logger.Debug(
+                _logger.Information(
                     "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
                     "for the current chain with tip #{TipIndex} {TipHash}",
                     header.Index,
@@ -241,7 +241,7 @@ namespace Libplanet.Net
                 return;
             }
 
-            _logger.Debug(
+            _logger.Information(
                 "Received a {MessageType} message with {TxIdCount} txIds",
                 nameof(Messages.TxIdsMsg),
                 message.Ids.Count()
