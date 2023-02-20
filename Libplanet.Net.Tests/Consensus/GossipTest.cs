@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Transports;
 using Libplanet.Tests.Store;
 using NetMQ;
 using Nito.AsyncEx;
@@ -49,7 +47,7 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
-            var gossip1 = CreateGossip(
+            var gossip1 = TestUtils.CreateGossip(
                 content =>
                 {
                     if (content is ConsensusProposalMsg)
@@ -60,7 +58,7 @@ namespace Libplanet.Net.Tests.Consensus
                 key1,
                 6001,
                 new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
-            var gossip2 = CreateGossip(
+            var gossip2 = TestUtils.CreateGossip(
                 content =>
                 {
                     if (content is ConsensusProposalMsg)
@@ -104,7 +102,7 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
-            var gossip1 = CreateGossip(
+            var gossip1 = TestUtils.CreateGossip(
                 content =>
                 {
                     if (content is ConsensusProposalMsg)
@@ -114,8 +112,8 @@ namespace Libplanet.Net.Tests.Consensus
                 },
                 key1,
                 6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
-            var gossip2 = CreateGossip(
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("localhost", 6002)) });
+            var gossip2 = TestUtils.CreateGossip(
                 content =>
                 {
                     if (content is ConsensusProposalMsg)
@@ -157,7 +155,7 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
-            var gossip1 = CreateGossip(
+            var gossip1 = TestUtils.CreateGossip(
                 content =>
                 {
                     if (content is ConsensusProposalMsg)
@@ -168,7 +166,7 @@ namespace Libplanet.Net.Tests.Consensus
                 key1,
                 6001,
                 new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
-            var gossip2 = CreateGossip(
+            var gossip2 = TestUtils.CreateGossip(
                 content =>
                 {
                     if (content is ConsensusProposalMsg)
@@ -220,7 +218,7 @@ namespace Libplanet.Net.Tests.Consensus
             var key2 = new PrivateKey();
             var received = false;
             var receivedEvent = new AsyncAutoResetEvent();
-            var transport1 = CreateTransport(key1, 6001);
+            var transport1 = TestUtils.CreateTransport(key1, 6001);
 
             async Task HandleMessage(Message message)
             {
@@ -236,7 +234,7 @@ namespace Libplanet.Net.Tests.Consensus
                 ImmutableArray<BoundPeer>.Empty,
                 _ => { },
                 TimeSpan.FromMinutes(2));
-            var transport2 = CreateTransport(key2, 6002);
+            var transport2 = TestUtils.CreateTransport(key2, 6002);
             try
             {
                 _ = gossip.StartAsync(default);
@@ -261,43 +259,6 @@ namespace Libplanet.Net.Tests.Consensus
                 gossip.Dispose();
                 transport2.Dispose();
             }
-        }
-
-        private Gossip CreateGossip(
-            Action<MessageContent> processMessage,
-            PrivateKey? privateKey = null,
-            int? port = null,
-            IEnumerable<BoundPeer>? peers = null)
-        {
-            var transport = CreateTransport(privateKey, port);
-            return new Gossip(
-                transport,
-                peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
-                ImmutableArray<BoundPeer>.Empty,
-                processMessage,
-                TimeSpan.FromMinutes(2));
-        }
-
-        private NetMQTransport CreateTransport(
-            PrivateKey? privateKey = null,
-            int? port = null)
-        {
-            var apvOptions = new AppProtocolVersionOptions
-                { AppProtocolVersion = TestUtils.AppProtocolVersion };
-            HostOptions hostOptions;
-            if (port is { } p)
-            {
-                hostOptions = new HostOptions("127.0.0.1", Array.Empty<IceServer>(), p);
-            }
-            else
-            {
-                hostOptions = new HostOptions("127.0.0.1", Array.Empty<IceServer>());
-            }
-
-            return NetMQTransport.Create(
-                privateKey ?? new PrivateKey(),
-                apvOptions,
-                hostOptions).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

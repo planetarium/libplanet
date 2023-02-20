@@ -321,6 +321,43 @@ namespace Libplanet.Net.Tests
                 contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
         }
 
+        public static Gossip CreateGossip(
+            Action<MessageContent> processMessage,
+            PrivateKey? privateKey = null,
+            int? port = null,
+            IEnumerable<BoundPeer>? peers = null)
+        {
+            var transport = CreateTransport(privateKey, port);
+            return new Gossip(
+                transport,
+                peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
+                ImmutableArray<BoundPeer>.Empty,
+                processMessage,
+                TimeSpan.FromMinutes(2));
+        }
+
+        public static NetMQTransport CreateTransport(
+            PrivateKey? privateKey = null,
+            int? port = null)
+        {
+            var apvOptions = new AppProtocolVersionOptions
+                { AppProtocolVersion = AppProtocolVersion };
+            HostOptions hostOptions;
+            if (port is { } p)
+            {
+                hostOptions = new HostOptions("localhost", Array.Empty<IceServer>(), p);
+            }
+            else
+            {
+                hostOptions = new HostOptions("localhost", Array.Empty<IceServer>());
+            }
+
+            return NetMQTransport.Create(
+                privateKey ?? new PrivateKey(),
+                apvOptions,
+                hostOptions).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
         public static byte[] GetRandomBytes(int size)
         {
             var bytes = new byte[size];
