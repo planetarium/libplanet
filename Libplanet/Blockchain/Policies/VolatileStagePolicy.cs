@@ -103,7 +103,7 @@ namespace Libplanet.Blockchain.Policies
                             _logger
                                 .ForContext("Tag", "Metric")
                                 .ForContext("Subtag", "TxStageTimestamp")
-                                .Debug(
+                                .Information(
                                     "Transaction {TxId} by {Signer} " +
                                     "with timestamp {TxTimestamp} staged at {StagedTimestamp}",
                                     transaction.Id,

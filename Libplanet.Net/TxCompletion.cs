@@ -76,11 +76,12 @@ namespace Libplanet.Net
 
             if (!required.Any())
             {
-                _logger.Debug("No unaware transactions to receive");
+                _logger.Information(
+                    "No unaware transactions to receive");
                 return;
             }
 
-            _logger.Debug(
+            _logger.Information(
                 "Unaware transactions to receive: {TxIdCount}",
                 required.Count
             );
@@ -175,7 +176,7 @@ namespace Libplanet.Net
 
                 if (stagedTxs.Any())
                 {
-                    _logger.Debug(
+                    _logger.Information(
                         "{StagedTxCount} out of {TxCount} txs from {Peer} staged successfully",
                         stagedTxs.Count,
                         txs.Count,
