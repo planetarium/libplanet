@@ -243,7 +243,9 @@ namespace Libplanet.Net.Tests.Protocols
                 }
                 catch (DifferentAppProtocolVersionException)
                 {
-                    _logger.Debug("Different version encountered during AddPeersAsync()");
+                    _logger.Debug(
+                        "Different version encountered during {MethodName}()",
+                        nameof(AddPeersAsync));
                 }
                 catch (PingTimeoutException)
                 {
@@ -254,13 +256,16 @@ namespace Libplanet.Net.Tests.Protocols
                 }
                 catch (TaskCanceledException)
                 {
-                    _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}()");
+                    _logger.Debug(
+                        "Task was cancelled during {MethodName}()",
+                        nameof(AddPeersAsync));
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
                         e,
-                        $"Unexpected exception occurred during {nameof(AddPeersAsync)}()");
+                        "Unexpected exception occurred during {MethodName}()",
+                        nameof(AddPeersAsync));
                     throw;
                 }
             }
