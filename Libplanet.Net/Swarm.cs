@@ -784,10 +784,9 @@ namespace Libplanet.Net
         {
             var blockHashesAsArray = blockHashes as BlockHash[] ?? blockHashes.ToArray();
             _logger.Information(
-                "Try to download {BlockHashes} block(s) from {Peer}...",
+                "Trying to download {BlockHashes} block(s) from {Peer}...",
                 blockHashesAsArray.Length,
-                peer
-            );
+                peer);
 
             var request = new GetBlocksMsg(blockHashesAsArray);
             int hashCount = blockHashesAsArray.Count();
@@ -1090,16 +1089,18 @@ namespace Libplanet.Net
 
         private void BroadcastBlock(Address? except, Block<T> block)
         {
-            _logger.Information("Trying to broadcast blocks...");
+            _logger.Information(
+                "Trying to broadcast block #{Index} {Hash}...",
+                block.Index,
+                block.Hash);
             var message = new BlockHeaderMsg(BlockChain.Genesis.Hash, block.Header);
             BroadcastMessage(except, message);
-            _logger.Information("Block broadcasting complete");
         }
 
         private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
-            _logger.Information("Broadcasting {TxIdCount} txIds...", txIds.Count);
+            _logger.Information("Broadcasting {Count} txIds...", txIds.Count);
             BroadcastTxIds(except?.Address, txIds);
         }
 
