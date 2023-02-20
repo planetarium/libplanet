@@ -17,6 +17,9 @@ namespace Libplanet.Net
             var checkInterval = TimeSpan.FromMilliseconds(10);
             while (!cancellationToken.IsCancellationRequested)
             {
+                _logger.Debug(
+                    "Trying to consume a branch candidate; number of candidates in table: {Count}",
+                    BlockCandidateTable.Count);
                 if (BlockCandidateTable.Count > 0)
                 {
                     BlockHeader tipHeader = BlockChain.Tip.Header;
@@ -24,15 +27,15 @@ namespace Libplanet.Net
                         BlockCandidateTable.GetCurrentRoundCandidate(tipHeader);
                     if (blocks is { } && blocks.Count > 0)
                     {
-                        var latest = blocks.Last();
+                        var root = blocks.First();
+                        var tip = blocks.Last();
                         _logger.Information(
-                            "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
-                            "Count of {BlockCandidateTable}: {Count}",
-                            nameof(ConsumeBlockCandidates),
-                            latest.Index,
-                            latest.Hash,
-                            nameof(BlockCandidateTable),
-                            BlockCandidateTable.Count);
+                            "Consuming branch with root #{RootIndex} {RootHash} " +
+                            "and tip #{TipIndex} {TipHash}",
+                            root.Index,
+                            root.Hash,
+                            tip.Index,
+                            tip.Hash);
                         _ = BlockCandidateProcess(
                             blocks,
                             cancellationToken);
@@ -55,28 +58,31 @@ namespace Libplanet.Net
         {
             BlockChain<T> synced = null;
             System.Action renderSwap = () => { };
-            const string methodName =
-                nameof(Swarm<T>) + "<T>." + nameof(BlockCandidateProcess) + "()";
             try
             {
                 FillBlocksAsyncStarted.Set();
-                _logger.Information(
-                    methodName + " starts to append. Current tip: #{BlockIndex}",
-                    BlockChain.Tip.Index
-                );
+                _logger.Debug(
+                    "{MethodName}() starts to append; current tip is #{Index} {Hash}",
+                    nameof(BlockCandidateProcess),
+                    BlockChain.Tip.Index,
+                    BlockChain.Tip.Hash);
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
                     candidate: candidate,
                     evaluateActions: true);
                 ProcessFillBlocksFinished.Set();
-                _logger.Information(
-                    methodName + " finished appending blocks. Synced tip: #{BlockIndex}",
-                    synced.Tip.Index
-                );
+                _logger.Debug(
+                    "{MethodName}() finished appending blocks; synced tip is #{Index} {Hash}",
+                    nameof(BlockCandidateProcess),
+                    synced.Tip.Index,
+                    synced.Tip.Hash);
             }
             catch (Exception e)
             {
-                _logger.Error(e, methodName + " failed to append blocks");
+                _logger.Error(
+                    e,
+                    "{MethodNAme}() has failed to append blocks",
+                    nameof(BlockCandidateProcess));
                 FillBlocksAsyncFailed.Set();
                 return false;
             }
@@ -126,10 +132,9 @@ namespace Libplanet.Net
 
              if (oldTip is null || branchpoint.Equals(oldTip))
              {
-                 _logger.Information(
-                     "No need to fork. at {MethodName}()",
-                     nameof(AppendPreviousBlocks)
-                 );
+                 _logger.Debug(
+                    "No need to fork. at {MethodName}()",
+                    nameof(AppendPreviousBlocks));
              }
              else if (!workspace.ContainsBlock(branchpoint.Hash))
              {
@@ -183,7 +188,7 @@ namespace Libplanet.Net
              }
              catch (Exception)
              {
-                 _logger.Information(
+                 _logger.Debug(
                      "Delete Chain Id: {ChainId}",
                      workspace.Id
                  );
@@ -202,7 +207,7 @@ namespace Libplanet.Net
                      _store.DeleteChainId(id);
                  }
 
-                 _logger.Information(
+                 _logger.Debug(
                      "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
                      "at {MethodName}()",
                      workspace?.Id,
