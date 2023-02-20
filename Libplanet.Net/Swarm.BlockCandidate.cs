@@ -82,7 +82,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    "{MethodNAme}() has failed to append blocks",
+                    "{MethodName}() has failed to append blocks",
                     nameof(BlockCandidateProcess));
                 FillBlocksAsyncFailed.Set();
                 return false;
