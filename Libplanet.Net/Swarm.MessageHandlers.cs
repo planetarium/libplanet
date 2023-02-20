@@ -162,26 +162,31 @@ namespace Libplanet.Net
                 return;
             }
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
             bool needed = IsBlockNeeded(header);
-            TimeSpan elapsed = stopwatch.Elapsed;
-            stopwatch.Stop();
-
             _logger.Information(
-                "Received " + nameof(BlockHeader) + " #{BlockIndex} {BlockHash}; " +
-                "Needed? {Needed}; Elapsed: {Elapsed}",
+                "Received " + nameof(BlockHeader) + " #{ReceivedIndex} {ReceivedHash}",
                 header.Index,
-                header.Hash,
-                needed,
-                elapsed
-            );
+                header.Hash);
 
-            if (!needed)
+            if (needed)
             {
                 _logger.Information(
-                    "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
-                    "for the current chain with tip #{TipIndex} {TipHash}",
+                    "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
+                    nameof(BlockDemandTable) + "...",
+                    header.Index,
+                    header.Hash,
+                    peer);
+                BlockDemandTable.Add(
+                    BlockChain,
+                    IsBlockNeeded,
+                    new BlockDemand(header, peer, DateTimeOffset.UtcNow));
+                return;
+            }
+            else
+            {
+                _logger.Information(
+                    "Discarding received header #{ReceivedIndex} {ReceivedHash} from peer {Peer} " +
+                    "as it is not needed for the current chain with tip #{TipIndex} {TipHash}",
                     header.Index,
                     header.Hash,
                     peer,
@@ -189,17 +194,6 @@ namespace Libplanet.Net
                     BlockChain.Tip.Hash);
                 return;
             }
-
-            _logger.Information(
-                "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
-                nameof(BlockDemandTable) + "...",
-                header.Index,
-                header.Hash,
-                peer);
-            BlockDemandTable.Add(
-                BlockChain,
-                IsBlockNeeded,
-                new BlockDemand(header, peer, DateTimeOffset.UtcNow));
         }
 
         private async Task TransferTxsAsync(GetTxsMsg getTxs)
