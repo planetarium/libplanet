@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.49.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on February 20, 2023.
 
 ### Backward-incompatible API changes
 
@@ -16,10 +14,6 @@ To be released.
  -  (Libplanet.Net) Changed the return type of
     `BlockCandidateTable<T>.GetCurrentRoundCandidate()` from `List<Block<T>>?`
     to `Branch<T>?`.  [[#2822]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -36,10 +30,6 @@ To be released.
  -  Fixed a bug where `NetMQTransport`'s overall throughput had been dropped
     when hostname resolving for some peers was delayed.  [[#2817]]
 
-### Dependencies
-
-### CLI tools
-
 [#2808]: https://github.com/planetarium/libplanet/issues/2808
 [#2814]: https://github.com/planetarium/libplanet/pull/2814
 [#2817]: https://github.com/planetarium/libplanet/pull/2817
@@ -49,7 +39,7 @@ To be released.
 Version 0.48.0
 --------------
 
-Released on Februrary 14, 2023.
+Released on February 14, 2023.
 
 ### Backward-incompatible API changes
 
