@@ -131,7 +131,7 @@ namespace Libplanet.Net
 
                 if (totalBlocksToDownload == 0)
                 {
-                    _logger.Debug("No any blocks to fetch.");
+                    _logger.Debug("No any blocks to fetch");
                     return;
                 }
 
@@ -147,7 +147,7 @@ namespace Libplanet.Net
                     in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
-                        "Got #{BlockIndex} {BlockHash} from {Peer}.",
+                        "Got #{BlockIndex} {BlockHash} from {Peer}",
                         block.Index,
                         block.Hash,
                         sourcePeer
@@ -208,7 +208,7 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}().";
+                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}()";
                 _logger.Error(e, msg);
                 FillBlocksAsyncFailed.Set();
             }
@@ -229,7 +229,7 @@ namespace Libplanet.Net
                 }
 
                 ProcessFillBlocksFinished.Set();
-                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully");
+                _logger.Debug("{MethodName}() has finished successfully", nameof(PullBlocksAsync));
             }
         }
 
@@ -243,7 +243,7 @@ namespace Libplanet.Net
                 if (BlockDemandTable.Any())
                 {
                     _logger.Debug(
-                        "{MethodName} blockDemand count: {BlockDemandCount}",
+                        "{MethodName}() blockDemand count: {BlockDemandCount}",
                         nameof(FillBlocksAsync),
                         BlockDemandTable.Demands.Count);
                     foreach (var blockDemand in BlockDemandTable.Demands.Values)
@@ -263,7 +263,7 @@ namespace Libplanet.Net
                 BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
             }
 
-            _logger.Debug($"{nameof(FillBlocksAsync)} has finished.");
+            _logger.Debug("{MethodName}() has finished", nameof(FillBlocksAsync));
         }
 
         private async Task PollBlocksAsync(
@@ -325,7 +325,7 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Debug($"Start to {nameof(CompleteBlocksAsync)}().");
+                _logger.Debug("Start to {MethodName}()", nameof(CompleteBlocksAsync));
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
@@ -386,7 +386,7 @@ namespace Libplanet.Net
 
                 if (totalBlocksToDownload == 0)
                 {
-                    _logger.Debug("No any blocks to fetch.");
+                    _logger.Debug("No any blocks to fetch");
                     return renderSwap;
                 }
 
@@ -404,7 +404,7 @@ namespace Libplanet.Net
                         in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
-                        "Got #{BlockIndex} {BlockHash} from {Peer}.",
+                        "Got #{BlockIndex} {BlockHash} from {Peer}",
                         block.Index,
                         block.Hash,
                         sourcePeer
@@ -463,7 +463,7 @@ namespace Libplanet.Net
                     });
                     _logger.Debug(
                         "Appended block #{BlockIndex} {BlockHash} " +
-                        "to the workspace chain.",
+                        "to the workspace chain",
                         block.Index,
                         block.Hash
                     );
@@ -508,9 +508,8 @@ namespace Libplanet.Net
                     }
 
                     _logger.Debug(
-                        "The starting tip is {TipCandidate}," +
-                        " and we are currently passing tip {CurrentTip}." +
-                        " The target tip is {WorkspaceTip}",
+                        "The starting tip is {TipCandidate} and we are currently passing " +
+                        "tip {CurrentTip}; the target tip is {WorkspaceTip}",
                         tipCandidate.Index,
                         b?.Index,
                         workspace.Tip.Index);
@@ -567,7 +566,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        "An exception occurred during appending blocks.");
+                        "An exception occurred during appending blocks");
                     throw;
                 }
 
@@ -584,7 +583,7 @@ namespace Libplanet.Net
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled.");
+                    _logger.Information("{MethodName}() is canceled", nameof(CompleteBlocksAsync));
                 }
 
                 IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
@@ -594,9 +593,11 @@ namespace Libplanet.Net
                     || cancellationToken.IsCancellationRequested)
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)}() is aborted. Complete? {complete}; " +
+                        "{MethodName}() is aborted. Complete? {Complete}; " +
                         "delete the temporary working chain ({TId}: #{TIndex} {THash}), " +
-                        "and make the existing chain ({EId}: #{EIndex} {EHash}) remains.",
+                        "and make the existing chain ({EId}: #{EIndex} {EHash}) remains",
+                        nameof(CompleteBlocksAsync),
+                        complete,
                         workspace.Id,
                         workspace.Tip.Index,
                         workspace.Tip.Hash,
@@ -608,9 +609,10 @@ namespace Libplanet.Net
                 else if (canonComparer.Compare(workspace.Tip, BlockChain.Tip) < 0)
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +
+                        "{MethodName}() is aborted since existing chain " +
                         "({EId}: #{EIndex} {EHash}) already has proper tip than " +
-                        "temporary working chain ({TId}: #{TIndex} {THash}).",
+                        "temporary working chain ({TId}: #{TIndex} {THash})",
+                        nameof(CompleteBlocksAsync),
                         BlockChain.Id,
                         BlockChain.Tip.Index,
                         BlockChain.Tip.Hash,
@@ -622,9 +624,10 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)} finished; " +
+                        "{MethodName}() finished; " +
                         "replace the existing chain ({0}: {1}) with " +
-                        "the working chain ({2}: {3}).",
+                        "the working chain ({2}: {3})",
+                        nameof(CompleteBlocksAsync),
                         BlockChain.Id,
                         BlockChain.Tip,
                         workspace.Id,
@@ -667,7 +670,7 @@ namespace Libplanet.Net
             long actionsCount = 0, txsCount = 0, initHeight = branchpoint?.Index + 1 ?? 0;
             int count = 0, totalCount = (int)(workspace.Count - initHeight);
             DateTimeOffset executionStarted = DateTimeOffset.Now;
-            _logger.Debug("Starting to execute actions of {BlockCount} blocks.", totalCount);
+            _logger.Debug("Starting to execute actions of {BlockCount} blocks", totalCount);
             var blockHashes = workspace.IterateBlockHashes((int)initHeight);
             foreach (BlockHash hash in blockHashes)
             {
@@ -687,7 +690,7 @@ namespace Libplanet.Net
                     transactions.Sum(tx => tx.CustomActions is { } ca ? ca.Count : 1L);
 
                 _logger.Debug(
-                    "Executed actions in block #{Index} {Hash}.",
+                    "Executed actions in block #{Index} {Hash}",
                     block.Index,
                     block.Hash);
                 progress?.Report(new ActionExecutionState()
@@ -698,7 +701,7 @@ namespace Libplanet.Net
                 });
             }
 
-            _logger.Debug("Finished to execute actions.");
+            _logger.Debug("Finished to execute actions");
 
             TimeSpan spent = DateTimeOffset.Now - executionStarted;
             _logger.Verbose(

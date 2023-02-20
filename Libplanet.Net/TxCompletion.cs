@@ -76,13 +76,12 @@ namespace Libplanet.Net
 
             if (!required.Any())
             {
-                _logger.Debug(
-                    "No unaware transactions to receive.");
+                _logger.Debug("No unaware transactions to receive");
                 return;
             }
 
             _logger.Debug(
-                "Unaware transactions to receive: {TxIdCount}.",
+                "Unaware transactions to receive: {TxIdCount}",
                 required.Count
             );
 
@@ -135,7 +134,7 @@ namespace Libplanet.Net
                             {
                                 const string message =
                                     "Received transaction {TxId} from {Peer} will not be " +
-                                    "staged since it does not follow policy.";
+                                    "staged since it does not follow policy";
                                 _logger.Debug(
                                     tpve,
                                     message,
@@ -163,7 +162,7 @@ namespace Libplanet.Net
                     catch (InvalidTxException ite)
                     {
                         const string msg = "Received transaction from {Peer} with id {TxId} " +
-                                  "will not be staged since it is invalid.";
+                                  "will not be staged since it is invalid";
                         _logger.Error(ite, msg, peer, tx.Id);
                     }
                 }
@@ -187,7 +186,7 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Information(
-                        "No transaction has been staged among received {TxCount} from {Peer}.",
+                        "No transaction has been staged among received {TxCount} from {Peer}",
                         txs.Count,
                         peer
                     );
@@ -197,7 +196,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    "An error occurred during {FName} from {Peer}.",
+                    "An error occurred during {MethodName}() from {Peer}",
                     nameof(ProcessFetchedTxIds),
                     peer);
                 throw;
@@ -205,7 +204,7 @@ namespace Libplanet.Net
             finally
             {
                 _logger.Debug(
-                    "End of {FName} from {Peer}.",
+                    "End of {MethodName}() from {Peer}",
                     nameof(ProcessFetchedTxIds),
                     peer);
             }
@@ -338,7 +337,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        "An error occurred during {FName} from {Peer}.",
+                        "An error occurred during {MethodName}() from {Peer}",
                         nameof(RequestAsync),
                         _peer);
                     throw;
@@ -346,7 +345,7 @@ namespace Libplanet.Net
                 finally
                 {
                     _logger.Debug(
-                        "End of {FName} from {Peer}.",
+                        "End of {MethodName}() from {Peer}",
                         nameof(RequestAsync),
                         _peer);
                 }

@@ -916,7 +916,7 @@ namespace Libplanet.Blockchain
                         ValidatorSetKey);
                 const string deltaMsg =
                     "Summarized the states delta with {KeyCount} key changes " +
-                    "made by block #{BlockIndex} {BlockHash}.";
+                    "made by block #{BlockIndex} {BlockHash}";
                 _logger.Debug(deltaMsg, totalDelta.Count, block.Index, block.Hash);
 
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
@@ -924,7 +924,7 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256> rootHash = stateRoot.Hash;
                 const string rootHashMsg =
                     "Calculated the root hash of the states made by block #{BlockIndex} " +
-                    "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}.";
+                    "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}";
                 _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
 
                 if (!rootHash.Equals(block.StateRootHash))
@@ -943,7 +943,7 @@ namespace Libplanet.Blockchain
                     .ForContext("Subtag", "StateUpdateDuration")
                     .Debug(
                         "Finished updating the states with {KeyCount} key changes affected by " +
-                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
+                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
                         totalDelta.Count,
                         block.Index,
                         block.Hash,
@@ -1025,7 +1025,7 @@ namespace Libplanet.Blockchain
                 .ForContext("Subtag", "FindHashesDuration")
                 .Debug(
                     "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
-                    "in {DurationMs:F0}ms.",
+                    "in {DurationMs:F0}ms",
                     result.Count,
                     Store.ListChainIds().Count(),
                     duration.TotalMilliseconds);
@@ -1223,7 +1223,7 @@ namespace Libplanet.Blockchain
                         );
                         actionEvaluations = ExecuteActions(block);
                         _logger.Debug(
-                            "Executed actions in the block #{BlockIndex} {BlockHash}.",
+                            "Executed actions in the block #{BlockIndex} {BlockHash}",
                             block.Index,
                             block.Hash
                         );
@@ -1235,7 +1235,7 @@ namespace Libplanet.Blockchain
                             .ForContext("Subtag", "BlockAppendTimestamp")
                             .Debug(
                                 "Block #{BlockIndex} {BlockHash} with " +
-                                "timestamp {BlockTimestamp} appended at {AppendTimestamp}.",
+                                "timestamp {BlockTimestamp} appended at {AppendTimestamp}",
                                 block.Index,
                                 block.Hash,
                                 block.Timestamp.ToString(
@@ -1284,7 +1284,7 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug(
                         "Skipping unstaging transactions from block #{BlockIndex} {BlockHash} " +
-                        "for non-canonical chain {ChainID}.",
+                        "for non-canonical chain {ChainID}",
                         block.Index,
                         block.Hash,
                         Id);
@@ -1292,7 +1292,7 @@ namespace Libplanet.Blockchain
 
                 TipChanged?.Invoke(this, (prevTip, block));
                 _logger.Debug(
-                    "Appended the block #{BlockIndex} {BlockHash}.",
+                    "Appended the block #{BlockIndex} {BlockHash}",
                     block.Index,
                     block.Hash);
 
@@ -1362,7 +1362,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 _logger.Debug(
-                    "Finding a branchpoint with locator [{LocatorHead}, ...].",
+                    "Finding a branchpoint with locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
                 foreach (BlockHash hash in locator)
                 {
@@ -1371,7 +1371,7 @@ namespace Libplanet.Blockchain
                         && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
                         _logger.Debug(
-                            "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}.",
+                            "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}",
                             locator.FirstOrDefault(),
                             hash
                         );
@@ -1380,7 +1380,7 @@ namespace Libplanet.Blockchain
                 }
 
                 _logger.Debug(
-                    "Failed to find a branchpoint locator [{LocatorHead}, ...].",
+                    "Failed to find a branchpoint locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
                 return null;
             }

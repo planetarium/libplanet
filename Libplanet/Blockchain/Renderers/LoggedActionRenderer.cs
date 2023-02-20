@@ -169,24 +169,20 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Error(
                         e,
-                        errorMessage + " (rehearsal: {Rehearsal}): {Exception}",
+                        errorMessage + " (rehearsal: {Rehearsal})",
                         methodName,
                         actionType,
                         context.BlockIndex,
-                        context.Rehearsal,
-                        e
-                    );
+                        context.Rehearsal);
                 }
                 else
                 {
                     Logger.Error(
                         e,
-                        errorMessage + ": {Exception}",
+                        errorMessage,
                         methodName,
                         actionType,
-                        context.BlockIndex,
-                        e
-                    );
+                        context.BlockIndex);
                 }
 
                 throw;
@@ -199,7 +195,7 @@ namespace Libplanet.Blockchain.Renderers
             {
                 Logger.Write(
                     Level,
-                    endMessage + " (rehearsal: {Rehearsal}).",
+                    endMessage + " (rehearsal: {Rehearsal})",
                     methodName,
                     actionType,
                     context.BlockIndex,
@@ -210,7 +206,7 @@ namespace Libplanet.Blockchain.Renderers
             {
                 Logger.Write(
                     Level,
-                    endMessage + ".",
+                    endMessage,
                     methodName,
                     actionType,
                     context.BlockIndex

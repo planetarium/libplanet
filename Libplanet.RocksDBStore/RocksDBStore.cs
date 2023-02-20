@@ -410,7 +410,7 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            _logger.Debug($"Deleting chainID: {chainId}.");
+            _logger.Debug($"Deleting chainID: {chainId}");
             Guid? prevChain = GetPreviousChainInfo(chainId)?.Item1;
 
             string cfName = chainId.ToString();
@@ -454,7 +454,7 @@ namespace Libplanet.RocksDBStore
             catch (KeyNotFoundException)
             {
                 // Do nothing according to the specification: DeleteChainId() should be idempotent.
-                _logger.Debug($"No such chain ID in _chainDb: {cfName}.", cfName);
+                _logger.Debug($"No such chain ID in _chainDb: {cfName}", cfName);
             }
             catch (Exception e)
             {
@@ -1332,8 +1332,7 @@ namespace Libplanet.RocksDBStore
 
         private void LogUnexpectedException(string methodName, Exception e)
         {
-            string msg = $"An unexpected exception occurred on {methodName}: {{Message}}";
-            _logger.Error(e, msg, e.Message);
+            _logger.Error(e, "An unexpected exception occurred on {MethodName}()", methodName);
         }
 
         private (Guid, long)? GetPreviousChainInfo(Guid chainId)

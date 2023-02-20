@@ -87,7 +87,8 @@ namespace Libplanet.Action
 #pragma warning restore MEN002
 #pragma warning restore CS1573
         {
-            _logger = Log.ForContext<ActionEvaluator<T>>();
+            _logger = Log.ForContext<ActionEvaluator<T>>()
+                .ForContext("Source", nameof(ActionEvaluator<T>));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
@@ -138,7 +139,7 @@ namespace Libplanet.Action
             IPreEvaluationBlock block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            _logger.Debug(
+            _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
                 "pre-evaluation hash: {PreEvaluationHash}...",
                 block.Index,
@@ -184,9 +185,9 @@ namespace Libplanet.Action
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "BlockEvaluationDuration")
-                    .Debug(
+                    .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms.",
+                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms",
                         block.Transactions.Count,
                         block.Index,
                         ByteUtil.Hex(block.PreEvaluationHash),
@@ -384,7 +385,7 @@ namespace Libplanet.Action
                     DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
                     nextStates = action.Execute(context);
                     TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
-                    logger?.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
+                    logger?.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms");
                 }
                 catch (OutOfMemoryException e)
                 {
@@ -393,7 +394,7 @@ namespace Libplanet.Action
                     var message =
                         "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
                         "pre-evaluation hash {PreEvaluationHash} threw an exception " +
-                        "during execution.";
+                        "during execution";
                     logger?.Error(
                         e,
                         message,
@@ -426,7 +427,7 @@ namespace Libplanet.Action
                             "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
                             "pre-evaluation hash {PreEvaluationHash} and previous " +
                             "state root hash {StateRootHash} threw an exception " +
-                            "during execution.";
+                            "during execution";
                         logger?.Error(
                             e,
                             message,
@@ -440,7 +441,7 @@ namespace Libplanet.Action
                             $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash)}, tx {txid}, " +
                             $"previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
-                            "See also this exception's InnerException property.";
+                            "See also this exception's InnerException property";
                         logger?.Error(
                             "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
@@ -536,7 +537,7 @@ namespace Libplanet.Action
                 block.PreEvaluationHash
             ).WithMeasuringTime(
                 sw => _logger.Verbose(
-                    "Took {ElapsedMilliseconds}ms to order transactions.",
+                    "Took {ElapsedMilliseconds}ms to order transactions",
                     sw.ElapsedMilliseconds
                 )
             );
@@ -573,9 +574,9 @@ namespace Libplanet.Action
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
-                logger.Debug(
+                logger.Information(
                     "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
-                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
+                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms",
                     actions.Count,
                     actions.Select(action => action.ToString()!.Split('.')
                         .LastOrDefault()?.Replace(">", string.Empty)),
@@ -644,7 +645,7 @@ namespace Libplanet.Action
                 throw new InvalidOperationException(message);
             }
 
-            _logger.Debug(
+            _logger.Information(
                 $"Evaluating policy block action for block #{blockHeader.Index} " +
                 $"{ByteUtil.Hex(blockHeader.PreEvaluationHash)}");
 

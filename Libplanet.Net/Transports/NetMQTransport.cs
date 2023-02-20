@@ -108,7 +108,7 @@ namespace Libplanet.Net.Transports
                     {
                         _logger.Error(
                             e,
-                            "An exception has occurred while running {TaskName}.",
+                            "An exception has occurred while running {TaskName}",
                             nameof(_runtimeProcessor));
                     }
                 },
@@ -346,13 +346,6 @@ namespace Libplanet.Net.Transports
                     AsPeer,
                     DateTimeOffset.UtcNow
                 );
-                _logger.Verbose(
-                    "Enqueue a request {RequestId} to {Peer}: {@Message}.",
-                    reqId,
-                    peer,
-                    message
-                );
-                Interlocked.Increment(ref _requestCount);
                 var req = new MessageRequest(
                     reqId,
                     rawMessage,
@@ -360,15 +353,14 @@ namespace Libplanet.Net.Transports
                     now,
                     expectedResponses,
                     channel,
-                    linkedCt
-                );
+                    linkedCt);
                 await _requests.Writer.WriteAsync(
                     req,
-                    linkedCt
-                ).ConfigureAwait(false);
+                    linkedCt).ConfigureAwait(false);
+                Interlocked.Increment(ref _requestCount);
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
-                    "{LeftRequests} left.",
+                    "{LeftRequests} left",
                     reqId,
                     peer,
                     message,
@@ -382,13 +374,12 @@ namespace Libplanet.Net.Transports
                         .ConfigureAwait(false);
                     Message reply = _messageCodec.Decode(raw, true);
 
-                    _logger.Debug(
-                        "A reply to request {Message} {RequestId} from {Peer} " +
-                        "has parsed: {Reply}.",
+                    _logger.Information(
+                        "Received {Reply} as a reply to request {Message} {RequestId} from {Peer}",
+                        reply,
                         message,
                         req.Id,
-                        reply.Remote,
-                        reply);
+                        reply.Remote);
                     try
                     {
                         _messageValidator.ValidateTimestamp(reply);
@@ -398,7 +389,7 @@ namespace Libplanet.Net.Transports
                     {
                         const string imteMsge =
                             "Received reply {Reply} from {Peer} to request {Message} " +
-                            "{RequestId} has an invalid timestamp.";
+                            "{RequestId} has an invalid timestamp";
                         _logger.Debug(
                             imte,
                             imteMsge,
@@ -412,7 +403,7 @@ namespace Libplanet.Net.Transports
                     {
                         const string dapveMsg =
                             "Received reply {Reply} from {Peer} to request {Message} " +
-                            "{RequestId} has an invalid APV.";
+                            "{RequestId} has an invalid APV";
                         _logger.Debug(
                             dapve,
                             dapveMsg,
@@ -426,11 +417,13 @@ namespace Libplanet.Net.Transports
                     replies.Add(reply);
                 }
 
-                const string dbgMsg =
+                _logger.Information(
                     "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                    "from {Peer}: {ReplyMessages}.";
-                _logger.Debug(dbgMsg, replies.Count, reqId, peer, replies);
-
+                    "from {Peer}: {ReplyMessages}",
+                    replies.Count,
+                    reqId,
+                    peer,
+                    replies);
                 return replies;
             }
             catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
@@ -453,8 +446,8 @@ namespace Libplanet.Net.Transports
             catch (OperationCanceledException oce2)
             {
                 const string dbgMsg =
-                    "{FName}() was cancelled while waiting for a reply to " +
-                    "{Message} {RequestId} from {Peer}.";
+                    "{MethodName}() was cancelled while waiting for a reply to " +
+                    "{Message} {RequestId} from {Peer}";
                 _logger.Debug(
                     oce2, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
 
@@ -468,8 +461,8 @@ namespace Libplanet.Net.Transports
             catch (Exception e)
             {
                 const string errMsg =
-                    "{FName}() encountered an unexpected exception while waiting for a reply to " +
-                    "{Message} {RequestId} from {Peer}.";
+                    "{MethodName}() encountered an unexpected exception while waiting for " +
+                    "a reply to {Message} {RequestId} from {Peer}";
                 _logger.Error(
                     e, errMsg, nameof(SendMessageAsync), message, reqId, peer.Address);
                 throw;
@@ -594,7 +587,7 @@ namespace Libplanet.Net.Transports
                     }
 
                     _logger.Verbose(
-                        "A raw message [frame count: {0}] has received.",
+                        "A raw message [frame count: {0}] has received",
                         raw.FrameCount
                     );
 
@@ -619,8 +612,8 @@ namespace Libplanet.Net.Transports
                                 _logger
                                     .ForContext("Tag", "Metric")
                                     .ForContext("Subtag", "InboundMessageReport")
-                                    .Debug(
-                                        "Received Request {RequestId} {Message} from {Peer}.",
+                                    .Information(
+                                        "Received Request {RequestId} {Message} from {Peer}",
                                         reqId,
                                         message,
                                         message.Remote);
@@ -634,7 +627,7 @@ namespace Libplanet.Net.Transports
                                 {
                                     const string logMsg =
                                         "Received {RequestId} {Message} from " +
-                                        "{Peer} has an invalid timestamp.";
+                                        "{Peer} has an invalid timestamp";
                                     _logger.Debug(
                                         imte,
                                         logMsg,
@@ -646,7 +639,7 @@ namespace Libplanet.Net.Transports
                                 {
                                     const string logMsg =
                                         "Received Request {RequestId} {Message} " +
-                                        "from {Peer} has an invalid APV.";
+                                        "from {Peer} has an invalid APV";
                                     _logger.Debug(
                                         dapve,
                                         logMsg,
@@ -658,7 +651,7 @@ namespace Libplanet.Net.Transports
                                         Identity = message.Identity,
                                     };
                                     _logger.Debug(
-                                        "Replying to Request {RequestId} {Peer} with {Reply}.",
+                                        "Replying to Request {RequestId} {Peer} with {Reply}",
                                         reqId,
                                         message.Remote,
                                         diffVersion);
@@ -670,13 +663,13 @@ namespace Libplanet.Net.Transports
                             }
                             catch (InvalidMessageException ex)
                             {
-                                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+                                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore");
                             }
                             catch (Exception exc)
                             {
                                 _logger.Error(
                                     exc,
-                                    "Something went wrong during message processing.");
+                                    "Something went wrong during message processing");
                             }
                         },
                         CancellationToken.None,
@@ -689,7 +682,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     ex,
-                    $"An unexpected exception occurred during " + nameof(ReceiveMessage) + "().");
+                    "An unexpected exception occurred during {MethodName}()",
+                    nameof(ReceiveMessage));
             }
         }
 
@@ -708,12 +702,12 @@ namespace Libplanet.Net.Transports
             if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
             {
                 _logger.Debug(
-                    "{Message} as a reply to {Identity} sent.", messageType, reqId);
+                    "{Message} as a reply to {Identity} sent", messageType, reqId);
             }
             else
             {
                 _logger.Debug(
-                    "Failed to send {Message} as a reply to {Identity}.", messageType, reqId);
+                    "Failed to send {Message} as a reply to {Identity}", messageType, reqId);
             }
 
             ev.Set();
@@ -735,7 +729,7 @@ namespace Libplanet.Net.Transports
                 MessageRequest req = await reader.ReadAsync(cancellationToken);
 #endif
                 long left = Interlocked.Decrement(ref _requestCount);
-                _logger.Debug("Request taken; {Count} requests left.", left);
+                _logger.Information("Request taken; {Count} requests left", left);
 
                 _ = SynchronizationContext.Current.PostAsync(
                     () => ProcessRequest(req, req.CancellationToken)
@@ -753,7 +747,7 @@ namespace Libplanet.Net.Transports
 
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
             _logger.Debug(
-                "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
+                "Request {Message} {RequestId} is ready to be processed in {TimeSpan}",
                 messageType,
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
@@ -779,39 +773,40 @@ namespace Libplanet.Net.Transports
                 dealer.Options.Identity = req.Id.ToByteArray();
                 try
                 {
-                    _logger.Debug("Trying to connect {RequestId}.", req.Id);
+                    _logger.Debug("Trying to connect {RequestId}", req.Id);
                     dealer.Connect(await req.Peer.ResolveNetMQAddressAsync());
                     incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                     _logger
                         .ForContext("Tag", "Metric")
                         .ForContext("Subtag", "SocketCount")
                         .Debug(
-                        "{SocketCount} sockets open for processing request {Message} {RequestId}.",
-                        incrementedSocketCount,
-                        messageType,
-                        req.Id);
+                            "{SocketCount} sockets open for processing request " +
+                            "{Message} {RequestId}",
+                            incrementedSocketCount,
+                            messageType,
+                            req.Id);
                 }
                 catch (NetMQException nme)
                 {
                     const string logMsg =
                         "{SocketCount} sockets open for processing requests; " +
-                        "failed to create an additional socket for request {Message} {RequestId}.";
+                        "failed to create an additional socket for request {Message} {RequestId}";
                     _logger
                         .ForContext("Tag", "Metric")
                         .ForContext("Subtag", "SocketCount")
                         .Debug(
-                        nme,
-                        logMsg,
-                        Interlocked.Read(ref _socketCount),
-                        messageType,
-                        req.Id);
+                            nme,
+                            logMsg,
+                            Interlocked.Read(ref _socketCount),
+                            messageType,
+                            req.Id);
                     throw;
                 }
 
                 if (dealer.TrySendMultipartMessage(req.Message))
                 {
                     _logger.Debug(
-                        "Request {RequestId} {Message} sent to {Peer}.",
+                        "Request {RequestId} {Message} sent to {Peer}",
                         req.Id,
                         messageType,
                         req.Peer);
@@ -819,7 +814,7 @@ namespace Libplanet.Net.Transports
                 else
                 {
                     _logger.Debug(
-                        "Failed to send {RequestId} {Message} to {Peer}.",
+                        "Failed to send {RequestId} {Message} to {Peer}",
                         req.Id,
                         messageType,
                         req.Peer);
@@ -837,7 +832,7 @@ namespace Libplanet.Net.Transports
 
                     _logger.Verbose(
                         "Received a raw message with {FrameCount} frames as a reply to " +
-                        "request {RequestId} from {Peer}.",
+                        "request {RequestId} from {Peer}",
                         raw.FrameCount,
                         req.Id,
                         req.Peer
@@ -852,11 +847,9 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Failed to process {RequestId} {Message}; discarding it. {e}",
+                    "Failed to process {RequestId} {Message}; discarding it",
                     messageType,
-                    req.Id,
-                    e
-                );
+                    req.Id);
                 channel.Writer.TryComplete(e);
             }
             finally
@@ -875,10 +868,10 @@ namespace Libplanet.Net.Transports
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "OutboundMessageReport")
-                    .Debug(
+                    .Information(
                         "Request {RequestId} {Message} " +
                         "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
-                        "out of {ExpectedCount} expected replies.",
+                        "out of {ExpectedCount} expected replies",
                         req.Id,
                         messageType,
                         (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds,
@@ -914,7 +907,7 @@ namespace Libplanet.Net.Transports
                     catch (Exception e)
                     {
                         _logger.Error(
-                            e, "An unexpected exception ocurred during poller.Run().");
+                            e, "An unexpected exception ocurred during poller.Run()");
                     }
                 },
                 CancellationToken.None,
