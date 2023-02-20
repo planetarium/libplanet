@@ -1074,8 +1074,7 @@ namespace Libplanet.Blockchain
                 ActionEvaluator);
             Guid forkedId = forked.Id;
             _logger.Information(
-                "Trying to fork chain at {branchPoint}" +
-                "(prevId: {prevChainId}) (forkedId: {forkedChainId})",
+                "Forked chain at {branchPoint} from id {previousChainId} to id {forkedChainId}",
                 point,
                 Id,
                 forkedId);
@@ -1162,7 +1161,7 @@ namespace Libplanet.Blockchain
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Information(
-                "Trying to append block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
+                "Trying to append block #{BlockIndex} {BlockHash}...", block?.Index, block?.Hash);
 
             block.ValidateTimestamp();
 
@@ -1197,7 +1196,7 @@ namespace Libplanet.Blockchain
 
                     if (!expectedNonce.Equals(tx1.Nonce))
                     {
-                        _logger.Information("Failed to append invalid tx {TxId}", tx1.Id);
+                        _logger.Error("Failed to append invalid tx {TxId}", tx1.Id);
                         throw new InvalidTxNonceException(
                             "Transaction nonce is invalid.",
                             tx1.Id,
@@ -1215,16 +1214,14 @@ namespace Libplanet.Blockchain
                     if (evaluateActions && actionEvaluations is null)
                     {
                         _logger.Information(
-                            "Executing actions in the block #{BlockIndex} {BlockHash}...",
+                            "Executing actions in block #{BlockIndex} {BlockHash}...",
                             block.Index,
-                            block.Hash
-                        );
+                            block.Hash);
                         actionEvaluations = ExecuteActions(block);
                         _logger.Information(
-                            "Executed actions in the block #{BlockIndex} {BlockHash}",
+                            "Executed actions in block #{BlockIndex} {BlockHash}",
                             block.Index,
-                            block.Hash
-                        );
+                            block.Hash);
 
                         // FIXME: Using evaluateActions as a proxy flag for preloading status.
                         const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -1296,16 +1293,13 @@ namespace Libplanet.Blockchain
 
                 if (renderBlocks)
                 {
-                    const string startMsg =
-                        "Invoking renderers for #{BlockIndex} {BlockHash}... " +
-                        "({Renderers} renderer(s), {ActionRenderers} action renderer(s))";
                     _logger.Information(
-                        startMsg,
-                        block.Index,
-                        block.Hash,
+                        "Invoking {RendererCount} renderers and " +
+                        "{ActionRendererCount} action renderers for #{BlockIndex} {BlockHash}",
                         Renderers.Count,
-                        ActionRenderers.Count
-                    );
+                        ActionRenderers.Count,
+                        block.Index,
+                        block.Hash);
                     foreach (IRenderer<T> renderer in Renderers)
                     {
                         renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
@@ -1327,16 +1321,13 @@ namespace Libplanet.Blockchain
                         }
                     }
 
-                    const string endMsg =
-                        "Invoked renderers for #{BlockIndex} {BlockHash}... " +
-                        "({Renderers} renderer(s), {ActionRenderers} action renderer(s))";
                     _logger.Information(
-                        endMsg,
-                        block.Index,
-                        block.Hash,
+                        "Invoked {RendererCount} renderers and " +
+                        "{ActionRendererCount} action renderers for #{BlockIndex} {BlockHash}",
                         Renderers.Count,
-                        ActionRenderers.Count
-                    );
+                        ActionRenderers.Count,
+                        block.Index,
+                        block.Hash);
                 }
             }
             finally
@@ -1359,7 +1350,7 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                _logger.Information(
+                _logger.Debug(
                     "Finding a branchpoint with locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
                 foreach (BlockHash hash in locator)
@@ -1368,7 +1359,7 @@ namespace Libplanet.Blockchain
                         && _blocks[hash] is Block<T> block
                         && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
-                        _logger.Information(
+                        _logger.Debug(
                             "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}",
                             locator.FirstOrDefault(),
                             hash
@@ -1377,7 +1368,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                _logger.Information(
+                _logger.Debug(
                     "Failed to find a branchpoint locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
                 return null;
