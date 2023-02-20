@@ -768,11 +768,10 @@ namespace Libplanet.Net
         )
         {
             var blockHashesAsArray = blockHashes as BlockHash[] ?? blockHashes.ToArray();
-            _logger.Debug(
-                "Try to download {BlockHashes} block(s) from {Peer}...",
+            _logger.Information(
+                "Trying to download {BlockHashes} block(s) from {Peer}...",
                 blockHashesAsArray.Length,
-                peer
-            );
+                peer);
 
             var request = new GetBlocksMsg(blockHashesAsArray);
             int hashCount = blockHashesAsArray.Count();
@@ -816,7 +815,7 @@ namespace Libplanet.Net
                 if (message is BlocksMsg blockMessage)
                 {
                     IList<byte[]> payloads = blockMessage.Payloads;
-                    _logger.Debug(
+                    _logger.Information(
                         "Received {Count} blocks from {Peer}",
                         payloads.Count,
                         message.Remote);
@@ -841,7 +840,7 @@ namespace Libplanet.Net
                 }
             }
 
-            _logger.Debug("Downloaded {Count} block(s) from {Peer}", count, peer);
+            _logger.Information("Downloaded {Count} block(s) from {Peer}", count, peer);
         }
 
         internal async IAsyncEnumerable<Transaction<T>> GetTxsAsync(
@@ -1075,16 +1074,18 @@ namespace Libplanet.Net
 
         private void BroadcastBlock(Address? except, Block<T> block)
         {
-            _logger.Debug("Trying to broadcast blocks...");
+            _logger.Information(
+                "Trying to broadcast block #{Index} {Hash}...",
+                block.Index,
+                block.Hash);
             var message = new BlockHeaderMsg(BlockChain.Genesis.Hash, block.Header);
             BroadcastMessage(except, message);
-            _logger.Debug("Block broadcasting complete");
         }
 
         private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
-            _logger.Debug("Broadcasting {TxIdCount} txIds...", txIds.Count);
+            _logger.Information("Broadcasting {Count} txIds...", txIds.Count);
             BroadcastTxIds(except?.Address, txIds);
         }
 
