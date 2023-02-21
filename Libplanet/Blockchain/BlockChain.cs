@@ -253,6 +253,9 @@ namespace Libplanet.Blockchain
                 .ForContext("ChainId", Id);
             ActionEvaluator = actionEvaluator;
 
+            // This is triggered under two conditions, namely when forking
+            // an existing chain or creating a new one from scratch
+            // (instead of loading from the provided store).
             if (Count == 0)
             {
                 if (inFork)
@@ -426,6 +429,110 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitReadLock();
                 }
             }
+        }
+
+#pragma warning disable SA1611
+        /// <summary>
+        /// Creates a new instance of <see cref="BlockChain{T}"/> from an empty
+        /// <see cref="IStore"/>.
+        /// </summary>
+        /// <returns>A newly created <see cref="BlockChain{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when either <paramref name="store"/>
+        /// or <paramref name="stateStore"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> already has a
+        /// canonical chain id.</exception>
+        public static BlockChain<T> Create(
+            IBlockPolicy<T> policy,
+            IStagePolicy<T> stagePolicy,
+            IStore store,
+            IStateStore stateStore,
+            Block<T> genesisBlock,
+            IEnumerable<IRenderer<T>> renderers)
+#pragma warning restore SA1611  // The documentation for parameters are missing.
+        {
+            if (store is null)
+            {
+                throw new ArgumentNullException(nameof(store));
+            }
+            else if (stateStore is null)
+            {
+                throw new ArgumentNullException(nameof(stateStore));
+            }
+            else if (store.GetCanonicalChainId() is { } canonId)
+            {
+                throw new ArgumentException(
+                    $"Given {store} already has its canonical chain id set: {canonId}",
+                    nameof(store));
+            }
+
+            // Extract pre-evaluation block and re-evaluate through
+            // determine-state-root-hash method with an ephemeral state store
+            // to check the state root hash validity
+            var preEval = new PreEvaluationBlock<T>(
+                genesisBlock.Header, genesisBlock.Transactions);
+            var computedStateRootHash = preEval.DetermineStateRootHash(
+                policy.BlockAction,
+                policy.NativeTokens.Contains,
+                new TrieStateStore(new DefaultKeyValueStore(null)));
+            if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
+            {
+                throw new InvalidBlockStateRootHashException(
+                    "Given block #{Index} {Hash} has a state root hash {ExpectedStateRootHash} " +
+                    "that is different from the calculated state root hash {ActualStateRootHash}",
+                    genesisBlock.StateRootHash,
+                    computedStateRootHash);
+            }
+
+            var id = Guid.NewGuid();
+
+            if (ValidateGenesisBlock(genesisBlock) is { } ibe)
+            {
+                throw ibe;
+            }
+
+            var nonceDeltas = ValidateNonces(new Dictionary<Address, long>(), genesisBlock);
+
+            store.PutBlock(genesisBlock);
+            store.AppendIndex(id, genesisBlock.Hash);
+
+            foreach (var tx in genesisBlock.Transactions)
+            {
+                store.PutTxIdBlockHashIndex(tx.Id, genesisBlock.Hash);
+            }
+
+            foreach (KeyValuePair<Address, long> pair in nonceDeltas)
+            {
+                store.IncreaseTxNonce(id, pair.Key, pair.Value);
+            }
+
+            store.SetCanonicalChainId(id);
+
+            // Evaluate once more to write to state store
+            _ = preEval.DetermineStateRootHash(
+            policy.BlockAction,
+            policy.NativeTokens.Contains,
+            stateStore);
+
+            var blockChainStates = new BlockChainStates<T>(store, stateStore);
+            var actionEvaluator = new ActionEvaluator<T>(
+                _ => policy.BlockAction,
+                blockChainStates: blockChainStates,
+                trieGetter: hash => stateStore.GetStateRoot(
+                    store.GetBlockDigest(hash)?.StateRootHash),
+                genesisHash: genesisBlock.Hash,
+                nativeTokenPredicate: policy.NativeTokens.Contains);
+
+            return new BlockChain<T>(
+                policy,
+                stagePolicy,
+                store,
+                stateStore,
+                id,
+                genesisBlock,
+                false,
+                renderers,
+                blockChainStates,
+                actionEvaluator);
         }
 
         /// <summary>
