@@ -2,24 +2,27 @@
   "name": "@planetarium/tx",
   "private": true,
   "description": "Creating Libplanet transactions from JavaScript/TypeScript",
-  "main": "dist/pkg.cjs.js",
-  "module": "dist/pkg.esm.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "engines": {
-    "node" : ">=19.0.0"
+    "node": ">=19.0.0"
   },
   "scripts": {
-    "prebuild": "npm install --include=dev",
-    "build": "bunchee --target es2020 --dts src/index.ts",
-    "prepack": "npm run build",
-    "dev": "bunchee --target es2020 --watch src/index.ts",
-    "test": "npm run prebuild && dotnet build ../../Libplanet.Tools && vitest run",
-    "coverage": "vitest run --coverage"
+    "build": "yarn && nanobundle build",
+    "prepack": "yarn && yarn build",
+    "dev": "yarn && dotnet build ../../Libplanet.Tools && vitest",
+    "test": "yarn && yarn run -T tsc -p tsconfig.json && dotnet build ../../Libplanet.Tools && vitest run",
+    "coverage": "yarn && vitest run --coverage"
   },
-  "types": "dist/src/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/planetarium/libplanet.git",
-    "directory": "@planet/tx"
+    "directory": "@planetarium/tx"
   },
   "keywords": [
     "libplanet"
@@ -29,22 +32,25 @@
   "bugs": {
     "url": "https://github.com/planetarium/libplanet/labels/js"
   },
-  "homepage": "https://github.com/planetarium/libplanet/tree/main/@planet/tx",
+  "homepage": "https://github.com/planetarium/libplanet/tree/main/@planetarium/tx",
   "devDependencies": {
+    "@types/node": "^18.14.0",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "@vitest/coverage-c8": "^0.22.1",
     "@vitest/ui": "^0.22.1",
-    "bunchee": "^2.1.3",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "execa": "^6.1.0",
     "fast-check": "^3.1.2",
+    "nanobundle": "^1.5.0",
     "prettier": "2.7.1",
     "typescript": "^4.8.4",
+    "vite": "^4.1.3",
     "vitest": "^0.22.1"
   },
   "dependencies": {
     "bencodex": "^0.1.1"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }

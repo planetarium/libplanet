@@ -1,6 +1,6 @@
 import { Encodable } from "bencodex";
-import { Address, encodeAddress } from "./address";
-import { encodeCurrency, FungibleAssetValue } from "./assets";
+import { Address, encodeAddress } from "./address.js";
+import { encodeCurrency, FungibleAssetValue } from "./assets.js";
 
 export type SystemAction = Mint | Transfer;
 

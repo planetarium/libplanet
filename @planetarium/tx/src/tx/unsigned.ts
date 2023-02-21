@@ -1,6 +1,6 @@
 import { Encodable } from "bencodex";
-import { CustomAction, encodeSystemAction, SystemAction } from "../action";
-import { encodeTxMetadata, TxMetadata } from "./metadata";
+import { CustomAction, encodeSystemAction, SystemAction } from "../action.js";
+import { encodeTxMetadata, TxMetadata } from "./metadata.js";
 
 const SYSTEM_ACTION_KEY = Buffer.from([0x41]); // 'A'
 const CUSTOM_ACTION_KEY = Buffer.from([0x61]); // 'a'

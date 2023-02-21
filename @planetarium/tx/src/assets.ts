@@ -1,5 +1,5 @@
 import { Encodable, encode } from "bencodex";
-import { Address, encodeAddressSet } from "./address";
+import { Address, encodeAddressSet } from "./address.js";
 
 export interface Currency {
   ticker: string;
