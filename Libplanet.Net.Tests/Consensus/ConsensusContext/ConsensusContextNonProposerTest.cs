@@ -45,8 +45,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightTwoProposalSent = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[2]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[2]);
             blockChain.TipChanged += (_, __) => tipChanged.Set();
             consensusContext.MessageBroadcasted += (_, eventArgs) =>
             {
@@ -128,8 +128,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[2]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[2]);
 
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -262,8 +262,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[2]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[2]);
 
             consensusContext.MessageConsumed += (_, eventArgs) =>
             {
@@ -302,8 +302,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightTwoProposalSent = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[2]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[2]);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)

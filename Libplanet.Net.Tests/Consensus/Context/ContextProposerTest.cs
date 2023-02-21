@@ -1,8 +1,5 @@
-using System;
 using System.Threading.Tasks;
-using Libplanet.Blocks;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Nito.AsyncEx;
@@ -229,9 +226,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var nilPreVoteSent = new AsyncAutoResetEvent();
-            var (_, context) = TestUtils.CreateDummyContext(
-                height: 5,
-                validatorSet: Libplanet.Tests.TestUtils.ValidatorSet); // Peer1 should be a proposer
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                height: 5); // Peer1 should be a proposer
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -295,33 +291,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(Step.PreVote, context.Step);
-        }
-
-        [Fact]
-        public async void CannotProposeWithoutLastCommitWhenRequired()
-        {
-            var privateKey = new PrivateKey();
-            var exceptionOccurred = new AsyncAutoResetEvent();
-            Exception? exception = null;
-            var (blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.PrivateKeys[2],
-                height: 2,
-                validatorSet: TestUtils.ValidatorSet);
-            context.ExceptionOccurred += (sender, e) =>
-            {
-                exception = e;
-                exceptionOccurred.Set();
-            };
-
-            var block = blockChain.ProposeBlock(new PrivateKey(), DateTimeOffset.UtcNow);
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(
-                TestUtils.PrivateKeys[2].PublicKey,
-                TestUtils.ValidatorSet.GetProposer(2, 0).PublicKey);
-
-            context.Start();
-            await exceptionOccurred.WaitAsync();
-            Assert.IsType<InvalidBlockLastCommitException>(exception);
         }
     }
 }

@@ -227,6 +227,7 @@ namespace Libplanet.Net.Tests
             ConsensusContext<DumbAction> ConsensusContext)
             CreateDummyConsensusContext(
                 TimeSpan newHeightDelay,
+                long height = 1L,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
@@ -236,6 +237,14 @@ namespace Libplanet.Net.Tests
             policy ??= Policy;
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockChain = CreateDummyBlockChain(fx);
+            for (int i = 1; i < height; i++)
+            {
+                var block = blockChain.ProposeBlock(
+                    Libplanet.Tests.TestUtils.GenesisProposer,
+                    lastCommit: CreateBlockCommit(blockChain[i - 1]));
+                blockChain.Append(block, CreateBlockCommit(block));
+            }
+
             ConsensusContext<DumbAction>? consensusContext = null;
 
             privateKey ??= PrivateKeys[1];
@@ -270,8 +279,7 @@ namespace Libplanet.Net.Tests
                 long height = 1,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                ContextTimeoutOption? contextTimeoutOptions = null,
-                ValidatorSet? validatorSet = null)
+                ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= PrivateKeys[1];
@@ -288,16 +296,16 @@ namespace Libplanet.Net.Tests
 
             var (blockChain, consensusContext) = CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
+                height,
                 policy,
                 PrivateKeys[1],
                 broadcastMessage: BroadcastMessage);
-
             context = new Context<DumbAction>(
                 consensusContext,
                 blockChain,
                 height,
                 privateKey,
-                validatorSet ?? blockChain.GetValidatorSet(blockChain[height - 1].Hash),
+                blockChain.GetValidatorSet(blockChain[height - 1].Hash),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);
