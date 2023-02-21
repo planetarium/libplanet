@@ -8,7 +8,10 @@
     "linux",
     "win32"
   ],
-  "cpu": ["x64", "arm64"],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
   "engines": {
     "node": ">=12"
   },
@@ -46,5 +49,6 @@
   "bugs": {
     "url": "https://github.com/planetarium/libplanet/labels/tools"
   },
-  "homepage": "https://github.com/planetarium/libplanet/tree/main/Libplanet.Tools"
+  "homepage": "https://github.com/planetarium/libplanet/tree/main/Libplanet.Tools",
+  "packageManager": "yarn@3.4.1"
 }

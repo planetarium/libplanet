@@ -1,8 +1,10 @@
-# npm
-.package.json.bak
-.package.json.tmp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 !bin/
 bin/*/
-node_modules/
-package-lock.json
-planetarium-cli-*.tgz
+package.tgz
