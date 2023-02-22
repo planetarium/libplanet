@@ -123,34 +123,120 @@ Version PBFT
 Version 0.47.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on February 6, 2023.
 
 ### Backward-incompatible API changes
 
+ -  The signature of `Address(ImmutableArray<byte>)` constructor became
+    `Address(in ImmutableArray<byte>)`.  [[#2756]]
+ -  The signature of `BlockHash(ImmutableArray<byte>)` constructor became
+    `BlockHash(in ImmutableArray<byte>)`.  [[#2756]]
+ -  The signature of `Nonce(ImmutableArray<byte>)` constructor became
+    `Nonce(in ImmutableArray<byte>)`.  [[#2756]]
  -  Removed `IAccountStateView.GetValidatorSet()` method.  [[#2733]]
  -  Removed `IAccountStateDelta.SetValidator(Validator)` method.  [[#2733]]
  -  (Libplanet.Extensions.Cocona)  Dropped .NET Standard 2.0 and .NET Core 3.1
     target assemblies.  [[#2732]]
  -  (Libplanet.Extensions.Cocona)  Added .NET 6 target assembly.  [[#2732]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+ -  (Libplanet.Net) Added `ITransport.AppProtocolVersion`,
+    `ITransport.TrustedAppProtocolVersionSigners`,
+    and `ITransport.DifferentAppProtocolVersionEncountered` properties.
+    [[#2743]]
+ -  (Libplanet.Net) Changed `Swarm<T>(BlockChain<T>, PrivateKey,
+    AppProtocolVersionOptions, HostOptions, SwarmOptions)` to
+    `Swarm<T>(BlockChain<T>, PrivateKey, ITransport, SwarmOptions)`.  [[#2743]]
+ -  (Libplanet.Net) Changed the type for
+    `AppProtocolVersionOptions.TrustedAppProtocolVersionSigners` from
+    `IImmutableHashSet<PublicKey>?` to `IImmutableHashSet<PublicKey>`.
+    [[#2759]]
+ -  (Libplanet.Net) Changed `BoundPeer` to implement `IBencodable` interface
+    and removed `[Serializable]` attribute from `BoundPeer`.  [[#2778]]
+ -  (Libplanet.Net) Changed `BoundPeer(Dictionary)` constructor's signature to
+    `BoundPeer(IValue)`.  [[#2778]]
+ -  Changed `Address` to implement `IBencodable` interface and removed
+    `[Serializable]` attribute from `Address`.  [[#2778]]
+ -  Changed `Address(Binary)` constructor's signature to `Address(IValue)`.
+    [[#2778]]
 
 ### Added APIs
 
-### Behavioral changes
+ -  Introduced *Libplanet.Crypto.Secp256k1* package.  [[#2780]]
+ -  Many more types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2756]]
+     -  A `Nonce` became represented as a single hexadecimal string in JSON.
+     -  A `PublicKey` became represented as a single hexadecimal string in
+        JSON.
+     -  A `Block<T>` became represented as an object with values in JSON.
+ -  Added `TxId(in ImmutableArray<byte>)` constructor.  [[#2756]]
+ -  Added `ByteUtil.ParseHexToImmutable()` static method.  [[#2756]]
 
 ### Bug fixes
 
+ -  Fixed a JSON serializer bug where a `Transaction<T>` serialized into JSON
+    had lacked the content of its `PublicKey`.  [[#2756]]
+ -  (Libplanet.Explorer) Fixed a bug where the query `stateQuery` hadn't work
+    correctly.  [[#2757]]
+ -  Fixed a bug of `DefaultStore.PutTxExecution()` where sometimes `TxExecution`
+    data is in undefined state due to data corruption.  [[#2761]]
+ -  (Libplanet.Node) Fixed a bug of `NodeUtils<T>.CreateGenesisBlock()` where
+    sometimes block data is in undefined state due to data corruption.
+    [[#2761]]
+ -  Fixed where `Address(string)` could accept 42 chars with a wrong prefix.
+    [[#2781]]
+ -  Fixed where `VolatileStagePolicy<T>(TimeSpan)` created with
+    `TimeSpan.MaxValue` as its argument would not behave properly and throw an
+    `ArgumentOutOfRangeException`.  [[#2783], [#2784]]
+
 ### Dependencies
+
+ -  Upgrade *Bencodex* from
+    [0.7.0-dev.20220923062845][Bencodex 0.7.0-dev.20220923062845] to
+    [0.8.0][Bencodex 0.8.0].  [[#2294]]
+ -  Upgrade *Bencodex.Json* from
+    [0.7.0-dev.20220923062845][Bencodex.Json 0.7.0-dev.20220923062845] to
+    [0.8.0][Bencodex.Json 0.8.0].  [[#2294]]
+ -  Upgrade *System.Text.Json* from [6.0.6][System.Text.Json 6.0.6] to
+    [6.0.7][System.Text.Json 6.0.7].  [[#2322]]
 
 ### CLI tools
 
-[[#2732]]: https://github.com/planetarium/libplanet/pull/2732
-[[#2733]]: https://github.com/planetarium/libplanet/pull/2733
+ -  Added `planet block` subcommand group. [[#2758]]
+     -  Added `planet block analyze` subcommand.
+     -  Added `planet block generate-genesis` subcommand.
+ -  Fixed a bug of `planet tx analyze` subcommand where a serialized transaction
+    had lacked the content of its `"publicKey"`.  [[#2756]]
+
+[#2732]: https://github.com/planetarium/libplanet/pull/2732
+[#2733]: https://github.com/planetarium/libplanet/pull/2733
+[#2743]: https://github.com/planetarium/libplanet/pull/2743
+[#2747]: https://github.com/planetarium/libplanet/pull/2747
+[#2756]: https://github.com/planetarium/libplanet/pull/2756
+[#2757]: https://github.com/planetarium/libplanet/pull/2757
+[#2758]: https://github.com/planetarium/libplanet/pull/2758
+[#2759]: https://github.com/planetarium/libplanet/pull/2759
+[#2761]: https://github.com/planetarium/libplanet/pull/2761
+[#2778]: https://github.com/planetarium/libplanet/pull/2778
+[#2780]: https://github.com/planetarium/libplanet/pull/2780
+[#2781]: https://github.com/planetarium/libplanet/pull/2781
+[#2783]: https://github.com/planetarium/libplanet/issues/2783
+[#2784]: https://github.com/planetarium/libplanet/pull/2784
+[Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
+[Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
+[System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
+
+
+Version 0.46.1
+--------------
+
+Released on February 3th, 2023.
+
+ -  Ported changes from [Libplanet 0.45.5] release.
+ -  General changes to log output for readability.  [[#2769]]
+
+[Libplanet 0.45.5]: https://www.nuget.org/packages/Libplanet/0.45.5
+[#2769]: https://github.com/planetarium/libplanet/pull/2769
 
 
 Version 0.46.0
@@ -274,10 +360,31 @@ Released on Janurary 18th, 2023.
 [#2701]: https://github.com/planetarium/libplanet/pull/2701
 [#2704]: https://github.com/planetarium/libplanet/pull/2704
 [#2705]: https://github.com/planetarium/libplanet/pull/2705
-[#2708]: https://github.com/planetarium/libplanet/pull/2708
 [#2718]: https://github.com/planetarium/libplanet/pull/2718
 [#2716]: https://github.com/planetarium/libplanet/pull/2716
+
+
+Version 0.45.5
+--------------
+
+Released on January 19, 2023.
+
+  -  Fixed a bug when `Web3KeyStore.Get()` hadn't worked properly on IL2CPP
+     environment.  [[#2727]]
+  -  Back-ported below changes from [Libplanet 0.46.0] release.
+     -  (Libplanet.Net) Fixed a bug `NetMQTransport` log shows socket count
+        wrongly. [[#2708]]
+     -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsync()`
+        method hadn't disposed of internal sockets properly when connecting
+        failed. [[#2719]]
+     -  (Libplanet.Net) `BoundPeer()` constructor became to validate a hostname
+        of `endPoint` parameter.  [[#2721]]
+
+[Libplanet 0.46.0]: https://www.nuget.org/packages/Libplanet/0.46.0
+[#2708]: https://github.com/planetarium/libplanet/pull/2708
 [#2719]: https://github.com/planetarium/libplanet/pull/2719
+[#2721]: https://github.com/planetarium/libplanet/pull/2721
+[#2727]: https://github.com/planetarium/libplanet/pull/2727
 
 
 Version 0.45.4

@@ -11,6 +11,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
+using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -71,7 +72,7 @@ namespace Libplanet.Net.Tests
             return (blocks[1].Transactions.First().CustomActions.First().TargetAddress, blocks);
         }
 
-        private Swarm<DumbAction> CreateConsensusSwarm(
+        private Task<Swarm<DumbAction>> CreateConsensusSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
@@ -98,7 +99,7 @@ namespace Libplanet.Net.Tests
             });
         }
 
-        private Swarm<DumbAction> CreateSwarm(
+        private async Task<Swarm<DumbAction>> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
@@ -118,7 +119,7 @@ namespace Libplanet.Net.Tests
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
-            return CreateSwarm(
+            return await CreateSwarm(
                 blockchain,
                 privateKey,
                 appProtocolVersionOptions,
@@ -127,7 +128,7 @@ namespace Libplanet.Net.Tests
                 consensusReactorOption: consensusReactorOption);
         }
 
-        private Swarm<T> CreateSwarm<T>(
+        private async Task<Swarm<T>> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
@@ -140,11 +141,16 @@ namespace Libplanet.Net.Tests
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
             options ??= new SwarmOptions();
-            var swarm = new Swarm<T>(
-                blockChain,
-                privateKey ?? new PrivateKey(),
+            privateKey ??= new PrivateKey();
+            var transport = await NetMQTransport.Create(
+                privateKey,
                 appProtocolVersionOptions,
                 hostOptions,
+                options.MessageTimestampBuffer);
+            var swarm = new Swarm<T>(
+                blockChain,
+                privateKey,
+                transport,
                 options,
                 consensusOption: consensusReactorOption);
             _finalizers.Add(async () =>

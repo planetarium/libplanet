@@ -31,7 +31,6 @@ namespace Libplanet.Net
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
 
         private readonly AsyncLock _runningMutex;
 
@@ -51,20 +50,21 @@ namespace Libplanet.Net
         /// <param name="blockChain">A blockchain to publicize on the network.</param>
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
-        /// <param name="appProtocolVersionOptions">The <see cref="AppProtocolVersionOptions"/>
-        /// to use when handling an <see cref="AppProtocolVersion"/> attached to
-        /// a <see cref="Message"/>.</param>
-        /// <param name="hostOptions">The <see cref="HostOptions"/> to use when binding
-        /// to the network.</param>
+        /// <param name="transport">The <see cref="ITransport"/> to use for
+        /// network communication in block synchronization.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
+        /// <param name="consensusTransport">The <see cref="ITransport"/> to use for
+        /// network communication in consensus.
+        /// If null is given, the node cannot join block consensus.
+        /// </param>
         /// <param name="consensusOption"><see cref="ConsensusReactorOption"/> for
         /// initialize <see cref="ConsensusReactor{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            AppProtocolVersionOptions appProtocolVersionOptions,
-            HostOptions hostOptions,
+            ITransport transport,
             SwarmOptions options = null,
+            ITransport consensusTransport = null,
             ConsensusReactorOption? consensusOption = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -77,8 +77,6 @@ namespace Libplanet.Net
             BlockReceived = new AsyncAutoResetEvent();
 
             _runningMutex = new AsyncLock();
-
-            _appProtocolVersionOptions = appProtocolVersionOptions;
 
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
@@ -94,27 +92,13 @@ namespace Libplanet.Net
             // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
             // fixed. for context, refer to
             // https://github.com/planetarium/libplanet/discussions/2303.
-            Transport = NetMQTransport.Create(
-                _privateKey,
-                _appProtocolVersionOptions,
-                hostOptions,
-                Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
+            Transport = transport;
             _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
-            if (consensusOption is { } consensusReactorOption)
+            if (consensusTransport is { } && consensusOption is { } consensusReactorOption)
             {
-                var consensusHostOptions = new HostOptions(
-                    hostOptions.Host,
-                    hostOptions.IceServers,
-                    consensusReactorOption.ConsensusPort);
-                NetMQTransport consensusTransport = NetMQTransport.Create(
-                    privateKey: _privateKey,
-                    appProtocolVersionOptions: _appProtocolVersionOptions,
-                    hostOptions: consensusHostOptions,
-                    messageTimestampBuffer: Options.MessageTimestampBuffer)
-                        .ConfigureAwait(false).GetAwaiter().GetResult();
                 _consensusReactor = new ConsensusReactor<T>(
                     consensusTransport,
                     BlockChain,
@@ -170,24 +154,19 @@ namespace Libplanet.Net
         /// </summary>
         public BlockChain<T> BlockChain { get; private set; }
 
-        /// <summary>
-        /// <see cref="PublicKey"/>s of parties who signed <see cref="AppProtocolVersion"/>s to
-        /// trust.  In case of <see langword="null"/>, any parties are trusted.
-        /// </summary>
+        /// <inheritdoc cref="AppProtocolVersionOptions.TrustedAppProtocolVersionSigners"/>
         public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
-            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
+            Transport.TrustedAppProtocolVersionSigners;
 
-        /// <summary>
-        /// The application protocol version to comply.
-        /// </summary>
+        /// <inheritdoc cref="AppProtocolVersionOptions.AppProtocolVersion"/>
         public AppProtocolVersion AppProtocolVersion =>
-            _appProtocolVersionOptions.AppProtocolVersion;
+            Transport.AppProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
 
         internal IProtocol PeerDiscovery { get; }
 
-        internal ITransport Transport { get; private set; }
+        internal ITransport Transport { get; }
 
         internal TxCompletion<BoundPeer, T> TxCompletion { get; }
 

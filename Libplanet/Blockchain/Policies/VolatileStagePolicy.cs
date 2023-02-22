@@ -249,7 +249,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         private bool Expired(Transaction<T> transaction) =>
-            transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
+            Lifetime < DateTimeOffset.UtcNow - transaction.Timestamp;
 
         /// <remarks>
         /// It has been intended to avoid recursive lock, hence doesn't hold any synchronous scope.

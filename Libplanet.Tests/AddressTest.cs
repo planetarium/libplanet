@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Xunit;
@@ -95,14 +93,18 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void HexMustBe40Characters()
+        public void DeriveFromHex()
         {
             Assert.Throws<ArgumentException>(
-                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDE")
-            );
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDE"));      // 39 chars
             Assert.Throws<ArgumentException>(
-                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF")
-            );
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF"));    // 41 chars
+            Assert.Throws<ArgumentException>(
+                () => new Address("1x0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"));   // bad prefix
+            Assert.Throws<ArgumentException>(
+                () => new Address("0x0123456789ABcdefABcdEfABcdEFabcDEFabCDE"));    // 41 chars
+            Assert.Throws<ArgumentException>(
+                () => new Address("0x0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF"));  // 43 chars
         }
 
         [Fact]
@@ -153,11 +155,11 @@ namespace Libplanet.Tests
 
             Assert.Equal(
                 new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"),
-                new Address((Binary)addr)
+                new Address((IValue)new Binary(addr))
             );
 
             var invalidAddr = new byte[19];
-            Assert.Throws<ArgumentException>(() => new Address((Binary)invalidAddr));
+            Assert.Throws<ArgumentException>(() => new Address((IValue)new Binary(invalidAddr)));
         }
 
         [Fact]
@@ -239,7 +241,7 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void SerializeAndDeserialize()
+        public void Bencode()
         {
             // Serialize and deserialize to and from memory
             var expectedAddress = new Address(
@@ -249,15 +251,7 @@ namespace Libplanet.Tests
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 }
             );
-            Address deserializedAddress;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (var memoryStream = new MemoryStream())
-            {
-                formatter.Serialize(memoryStream, expectedAddress);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                deserializedAddress = (Address)formatter.Deserialize(memoryStream);
-            }
-
+            Address deserializedAddress = new Address(expectedAddress.Bencoded);
             Assert.Equal(deserializedAddress, expectedAddress);
         }
 
@@ -265,15 +259,8 @@ namespace Libplanet.Tests
         public void SerializeAndDeserializeWithDefault()
         {
             var defaultAddress = default(Address);
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            using (var memoryStream = new MemoryStream())
-            {
-                formatter.Serialize(memoryStream, defaultAddress);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                var deserializedAddress = (Address)formatter.Deserialize(memoryStream);
-                Assert.Equal(default, deserializedAddress);
-            }
+            Address deserializedAddress = new Address(defaultAddress.Bencoded);
+            Assert.Equal(default, deserializedAddress);
         }
 
         [Fact]

@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Bencodex.Types.Dictionary plainValue)
         {
-            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address"));
+            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

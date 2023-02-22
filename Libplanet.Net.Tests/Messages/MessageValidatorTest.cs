@@ -72,7 +72,6 @@ namespace Libplanet.Net.Tests.Messages
                 new HashSet<PublicKey>() { trustedSigner.PublicKey }.ToImmutableHashSet();
             ImmutableHashSet<PublicKey>? emptyApvSigners =
                 new HashSet<PublicKey>() { }.ToImmutableHashSet();
-            ImmutableHashSet<PublicKey>? nullApvSigners = null;
 
             // Ping
             var trustedPing = new PingMsg()
@@ -181,41 +180,6 @@ namespace Libplanet.Net.Tests.Messages
                 () => messageValidator.ValidateAppProtocolVersion(unknownDifferentExtraPing));
             Assert.False(exception.Trusted);
             Assert.False(called);
-
-            // Trust anyone.
-            appProtocolVersionOptions = new AppProtocolVersionOptions()
-            {
-                AppProtocolVersion = trustedApv,
-                TrustedAppProtocolVersionSigners = nullApvSigners,
-                DifferentAppProtocolVersionEncountered = callback,
-            };
-
-            messageValidator = new MessageValidator(appProtocolVersionOptions, null);
-
-            // Check trust pings
-            messageValidator.ValidateAppProtocolVersion(trustedPing);
-            Assert.False(called);
-            exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(trustedDifferentVersionPing));
-            Assert.True(exception.Trusted);
-            Assert.True(called);
-            called = false;
-            messageValidator.ValidateAppProtocolVersion(trustedDifferentExtraPing);
-            Assert.True(called);
-            called = false;
-
-            // Check unknown pings
-            messageValidator.ValidateAppProtocolVersion(unknownPing);
-            Assert.True(called);
-            called = false;
-            exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownDifferentVersionPing));
-            Assert.True(exception.Trusted);
-            Assert.True(called);
-            called = false;
-            messageValidator.ValidateAppProtocolVersion(unknownDifferentExtraPing);
-            Assert.True(called);
-            called = false;
         }
     }
 }

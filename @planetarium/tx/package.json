@@ -9,7 +9,7 @@
     "build": "bunchee --target es2020 --dts src/index.ts",
     "prepack": "npm run build",
     "dev": "bunchee --target es2020 --watch src/index.ts",
-    "test": "dotnet build ../../Libplanet.Tools && vitest run",
+    "test": "npm run prebuild && dotnet build ../../Libplanet.Tools && vitest run",
     "coverage": "vitest run --coverage"
   },
   "types": "dist/src/index.d.ts",

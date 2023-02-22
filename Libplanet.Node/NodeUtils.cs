@@ -145,7 +145,7 @@ namespace Libplanet.Node
             else
             {
                 Codec codec = new Codec();
-                using (FileStream stream = File.OpenWrite(path))
+                using (FileStream stream = File.Open(path, FileMode.Create))
                 {
                     codec.Encode(genesisBlock.MarshalBlock(), stream);
                 }

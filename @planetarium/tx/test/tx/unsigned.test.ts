@@ -57,7 +57,8 @@ test("encodeUnsignedTxWithSystemAction", async () => {
       },
     },
     timestamp: "2022-05-23T01:02:00+00:00",
-    publicKey: {},
+    publicKey:
+      "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
     genesisHash: null,
   });
 }, 30_000);

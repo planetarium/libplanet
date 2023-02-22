@@ -14,6 +14,8 @@ namespace Libplanet.Tests.Common.Action
             Address = address;
         }
 
+        // FIXME: Should be encoded in bencodex binary, not text.  Left as is for
+        // old unit test spec compliance.
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
             .Add("address", Address.ToHex());
 
@@ -22,7 +24,7 @@ namespace Libplanet.Tests.Common.Action
         public void LoadPlainValue(IValue plainValue)
         {
             var dictionary = (Bencodex.Types.Dictionary)plainValue;
-            Address = new Address(dictionary.GetValue<Text>("address"));
+            Address = new Address((string)dictionary.GetValue<Text>("address"));
         }
 
         public IAccountStateDelta Execute(IActionContext context)

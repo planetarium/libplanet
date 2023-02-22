@@ -34,9 +34,31 @@ namespace Libplanet.Tx
         private ImmutableArray<byte> _byteArray;
 
         /// <summary>
-        /// Converts a <see cref="byte"/> array into a <see cref="TxId"/>.
+        /// Converts an immutable <see cref="byte"/> array into a <see cref="TxId"/>.
         /// </summary>
-        /// <param name="txid">A <see cref="byte"/> array that encodes
+        /// <param name="txid">An immutable <see cref="byte"/> array that encodes
+        /// a <see cref="TxId"/>.  It must not be <see langword="null"/>, and its
+        /// <see cref="ImmutableArray{T}.Length"/> must be the same to <see cref="Size"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not the same to the required
+        /// <see cref="Size"/>.</exception>
+        public TxId(in ImmutableArray<byte> txid)
+        {
+            if (txid.Length != Size)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(txid),
+                    $"{nameof(TxId)} must be {Size} bytes."
+                );
+            }
+
+            _byteArray = txid;
+        }
+
+        /// <summary>
+        /// Converts a mutable <see cref="byte"/> array into a <see cref="TxId"/>.
+        /// </summary>
+        /// <param name="txid">A mutable <see cref="byte"/> array that encodes
         /// a <see cref="TxId"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
@@ -46,21 +68,10 @@ namespace Libplanet.Tx
         /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not
         /// the same to the required <see cref="Size"/>.</exception>
         public TxId(byte[] txid)
+            : this(txid is null
+                ? throw new ArgumentNullException(nameof(txid))
+                : txid.ToImmutableArray())
         {
-            if (txid == null)
-            {
-                throw new ArgumentNullException(nameof(txid));
-            }
-
-            if (txid.Length != Size)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(txid),
-                    $"{nameof(TxId)} must be {Size} bytes."
-                );
-            }
-
-            _byteArray = txid.ToImmutableArray();
         }
 
         public TxId(
@@ -115,7 +126,7 @@ namespace Libplanet.Tx
                 throw new ArgumentNullException(nameof(hex));
             }
 
-            byte[] bytes = ByteUtil.ParseHex(hex);
+            ImmutableArray<byte> bytes = ByteUtil.ParseHexToImmutable(hex);
             try
             {
                 return new TxId(bytes);

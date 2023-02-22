@@ -72,7 +72,7 @@ namespace Libplanet.Tx
                 ? new BlockHash(g.ByteArray)
                 : (BlockHash?)null;
             UpdatedAddresses = dictionary.GetValue<List>(UpdatedAddressesKey)
-                .Select(v => new Address((Binary)v))
+                .Select(v => new Address(v))
                 .ToImmutableHashSet();
             PublicKey = new PublicKey(dictionary.GetValue<Binary>(PublicKeyKey).ByteArray);
             Timestamp = DateTimeOffset.ParseExact(

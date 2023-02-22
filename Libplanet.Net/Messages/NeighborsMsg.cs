@@ -25,7 +25,7 @@ namespace Libplanet.Net.Messages
             var codec = new Codec();
             int foundCount = BitConverter.ToInt32(dataFrames[0], 0);
             Found = dataFrames.Skip(1).Take(foundCount)
-                .Select(ba => new BoundPeer((Bencodex.Types.Dictionary)codec.Decode(ba)))
+                .Select(ba => new BoundPeer(codec.Decode(ba)))
                 .ToImmutableList();
         }
 
@@ -40,7 +40,7 @@ namespace Libplanet.Net.Messages
             {
                 var frames = new List<byte[]>();
                 frames.Add(BitConverter.GetBytes(Found.Count));
-                frames.AddRange(Found.Select(boundPeer => Codec.Encode(boundPeer.ToBencodex())));
+                frames.AddRange(Found.Select(boundPeer => Codec.Encode(boundPeer.Bencoded)));
                 return frames;
             }
         }

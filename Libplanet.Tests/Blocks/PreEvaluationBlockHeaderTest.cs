@@ -167,10 +167,10 @@ namespace Libplanet.Tests.Blocks
                 _contents.Block1Metadata.DerivePreEvaluationHash(default));
 
             // Same as block1.MakeSignature(_contents.Block1Key, arbitraryHash)
-            ImmutableArray<byte> validSig = ByteUtil.ParseHex(
+            ImmutableArray<byte> validSig = ByteUtil.ParseHexToImmutable(
                 "3044022100b285f684fe94524aa725c6b69cb858370f85af56420d275410e148b0ad18" +
                 "b3d9021f324c828b1dd949ebf73591bc0ac8858debae7c5aabc420fd4a1cec53d61e60"
-            ).ToImmutableArray();
+            );
 
             AssertBytesEqual(
                 block1.MakeSignature(_contents.Block1Key, arbitraryHash),
