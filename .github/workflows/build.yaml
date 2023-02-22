@@ -34,13 +34,24 @@ jobs:
     - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
         registry-url: 'https://registry.npmjs.org'
         scope: '@planetarium'
-        node-version: 18
-    - run: .github/bin/dist-version.ps1
-      shell: pwsh
+        node-version: 'lts/*'
+    - id: determine-version
+      run: node scripts/determine-version.js
+    - shell: bash
+      run: |
+        echo "$VERSION_PREFIX" > obj/version_prefix.txt
+        if [[ "$VERSION_SUFFIX" != "" ]]; then
+          echo "$VERSION_SUFFIX" > obj/version_suffix.txt
+        fi
+        echo "$PACKAGE_VERSION" > obj/package_version.txt
+      env:
+        VERSION_PREFIX: ${{ steps.determine-version.outputs.version-prefix }}
+        VERSION_SUFFIX: ${{ steps.determine-version.outputs.version-suffix }}
+        PACKAGE_VERSION: ${{ steps.determine-version.outputs.package-version }}
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
     - uses: actions/upload-artifact@main
       with:
@@ -68,7 +79,7 @@ jobs:
       run: .github/bin/dist-nuget.sh
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-    - if: startsWith(github.ref, 'refs/tags/') && env.NODE_AUTH_TOKEN != ''
+    - if: env.NODE_AUTH_TOKEN != ''
       run: .github/bin/dist-npm.sh
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}

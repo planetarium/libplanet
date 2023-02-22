@@ -7,7 +7,7 @@ set -e
 . "$(dirname "$0")/constants.sh"
 
 if [ "$NODE_AUTH_TOKEN" = "" ]; then
-  echo "This script requires NODE_AUTH_TOKEN envrionment variable." \
+  echo "This script requires NODE_AUTH_TOKEN environment variable." \
     > /dev/stderr
   exit 1
 fi
