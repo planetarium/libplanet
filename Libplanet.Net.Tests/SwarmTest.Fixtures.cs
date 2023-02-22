@@ -147,11 +147,26 @@ namespace Libplanet.Net.Tests
                 appProtocolVersionOptions,
                 hostOptions,
                 options.MessageTimestampBuffer);
+            ITransport consensusTransport = null;
+            if (consensusReactorOption is { } option)
+            {
+                var consensusHostOptions = new HostOptions(
+                    hostOptions.Host,
+                    hostOptions.IceServers,
+                    option.ConsensusPort);
+                consensusTransport = await NetMQTransport.Create(
+                    privateKey,
+                    appProtocolVersionOptions,
+                    consensusHostOptions,
+                    options.MessageTimestampBuffer);
+            }
+
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey,
                 transport,
                 options,
+                consensusTransport: consensusTransport,
                 consensusOption: consensusReactorOption);
             _finalizers.Add(async () =>
             {

@@ -104,7 +104,6 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte>? Signature => Header.Signature;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        [JsonConverter(typeof(ByteArrayJsonConverter))]
         public HashDigest<SHA256> PreEvaluationHash => _preEvaluationBlock.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>

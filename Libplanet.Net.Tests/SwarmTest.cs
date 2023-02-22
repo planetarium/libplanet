@@ -414,19 +414,19 @@ namespace Libplanet.Net.Tests
                     TargetBlockInterval = TimeSpan.FromSeconds(10),
                     ContextTimeoutOptions = new ContextTimeoutOption(),
                 }).ToList();
-            var swarms = Enumerable.Range(0, 4)
-                .Select(
-                    i =>
-                        CreateSwarm(
-                            privateKey: TestUtils.PrivateKeys[i],
-                            hostOptions: new HostOptions(
-                                "localhost",
-                                Array.Empty<IceServer>(),
-                                9000 + i),
-                            policy: policy,
-                            genesis: genesis,
-                            consensusReactorOption: reactorOpts[i]).Result)
-                .ToList();
+            var swarms = new List<Swarm<DumbAction>>();
+            for (int i = 0; i < 4; i++)
+            {
+                swarms.Add(await CreateSwarm(
+                    privateKey: TestUtils.PrivateKeys[i],
+                    hostOptions: new HostOptions(
+                        "localhost",
+                        Array.Empty<IceServer>(),
+                        9000 + i),
+                    policy: policy,
+                    genesis: genesis,
+                    consensusReactorOption: reactorOpts[i]).ConfigureAwait(false));
+            }
 
             try
             {
