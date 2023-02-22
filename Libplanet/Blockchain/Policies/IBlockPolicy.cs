@@ -17,6 +17,9 @@ namespace Libplanet.Blockchain.Policies
     /// such as whether a <see cref="Block{T}"/> has the right difficulty,
     /// a <see cref="Transaction{T}"/> has the right signer, etc.
     /// </para>
+    /// <para>
+    /// Note that all index dependent sub-policies are ignored for genesis <see cref="Block{T}"/>s.
+    /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// <see cref="Block{T}"/>'s type parameter.</typeparam>

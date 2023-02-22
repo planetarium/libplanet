@@ -2039,42 +2039,36 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = MineGenesis(
+
+            var genesisTx = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                null,
+                Array.Empty<DumbAction>());
+            var genesisWithTx = MineGenesis(
                 GenesisMiner.PublicKey,
-                new[]
-                {
-                    Transaction<DumbAction>.Create(
-                        0,
-                        new PrivateKey(),
-                        null,
-                        Array.Empty<DumbAction>()
-                    ),
-                }
-            ).Evaluate(
+                new[] { genesisTx }).Evaluate(
                 privateKey: GenesisMiner,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: stateStore
-            );
+                stateStore: stateStore);
 
-            Assert.Throws<TxPolicyViolationException>(() =>
-            {
-                try
-                {
-                    var chain = new BlockChain<DumbAction>(
-                        policy,
-                        new VolatileStagePolicy<DumbAction>(),
-                        store,
-                        stateStore,
-                        genesisWithTx
-                    );
-                }
-                catch (TxPolicyViolationException e)
-                {
-                    Assert.NotNull(e.InnerException);
-                    throw;
-                }
-            });
+            var chain = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                store,
+                stateStore,
+                genesisWithTx);
+
+            var blockTx = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                null,
+                Array.Empty<DumbAction>());
+            var block = TestUtils.MineNextBlock(chain.Genesis, GenesisMiner, new[] { blockTx });
+
+            var e = Assert.Throws<TxPolicyViolationException>(() => chain.Append(block));
+            Assert.NotNull(e.InnerException);
         }
 
         private class

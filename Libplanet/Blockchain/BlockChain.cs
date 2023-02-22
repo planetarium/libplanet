@@ -1171,9 +1171,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Count > 0 ? Tip : null;
             try
             {
-                InvalidBlockException ibe = ValidateNextBlock(block);
-
-                if (!(ibe is null))
+                if (ValidateNextBlock(block) is { } ibe)
                 {
                     _logger.Error(ibe, "Failed to append invalid block {BlockHash}", block.Hash);
                     throw ibe;
@@ -1183,7 +1181,7 @@ namespace Libplanet.Blockchain
 
                 foreach (Transaction<T> tx1 in block.Transactions.OrderBy(tx => tx.Nonce))
                 {
-                    if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
+                    if (block.Index > 0 && Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
                             "According to BlockPolicy, this transaction is not valid.",
@@ -1494,12 +1492,12 @@ namespace Libplanet.Blockchain
                 return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
-            BlockPolicyViolationException bpve = Policy.ValidateNextBlock(this, block);
-            if (bpve is { })
+            if (block.Index > 0 && Policy.ValidateNextBlock(this, block) is { } bpve)
             {
                 return bpve;
             }
 
+            // FIXME: Difficulty comparison to policy should be part of ValidateNextBlock().
             long index = this.Count;
             long difficulty = Policy.GetNextBlockDifficulty(this);
             BigInteger totalDifficulty = index >= 1
@@ -1517,7 +1515,7 @@ namespace Libplanet.Blockchain
                     $"but its index is #{block.Index}.");
             }
 
-            if (block.Difficulty < difficulty)
+            if (block.Index > 0 && block.Difficulty < difficulty)
             {
                 return new InvalidBlockDifficultyException(
                     $"The expected difficulty of the block #{index} {block.Hash} " +
