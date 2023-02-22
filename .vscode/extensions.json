@@ -5,6 +5,9 @@
     "formulahendry.dotnet-test-explorer",
     "ms-vscode.powershell",
     "streetsidesoftware.code-spell-checker",
-    "GitHub.vscode-pull-request-github"
+    "GitHub.vscode-pull-request-github",
+    "arcanis.vscode-zipfs",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
   ]
 }

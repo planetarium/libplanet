@@ -1,5 +1,13 @@
 {
-  "editor.rulers": [80, 100],
+  "editor.rulers": [
+    80,
+    100
+  ],
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
   "csharp.semanticHighlighting.enabled": true,
   "cSpell.words": [
     "Bencodex",
@@ -36,8 +44,19 @@
     "unrenderer",
     "unrendering",
     "unrenders",
-    "upstream's",
+    "upstream's"
   ],
   "dotnet-test-explorer.autoExpandTree": true,
-  "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
+  "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "eslint.nodePath": ".yarn/sdks",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
 }
