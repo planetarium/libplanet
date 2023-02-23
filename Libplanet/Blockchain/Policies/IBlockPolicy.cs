@@ -95,9 +95,15 @@ namespace Libplanet.Blockchain.Policies
             BlockChain<T> blockChain, Block<T> nextBlock);
 
         /// <summary>
+        /// <para>
         /// Determines a right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined
         /// right after the given <paramref name="blockChain"/>.
+        /// </para>
+        /// <para>
+        /// Any specific implementation of this method should assume a genesis
+        /// <see cref="Block{T}"/> will always have zero difficulty.
+        /// </para>
         /// </summary>
         /// <param name="blockChain">Consecutive <see cref="Block{T}"/>s to be
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>

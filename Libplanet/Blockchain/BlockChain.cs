@@ -1466,8 +1466,76 @@ namespace Libplanet.Blockchain
             }
         }
 
+        /// <summary>
+        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
+        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
+        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="block"/> has
+        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
+        private static InvalidBlockException ValidateGenesisBlock(Block<T> block)
+        {
+            if (block.Index != 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(block)} must have index 0 but has index {block.Index}",
+                    nameof(block));
+            }
+
+            int actualProtocolVersion = block.ProtocolVersion;
+            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
+            {
+                return new InvalidBlockProtocolVersionException(
+                    $"The protocol version ({actualProtocolVersion}) of the block " +
+                    $"#{block.Index} {block.Hash} is not supported by this node." +
+                    $"The highest supported protocol version is {currentProtocolVersion}.",
+                    actualProtocolVersion);
+            }
+
+            if (block.Difficulty != 0)
+            {
+                return new InvalidBlockDifficultyException(
+                    $"The expected difficulty of the block #{block.Index} {block.Hash} " +
+                    $"is 0, but its difficulty is {block.Difficulty}.");
+            }
+
+            if (block.Difficulty != block.TotalDifficulty)
+            {
+                return new InvalidBlockTotalDifficultyException(
+                    $"The expected total difficulty of the block #{block.Index} " +
+                    $"{block.Hash} is {block.Difficulty}, but its total difficulty is " +
+                    $"{block.TotalDifficulty}.",
+                    block.Difficulty,
+                    block.TotalDifficulty);
+            }
+
+            if (block.PreviousHash is { } previousHash)
+            {
+                return new InvalidBlockPreviousHashException(
+                    $"A genesis block should not have previous hash, " +
+                    $"but its value is {block.PreviousHash}.");
+            }
+
+            return null;
+        }
+
         private InvalidBlockException ValidateNextBlock(Block<T> block)
         {
+            if (block.Index == 0)
+            {
+                return ValidateGenesisBlock(block);
+            }
+
+            long index = Count;
+            if (block.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"The expected index of block {block.Hash} is #{index}, " +
+                    $"but its index is #{block.Index}.");
+            }
+
             int actualProtocolVersion = block.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
 
@@ -1484,7 +1552,7 @@ namespace Libplanet.Blockchain
                     actualProtocolVersion
                 );
             }
-            else if (Count > 0 && actualProtocolVersion < Tip.ProtocolVersion)
+            else if (actualProtocolVersion < Tip.ProtocolVersion)
             {
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
@@ -1492,30 +1560,20 @@ namespace Libplanet.Blockchain
                 return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
-            if (block.Index > 0 && Policy.ValidateNextBlock(this, block) is { } bpve)
+            if (Policy.ValidateNextBlock(this, block) is { } bpve)
             {
                 return bpve;
             }
 
-            // FIXME: Difficulty comparison to policy should be part of ValidateNextBlock().
-            long index = this.Count;
+            // FIXME: Difficulty comparison to policy should be part of Policy.ValidateNextBlock().
             long difficulty = Policy.GetNextBlockDifficulty(this);
-            BigInteger totalDifficulty = index >= 1
-                    ? this[index - 1].TotalDifficulty + block.Difficulty
-                    : block.Difficulty;
+            BigInteger totalDifficulty = this[index - 1].TotalDifficulty + block.Difficulty;
 
-            Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
+            Block<T> lastBlock = this[index - 1];
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
-            if (block.Index != index)
-            {
-                return new InvalidBlockIndexException(
-                    $"The expected index of block {block.Hash} is #{index}, " +
-                    $"but its index is #{block.Index}.");
-            }
-
-            if (block.Index > 0 && block.Difficulty < difficulty)
+            if (block.Difficulty < difficulty)
             {
                 return new InvalidBlockDifficultyException(
                     $"The expected difficulty of the block #{index} {block.Hash} " +
@@ -1535,13 +1593,6 @@ namespace Libplanet.Blockchain
 
             if (!block.PreviousHash.Equals(prevHash))
             {
-                if (prevHash is null)
-                {
-                    return new InvalidBlockPreviousHashException(
-                        $"The genesis block {block.Hash} should not have previous hash, " +
-                        $"but its value is {block.PreviousHash}.");
-                }
-
                 return new InvalidBlockPreviousHashException(
                     $"The block #{index} {block.Hash} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +

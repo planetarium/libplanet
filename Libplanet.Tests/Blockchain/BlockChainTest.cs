@@ -1048,15 +1048,11 @@ namespace Libplanet.Tests.Blockchain
         public void GetStatesOnUninitializedBlockChain()
         {
             bool invoked = false;
-            IReadOnlyList<IValue> values = null;
-            IValue value = null;
             var policy = new NullPolicyForGetStatesOnUninitializedBlockChain<DumbAction>(
                 c =>
                 {
                     // ReSharper disable AccessToModifiedClosure
                     // The following method calls should not throw any exceptions:
-                    values = c?.GetStates(new[] { default(Address) });
-                    value = c?.GetState(default);
                     invoked = true;
                     // ReSharper restore AccessToModifiedClosure
                 });
@@ -1086,11 +1082,7 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisWithTx
             );
-            Assert.True(invoked);
-            Assert.NotNull(values);
-            Assert.Single(values);
-            Assert.Null(values[0]);
-            Assert.Null(value);
+            Assert.False(invoked);
         }
 
         // This is a regression test for:
