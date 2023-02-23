@@ -18,12 +18,16 @@ To be released.
 
 ### Behavioral changes
 
+ -  `IBlockPolicy` is no longer enforced for genesis `Block<T>`s.  [[#2845]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+
+[#2845]: https://github.com/planetarium/libplanet/pull/2845
 
 Version 0.49.0
 --------------
