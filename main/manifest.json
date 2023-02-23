@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "s8DLdv54B0q+gJ1xG2WvScGeB5lYuEwpEMxmM4vg2u0="
+          "hash": "RfCQEUCGddBnba1DAJsh6wg0NI0KaHbNB69qNRUgzZU="
         }
       },
       "is_incremental": false,
@@ -693,7 +693,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-1.html",
-          "hash": "DVegv5dbm4HbzOpOdFoAqBgmMsDDQuS6T8E0PDYlG+w="
+          "hash": "Rs5jmGdI1PHNbQ2rTWXO9D5MYAMt8S/h5+tg+MB9Av8="
         }
       },
       "is_incremental": false,
@@ -717,7 +717,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html",
-          "hash": "I4tMCdTsPn70cqds74HN6FlVR4K5x7wIYnT6LdBqGYo="
+          "hash": "YQT2z/zgqgpg4p+DkUFieVpDBz4Ka9jRB8aNFXHsIZ4="
         }
       },
       "is_incremental": false,
@@ -765,7 +765,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.html",
-          "hash": "M6kEBJrnMArAL4VubmQ0+Gr112YJXO+fbs6uAE9NrbM="
+          "hash": "VpQloE2LT0TX8n+hxf76CxgFBF2a1fAFc6XFyAxJsCA="
         }
       },
       "is_incremental": false,
