@@ -309,21 +309,7 @@ namespace Libplanet.Net
                 await Transport.ReplyMessageAsync(response, default);
             }
 
-            if (count == 0)
-            {
-                var response = new Messages.BlocksMsg(blocks)
-                {
-                    Identity = getData.Identity,
-                };
-                _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
-                    count,
-                    total,
-                    reqId);
-                await Transport.ReplyMessageAsync(response, default);
-            }
-
-            _logger.Debug("{Count} blocks were transferred to {Identity}.", count, reqId);
+            _logger.Debug("{Count} blocks were transferred to {Identity}", count, reqId);
         }
     }
 }
