@@ -59,7 +59,7 @@ namespace Libplanet.Tx
             var updatedStates =
                 (Dictionary)Codec.Decode(info.GetValue<byte[]>(nameof(UpdatedStates)));
             UpdatedStates = updatedStates.ToImmutableDictionary(
-                kv => new Address((Binary)kv.Key),
+                kv => new Address(kv.Key),
                 kv => kv.Value is List l && l.Any() ? l[0] : null
             );
             FungibleAssetsDelta = DecodeFungibleAssetGroups(
@@ -154,7 +154,7 @@ namespace Libplanet.Tx
         private static IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
         DecodeFungibleAssetGroups(byte[] encoded) =>
             ((Dictionary)Codec.Decode(encoded)).ToImmutableDictionary(
-                kv => new Address((Binary)kv.Key),
+                kv => new Address(kv.Key),
                 kv => (IImmutableDictionary<Currency, FAV>)((List)kv.Value)
                     .Cast<List>()
                     .Select(pair => (new Currency(pair[0]), (Bencodex.Types.Integer)pair[1]))

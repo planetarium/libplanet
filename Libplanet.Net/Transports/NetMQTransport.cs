@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -133,6 +134,18 @@ namespace Libplanet.Net.Transports
 
         /// <inheritdoc/>
         public bool Running => _routerPoller?.IsRunning ?? false;
+
+        /// <inheritdoc/>
+        public AppProtocolVersion AppProtocolVersion =>
+            _appProtocolVersionOptions.AppProtocolVersion;
+
+        /// <inheritdoc/>
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
+            _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
+
+        /// <inheritdoc/>
+        public DifferentAppProtocolVersionEncountered DifferentAppProtocolVersionEncountered =>
+            _appProtocolVersionOptions.DifferentAppProtocolVersionEncountered;
 
         /// <summary>
         /// Creates an initialized <see cref="NetMQTransport"/> instance.
@@ -506,7 +519,6 @@ namespace Libplanet.Net.Transports
 
             string reqId = !(message.Identity is null) && message.Identity.Length == 16 ?
                 new Guid(message.Identity).ToString() : "unknown";
-
             _logger.Debug("Reply {Message} to {Identity}...", message, reqId);
 
             var ev = new AsyncManualResetEvent();
@@ -604,7 +616,6 @@ namespace Libplanet.Net.Transports
                                 Message message = _messageCodec.Decode(copied, false);
                                 string reqId = copied[0].Buffer.Length == 16 ?
                                     new Guid(copied[0].ToByteArray()).ToString() : "unknown";
-
                                 _logger
                                     .ForContext("Tag", "Metric")
                                     .ForContext("Subtag", "InboundMessageReport")

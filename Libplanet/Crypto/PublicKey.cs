@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Org.BouncyCastle.Crypto.Parameters;
 
 namespace Libplanet.Crypto
@@ -26,6 +29,7 @@ namespace Libplanet.Crypto
     /// <remarks>Every <see cref="PublicKey"/> object is immutable.</remarks>
     /// <seealso cref="PrivateKey"/>
     /// <seealso cref="Address"/>
+    [JsonConverter(typeof(PublicKeyJsonConverter))]
     public class PublicKey : IEquatable<PublicKey>
     {
         /// <summary>
@@ -204,5 +208,37 @@ namespace Libplanet.Crypto
                 ecParams
             );
         }
+    }
+
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class PublicKeyJsonConverter : JsonConverter<PublicKey>
+    {
+        public override PublicKey Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? hex = reader.GetString();
+            try
+            {
+                return new PublicKey(ByteUtil.ParseHex(hex!));
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            PublicKey value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(ByteUtil.Hex(value.Format(true)));
     }
 }

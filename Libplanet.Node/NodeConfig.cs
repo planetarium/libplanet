@@ -5,6 +5,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Consensus;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 
 namespace Libplanet.Node
@@ -124,12 +125,16 @@ namespace Libplanet.Node
                 SwarmConfig.InitConfig.Host,
                 SwarmConfig.InitConfig.IceServers,
                 SwarmConfig.InitConfig.Port);
-
+            var transport = NetMQTransport.Create(
+                _privateKey,
+                apvOptions,
+                hostOptions,
+                SwarmConfig.ToSwarmOptions().MessageTimestampBuffer)
+                    .ConfigureAwait(false).GetAwaiter().GetResult();
             return new Swarm<T>(
-                privateKey: _privateKey,
                 blockChain: blockChain,
-                appProtocolVersionOptions: apvOptions,
-                hostOptions: hostOptions,
+                privateKey: _privateKey,
+                transport: transport,
                 options: SwarmConfig.ToSwarmOptions());
         }
     }

@@ -14,7 +14,6 @@ using Serilog;
 using xRetry;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
@@ -179,7 +178,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             if (proposal is null)
             {
-                throw new NullException(proposal);
+                throw new Exception("Proposal is null.");
             }
 
             foreach ((PrivateKey privateKey, BoundPeer peer)

@@ -4,13 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet
@@ -42,9 +41,8 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     [JsonConverter(typeof(AddressJsonConverter))]
-    [Serializable]
     public readonly struct Address
-        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable
+        : IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -68,7 +66,7 @@ namespace Libplanet
         /// <see cref="Address"/> can be gotten using <see cref="ToByteArray()"
         /// /> method.</remarks>
         /// <seealso cref="ByteArray"/>
-        public Address(ImmutableArray<byte> address)
+        public Address(in ImmutableArray<byte> address)
         {
             if (address.Length != Size)
             {
@@ -118,14 +116,12 @@ namespace Libplanet
         /// Derives the corresponding <see cref="Address"/> from a hexadecimal
         /// address string.
         /// </summary>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> was
-        /// passed to <paramref name="hex"/>.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> did not lengthen 40 characters except 0x prefix.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> is mixed-case and the checksum is invalid.</exception>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref
-        /// name="hex"/> does not consist of ASCII characters.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// is neither 40 chars long nor 42 chars long with 0x prefix.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// is mixed-case and the checksum is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="hex"/>
+        /// does not consist of ASCII characters.</exception>
         /// <param name="hex">A 40 characters or included 0x prefix hexadecimal
         /// address string to derive the corresponding <see cref="Address"/> from.
         /// The string should be all lower-case or mixed-case which follows <a
@@ -137,24 +133,25 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Creates an <see cref="Address"/> instance from the given Bencodex <see cref="Binary"/>
-        /// (i.e., <paramref name="address"/>).
+        /// Creates an <see cref="Address"/> instance from given <paramref name="bencoded"/>.
         /// </summary>
-        /// <param name="address">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
+        /// <param name="bencoded">A Bencodex <see cref="Binary"/> of 20 <see cref="byte"/>s which
         /// represents an <see cref="Address"/>.
         /// </param>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref name="address"/>
-        /// did not lengthen 20 bytes.</exception>
-        public Address(Binary address)
-            : this(address.ByteArray)
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
+        /// is not of type <see cref="Binary"/>.</exception>
+        public Address(IValue bencoded)
+            : this(bencoded is Binary binary
+                ? (Binary)bencoded
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
         {
         }
 
-        private Address(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info?.GetValue<byte[]>("address") ??
-                throw new SerializationException("Missing the address field."))
+        private Address(Binary bencoded)
+            : this(bencoded.ByteArray)
         {
         }
 
@@ -165,18 +162,13 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    return _defaultByteArray.ToImmutableArray();
-                }
+        public ImmutableArray<byte> ByteArray =>
+            _byteArray.IsDefault
+                ? _defaultByteArray.ToImmutableArray()
+                : _byteArray;
 
-                return _byteArray;
-            }
-        }
+        /// <inheritdoc/>
+        public IValue Bencoded => new Binary(ByteArray);
 
         public static bool operator ==(Address left, Address right) => left.Equals(right);
 
@@ -248,12 +240,6 @@ namespace Libplanet
             return $"0x{ToHex()}";
         }
 
-        /// <inheritdoc />
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("address", ToByteArray());
-        }
-
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         public int CompareTo(Address other)
         {
@@ -302,57 +288,52 @@ namespace Libplanet
             return output;
         }
 
-        private static byte[] DeriveAddress(PublicKey key)
+        private static ImmutableArray<byte> DeriveAddress(PublicKey key)
         {
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
             var output = CalculateHash(hashPayload);
 
-            return output.Skip(output.Length - Size).ToArray();
+            return output.Skip(output.Length - Size).ToImmutableArray();
         }
 
-        private static byte[] DeriveAddress(string hex)
+        private static ImmutableArray<byte> DeriveAddress(string hex)
         {
-            if (hex == null)
+            if (hex.Length != 40 && hex.Length != 42)
             {
-                throw new ArgumentNullException(nameof(hex));
+                throw new ArgumentException(
+                    $"Address hex must be either 42 chars or 40 chars, " +
+                    $"but given {nameof(hex)} is of length {hex.Length}: {hex}",
+                    nameof(hex));
             }
 
             if (hex.Length == 42)
             {
-                int pos = hex.IndexOf('x');
-                if (pos >= 0)
+                if (hex.StartsWith("0x"))
                 {
-                    hex = hex.Remove(0, pos + 1);
+                    hex = hex.Substring(2);
                 }
-            }
-
-            if (hex.Length != 40)
-            {
-                throw new ArgumentException(
-                    "Address hex must be 40 bytes, but " +
-                    $"{hex.Length} bytes were passed.",
-                    nameof(hex)
-                );
+                else
+                {
+                    throw new ArgumentException(
+                        $"Address hex of length 42 chars must start with \"0x\" prefix: {hex}",
+                        nameof(hex));
+                }
             }
 
             if (hex.ToLower(CultureInfo.InvariantCulture) != hex &&
                 ToChecksumAddress(hex.ToLower(CultureInfo.InvariantCulture)) != hex)
             {
-                throw new ArgumentException(
-                    "address checksum is invalid",
-                    nameof(hex)
-                );
+                throw new ArgumentException("Address checksum is invalid", nameof(hex));
             }
 
             try
             {
-                return ByteUtil.ParseHex(hex);
+                return ByteUtil.ParseHexToImmutable(hex);
             }
-            catch (FormatException)
+            catch (FormatException fe)
             {
                 throw new ArgumentException(
-                    "address hex must only consist of ASCII characters"
-                );
+                    "Address hex must only consist of ASCII characters", fe);
             }
         }
     }

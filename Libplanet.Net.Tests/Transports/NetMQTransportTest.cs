@@ -21,12 +21,12 @@ namespace Libplanet.Net.Tests.Transports
 
         public NetMQTransportTest(ITestOutputHelper testOutputHelper)
         {
-            TransportConstructor = (
+            TransportConstructor = async (
                     privateKey,
                     appProtocolVersionOptions,
                     hostOptions,
                     messageTimestampBuffer) =>
-                CreateNetMQTransport(
+                await CreateNetMQTransport(
                     privateKey,
                     appProtocolVersionOptions,
                     hostOptions,
@@ -61,7 +61,7 @@ namespace Libplanet.Net.Tests.Transports
                     new PrivateKey(),
                     new AppProtocolVersionOptions(),
                     new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { }, 0)
-                );
+                ).ConfigureAwait(false);
                 transport.ProcessMessageHandler.Register(
                     async m =>
                     {
@@ -139,7 +139,7 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
-        private NetMQTransport CreateNetMQTransport(
+        private Task<NetMQTransport> CreateNetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
             HostOptions hostOptions,
@@ -150,7 +150,8 @@ namespace Libplanet.Net.Tests.Transports
                 privateKey,
                 appProtocolVersionOptions,
                 hostOptions,
-                messageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
+                messageTimestampBuffer
+            );
         }
     }
 }

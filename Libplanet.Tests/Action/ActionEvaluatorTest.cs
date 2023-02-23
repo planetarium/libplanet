@@ -1240,9 +1240,9 @@ namespace Libplanet.Tests.Action
             public void LoadPlainValue(IValue plainValue)
             {
                  var asList = (List)plainValue;
-                 SignerKey = new Address((Binary)asList[0]);
-                 MinerKey = new Address((Binary)asList[1]);
-                 BlockIndexKey = new Address((Binary)asList[2]);
+                 SignerKey = new Address(asList[0]);
+                 MinerKey = new Address(asList[1]);
+                 BlockIndexKey = new Address(asList[2]);
             }
 
             public IAccountStateDelta Execute(IActionContext context) =>

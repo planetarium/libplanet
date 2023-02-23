@@ -52,21 +52,12 @@ namespace Libplanet.Net.Messages
         /// <para>
         /// Whether to trust an unknown <see cref="AppProtocolVersion"/>, i.e.
         /// an <see cref="AppProtocolVersion"/> that is different
-        /// from <see cref="Apv"/>, depends on this value:
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         If <see langword="null"/>, the <see cref="AppProtocolVersion"/> in question
-        ///         is trusted regardless of its signer.
-        ///     </description></item>
-        ///     <item><description>
-        ///         If not <see langword="null"/>, an <see cref="AppProtocolVersion"/> is trusted
-        ///         if it is signed by one of the signers in the set.  In particular, if the set
-        ///         is empty, no <see cref="AppProtocolVersion"/> is trusted.
-        ///     </description></item>
-        /// </list>
+        /// from <see cref="Apv"/>.  An <see cref="AppProtocolVersion"/> is trusted if it is signed
+        /// by one of the signers in the set.  In particular, if the set is empty,
+        /// no <see cref="AppProtocolVersion"/> is trusted.
         /// </para>
         /// </summary>
-        public IImmutableSet<PublicKey>? TrustedApvSigners =>
+        public IImmutableSet<PublicKey> TrustedApvSigners =>
             _appProtocolVersionOptions.TrustedAppProtocolVersionSigners;
 
         /// <summary>
@@ -134,7 +125,7 @@ namespace Libplanet.Net.Messages
 
         private static void ValidateAppProtocolVersion(
             AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             Message message)
         {
@@ -145,9 +136,9 @@ namespace Libplanet.Net.Messages
                     return;
                 }
 
-                bool trusted = !(
-                    trustedAppProtocolVersionSigners is { } tapvs &&
-                    tapvs.All(publicKey => !message.Version.Verify(publicKey)));
+                bool trusted = !trustedAppProtocolVersionSigners.All(
+                    publicKey => !message.Version.Verify(publicKey));
+
                 if (trusted)
                 {
                     differentAppProtocolVersionEncountered(

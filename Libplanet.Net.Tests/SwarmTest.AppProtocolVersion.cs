@@ -20,10 +20,10 @@ namespace Libplanet.Net.Tests
                 { AppProtocolVersion = AppProtocolVersion.Sign(signer, 2) };
             AppProtocolVersionOptions v3 = new AppProtocolVersionOptions()
                 { AppProtocolVersion = AppProtocolVersion.Sign(signer, 3) };
-            var a = CreateSwarm(appProtocolVersionOptions: v2);
-            var b = CreateSwarm(appProtocolVersionOptions: v3);
-            var c = CreateSwarm(appProtocolVersionOptions: v2);
-            var d = CreateSwarm(appProtocolVersionOptions: v3);
+            var a = await CreateSwarm(appProtocolVersionOptions: v2).ConfigureAwait(false);
+            var b = await CreateSwarm(appProtocolVersionOptions: v3).ConfigureAwait(false);
+            var c = await CreateSwarm(appProtocolVersionOptions: v2).ConfigureAwait(false);
+            var d = await CreateSwarm(appProtocolVersionOptions: v3).ConfigureAwait(false);
 
             try
             {
@@ -62,12 +62,14 @@ namespace Libplanet.Net.Tests
             AppProtocolVersionOptions v1 = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = AppProtocolVersion.Sign(signer, 1),
+                TrustedAppProtocolVersionSigners =
+                    new HashSet<PublicKey>() { signer.PublicKey }.ToImmutableHashSet(),
                 DifferentAppProtocolVersionEncountered = (_, ver, __) => { isCalled = true; },
             };
             AppProtocolVersionOptions v2 = new AppProtocolVersionOptions()
                 { AppProtocolVersion = AppProtocolVersion.Sign(signer, 2) };
-            var a = CreateSwarm(appProtocolVersionOptions: v1);
-            var b = CreateSwarm(appProtocolVersionOptions: v2);
+            var a = await CreateSwarm(appProtocolVersionOptions: v1).ConfigureAwait(false);
+            var b = await CreateSwarm(appProtocolVersionOptions: v2).ConfigureAwait(false);
 
             try
             {
@@ -120,37 +122,37 @@ namespace Libplanet.Net.Tests
                 TrustedAppProtocolVersionSigners = trustedSigners,
                 DifferentAppProtocolVersionEncountered = DifferentAppProtocolVersionEncountered,
             };
-            var a = CreateSwarm(appProtocolVersionOptions: optionsA);
+            var a = await CreateSwarm(appProtocolVersionOptions: optionsA).ConfigureAwait(false);
             var optionsB = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = newer,
                 TrustedAppProtocolVersionSigners = trustedSigners,
             };
-            var b = CreateSwarm(appProtocolVersionOptions: optionsB);
+            var b = await CreateSwarm(appProtocolVersionOptions: optionsB).ConfigureAwait(false);
             var optionsC = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = older,
                 TrustedAppProtocolVersionSigners = trustedSigners,
             };
-            var c = CreateSwarm(appProtocolVersionOptions: optionsC);
+            var c = await CreateSwarm(appProtocolVersionOptions: optionsC).ConfigureAwait(false);
             var optionsD = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = newer,
                 TrustedAppProtocolVersionSigners = trustedSigners,
             };
-            var d = CreateSwarm(appProtocolVersionOptions: optionsD);
+            var d = await CreateSwarm(appProtocolVersionOptions: optionsD).ConfigureAwait(false);
             var optionsE = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = untrustedOlder,
                 TrustedAppProtocolVersionSigners = untrustedSigners,
             };
-            var e = CreateSwarm(appProtocolVersionOptions: optionsE);
+            var e = await CreateSwarm(appProtocolVersionOptions: optionsE).ConfigureAwait(false);
             var optionsF = new AppProtocolVersionOptions()
             {
                 AppProtocolVersion = untrustedNewer,
                 TrustedAppProtocolVersionSigners = untrustedSigners,
             };
-            var f = CreateSwarm(appProtocolVersionOptions: optionsF);
+            var f = await CreateSwarm(appProtocolVersionOptions: optionsF).ConfigureAwait(false);
 
             try
             {

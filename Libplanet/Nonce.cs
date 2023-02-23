@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Libplanet
 {
@@ -9,6 +12,7 @@ namespace Libplanet
     /// An arbitrary <see cref="byte"/>s that determines a
     /// <see cref="Hashcash.Stamp"/>.
     /// </summary>
+    [JsonConverter(typeof(NonceJsonConverter))]
     public struct Nonce : IEquatable<Nonce>
     {
         private ImmutableArray<byte> _byteArray;
@@ -36,7 +40,7 @@ namespace Libplanet
         /// <param name="nonce">An immutable <see cref="byte"/> array to convert to
         /// a <see cref="Nonce"/> instance.</param>
         /// <seealso cref="ByteArray"/>
-        public Nonce(ImmutableArray<byte> nonce) =>
+        public Nonce(in ImmutableArray<byte> nonce) =>
             _byteArray = nonce;
 
         /// <summary>
@@ -90,5 +94,37 @@ namespace Libplanet
         {
             return ByteUtil.Hex(ToByteArray());
         }
+    }
+
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class NonceJsonConverter : JsonConverter<Nonce>
+    {
+        public override Nonce Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? hex = reader.GetString();
+            try
+            {
+                return new Nonce(ByteUtil.ParseHex(hex!));
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            Nonce value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(value.ToString());
     }
 }

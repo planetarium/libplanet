@@ -284,6 +284,7 @@ public class KeyCommand
         Utils.PrintTable(("Public Key", "Address"), new[] { (pub, addr) });
     }
 
+    // FIXME: Declare a ICommandParameterSet type taking key ID and keystore path instead:
     public PrivateKey UnprotectKey(
         Guid keyId,
         PassphraseParameters passphrase,
@@ -365,6 +366,7 @@ public class KeyCommand
         }
     }
 
+    // FIXME: Declare a ICommandParameterSet type taking key ID and keystore path instead:
     private void ChangeKeyStorePath(string? path)
     {
         if (path != null)

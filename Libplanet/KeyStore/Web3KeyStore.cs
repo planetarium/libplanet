@@ -106,17 +106,17 @@ namespace Libplanet.KeyStore
         public ProtectedPrivateKey Get(Guid id)
         {
             IEnumerable<(Guid, string)> files = ListFiles();
-            string name;
+            string keyPath;
             try
             {
-                (_, name) = files.First(pair => pair.Item1.Equals(id));
+                (_, keyPath) = files.First(pair => pair.Item1.Equals(id));
             }
             catch (InvalidOperationException)
             {
                 throw new NoKeyException("There is no key with such ID", id);
             }
 
-            return Get(name);
+            return Get(keyPath);
         }
 
         /// <inheritdoc/>
@@ -179,12 +179,10 @@ namespace Libplanet.KeyStore
             }
         }
 
-        private ProtectedPrivateKey Get(string name)
+        private ProtectedPrivateKey Get(string keyPath)
         {
-            using (StreamReader reader = new StreamReader(System.IO.Path.Combine(Path, name)))
-            {
-                return ProtectedPrivateKey.FromJson(reader.ReadToEnd());
-            }
+            using StreamReader reader = new StreamReader(keyPath);
+            return ProtectedPrivateKey.FromJson(reader.ReadToEnd());
         }
     }
 }

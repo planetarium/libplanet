@@ -41,14 +41,15 @@ namespace Libplanet.Net.Tests.Transports
             int port = FreeTcpPort();
             var hostOptions = new HostOptions(
                 IPAddress.Loopback.ToString(), new IceServer[] { }, port);
-
             var option = new SwarmOptions();
-
+            var transport = await NetMQTransport.Create(
+                swarmKey,
+                apvOptions,
+                hostOptions);
             using (var swarm = new Swarm<DumbAction>(
                 blockchain,
                 swarmKey,
-                apvOptions,
-                hostOptions,
+                transport,
                 options: option))
             {
                 var peer = new BoundPeer(swarmKey.PublicKey, new DnsEndPoint(host, port));
