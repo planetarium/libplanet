@@ -17,7 +17,7 @@ const SUFFIXES = {
 };
 const PACKAGE_PATH = path.dirname(fileURLToPath(import.meta.url));
 const METADATA_PATH = path.join(PACKAGE_PATH, "package.json");
-export const BIN_NAME = process.platform == "win32" ? "planet.exe" : "planet";
+export const BIN_NAME = process.platform === "win32" ? "planet.exe" : "planet";
 export const BIN_PATH = path.join(PACKAGE_PATH, "bin");
 
 export async function download(options = {}) {

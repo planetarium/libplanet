@@ -5,12 +5,21 @@ set -e
 "$(dirname "$0")/check-changelog"
 "$(dirname "$0")/check-projects"
 
-for jsproj in "$(dirname "$0")/../@planetarium"/*; do
-  if [[ -x "$jsproj/hooks/pre-commit" ]]; then
-    pushd "$jsproj"
-    hooks/pre-commit
-    popd
+if command -v yarn --help > /dev/null; then
+  if [[ "$CI" = "true" ]]; then
+    yarn --immutable
+  else
+    yarn --silent
   fi
-done
+
+  # FIXME: The following workaround should be removed when Rome fixes their bug
+  # which fails to resolve symlinks referring to the parent directory.
+  rm -f @planetarium/cli
+  trap "ln -sf ../Libplanet.Tools @planetarium/cli" EXIT
+  yarn rome check .
+else
+  echo warn: yarn is not available\; not running commands pertaining to node.js. >&2
+  exit 0
+fi
 
 # vim: set filetype=sh ts=2 sw=2 et:

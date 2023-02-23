@@ -48,10 +48,12 @@ jobs:
           echo "$VERSION_SUFFIX" > obj/version_suffix.txt
         fi
         echo "$PACKAGE_VERSION" > obj/package_version.txt
+        echo "$VERSION_TYPE" > obj/version_type.txt
       env:
         VERSION_PREFIX: ${{ steps.determine-version.outputs.version-prefix }}
         VERSION_SUFFIX: ${{ steps.determine-version.outputs.version-suffix }}
         PACKAGE_VERSION: ${{ steps.determine-version.outputs.package-version }}
+        VERSION_TYPE: ${{ steps.determine-version.outputs.version-type }}
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
     - uses: actions/upload-artifact@main
       with:

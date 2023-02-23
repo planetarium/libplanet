@@ -18,9 +18,16 @@ else
   dry_run=
 fi
 
+version_type="$(cat "$(dirname $0)/../../obj/version_type.txt")"
+if [[ "$version_type" = stable ]]; then
+  tag=latest
+else
+  tag="$version_type"
+fi
+
 for npmpkg in "${npm_packages[@]}"; do
   for tgz in "./$npmpkg"/*.tgz; do
     # shellcheck disable=SC2086
-    npm publish --access=public $dry_run "$tgz"
+    npm publish --access=public --tag="$tag" $dry_run "$tgz"
   done
 done

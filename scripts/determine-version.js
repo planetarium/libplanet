@@ -63,10 +63,7 @@ async function getTag() {
 }
 
 function getScheduledJobDate() {
-  if (
-    process.env.GITHUB_EVENT_NAME &&
-    process.env.GITHUB_EVENT_NAME.startsWith("schedule")
-  ) {
+  if (process.env.GITHUB_EVENT_NAME?.startsWith("schedule")) {
     // TODO: Read the date from the event payload for determinism.
     const now = new Date();
     return `${now.getUTCFullYear()}${
@@ -80,7 +77,7 @@ async function main() {
   const csprojPath = path.join(
     path.dirname(__dirname),
     "Libplanet",
-    "Libplanet.csproj"
+    "Libplanet.csproj",
   );
   const versionPrefix = await readVersionPrefix(csprojPath);
   const scheduledJobDate = getScheduledJobDate();
@@ -88,20 +85,23 @@ async function main() {
   const commitHash = (await getCommitHash()).substring(0, 7);
   let packageVersion;
   let versionSuffix;
+  let versionType;
   if (scheduledJobDate != null) {
     // Nightly
     versionSuffix = `nightly.${scheduledJobDate}`;
     packageVersion = `${versionPrefix}-${versionSuffix}`;
     versionSuffix += `+${commitHash}`;
+    versionType = "nightly";
   } else if (tag != null) {
     // Release
     if (tag !== versionPrefix) {
       console.error(
-        `Git tag (${tag}) does not match VersionPrefix (${versionPrefix})`
+        `Git tag (${tag}) does not match VersionPrefix (${versionPrefix})`,
       );
       process.exit(1);
     }
     packageVersion = tag;
+    versionType = "stable";
   } else {
     // Dev
     const timestamp = await getCommitTimestamp();
@@ -113,24 +113,30 @@ async function main() {
     versionSuffix = `dev.${ts}`;
     packageVersion = `${versionPrefix}-${versionSuffix}`;
     versionSuffix += `+${commitHash}`;
+    versionType = "dev";
   }
   console.error("VersionPrefix:", versionPrefix);
   if (versionSuffix) console.error("VersionSuffix:", versionSuffix);
   console.error("PackageVersion:", packageVersion);
+  console.error("VersionType:", versionType);
   if (process.env.GITHUB_OUTPUT) {
     // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#environment-files
     await fs.appendFile(
       process.env.GITHUB_OUTPUT,
-      `version-prefix=${versionPrefix}`
+      `version-prefix=${versionPrefix}`,
     );
     if (versionSuffix)
       await fs.appendFile(
         process.env.GITHUB_OUTPUT,
-        `version-suffix=${versionSuffix}`
+        `version-suffix=${versionSuffix}`,
       );
     await fs.appendFile(
       process.env.GITHUB_OUTPUT,
-      `package-version=${packageVersion}`
+      `package-version=${packageVersion}`,
+    );
+    await fs.appendFile(
+      process.env.GITHUB_OUTPUT,
+      `version-type=${versionType}`,
     );
   }
 }
