@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Libplanet.Blockchain.Policies;
 
 namespace Libplanet.Blocks
@@ -18,6 +19,11 @@ namespace Libplanet.Blocks
         /// </param>
         public BlockPolicyViolationException(string message)
             : base(message)
+        {
+        }
+
+        protected BlockPolicyViolationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

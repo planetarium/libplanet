@@ -120,6 +120,50 @@ Version PBFT
 ### CLI tools
 
 
+Version 0.48.0
+--------------
+
+Released on Februrary 14, 2023.
+
+### Backward-incompatible API changes
+
+ -  Removed `BlockCandidateTable<T>.Any()` method.  [[#2794]]
+ -  Changed the return type from `SortedList<long, Block<T>>?` to
+    `List<Block<T>>?` for `BlockCandidateTable<T>.GetCurrentRoundCandidate()`
+    method.  [[#2794]]
+ -  Changed the behavior of `BlockCandidateTable<T>.Add()` method.  [[#2794]]
+ -  Changed `TxId` to implement `IBencodable` interface.  [[#2795]]
+
+### Added APIs
+
+ -  Added `Serializable` attribute back to `Address`.  [[#2798]]
+ -  (Libplanet.Net) Added `Serializable` attribute back to `BoundPeer`.
+    [[#2798]]
+ -  (@planetarium/tx) Added `encodeUnsignedTxWithCustomActions()` function.
+    [[#2805]]
+ -  (@planetarium/tx) Added `CustomAction` type.  [[#2805]]
+ -  (@planetarium/tx) Added `UnsignedTxWithCustomActions` type.  [[#2805]]
+
+### Behavioral changes
+
+ -  (Libplanet.Net) Changed `Swarm<T>` to respond to a `GetBlocksMsg` request
+    with an empty `BlocksMsg` if no requested `Block<T>`s are found.
+    [[#2800], [#2803]]
+
+### Dependencies
+
+ -  (@planetarium/tx) Because `globalThis.crypto` API is available since
+    Node.js version 19.0.0, it now explicitly requires 19.0.0 or later.
+    [[#2805]]
+
+[#2794]: https://github.com/planetarium/libplanet/pull/2794
+[#2795]: https://github.com/planetarium/libplanet/pull/2795
+[#2798]: https://github.com/planetarium/libplanet/pull/2798
+[#2800]: https://github.com/planetarium/libplanet/issues/2800
+[#2803]: https://github.com/planetarium/libplanet/pull/2803
+[#2805]: https://github.com/planetarium/libplanet/pull/2805
+
+
 Version 0.47.0
 --------------
 
@@ -230,7 +274,7 @@ Released on February 6, 2023.
 Version 0.46.1
 --------------
 
-Released on February 3th, 2023.
+Released on February 3, 2023.
 
  -  Ported changes from [Libplanet 0.45.5] release.
  -  General changes to log output for readability.  [[#2769]]
