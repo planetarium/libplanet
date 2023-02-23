@@ -18,7 +18,7 @@ else
   dry_run=
 fi
 
-version_type="$(cat "$(dirname $0)/../../obj/version_type.txt")"
+version_type="$(cat "$(dirname "$0")/../../obj/version_type.txt")"
 if [[ "$version_type" = stable ]]; then
   tag=latest
 else

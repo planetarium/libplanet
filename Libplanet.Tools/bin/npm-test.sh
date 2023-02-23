@@ -37,12 +37,12 @@ jq --arg v "$version" 'del(.private) | .version = $v' package.json \
   > .package.json.tmp
 mv .package.json.tmp package.json
 
-rm -f planetarium-cli-*.tgz
-npm pack --quiet
+rm -f package.tgz
+yarn pack --install-if-needed
 
 echo Test with \`npm install\'... >&2
 pushd "$(mktemp -d)"
-npm install --quiet --save "$pkgdir/planetarium-cli-$version.tgz"
+npm install --quiet --save "$pkgdir/package.tgz"
 test_planet
 popd
 
@@ -52,10 +52,10 @@ npm install \
   --quiet \
   --ignore-scripts \
   --save \
-  "$pkgdir/planetarium-cli-$version.tgz"
+  "$pkgdir/package.tgz"
 test_planet
 popd
 
-rm "$pkgdir"/planetarium-cli-*.tgz
+rm "$pkgdir"/package.tgz
 
 echo "Succeeded!"
