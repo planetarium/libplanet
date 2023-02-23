@@ -72,18 +72,12 @@
 
   <h1 id="Libplanet_Net_Messages_Message" data-uid="Libplanet.Net.Messages.Message" class="text-break">Class Message
 </h1>
-  <div class="markdown level0 summary"><p>Serves as the base class for messages used in <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">Message</span></div>
-      <div class="level2"><a class="xref" href="Libplanet.Net.Messages.DifferentVersionMsg.html">DifferentVersionMsg</a></div>
-      <div class="level2"><a class="xref" href="Libplanet.Net.Messages.FindNeighborsMsg.html">FindNeighborsMsg</a></div>
-      <div class="level2"><a class="xref" href="Libplanet.Net.Messages.NeighborsMsg.html">NeighborsMsg</a></div>
-      <div class="level2"><a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a></div>
-      <div class="level2"><a class="xref" href="Libplanet.Net.Messages.PongMsg.html">PongMsg</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -113,36 +107,58 @@
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Messages_Message_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Message</code></pre>
+    <pre><code class="lang-csharp hljs">public class Message</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_CommonFrames.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.CommonFrames%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message__ctor_Libplanet_Net_Messages_MessageContent_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.%23ctor(Libplanet.Net.Messages.MessageContent%2CLibplanet.Net.AppProtocolVersion%2CLibplanet.Net.BoundPeer%2CSystem.DateTimeOffset%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L14">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L7">View Source</a>
   </span>
-  <h4 id="Libplanet_Net_Messages_Message_CommonFrames" data-uid="Libplanet.Net.Messages.Message.CommonFrames">CommonFrames</h4>
-  <div class="markdown level1 summary"><p>Serves as the base class for messages used in <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
-</div>
+  <a id="Libplanet_Net_Messages_Message__ctor_" data-uid="Libplanet.Net.Messages.Message.#ctor*"></a>
+  <h4 id="Libplanet_Net_Messages_Message__ctor_Libplanet_Net_Messages_MessageContent_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___" data-uid="Libplanet.Net.Messages.Message.#ctor(Libplanet.Net.Messages.MessageContent,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])">Message(MessageContent, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly int CommonFrames</code></pre>
+    <pre><code class="lang-csharp hljs">public Message(MessageContent content, AppProtocolVersion version, BoundPeer remote, DateTimeOffset timestamp, byte[] identity)</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a></td>
+        <td><span class="parametername">content</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">version</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">remote</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">timestamp</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">identity</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -151,19 +167,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_DataFrames.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.DataFrames%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_Content.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.Content%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L166">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L24">View Source</a>
   </span>
-  <a id="Libplanet_Net_Messages_Message_DataFrames_" data-uid="Libplanet.Net.Messages.Message.DataFrames*"></a>
-  <h4 id="Libplanet_Net_Messages_Message_DataFrames" data-uid="Libplanet.Net.Messages.Message.DataFrames">DataFrames</h4>
-  <div class="markdown level1 summary"><p>The body of the message.</p>
+  <a id="Libplanet_Net_Messages_Message_Content_" data-uid="Libplanet.Net.Messages.Message.Content*"></a>
+  <h4 id="Libplanet_Net_Messages_Message_Content" data-uid="Libplanet.Net.Messages.Message.Content">Content</h4>
+  <div class="markdown level1 summary"><p>The body of the message that contains the message type and data.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;byte[]&gt; DataFrames { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageContent Content { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -175,7 +191,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -185,18 +201,17 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_Identity.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.Identity%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L138">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_Message_Identity_" data-uid="Libplanet.Net.Messages.Message.Identity*"></a>
   <h4 id="Libplanet_Net_Messages_Message_Identity" data-uid="Libplanet.Net.Messages.Message.Identity">Identity</h4>
-  <div class="markdown level1 summary"><p><code>byte[]</code>-typed identity of the message.
-If message B is a reply to message A,
-B's identity must be set to A's identity.</p>
+  <div class="markdown level1 summary"><p>The byte array identifies the message to match between
+message and its respond used in <span class="xref">NetMQ</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte[] Identity { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] Identity { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -213,26 +228,21 @@ B's identity must be set to A's identity.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_Message_Identity_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The handling of the identity of a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is implementation specific to
-<a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_Remote.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.Remote%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L150">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_Message_Remote_" data-uid="Libplanet.Net.Messages.Message.Remote*"></a>
   <h4 id="Libplanet_Net_Messages_Message_Remote" data-uid="Libplanet.Net.Messages.Message.Remote">Remote</h4>
-  <div class="markdown level1 summary"><p>The sender <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> of the message.</p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> representation of sender of the given <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[LogAsScalar(false)]
-public BoundPeer Remote { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public BoundPeer Remote { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -254,16 +264,16 @@ public BoundPeer Remote { get; set; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L156">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L39">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_Message_Timestamp_" data-uid="Libplanet.Net.Messages.Message.Timestamp*"></a>
   <h4 id="Libplanet_Net_Messages_Message_Timestamp" data-uid="Libplanet.Net.Messages.Message.Timestamp">Timestamp</h4>
-  <div class="markdown level1 summary"><p>The timestamp of the message is created.</p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> of the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -282,52 +292,19 @@ public BoundPeer Remote { get; set; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_Type.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.Type%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L161">View Source</a>
-  </span>
-  <a id="Libplanet_Net_Messages_Message_Type_" data-uid="Libplanet.Net.Messages.Message.Type*"></a>
-  <h4 id="Libplanet_Net_Messages_Message_Type" data-uid="Libplanet.Net.Messages.Message.Type">Type</h4>
-  <div class="markdown level1 summary"><p>The type of the message.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Message.MessageType Type { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Net.Messages.Message.MessageType.html">Message.MessageType</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message_Version.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message.Version%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L144">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L29">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_Message_Version_" data-uid="Libplanet.Net.Messages.Message.Version*"></a>
   <h4 id="Libplanet_Net_Messages_Message_Version" data-uid="Libplanet.Net.Messages.Message.Version">Version</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>-typed version of the
-<a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Remote">Remote</a>'s transport layer.</p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> of sender of the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[LogAsScalar(false)]
-public AppProtocolVersion Version { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public AppProtocolVersion Version { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,7 +332,7 @@ public AppProtocolVersion Version { get; set; }</code></pre>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_Message.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.Message%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/Message.cs/#L5" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

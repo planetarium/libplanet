@@ -65,9 +65,44 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>Message.Content</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/2772">#2772</a>, <a href="https://github.com/planetarium/libplanet/pull/2831">#2831</a>]</li>
+<li>Some properties and enum of <code>Message</code> class are removed and moved to
+<code>MessageContent</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/2772">#2772</a>, <a href="https://github.com/planetarium/libplanet/pull/2831">#2831</a>]
+<ul>
+<li>Removed <code>Message.Type</code> property.</li>
+<li>Removed <code>Message.DateField</code> property.</li>
+<li>Removed <code>Message.MessageType</code> enum.</li>
+</ul>
+</li>
+<li><code>ITransport</code> interface and its implementations overhauled.
+[<a href="https://github.com/planetarium/libplanet/issues/2772">#2772</a>, <a href="https://github.com/planetarium/libplanet/pull/2831">#2831</a>]
+<ul>
+<li><code>ITransport.SendMessageAsync(BoundPeer, Message, TimeSpan?, CancellationToken)</code> method has changed to
+<code>ITransport.SendMessageAsync(BoundPeer, MessageContent, TimeSpan?, int, bool, CancellationToken)</code>.</li>
+<li><code>ITransport.SendMessageAsync(BoundPeer, Message, TimeSpan?, CancellationToken)</code> method has changed to
+<code>ITransport.SendMessageAsync(BoundPeer, MessageContent, TimeSpan?, int, bool, CancellationToken)</code>.</li>
+<li><code>ITransport.BroadcastMessage(IEnumerable&lt;BoundPeer&gt;, Message)</code> method
+has changed to
+<code>ITransport.BroadcastMessage(IEnumerable&lt;BoundPeer&gt;, MessageContent)</code>.</li>
+<li><code>ITransport.ReplyMessageAsync(Message, CancellationToken)</code> method
+has changed to <code>ITransport.ReplyMessageAsync(MessageContent, byte[], CancellationToken)</code>.</li>
+</ul>
+</li>
+<li>Removed <code>InvalidMessageException</code> class.
+Instead, added <code>InvalidMessageContentException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/2772">#2772</a>, <a href="https://github.com/planetarium/libplanet/pull/2831">#2831</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>MessageContent</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/2772">#2772</a>, <a href="https://github.com/planetarium/libplanet/pull/2831">#2831</a>]
+<ul>
+<li>All messages (e.g. <code>PingMsg</code>) became to inherit <code>MessageContent</code>
+(were <code>Message</code>).</li>
+</ul>
+</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>IBlockPolicy</code> is no longer enforced for genesis <code>Block&lt;T&gt;</code>s.  [<a href="https://github.com/planetarium/libplanet/pull/2845">#2845</a>]</li>

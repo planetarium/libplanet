@@ -16724,38 +16724,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.IceServer.Username
   nameWithType: IceServer.Username
-- uid: Libplanet.Net.InvalidMessageException
-  name: InvalidMessageException
-  href: api/Libplanet.Net.InvalidMessageException.html
-  commentId: T:Libplanet.Net.InvalidMessageException
-  fullName: Libplanet.Net.InvalidMessageException
-  nameWithType: InvalidMessageException
-- uid: Libplanet.Net.InvalidMessageException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: InvalidMessageException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: InvalidMessageException.InvalidMessageException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageException.#ctor*
-  name: InvalidMessageException
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException__ctor_
-  commentId: Overload:Libplanet.Net.InvalidMessageException.#ctor
+- uid: Libplanet.Net.InvalidMessageContentException
+  name: InvalidMessageContentException
+  href: api/Libplanet.Net.InvalidMessageContentException.html
+  commentId: T:Libplanet.Net.InvalidMessageContentException
+  fullName: Libplanet.Net.InvalidMessageContentException
+  nameWithType: InvalidMessageContentException
+- uid: Libplanet.Net.InvalidMessageContentException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidMessageContentException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.InvalidMessageContentException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.InvalidMessageContentException.InvalidMessageContentException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidMessageContentException.InvalidMessageContentException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.InvalidMessageContentException.#ctor*
+  name: InvalidMessageContentException
+  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException__ctor_
+  commentId: Overload:Libplanet.Net.InvalidMessageContentException.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException
-  nameWithType: InvalidMessageException.InvalidMessageException
-- uid: Libplanet.Net.InvalidMessageException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.InvalidMessageContentException.InvalidMessageContentException
+  nameWithType: InvalidMessageContentException.InvalidMessageContentException
+- uid: Libplanet.Net.InvalidMessageContentException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: InvalidMessageException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageException.GetObjectData*
+  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.InvalidMessageContentException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.InvalidMessageContentException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidMessageContentException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.InvalidMessageContentException.GetObjectData*
   name: GetObjectData
-  href: api/Libplanet.Net.InvalidMessageException.html#Libplanet_Net_InvalidMessageException_GetObjectData_
-  commentId: Overload:Libplanet.Net.InvalidMessageException.GetObjectData
+  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException_GetObjectData_
+  commentId: Overload:Libplanet.Net.InvalidMessageContentException.GetObjectData
   isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageException.GetObjectData
-  nameWithType: InvalidMessageException.GetObjectData
+  fullName: Libplanet.Net.InvalidMessageContentException.GetObjectData
+  nameWithType: InvalidMessageContentException.GetObjectData
 - uid: Libplanet.Net.InvalidStateTargetException
   name: InvalidStateTargetException
   href: api/Libplanet.Net.InvalidStateTargetException.html
@@ -16924,14 +16924,15 @@ references:
   fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Decode
   nameWithType: IMessageCodec<T>.Decode
   nameWithType.vb: IMessageCodec(Of T).Decode
-- uid: Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset)
-  name: Encode(Message, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset)
-  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset)
-  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset)
-  nameWithType: IMessageCodec<T>.Encode(Message, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset)
-  nameWithType.vb: IMessageCodec(Of T).Encode(Message, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset)
+- uid: Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.MessageContent,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])
+  name: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
+  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_MessageContent_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___
+  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.MessageContent,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])
+  name.vb: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
+  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Encode(Libplanet.Net.Messages.MessageContent, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset, System.Byte[])
+  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Encode(Libplanet.Net.Messages.MessageContent, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset, System.Byte())
+  nameWithType: IMessageCodec<T>.Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
+  nameWithType.vb: IMessageCodec(Of T).Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
 - uid: Libplanet.Net.Messages.IMessageCodec`1.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_
@@ -16947,25 +16948,35 @@ references:
   commentId: T:Libplanet.Net.Messages.Message
   fullName: Libplanet.Net.Messages.Message
   nameWithType: Message
-- uid: Libplanet.Net.Messages.Message.CommonFrames
-  name: CommonFrames
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_CommonFrames
-  commentId: F:Libplanet.Net.Messages.Message.CommonFrames
-  fullName: Libplanet.Net.Messages.Message.CommonFrames
-  nameWithType: Message.CommonFrames
-- uid: Libplanet.Net.Messages.Message.DataFrames
-  name: DataFrames
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_DataFrames
-  commentId: P:Libplanet.Net.Messages.Message.DataFrames
-  fullName: Libplanet.Net.Messages.Message.DataFrames
-  nameWithType: Message.DataFrames
-- uid: Libplanet.Net.Messages.Message.DataFrames*
-  name: DataFrames
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_DataFrames_
-  commentId: Overload:Libplanet.Net.Messages.Message.DataFrames
+- uid: Libplanet.Net.Messages.Message.#ctor(Libplanet.Net.Messages.MessageContent,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])
+  name: Message(MessageContent, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message__ctor_Libplanet_Net_Messages_MessageContent_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___
+  commentId: M:Libplanet.Net.Messages.Message.#ctor(Libplanet.Net.Messages.MessageContent,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])
+  name.vb: Message(MessageContent, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
+  fullName: Libplanet.Net.Messages.Message.Message(Libplanet.Net.Messages.MessageContent, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset, System.Byte[])
+  fullName.vb: Libplanet.Net.Messages.Message.Message(Libplanet.Net.Messages.MessageContent, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset, System.Byte())
+  nameWithType: Message.Message(MessageContent, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
+  nameWithType.vb: Message.Message(MessageContent, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
+- uid: Libplanet.Net.Messages.Message.#ctor*
+  name: Message
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message__ctor_
+  commentId: Overload:Libplanet.Net.Messages.Message.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Message.DataFrames
-  nameWithType: Message.DataFrames
+  fullName: Libplanet.Net.Messages.Message.Message
+  nameWithType: Message.Message
+- uid: Libplanet.Net.Messages.Message.Content
+  name: Content
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Content
+  commentId: P:Libplanet.Net.Messages.Message.Content
+  fullName: Libplanet.Net.Messages.Message.Content
+  nameWithType: Message.Content
+- uid: Libplanet.Net.Messages.Message.Content*
+  name: Content
+  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Content_
+  commentId: Overload:Libplanet.Net.Messages.Message.Content
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.Message.Content
+  nameWithType: Message.Content
 - uid: Libplanet.Net.Messages.Message.Identity
   name: Identity
   href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity
@@ -16979,138 +16990,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.Message.Identity
   nameWithType: Message.Identity
-- uid: Libplanet.Net.Messages.Message.MessageFrame
-  name: Message.MessageFrame
-  href: api/Libplanet.Net.Messages.Message.MessageFrame.html
-  commentId: T:Libplanet.Net.Messages.Message.MessageFrame
-  fullName: Libplanet.Net.Messages.Message.MessageFrame
-  nameWithType: Message.MessageFrame
-- uid: Libplanet.Net.Messages.Message.MessageFrame.Peer
-  name: Peer
-  href: api/Libplanet.Net.Messages.Message.MessageFrame.html#Libplanet_Net_Messages_Message_MessageFrame_Peer
-  commentId: F:Libplanet.Net.Messages.Message.MessageFrame.Peer
-  fullName: Libplanet.Net.Messages.Message.MessageFrame.Peer
-  nameWithType: Message.MessageFrame.Peer
-- uid: Libplanet.Net.Messages.Message.MessageFrame.Sign
-  name: Sign
-  href: api/Libplanet.Net.Messages.Message.MessageFrame.html#Libplanet_Net_Messages_Message_MessageFrame_Sign
-  commentId: F:Libplanet.Net.Messages.Message.MessageFrame.Sign
-  fullName: Libplanet.Net.Messages.Message.MessageFrame.Sign
-  nameWithType: Message.MessageFrame.Sign
-- uid: Libplanet.Net.Messages.Message.MessageFrame.Timestamp
-  name: Timestamp
-  href: api/Libplanet.Net.Messages.Message.MessageFrame.html#Libplanet_Net_Messages_Message_MessageFrame_Timestamp
-  commentId: F:Libplanet.Net.Messages.Message.MessageFrame.Timestamp
-  fullName: Libplanet.Net.Messages.Message.MessageFrame.Timestamp
-  nameWithType: Message.MessageFrame.Timestamp
-- uid: Libplanet.Net.Messages.Message.MessageFrame.Type
-  name: Type
-  href: api/Libplanet.Net.Messages.Message.MessageFrame.html#Libplanet_Net_Messages_Message_MessageFrame_Type
-  commentId: F:Libplanet.Net.Messages.Message.MessageFrame.Type
-  fullName: Libplanet.Net.Messages.Message.MessageFrame.Type
-  nameWithType: Message.MessageFrame.Type
-- uid: Libplanet.Net.Messages.Message.MessageFrame.Version
-  name: Version
-  href: api/Libplanet.Net.Messages.Message.MessageFrame.html#Libplanet_Net_Messages_Message_MessageFrame_Version
-  commentId: F:Libplanet.Net.Messages.Message.MessageFrame.Version
-  fullName: Libplanet.Net.Messages.Message.MessageFrame.Version
-  nameWithType: Message.MessageFrame.Version
-- uid: Libplanet.Net.Messages.Message.MessageType
-  name: Message.MessageType
-  href: api/Libplanet.Net.Messages.Message.MessageType.html
-  commentId: T:Libplanet.Net.Messages.Message.MessageType
-  fullName: Libplanet.Net.Messages.Message.MessageType
-  nameWithType: Message.MessageType
-- uid: Libplanet.Net.Messages.Message.MessageType.BlockHashes
-  name: BlockHashes
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_BlockHashes
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.BlockHashes
-  fullName: Libplanet.Net.Messages.Message.MessageType.BlockHashes
-  nameWithType: Message.MessageType.BlockHashes
-- uid: Libplanet.Net.Messages.Message.MessageType.BlockHeaderMessage
-  name: BlockHeaderMessage
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_BlockHeaderMessage
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.BlockHeaderMessage
-  fullName: Libplanet.Net.Messages.Message.MessageType.BlockHeaderMessage
-  nameWithType: Message.MessageType.BlockHeaderMessage
-- uid: Libplanet.Net.Messages.Message.MessageType.Blocks
-  name: Blocks
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_Blocks
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.Blocks
-  fullName: Libplanet.Net.Messages.Message.MessageType.Blocks
-  nameWithType: Message.MessageType.Blocks
-- uid: Libplanet.Net.Messages.Message.MessageType.ChainStatus
-  name: ChainStatus
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_ChainStatus
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.ChainStatus
-  fullName: Libplanet.Net.Messages.Message.MessageType.ChainStatus
-  nameWithType: Message.MessageType.ChainStatus
-- uid: Libplanet.Net.Messages.Message.MessageType.DifferentVersion
-  name: DifferentVersion
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_DifferentVersion
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.DifferentVersion
-  fullName: Libplanet.Net.Messages.Message.MessageType.DifferentVersion
-  nameWithType: Message.MessageType.DifferentVersion
-- uid: Libplanet.Net.Messages.Message.MessageType.FindNeighbors
-  name: FindNeighbors
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_FindNeighbors
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.FindNeighbors
-  fullName: Libplanet.Net.Messages.Message.MessageType.FindNeighbors
-  nameWithType: Message.MessageType.FindNeighbors
-- uid: Libplanet.Net.Messages.Message.MessageType.GetBlockHashes
-  name: GetBlockHashes
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_GetBlockHashes
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.GetBlockHashes
-  fullName: Libplanet.Net.Messages.Message.MessageType.GetBlockHashes
-  nameWithType: Message.MessageType.GetBlockHashes
-- uid: Libplanet.Net.Messages.Message.MessageType.GetBlocks
-  name: GetBlocks
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_GetBlocks
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.GetBlocks
-  fullName: Libplanet.Net.Messages.Message.MessageType.GetBlocks
-  nameWithType: Message.MessageType.GetBlocks
-- uid: Libplanet.Net.Messages.Message.MessageType.GetChainStatus
-  name: GetChainStatus
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_GetChainStatus
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.GetChainStatus
-  fullName: Libplanet.Net.Messages.Message.MessageType.GetChainStatus
-  nameWithType: Message.MessageType.GetChainStatus
-- uid: Libplanet.Net.Messages.Message.MessageType.GetTxs
-  name: GetTxs
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_GetTxs
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.GetTxs
-  fullName: Libplanet.Net.Messages.Message.MessageType.GetTxs
-  nameWithType: Message.MessageType.GetTxs
-- uid: Libplanet.Net.Messages.Message.MessageType.Neighbors
-  name: Neighbors
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_Neighbors
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.Neighbors
-  fullName: Libplanet.Net.Messages.Message.MessageType.Neighbors
-  nameWithType: Message.MessageType.Neighbors
-- uid: Libplanet.Net.Messages.Message.MessageType.Ping
-  name: Ping
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_Ping
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.Ping
-  fullName: Libplanet.Net.Messages.Message.MessageType.Ping
-  nameWithType: Message.MessageType.Ping
-- uid: Libplanet.Net.Messages.Message.MessageType.Pong
-  name: Pong
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_Pong
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.Pong
-  fullName: Libplanet.Net.Messages.Message.MessageType.Pong
-  nameWithType: Message.MessageType.Pong
-- uid: Libplanet.Net.Messages.Message.MessageType.Tx
-  name: Tx
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_Tx
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.Tx
-  fullName: Libplanet.Net.Messages.Message.MessageType.Tx
-  nameWithType: Message.MessageType.Tx
-- uid: Libplanet.Net.Messages.Message.MessageType.TxIds
-  name: TxIds
-  href: api/Libplanet.Net.Messages.Message.MessageType.html#Libplanet_Net_Messages_Message_MessageType_TxIds
-  commentId: F:Libplanet.Net.Messages.Message.MessageType.TxIds
-  fullName: Libplanet.Net.Messages.Message.MessageType.TxIds
-  nameWithType: Message.MessageType.TxIds
 - uid: Libplanet.Net.Messages.Message.Remote
   name: Remote
   href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Remote
@@ -17137,19 +17016,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.Message.Timestamp
   nameWithType: Message.Timestamp
-- uid: Libplanet.Net.Messages.Message.Type
-  name: Type
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Type
-  commentId: P:Libplanet.Net.Messages.Message.Type
-  fullName: Libplanet.Net.Messages.Message.Type
-  nameWithType: Message.Type
-- uid: Libplanet.Net.Messages.Message.Type*
-  name: Type
-  href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Type_
-  commentId: Overload:Libplanet.Net.Messages.Message.Type
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.Message.Type
-  nameWithType: Message.Type
 - uid: Libplanet.Net.Messages.Message.Version
   name: Version
   href: api/Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Version
@@ -17163,6 +17029,134 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.Message.Version
   nameWithType: Message.Version
+- uid: Libplanet.Net.Messages.MessageContent
+  name: MessageContent
+  href: api/Libplanet.Net.Messages.MessageContent.html
+  commentId: T:Libplanet.Net.Messages.MessageContent
+  fullName: Libplanet.Net.Messages.MessageContent
+  nameWithType: MessageContent
+- uid: Libplanet.Net.Messages.MessageContent.DataFrames
+  name: DataFrames
+  href: api/Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_DataFrames
+  commentId: P:Libplanet.Net.Messages.MessageContent.DataFrames
+  fullName: Libplanet.Net.Messages.MessageContent.DataFrames
+  nameWithType: MessageContent.DataFrames
+- uid: Libplanet.Net.Messages.MessageContent.DataFrames*
+  name: DataFrames
+  href: api/Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_DataFrames_
+  commentId: Overload:Libplanet.Net.Messages.MessageContent.DataFrames
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.MessageContent.DataFrames
+  nameWithType: MessageContent.DataFrames
+- uid: Libplanet.Net.Messages.MessageContent.MessageType
+  name: MessageContent.MessageType
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html
+  commentId: T:Libplanet.Net.Messages.MessageContent.MessageType
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType
+  nameWithType: MessageContent.MessageType
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.BlockHashes
+  name: BlockHashes
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_BlockHashes
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.BlockHashes
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.BlockHashes
+  nameWithType: MessageContent.MessageType.BlockHashes
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.BlockHeaderMessage
+  name: BlockHeaderMessage
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_BlockHeaderMessage
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.BlockHeaderMessage
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.BlockHeaderMessage
+  nameWithType: MessageContent.MessageType.BlockHeaderMessage
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.Blocks
+  name: Blocks
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_Blocks
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.Blocks
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.Blocks
+  nameWithType: MessageContent.MessageType.Blocks
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.ChainStatus
+  name: ChainStatus
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_ChainStatus
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.ChainStatus
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.ChainStatus
+  nameWithType: MessageContent.MessageType.ChainStatus
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.DifferentVersion
+  name: DifferentVersion
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_DifferentVersion
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.DifferentVersion
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.DifferentVersion
+  nameWithType: MessageContent.MessageType.DifferentVersion
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.FindNeighbors
+  name: FindNeighbors
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_FindNeighbors
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.FindNeighbors
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.FindNeighbors
+  nameWithType: MessageContent.MessageType.FindNeighbors
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.GetBlockHashes
+  name: GetBlockHashes
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_GetBlockHashes
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.GetBlockHashes
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.GetBlockHashes
+  nameWithType: MessageContent.MessageType.GetBlockHashes
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.GetBlocks
+  name: GetBlocks
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_GetBlocks
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.GetBlocks
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.GetBlocks
+  nameWithType: MessageContent.MessageType.GetBlocks
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.GetChainStatus
+  name: GetChainStatus
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_GetChainStatus
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.GetChainStatus
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.GetChainStatus
+  nameWithType: MessageContent.MessageType.GetChainStatus
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.GetTxs
+  name: GetTxs
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_GetTxs
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.GetTxs
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.GetTxs
+  nameWithType: MessageContent.MessageType.GetTxs
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.Neighbors
+  name: Neighbors
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_Neighbors
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.Neighbors
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.Neighbors
+  nameWithType: MessageContent.MessageType.Neighbors
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.Ping
+  name: Ping
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_Ping
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.Ping
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.Ping
+  nameWithType: MessageContent.MessageType.Ping
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.Pong
+  name: Pong
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_Pong
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.Pong
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.Pong
+  nameWithType: MessageContent.MessageType.Pong
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.Tx
+  name: Tx
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_Tx
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.Tx
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.Tx
+  nameWithType: MessageContent.MessageType.Tx
+- uid: Libplanet.Net.Messages.MessageContent.MessageType.TxIds
+  name: TxIds
+  href: api/Libplanet.Net.Messages.MessageContent.MessageType.html#Libplanet_Net_Messages_MessageContent_MessageType_TxIds
+  commentId: F:Libplanet.Net.Messages.MessageContent.MessageType.TxIds
+  fullName: Libplanet.Net.Messages.MessageContent.MessageType.TxIds
+  nameWithType: MessageContent.MessageType.TxIds
+- uid: Libplanet.Net.Messages.MessageContent.Type
+  name: Type
+  href: api/Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Type
+  commentId: P:Libplanet.Net.Messages.MessageContent.Type
+  fullName: Libplanet.Net.Messages.MessageContent.Type
+  nameWithType: MessageContent.Type
+- uid: Libplanet.Net.Messages.MessageContent.Type*
+  name: Type
+  href: api/Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Type_
+  commentId: Overload:Libplanet.Net.Messages.MessageContent.Type
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.MessageContent.Type
+  nameWithType: MessageContent.Type
 - uid: Libplanet.Net.Messages.MessageValidator
   name: MessageValidator
   href: api/Libplanet.Net.Messages.MessageValidator.html
@@ -17336,6 +17330,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec
   nameWithType: NetMQMessageCodec.NetMQMessageCodec
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.CommonFrames
+  name: CommonFrames
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_CommonFrames
+  commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.CommonFrames
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.CommonFrames
+  nameWithType: NetMQMessageCodec.CommonFrames
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQ.NetMQMessage,System.Boolean)
   name: Decode(NetMQMessage, Boolean)
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQ_NetMQMessage_System_Boolean_
@@ -17349,12 +17349,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Decode
   nameWithType: NetMQMessageCodec.Decode
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset)
-  name: Encode(Message, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset)
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset)
-  nameWithType: NetMQMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset)
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])
+  name: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_MessageContent_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])
+  name.vb: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset, System.Byte[])
+  fullName.vb: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, System.DateTimeOffset, System.Byte())
+  nameWithType: NetMQMessageCodec.Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
+  nameWithType.vb: NetMQMessageCodec.Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_
@@ -17362,6 +17365,42 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode
   nameWithType: NetMQMessageCodec.Encode
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame
+  name: NetMQMessageCodec.MessageFrame
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.html
+  commentId: T:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame
+  nameWithType: NetMQMessageCodec.MessageFrame
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Peer
+  name: Peer
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.html#Libplanet_Net_Messages_NetMQMessageCodec_MessageFrame_Peer
+  commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Peer
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Peer
+  nameWithType: NetMQMessageCodec.MessageFrame.Peer
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Sign
+  name: Sign
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.html#Libplanet_Net_Messages_NetMQMessageCodec_MessageFrame_Sign
+  commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Sign
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Sign
+  nameWithType: NetMQMessageCodec.MessageFrame.Sign
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.html#Libplanet_Net_Messages_NetMQMessageCodec_MessageFrame_Timestamp
+  commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Timestamp
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Timestamp
+  nameWithType: NetMQMessageCodec.MessageFrame.Timestamp
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Type
+  name: Type
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.html#Libplanet_Net_Messages_NetMQMessageCodec_MessageFrame_Type
+  commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Type
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Type
+  nameWithType: NetMQMessageCodec.MessageFrame.Type
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Version
+  name: Version
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.html#Libplanet_Net_Messages_NetMQMessageCodec_MessageFrame_Version
+  commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Version
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Version
+  nameWithType: NetMQMessageCodec.MessageFrame.Version
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQ.NetMQMessage,System.Boolean)
   name: ParseMessageType(NetMQMessage, Boolean)
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQ_NetMQMessage_System_Boolean_
@@ -19395,18 +19434,18 @@ references:
   commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
   nameWithType: CommunicationFailException.CommunicationFailException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer,System.Exception)
-  name: CommunicationFailException(String, Message.MessageType, BoundPeer, Exception)
-  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_Message_MessageType_Libplanet_Net_BoundPeer_System_Exception_
-  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer,System.Exception)
-  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.String, Libplanet.Net.Messages.Message.MessageType, Libplanet.Net.BoundPeer, System.Exception)
-  nameWithType: CommunicationFailException.CommunicationFailException(String, Message.MessageType, BoundPeer, Exception)
-- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer)
-  name: CommunicationFailException(String, Message.MessageType, BoundPeer)
-  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_Message_MessageType_Libplanet_Net_BoundPeer_
-  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer)
-  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.String, Libplanet.Net.Messages.Message.MessageType, Libplanet.Net.BoundPeer)
-  nameWithType: CommunicationFailException.CommunicationFailException(String, Message.MessageType, BoundPeer)
+- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.MessageContent.MessageType,Libplanet.Net.BoundPeer,System.Exception)
+  name: CommunicationFailException(String, MessageContent.MessageType, BoundPeer, Exception)
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_MessageContent_MessageType_Libplanet_Net_BoundPeer_System_Exception_
+  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.MessageContent.MessageType,Libplanet.Net.BoundPeer,System.Exception)
+  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.String, Libplanet.Net.Messages.MessageContent.MessageType, Libplanet.Net.BoundPeer, System.Exception)
+  nameWithType: CommunicationFailException.CommunicationFailException(String, MessageContent.MessageType, BoundPeer, Exception)
+- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.MessageContent.MessageType,Libplanet.Net.BoundPeer)
+  name: CommunicationFailException(String, MessageContent.MessageType, BoundPeer)
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_MessageContent_MessageType_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.MessageContent.MessageType,Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.String, Libplanet.Net.Messages.MessageContent.MessageType, Libplanet.Net.BoundPeer)
+  nameWithType: CommunicationFailException.CommunicationFailException(String, MessageContent.MessageType, BoundPeer)
 - uid: Libplanet.Net.Transports.CommunicationFailException.#ctor*
   name: CommunicationFailException
   href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_
@@ -19736,15 +19775,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.AsPeer
   nameWithType: ITransport.AsPeer
-- uid: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
-  name: BroadcastMessage(IEnumerable<BoundPeer>, Message)
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_BroadcastMessage_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
-  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), Message)
-  fullName: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.Message)
-  fullName.vb: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.Message)
-  nameWithType: ITransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)
-  nameWithType.vb: ITransport.BroadcastMessage(IEnumerable(Of BoundPeer), Message)
+- uid: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.MessageContent)
+  name: BroadcastMessage(IEnumerable<BoundPeer>, MessageContent)
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_BroadcastMessage_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_MessageContent_
+  commentId: M:Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.MessageContent)
+  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), MessageContent)
+  fullName: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.MessageContent)
+  fullName.vb: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Collections.Generic.IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.MessageContent)
+  nameWithType: ITransport.BroadcastMessage(IEnumerable<BoundPeer>, MessageContent)
+  nameWithType.vb: ITransport.BroadcastMessage(IEnumerable(Of BoundPeer), MessageContent)
 - uid: Libplanet.Net.Transports.ITransport.BroadcastMessage*
   name: BroadcastMessage
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_BroadcastMessage_
@@ -19791,12 +19830,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.ProcessMessageHandler
   nameWithType: ITransport.ProcessMessageHandler
-- uid: Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,System.Threading.CancellationToken)
-  name: ReplyMessageAsync(Message, CancellationToken)
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message, System.Threading.CancellationToken)
-  nameWithType: ITransport.ReplyMessageAsync(Message, CancellationToken)
+- uid: Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent,System.Byte[],System.Threading.CancellationToken)
+  name: ReplyMessageAsync(MessageContent, Byte[], CancellationToken)
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_MessageContent_System_Byte___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent,System.Byte[],System.Threading.CancellationToken)
+  name.vb: ReplyMessageAsync(MessageContent, Byte(), CancellationToken)
+  fullName: Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent, System.Byte[], System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent, System.Byte(), System.Threading.CancellationToken)
+  nameWithType: ITransport.ReplyMessageAsync(MessageContent, Byte[], CancellationToken)
+  nameWithType.vb: ITransport.ReplyMessageAsync(MessageContent, Byte(), CancellationToken)
 - uid: Libplanet.Net.Transports.ITransport.ReplyMessageAsync*
   name: ReplyMessageAsync
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_ReplyMessageAsync_
@@ -19817,24 +19859,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.Running
   nameWithType: ITransport.Running
-- uid: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
-  name: SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Int32_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
-  name.vb: SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
-  fullName: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Int32, System.Boolean, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Int32, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: ITransport.SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
-  nameWithType.vb: ITransport.SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
-- uid: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
-  name: SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
-  name.vb: SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Threading.CancellationToken)
-  nameWithType: ITransport.SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: ITransport.SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name: SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_MessageContent_System_Nullable_System_TimeSpan__System_Int32_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
+  fullName: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable<System.TimeSpan>, System.Int32, System.Boolean, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable(Of System.TimeSpan), System.Int32, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: ITransport.SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  nameWithType.vb: ITransport.SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
+- uid: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  name: SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_MessageContent_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable<System.TimeSpan>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable(Of System.TimeSpan), System.Threading.CancellationToken)
+  nameWithType: ITransport.SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: ITransport.SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), CancellationToken)
 - uid: Libplanet.Net.Transports.ITransport.SendMessageAsync*
   name: SendMessageAsync
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_SendMessageAsync_
@@ -19926,15 +19968,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.AsPeer
   nameWithType: NetMQTransport.AsPeer
-- uid: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
-  name: BroadcastMessage(IEnumerable<BoundPeer>, Message)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
-  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), Message)
-  fullName: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.Message)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.Message)
-  nameWithType: NetMQTransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)
-  nameWithType.vb: NetMQTransport.BroadcastMessage(IEnumerable(Of BoundPeer), Message)
+- uid: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.MessageContent)
+  name: BroadcastMessage(IEnumerable<BoundPeer>, MessageContent)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_MessageContent_
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.MessageContent)
+  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), MessageContent)
+  fullName: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.MessageContent)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Collections.Generic.IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.MessageContent)
+  nameWithType: NetMQTransport.BroadcastMessage(IEnumerable<BoundPeer>, MessageContent)
+  nameWithType.vb: NetMQTransport.BroadcastMessage(IEnumerable(Of BoundPeer), MessageContent)
 - uid: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage*
   name: BroadcastMessage
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_
@@ -20010,12 +20052,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.ProcessMessageHandler
   nameWithType: NetMQTransport.ProcessMessageHandler
-- uid: Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,System.Threading.CancellationToken)
-  name: ReplyMessageAsync(Message, CancellationToken)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message, System.Threading.CancellationToken)
-  nameWithType: NetMQTransport.ReplyMessageAsync(Message, CancellationToken)
+- uid: Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent,System.Byte[],System.Threading.CancellationToken)
+  name: ReplyMessageAsync(MessageContent, Byte[], CancellationToken)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_Libplanet_Net_Messages_MessageContent_System_Byte___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent,System.Byte[],System.Threading.CancellationToken)
+  name.vb: ReplyMessageAsync(MessageContent, Byte(), CancellationToken)
+  fullName: Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent, System.Byte[], System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync(Libplanet.Net.Messages.MessageContent, System.Byte(), System.Threading.CancellationToken)
+  nameWithType: NetMQTransport.ReplyMessageAsync(MessageContent, Byte[], CancellationToken)
+  nameWithType.vb: NetMQTransport.ReplyMessageAsync(MessageContent, Byte(), CancellationToken)
 - uid: Libplanet.Net.Transports.NetMQTransport.ReplyMessageAsync*
   name: ReplyMessageAsync
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_ReplyMessageAsync_
@@ -20036,24 +20081,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.Running
   nameWithType: NetMQTransport.Running
-- uid: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
-  name: SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Int32_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
-  name.vb: SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
-  fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Int32, System.Boolean, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Int32, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: NetMQTransport.SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
-  nameWithType.vb: NetMQTransport.SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
-- uid: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
-  name: SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
-  name.vb: SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<System.TimeSpan>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of System.TimeSpan), System.Threading.CancellationToken)
-  nameWithType: NetMQTransport.SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: NetMQTransport.SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name: SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_MessageContent_System_Nullable_System_TimeSpan__System_Int32_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Int32,System.Boolean,System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
+  fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable<System.TimeSpan>, System.Int32, System.Boolean, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable(Of System.TimeSpan), System.Int32, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: NetMQTransport.SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
+  nameWithType.vb: NetMQTransport.SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
+- uid: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  name: SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_MessageContent_System_Nullable_System_TimeSpan__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.MessageContent,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)
+  name.vb: SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable<System.TimeSpan>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.MessageContent, System.Nullable(Of System.TimeSpan), System.Threading.CancellationToken)
+  nameWithType: NetMQTransport.SendMessageAsync(BoundPeer, MessageContent, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: NetMQTransport.SendMessageAsync(BoundPeer, MessageContent, Nullable(Of TimeSpan), CancellationToken)
 - uid: Libplanet.Net.Transports.NetMQTransport.SendMessageAsync*
   name: SendMessageAsync
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_SendMessageAsync_
