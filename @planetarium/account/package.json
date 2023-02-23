@@ -1,0 +1,47 @@
+{
+  "name": "@planetarium/account",
+  "private": true,
+  "description": "Libplanet accounts for JavaScript/TypeScript",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "yarn && nanobundle build",
+    "prepack": "yarn && yarn build",
+    "dev": "yarn && vitest",
+    "test": "yarn && yarn run -T tsc -p tsconfig.json && vitest run",
+    "coverage": "yarn && vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/planetarium/libplanet.git",
+    "directory": "@planetarium/account"
+  },
+  "keywords": [
+    "libplanet"
+  ],
+  "author": "Planetarium (https://planetarium.dev/)",
+  "license": "LGPL-2.1-or-later",
+  "bugs": {
+    "url": "https://github.com/planetarium/libplanet/labels/js"
+  },
+  "homepage": "https://github.com/planetarium/libplanet/tree/main/@planetarium/account",
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "@vitest/coverage-c8": "^0.22.1",
+    "@vitest/ui": "^0.22.1",
+    "fast-check": "^3.1.2",
+    "nanobundle": "^1.5.0",
+    "vite": "^4.1.1",
+    "vitest": "^0.22.1"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.2.0",
+    "@noble/secp256k1": "^1.7.1",
+    "bencodex": "^0.1.1"
+  }
+}

@@ -2,6 +2,7 @@
   "packageManager": "yarn@3.4.1",
   "private": true,
   "workspaces": [
+    "@planetarium/account",
     "@planetarium/tx",
     "Libplanet.Tools"
   ],
