@@ -986,7 +986,7 @@ namespace Libplanet.Net.Tests
                     new[] { tx1, tx2, tx3 }.ToHashSet(),
                     replies.Select(
                         m => Transaction<DumbAction>.Deserialize(
-                            ((Libplanet.Net.Messages.TxMsg)m).Payload)).ToHashSet());
+                            ((TxMsg)m.Content).Payload)).ToHashSet());
             }
             finally
             {
@@ -1014,12 +1014,13 @@ namespace Libplanet.Net.Tests
 
             async Task MessageHandler(Message message)
             {
-                _logger.Debug("Received message: {Message}", message);
-                switch (message)
+                _logger.Debug("Received message: {Content}", message);
+                switch (message.Content)
                 {
                     case PingMsg ping:
                         await mockTransport.ReplyMessageAsync(
-                            new PongMsg { Identity = ping.Identity },
+                            new PongMsg(),
+                            message.Identity,
                             default);
                         break;
 

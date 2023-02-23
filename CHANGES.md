@@ -10,11 +10,40 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `Message.Content` property.  [[#2772], [#2831]]
+ -  Some properties and enum of `Message` class are removed and moved to
+    `MessageContent` class.  [[#2772], [#2831]]
+     -  Removed `Message.Type` property.
+     -  Removed `Message.DateField` property.
+     -  Removed `Message.MessageType` enum.
+ -  `ITransport` interface and its implementations overhauled.
+    [[#2772], [#2831]]
+     -  `ITransport.SendMessageAsync(BoundPeer, Message, TimeSpan?,
+        CancellationToken)` method has changed to
+        `ITransport.SendMessageAsync(BoundPeer, MessageContent, TimeSpan?, int,
+        bool, CancellationToken)`.
+     -  `ITransport.SendMessageAsync(BoundPeer, Message, TimeSpan?,
+        CancellationToken)` method has changed to
+        `ITransport.SendMessageAsync(BoundPeer, MessageContent, TimeSpan?, int,
+        bool, CancellationToken)`.
+     -  `ITransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)` method
+        has changed to
+        `ITransport.BroadcastMessage(IEnumerable<BoundPeer>, MessageContent)`.
+     -  `ITransport.ReplyMessageAsync(Message, CancellationToken)` method
+        has changed to `ITransport.ReplyMessageAsync(MessageContent,
+        byte[], CancellationToken)`.
+ -  Removed `InvalidMessageException` class.
+    Instead, added `InvalidMessageContentException` class.  [[#2772], [#2831]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `MessageContent` class.  [[#2772], [#2831]]
+     -  All messages (e.g. `PingMsg`) became to inherit `MessageContent`
+        (were `Message`).
 
 ### Behavioral changes
 
@@ -25,6 +54,9 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2772]: https://github.com/planetarium/libplanet/issues/2772
+[#2831]: https://github.com/planetarium/libplanet/pull/2831
 
 
 [#2845]: https://github.com/planetarium/libplanet/pull/2845

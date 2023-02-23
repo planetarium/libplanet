@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Libplanet.Net.Messages
 {
-    internal class BlocksMsg : Message
+    internal class BlocksMsg : MessageContent
     {
         public BlocksMsg(IEnumerable<byte[]> payloads)
         {

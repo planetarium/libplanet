@@ -22,7 +22,7 @@ namespace Libplanet.Net.Tests.Transports
         [MemberData(nameof(InnerExceptions))]
         public void Serialization(Exception? innerException)
         {
-            Message ping = new PingMsg();
+            MessageContent ping = new PingMsg();
             BoundPeer peer = new BoundPeer(
                 new PrivateKey().PublicKey,
                 new DnsEndPoint("0.0.0.0", 1234));

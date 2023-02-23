@@ -6,7 +6,7 @@ namespace Libplanet.Net.Messages
     /// A reply to <see cref="PingMsg"/>.
     /// </summary>
     /// <seealso cref="PingMsg"/>
-    public class PongMsg : Message
+    public class PongMsg : MessageContent
     {
         public override MessageType Type => MessageType.Pong;
 

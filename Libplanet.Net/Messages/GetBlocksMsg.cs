@@ -5,7 +5,7 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetBlocksMsg : Message
+    internal class GetBlocksMsg : MessageContent
     {
         public GetBlocksMsg(IEnumerable<BlockHash> hashes, int chunkSize = 100)
         {

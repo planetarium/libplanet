@@ -10,6 +10,9 @@ namespace Libplanet.Net.Messages
 {
     public class NetMQMessageCodec : IMessageCodec<NetMQMessage>
     {
+        public static readonly int CommonFrames =
+            Enum.GetValues(typeof(MessageFrame)).Length;
+
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
@@ -22,13 +25,42 @@ namespace Libplanet.Net.Messages
             _codec = new Codec();
         }
 
+        public enum MessageFrame
+        {
+            /// <summary>
+            /// Frame containing <see cref="AppProtocolVersion"/>.
+            /// </summary>
+            Version = 0,
+
+            /// <summary>
+            /// Frame containing the type of the message.
+            /// </summary>
+            Type = 1,
+
+            /// <summary>
+            /// Frame containing the sender <see cref="BoundPeer"/> of the<see cref="Message"/>.
+            /// </summary>
+            Peer = 2,
+
+            /// <summary>
+            /// Frame containing the datetime when the <see cref="Message"/> is created.
+            /// </summary>
+            Timestamp = 3,
+
+            /// <summary>
+            /// Frame containing signature of the <see cref="Message"/>.
+            /// </summary>
+            Sign = 4,
+        }
+
         /// <inheritdoc/>
         public NetMQMessage Encode(
-            Message message,
+            MessageContent content,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             BoundPeer peer,
-            DateTimeOffset timestamp)
+            DateTimeOffset timestamp,
+            byte[]? identity = null)
         {
             if (!privateKey.PublicKey.Equals(peer.PublicKey))
             {
@@ -43,7 +75,7 @@ namespace Libplanet.Net.Messages
             var netMqMessage = new NetMQMessage();
 
             // Write body (by concrete class)
-            foreach (byte[] frame in message.DataFrames)
+            foreach (byte[] frame in content.DataFrames)
             {
                 netMqMessage.Append(frame);
             }
@@ -51,42 +83,41 @@ namespace Libplanet.Net.Messages
             // Write headers. (inverse order, version-type-peer-timestamp)
             netMqMessage.Push(timestamp.Ticks);
             netMqMessage.Push(_codec.Encode(peer.Bencoded));
-            netMqMessage.Push((int)message.Type);
+            netMqMessage.Push((int)content.Type);
             netMqMessage.Push(appProtocolVersion.Token);
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());
             List<NetMQFrame> frames = netMqMessage.ToList();
-            frames.Insert((int)Message.MessageFrame.Sign, new NetMQFrame(signature));
+            frames.Insert((int)MessageFrame.Sign, new NetMQFrame(signature));
             netMqMessage = new NetMQMessage(frames);
 
-            if (message.Identity is { } to)
+            if (identity != null)
             {
-                netMqMessage.Push(to);
+                netMqMessage.Push(identity);
             }
 
             return netMqMessage;
         }
 
         /// <summary>
-        /// Parses a <see cref="Message.MessageType"/> from given <see cref="NetMQMessage"/>.
+        /// Parses a <see cref="MessageContent.MessageType"/> from given <see cref="NetMQMessage"/>.
         /// </summary>
         /// <param name="encoded">A encoded <see cref="NetMQMessage"/>.</param>
         /// <param name="reply">A flag to express whether the target is a reply of other message.
         /// </param>
         /// <exception cref="IndexOutOfRangeException">Thrown if given <see cref="NetMQMessage"/>
         /// has not enough <see cref="NetMQFrame"/> for parsing a message type.</exception>
-        /// <returns>Returns a <see cref="Message.MessageType"/> of given <paramref name="encoded">
-        /// </paramref>. If given value cannot be interpreted in <see cref="Message.MessageType"/>,
+        /// <returns>Returns a <see cref="MessageContent.MessageType"/> of given
+        /// <paramref name="encoded"/>. If given value cannot be
+        /// interpreted in <see cref="MessageContent.MessageType"/>,
         /// this would return a integer number.</returns>
-        public Message.MessageType ParseMessageType(NetMQMessage encoded, bool reply)
-            => (Message.MessageType)encoded[(int)Message.MessageFrame.Type + (reply ? 0 : 1)]
+        public MessageContent.MessageType ParseMessageType(NetMQMessage encoded, bool reply)
+            => (MessageContent.MessageType)encoded[(int)MessageFrame.Type + (reply ? 0 : 1)]
                 .ConvertToInt32();
 
         /// <inheritdoc/>
-        public Message Decode(
-            NetMQMessage encoded,
-            bool reply)
+        public Message Decode(NetMQMessage encoded, bool reply)
         {
             if (encoded.FrameCount == 0)
             {
@@ -97,90 +128,82 @@ namespace Libplanet.Net.Messages
             // (reply == false) [identity, version, type, peer, timestamp, sign, frames...]
             NetMQFrame[] remains = reply ? encoded.ToArray() : encoded.Skip(1).ToArray();
 
-            var versionToken = remains[(int)Message.MessageFrame.Version].ConvertToString();
+            var versionToken = remains[(int)MessageFrame.Version].ConvertToString();
 
-            AppProtocolVersion remoteVersion = AppProtocolVersion.FromToken(versionToken);
-            var dictionary = _codec.Decode(remains[(int)Message.MessageFrame.Peer].ToByteArray());
-            BoundPeer remotePeer = new BoundPeer(dictionary);
+            AppProtocolVersion version = AppProtocolVersion.FromToken(versionToken);
+            var dictionary = _codec.Decode(remains[(int)MessageFrame.Peer].ToByteArray());
+            var remote = new BoundPeer(dictionary);
 
             var type =
-                (Message.MessageType)remains[(int)Message.MessageFrame.Type].ConvertToInt32();
-            var ticks = remains[(int)Message.MessageFrame.Timestamp].ConvertToInt64();
+                (MessageContent.MessageType)remains[(int)MessageFrame.Type].ConvertToInt32();
+            var ticks = remains[(int)MessageFrame.Timestamp].ConvertToInt64();
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
-            var currentTime = DateTimeOffset.UtcNow;
 
-            byte[] signature = remains[(int)Message.MessageFrame.Sign].ToByteArray();
+            byte[] signature = remains[(int)MessageFrame.Sign].ToByteArray();
 
-            NetMQFrame[] body = remains.Skip(Message.CommonFrames)
-                .ToArray();
+            NetMQFrame[] body = remains.Skip(CommonFrames).ToArray();
 
-            Message message = CreateMessage(
+            MessageContent content = CreateMessage(
                 type,
                 body.Select(frame => frame.ToByteArray()).ToArray());
-            message.Version = remoteVersion;
-            message.Remote = remotePeer;
-            message.Timestamp = timestamp;
 
             var headerWithoutSign = new[]
             {
-                remains[(int)Message.MessageFrame.Version],
-                remains[(int)Message.MessageFrame.Type],
-                remains[(int)Message.MessageFrame.Peer],
-                remains[(int)Message.MessageFrame.Timestamp],
+                remains[(int)MessageFrame.Version],
+                remains[(int)MessageFrame.Type],
+                remains[(int)MessageFrame.Peer],
+                remains[(int)MessageFrame.Timestamp],
             };
 
             var messageToVerify = headerWithoutSign.Concat(body).ToByteArray();
-            if (!remotePeer.PublicKey.Verify(messageToVerify, signature))
+            if (!remote.PublicKey.Verify(messageToVerify, signature))
             {
                 throw new InvalidMessageSignatureException(
                     "The signature of an encoded message is invalid.",
-                    remotePeer,
-                    remotePeer.PublicKey,
+                    remote,
+                    remote.PublicKey,
                     messageToVerify,
                     signature);
             }
 
-            if (!reply)
-            {
-                message.Identity = encoded[0].Buffer.ToArray();
-            }
+            byte[]? identity = reply ? null : encoded[0].Buffer.ToArray();
 
-            return message;
+            return new Message(content, version, remote, timestamp, identity);
         }
 
-        private Message CreateMessage(Message.MessageType type, byte[][] dataframes)
+        private MessageContent CreateMessage(MessageContent.MessageType type, byte[][] dataframes)
         {
             switch (type)
             {
-                case Message.MessageType.Ping:
+                case MessageContent.MessageType.Ping:
                     return new PingMsg();
-                case Message.MessageType.Pong:
+                case MessageContent.MessageType.Pong:
                     return new PongMsg();
-                case Message.MessageType.GetBlockHashes:
+                case MessageContent.MessageType.GetBlockHashes:
                     return new GetBlockHashesMsg(dataframes);
-                case Message.MessageType.TxIds:
+                case MessageContent.MessageType.TxIds:
                     return new TxIdsMsg(dataframes);
-                case Message.MessageType.GetBlocks:
+                case MessageContent.MessageType.GetBlocks:
                     return new GetBlocksMsg(dataframes);
-                case Message.MessageType.GetTxs:
+                case MessageContent.MessageType.GetTxs:
                     return new GetTxsMsg(dataframes);
-                case Message.MessageType.Blocks:
+                case MessageContent.MessageType.Blocks:
                     return new BlocksMsg(dataframes);
-                case Message.MessageType.Tx:
+                case MessageContent.MessageType.Tx:
                     return new TxMsg(dataframes);
-                case Message.MessageType.FindNeighbors:
+                case MessageContent.MessageType.FindNeighbors:
                     return new FindNeighborsMsg(dataframes);
-                case Message.MessageType.Neighbors:
+                case MessageContent.MessageType.Neighbors:
                     return new NeighborsMsg(dataframes);
-                case Message.MessageType.BlockHeaderMessage:
+                case MessageContent.MessageType.BlockHeaderMessage:
                     return new BlockHeaderMsg(dataframes);
-                case Message.MessageType.BlockHashes:
+                case MessageContent.MessageType.BlockHashes:
                     return new BlockHashesMsg(dataframes);
-                case Message.MessageType.GetChainStatus:
+                case MessageContent.MessageType.GetChainStatus:
                     return new GetChainStatusMsg();
-                case Message.MessageType.ChainStatus:
+                case MessageContent.MessageType.ChainStatus:
                     return new ChainStatusMsg(dataframes);
-                case Message.MessageType.DifferentVersion:
+                case MessageContent.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
                 default:
                     throw new InvalidCastException($"Given type {type} is not a valid message.");
