@@ -123,20 +123,20 @@ async function main() {
     // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#environment-files
     await fs.appendFile(
       process.env.GITHUB_OUTPUT,
-      `version-prefix=${versionPrefix}`,
+      `version-prefix=${versionPrefix}\n`,
     );
     if (versionSuffix)
       await fs.appendFile(
         process.env.GITHUB_OUTPUT,
-        `version-suffix=${versionSuffix}`,
+        `version-suffix=${versionSuffix}\n`,
       );
     await fs.appendFile(
       process.env.GITHUB_OUTPUT,
-      `package-version=${packageVersion}`,
+      `package-version=${packageVersion}\n`,
     );
     await fs.appendFile(
       process.env.GITHUB_OUTPUT,
-      `version-type=${versionType}`,
+      `version-type=${versionType}\n`,
     );
   }
 }
