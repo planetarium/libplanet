@@ -54,7 +54,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validatorPeers.Add(
                     new BoundPeer(
                         TestUtils.PrivateKeys[i].PublicKey,
-                        new DnsEndPoint("localhost", 6000 + i)));
+                        new DnsEndPoint("127.0.0.1", 6000 + i)));
                 stores[i] = new MemoryStore();
                 blockChains[i] = new BlockChain<DumbAction>(
                     TestUtils.Policy,

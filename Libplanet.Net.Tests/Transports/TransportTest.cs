@@ -83,7 +83,7 @@ namespace Libplanet.Net.Tests.Transports
                 transport.Dispose();
                 var boundPeer = new BoundPeer(
                     new PrivateKey().PublicKey,
-                    new DnsEndPoint("localhost", 1234));
+                    new DnsEndPoint("127.0.0.1", 1234));
                 var message = new PingMsg();
                 await Assert.ThrowsAsync<ObjectDisposedException>(
                     async () => await transport.StartAsync());

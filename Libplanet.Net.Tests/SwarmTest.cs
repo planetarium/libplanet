@@ -402,7 +402,7 @@ namespace Libplanet.Net.Tests
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
                 new BoundPeer(
                     TestUtils.PrivateKeys[i].PublicKey,
-                    new DnsEndPoint("localhost", 6000 + i))).ToImmutableList();
+                    new DnsEndPoint("127.0.0.1", 6000 + i))).ToImmutableList();
             var reactorOpts = Enumerable.Range(0, 4).Select(i =>
                 new ConsensusReactorOption()
                 {
@@ -420,7 +420,7 @@ namespace Libplanet.Net.Tests
                 swarms.Add(await CreateSwarm(
                     privateKey: TestUtils.PrivateKeys[i],
                     hostOptions: new HostOptions(
-                        "localhost",
+                        "127.0.0.1",
                         Array.Empty<IceServer>(),
                         9000 + i),
                     policy: policy,
@@ -750,7 +750,7 @@ namespace Libplanet.Net.Tests
         public async Task ExchangeWithIceServer()
         {
             var iceServers = FactOnlyTurnAvailableAttribute.GetIceServers();
-            var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
+            var seedHostOptions = new HostOptions("127.0.0.1", ImmutableList<IceServer>.Empty, 0);
             var swarmHostOptions = new HostOptions(null, iceServers);
             var seed = await CreateSwarm(hostOptions: seedHostOptions).ConfigureAwait(false);
             var swarmA = await CreateSwarm(hostOptions: swarmHostOptions).ConfigureAwait(false);
@@ -806,14 +806,14 @@ namespace Libplanet.Net.Tests
             string[] userInfo = turnUrl.UserInfo.Split(':');
             string username = userInfo[0];
             string password = userInfo[1];
-            var proxyUri = new Uri($"turn://{username}:{password}@localhost:{port}/");
+            var proxyUri = new Uri($"turn://{username}:{password}@127.0.0.1:{port}/");
             IEnumerable<IceServer> iceServers = new[] { new IceServer(url: proxyUri) };
 
             var cts = new CancellationTokenSource();
             var proxyTask = TurnProxy(port, turnUrl, cts.Token);
 
             var seedKey = new PrivateKey();
-            var seedHostOptions = new HostOptions("localhost", ImmutableList<IceServer>.Empty, 0);
+            var seedHostOptions = new HostOptions("127.0.0.1", ImmutableList<IceServer>.Empty, 0);
             var swarmHostOptions = new HostOptions(null, iceServers, 0);
             var seed =
                 await CreateSwarm(seedKey, hostOptions: seedHostOptions).ConfigureAwait(false);

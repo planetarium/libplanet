@@ -66,7 +66,7 @@ namespace Libplanet.Net.Tests.Messages
         private Message CreateMessage(Message.MessageType type)
         {
             var privateKey = new PrivateKey();
-            var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("localhost", 1000));
+            var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("127.0.0.1", 1000));
             IBlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>();
             BlockChain<DumbAction> chain = MakeBlockChain(
                 policy,

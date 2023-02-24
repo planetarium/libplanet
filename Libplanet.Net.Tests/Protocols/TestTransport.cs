@@ -75,7 +75,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public BoundPeer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
-            new DnsEndPoint("localhost", 1234));
+            new DnsEndPoint("127.0.0.1", 1234));
 
         public IReadOnlyList<BoundPeer> Peers => Table.Peers;
 

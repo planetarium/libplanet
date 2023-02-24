@@ -94,7 +94,7 @@ namespace Libplanet.Net.Tests.Transports
 
         [Theory]
         [InlineData("127.0.0.1", 3000, new[] { "tcp://127.0.0.1:3000" })]
-        [InlineData("localhost", 3000, new[] { "tcp://127.0.0.1:3000", "tcp://::1:3000" })]
+        [InlineData("127.0.0.1", 3000, new[] { "tcp://127.0.0.1:3000", "tcp://::1:3000" })]
         public async Task ResolveNetMQAddressAsync(string host, int port, string[] expected)
         {
             var bp = new BoundPeer(

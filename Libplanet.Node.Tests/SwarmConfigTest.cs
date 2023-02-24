@@ -23,7 +23,7 @@ namespace Libplanet.Node.Tests
                 new List<BoundPeer>()
                 {
                     new BoundPeer(
-                        new PrivateKey().PublicKey, new DnsEndPoint("localhost", 0)),
+                        new PrivateKey().PublicKey, new DnsEndPoint("127.0.0.1", 0)),
                     new BoundPeer(
                         new PrivateKey().PublicKey, new DnsEndPoint("planetarium.com", 1004)),
                 },

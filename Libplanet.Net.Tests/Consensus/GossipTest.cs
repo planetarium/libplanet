@@ -59,7 +59,7 @@ namespace Libplanet.Net.Tests.Consensus
                 },
                 key1,
                 6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("localhost", 6002)) });
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
             var gossip2 = CreateGossip(
                 message =>
                 {
@@ -71,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus
                 },
                 key2,
                 6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("localhost", 6001)) });
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -112,7 +112,7 @@ namespace Libplanet.Net.Tests.Consensus
                 },
                 key1,
                 6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("localhost", 6002)) });
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
             var gossip2 = CreateGossip(
                 message =>
                 {
@@ -128,7 +128,7 @@ namespace Libplanet.Net.Tests.Consensus
                 },
                 key2,
                 6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("localhost", 6001)) });
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -232,11 +232,11 @@ namespace Libplanet.Net.Tests.Consensus
             HostOptions hostOptions;
             if (port is { } p)
             {
-                hostOptions = new HostOptions("localhost", Array.Empty<IceServer>(), p);
+                hostOptions = new HostOptions("127.0.0.1", Array.Empty<IceServer>(), p);
             }
             else
             {
-                hostOptions = new HostOptions("localhost", Array.Empty<IceServer>());
+                hostOptions = new HostOptions("127.0.0.1", Array.Empty<IceServer>());
             }
 
             return NetMQTransport.Create(
