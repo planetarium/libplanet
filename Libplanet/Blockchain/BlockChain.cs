@@ -1173,39 +1173,25 @@ namespace Libplanet.Blockchain
             {
                 if (ValidateNextBlock(block) is { } ibe)
                 {
-                    _logger.Error(ibe, "Failed to append invalid block {BlockHash}", block.Hash);
                     throw ibe;
                 }
 
-                var nonceDeltas = new Dictionary<Address, long>();
+                var nonceDeltas = ValidateNonces(
+                    block.Transactions
+                        .Select(tx => tx.Signer)
+                        .Distinct()
+                        .ToDictionary(signer => signer, signer => Store.GetTxNonce(Id, signer)),
+                    block);
 
-                foreach (Transaction<T> tx1 in block.Transactions.OrderBy(tx => tx.Nonce))
+                foreach (Transaction<T> tx in block.Transactions)
                 {
-                    if (block.Index > 0 && Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
+                    if (block.Index > 0 && Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
                             "According to BlockPolicy, this transaction is not valid.",
-                            tx1.Id,
+                            tx.Id,
                             tpve);
                     }
-
-                    Address txSigner = tx1.Signer;
-                    nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
-
-                    long expectedNonce = nonceDelta + Store.GetTxNonce(Id, txSigner);
-
-                    if (!expectedNonce.Equals(tx1.Nonce))
-                    {
-                        _logger.Error("Failed to append invalid tx {TxId}", tx1.Id);
-                        throw new InvalidTxNonceException(
-                            "Transaction nonce is invalid.",
-                            tx1.Id,
-                            expectedNonce,
-                            tx1.Nonce
-                        );
-                    }
-
-                    nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
                 _rwlock.EnterWriteLock();
@@ -1519,6 +1505,33 @@ namespace Libplanet.Blockchain
             }
 
             return null;
+        }
+
+        private static Dictionary<Address, long> ValidateNonces(
+            Dictionary<Address, long> storedNonces,
+            Block<T> block)
+        {
+            var nonceDeltas = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            {
+                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
+                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
+
+                long expectedNonce = nonceDelta + storedNonce;
+
+                if (!expectedNonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        "Transaction nonce is invalid.",
+                        tx.Id,
+                        expectedNonce,
+                        tx.Nonce);
+                }
+
+                nonceDeltas[tx.Signer] = nonceDelta + 1;
+            }
+
+            return nonceDeltas;
         }
 
         private InvalidBlockException ValidateNextBlock(Block<T> block)
