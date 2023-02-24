@@ -187,7 +187,7 @@ namespace Libplanet.Action
                     .ForContext("Subtag", "BlockEvaluationDuration")
                     .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms",
+                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0} ms",
                         block.Transactions.Count,
                         block.Index,
                         ByteUtil.Hex(block.PreEvaluationHash),
@@ -537,7 +537,7 @@ namespace Libplanet.Action
                 block.PreEvaluationHash
             ).WithMeasuringTime(
                 sw => _logger.Verbose(
-                    "Took {ElapsedMilliseconds}ms to order transactions",
+                    "Took {ElapsedMilliseconds} ms to order transactions",
                     sw.ElapsedMilliseconds
                 )
             );
@@ -576,7 +576,7 @@ namespace Libplanet.Action
                     .ForContext("Subtag", "TxEvaluationDuration");
                 logger.Information(
                     "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
-                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms",
+                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0} ms",
                     actions.Count,
                     actions.Select(action => action.ToString()!.Split('.')
                         .LastOrDefault()?.Replace(">", string.Empty)),

@@ -326,7 +326,7 @@ namespace Libplanet.Blockchain
                 .ForContext("Subtag", "BlockRenderDuration")
                 .Debug(
                     "Finished rendering {RenderCount} renders for actions in " +
-                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
+                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0} ms",
                     count,
                     block.Index,
                     block.Hash,

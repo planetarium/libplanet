@@ -941,7 +941,7 @@ namespace Libplanet.Blockchain
                     .ForContext("Subtag", "StateUpdateDuration")
                     .Information(
                         "Finished updating the states with {KeyCount} key changes affected by " +
-                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
+                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0} ms",
                         totalDelta.Count,
                         block.Index,
                         block.Hash,
@@ -1023,7 +1023,7 @@ namespace Libplanet.Blockchain
                 .ForContext("Subtag", "FindHashesDuration")
                 .Information(
                     "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
-                    "in {DurationMs:F0}ms",
+                    "in {DurationMs:F0} ms",
                     result.Count,
                     Store.ListChainIds().Count(),
                     duration.TotalMilliseconds);
