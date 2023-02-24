@@ -57,9 +57,18 @@ To be released.
 
 [#2772]: https://github.com/planetarium/libplanet/issues/2772
 [#2831]: https://github.com/planetarium/libplanet/pull/2831
-
-
 [#2845]: https://github.com/planetarium/libplanet/pull/2845
+
+
+Version 0.49.1
+--------------
+
+Released on February 24, 2023.
+
+ -  (Libplanet.Net) Reduced logging due output being too verbose.  [[#2849]]
+
+[#2849]: https://github.com/planetarium/libplanet/pull/2849
+
 
 Version 0.49.0
 --------------

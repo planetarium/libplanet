@@ -20,9 +20,6 @@ namespace Libplanet.Net
             var checkInterval = TimeSpan.FromMilliseconds(10);
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.Debug(
-                    "Trying to consume a branch candidate; number of candidates in table: {Count}",
-                    BlockCandidateTable.Count);
                 if (BlockCandidateTable.Count > 0)
                 {
                     BlockHeader tipHeader = BlockChain.Tip.Header;
