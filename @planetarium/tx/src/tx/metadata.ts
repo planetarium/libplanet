@@ -1,7 +1,7 @@
 import { Encodable } from "bencodex";
-import { Address, encodeAddress, encodeAddressSet } from "../address";
-import { BlockHash, encodeBlockHash } from "../blockhash";
-import { encodePublicKey, PublicKey } from "../key";
+import { Address, encodeAddress, encodeAddressSet } from "../address.js";
+import { BlockHash, encodeBlockHash } from "../blockhash.js";
+import { encodePublicKey, PublicKey } from "../key.js";
 
 /**
  * Represents an unsigned transaction without actions.  Corresponds to

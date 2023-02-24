@@ -82,7 +82,15 @@ Projects
 --------
 
 The [planetarium/libplanet](https://github.com/planetarium/libplanet) repository
-on GitHub consists of several projects:
+on GitHub consists of several projects.  There are two types of projects:
+
+ -  .NET projects under the umbrella of *Libplanet.sln*
+ -  TypeScript/JavaScript project under the [Yarn 3 workspace]
+
+[Yarn 3 workspace]: https://yarnpkg.com/features/workspaces
+
+
+### .NET projects
 
  -  *Libplanet*: The main project, which contains the most of implementation
     code.  It is distributed as a NuGet package with the same name:

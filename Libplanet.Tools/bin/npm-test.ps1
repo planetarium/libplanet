@@ -42,19 +42,21 @@ try {
   $Package = Get-Content "package.json" | ConvertFrom-Json
   $Package.private = $false
   $Package.version = $Version
-  ConvertTo-Json $Package | Set-Content "package.json"
+  ConvertTo-Json -Depth 100 $Package | Set-Content "package.json"
 
-  Remove-Item -Force planetarium-cli-*.tgz
-  npm pack --quiet
+  if (Test-Path package.tgz) {
+    Remove-Item -Force package.tgz
+  }
+  yarn pack --install-if-needed
   $PackagePath = Join-Path `
     -Path $PackageDir `
-    -ChildPath "planetarium-cli-$Version.tgz"
+    -ChildPath "package.tgz"
 
   Write-Information 'Test with "npm install"...'
   $tempDir = New-TemporaryDirectory
   Push-Location $tempDir
   Write-Debug "Enter a temporary directory: $($tempDir.FullName)"
-  npm install --quiet --save $PackagePath
+  npm install --save $PackagePath
   Test-Planet
   Pop-Location
 
