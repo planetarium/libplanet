@@ -192,8 +192,10 @@ namespace Libplanet.Node
         {
             using (StreamReader stream = new StreamReader(path, Encoding.UTF8))
             {
-                string privateKeyString = stream.ReadLine();
-                return new PrivateKey(ByteUtil.ParseHex(privateKeyString));
+                string? privateKeyString = stream.ReadLine();
+                return new PrivateKey(ByteUtil.ParseHex(privateKeyString
+                    ?? throw new ArgumentNullException(
+                        nameof(privateKeyString), "Expected a string")));
             }
         }
 

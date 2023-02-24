@@ -48,3 +48,5 @@ export function encodeTransfer(action: Transfer): Encodable {
     amount: action.amount.rawValue,
   };
 }
+
+export type CustomAction = Encodable;

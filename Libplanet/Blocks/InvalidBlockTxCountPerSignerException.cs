@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using Bencodex;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -14,8 +13,6 @@ namespace Libplanet.Blocks
     [Serializable]
     public sealed class InvalidBlockTxCountPerSignerException : BlockPolicyViolationException
     {
-        private static Codec _codec = new Codec();
-
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidBlockTxCountPerSignerException"/> class.
         /// </summary>
@@ -33,9 +30,9 @@ namespace Libplanet.Blocks
 
         private InvalidBlockTxCountPerSignerException(
             SerializationInfo info, StreamingContext context)
-            : base(info.GetString(nameof(Message)) ?? string.Empty)
+                : base(info, context)
         {
-            Signer = new Address(_codec.Decode(info.GetValue<byte[]>(nameof(Signer))));
+            Signer = info.GetValue<Address>(nameof(Signer));
             TxCount = info.GetInt32(nameof(TxCount));
         }
 
@@ -46,7 +43,7 @@ namespace Libplanet.Blocks
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Signer), _codec.Encode(Signer.Bencoded));
+            info.AddValue(nameof(Signer), Signer);
             info.AddValue(nameof(TxCount), TxCount);
         }
     }

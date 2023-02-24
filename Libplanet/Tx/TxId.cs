@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
@@ -7,7 +6,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Libplanet.Serialization;
+using Bencodex;
+using Bencodex.Types;
 
 namespace Libplanet.Tx
 {
@@ -20,9 +20,10 @@ namespace Libplanet.Tx
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
-    [JsonConverter(typeof(TxIdJsonConverter))]
     [Serializable]
-    public struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
+    [JsonConverter(typeof(TxIdJsonConverter))]
+    public readonly struct TxId
+        : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -31,7 +32,12 @@ namespace Libplanet.Tx
         /// </summary>
         public const int Size = 32;
 
-        private ImmutableArray<byte> _byteArray;
+        private static readonly Codec _codec = new Codec();
+
+        private static readonly ImmutableArray<byte> _defaultByteArray =
+            ImmutableArray.Create<byte>(new byte[Size]);
+
+        private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
         /// Converts an immutable <see cref="byte"/> array into a <see cref="TxId"/>.
@@ -47,9 +53,7 @@ namespace Libplanet.Tx
             if (txid.Length != Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(txid),
-                    $"{nameof(TxId)} must be {Size} bytes."
-                );
+                    nameof(txid), $"Given {nameof(txid)} must be {Size} bytes.");
             }
 
             _byteArray = txid;
@@ -62,22 +66,44 @@ namespace Libplanet.Tx
         /// a <see cref="TxId"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="txid"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not
         /// the same to the required <see cref="Size"/>.</exception>
         public TxId(byte[] txid)
-            : this(txid is null
-                ? throw new ArgumentNullException(nameof(txid))
-                : txid.ToImmutableArray())
+            : this(txid.ToImmutableArray())
         {
         }
 
-        public TxId(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info.GetValue<byte[]>("tx_id"))
+        /// <summary>
+        /// Creates a <see cref="TxId"/> instance from given <paramref name="bencoded"/>.
+        /// </summary>
+        /// <param name="bencoded">A Bencodex <see cref="Binary"/> of 32 <see cref="byte"/>s which
+        /// represents an <see cref="TxId"/>.
+        /// </param>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="bencoded"/>
+        /// is not of type <see cref="Binary"/>.</exception>
+        /// <seealso cref="TxId(in ImmutableArray{byte})"/>
+        public TxId(IValue bencoded)
+            : this(bencoded is Binary binary
+                ? binary
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        public TxId(SerializationInfo info, StreamingContext context)
+            : this(_codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
+                byte[] bytes
+                    ? bytes
+                    : throw new SerializationException(
+                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
+        {
+        }
+
+        private TxId(Binary bencoded)
+            : this(bencoded.ByteArray)
         {
         }
 
@@ -88,18 +114,12 @@ namespace Libplanet.Tx
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    _byteArray = new byte[Size].ToImmutableArray();
-                }
+        public ImmutableArray<byte> ByteArray => _byteArray.IsDefault
+            ? _defaultByteArray
+            : _byteArray;
 
-                return _byteArray;
-            }
-        }
+        /// <inheritdoc/>
+        public IValue Bencoded => new Binary(ByteArray);
 
         public static bool operator ==(TxId left, TxId right) => left.Equals(right);
 
@@ -112,8 +132,6 @@ namespace Libplanet.Tx
         /// This has to contain 64 hexadecimal digits and must not be <see langword="null"/>
         /// This is usually made by <see cref="ToHex()"/> method.</param>
         /// <returns>A corresponding <see cref="TxId"/> value.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
-        /// string is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hex"/> is shorter or longer than 64 characters.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
@@ -121,11 +139,6 @@ namespace Libplanet.Tx
         /// <seealso cref="ToHex()"/>
         public static TxId FromHex(string hex)
         {
-            if (hex is null)
-            {
-                throw new ArgumentNullException(nameof(hex));
-            }
-
             ImmutableArray<byte> bytes = ByteUtil.ParseHexToImmutable(hex);
             try
             {
@@ -135,14 +148,13 @@ namespace Libplanet.Tx
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(hex),
-                    $"Expected {Size * 2} characters, but {hex.Length} characters given."
-                );
+                    $"Expected {Size * 2} characters, but {hex.Length} characters given.");
             }
         }
 
         public bool Equals(TxId other) => ByteArray.SequenceEqual(other.ByteArray);
 
-        public override bool Equals(object obj) => obj is TxId other && Equals(other);
+        public override bool Equals(object? obj) => obj is TxId other && Equals(other);
 
         public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
@@ -191,21 +203,18 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc cref="IComparable.CompareTo(object)"/>
-        public int CompareTo(object obj) => obj is TxId other
+        public int CompareTo(object? obj) => obj is TxId other
             ? this.CompareTo(other)
             : throw new ArgumentException(
                 $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
 
         /// <inheritdoc />
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("tx_id", _byteArray.ToArray());
+            info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
         }
     }
 
-#nullable enable
     [SuppressMessage(
         "StyleCop.CSharp.MaintainabilityRules",
         "SA1402:FileMayOnlyContainASingleClass",
@@ -219,7 +228,7 @@ namespace Libplanet.Tx
             JsonSerializerOptions options
         )
         {
-            string? hex = reader.GetString();
+            string hex = reader.GetString() ?? throw new JsonException("Expected a string.");
             try
             {
                 return TxId.FromHex(hex);

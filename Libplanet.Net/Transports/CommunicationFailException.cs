@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using Bencodex;
 using Libplanet.Net.Messages;
 using Libplanet.Serialization;
 
@@ -14,8 +13,6 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class CommunicationFailException : Exception
     {
-        private static Codec _codec = new Codec();
-
         public CommunicationFailException(
             string message,
             Message.MessageType messageType,
@@ -40,7 +37,7 @@ namespace Libplanet.Net.Transports
         public CommunicationFailException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Peer = new BoundPeer(_codec.Decode(info.GetValue<byte[]>(nameof(Peer))));
+            Peer = info.GetValue<BoundPeer>(nameof(Peer));
             MessageType = info.GetValue(nameof(MessageType), typeof(Message.MessageType))
                 is Message.MessageType messageType
                 ? messageType
@@ -54,7 +51,7 @@ namespace Libplanet.Net.Transports
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Peer), _codec.Encode(Peer.Bencoded));
+            info.AddValue(nameof(Peer), Peer);
             info.AddValue(nameof(MessageType), MessageType, typeof(Message.MessageType));
         }
     }

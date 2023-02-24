@@ -852,7 +852,7 @@ namespace Libplanet.Net
                 {
                     List<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
-                        "Received {Number} blocks from {Peer}.",
+                        "Received {Count} blocks from {Peer}.",
                         payloads.Count,
                         message.Remote);
                     for (int i = 0; i < payloads.Count; i += 2)
@@ -880,7 +880,7 @@ namespace Libplanet.Net
                 }
             }
 
-            _logger.Debug("Downloaded {Blocks} block(s) from {Peer}.", count, peer);
+            _logger.Debug("Downloaded {Count} block(s) from {Peer}.", count, peer);
         }
 
         internal async IAsyncEnumerable<Transaction<T>> GetTxsAsync(

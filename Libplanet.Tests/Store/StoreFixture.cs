@@ -10,7 +10,6 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
-using Serilog;
 
 namespace Libplanet.Tests.Store
 {
@@ -113,10 +112,6 @@ namespace Libplanet.Tests.Store
                     : (Predicate<Currency>)nativeTokens.Contains,
                 stateStore: stateStore
             );
-            Log.Debug(
-                "GenesisBlock {Hash} is created. Txs: {Txs}",
-                GenesisBlock,
-                GenesisBlock.Transactions);
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,
@@ -133,6 +128,8 @@ namespace Libplanet.Tests.Store
                 miner: Proposer,
                 lastCommit: TestUtils.CreateBlockCommit(Block2));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
+            Block3Alt = TestUtils.ProposeNextBlock(Block2, miner: Proposer);
+            stateRootHashes[Block3Alt.Hash] = Block3Alt.StateRootHash;
             Block4 = TestUtils.ProposeNextBlock(Block3, miner: Proposer);
             stateRootHashes[Block4.Hash] = Block4.StateRootHash;
             Block5 = TestUtils.ProposeNextBlock(Block4, miner: Proposer);
@@ -180,6 +177,8 @@ namespace Libplanet.Tests.Store
         public Block<DumbAction> Block2 { get; }
 
         public Block<DumbAction> Block3 { get; }
+
+        public Block<DumbAction> Block3Alt { get; }
 
         public Block<DumbAction> Block4 { get; }
 
