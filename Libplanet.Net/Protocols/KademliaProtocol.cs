@@ -96,13 +96,13 @@ namespace Libplanet.Net.Protocols
                 }
                 catch (PingTimeoutException)
                 {
-                    _logger.Warning("A timeout exception occurred connecting to seed peer.");
+                    _logger.Warning("A timeout exception occurred connecting to seed peer");
                     RemovePeer(peer);
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
-                        e, "An unexpected exception occurred connecting to seed peer.");
+                        e, "An unexpected exception occurred connecting to seed peer");
                 }
             }
 
@@ -122,7 +122,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (Exception e)
             {
-                var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}().";
+                var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}()";
                 _logger.Error(e, msg);
                 throw;
             }
@@ -145,23 +145,25 @@ namespace Libplanet.Net.Protocols
                         cancellationToken: cancellationToken));
                 }
 
-                _logger.Verbose("Trying to ping {PeerCount} peers.", tasks.Count);
+                _logger.Verbose("Trying to ping {PeerCount} peers", tasks.Count);
                 await Task.WhenAll(tasks).ConfigureAwait(false);
-                _logger.Verbose("Update complete.");
+                _logger.Verbose("Update complete");
             }
             catch (PingTimeoutException e)
             {
-                _logger.Debug(e, "Ping timed out.");
+                _logger.Debug(e, "Ping timed out");
             }
             catch (TaskCanceledException e)
             {
                 _logger.Debug(
-                    e, "Task cancelled during {FName}().", nameof(AddPeersAsync));
+                    e, "Task cancelled during {MethodName}()", nameof(AddPeersAsync));
             }
             catch (Exception e)
             {
                 _logger.Error(
-                    e, "Unexpected exception occurred during {FName}()", nameof(AddPeersAsync));
+                    e,
+                    "Unexpected exception occurred during {MethodName}()",
+                    nameof(AddPeersAsync));
                 throw;
             }
         }
@@ -222,7 +224,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException e)
             {
-                _logger.Error(e, "Timeout occurred checking some peers.");
+                _logger.Error(e, "Timeout occurred checking some peers");
             }
         }
 
@@ -268,14 +270,14 @@ namespace Libplanet.Net.Protocols
         /// <inheritdoc />
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
-            _logger.Verbose("Checking replacement cache.");
+            _logger.Verbose("Checking replacement cache");
             foreach (IEnumerable<BoundPeer> cache in _table.CachesToCheck)
             {
                 foreach (BoundPeer replacement in cache)
                 {
                     try
                     {
-                        _logger.Verbose("Check peer {Peer}.", replacement);
+                        _logger.Verbose("Check peer {Peer}", replacement);
 
                         _table.RemoveCache(replacement);
                         await PingAsync(replacement, _requestTimeout, cancellationToken)
@@ -284,13 +286,13 @@ namespace Libplanet.Net.Protocols
                     catch (PingTimeoutException)
                     {
                         _logger.Verbose(
-                            "Removed stale peer {Peer} from replacement cache.",
+                            "Removed stale peer {Peer} from replacement cache",
                             replacement);
                     }
                 }
             }
 
-            _logger.Verbose("Replacement cache checked.");
+            _logger.Verbose("Replacement cache checked");
         }
 
         /// <summary>
@@ -312,8 +314,8 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                $"{nameof(FindSpecificPeerAsync)}() with {{Target}}. " +
-                "(depth: {Depth})",
+                "{MethodName}() with {Target}. (depth: {Depth})",
+                nameof(FindSpecificPeerAsync),
                 target,
                 depth);
 
@@ -327,14 +329,14 @@ namespace Libplanet.Net.Protocols
                 catch (PingTimeoutException)
                 {
                     var msg =
-                        "{BoundPeer}, a target peer, is in the routing table does not respond.";
+                        "{BoundPeer}, a target peer, is in the routing table does not respond";
                     _logger.Verbose(msg, boundPeer);
                     RemovePeer(boundPeer);
                     return null;
                 }
 
                 _logger.Verbose(
-                    "{BoundPeer}, a target peer, is in the routing table.",
+                    "{BoundPeer}, a target peer, is in the routing table",
                     boundPeer);
                 return boundPeer;
             }
@@ -417,7 +419,7 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                _logger.Verbose("Trying to ping async to {Peer}.", peer);
+                _logger.Verbose("Trying to ping async to {Peer}", peer);
                 Message reply = await _transport.SendMessageAsync(
                     peer,
                     new PingMsg(),
@@ -545,8 +547,8 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                $"{nameof(FindPeerAsync)}() with {{Target}} to {{Peer}}. " +
-                "(depth: {Depth})",
+                "{MethodName}() with {Target} to {Peer}. (depth: {Depth})",
+                nameof(FindPeerAsync),
                 target,
                 viaPeer,
                 depth);
@@ -629,8 +631,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (CommunicationFailException cfe)
             {
-                _logger.Debug(
-                    cfe, "Failed to get neighbors from {Peer}.", target);
+                _logger.Debug(cfe, "Failed to get neighbors from {Peer}", target);
                 RemovePeer(peer);
                 return ImmutableArray<BoundPeer>.Empty;
             }
@@ -690,7 +691,7 @@ namespace Libplanet.Net.Protocols
 
             if (peers.Count == 0)
             {
-                _logger.Verbose("No any neighbor received.");
+                _logger.Verbose("No any neighbor received");
                 return;
             }
 
@@ -726,7 +727,7 @@ namespace Libplanet.Net.Protocols
 
                 _logger.Warning(
                     aggregateException,
-                    "Some responses from neighbors found unexpectedly terminated.");
+                    "Some responses from neighbors found unexpectedly terminated");
             }
 
             var findPeerTasks = new List<Task>();
@@ -770,7 +771,7 @@ namespace Libplanet.Net.Protocols
             {
                 _logger.Error(
                     e,
-                    "Some FindPeer tasks were unexpectedly terminated.");
+                    "Some FindPeer tasks were unexpectedly terminated");
             }
         }
 

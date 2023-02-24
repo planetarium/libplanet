@@ -1056,7 +1056,7 @@ namespace Libplanet.Net.Tests
                     minerB.BlockChain.StageTransaction(txA);
                 }
 
-                Log.Debug("Make minerB's chain longer than minerA's chain.");
+                Log.Debug("Make minerB's chain longer than minerA's chain");
                 Block<DumbAction> blockA = minerA.BlockChain.ProposeBlock(
                     keyA, lastCommit: CreateBlockCommit(minerA.BlockChain.Tip));
                 minerA.BlockChain.Append(blockA, TestUtils.CreateBlockCommit(blockA));
@@ -1075,7 +1075,7 @@ namespace Libplanet.Net.Tests
 
                 await BootstrapAsync(minerA, minerB.AsPeer);
 
-                Log.Debug("Reorg occurs.");
+                Log.Debug("Reorg occurs");
                 minerB.BroadcastBlock(blockC);
                 await minerA.BlockAppended.WaitAsync();
 
@@ -1086,7 +1086,7 @@ namespace Libplanet.Net.Tests
                     minerA.BlockChain.GetState(targetAddress1));
                 Assert.Equal((Text)dumbItem, minerA.BlockChain.GetState(targetAddress2));
 
-                Log.Debug("Check if txs in unrendered blocks staged again.");
+                Log.Debug("Check if txs in unrendered blocks staged again");
                 Assert.Equal(
                     restage,
                     minerA.BlockChain.GetStagedTransactionIds().Contains(txA.Id));
@@ -1817,7 +1817,7 @@ namespace Libplanet.Net.Tests
                         finalize().WaitAndUnwrapException();
                     }
 
-                    _logger.Debug("Finished to finalize {Resources} resources.", _finalizers.Count);
+                    _logger.Debug("Finished to finalize {Resources} resources", _finalizers.Count);
                     NetMQConfig.Cleanup(false);
                 }
 
@@ -1920,7 +1920,7 @@ namespace Libplanet.Net.Tests
                 client?.Dispose();
             }
 
-            Log.Debug("TurnProxy is canceled.");
+            Log.Debug("TurnProxy is canceled");
 
             await Task.WhenAny(tasks);
         }

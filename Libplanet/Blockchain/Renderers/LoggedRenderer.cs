@@ -140,7 +140,7 @@ namespace Libplanet.Blockchain.Renderers
             {
                 const string errorMessage =
                     "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
-                    "(was #{OldIndex} {OldHash}): {Exception}";
+                    "(was #{OldIndex} {OldHash})";
                 Logger.Error(
                     e,
                     errorMessage,
@@ -148,15 +148,13 @@ namespace Libplanet.Blockchain.Renderers
                     newTip.Index,
                     newTip.Hash,
                     oldTip.Index,
-                    oldTip.Hash,
-                    e
-                );
+                    oldTip.Hash);
                 throw;
             }
 
             Logger.Write(
                 Level,
-                "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash}).",
+                "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash})",
                 methodName,
                 newTip.Index,
                 newTip.Hash,
@@ -196,8 +194,7 @@ namespace Libplanet.Blockchain.Renderers
             {
                 const string errorMessage =
                     "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
-                    "(was #{OldIndex} {OldHash} through #{BranchpointIndex} {BranchpointHash}): " +
-                    "{Exception}";
+                    "(was #{OldIndex} {OldHash} through #{BranchpointIndex} {BranchpointHash})";
                 Logger.Error(
                     e,
                     errorMessage,
@@ -207,15 +204,13 @@ namespace Libplanet.Blockchain.Renderers
                     oldTip.Index,
                     oldTip.Hash,
                     branchpoint.Index,
-                    branchpoint.Hash,
-                    e
-                );
+                    branchpoint.Hash);
                 throw;
             }
 
             const string endMessage =
                 "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash} " +
-                "through #{BranchpointIndex} {BranchpointHash}).";
+                "through #{BranchpointIndex} {BranchpointHash})";
             Logger.Write(
                 Level,
                 endMessage,

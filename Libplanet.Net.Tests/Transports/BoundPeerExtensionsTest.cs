@@ -92,6 +92,34 @@ namespace Libplanet.Net.Tests.Transports
             NetMQConfig.Cleanup(false);
         }
 
+        [Theory]
+        [InlineData("127.0.0.1", 3000, new[] { "tcp://127.0.0.1:3000" })]
+        [InlineData("localhost", 3000, new[] { "tcp://127.0.0.1:3000", "tcp://::1:3000" })]
+        public async Task ResolveNetMQAddressAsync(string host, int port, string[] expected)
+        {
+            var bp = new BoundPeer(
+                new PrivateKey().PublicKey,
+                new DnsEndPoint(host, port)
+            );
+            var addr = await bp.ResolveNetMQAddressAsync();
+
+            Assert.Contains(addr, expected);
+        }
+
+        [Fact]
+        public async Task ResolveNetMQAddressAsyncFails()
+        {
+            string hostDoesNotExist = $"{Guid.NewGuid()}.com";
+            var bp = new BoundPeer(
+                new PrivateKey().PublicKey,
+                new DnsEndPoint(hostDoesNotExist, 3000)
+            );
+            await Assert.ThrowsAnyAsync<SocketException>(async () =>
+            {
+                await bp.ResolveNetMQAddressAsync();
+            });
+        }
+
         private static int FreeTcpPort()
         {
             var l = new TcpListener(IPAddress.Loopback, 0);

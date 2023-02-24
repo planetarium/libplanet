@@ -156,7 +156,7 @@ namespace Libplanet.Net.Tests
 
             // TODO change waiting condition
             await Task.Delay(1000);
-            _logger.Verbose("Demand #2-6 processed.");
+            _logger.Verbose("Demand #2-6 processed");
             var actual = new List<BlockHash>();
             while (logs.TryTake(out var log))
             {
@@ -178,7 +178,7 @@ namespace Libplanet.Net.Tests
             _logger.Verbose("Waiting demand #7-11...");
             // TODO change waiting condition
             await Task.Delay(1000);
-            _logger.Verbose("Demand #7-11 processed.");
+            _logger.Verbose("Demand #7-11 processed");
 
             actual = new List<BlockHash>();
             while (logs.TryTake(out var log))
@@ -201,7 +201,7 @@ namespace Libplanet.Net.Tests
             _logger.Verbose("Waiting demand #12-14...");
             // TODO change waiting condition
             await Task.Delay(1000);
-            _logger.Verbose("Demand #12-14 processed.");
+            _logger.Verbose("Demand #12-14 processed");
             actual = new List<BlockHash>();
             while (logs.TryTake(out var log))
             {
@@ -278,7 +278,7 @@ namespace Libplanet.Net.Tests
                             }
                         }
 
-                        _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}.", peer, sent);
+                        _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}", peer, sent);
                     })
             );
 

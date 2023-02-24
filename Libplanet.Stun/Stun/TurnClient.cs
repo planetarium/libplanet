@@ -156,7 +156,7 @@ namespace Libplanet.Stun
                 catch (Exception e)
                 {
                     _logger.Error(
-                        $"An unexpected exception occurred during {nameof(StartAsync)}(): {e}");
+                        e, $"An unexpected exception occurred during {nameof(StartAsync)}()");
                 }
                 finally
                 {
@@ -170,11 +170,7 @@ namespace Libplanet.Stun
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(
-                            e,
-                            "Failed to initialize due to error ({Exception}); retry...",
-                            e
-                        );
+                        _logger.Error(e, "Failed to initialize due to an error; retry...");
                         await Task.Delay(1000, cancellationToken);
                     }
                 }
@@ -264,7 +260,7 @@ namespace Libplanet.Stun
                 {
                     _logger.Warning(
                         e,
-                        "The connection seems to disconnect before parsing; ignored."
+                        "The connection seems to disconnect before parsing; ignored"
                     );
                 }
             }
@@ -329,7 +325,7 @@ namespace Libplanet.Stun
         {
             _logger.Debug($"Disposing {nameof(TurnClient)}...");
             ClearSession();
-            _logger.Debug($"{nameof(TurnClient)} is disposed.");
+            _logger.Debug($"{nameof(TurnClient)} is disposed");
         }
 
         private async Task<bool> IsConnectable(
@@ -412,15 +408,14 @@ namespace Libplanet.Stun
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
+                    _logger.Warning(e, "{MethodName}() was cancelled", nameof(RefreshAllocate));
                     throw;
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occurred during {nameof(RefreshAllocate)}(): {e}"
-                    );
+                        $"An unexpected exception occurred during {nameof(RefreshAllocate)}()");
                 }
             }
         }
@@ -465,7 +460,7 @@ namespace Libplanet.Stun
                 }
                 catch (TurnClientException e)
                 {
-                    _logger.Error(e, "Failed to parse " + nameof(StunMessage) + ": {Exception}", e);
+                    _logger.Error(e, "Failed to parse " + nameof(StunMessage));
                     ClearResponses();
                     break;
                 }
@@ -473,8 +468,7 @@ namespace Libplanet.Stun
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occurred during {nameof(ProcessMessage)}(): {e}"
-                    );
+                        $"An unexpected exception occurred during {nameof(ProcessMessage)}()");
                 }
             }
 

@@ -92,12 +92,12 @@ namespace Libplanet.Net.Protocols
         {
             if (_peerStates.Remove(peer.Address))
             {
-                _logger.Verbose("Removed peer {Peer} from bucket.", peer);
+                _logger.Verbose("Removed peer {Peer} from bucket", peer);
                 return true;
             }
             else
             {
-                _logger.Verbose("Failed to remove peer {Peer} from bucket.", peer);
+                _logger.Verbose("Failed to remove peer {Peer} from bucket", peer);
                 return false;
             }
         }

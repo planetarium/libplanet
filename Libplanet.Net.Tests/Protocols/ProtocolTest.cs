@@ -367,13 +367,13 @@ namespace Libplanet.Net.Tests.Protocols
                     await transport.BootstrapAsync(new[] { seed.AsPeer });
                 }
 
-                Log.Debug("Bootstrap completed.");
+                Log.Debug("Bootstrap completed");
 
                 var tasks =
                     transports.Select(transport => transport.WaitForTestMessageWithData("foo"));
 
                 seed.BroadcastTestMessage(null, "foo");
-                Log.Debug("Broadcast completed.");
+                Log.Debug("Broadcast completed");
 
                 await Task.WhenAll(tasks);
             }
@@ -423,13 +423,13 @@ namespace Libplanet.Net.Tests.Protocols
                 await t1.BootstrapAsync(new[] { seed.AsPeer });
                 await t2.BootstrapAsync(new[] { seed.AsPeer });
 
-                Log.Debug("Bootstrap completed.");
+                Log.Debug("Bootstrap completed");
 
                 var tcs = new CancellationTokenSource();
                 var task = t2.WaitForTestMessageWithData("foo", tcs.Token);
 
                 seed.BroadcastTestMessage(null, "foo");
-                Log.Debug("Broadcast \"foo\" completed.");
+                Log.Debug("Broadcast \"foo\" completed");
 
                 tcs.CancelAfter(TimeSpan.FromSeconds(5));
                 await task;
@@ -440,7 +440,7 @@ namespace Libplanet.Net.Tests.Protocols
                 task = t2.WaitForTestMessageWithData("bar", tcs.Token);
 
                 seed.BroadcastTestMessage(null, "bar");
-                Log.Debug("Broadcast \"bar\" completed.");
+                Log.Debug("Broadcast \"bar\" completed");
 
                 tcs.CancelAfter(TimeSpan.FromSeconds(5));
                 await task;
@@ -451,7 +451,7 @@ namespace Libplanet.Net.Tests.Protocols
                 task = t2.WaitForTestMessageWithData("baz", tcs.Token);
 
                 seed.BroadcastTestMessage(null, "baz");
-                Log.Debug("Broadcast \"baz\" completed.");
+                Log.Debug("Broadcast \"baz\" completed");
 
                 tcs.CancelAfter(TimeSpan.FromSeconds(5));
                 await task;
@@ -462,7 +462,7 @@ namespace Libplanet.Net.Tests.Protocols
                 task = t2.WaitForTestMessageWithData("qux", tcs.Token);
 
                 seed.BroadcastTestMessage(null, "qux");
-                Log.Debug("Broadcast \"qux\" completed.");
+                Log.Debug("Broadcast \"qux\" completed");
 
                 tcs.CancelAfter(TimeSpan.FromSeconds(5));
                 await task;

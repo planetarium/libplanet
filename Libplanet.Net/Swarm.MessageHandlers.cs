@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
@@ -23,7 +22,7 @@ namespace Libplanet.Net
                 case GetChainStatusMsg getChainStatus:
                 {
                     _logger.Debug(
-                        "Received a {MessageType} message.",
+                        "Received a {MessageType} message",
                         nameof(GetChainStatusMsg));
 
                     // This is based on the assumption that genesis block always exists.
@@ -43,7 +42,7 @@ namespace Libplanet.Net
                 case GetBlockHashesMsg getBlockHashes:
                 {
                     _logger.Debug(
-                        "Received a {MessageType} message (stop: {Stop}).",
+                        "Received a {MessageType} message (stop: {Stop})",
                         nameof(GetBlockHashesMsg),
                         getBlockHashes.Stop);
                     BlockChain.FindNextHashes(
@@ -56,7 +55,7 @@ namespace Libplanet.Net
                     );
                     _logger.Debug(
                         "Found {HashCount} hashes after the branchpoint (offset: {Offset}) " +
-                        "with locator [{LocatorHead}, ...] (stop: {Stop}).",
+                        "with locator [{LocatorHead}, ...] (stop: {Stop})",
                         hashes.Count,
                         offset,
                         getBlockHashes.Locator.FirstOrDefault(),
@@ -84,7 +83,7 @@ namespace Libplanet.Net
 
                 case BlockHashesMsg _:
                     _logger.Error(
-                        "{MessageType} messages are only for IBD.",
+                        "{MessageType} messages are only for IBD",
                         nameof(BlockHashesMsg));
                     return Task.CompletedTask;
 
@@ -108,7 +107,7 @@ namespace Libplanet.Net
             if (!(message.Remote is BoundPeer peer))
             {
                 _logger.Debug(
-                    "{MessageType} message was sent from an invalid peer {Peer}.",
+                    "{MessageType} message was sent from an invalid peer {Peer}",
                     nameof(Messages.BlockHeaderMsg),
                     message.Remote
                 );
@@ -119,7 +118,7 @@ namespace Libplanet.Net
             {
                 _logger.Debug(
                     "{MessageType} message was sent from a peer {Peer} with " +
-                    "a different genesis block {Hash}.",
+                    "a different genesis block {Hash}",
                     nameof(Messages.BlockHeaderMsg),
                     message.Remote,
                     message.GenesisHash
@@ -137,7 +136,7 @@ namespace Libplanet.Net
             {
                 _logger.Debug(
                     ibe,
-                    "Received header #{BlockIndex} {BlockHash} is invalid.",
+                    "Received header #{BlockIndex} {BlockHash} is invalid",
                     message.HeaderHash,
                     message.HeaderIndex
                 );
@@ -152,7 +151,7 @@ namespace Libplanet.Net
             {
                 _logger.Debug(
                     e,
-                    "Received header #{BlockIndex} {BlockHash} has invalid timestamp: {Timestamp}.",
+                    "Received header #{BlockIndex} {BlockHash} has invalid timestamp: {Timestamp}",
                     header.Index,
                     header.Hash,
                     header.Timestamp
@@ -160,26 +159,31 @@ namespace Libplanet.Net
                 return;
             }
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
             bool needed = IsBlockNeeded(header);
-            TimeSpan elapsed = stopwatch.Elapsed;
-            stopwatch.Stop();
-
             _logger.Information(
-                "Received " + nameof(BlockHeader) + " #{BlockIndex} {BlockHash}; " +
-                "Needed? {Needed}; Elapsed: {Elapsed}",
+                "Received " + nameof(BlockHeader) + " #{ReceivedIndex} {ReceivedHash}",
                 header.Index,
-                header.Hash,
-                needed,
-                elapsed
-            );
+                header.Hash);
 
-            if (!needed)
+            if (needed)
             {
-                _logger.Debug(
-                    "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
-                    "for the current chain with tip #{TipIndex} {TipHash}.",
+                _logger.Information(
+                    "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
+                    nameof(BlockDemandTable) + "...",
+                    header.Index,
+                    header.Hash,
+                    peer);
+                BlockDemandTable.Add(
+                    BlockChain,
+                    IsBlockNeeded,
+                    new BlockDemand(header, peer, DateTimeOffset.UtcNow));
+                return;
+            }
+            else
+            {
+                _logger.Information(
+                    "Discarding received header #{ReceivedIndex} {ReceivedHash} from peer {Peer} " +
+                    "as it is not needed for the current chain with tip #{TipIndex} {TipHash}",
                     header.Index,
                     header.Hash,
                     peer,
@@ -187,17 +191,6 @@ namespace Libplanet.Net
                     BlockChain.Tip.Hash);
                 return;
             }
-
-            _logger.Information(
-                "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
-                nameof(BlockDemandTable) + "...",
-                header.Index,
-                header.Hash,
-                peer);
-            BlockDemandTable.Add(
-                BlockChain,
-                IsBlockNeeded,
-                new BlockDemand(header, peer, DateTimeOffset.UtcNow));
         }
 
         private async Task TransferTxsAsync(GetTxsMsg getTxs)
@@ -221,7 +214,7 @@ namespace Libplanet.Net
                 }
                 catch (KeyNotFoundException)
                 {
-                    _logger.Warning("Requested TxId {TxId} does not exist.", txid);
+                    _logger.Warning("Requested TxId {TxId} does not exist", txid);
                 }
             }
         }
@@ -232,15 +225,15 @@ namespace Libplanet.Net
             {
                 _logger.Information(
                     "Ignoring a {MessageType} message because it was sent by an invalid peer: " +
-                    "{PeerAddress}.",
+                    "{PeerAddress}",
                     nameof(Messages.TxIdsMsg),
                     message.Remote?.Address.ToHex()
                 );
                 return;
             }
 
-            _logger.Debug(
-                "Received a {MessageType} message with {TxIdCount} txIds.",
+            _logger.Information(
+                "Received a {MessageType} message with {TxIdCount} txIds",
                 nameof(Messages.TxIdsMsg),
                 message.Ids.Count()
             );

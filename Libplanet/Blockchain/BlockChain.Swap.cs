@@ -45,7 +45,7 @@ namespace Libplanet.Blockchain
                 _logger.Debug(
                     "The blockchain was reorged from " +
                     "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
-                    "to {NewChainId} (#{NewTipIndex} {NewTipHash}).",
+                    "to {NewChainId} (#{NewTipIndex} {NewTipHash})",
                     Id,
                     Tip.Index,
                     Tip.Hash,
@@ -71,7 +71,7 @@ namespace Libplanet.Blockchain
                 }
 
                 _logger.Debug(
-                    "The branchpoint is #{BranchpointIndex} {BranchpointHash}.",
+                    "The branchpoint is #{BranchpointIndex} {BranchpointHash}",
                     branchpoint.Index,
                     branchpoint
                 );
@@ -228,7 +228,8 @@ namespace Libplanet.Blockchain
                 }
 
                 _logger.Debug(
-                    $"{nameof(Swap)}() completed unrendering {{Actions}} actions.",
+                    "{MethodName}() completed unrendering {Actions} actions",
+                    nameof(Swap),
                     count);
             }
         }
@@ -243,7 +244,7 @@ namespace Libplanet.Blockchain
         {
             if (render && ActionRenderers.Any())
             {
-                _logger.Debug("Rendering actions in new chain.");
+                _logger.Debug("Rendering actions in new chain");
 
                 long count = 0;
                 foreach (BlockHash hash in fastForwardPath)
@@ -259,7 +260,8 @@ namespace Libplanet.Blockchain
                 }
 
                 _logger.Debug(
-                    $"{nameof(Swap)}() completed rendering {{Count}} actions.",
+                    "{MethodName}() completed rendering {Count} actions",
+                    nameof(Swap),
                     count);
 
                 foreach (IActionRenderer<T> renderer in ActionRenderers)
@@ -324,7 +326,7 @@ namespace Libplanet.Blockchain
                 .ForContext("Subtag", "BlockRenderDuration")
                 .Debug(
                     "Finished rendering {RenderCount} renders for actions in " +
-                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
+                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
                     count,
                     block.Index,
                     block.Hash,

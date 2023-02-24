@@ -233,14 +233,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 expected2ndLog =
                     "An exception was thrown during {MethodName}() for an action {ActionType} at " +
                     "block #{BlockIndex}" +
-                    (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty) +
-                    ": {Exception}";
+                    (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty);
             }
             else
             {
                 expected2ndLog =
                     "Invoked {MethodName}() for an action {ActionType} at block #{BlockIndex}" +
-                    (rehearsal ? " (rehearsal: {Rehearsal})." : ".");
+                    (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty);
             }
 
             Assert.Equal(
@@ -256,11 +255,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             if (exception)
             {
-                Assert.StartsWith(
-                    $"\"{typeof(ThrowException.SomeException).FullName}",
-                    secondLog.Properties["Exception"].ToString()
-                );
-                Assert.NotNull(secondLog.Exception);
                 Assert.IsType<ThrowException.SomeException>(secondLog.Exception);
             }
             else
@@ -374,9 +368,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(
                 exception
                     ? "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
-                        "(was #{OldIndex} {OldHash}): {Exception}"
+                        "(was #{OldIndex} {OldHash})"
                     : "Invoked {MethodName}() for #{NewIndex} {NewHash} " +
-                        "(was #{OldIndex} {OldHash}).",
+                        "(was #{OldIndex} {OldHash})",
                 secondLog.MessageTemplate.Text
             );
             Assert.Equal(firstLog.Properties["MethodName"], secondLog.Properties["MethodName"]);
@@ -390,15 +384,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             if (exception)
             {
-                Assert.StartsWith(
-                    $"\"{typeof(ThrowException.SomeException).FullName}",
-                    secondLog.Properties["Exception"].ToString()
-                );
                 Assert.IsType<ThrowException.SomeException>(secondLog.Exception);
             }
             else
             {
-                Assert.False(secondLog.Properties.ContainsKey("Exception"));
                 Assert.Null(secondLog.Exception);
             }
         }
@@ -511,9 +500,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 exception
                     ? "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
                         "(was #{OldIndex} {OldHash} through #{BranchpointIndex} " +
-                        "{BranchpointHash}): {Exception}"
+                        "{BranchpointHash})"
                     : "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} " +
-                        "{OldHash} through #{BranchpointIndex} {BranchpointHash}).",
+                        "{OldHash} through #{BranchpointIndex} {BranchpointHash})",
                 secondLog.MessageTemplate.Text
             );
             Assert.Equal(firstLog.Properties["MethodName"], secondLog.Properties["MethodName"]);
@@ -535,15 +524,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             if (exception)
             {
-                Assert.StartsWith(
-                    $"\"{typeof(ThrowException.SomeException).FullName}",
-                    secondLog.Properties["Exception"].ToString()
-                );
                 Assert.IsType<ThrowException.SomeException>(secondLog.Exception);
             }
             else
             {
-                Assert.False(secondLog.Properties.ContainsKey("Exception"));
                 Assert.Null(secondLog.Exception);
             }
         }

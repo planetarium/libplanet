@@ -120,7 +120,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Verbose(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} is tried to be updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from null).",
+                        "#{NewTipIndex} {NewTipHash} (from null)",
                         newTip.Index,
                         newTip.Hash
                     );
@@ -129,7 +129,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Verbose(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} is tried to be updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash}).",
+                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash})",
                         newTip.Index,
                         newTip.Hash,
                         _tip.Index,
@@ -143,7 +143,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Debug(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} was updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from null).",
+                        "#{NewTipIndex} {NewTipHash} (from null)",
                         newTip.Index,
                         newTip.Hash
                     );
@@ -152,7 +152,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     Logger.Debug(
                         $"{nameof(DelayedRenderer<T>)}.{nameof(Tip)} was updated to " +
-                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash}).",
+                        "#{NewTipIndex} {NewTipHash} (from #{OldTipIndex} {OldTipHash})",
                         newTip.Index,
                         newTip.Hash,
                         oldTip.Index,
@@ -271,7 +271,7 @@ namespace Libplanet.Blockchain.Renderers
                 uint c = Confirmed.AddOrUpdate(hash, k => 0U, (k, v) => ac);
 
                 Logger.Verbose(
-                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations. ",
+                    "The block #{BlockIndex} {BlockHash} has {Confirmations} confirmations",
                     index,
                     hash,
                     c

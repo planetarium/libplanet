@@ -120,10 +120,45 @@ Version PBFT
 ### CLI tools
 
 
+Version 0.49.0
+--------------
+
+Released on February 20, 2023.
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Net) Changed `BlockCandidateTable<T>.Add(BlockHeader,
+    IEnumerable<Block<T>>)` to `BlockCandidateTable<T>.Add(BlockHeader,
+    Branch<T>)`.  [[#2822]]
+ -  (Libplanet.Net) Changed the return type of
+    `BlockCandidateTable<T>.GetCurrentRoundCandidate()` from `List<Block<T>>?`
+    to `Branch<T>?`.  [[#2822]]
+
+### Added APIs
+
+ -  Added `Branch<T>` class to represent a sequence of consecutive `Block<T>`s.
+    [[#2822]]
+
+### Behavioral changes
+
+ -  `Swarm<T>` became not to spawn multiple task for process `BlockDemand`
+    for the same `BoundPeer`.  [[#2808], [#2814]]
+
+### Bug fixes
+
+ -  Fixed a bug where `NetMQTransport`'s overall throughput had been dropped
+    when hostname resolving for some peers was delayed.  [[#2817]]
+
+[#2808]: https://github.com/planetarium/libplanet/issues/2808
+[#2814]: https://github.com/planetarium/libplanet/pull/2814
+[#2817]: https://github.com/planetarium/libplanet/pull/2817
+[#2822]: https://github.com/planetarium/libplanet/pull/2822
+
+
 Version 0.48.0
 --------------
 
-Released on Februrary 14, 2023.
+Released on February 14, 2023.
 
 ### Backward-incompatible API changes
 
@@ -269,6 +304,16 @@ Released on February 6, 2023.
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
+
+
+Version 0.46.2
+--------------
+
+Released on February 16th, 2023.
+
+ -  Fix memory issues when preloading.  [[#2804]]
+
+[#2804]: https://github.com/planetarium/libplanet/pull/2804
 
 
 Version 0.46.1
