@@ -91,6 +91,7 @@ for npmpkg in "${npm_packages[@]}"; do
     jq --arg v "$version" 'del(.private) | .version = $v' package.json \
       > .package.json.tmp
     mv .package.json.tmp package.json
+    yarn
     yarn pack --out "${npmpkg//\//-}-$version.tgz"
     popd
   fi
