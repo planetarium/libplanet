@@ -90,9 +90,10 @@ is different from the <a class="xref" href="Libplanet.HashDigest-1.html">HashDig
 found.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></h4>
-      <section><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
-is different from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a> result of
-the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+      <section><p>An exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
+of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+is inconsistent with the expected nonce for the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>
+when appending to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s

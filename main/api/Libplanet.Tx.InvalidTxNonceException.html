@@ -72,9 +72,10 @@
 
   <h1 id="Libplanet_Tx_InvalidTxNonceException" data-uid="Libplanet.Tx.InvalidTxNonceException" class="text-break">Class InvalidTxNonceException
 </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
-is different from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a> result of
-the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+  <div class="markdown level0 summary"><p>An exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
+of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+is inconsistent with the expected nonce for the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>
+when appending to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -172,7 +173,7 @@ public sealed class InvalidTxNonceException : InvalidTxException, ISerializable<
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InvalidTxNonceException(string message, TxId txid, long expectedNonce, long improperNonce)</code></pre>
+    <pre><code class="lang-csharp hljs">public InvalidTxNonceException(string message, TxId txId, long expectedNonce, long improperNonce)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -192,7 +193,7 @@ public sealed class InvalidTxNonceException : InvalidTxException, ISerializable<
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
-        <td><span class="parametername">txid</span></td>
+        <td><span class="parametername">txId</span></td>
         <td><p>The invalid <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.  It is automatically included to
 the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.message#system-exception-message">Message</a> string.</p>
@@ -201,15 +202,14 @@ the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exceptio
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">expectedNonce</span></td>
-        <td><p><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a>
-result of the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+        <td><p>The expected <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a> value
+for the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">improperNonce</span></td>
-        <td><p>The actual
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>.</p>
+        <td><p>The actual <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -221,12 +221,13 @@ result of the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException_ExpectedNonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException.ExpectedNonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/InvalidTxNonceException.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/InvalidTxNonceException.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Tx_InvalidTxNonceException_ExpectedNonce_" data-uid="Libplanet.Tx.InvalidTxNonceException.ExpectedNonce*"></a>
   <h4 id="Libplanet_Tx_InvalidTxNonceException_ExpectedNonce" data-uid="Libplanet.Tx.InvalidTxNonceException.ExpectedNonce">ExpectedNonce</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a> result of the
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+  <div class="markdown level1 summary"><p>The expected <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a> value
+for the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> with <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>
+as its <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -253,7 +254,7 @@ result of the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException_ImproperNonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException.ImproperNonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/InvalidTxNonceException.cs/#L55">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/InvalidTxNonceException.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Tx_InvalidTxNonceException_ImproperNonce_" data-uid="Libplanet.Tx.InvalidTxNonceException.ImproperNonce*"></a>
   <h4 id="Libplanet_Tx_InvalidTxNonceException_ImproperNonce" data-uid="Libplanet.Tx.InvalidTxNonceException.ImproperNonce">ImproperNonce</h4>
@@ -298,7 +299,7 @@ result of the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/InvalidTxNonceException.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/InvalidTxNonceException.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

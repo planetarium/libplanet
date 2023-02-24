@@ -4317,7 +4317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.InvalidTxNonceException.html",
-          "hash": "QGaQXaBkS951iKwfXw2SnS0+QsYFQxZ2THUSUV6WKOc="
+          "hash": "8eZR/7+JR7juhkS7PRi1s3CaJtxDNSzXZP39RK+0H4g="
         }
       },
       "is_incremental": false,
@@ -4437,7 +4437,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.html",
-          "hash": "1usMf8o+sFJ4pNMtjtqj3hBgvUg9JiEv6Ulq8KrMGfA="
+          "hash": "e405tzclFXpPd7Jt6ub4OYpENxqcaC7pDMtOPZv0uxM="
         }
       },
       "is_incremental": false,
