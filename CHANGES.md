@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.49.1
 --------------
 
-To be released.
+Released on February 24, 2023.
 
  -  (Libplanet.Net) Reduced logging due output being too verbose.  [[#2849]]
 
