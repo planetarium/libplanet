@@ -6,6 +6,10 @@ Version 0.49.1
 
 To be released.
 
+ -  (Libplanet.Net) Reduced logging due output being too verbose.  [[#2849]]
+
+[#2849]: https://github.com/planetarium/libplanet/pull/2849
+
 
 Version 0.49.0
 --------------
