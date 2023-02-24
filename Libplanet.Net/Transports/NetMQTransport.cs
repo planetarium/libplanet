@@ -341,10 +341,10 @@ namespace Libplanet.Net.Transports
                     expectedResponses,
                     channel,
                     linkedCt);
+                Interlocked.Increment(ref _requestCount);
                 await _requests.Writer.WriteAsync(
                     req,
                     linkedCt).ConfigureAwait(false);
-                Interlocked.Increment(ref _requestCount);
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
                     "{LeftRequests} left",
