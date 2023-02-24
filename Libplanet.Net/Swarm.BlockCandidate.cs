@@ -118,104 +118,104 @@ namespace Libplanet.Net
             Branch<T> candidate,
             bool evaluateActions)
         {
-             BlockChain<T> workspace = blockChain;
-             List<Guid> scope = new List<Guid>();
-             bool renderActions = evaluateActions;
-             bool renderBlocks = true;
+            BlockChain<T> workspace = blockChain;
+            List<Guid> scope = new List<Guid>();
+            bool renderActions = evaluateActions;
+            bool renderBlocks = true;
 
-             Block<T> oldTip = workspace.Tip;
-             Block<T> newTip = candidate.Blocks.Last();
-             List<Block<T>> blocks = candidate.Blocks.ToList();
-             Block<T> branchpoint = FindBranchpoint(oldTip, newTip, blocks);
+            Block<T> oldTip = workspace.Tip;
+            Block<T> newTip = candidate.Blocks.Last();
+            List<Block<T>> blocks = candidate.Blocks.ToList();
+            Block<T> branchpoint = FindBranchpoint(oldTip, newTip, blocks);
 
-             if (oldTip is null || branchpoint.Equals(oldTip))
-             {
-                 _logger.Debug(
+            if (oldTip is null || branchpoint.Equals(oldTip))
+            {
+                _logger.Debug(
                     "No need to fork. at {MethodName}()",
                     nameof(AppendPreviousBlocks));
-             }
-             else if (!workspace.ContainsBlock(branchpoint.Hash))
-             {
-                 // FIXME: This behavior can unexpectedly terminate the swarm (and the game
-                 // app) if it encounters a peer having a different blockchain, and therefore
-                 // can be exploited to remotely shut down other nodes as well.
-                 // Since the intention of this behavior is to prevent mistakes to try to
-                 // connect incorrect seeds (by a user), this behavior should be limited for
-                 // only seed peers.
-                 var msg =
-                     $"Since the genesis block is fixed to {BlockChain.Genesis} " +
-                     "protocol-wise, the blockchain which does not share " +
-                     "any mutual block is not acceptable.";
-                 throw new InvalidGenesisBlockException(
-                     msg,
-                     branchpoint.Hash,
-                     workspace.Genesis.Hash);
-             }
-             else
-             {
-                 _logger.Debug(
-                     "Trying to fork... at {MethodName}()",
-                     nameof(AppendPreviousBlocks)
-                 );
-                 workspace = workspace.Fork(branchpoint.Hash);
-                 renderActions = false;
-                 renderBlocks = false;
-                 scope.Add(workspace.Id);
-                 _logger.Debug(
-                     "Fork finished. at {MethodName}()",
-                     nameof(AppendPreviousBlocks)
-                 );
-             }
+            }
+            else if (!workspace.ContainsBlock(branchpoint.Hash))
+            {
+                // FIXME: This behavior can unexpectedly terminate the swarm (and the game
+                // app) if it encounters a peer having a different blockchain, and therefore
+                // can be exploited to remotely shut down other nodes as well.
+                // Since the intention of this behavior is to prevent mistakes to try to
+                // connect incorrect seeds (by a user), this behavior should be limited for
+                // only seed peers.
+                var msg =
+                    $"Since the genesis block is fixed to {BlockChain.Genesis} " +
+                    "protocol-wise, the blockchain which does not share " +
+                    "any mutual block is not acceptable.";
+                throw new InvalidGenesisBlockException(
+                    msg,
+                    branchpoint.Hash,
+                    workspace.Genesis.Hash);
+            }
+            else
+            {
+                _logger.Debug(
+                    "Trying to fork... at {MethodName}()",
+                    nameof(AppendPreviousBlocks)
+                );
+                workspace = workspace.Fork(branchpoint.Hash);
+                renderActions = false;
+                renderBlocks = false;
+                scope.Add(workspace.Id);
+                _logger.Debug(
+                    "Fork finished. at {MethodName}()",
+                    nameof(AppendPreviousBlocks)
+                );
+            }
 
-             if (!(workspace.Tip is null) &&
-                 !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
-             {
-                 blocks = blocks.Skip(1).ToList();
-             }
+            if (!(workspace.Tip is null) &&
+                !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
+            {
+                blocks = blocks.Skip(1).ToList();
+            }
 
-             try
-             {
-                 foreach (var block in blocks)
-                 {
-                     workspace.Append(
-                         block,
-                         evaluateActions: evaluateActions,
-                         renderBlocks: renderBlocks,
-                         renderActions: renderActions);
-                 }
-             }
-             catch (Exception)
-             {
-                 _logger.Debug(
-                     "Delete Chain Id: {ChainId}",
-                     workspace.Id
-                 );
+            try
+            {
+                foreach (var block in blocks)
+                {
+                    workspace.Append(
+                        block,
+                        evaluateActions: evaluateActions,
+                        renderBlocks: renderBlocks,
+                        renderActions: renderActions);
+                }
+            }
+            catch (Exception e)
+            {
+                const string dbgMsg =
+                    "An exception occurred while appending a block " +
+                    "to a workspace chain; deleting workspace chain {ChainId}";
+                _logger.Debug(e, dbgMsg, workspace.Id);
 
-                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
-                 {
-                     _store.DeleteChainId(workspaceId);
-                 }
+                if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
+                {
+                    _store.DeleteChainId(workspaceId);
+                }
 
-                 throw;
-             }
-             finally
-             {
-                 foreach (var id in scope.Where(guid => guid != workspace?.Id))
-                 {
-                     _store.DeleteChainId(id);
-                 }
+                throw;
+            }
+            finally
+            {
+                foreach (var id in scope.Where(guid => guid != workspace?.Id))
+                {
+                    _store.DeleteChainId(id);
+                }
 
-                 _logger.Debug(
-                     "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
-                     "at {MethodName}()",
-                     workspace?.Id,
-                     workspace?.Tip?.Index,
-                     workspace?.Tip?.Hash,
-                     nameof(AppendPreviousBlocks)
-                 );
-             }
+                _logger.Debug(
+                    "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
+                    "at {MethodName}()",
+                    workspace?.Id,
+                    workspace?.Tip?.Index,
+                    workspace?.Tip?.Hash,
+                    nameof(AppendPreviousBlocks)
+                );
+            }
 
-             return workspace;
+            return workspace;
         }
 
         private Block<T> FindBranchpoint(Block<T> oldTip, Block<T> newTip, List<Block<T>> newBlocks)
