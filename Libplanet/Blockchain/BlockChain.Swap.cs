@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
@@ -285,7 +286,8 @@ namespace Libplanet.Blockchain
             Block<T> block,
             StateCompleterSet<T> stateCompleters)
         {
-            DateTimeOffset startTime = DateTimeOffset.UtcNow;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             _logger.Debug(
                 "Rendering actions in block #{BlockIndex} {BlockHash}...",
                 block.Index,
@@ -320,17 +322,16 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            TimeSpan renderDuration = DateTimeOffset.Now - startTime;
             _logger
                 .ForContext("Tag", "Metric")
                 .ForContext("Subtag", "BlockRenderDuration")
                 .Debug(
                     "Finished rendering {RenderCount} renders for actions in " +
-                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0} ms",
+                    "block #{BlockIndex} {BlockHash} in {DurationMs} ms",
                     count,
                     block.Index,
                     block.Hash,
-                    renderDuration.TotalMilliseconds);
+                    stopwatch.ElapsedMilliseconds);
             return count;
         }
 
