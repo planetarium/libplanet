@@ -43,6 +43,7 @@ jobs:
       run: node scripts/determine-version.js
     - shell: bash
       run: |
+        mkdir -p obj
         echo "$VERSION_PREFIX" > obj/version_prefix.txt
         if [[ "$VERSION_SUFFIX" != "" ]]; then
           echo "$VERSION_SUFFIX" > obj/version_suffix.txt
