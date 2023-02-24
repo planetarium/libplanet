@@ -1137,7 +1137,6 @@ namespace Libplanet.Blockchain
                 sampleAfter: threshold);
         }
 
-#pragma warning disable MEN003
         internal void Append(
             Block<T> block,
             bool evaluateActions,
@@ -1163,7 +1162,7 @@ namespace Libplanet.Blockchain
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Information(
-                "Trying to append block #{BlockIndex} {BlockHash}...", block?.Index, block?.Hash);
+                "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
 
             block.ValidateTimestamp();
 
@@ -1321,7 +1320,6 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
-#pragma warning restore MEN003
 
         /// <summary>
         /// Find an approximate to the topmost common ancestor between this
@@ -1522,7 +1520,8 @@ namespace Libplanet.Blockchain
                 if (!expectedNonce.Equals(tx.Nonce))
                 {
                     throw new InvalidTxNonceException(
-                        "Transaction nonce is invalid.",
+                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
+                        $"from expected nonce {expectedNonce}.",
                         tx.Id,
                         expectedNonce,
                         tx.Nonce);
