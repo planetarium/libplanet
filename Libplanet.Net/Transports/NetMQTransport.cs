@@ -870,7 +870,7 @@ namespace Libplanet.Net.Transports
                     .ForContext("Subtag", "OutboundMessageReport")
                     .Information(
                         "Request {RequestId} {Message} " +
-                        "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
+                        "processed in {DurationMs:F0} ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies",
                         req.Id,
                         messageType,
