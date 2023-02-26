@@ -447,7 +447,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers)
+            IEnumerable<IRenderer<T>> renderers = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)

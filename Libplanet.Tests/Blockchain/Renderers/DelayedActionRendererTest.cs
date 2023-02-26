@@ -471,7 +471,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 4
             );
 
-            var chain = new BlockChain<DumbAction>(
+            var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
@@ -558,7 +558,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 confirmations: 2
             );
 
-            var chain = new BlockChain<DumbAction>(
+            var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
@@ -686,7 +686,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 confirmations: 2
             );
 
-            var chain = new BlockChain<DumbAction>(
+            var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 fx.Store,

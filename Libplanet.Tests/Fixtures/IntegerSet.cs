@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Fixtures
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: StateStore);
-            Chain = new BlockChain<Arithmetic>(
+            Chain = BlockChain<Arithmetic>.Create(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
                 Store,

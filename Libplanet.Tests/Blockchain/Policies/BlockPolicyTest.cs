@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
-            _chain = new BlockChain<DumbAction>(
+            _chain = BlockChain<DumbAction>.Create(
                 _policy,
                 _stagePolicy,
                 _fx.Store,

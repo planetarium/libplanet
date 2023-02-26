@@ -441,7 +441,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
-                var blockChain = new BlockChain<DumbAction>(
+                var blockChain = BlockChain<DumbAction>.Create(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
                     fx.Store,
