@@ -377,8 +377,8 @@ namespace Libplanet.Net.Transports
 
                     _logger.Information(
                         "Received {Reply} as a reply to request {Message} {RequestId} from {Peer}",
-                        reply,
-                        message,
+                        reply.Type,
+                        message.Type,
                         req.Id,
                         reply.Remote);
                     try
@@ -394,9 +394,9 @@ namespace Libplanet.Net.Transports
                         _logger.Debug(
                             imte,
                             imteMsge,
-                            reply,
+                            reply.Type,
                             reply.Remote,
-                            message,
+                            message.Type,
                             req.Id);
                         channel.Writer.Complete(imte);
                     }
@@ -408,9 +408,9 @@ namespace Libplanet.Net.Transports
                         _logger.Debug(
                             dapve,
                             dapveMsg,
-                            reply,
+                            reply.Type,
                             reply.Remote,
-                            message,
+                            message.Type,
                             req.Id);
                         channel.Writer.Complete(dapve);
                     }
@@ -419,12 +419,13 @@ namespace Libplanet.Net.Transports
                 }
 
                 _logger.Information(
-                    "Received {ReplyMessageCount} reply messages to {RequestId} " +
+                    "Received {ReplyMessageCount} reply messages to {Message} {RequestId}" +
                     "from {Peer}: {ReplyMessages}",
                     replies.Count,
+                    message.Type,
                     reqId,
                     peer,
-                    replies);
+                    replies.Select(reply => reply.Type));
                 return replies;
             }
             catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
