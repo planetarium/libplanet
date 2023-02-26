@@ -376,9 +376,9 @@ namespace Libplanet.Net.Transports
                     Message reply = _messageCodec.Decode(raw, true);
 
                     _logger.Information(
-                        "Received {Reply} as a reply to request {Message} {RequestId} from {Peer}",
-                        reply,
-                        content,
+                        "Received {Reply} as a reply to request {Request} {RequestId} from {Peer}",
+                        reply.Content.Type,
+                        content.Type,
                         req.Id,
                         reply.Remote);
                     try
@@ -389,28 +389,28 @@ namespace Libplanet.Net.Transports
                     catch (InvalidMessageTimestampException imte)
                     {
                         const string imteMsge =
-                            "Received reply {Content} from {Peer} to request {Content} " +
+                            "Received reply {Reply} from {Peer} to request {Request} " +
                             "{RequestId} has an invalid timestamp";
                         _logger.Debug(
                             imte,
                             imteMsge,
-                            reply.Content,
+                            reply.Content.Type,
                             reply.Remote,
-                            content,
+                            content.Type,
                             req.Id);
                         channel.Writer.Complete(imte);
                     }
                     catch (DifferentAppProtocolVersionException dapve)
                     {
                         const string dapveMsg =
-                            "Received reply {Content} from {Peer} to request {Content} " +
+                            "Received reply {Reply} from {Peer} to request {Request} " +
                             "{RequestId} has an invalid APV";
                         _logger.Debug(
                             dapve,
                             dapveMsg,
-                            reply.Content,
+                            reply.Content.Type,
                             reply.Remote,
-                            content,
+                            content.Type,
                             req.Id);
                         channel.Writer.Complete(dapve);
                     }
@@ -419,12 +419,13 @@ namespace Libplanet.Net.Transports
                 }
 
                 _logger.Information(
-                    "Received {ReplyMessageCount} reply messages to {RequestId} " +
+                    "Received {ReplyMessageCount} reply messages to {Message} {RequestId}" +
                     "from {Peer}: {ReplyMessages}",
                     replies.Count,
+                    content.Type,
                     reqId,
                     peer,
-                    replies);
+                    replies.Select(reply => reply.Content.Type));
                 return replies;
             }
             catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
