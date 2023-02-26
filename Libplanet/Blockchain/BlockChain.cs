@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -905,7 +906,8 @@ namespace Libplanet.Blockchain
             try
             {
                 // Update states
-                DateTimeOffset setStatesStarted = DateTimeOffset.Now;
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 var totalDelta =
                     evaluations.GetTotalDelta(
                         ToStateKey,
@@ -935,17 +937,16 @@ namespace Libplanet.Blockchain
                         rootHash);
                 }
 
-                TimeSpan setStatesDuration = DateTimeOffset.Now - setStatesStarted;
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "StateUpdateDuration")
                     .Information(
                         "Finished updating the states with {KeyCount} key changes affected by " +
-                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
+                        "block #{BlockIndex} {BlockHash} in {DurationMs} ms",
                         totalDelta.Count,
                         block.Index,
                         block.Hash,
-                        setStatesDuration.TotalMilliseconds);
+                        stopwatch.ElapsedMilliseconds);
 
                 IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
                 UpdateTxExecutions(txExecutions);
@@ -978,7 +979,8 @@ namespace Libplanet.Blockchain
             BlockHash? stop = null,
             int count = 500)
         {
-            DateTimeOffset startTime = DateTimeOffset.Now;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             // FIXME Theoretically, we don't accept empty chain. so `tip` can't be null on this
             // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
@@ -1017,16 +1019,15 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            TimeSpan duration = DateTimeOffset.Now - startTime;
             _logger
                 .ForContext("Tag", "Metric")
                 .ForContext("Subtag", "FindHashesDuration")
                 .Information(
                     "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
-                    "in {DurationMs:F0}ms",
+                    "in {DurationMs} ms",
                     result.Count,
                     Store.ListChainIds().Count(),
-                    duration.TotalMilliseconds);
+                    stopwatch.ElapsedMilliseconds);
 
             return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
         }

@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -731,8 +732,9 @@ namespace Libplanet.Net.Transports
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            DateTimeOffset startedTime = DateTimeOffset.UtcNow;
             _logger.Debug(
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}",
                 messageType,
@@ -857,11 +859,11 @@ namespace Libplanet.Net.Transports
                     .ForContext("Subtag", "OutboundMessageReport")
                     .Information(
                         "Request {RequestId} {Message} " +
-                        "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
+                        "processed in {DurationMs} ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies",
                         req.Id,
                         messageType,
-                        (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds,
+                        stopwatch.ElapsedMilliseconds,
                         receivedCount,
                         req.ExpectedResponses);
             }

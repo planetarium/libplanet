@@ -71,7 +71,7 @@ namespace Libplanet.Tests
 
             Assert.True(
                 elapsed >= 300L,
-                $"{elapsed}ms is not greater than 300ms."
+                $"{elapsed} ms is not greater than 300 ms."
             );
         }
     }
