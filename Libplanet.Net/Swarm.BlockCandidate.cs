@@ -20,24 +20,25 @@ namespace Libplanet.Net
             var checkInterval = TimeSpan.FromMilliseconds(10);
             while (!cancellationToken.IsCancellationRequested)
             {
+                _logger.Debug(
+                    "Trying to consume a branch candidate; number of candidates in table: {Count}",
+                    BlockCandidateTable.Count);
                 if (BlockCandidateTable.Count > 0)
                 {
                     BlockHeader tipHeader = BlockChain.Tip.Header;
-                    List<(Block<T>, BlockCommit)> blocks =
-                        BlockCandidateTable.GetCurrentRoundCandidate(tipHeader);
-                    if (blocks is { } && blocks.Count > 0)
+                    if (BlockCandidateTable.GetCurrentRoundCandidate(tipHeader) is { } branch)
                     {
-                        var latest = blocks.Last();
-                        _logger.Debug(
-                            "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
-                            "Count of {BlockCandidateTable}: {Count}",
-                            nameof(ConsumeBlockCandidates),
-                            latest.Item1.Index,
-                            latest.Item1.Header,
-                            nameof(BlockCandidateTable),
-                            BlockCandidateTable.Count);
+                        var root = branch.Blocks.First();
+                        var tip = branch.Blocks.Last();
+                        _logger.Information(
+                            "Consuming branch with root #{RootIndex} {RootHash} " +
+                            "and tip #{TipIndex} {TipHash}",
+                            root.Item1.Index,
+                            root.Item1.Hash,
+                            tip.Item1.Index,
+                            tip.Item1.Hash);
                         _ = BlockCandidateProcess(
-                            blocks,
+                            branch,
                             cancellationToken);
                         BlockAppended.Set();
                     }
@@ -53,33 +54,36 @@ namespace Libplanet.Net
         }
 
         private bool BlockCandidateProcess(
-            List<(Block<T>, BlockCommit)> candidate,
+            Branch<T> candidate,
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
             System.Action renderSwap = () => { };
-            const string methodName =
-                nameof(Swarm<T>) + "<T>." + nameof(BlockCandidateProcess) + "()";
             try
             {
                 FillBlocksAsyncStarted.Set();
                 _logger.Debug(
-                    methodName + " starts to append. Current tip: #{BlockIndex}.",
-                    BlockChain.Tip.Index
-                );
+                    "{MethodName}() starts to append; current tip is #{Index} {Hash}",
+                    nameof(BlockCandidateProcess),
+                    BlockChain.Tip.Index,
+                    BlockChain.Tip.Hash);
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
                     candidate: candidate,
                     evaluateActions: true);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
-                    methodName + " finished appending blocks. Synced tip: #{BlockIndex}.",
-                    synced.Tip.Index
-                );
+                    "{MethodName}() finished appending blocks; synced tip is #{Index} {Hash}",
+                    nameof(BlockCandidateProcess),
+                    synced.Tip.Index,
+                    synced.Tip.Hash);
             }
             catch (Exception e)
             {
-                _logger.Error(e, methodName + " failed to append blocks.");
+                _logger.Error(
+                    e,
+                    "{MethodName}() has failed to append blocks",
+                    nameof(BlockCandidateProcess));
                 FillBlocksAsyncFailed.Set();
                 return false;
             }
@@ -98,7 +102,7 @@ namespace Libplanet.Net
                     render: true,
                     stateCompleters: null);
                 _logger.Debug(
-                    "Swapped chain {ChainIdA} with chain {ChainIdB}.",
+                    "Swapped chain {ChainIdA} with chain {ChainIdB}",
                     BlockChain.Id,
                     synced.Id
                 );
@@ -111,7 +115,7 @@ namespace Libplanet.Net
 
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
-            List<(Block<T>, BlockCommit)> candidate,
+            Branch<T> candidate,
             bool evaluateActions)
         {
              BlockChain<T> workspace = blockChain;
@@ -120,8 +124,8 @@ namespace Libplanet.Net
              bool renderBlocks = true;
 
              Block<T> oldTip = workspace.Tip;
-             Block<T> newTip = candidate.Last().Item1;
-             List<(Block<T>, BlockCommit)> blocks = candidate.ToList();
+             Block<T> newTip = candidate.Blocks.Last().Item1;
+             List<(Block<T>, BlockCommit)> blocks = candidate.Blocks.ToList();
              Block<T> branchpoint = FindBranchpoint(
                  oldTip,
                  newTip,
@@ -130,9 +134,8 @@ namespace Libplanet.Net
              if (oldTip is null || branchpoint.Equals(oldTip))
              {
                  _logger.Debug(
-                     "No need to fork. at {MethodName}",
-                     nameof(AppendPreviousBlocks)
-                 );
+                    "No need to fork. at {MethodName}()",
+                    nameof(AppendPreviousBlocks));
              }
              else if (!workspace.ContainsBlock(branchpoint.Hash))
              {
@@ -154,7 +157,7 @@ namespace Libplanet.Net
              else
              {
                  _logger.Debug(
-                     "Trying to fork... at {MethodName}",
+                     "Trying to fork... at {MethodName}()",
                      nameof(AppendPreviousBlocks)
                  );
                  workspace = workspace.Fork(branchpoint.Hash);
@@ -162,7 +165,7 @@ namespace Libplanet.Net
                  renderBlocks = false;
                  scope.Add(workspace.Id);
                  _logger.Debug(
-                     "Fork finished. at {MethodName}",
+                     "Fork finished. at {MethodName}()",
                      nameof(AppendPreviousBlocks)
                  );
              }
@@ -207,7 +210,8 @@ namespace Libplanet.Net
                  }
 
                  _logger.Debug(
-                     "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). at {MethodName}",
+                     "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
+                     "at {MethodName}()",
                      workspace?.Id,
                      workspace?.Tip?.Index,
                      workspace?.Tip?.Hash,
@@ -300,11 +304,9 @@ namespace Libplanet.Net
                 return false;
             }
 
-            const string downloadStartLogMsg =
-                "{SessionId}: Downloading blocks from {Peer}; started " +
-                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}.";
             _logger.Debug(
-                downloadStartLogMsg,
+                "{SessionId}: Downloading blocks from {Peer}; started " +
+                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}()",
                 sessionId,
                 peer,
                 demand.Header.Index,
@@ -326,30 +328,31 @@ namespace Libplanet.Net
             }
             catch (TimeoutException)
             {
-                const string msg =
-                    "{SessionId}: Timeout occurred during " + nameof(ProcessBlockDemandAsync) +
-                    "() from {Peer}.";
-                _logger.Debug(msg, sessionId, peer);
+                _logger.Debug(
+                    "{SessionId}: Timeout occurred during {MethodName}() from {Peer}",
+                    sessionId,
+                    nameof(ProcessBlockDemandAsync),
+                    peer);
                 return false;
             }
             catch (InvalidBlockIndexException)
             {
                 const string msg =
-                    "{SessionId}: {Peer} sent an invalid block index.";
+                    "{SessionId}: {Peer} sent an invalid block index";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
             catch (InvalidBlockHashException)
             {
                 const string msg =
-                    "{SessionId}: {Peer} sent an invalid block hash.";
+                    "{SessionId}: {Peer} sent an invalid block hash";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
             catch (InvalidBlockException)
             {
                 const string msg =
-                    "{SessionId}: {Peer} sent an invalid block.";
+                    "{SessionId}: {Peer} sent an invalid block";
                 _logger.Debug(msg, sessionId, peer);
                 return false;
             }
@@ -357,8 +360,8 @@ namespace Libplanet.Net
             {
                 const string msg =
                     "{SessionId}: Unexpected exception occurred during " +
-                    nameof(ProcessBlockDemandAsync) + "() from {Peer}: {Exception}";
-                _logger.Error(e, msg, sessionId, peer, e);
+                    nameof(ProcessBlockDemandAsync) + "() from {Peer}";
+                _logger.Error(e, msg, sessionId, peer);
                 return false;
             }
             finally
@@ -400,9 +403,20 @@ namespace Libplanet.Net
                 peer,
                 hashes.Select(pair => pair.Item2),
                 cancellationToken);
-            var blocks = await blocksAsync.ToArrayAsync(cancellationToken);
-            BlockCandidateTable.Add(tip.Header, blocks);
-            return true;
+            try
+            {
+                var branch = new Branch<T>(await blocksAsync.ToArrayAsync(cancellationToken));
+                BlockCandidateTable.Add(tip.Header, branch);
+                return true;
+            }
+            catch (ArgumentException ae)
+            {
+                _logger.Error(
+                    ae,
+                    "An unexpected exception occurred during {FName}",
+                    nameof(BlockCandidateDownload));
+                return false;
+            }
         }
     }
 }

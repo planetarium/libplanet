@@ -306,7 +306,7 @@ namespace Libplanet.Net.Tests
         public static ConsensusReactor<DumbAction> CreateDummyConsensusReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            string host = "localhost",
+            string host = "127.0.0.1",
             int consensusPort = 5101,
             List<BoundPeer>? validatorPeers = null,
             int newHeightDelayMilliseconds = 10_000,

@@ -116,7 +116,7 @@ namespace Libplanet.Net
             if (Running)
             {
                 _logger.Warning(
-                    "Swarm is scheduled to destruct, but Transport progress is still running."
+                    "Swarm is scheduled to destruct, but Transport progress is still running"
                 );
             }
         }
@@ -237,7 +237,7 @@ namespace Libplanet.Net
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
             BlockCandidateTable = new BlockCandidateTable<T>();
-            _logger.Debug($"{nameof(Swarm<T>)} stopped.");
+            _logger.Debug($"{nameof(Swarm<T>)} stopped");
         }
 
         /// <summary>
@@ -362,20 +362,20 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Debug("Swarm started.");
+                _logger.Debug("Swarm started");
                 await await runner;
             }
             catch (OperationCanceledException e)
             {
-                _logger.Warning(e, $"{nameof(StartAsync)}() is canceled.");
+                _logger.Warning(e, "{MethodName}() is canceled", nameof(StartAsync));
                 throw;
             }
             catch (Exception e)
             {
                 _logger.Error(
                     e,
-                    $"An unexpected exception occurred during {nameof(StartAsync)}()."
-                );
+                    "An unexpected exception occurred during {MethodName}()",
+                    nameof(StartAsync));
                 throw;
             }
         }
@@ -555,7 +555,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default)
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
-                _logger.Information("Preloading is requested to be cancelled.")
+                _logger.Information("Preloading is requested to be cancelled")
             );
 
             _logger.Debug(
@@ -577,13 +577,13 @@ namespace Libplanet.Net
 
                 if (!peersWithExcerpts.Any())
                 {
-                    _logger.Information("There are no appropriate peers for preloading.");
+                    _logger.Information("There are no appropriate peers for preloading");
                     break;
                 }
                 else
                 {
                     _logger.Information(
-                        "Fetched {PeersWithExcerptsCount} excerpts from {PeersCount} peers.",
+                        "Fetched {PeersWithExcerptsCount} excerpts from {PeersCount} peers",
                         peersWithExcerpts.Count,
                         Peers.Count);
                 }
@@ -597,7 +597,7 @@ namespace Libplanet.Net
                     const string msg =
                         "As the local tip (#{LocalTipIndex} {LocalTipHash}) is close enough to " +
                         "the topmost tip in the network (#{TopmostTipIndex} {TopmostTipHash}), " +
-                        "preloading is no longer needed.";
+                        "preloading is no longer needed";
                     _logger.Information(
                         msg,
                         localTip.Index,
@@ -770,7 +770,7 @@ namespace Libplanet.Net
                     const string msg =
                         "{SessionId}/{SubSessionId}: Received a " +
                         nameof(Messages.BlockHashesMsg) +
-                        " message with an offset index {OffsetIndex} (total {Length} hashes).";
+                        " message with an offset index {OffsetIndex} (total {Length} hashes)";
                     _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongLength);
                     foreach (BlockHash hash in hashes)
                     {
@@ -783,7 +783,7 @@ namespace Libplanet.Net
                     const string msg =
                         "{SessionId}/{SubSessionId}: Received a " +
                         nameof(Messages.BlockHashesMsg) +
-                        " message, but it has zero hashes.";
+                        " message, but it has zero hashes";
                     _logger.Debug(msg, logSessionId, subSessionId);
                 }
 
@@ -803,11 +803,10 @@ namespace Libplanet.Net
         )
         {
             var blockHashesAsArray = blockHashes as BlockHash[] ?? blockHashes.ToArray();
-            _logger.Debug(
-                "Try to download {BlockHashes} block(s) from {Peer}...",
+            _logger.Information(
+                "Trying to download {BlockHashes} block(s) from {Peer}...",
                 blockHashesAsArray.Length,
-                peer
-            );
+                peer);
 
             var request = new GetBlocksMsg(blockHashesAsArray);
             int hashCount = blockHashesAsArray.Count();
@@ -841,7 +840,7 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            _logger.Debug("Received replies from {Peer}.", peer);
+            _logger.Debug("Received replies from {Peer}", peer);
             int count = 0;
 
             foreach (Message message in replies)
@@ -851,8 +850,8 @@ namespace Libplanet.Net
                 if (message is BlocksMsg blockMessage)
                 {
                     List<byte[]> payloads = blockMessage.Payloads;
-                    _logger.Debug(
-                        "Received {Count} blocks from {Peer}.",
+                    _logger.Information(
+                        "Received {Count} blocks from {Peer}",
                         payloads.Count,
                         message.Remote);
                     for (int i = 0; i < payloads.Count; i += 2)
@@ -880,7 +879,7 @@ namespace Libplanet.Net
                 }
             }
 
-            _logger.Debug("Downloaded {Count} block(s) from {Peer}.", count, peer);
+            _logger.Information("Downloaded {Count} block(s) from {Peer}", count, peer);
         }
 
         internal async IAsyncEnumerable<Transaction<T>> GetTxsAsync(
@@ -892,7 +891,7 @@ namespace Libplanet.Net
             var request = new GetTxsMsg(txIdsAsArray);
             int txCount = txIdsAsArray.Count();
 
-            _logger.Debug("Required tx count: {Count}.", txCount);
+            _logger.Debug("Required tx count: {Count}", txCount);
 
             var txRecvTimeout = Options.TimeoutOptions.GetTxsBaseTimeout
                 + Options.TimeoutOptions.GetTxsPerTxIdTimeout.Multiply(txCount);
@@ -990,7 +989,7 @@ namespace Libplanet.Net
                 if (!IsBlockNeeded(excerpt))
                 {
                     _logger.Verbose(
-                        "Skip peer {Peer} because its block excerpt is not needed.",
+                        "Skip peer {Peer} because its block excerpt is not needed",
                         Peers);
                     continue;
                 }
@@ -1012,7 +1011,7 @@ namespace Libplanet.Net
                             const string stagnationMessage =
                                 "Stagnation limit of {StagnationLimit} reached while " +
                                 "fetching hashes from {Peer}. Continuing operation with " +
-                                "{DownloadCount} hashes downloaded so far.";
+                                "{DownloadCount} hashes downloaded so far";
                             _logger.Information(
                                 stagnationMessage,
                                 stagnationLimit,
@@ -1107,7 +1106,7 @@ namespace Libplanet.Net
                                     const string msg =
                                         "Failed to look up a block hash by its index {Index} " +
                                         "(branching index: {BranchingIndex}; " +
-                                        "downloaded: {Downloaded}).";
+                                        "downloaded: {Downloaded})";
                                     _logger.Error(e, msg, arg, branchingIndex, downloaded.Count);
                                     return null;
                                 }
@@ -1133,8 +1132,8 @@ namespace Libplanet.Net
                 {
                     const string message =
                         "Failed to fetch demand block hashes from {Peer}; " +
-                        "retry with another peer...\n";
-                    _logger.Debug(error, message, peer, error);
+                        "retry with another peer...";
+                    _logger.Debug(error, message, peer);
                     exceptions.Add(error);
                 }
             }
@@ -1151,16 +1150,18 @@ namespace Libplanet.Net
 
         private void BroadcastBlock(Address? except, Block<T> block)
         {
-            _logger.Debug("Trying to broadcast blocks...");
+            _logger.Information(
+                "Trying to broadcast block #{Index} {Hash}...",
+                block.Index,
+                block.Hash);
             var message = new BlockHeaderMsg(BlockChain.Genesis.Hash, block.Header);
             BroadcastMessage(except, message);
-            _logger.Debug("Block broadcasting complete.");
         }
 
         private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
-            _logger.Debug("Broadcasting {TxIdCount} txIds...", txIds.Count);
+            _logger.Information("Broadcasting {Count} txIds...", txIds.Count);
             BroadcastTxIds(except?.Address, txIds);
         }
 
@@ -1231,14 +1232,12 @@ namespace Libplanet.Net
                     case CommunicationFailException cfe:
                         _logger.Debug(
                             cfe,
-                            "Failed to dial {Peer}.",
+                            "Failed to dial {Peer}",
                             peer);
                         break;
                     case Exception e:
-                        string msg =
-                            "An unexpected exception occurred while dialing " +
-                            "({Peer}).";
-                        _logger.Error(e, msg, peer);
+                        _logger.Error(
+                            e, "An unexpected exception occurred while dialing {Peer}", peer);
                         break;
                     default:
                         break;
@@ -1304,15 +1303,13 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{fname}() is canceled.");
+                    _logger.Warning(e, "{MethodName}() was canceled", fname);
                     throw;
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
-                        e,
-                        $"An unexpected exception occurred during {fname}()."
-                    );
+                        e, "An unexpected exception occurred during {MethodName}()", fname);
                 }
             }
         }
@@ -1345,15 +1342,15 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(BroadcastTxAsync)}() is canceled.");
+                    _logger.Warning(e, "{MethodName}() was canceled", nameof(BroadcastTxAsync));
                     throw;
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occurred during {nameof(BroadcastTxAsync)}()."
-                    );
+                        "An unexpected exception occurred during {MethodName}()",
+                        nameof(BroadcastTxAsync));
                 }
             }
         }
@@ -1392,14 +1389,15 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
+                    _logger.Warning(e, "{MethodName}() was cancelled", nameof(RefreshTableAsync));
                     throw;
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unexpected exception occurred during " +
-                              $"{nameof(RefreshTableAsync)}(): {{0}}";
-                    _logger.Warning(e, msg, e);
+                    _logger.Warning(
+                        e,
+                        "An unexpected exception occurred during {MethodName}()",
+                        nameof(RefreshTableAsync));
                 }
             }
         }
@@ -1419,14 +1417,15 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled.");
+                    _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled");
                     throw;
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unexpected exception occurred during " +
-                              $"{nameof(RebuildConnectionAsync)}(): {{0}}";
-                    _logger.Warning(e, msg, e);
+                    _logger.Warning(
+                        e,
+                        "Unexpected exception occurred during {MethodName}()",
+                        nameof(RebuildConnectionAsync));
                 }
             }
         }

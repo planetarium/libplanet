@@ -226,7 +226,7 @@ namespace Libplanet.Store
             if (!(decoded is Bencodex.Types.Dictionary d))
             {
                 const string msg = nameof(TxExecution) +
-                    " must be serialized as a Bencodex dictionary, not {ActualValue}.";
+                    " must be serialized as a Bencodex dictionary, not {ActualValue}";
                 logger?.Error(msg, decoded.Inspect(false));
                 return null;
             }
@@ -271,9 +271,8 @@ namespace Libplanet.Store
             catch (Exception e)
             {
                 const string msg =
-                    "Uncaught exception during deserializing a " + nameof(TxExecution) +
-                    ": {Exception}";
-                logger?.Error(e, msg, e);
+                    "Uncaught exception during deserializing a " + nameof(TxExecution);
+                logger?.Error(e, msg);
                 return null;
             }
         }

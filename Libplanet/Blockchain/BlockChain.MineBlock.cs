@@ -113,7 +113,7 @@ namespace Libplanet.Blockchain
 
             _logger.Verbose(
                 "{SessionId}/{ProcessId}: Propose block #{Index} will include " +
-                "{TxCount} transactions.",
+                "{TxCount} transactions",
                 sessionId,
                 processId,
                 index,
@@ -144,7 +144,7 @@ namespace Libplanet.Blockchain
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
-                "with previous hash {PreviousHash}.",
+                "with previous hash {PreviousHash}",
                 sessionId,
                 processId,
                 block.Index,
@@ -232,7 +232,7 @@ namespace Libplanet.Blockchain
                     if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                     {
                         _logger.Debug(
-                            "Ignoring tx {Iter}/{Total} {TxId} as it does not follow policy.",
+                            "Ignoring tx {Iter}/{Total} {TxId} as it does not follow policy",
                             i,
                             stagedTransactions.Count,
                             tx.Id);
@@ -269,7 +269,7 @@ namespace Libplanet.Blockchain
 
                     _logger.Verbose(
                         "Adding tx {Iter}/{Total} {TxId} to the list of transactions " +
-                        "to be mined.",
+                        "to be mined",
                         i,
                         stagedTransactions.Count,
                         tx.Id);
@@ -307,14 +307,14 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug(
                         "Reached the time limit to collect staged transactions; other staged " +
-                        "transactions will be mined later.");
+                        "transactions will be mined later");
                     break;
                 }
             }
 
             _logger.Information(
                 "Gathered total of {TransactionsToMineCount} transactions to mine for " +
-                "block #{Index} from {StagedTransactionsCount} staged transactions.",
+                "block #{Index} from {StagedTransactionsCount} staged transactions",
                 transactionsToMine.Count,
                 index,
                 stagedTransactions.Count);

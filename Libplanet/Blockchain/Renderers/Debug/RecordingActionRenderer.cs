@@ -57,7 +57,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         {
             _nextIndex = 0;
             _records.Clear();
-            Log.Logger.ForContext<RecordingActionRenderer<T>>().Debug("Reset records.");
+            Log.Logger.ForContext<RecordingActionRenderer<T>>().Debug("Reset records");
         }
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderAction"/>

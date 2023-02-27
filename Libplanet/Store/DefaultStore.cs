@@ -522,8 +522,8 @@ namespace Libplanet.Store
                     catch (DecodingException e)
                     {
                         const string msg =
-                            "Uncaught exception during " + nameof(GetTxExecution) + ": {Exception}";
-                        _logger.Error(e, msg, e);
+                            "Uncaught exception during " + nameof(GetTxExecution);
+                        _logger.Error(e, msg);
                         return null;
                     }
                 }

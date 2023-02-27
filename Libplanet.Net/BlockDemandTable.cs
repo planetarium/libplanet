@@ -35,7 +35,7 @@ namespace Libplanet.Net
             {
                 _blockDemands[demand.Peer] = demand;
                 Log.Debug(
-                    "BlockDemand #{Index} {BlockHash} from peer {Peer} added.",
+                    "BlockDemand #{Index} {BlockHash} from peer {Peer} added",
                     demand.Index,
                     demand.Hash,
                     demand.Peer);
@@ -43,7 +43,7 @@ namespace Libplanet.Net
             else
             {
                 Log.Debug(
-                    "BlockDemand #{Index} {BlockHash} from peer {Peer} ignored.",
+                    "BlockDemand #{Index} {BlockHash} from peer {Peer} ignored",
                     demand.Index,
                     demand.Hash,
                     demand.Peer);
@@ -67,7 +67,7 @@ namespace Libplanet.Net
                 }
             }
 
-            Log.Verbose("Successfully cleaned up demands.");
+            Log.Verbose("Successfully cleaned up demands");
         }
 
         private bool IsDemandNeeded(

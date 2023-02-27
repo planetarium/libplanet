@@ -261,7 +261,7 @@ namespace Libplanet.Net.Tests
                     }
 
                     swarm.BroadcastBlock(chain[-1]);
-                    Log.Debug("Mining complete.");
+                    Log.Debug("Mining complete");
                 });
             }
 

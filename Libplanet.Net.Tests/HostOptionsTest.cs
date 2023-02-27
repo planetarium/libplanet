@@ -12,7 +12,7 @@ namespace Libplanet.Net.Tests
                 () => new HostOptions(null, new IceServer[] { }));
             Assert.Throws<ArgumentException>(
                 () => new HostOptions(
-                    "localhost", new IceServer[] { new IceServer("turn://user:info@some.path") }));
+                    "127.0.0.1", new IceServer[] { new IceServer("turn://user:info@some.path") }));
         }
     }
 }

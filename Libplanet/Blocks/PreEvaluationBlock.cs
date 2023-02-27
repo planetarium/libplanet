@@ -321,7 +321,7 @@ namespace Libplanet.Blocks
                 statesDelta = actionEvaluations.GetTotalDelta(
                     ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 logger.Verbose(
-                    "Calculated the total delta of states made in block #{BlockIndex}.",
+                    "Calculated the total delta of states made in block #{BlockIndex}",
                     Index
                 );
                 blockChain._rwlock.EnterWriteLock();
@@ -336,7 +336,7 @@ namespace Libplanet.Blocks
                         statesDelta
                     );
                     logger.Verbose(
-                        "Committed the state changes made in block #{BlockIndex}: {StateRootHash}.",
+                        "Committed the state changes made in block #{BlockIndex}: {StateRootHash}",
                         Index,
                         trie.Hash
                     );

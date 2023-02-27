@@ -47,7 +47,7 @@ namespace Libplanet.Store
             // Bencodex values), it needs to be fixed so that it can prune offloaded Bencodex
             // values too.  https://github.com/planetarium/libplanet/issues/1653
             var stopwatch = new Stopwatch();
-            _logger.Verbose($"Started {nameof(PruneStates)}()");
+            _logger.Verbose("Started {MethodName}()", nameof(PruneStates));
             var survivalNodes = new HashSet<HashDigest<SHA256>>();
             foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
             {
@@ -56,7 +56,7 @@ namespace Libplanet.Store
                     new HashNode(stateRootHash),
                     Secure
                 );
-                _logger.Debug("Started to iterate hash nodes.");
+                _logger.Debug("Started to iterate hash nodes");
                 stopwatch.Start();
                 foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
                 {
@@ -64,16 +64,16 @@ namespace Libplanet.Store
                 }
 
                 _logger.Debug(
-                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms).",
+                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms)",
                     stopwatch.ElapsedMilliseconds);
                 stopwatch.Stop();
             }
 
-            _logger.Debug("{Count} hash nodes will survive.", survivalNodes.Count);
+            _logger.Debug("{Count} hash nodes will survive", survivalNodes.Count);
 
             // Clean up nodes.
             long deleteCount = 0;
-            _logger.Debug("Started to clean up states.");
+            _logger.Debug("Started to clean up states...");
             stopwatch.Restart();
             foreach (var stateKey in StateKeyValueStore.ListKeys())
             {
@@ -91,7 +91,7 @@ namespace Libplanet.Store
 
             _logger.Debug(
                 "Finished to clean up {DeleteCount} state hashes " +
-                "(elapsed: {ElapsedMilliseconds} ms).",
+                "(elapsed: {ElapsedMilliseconds} ms)",
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
@@ -108,7 +108,7 @@ namespace Libplanet.Store
         {
             IKeyValueStore targetKeyValueStore = targetStateStore.StateKeyValueStore;
             var stopwatch = new Stopwatch();
-            _logger.Verbose($"Started {nameof(CopyStates)}()");
+            _logger.Verbose("Started {MethodName}()", nameof(CopyStates));
             stopwatch.Start();
 
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
@@ -127,9 +127,9 @@ namespace Libplanet.Store
 
             stopwatch.Stop();
             _logger.Debug(
-                "Finished to copy all states {ElapsedMilliseconds} ms",
+                "Finished to copy all states {ElapsedMilliseconds}ms",
                 stopwatch.ElapsedMilliseconds);
-            _logger.Verbose($"Finished {nameof(CopyStates)}()");
+            _logger.Verbose("Finished {MethodName}()", nameof(CopyStates));
         }
 
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?)"/>

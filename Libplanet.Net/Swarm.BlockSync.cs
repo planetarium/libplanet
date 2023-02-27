@@ -7,8 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tx;
 using Nito.AsyncEx;
+using BlockChainSlice = System.Collections.Generic.LinkedList<Libplanet.Blocks.BlockHash>;
 
 namespace Libplanet.Net
 {
@@ -129,7 +131,7 @@ namespace Libplanet.Net
 
                 if (totalBlocksToDownload == 0)
                 {
-                    _logger.Debug("No any blocks to fetch.");
+                    _logger.Debug("No any blocks to fetch");
                     return;
                 }
 
@@ -145,7 +147,7 @@ namespace Libplanet.Net
                     in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
-                        "Got #{BlockIndex} {BlockHash} from {Peer}.",
+                        "Got #{BlockIndex} {BlockHash} from {Peer}",
                         block.Index,
                         block.Hash,
                         sourcePeer
@@ -208,21 +210,28 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}().";
+                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}()";
                 _logger.Error(e, msg);
                 FillBlocksAsyncFailed.Set();
             }
             finally
             {
-                // FIXME: This somewhat assumes returned blocks are consecutive and sequential.
-                if (blocks.Count != 0)
+                try
                 {
-                    BlockCandidateTable.Add(BlockChain.Tip.Header, blocks);
+                    var branch = new Branch<T>(blocks);
+                    BlockCandidateTable.Add(BlockChain.Tip.Header, branch);
                     BlockReceived.Set();
+                }
+                catch (ArgumentException ae)
+                {
+                    _logger.Error(
+                        ae,
+                        "An Unexpected exception occurred during {FName}",
+                        nameof(PullBlocksAsync));
                 }
 
                 ProcessFillBlocksFinished.Set();
-                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully.");
+                _logger.Debug("{MethodName}() has finished successfully", nameof(PullBlocksAsync));
             }
         }
 
@@ -236,7 +245,7 @@ namespace Libplanet.Net
                 if (BlockDemandTable.Any())
                 {
                     _logger.Debug(
-                        "{MethodName} blockDemand count: {BlockDemandCount}",
+                        "{MethodName}() blockDemand count: {BlockDemandCount}",
                         nameof(FillBlocksAsync),
                         BlockDemandTable.Demands.Count);
                     foreach (var blockDemand in BlockDemandTable.Demands.Values)
@@ -256,7 +265,7 @@ namespace Libplanet.Net
                 BlockDemandTable.Cleanup(BlockChain, IsBlockNeeded);
             }
 
-            _logger.Debug($"{nameof(FillBlocksAsync)} has finished.");
+            _logger.Debug("{MethodName}() has finished", nameof(FillBlocksAsync));
         }
 
         private async Task PollBlocksAsync(
@@ -318,7 +327,7 @@ namespace Libplanet.Net
 
             try
             {
-                _logger.Debug($"Start to {nameof(CompleteBlocksAsync)}().");
+                _logger.Debug("Start to {MethodName}()", nameof(CompleteBlocksAsync));
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
@@ -331,7 +340,6 @@ namespace Libplanet.Net
                 long totalBlocksToDownload = 0L;
                 long receivedBlockCount = 0L;
                 (Block<T> Block, BlockCommit Commit) tipCandidate = initialTip;
-
                 (Block<T> Block, BlockCommit Commit) tempTip = tipCandidate;
                 Block<T> branchpoint = null;
 
@@ -381,7 +389,7 @@ namespace Libplanet.Net
 
                 if (totalBlocksToDownload == 0)
                 {
-                    _logger.Debug("No any blocks to fetch.");
+                    _logger.Debug("No any blocks to fetch");
                     return renderSwap;
                 }
 
@@ -389,7 +397,9 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken);
+                        cancellationToken: cancellationToken
+                    );
+
                 BlockDownloadStarted.Set();
 
                 await foreach (
@@ -397,7 +407,7 @@ namespace Libplanet.Net
                         in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
-                        "Got #{BlockIndex} {BlockHash} from {Peer}.",
+                        "Got #{BlockIndex} {BlockHash} from {Peer}",
                         block.Index,
                         block.Hash,
                         sourcePeer
@@ -433,7 +443,7 @@ namespace Libplanet.Net
                     }
 
                     _logger.Verbose(
-                        "Trying to store downloaded block #{BlockIndex} {BlockHash}...",
+                        "Add a block #{BlockIndex} {BlockHash}...",
                         block.Index,
                         block.Hash
                     );
@@ -461,18 +471,27 @@ namespace Libplanet.Net
                         SourcePeer = sourcePeer,
                     });
                     _logger.Debug(
-                        "Stored downloaded block #{BlockIndex} {BlockHash}",
+                        "Appended block #{BlockIndex} {BlockHash} " +
+                        "to the workspace chain",
                         block.Index,
-                        block.Hash);
+                        block.Hash
+                    );
                 }
 
                 tipCandidate = tempTip;
+
+                if (!(tipCandidate is { Block: { } }))
+                {
+                    throw new SwarmException(
+                        $"Tip candidate is null.");
+                }
+
                 _logger.Debug(
                     "TipCandidate: #{Index} {Hash}",
                     tipCandidate.Block?.Index,
                     tipCandidate.Block?.Hash);
 
-                if (tipCandidate.Block is { } tc && tc.Index == 0)
+                if (tipCandidate.Block is { Index: 0 } tc)
                 {
                     // FIXME: This is here to keep logical equivalence through refactoring.
                     // This part of the code is likely unreachable and the exception message
@@ -483,43 +502,48 @@ namespace Libplanet.Net
                         $"is unusable for the the existing chain #0 {g}.");
                 }
 
-                // FIXME: This simply tries to line up downloaded blocks starting with
-                // a highest indexed block all the way down to presumably a block
-                // after workspace's tip.  However, there is no guarantee that there is
-                // a connected path using downloaded blocks, in which case,
-                // deltaBlocks will result in being unusable.
-                var deltaBlocks = new LinkedList<(Block<T> Block, BlockCommit Commit)>();
+                // NOTE: All blocks in deltaBlocks will have non-null previousHash.
+                var blockChainSlice = new BlockChainSlice(new[] { tipCandidate.Block.Hash });
                 while (true)
                 {
-                    (Block<T> Block, BlockCommit Commit) blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<(Block<T>, BlockCommit)> node)
+                    BlockHash bh = blockChainSlice.First();
+                    BlockDigest? b = workspace.Store.GetBlockDigest(bh);
+                    if (b?.PreviousHash is { } p && !workspace.ContainsBlock(p))
                     {
-                        (Block<T> b, BlockCommit c) = node.Value;
-                        if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
-                        {
-                            Block<T> prevBlock = workspace.Store.GetBlock<T>(p);
-                            blockToAdd = (prevBlock, b.LastCommit);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    else if (tipCandidate.Block.Index <= tempTip.Block.Index)
-                    {
-                        blockToAdd = tipCandidate;
+                        blockChainSlice.AddFirst(p);
                     }
                     else
                     {
-                        // Received chain's topmost block is not canonical.
-                        _logger.Debug("Received block is not canonical.");
                         break;
                     }
 
-                    deltaBlocks.AddFirst(blockToAdd);
+                    _logger.Debug(
+                        "The starting tip is {TipCandidate} and we are currently passing " +
+                        "tip {CurrentTip}; the target tip is {WorkspaceTip}",
+                        tipCandidate.Block.Index,
+                        b?.Index,
+                        workspace.Tip.Index);
+
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
 
-                cancellationToken.ThrowIfCancellationRequested();
+                BlockDigest? firstBlock = workspace.Store.GetBlockDigest(blockChainSlice.First());
+
+                if (!(firstBlock?.PreviousHash is { } previousHash))
+                {
+                    throw new SwarmException(
+                        "A genesis block cannot be a preload target block.");
+                }
+
+                branchpoint = workspace[previousHash];
+                _logger.Debug(
+                    "Branchpoint block is #{Index} {Hash}",
+                    branchpoint.Index,
+                    branchpoint.Hash);
+                workspace = workspace.Fork(branchpoint.Hash, inheritRenderers: true);
+                chainIds.Add(workspace.Id);
+                renderBlocks = false;
+                renderActions = false;
 
                 var actionExecutionState = new ActionExecutionState()
                 {
@@ -529,96 +553,65 @@ namespace Libplanet.Net
                 long txsCount = 0, actionsCount = 0;
                 TimeSpan spent = TimeSpan.Zero;
 
-                // FIXME: If any of the blocks in deltaBlocks is invalid, the whole process
-                // is aborted, even when an actually valid potential tip block and
-                // all the blocks in the path has been downloaded.
-                if (deltaBlocks.First is { } deltaBottom)
+                try
                 {
-                    Block<T> bottomBlock = deltaBottom.Value.Block;
-                    if (bottomBlock.PreviousHash is { } bp)
+                    long verifiedBlockCount = 0;
+                    foreach (BlockHash deltaBlockHash in blockChainSlice)
                     {
-                        branchpoint = workspace[bp];
-                        _logger.Debug(
-                            "Branchpoint block is #{Index} {Hash}.",
-                            branchpoint.Index,
-                            branchpoint.Hash);
-                        workspace = workspace.Fork(bp, inheritRenderers: true);
-                        chainIds.Add(workspace.Id);
-                        renderBlocks = false;
-                        renderActions = false;
-
-                        try
-                        {
-                            long verifiedBlockCount = 0;
-                            foreach ((Block<T> deltaBlock, BlockCommit deltaCommit) in deltaBlocks)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-
-                                _logger.Debug(
-                                    "Appending block #{Index} {Hash}",
-                                    deltaBlock.Index,
-                                    deltaBlock.Hash);
-
-                                DateTimeOffset executionStarted = DateTimeOffset.Now;
-                                workspace.ExecuteActions(deltaBlock);
-                                spent += DateTimeOffset.Now - executionStarted;
-
-                                _logger.Debug(
-                                    "Executed actions in block #{Index} {Hash}.",
-                                    deltaBlock.Index,
-                                    deltaBlock.Hash);
-
-                                IEnumerable<Transaction<T>>
-                                    transactions = deltaBlock.Transactions.ToImmutableArray();
-                                txsCount += transactions.Count();
-                                actionsCount += transactions.Sum(
-                                    tx => tx.CustomActions is { } ca ? ca.Count : 1L);
-                                actionExecutionState.ExecutedBlockCount += 1;
-                                actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
-                                progress?.Report(actionExecutionState);
-
-                                workspace.Append(
-                                    deltaBlock,
-                                    deltaCommit,
-                                    evaluateActions: false,
-                                    renderBlocks: renderBlocks,
-                                    renderActions: renderActions
-                                );
-                                progress?.Report(
-                                    new BlockVerificationState
-                                    {
-                                        TotalBlockCount = deltaBlocks.Count,
-                                        VerifiedBlockCount = ++verifiedBlockCount,
-                                        VerifiedBlockHash = deltaBlock.Hash,
-                                    });
-                            }
-
-                            workspace.CleanupBlockCommitStore(workspace.Tip.Index);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(
-                                e,
-                                "An exception occurred during appending blocks.");
-                            throw;
-                        }
-
                         cancellationToken.ThrowIfCancellationRequested();
-                    }
-                    else
-                    {
-                        Block<T> first = deltaBlocks.First.Value.Block;
-                        Block<T> last = deltaBlocks.Last.Value.Block;
-                        BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
-                        throw new SwarmException(
-                            $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
-                            $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Block.Index} " +
-                            $"{initialTip.Block.Hash})."
+
+                        Block<T> deltaBlock = workspace.Store.GetBlock<T>(deltaBlockHash);
+                        BlockCommit deltaCommit = workspace.Store.GetBlockCommit(deltaBlockHash);
+                        _logger.Debug(
+                            "Appending block #{Index} {Hash}",
+                            deltaBlock.Index,
+                            deltaBlock.Hash);
+
+                        DateTimeOffset executionStarted = DateTimeOffset.Now;
+                        workspace.ExecuteActions(deltaBlock);
+                        spent += DateTimeOffset.Now - executionStarted;
+
+                        _logger.Debug(
+                            "Executed actions in block #{Index} {Hash}.",
+                            deltaBlock.Index,
+                            deltaBlock.Hash);
+
+                        IEnumerable<Transaction<T>>
+                            transactions = deltaBlock.Transactions.ToImmutableArray();
+                        txsCount += transactions.Count();
+                        actionsCount += transactions.Sum(
+                            tx => tx.CustomActions is { } ca ? ca.Count : 1L);
+                        actionExecutionState.ExecutedBlockCount += 1;
+                        actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
+                        progress?.Report(actionExecutionState);
+
+                        workspace.Append(
+                            deltaBlock,
+                            deltaCommit,
+                            evaluateActions: false,
+                            renderBlocks: renderBlocks,
+                            renderActions: renderActions
                         );
+                        progress?.Report(
+                            new BlockVerificationState
+                            {
+                                TotalBlockCount = blockChainSlice.Count,
+                                VerifiedBlockCount = ++verifiedBlockCount,
+                                VerifiedBlockHash = deltaBlock.Hash,
+                            });
                     }
+
+                    workspace.CleanupBlockCommitStore(workspace.Tip.Index);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "An exception occurred during appending blocks");
+                    throw;
                 }
 
+                cancellationToken.ThrowIfCancellationRequested();
                 _logger.Verbose(
                     "Executed totally {0} blocks, {1} txs, {2} actions during {3}",
                     actionExecutionState.TotalBlockCount,
@@ -631,7 +624,7 @@ namespace Libplanet.Net
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled.");
+                    _logger.Information("{MethodName}() is canceled", nameof(CompleteBlocksAsync));
                 }
 
                 if (!complete
@@ -639,9 +632,11 @@ namespace Libplanet.Net
                     || cancellationToken.IsCancellationRequested)
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)}() is aborted. Complete? {complete}; " +
+                        "{MethodName}() is aborted. Complete? {Complete}; " +
                         "delete the temporary working chain ({TId}: #{TIndex} {THash}), " +
-                        "and make the existing chain ({EId}: #{EIndex} {EHash}) remains.",
+                        "and make the existing chain ({EId}: #{EIndex} {EHash}) remains",
+                        nameof(CompleteBlocksAsync),
+                        complete,
                         workspace.Id,
                         workspace.Tip.Index,
                         workspace.Tip.Hash,
@@ -653,9 +648,10 @@ namespace Libplanet.Net
                 else if (workspace.Tip.Index < BlockChain.Tip.Index)
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +
+                        "{MethodName}() is aborted since existing chain " +
                         "({EId}: #{EIndex} {EHash}) already has proper tip than " +
-                        "temporary working chain ({TId}: #{TIndex} {THash}).",
+                        "temporary working chain ({TId}: #{TIndex} {THash})",
+                        nameof(CompleteBlocksAsync),
                         BlockChain.Id,
                         BlockChain.Tip.Index,
                         BlockChain.Tip.Hash,
@@ -667,9 +663,10 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Debug(
-                        $"{nameof(CompleteBlocksAsync)} finished; " +
+                        "{MethodName}() finished; " +
                         "replace the existing chain ({0}: {1}) with " +
-                        "the working chain ({2}: {3}).",
+                        "the working chain ({2}: {3})",
+                        nameof(CompleteBlocksAsync),
                         BlockChain.Id,
                         BlockChain.Tip,
                         workspace.Id,

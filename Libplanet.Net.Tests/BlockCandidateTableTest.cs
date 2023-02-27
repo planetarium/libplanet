@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -22,59 +23,27 @@ namespace Libplanet.Net.Tests
             var table = new BlockCandidateTable<DumbAction>();
             var header = _fx.GenesisBlock.Header;
 
-            // Ignore empty
-            table.Add(header, new List<(Block<DumbAction>, BlockCommit)>());
-            Assert.Equal(0, table.Count);
-
-            // Ignore duplicate
-            var duplicateSet = new List<(Block<DumbAction>, BlockCommit)>
-            {
-                (_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)),
-                (_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)),
-                (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
-            };
-            table.Add(header, duplicateSet);
-            Assert.Equal(0, table.Count);
-
-            // Ignore non-consecutive indices
-            var nonConsecutiveIndexSet = new List<(Block<DumbAction>, BlockCommit)>
-            {
-                (_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)),
-                (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
-                (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
-            };
-            table.Add(header, nonConsecutiveIndexSet);
-            Assert.Equal(0, table.Count);
-
-            // Ignore non-consecutive blocks
-            var nonConsecutiveHashSet = new List<(Block<DumbAction>, BlockCommit)>
-            {
-                (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
-                (_fx.Block3Alt, TestUtils.CreateBlockCommit(_fx.Block3Alt)),
-                (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
-            };
-            table.Add(header, nonConsecutiveHashSet);
-            Assert.Equal(0, table.Count);
-
             // Ignore existing key
-            var firstSet = new List<(Block<DumbAction>, BlockCommit)>
-            {
-                (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
-                (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
-                (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
-            };
-            var secondSet = new List<(Block<DumbAction>, BlockCommit)>
-            {
-                (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
-                (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
-            };
-            table.Add(header, firstSet);
+            var firstBranch = new Branch<DumbAction>(
+                new List<(Block<DumbAction>, BlockCommit)>
+                {
+                    (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
+                    (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
+                    (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
+                });
+            var secondBranch = new Branch<DumbAction>(
+                new List<(Block<DumbAction>, BlockCommit)>
+                {
+                    (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
+                    (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
+                });
+            table.Add(header, firstBranch);
             Assert.Equal(1, table.Count);
-            table.Add(header, secondSet);
+            table.Add(header, secondBranch);
             Assert.Equal(1, table.Count);
-            var stored = table.GetCurrentRoundCandidate(header)
+            var branch = table.GetCurrentRoundCandidate(header)
                 ?? throw new NullReferenceException();
-            Assert.Equal(stored, firstSet);
+            Assert.Equal(branch.Blocks, firstBranch.Blocks);
         }
     }
 }
