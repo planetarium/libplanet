@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.50.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on February 27, 2023.
 
 ### Backward-incompatible API changes
 
@@ -35,10 +33,6 @@ To be released.
  -  Removed `InvalidMessageException` class.
     Instead, added `InvalidMessageContentException` class.  [[#2772], [#2831]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `MessageContent` class.  [[#2772], [#2831]]
@@ -48,12 +42,6 @@ To be released.
 ### Behavioral changes
 
  -  `IBlockPolicy` is no longer enforced for genesis `Block<T>`s.  [[#2845]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#2772]: https://github.com/planetarium/libplanet/issues/2772
 [#2831]: https://github.com/planetarium/libplanet/pull/2831
