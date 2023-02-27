@@ -486,38 +486,29 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             };
             if (genesisBlock is null)
             {
-                var content = new BlockContent<T>(
-                    new BlockMetadata(
-                        protocolVersion: protocolVersion,
-                        index: 0,
-                        timestamp: timestamp ?? DateTimeOffset.MinValue,
-                        miner: GenesisMiner.PublicKey.ToAddress(),
-                        publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
-                        difficulty: 0,
-                        totalDifficulty: 0,
-                        previousHash: null,
-                        txHash: BlockContent<T>.DeriveTxHash(txs)),
-                    transactions: txs);
-                var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
-                var preEval = new PreEvaluationBlock<T>(
-                    content, (nonce, content.Metadata.DerivePreEvaluationHash(nonce)));
-                var stateRootHash = preEval.DetermineStateRootHash(
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: stateStore);
-                genesisBlock = protocolVersion < 2
-                    ? new Block<T>(
+                var preEval = MineGenesis(null, txs, timestamp, protocolVersion);
+                if (protocolVersion < 2)
+                {
+                    var stateRootHash = preEval.DetermineStateRootHash(
+                        blockAction: policy.BlockAction,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        stateStore: new TrieStateStore(new MemoryKeyValueStore()));
+                    genesisBlock = new Block<T>(
                         preEval,
                         (
                             stateRootHash,
                             null,
                             preEval.Header.DeriveBlockHash(stateRootHash, null)
-                        ))
-                    : preEval.Evaluate(
+                        ));
+                }
+                else
+                {
+                    genesisBlock = preEval.Evaluate(
                          privateKey: GenesisMiner,
                          blockAction: policy.BlockAction,
                          nativeTokenPredicate: policy.NativeTokens.Contains,
-                         stateStore: stateStore);
+                         stateStore: new TrieStateStore(new MemoryKeyValueStore()));
+                }
             }
 
             ValidatingActionRenderer<T> validator = null;
