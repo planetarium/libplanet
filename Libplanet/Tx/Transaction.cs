@@ -10,6 +10,7 @@ using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Misc.Either;
 
 namespace Libplanet.Tx
 {
@@ -36,7 +37,7 @@ namespace Libplanet.Tx
 
         private static readonly Codec Codec = new Codec();
 
-        private readonly IImmutableList<IValue>? _customActions;
+        private readonly IImmutableList<IEither<IValue, T>>? _customActions;
 
         private readonly Dictionary? _systemAction;
 
@@ -79,7 +80,9 @@ namespace Libplanet.Tx
         public Transaction(ITxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            _customActions = customActions.Select(ca => ca.PlainValue).ToImmutableList();
+            _customActions = customActions
+                .Select(ca => (IEither<IValue, T>)new EitherRight<IValue, T>(ca))
+                .ToImmutableList();
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
@@ -148,7 +151,8 @@ namespace Libplanet.Tx
 
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
-            _customActions = customActions.Select(ca => ca.PlainValue)
+            _customActions = customActions
+                .Select(ca => (IEither<IValue, T>)new EitherRight<IValue, T>(ca))
                 .ToImmutableList();
         }
 
@@ -168,6 +172,7 @@ namespace Libplanet.Tx
             else
             {
                 _customActions = dict.GetValue<List>(TxMetadata.CustomActionsKey)
+                    .Select(v => (IEither<IValue, T>)new EitherLeft<IValue, T>(v))
                     .ToImmutableList();
             }
 
@@ -269,14 +274,16 @@ namespace Libplanet.Tx
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonConverter(typeof(ActionListJsonConverter))]
         public IImmutableList<T>? CustomActions => _customActions?
-            .Select(ToAction)
+            .Select(ca => ca.GetRightOrElse(ToAction))
             .ToImmutableList();
 
         Dictionary? ITransaction.SystemAction => _systemAction is Dictionary dictionary
             ? dictionary
             : null;
 
-        IImmutableList<IValue>? ITransaction.CustomActions => _customActions;
+        IImmutableList<IValue>? ITransaction.CustomActions => _customActions
+            .Select(ca => ca.GetLeftOrElse(v => v.PlainValue))
+            .ToImmutableList();
 
         /// <inheritdoc cref="ITxMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _metadata.Timestamp;
@@ -693,7 +700,7 @@ namespace Libplanet.Tx
                 : _metadata.ToBencodex().Add(
                     TxMetadata.CustomActionsKey,
                     new List(
-                        _customActions
+                        _customActions.Select(ca => ca.GetLeftOrElse(v => v.PlainValue))
                         ?? throw new InvalidOperationException(
                             $"Unexpected Transaction<T> state. " +
                             $"{nameof(_systemAction)} or {nameof(_customActions)} should exist.")));
