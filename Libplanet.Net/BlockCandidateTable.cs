@@ -23,10 +23,14 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
+        private readonly ILogger _logger;
         private readonly ConcurrentDictionary<BlockHeader, List<Block<T>>> _table;
 
         public BlockCandidateTable()
         {
+            _logger = Log
+                .ForContext<BlockCandidateTable<T>>()
+                .ForContext("Source", nameof(BlockCandidateTable<T>));
             _table = new ConcurrentDictionary<BlockHeader, List<Block<T>>>();
         }
 
@@ -64,7 +68,7 @@ namespace Libplanet.Net
         {
             if (_table.ContainsKey(blockHeader))
             {
-                Log.Debug(
+                _logger.Debug(
                     "Given blocks will not be added as the table already contains " +
                     "blockheader #{Index} {BlockHash} as a key",
                     blockHeader.Index,
@@ -75,7 +79,7 @@ namespace Libplanet.Net
             List<Block<T>> sorted = blocks.OrderBy(block => block.Index).ToList();
             if (!sorted.Any())
             {
-                Log.Debug(
+                _logger.Debug(
                     "Given blocks associated with blockheader #{Index} {BlockHash} will " +
                     "not be added to the table as an empty set of blocks is not allowed",
                     blockHeader.Index,
@@ -87,7 +91,7 @@ namespace Libplanet.Net
                     prev.Index + 1 == next.Index && prev.Hash.Equals(next.PreviousHash))
                 .All(pred => pred))
             {
-                Log.Debug(
+                _logger.Debug(
                     "Given blocks associated with blockheader #{Index} {BlockHash} will " +
                     "not be added as given blocks are not consecutive",
                     blockHeader.Index,
@@ -96,6 +100,13 @@ namespace Libplanet.Net
             }
 
             _table.TryAdd(blockHeader, sorted);
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CandidateTableCount")
+                .Information(
+                    "There are {Count} branches in {ClassName}",
+                    _table.Count,
+                    nameof(BlockCandidateTable<T>));
         }
 
         /// <summary>
@@ -131,6 +142,14 @@ namespace Libplanet.Net
                     TryRemove(blockHeader);
                 }
             }
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CandidateTableCount")
+                .Information(
+                    "There are {Count} branches in {ClassName}",
+                    _table.Count,
+                    nameof(BlockCandidateTable<T>));
         }
     }
 }
