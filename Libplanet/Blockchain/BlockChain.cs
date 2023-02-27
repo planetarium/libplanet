@@ -1332,6 +1332,18 @@ namespace Libplanet.Blockchain
             StateCompleterSet<T>? stateCompleters = null
         )
         {
+            if (Count == 0)
+            {
+                throw new ArgumentException(
+                    "Cannot append a block to an empty chain.");
+            }
+            else if (block.Index == 0)
+            {
+                throw new ArgumentException(
+                    $"Cannot append genesis block #{block.Index} {block.Hash} to a chain.",
+                    nameof(block));
+            }
+
             if (!evaluateActions && renderActions)
             {
                 throw new ArgumentException(
@@ -1375,7 +1387,7 @@ namespace Libplanet.Blockchain
 
                 foreach (Transaction<T> tx in block.Transactions)
                 {
-                    if (block.Index > 0 && Policy.ValidateNextBlockTx(this, tx) is { } tpve)
+                    if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
                             "According to BlockPolicy, this transaction is not valid.",
