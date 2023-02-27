@@ -391,7 +391,7 @@ namespace Libplanet.Net.Transports
                         const string imteMsge =
                             "Received reply {Reply} from {Peer} to request {Request} " +
                             "{RequestId} has an invalid timestamp";
-                        _logger.Debug(
+                        _logger.Warning(
                             imte,
                             imteMsge,
                             reply.Content.Type,
@@ -405,7 +405,7 @@ namespace Libplanet.Net.Transports
                         const string dapveMsg =
                             "Received reply {Reply} from {Peer} to request {Request} " +
                             "{RequestId} has an invalid APV";
-                        _logger.Debug(
+                        _logger.Warning(
                             dapve,
                             dapveMsg,
                             reply.Content.Type,
