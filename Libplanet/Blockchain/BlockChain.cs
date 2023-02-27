@@ -461,7 +461,7 @@ namespace Libplanet.Blockchain
             else if (store.GetCanonicalChainId() is { } canonId)
             {
                 throw new ArgumentException(
-                    $"Given {store} already has its canonical chain id set: {canonId}",
+                    $"Given {nameof(store)} already has its canonical chain id set: {canonId}",
                     nameof(store));
             }
 

@@ -562,9 +562,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkShouldSkipExecuteAndRenderGenesis()
         {
-            Address stateKey = _fx.Address1;
             var miner = new PrivateKey();
-            var action = new DumbAction(stateKey, "genesis");
+            var action = new DumbAction(_fx.Address1, "genesis");
 
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
@@ -586,8 +585,11 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: GenesisProposer,
                     blockAction: _policy.BlockAction,
                     nativeTokenPredicate: _policy.NativeTokens.Contains,
-                    stateStore: stateStore
+                    stateStore: new TrieStateStore(new MemoryKeyValueStore())
                 );
+                Assert.Equal(1, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
+
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer<DumbAction>();
                 var blockChain = BlockChain<DumbAction>.Create(
@@ -599,10 +601,12 @@ namespace Libplanet.Tests.Blockchain
                     renderers: new[] { renderer }
                 );
 
-                Assert.Equal(0, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                // Creation does not render anything
+                Assert.Equal(0, renderer.ActionRecords.Count);
                 Assert.Equal(0, renderer.BlockRecords.Count);
-                // NOTE: AttachStateRootHash, Append
+                // NOTE: Validaton and write to state store
                 Assert.Equal(3, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
                 Block<DumbAction> block1 = blockChain.ProposeBlock(miner);
                 blockChain.Append(block1, CreateBlockCommit(block1));
@@ -618,6 +622,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
                 // NOTE: AttachStateRootHash, Append
                 Assert.Equal(3, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
             }
         }
 
@@ -1873,10 +1878,6 @@ namespace Libplanet.Tests.Blockchain
 
             return (signer, addresses, chain);
         }
-
-        private (Address, Address[] Addresses, BlockChain<DumbAction> Chain)
-            MakeIncompleteBlockStates() =>
-                MakeIncompleteBlockStates(_fx.Store, _fx.StateStore);
 
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
