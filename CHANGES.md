@@ -73,6 +73,8 @@ To be released.
  -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` no more implements
     `ImportableKeyStore<KeyId, RawPrivateKey>`.  Instead, it now implements
     `ImportableKeyStore<KeyId, Web3Account>`.  [[#3061]]
+ -  (Libplanet.Explorer) Added `Index` field to `IBlockChainContext` interface.
+    [[#2613]]
 
 ### Backward-incompatible network protocol changes
 
@@ -107,6 +109,18 @@ To be released.
     [[#3061]]
  -  (@planetarium/account-web3-secret-storage) Added `Web3KeyObject` interface.
     [[#3061]]
+ -  (Libplanet.Explorer) Added several interfaces and classes that pertain to
+    blockchain indexing.  [[#2613]]
+     -  Added `IBlockChainIndex` interface.
+     -  Added `IIndexingContext` interface.
+     -  Added `BlockChainIndexBase` abstract class.
+     -  Added `RocksDbBlockChainIndex` class.
+     -  Added `RocksDbIndexingContext` class.
+     -  Added `IndexingService` class.
+     -  Added `IndexMismatchException` class.
+ -  (Libplanet.Explorer.Cocona) New project was added to provide Cocona
+    commands related to *Libplanet.Explorer* project.  [[#2613]]
+     -  Added `IndexCommand` Cocona command class.
 
 ### Behavioral changes
 
@@ -158,6 +172,18 @@ To be released.
     Instead, `PassphraseEntry.authenticate()` is called when operations that
     require unlocking `Web3Account` are called, such as `sign()` or
     `getPublicKey()`.  [[#3061]]
+ -  (Libplanet.Explorer) Now, when an `IBlockChainIndex` instance is available
+    in the optional `Index` property of the injected `IBlockChainContext`
+    instance, GraphQL queries can benefit from the improved lookup performace
+    of the index.  Applications willing to take advantage of the index should
+    provide an instance of `IBlockChainIndex` to the `IBlockChainContext`
+    implementation and add the `IndexingService` hosted service to sync the
+    index in the background.  Note that the synchronization may take a long
+    time if you have a lot of blocks (over 24 hours for ~5M blocks).  [[#2613]]
+     -  `BlockRef` property of `TransactionType` now uses `IBlockChainIndex`
+        if available.
+     -  `transactionResult` query in `TransactionQuery` now uses
+        `IBlockChainIndex` if available.
 
 ### Bug fixes
 
@@ -176,6 +202,12 @@ To be released.
 
 ### CLI tools
 
+ -  (Libplanet.Explorer.Executable) Project is now deprecated. It is currently
+    nonfunctional.  [[#2243], [#2588]]
+
+[#2243]: https://github.com/planetarium/libplanet/discussions/2243
+[#2588]: https://github.com/planetarium/libplanet/discussions/2588
+[#2613]: https://github.com/planetarium/libplanet/pull/2613
 [#2709]: https://github.com/planetarium/libplanet/issues/2709
 [#2711]: https://github.com/planetarium/libplanet/issues/2711
 [#2986]: https://github.com/planetarium/libplanet/pull/2986
@@ -629,6 +661,7 @@ and the specification might change in the near future.
     correctly in some situations.  [[#2872]]
 
 ### Dependencies
+
  -  Added *[@planetarium/account]* npm package.  [[#2848]]
 
 [#2848]: https://github.com/planetarium/libplanet/pull/2848
