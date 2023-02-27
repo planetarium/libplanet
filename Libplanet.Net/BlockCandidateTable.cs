@@ -22,10 +22,14 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
+        private readonly ILogger _logger;
         private readonly ConcurrentDictionary<BlockHeader, Branch<T>> _table;
 
         public BlockCandidateTable()
         {
+            _logger = Log
+                .ForContext<BlockCandidateTable<T>>()
+                .ForContext("Source", nameof(BlockCandidateTable<T>));
             _table = new ConcurrentDictionary<BlockHeader, Branch<T>>();
         }
 
@@ -51,7 +55,7 @@ namespace Libplanet.Net
         {
             if (_table.ContainsKey(blockHeader))
             {
-                Log.Debug(
+                _logger.Debug(
                     "Given blocks will not be added as the table already contains " +
                     "blockheader #{Index} {BlockHash} as a key",
                     blockHeader.Index,
@@ -60,6 +64,13 @@ namespace Libplanet.Net
             }
 
             _table.TryAdd(blockHeader, branch);
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CandidateTableCount")
+                .Information(
+                    "There are {Count} branches in {ClassName}",
+                    _table.Count,
+                    nameof(BlockCandidateTable<T>));
         }
 
         /// <summary>
@@ -96,6 +107,14 @@ namespace Libplanet.Net
                     TryRemove(blockHeader);
                 }
             }
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CandidateTableCount")
+                .Information(
+                    "There are {Count} branches in {ClassName}",
+                    _table.Count,
+                    nameof(BlockCandidateTable<T>));
         }
     }
 }
