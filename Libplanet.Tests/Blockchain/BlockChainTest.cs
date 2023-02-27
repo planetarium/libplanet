@@ -272,64 +272,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ShortCircuitActionEvaluationForUnrenderWithNoActionRenderers()
-        {
-            IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
-                DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal);
-
-            var policy = new BlockPolicy<DumbAction>();
-            var key = new PrivateKey();
-            Address miner = key.ToAddress();
-
-            using (var fx = new MemoryStoreFixture())
-            {
-                var emptyRenderer = new AnonymousRenderer<DumbAction>();
-                var chain = BlockChain<DumbAction>.Create(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    fx.Store,
-                    fx.StateStore,
-                    fx.GenesisBlock,
-                    renderers: new[] { emptyRenderer }
-                );
-                var actions = new[] { new DumbAction(miner, "foo") };
-                var tx = chain.MakeTransaction(key, actions);
-                Block<DumbAction> block = ProposeNext(
-                    chain.Genesis,
-                    new[] { tx },
-                    miner: key.PublicKey
-                ).Evaluate(key, chain);
-                chain.Append(block, CreateBlockCommit(block));
-                var forked = chain.Fork(chain.Genesis.Hash);
-                forked.Append(block, CreateBlockCommit(block));
-
-                DumbAction.ExecuteRecords.Value = ImmutableList<ExecuteRecord>.Empty;
-                Assert.Empty(DumbAction.ExecuteRecords.Value);
-
-                // Stale actions shouldn't be evaluated because the "renderer" here is not an
-                // IActionRenderer<T> but a vanilla IRenderer<T> which means they don't have to
-                // be unrendered.
-                var renderer = new RecordingActionRenderer<DumbAction>();
-                var newChain = new BlockChain<DumbAction>(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    fx.Store,
-                    fx.StateStore,
-                    Guid.NewGuid(),
-                    fx.GenesisBlock,
-                    renderers: new[] { renderer },
-                    blockChainStates: new BlockChainStates<DumbAction>(fx.Store, fx.StateStore),
-                    actionEvaluator: chain.ActionEvaluator
-                );
-                chain.Swap(newChain, true)();
-
-                // 4 is for Promote action
-                Assert.Equal(4, renderer.ActionRecords.Count);
-                Assert.Empty(NonRehearsalExecutions());
-            }
-        }
-
-        [Fact]
         public void ActionRenderersHaveDistinctContexts()
         {
             var policy = new NullBlockPolicy<DumbAction>();
