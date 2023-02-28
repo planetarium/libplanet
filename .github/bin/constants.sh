@@ -35,6 +35,7 @@ if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ] && [[ \
     "$GITHUB_REF" = refs/tags/* || \
     "$GITHUB_REF" = refs/heads/main || \
     "$GITHUB_REF" = refs/heads/*-maintenance || \
+    "$GITHUB_REF" = refs/heads/ci-* || \
     "$GITHUB_REF" = refs/heads/9c-* \
   ]]; then
   publish_package=true

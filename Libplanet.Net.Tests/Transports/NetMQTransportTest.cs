@@ -66,10 +66,8 @@ namespace Libplanet.Net.Tests.Transports
                     async m =>
                     {
                         await transport.ReplyMessageAsync(
-                            new PongMsg
-                            {
-                                Identity = m.Identity,
-                            },
+                            new PongMsg(),
+                            m.Identity,
                             CancellationToken.None
                         );
                     }
@@ -110,7 +108,7 @@ namespace Libplanet.Net.Tests.Transports
                     TimeSpan.FromSeconds(1),
                     default
                 );
-                Assert.IsType<PongMsg>(reply);
+                Assert.IsType<PongMsg>(reply.Content);
 
                 await transport.StopAsync(TimeSpan.Zero, CancellationToken.None);
             }

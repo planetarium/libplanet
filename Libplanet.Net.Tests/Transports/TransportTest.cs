@@ -106,7 +106,10 @@ namespace Libplanet.Net.Tests.Transports
                 Assert.Throws<ObjectDisposedException>(
                     () => transport.BroadcastMessage(null, message));
                 await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.ReplyMessageAsync(message, default));
+                    async () => await transport.ReplyMessageAsync(
+                        message,
+                        Array.Empty<byte>(),
+                        default));
 
                 // To check multiple Dispose() throws error or not.
                 transport.Dispose();
@@ -146,13 +149,11 @@ namespace Libplanet.Net.Tests.Transports
 
             transportB.ProcessMessageHandler.Register(async message =>
             {
-                if (message is PingMsg)
+                if (message.Content is PingMsg)
                 {
                     await transportB.ReplyMessageAsync(
-                        new PongMsg
-                        {
-                            Identity = message.Identity,
-                        },
+                        new PongMsg(),
+                        message.Identity,
                         CancellationToken.None);
                 }
             });
@@ -168,7 +169,7 @@ namespace Libplanet.Net.Tests.Transports
                     TimeSpan.FromSeconds(3),
                     CancellationToken.None);
 
-                Assert.IsType<PongMsg>(reply);
+                Assert.IsType<PongMsg>(reply.Content);
             }
             finally
             {
@@ -213,19 +214,15 @@ namespace Libplanet.Net.Tests.Transports
 
             transportB.ProcessMessageHandler.Register(async message =>
             {
-                if (message is PingMsg)
+                if (message.Content is PingMsg)
                 {
                     await transportB.ReplyMessageAsync(
-                        new PingMsg
-                        {
-                            Identity = message.Identity,
-                        },
+                        new PingMsg(),
+                        message.Identity,
                         default);
                     await transportB.ReplyMessageAsync(
-                        new PongMsg
-                        {
-                            Identity = message.Identity,
-                        },
+                        new PongMsg(),
+                        message.Identity,
                         default);
                 }
             });
@@ -243,8 +240,8 @@ namespace Libplanet.Net.Tests.Transports
                     false,
                     CancellationToken.None)).ToArray();
 
-                Assert.Contains(replies, message => message is PingMsg);
-                Assert.Contains(replies, message => message is PongMsg);
+                Assert.Contains(replies, message => message.Content is PingMsg);
+                Assert.Contains(replies, message => message.Content is PongMsg);
             }
             finally
             {
@@ -361,7 +358,7 @@ namespace Libplanet.Net.Tests.Transports
             {
                 return async message =>
                 {
-                    if (message is PingMsg)
+                    if (message.Content is PingMsg)
                     {
                         tcs.SetResult(message);
                     }
@@ -390,8 +387,8 @@ namespace Libplanet.Net.Tests.Transports
 
                 await Task.WhenAll(tcsB.Task, tcsC.Task);
 
-                Assert.IsType<PingMsg>(tcsB.Task.Result);
-                Assert.IsType<PingMsg>(tcsC.Task.Result);
+                Assert.IsType<PingMsg>(tcsB.Task.Result.Content);
+                Assert.IsType<PingMsg>(tcsC.Task.Result.Content);
                 Assert.False(tcsD.Task.IsCompleted);
 
                 tcsD.SetCanceled();

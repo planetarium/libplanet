@@ -10,7 +10,7 @@ namespace Libplanet.Net.Messages
         /// Encodes the message to <see typeref="T"/>-typed instance with given
         /// <paramref name="privateKey"/> and <paramref name="peer"/>.
         /// </summary>
-        /// <param name="message">The message to encode.</param>
+        /// <param name="content">The message body to encode.</param>
         /// <param name="privateKey">The <see cref="PrivateKey"/> to sign the encoded message.
         /// </param>
         /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> of
@@ -19,18 +19,21 @@ namespace Libplanet.Net.Messages
         /// the transport layer.
         /// <seealso cref="ITransport.AsPeer"/></param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> of the time
-        /// <paramref name="message"/> is encoded.
+        /// <paramref name="content"/> is encoded.
         /// </param>
-        /// <returns>A <see typeref="T"/> containing the signed <see cref="Message"/>.
+        /// <param name="identity">The byte array identifies the message to match between
+        /// message and its respond used in <see cref="NetMQ"/>.</param>
+        /// <returns>A <see typeref="T"/> containing the signed <see cref="MessageContent"/>.
         /// </returns>
         /// <exception cref="InvalidCredentialException">Thrown when <paramref name="privateKey"/>'s
         /// <see cref="PublicKey"/> does not match that of <paramref name="peer"/>.</exception>
         T Encode(
-            Message message,
+            MessageContent content,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             BoundPeer peer,
-            DateTimeOffset timestamp);
+            DateTimeOffset timestamp,
+            byte[]? identity);
 
         /// <summary>
         /// Decodes given <see typeref="T"/>-typed <paramref name="encoded"/> into

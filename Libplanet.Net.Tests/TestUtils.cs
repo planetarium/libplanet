@@ -135,10 +135,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(privateKey))
-                    {
-                        Remote = peer,
-                    });
+                            VoteFlag.PreCommit).Sign(privateKey)));
             }
         }
 
@@ -163,10 +160,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(privateKey))
-                    {
-                        Remote = peer,
-                    });
+                            VoteFlag.PreCommit).Sign(privateKey)));
             }
         }
 
@@ -191,10 +185,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.PreVote).Sign(privateKey))
-                    {
-                        Remote = peer,
-                    });
+                            VoteFlag.PreVote).Sign(privateKey)));
             }
         }
 
@@ -244,10 +235,6 @@ namespace Libplanet.Net.Tests
                 Task.Run(() =>
                 {
                     // ReSharper disable once AccessToModifiedClosure
-                    message.Remote = new BoundPeer(
-                        privateKey.PublicKey,
-                        new DnsEndPoint("1.2.3.4", 1234));
-                    // ReSharper disable once AccessToModifiedClosure
                     consensusContext!.HandleMessage(message);
                 });
 
@@ -280,9 +267,6 @@ namespace Libplanet.Net.Tests
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
                 {
-                    message.Remote = new BoundPeer(
-                        privateKey!.PublicKey,
-                        new DnsEndPoint("1.2.3.4", 1234));
                     context!.ProduceMessage(message);
                 });
 

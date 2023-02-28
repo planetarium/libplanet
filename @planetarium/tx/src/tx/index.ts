@@ -1,10 +1,10 @@
-export type { TxMetadata } from "./metadata";
-export { encodeTxMetadata } from "./metadata";
+export type { TxMetadata } from "./metadata.js";
+export { encodeTxMetadata } from "./metadata.js";
 export type {
   UnsignedTxWithSystemAction,
   UnsignedTxWithCustomActions,
-} from "./unsigned";
+} from "./unsigned.js";
 export {
   encodeUnsignedTxWithSystemAction,
   encodeUnsignedTxWithCustomActions,
-} from "./unsigned";
+} from "./unsigned.js";

@@ -59,7 +59,7 @@ test("encodeAddressSet", () => {
         let prev: ArrayBuffer | null = null;
         for (const v of encoded) {
           if (!(v instanceof ArrayBuffer)) return false;
-          if (v.byteLength != 20 || !checks.has(hex(v))) return false;
+          if (v.byteLength !== 20 || !checks.has(hex(v))) return false;
           if (prev != null && compareUint8Array(prev, v) >= 0) return false;
           checks.delete(hex(v));
           prev = v;

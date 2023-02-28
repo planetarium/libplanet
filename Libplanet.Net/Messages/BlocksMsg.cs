@@ -5,7 +5,7 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class BlocksMsg : Message
+    internal class BlocksMsg : MessageContent
     {
         /// <summary>
         /// Creates an instance of <see cref="BlocksMsg"/> with given <paramref name="payloads"/>.

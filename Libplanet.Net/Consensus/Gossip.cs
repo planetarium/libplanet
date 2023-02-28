@@ -180,22 +180,37 @@ namespace Libplanet.Net.Consensus
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
         /// <summary>
+        /// Process a <see cref="MessageContent"/> and add it to the gossip.
+        /// </summary>
+        /// <param name="content">A <see cref="MessageContent"/> instance to
+        /// process and gossip.</param>
+        public void AddMessage(MessageContent content) =>
+            AddMessage(
+                new Message(
+                    content,
+                    _transport.AppProtocolVersion,
+                    AsPeer,
+                    DateTimeOffset.UtcNow,
+                    null));
+
+        /// <summary>
         /// Process a <see cref="Message"/> and add it to the gossip.
         /// </summary>
-        /// <param name="message">A <see cref="Message"/> instance to process and gossip.</param>
+        /// <param name="message">A <see cref="Message"/> instance to
+        /// process and gossip.</param>
         public void AddMessage(Message message)
         {
-            if (_seen.TryGetValue(message.Id, out _))
+            if (_seen.TryGetValue(message.Content.Id, out _))
             {
                 _logger.Verbose(
-                    "Message {Message} of id {Id} seen recently, ignored.",
-                    message,
-                    message.Id);
+                    "Message of content {Content} with id {Id} seen recently, ignored",
+                    message.Content,
+                    message.Content.Id);
             }
 
             try
             {
-                _cache.Put(message);
+                _cache.Put(message.Content);
             }
             catch (Exception)
             {
@@ -203,7 +218,7 @@ namespace Libplanet.Net.Consensus
             }
 
             // Message instance does not have to be stored.
-            _seen.Set(message.Id, message.Id, _seenTtl);
+            _seen.Set(message.Content.Id, message.Content.Id, _seenTtl);
             try
             {
                 _processMessage(message);
@@ -215,8 +230,19 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Adds multiple <see cref="MessageContent"/>s in parallel.
+        /// <seealso cref="AddMessage(MessageContent)"/>
+        /// </summary>
+        /// <param name="contents">
+        /// An enumerable <see cref="MessageContent"/> instance to process and gossip.</param>
+        public void AddMessages(IEnumerable<MessageContent> contents)
+        {
+            contents.AsParallel().ForAll(AddMessage);
+        }
+
+        /// <summary>
         /// Adds multiple <see cref="Message"/>s in parallel.
-        /// <seealso cref="AddMessage"/>
+        /// <seealso cref="AddMessage(Message)"/>
         /// </summary>
         /// <param name="messages">
         /// An enumerable <see cref="Message"/> instance to process and gossip.</param>
@@ -250,17 +276,17 @@ namespace Libplanet.Net.Consensus
         private Func<Message, Task> HandleMessageAsync(CancellationToken ctx) => async msg =>
         {
             _logger.Verbose("HandleMessage: {Message}", msg);
-            switch (msg)
+            switch (msg.Content)
             {
                 case PingMsg _:
                 case FindNeighborsMsg _:
                     // Ignore protocol related messages, Kadmelia Protocol will handle it.
                     break;
-                case HaveMessage h:
-                    await HandleHaveAsync(h, ctx);
+                case HaveMessage _:
+                    await HandleHaveAsync(msg, ctx);
                     break;
-                case WantMessage w:
-                    await HandleWantAsync(w, ctx);
+                case WantMessage _:
+                    await HandleWantAsync(msg, ctx);
                     break;
                 default:
                     AddMessage(msg);
@@ -301,23 +327,20 @@ namespace Libplanet.Net.Consensus
         /// <param name="ctx">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        private async Task HandleHaveAsync(HaveMessage msg, CancellationToken ctx)
+        private async Task HandleHaveAsync(Message msg, CancellationToken ctx)
         {
-            if (!(msg.Remote is BoundPeer peer))
+            var haveMessage = (HaveMessage)msg.Content;
+            if (!_table.Contains(msg.Remote))
             {
-                return;
-            }
-
-            if (!_table.Contains(peer))
-            {
-                await _protocol.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1), ctx);
+                await _protocol.AddPeersAsync(new[] { msg.Remote }, TimeSpan.FromSeconds(1), ctx);
             }
 
             await ReplyMessagePongAsync(msg, ctx);
-            MessageId[] idsToGet = msg.Ids.Where(id => !_seen.TryGetValue(id, out _)).ToArray();
+            MessageId[] idsToGet =
+                haveMessage.Ids.Where(id => !_seen.TryGetValue(id, out _)).ToArray();
             _logger.Verbose(
                 "Handle HaveMessage. {Total}/{Count} messages to get.",
-                msg.Ids.Count(),
+                haveMessage.Ids.Count(),
                 idsToGet.Length);
             if (!idsToGet.Any())
             {
@@ -327,7 +350,7 @@ namespace Libplanet.Net.Consensus
             _logger.Verbose("Ids to receive: {Ids}", idsToGet);
             var want = new WantMessage(idsToGet);
             Message[] replies = (await _transport.SendMessageAsync(
-                peer,
+                msg.Remote,
                 want,
                 TimeSpan.FromSeconds(1),
                 idsToGet.Length,
@@ -338,7 +361,7 @@ namespace Libplanet.Net.Consensus
                 idsToGet.Length,
                 replies.Length,
                 replies,
-                replies.Select(m => m.Id).ToArray());
+                replies.Select(m => m.Content.Id).ToArray());
             AddMessages(replies);
         }
 
@@ -350,30 +373,20 @@ namespace Libplanet.Net.Consensus
         /// <param name="ctx">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        private async Task HandleWantAsync(WantMessage msg, CancellationToken ctx)
+        private async Task HandleWantAsync(Message msg, CancellationToken ctx)
         {
             // FIXME: Message may have been discarded.
-            // TODO: Message instance in cache itself is modified.
-            // Should create new instance before modifying.
-            Message[] messages = msg.Ids.Select(id =>
-            {
-                Message ret = _cache.Get(id);
-                ret.Remote = _transport.AsPeer;
-                ret.Identity = msg.Identity;
-                ret.Timestamp = DateTimeOffset.UtcNow;
-
-                // FIXME: This assumes if we receives a message, then version would match.
-                ret.Version = msg.Version;
-                return ret;
-            }).ToArray();
-            MessageId[] ids = messages.Select(m => m.Id).ToArray();
+            var wantMessage = (WantMessage)msg.Content;
+            MessageContent[] contents = wantMessage.Ids.Select(id => _cache.Get(id)).ToArray();
+            MessageId[] ids = contents.Select(c => c.Id).ToArray();
 
             _logger.Debug(
                 "WantMessage: Requests are: {Idr}, Ids are: {Id}, Messages are: {@Messages}",
-                msg.Ids,
+                wantMessage.Ids,
                 ids,
-                messages);
-            IEnumerable<Task> tasks = messages.Select(m => _transport.ReplyMessageAsync(m, ctx));
+                contents);
+            IEnumerable<Task> tasks =
+                contents.Select(c => _transport.ReplyMessageAsync(c, msg.Identity, ctx));
             await Task.WhenAll(tasks);
             _logger.Debug("Finished replying WantMessage.");
         }
@@ -442,8 +455,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         private async Task ReplyMessagePongAsync(Message message, CancellationToken ctx)
         {
-            var pong = new PongMsg { Identity = message.Identity };
-            await _transport.ReplyMessageAsync(pong, ctx);
+            await _transport.ReplyMessageAsync(new PongMsg(), message.Identity, ctx);
         }
     }
 }

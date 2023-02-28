@@ -15,7 +15,7 @@ namespace Libplanet.Net.Messages
     /// and 64 characters in hexadecimal.
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
-    /// <seealso cref="Message.Id"/>
+    /// <seealso cref="MessageContent.Id"/>
     [Serializable]
     public struct MessageId : ISerializable, IComparable<MessageId>, IComparable
     {

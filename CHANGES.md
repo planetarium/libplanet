@@ -120,6 +120,63 @@ Version PBFT
 ### CLI tools
 
 
+Version 0.50.0
+--------------
+
+Released on February 27, 2023.
+
+### Backward-incompatible API changes
+
+ -  Added `Message.Content` property.  [[#2772], [#2831]]
+ -  Some properties and enum of `Message` class are removed and moved to
+    `MessageContent` class.  [[#2772], [#2831]]
+     -  Removed `Message.Type` property.
+     -  Removed `Message.DateField` property.
+     -  Removed `Message.MessageType` enum.
+ -  `ITransport` interface and its implementations overhauled.
+    [[#2772], [#2831]]
+     -  `ITransport.SendMessageAsync(BoundPeer, Message, TimeSpan?,
+        CancellationToken)` method has changed to
+        `ITransport.SendMessageAsync(BoundPeer, MessageContent, TimeSpan?, int,
+        bool, CancellationToken)`.
+     -  `ITransport.SendMessageAsync(BoundPeer, Message, TimeSpan?,
+        CancellationToken)` method has changed to
+        `ITransport.SendMessageAsync(BoundPeer, MessageContent, TimeSpan?, int,
+        bool, CancellationToken)`.
+     -  `ITransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)` method
+        has changed to
+        `ITransport.BroadcastMessage(IEnumerable<BoundPeer>, MessageContent)`.
+     -  `ITransport.ReplyMessageAsync(Message, CancellationToken)` method
+        has changed to `ITransport.ReplyMessageAsync(MessageContent,
+        byte[], CancellationToken)`.
+ -  Removed `InvalidMessageException` class.
+    Instead, added `InvalidMessageContentException` class.  [[#2772], [#2831]]
+
+### Added APIs
+
+ -  Added `MessageContent` class.  [[#2772], [#2831]]
+     -  All messages (e.g. `PingMsg`) became to inherit `MessageContent`
+        (were `Message`).
+
+### Behavioral changes
+
+ -  `IBlockPolicy` is no longer enforced for genesis `Block<T>`s.  [[#2845]]
+
+[#2772]: https://github.com/planetarium/libplanet/issues/2772
+[#2831]: https://github.com/planetarium/libplanet/pull/2831
+[#2845]: https://github.com/planetarium/libplanet/pull/2845
+
+
+Version 0.49.1
+--------------
+
+Released on February 24, 2023.
+
+ -  (Libplanet.Net) Reduced logging due output being too verbose.  [[#2849]]
+
+[#2849]: https://github.com/planetarium/libplanet/pull/2849
+
+
 Version 0.49.0
 --------------
 

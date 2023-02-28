@@ -1,5 +1,5 @@
 import { Encodable } from "bencodex";
-import { compareUint8Array } from "./binary";
+import { compareUint8Array } from "./binary.js";
 
 export type Address = Uint8Array;  // TODO: proper type definition
 

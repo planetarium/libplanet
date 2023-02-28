@@ -609,7 +609,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var stateRootHash = preEval.DetermineStateRootHash(
                     blockAction: policy.BlockAction,
                     nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: stateStore);
+                    stateStore: new TrieStateStore(new MemoryKeyValueStore()));
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
                         preEval,
@@ -619,10 +619,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             preEval.Header.DeriveBlockHash(stateRootHash, null)
                         ))
                     : preEval.Evaluate(
-                         privateKey: GenesisProposer,
-                         blockAction: policy.BlockAction,
-                         nativeTokenPredicate: policy.NativeTokens.Contains,
-                         stateStore: stateStore);
+                        privateKey: GenesisProposer,
+                        blockAction: policy.BlockAction,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        stateStore: new TrieStateStore(new MemoryKeyValueStore()));
             }
 
             ValidatingActionRenderer<T> validator = null;

@@ -1157,15 +1157,11 @@ namespace Libplanet.Tests.Blockchain
         public void GetStatesOnUninitializedBlockChain()
         {
             bool invoked = false;
-            IReadOnlyList<IValue> values = null;
-            IValue value = null;
             var policy = new NullPolicyForGetStatesOnUninitializedBlockChain<DumbAction>(
                 c =>
                 {
                     // ReSharper disable AccessToModifiedClosure
                     // The following method calls should not throw any exceptions:
-                    values = c?.GetStates(new[] { default(Address) });
-                    value = c?.GetState(default);
                     invoked = true;
                     // ReSharper restore AccessToModifiedClosure
                 });
@@ -1195,11 +1191,7 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisWithTx
             );
-            Assert.True(invoked);
-            Assert.NotNull(values);
-            Assert.Single(values);
-            Assert.Null(values[0]);
-            Assert.Null(value);
+            Assert.False(invoked);
         }
 
         // This is a regression test for:
@@ -2151,42 +2143,36 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = ProposeGenesis(
+            var genesisTx = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                null,
+                Array.Empty<DumbAction>());
+            var genesisWithTx = ProposeGenesis(
                 GenesisProposer.PublicKey,
-                new[]
-                {
-                    Transaction<DumbAction>.Create(
-                        0,
-                        new PrivateKey(),
-                        null,
-                        Array.Empty<DumbAction>()
-                    ),
-                }
-            ).Evaluate(
+                new[] { genesisTx }).Evaluate(
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: stateStore
-            );
+                stateStore: stateStore);
 
-            Assert.Throws<TxPolicyViolationException>(() =>
-            {
-                try
-                {
-                    var chain = new BlockChain<DumbAction>(
-                        policy,
-                        new VolatileStagePolicy<DumbAction>(),
-                        store,
-                        stateStore,
-                        genesisWithTx
-                    );
-                }
-                catch (TxPolicyViolationException e)
-                {
-                    Assert.NotNull(e.InnerException);
-                    throw;
-                }
-            });
+            var chain = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                store,
+                stateStore,
+                genesisWithTx);
+
+            var blockTx = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                null,
+                Array.Empty<DumbAction>());
+            var block = ProposeNextBlock(chain.Genesis, GenesisProposer, new[] { blockTx });
+
+            var e = Assert.Throws<TxPolicyViolationException>(
+                () => chain.Append(block, CreateBlockCommit(block)));
+            Assert.NotNull(e.InnerException);
         }
 
         [Fact]

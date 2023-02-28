@@ -129,42 +129,34 @@ namespace Libplanet.Net.Messages
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             Message message)
         {
-            if (message.Remote is BoundPeer peer)
+            if (message.Version.Equals(appProtocolVersion))
             {
-                if (message.Version.Equals(appProtocolVersion))
-                {
-                    return;
-                }
-
-                bool trusted = !trustedAppProtocolVersionSigners.All(
-                    publicKey => !message.Version.Verify(publicKey));
-
-                if (trusted)
-                {
-                    differentAppProtocolVersionEncountered(
-                        peer, message.Version, appProtocolVersion);
-                }
-
-                if (!trusted || !message.Version.Version.Equals(appProtocolVersion.Version))
-                {
-                    throw new DifferentAppProtocolVersionException(
-                        $"The APV of a received message is invalid:\n" +
-                        $"Expected: APV {appProtocolVersion} with " +
-                        $"signature {ByteUtil.Hex(appProtocolVersion.Signature)} by " +
-                        $"signer {appProtocolVersion.Signer}\n" +
-                        $"Actual: APV {message.Version} with " +
-                        $"signature: {ByteUtil.Hex(message.Version.Signature)} by " +
-                        $"signer: {message.Version.Signer}\n" +
-                        $"Signed by a trusted signer: {trusted}",
-                        appProtocolVersion,
-                        message.Version,
-                        trusted);
-                }
+                return;
             }
-            else
+
+            bool trusted = !trustedAppProtocolVersionSigners.All(
+                publicKey => !message.Version.Verify(publicKey));
+
+            if (trusted)
             {
-                throw new NullReferenceException(
-                    $"Property {nameof(message.Remote)} of {nameof(message)} cannot be null.");
+                differentAppProtocolVersionEncountered(
+                    message.Remote, message.Version, appProtocolVersion);
+            }
+
+            if (!trusted || !message.Version.Version.Equals(appProtocolVersion.Version))
+            {
+                throw new DifferentAppProtocolVersionException(
+                    $"The APV of a received message is invalid:\n" +
+                    $"Expected: APV {appProtocolVersion} with " +
+                    $"signature {ByteUtil.Hex(appProtocolVersion.Signature)} by " +
+                    $"signer {appProtocolVersion.Signer}\n" +
+                    $"Actual: APV {message.Version} with " +
+                    $"signature: {ByteUtil.Hex(message.Version.Signature)} by " +
+                    $"signer: {message.Version.Signer}\n" +
+                    $"Signed by a trusted signer: {trusted}",
+                    appProtocolVersion,
+                    message.Version,
+                    trusted);
             }
         }
 

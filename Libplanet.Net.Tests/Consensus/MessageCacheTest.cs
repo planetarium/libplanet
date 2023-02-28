@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -36,33 +34,13 @@ namespace Libplanet.Net.Tests.Consensus
         public void Get()
         {
             var cache = new MessageCache(3, 3);
-            var identity = TestUtils.GetRandomBytes(1);
             var messageId = TestUtils.GetRandomBytes(MessageId.Size);
-            var pk = new PrivateKey();
-            var boundPeer = new BoundPeer(
-                pk.PublicKey,
-                new DnsEndPoint("0.0.0.0", 1234));
-            var version =
-                new AppProtocolVersion(1, null, ImmutableArray<byte>.Empty, pk.ToAddress());
-            var time = DateTimeOffset.UtcNow;
             // Had to use HaveMessage for testing the persistent dataFrame.
-            var msg = new HaveMessage(new[] { messageId })
-            {
-                Identity = identity,
-                Remote = boundPeer,
-                Timestamp = time,
-                Version = version,
-            };
+            var msg = new HaveMessage(new[] { messageId });
             Assert.Throws<KeyNotFoundException>(() => cache.Get(msg.Id));
             cache.Put(msg);
             var ret = cache.Get(msg.Id);
             Assert.NotEqual(ret, msg);
-
-            // Base Message data is removed
-            Assert.Null(ret.Identity);
-            Assert.Null(ret.Remote);
-            Assert.Equal(DateTimeOffset.MinValue, ret.Timestamp);
-            Assert.Equal(default, ret.Version);
 
             // Message data is persistent
             Assert.Equal(msg.Type, ret.Type);

@@ -12,7 +12,7 @@ indent_style = space
 continuation_indent_size = 4
 indent_size = 4
 
-[*.{ps1,sh,yaml,yml}]
+[*.{json,ps1,sh,yaml,yml}]
 indent_size = 2
 continuation_indent_size = 2
 

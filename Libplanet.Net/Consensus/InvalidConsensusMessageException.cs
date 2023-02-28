@@ -10,7 +10,7 @@ namespace Libplanet.Net.Consensus
     /// does not change the state of a <see cref="Context{T}"/> in a meaningful way.
     /// </summary>
     [Serializable]
-    public class InvalidConsensusMessageException : InvalidMessageException
+    public class InvalidConsensusMessageException : InvalidMessageContentException
     {
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
@@ -23,7 +23,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         public InvalidConsensusMessageException(
             string message,
-            Message receivedMessage,
+            MessageContent receivedMessage,
             Exception innerException)
             : base(message, receivedMessage, innerException)
         {
@@ -36,7 +36,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="receivedMessage">The <see cref="ConsensusMsg"/> that caused this exception.
         /// </param>
-        public InvalidConsensusMessageException(string message, Message receivedMessage)
+        public InvalidConsensusMessageException(string message, MessageContent receivedMessage)
             : base(message, receivedMessage)
         {
         }

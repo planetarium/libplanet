@@ -45,11 +45,11 @@ namespace Libplanet.Net.Messages
         /// </summary>
         public Vote PreVote { get; }
 
-        /// <inheritdoc cref="Message.DataFrames"/>
+        /// <inheritdoc cref="MessageContent.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames =>
             new List<byte[]> { PreVote.ToByteArray() };
 
-        /// <inheritdoc cref="Message.MessageType"/>
+        /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusVote;
 
         public override bool Equals(ConsensusMsg? other)
