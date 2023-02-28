@@ -23,6 +23,7 @@ executables=(
 npm_packages=(
   "@planetarium/cli"
   "@planetarium/tx"
+  "@planetarium/account"
 )
 
 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
