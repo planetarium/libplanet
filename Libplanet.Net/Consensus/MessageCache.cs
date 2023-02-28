@@ -15,7 +15,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _lock;
         private readonly int _len;
         private readonly int _gossip;
-        private readonly Dictionary<MessageId, Message> _messages;
+        private readonly Dictionary<MessageId, MessageContent> _messages;
         private readonly ImmutableArray<MessageId>[] _history;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Libplanet.Net.Consensus
             _lock = new object();
             _len = len;
             _gossip = gossip;
-            _messages = new Dictionary<MessageId, Message>();
+            _messages = new Dictionary<MessageId, MessageContent>();
             _history = new ImmutableArray<MessageId>[_len];
             for (int i = 0; i < len; i++)
             {
@@ -68,7 +68,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="message">A <see cref="Message"/> to cache.</param>
         /// <exception cref="ArgumentException">
         /// Thrown when a <see cref="Message"/> with the same id already exists.</exception>
-        public void Put(Message message)
+        public void Put(MessageContent message)
         {
             lock (_lock)
             {
@@ -88,19 +88,19 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the message with <paramref name="id"/> if it exists in the message cache. Returned
-        /// message contains no original metadata from <see cref="Message"/>.
+        /// Gets copied value of the message with <paramref name="id"/>
+        /// if it exists in the message cache.
         /// </summary>
         /// <param name="id">A <see cref="MessageId"/> of the <see cref="Message"/> to get.</param>
         /// <returns>A message with id <paramref name="id"/>.</returns>
         /// <exception cref="KeyNotFoundException">Thrown when a <see cref="Message"/> of id
         /// <paramref name="id"/> does not exist in the message cache.</exception>
         [Pure]
-        public Message Get(MessageId id)
+        public MessageContent Get(MessageId id)
         {
             lock (_lock)
             {
-                if (_messages.TryGetValue(id, out Message? msg))
+                if (_messages.TryGetValue(id, out MessageContent? msg))
                 {
                     // FIXME: This is a workaround for preventing any message modification in
                     // message dictionary.

@@ -1,8 +1,3 @@
-# npm
-.package.json.bak
-.package.json.tmp
 !bin/
 bin/*/
-node_modules/
-package-lock.json
-planetarium-cli-*.tgz
+package.tgz

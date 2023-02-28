@@ -112,11 +112,7 @@ namespace Libplanet.Net.Tests.Messages
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
-            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header)
-            {
-                Timestamp = dateTimeOffset,
-                Remote = peer,
-            };
+            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             Assert.Equal(
                 new MessageId(ByteUtil.ParseHex(
                     "ed3951949a2067ae66ef5c0966239df7fc460b387f0f5f282b0e17d113c07e6d")),

@@ -1,5 +1,2 @@
 coverage/
 dist/
-node_modules/
-package-lock.json
-planetarium-tx-*.tgz

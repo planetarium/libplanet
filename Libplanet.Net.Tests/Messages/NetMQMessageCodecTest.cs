@@ -26,22 +26,22 @@ namespace Libplanet.Net.Tests.Messages
         }
 
         [Theory]
-        [InlineData(Message.MessageType.Ping)]
-        [InlineData(Message.MessageType.Pong)]
-        [InlineData(Message.MessageType.GetBlockHashes)]
-        [InlineData(Message.MessageType.TxIds)]
-        [InlineData(Message.MessageType.GetBlocks)]
-        [InlineData(Message.MessageType.GetTxs)]
-        [InlineData(Message.MessageType.Blocks)]
-        [InlineData(Message.MessageType.Tx)]
-        [InlineData(Message.MessageType.FindNeighbors)]
-        [InlineData(Message.MessageType.Neighbors)]
-        [InlineData(Message.MessageType.BlockHeaderMessage)]
-        [InlineData(Message.MessageType.BlockHashes)]
-        [InlineData(Message.MessageType.GetChainStatus)]
-        [InlineData(Message.MessageType.ChainStatus)]
-        [InlineData(Message.MessageType.DifferentVersion)]
-        public void CheckMessages(Message.MessageType type)
+        [InlineData(MessageContent.MessageType.Ping)]
+        [InlineData(MessageContent.MessageType.Pong)]
+        [InlineData(MessageContent.MessageType.GetBlockHashes)]
+        [InlineData(MessageContent.MessageType.TxIds)]
+        [InlineData(MessageContent.MessageType.GetBlocks)]
+        [InlineData(MessageContent.MessageType.GetTxs)]
+        [InlineData(MessageContent.MessageType.Blocks)]
+        [InlineData(MessageContent.MessageType.Tx)]
+        [InlineData(MessageContent.MessageType.FindNeighbors)]
+        [InlineData(MessageContent.MessageType.Neighbors)]
+        [InlineData(MessageContent.MessageType.BlockHeaderMessage)]
+        [InlineData(MessageContent.MessageType.BlockHashes)]
+        [InlineData(MessageContent.MessageType.GetChainStatus)]
+        [InlineData(MessageContent.MessageType.ChainStatus)]
+        [InlineData(MessageContent.MessageType.DifferentVersion)]
+        public void CheckMessages(MessageContent.MessageType type)
         {
             var privateKey = new PrivateKey();
             var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
@@ -59,11 +59,11 @@ namespace Libplanet.Net.Tests.Messages
             Assert.Equal(apv, parsed.Version);
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);
-            Assert.IsType(message.GetType(), parsed);
-            Assert.Equal(message.DataFrames, parsed.DataFrames);
+            Assert.IsType(message.GetType(), parsed.Content);
+            Assert.Equal(message.DataFrames, parsed.Content.DataFrames);
         }
 
-        private Message CreateMessage(Message.MessageType type)
+        private MessageContent CreateMessage(MessageContent.MessageType type)
         {
             var privateKey = new PrivateKey();
             var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("127.0.0.1", 1000));
@@ -78,44 +78,44 @@ namespace Libplanet.Net.Tests.Messages
             var transaction = chain.MakeTransaction(privateKey, new DumbAction[] { });
             switch (type)
             {
-                case Message.MessageType.Ping:
+                case MessageContent.MessageType.Ping:
                     return new PingMsg();
-                case Message.MessageType.Pong:
+                case MessageContent.MessageType.Pong:
                     return new PongMsg();
-                case Message.MessageType.GetBlockHashes:
+                case MessageContent.MessageType.GetBlockHashes:
                     return new GetBlockHashesMsg(chain.GetBlockLocator(), genesis.Hash);
-                case Message.MessageType.TxIds:
+                case MessageContent.MessageType.TxIds:
                     return new TxIdsMsg(new[] { transaction.Id });
-                case Message.MessageType.GetBlocks:
+                case MessageContent.MessageType.GetBlocks:
                     return new GetBlocksMsg(new[] { genesis.Hash }, 10);
-                case Message.MessageType.GetTxs:
+                case MessageContent.MessageType.GetTxs:
                     return new GetTxsMsg(new[] { transaction.Id });
-                case Message.MessageType.Blocks:
+                case MessageContent.MessageType.Blocks:
                     return new Libplanet.Net.Messages.BlocksMsg(new[]
                     {
                         BitConverter.GetBytes(2),
                         codec.Encode(genesis.MarshalBlock()),
                         new byte[0],
                     });
-                case Message.MessageType.Tx:
+                case MessageContent.MessageType.Tx:
                     return new Libplanet.Net.Messages.TxMsg(transaction.Serialize(true));
-                case Message.MessageType.FindNeighbors:
+                case MessageContent.MessageType.FindNeighbors:
                     return new FindNeighborsMsg(privateKey.ToAddress());
-                case Message.MessageType.Neighbors:
+                case MessageContent.MessageType.Neighbors:
                     return new NeighborsMsg(new[] { boundPeer });
-                case Message.MessageType.BlockHeaderMessage:
+                case MessageContent.MessageType.BlockHeaderMessage:
                     return new BlockHeaderMsg(genesis.Hash, genesis.Header);
-                case Message.MessageType.BlockHashes:
+                case MessageContent.MessageType.BlockHashes:
                     return new BlockHashesMsg(0, new[] { genesis.Hash });
-                case Message.MessageType.GetChainStatus:
+                case MessageContent.MessageType.GetChainStatus:
                     return new GetChainStatusMsg();
-                case Message.MessageType.ChainStatus:
+                case MessageContent.MessageType.ChainStatus:
                     return new ChainStatusMsg(
                         0,
                         genesis.Hash,
                         chain.Tip.Index,
                         chain.Tip.Hash);
-                case Message.MessageType.DifferentVersion:
+                case MessageContent.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
                 default:
                     throw new Exception($"Cannot create a message of invalid type {type}");

@@ -73,11 +73,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     DateTimeOffset.UtcNow,
                     TestUtils.ValidatorSet[i].PublicKey,
                     VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i]);
-                consensusContext.HandleMessage(
-                    new ConsensusPreVoteMsg(expectedVotes[i])
-                    {
-                        Remote = TestUtils.Peers[i],
-                    });
+                consensusContext.HandleMessage(new ConsensusPreVoteMsg(expectedVotes[i]));
             }
 
             // Peer2 sends a ConsensusCommit via background process.
@@ -91,11 +87,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     DateTimeOffset.UtcNow,
                     TestUtils.ValidatorSet[i].PublicKey,
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i]);
-                consensusContext.HandleMessage(
-                    new ConsensusPreCommitMsg(expectedVotes[i])
-                    {
-                        Remote = TestUtils.Peers[i],
-                    });
+                consensusContext.HandleMessage(new ConsensusPreCommitMsg(expectedVotes[i]));
             }
 
             await heightTwoProposalSent.WaitAsync();
@@ -200,10 +192,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             proposal!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.PreVote).Sign(privateKey))
-                    {
-                        Remote = peer,
-                    });
+                            VoteFlag.PreVote).Sign(privateKey)));
             }
 
             foreach ((PrivateKey privateKey, BoundPeer peer)
@@ -225,10 +214,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             proposal!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(privateKey))
-                    {
-                        Remote = peer,
-                    });
+                            VoteFlag.PreCommit).Sign(privateKey)));
             }
 
             await heightTwoStepChangedToEndCommit.WaitAsync();

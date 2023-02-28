@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     /// List of message IDs that the peer seen recently.
     /// </summary>
     /// <seealso cref="WantMessage"/>
-    public class HaveMessage : Message
+    public class HaveMessage : MessageContent
     {
         public HaveMessage(MessageId[] messageIds)
         {

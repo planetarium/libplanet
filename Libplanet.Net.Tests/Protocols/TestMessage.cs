@@ -5,7 +5,7 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Tests.Protocols
 {
-    internal class TestMessage : Message
+    internal class TestMessage : MessageContent
     {
         public TestMessage(string data)
         {

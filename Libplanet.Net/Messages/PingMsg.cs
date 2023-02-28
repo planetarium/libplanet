@@ -6,7 +6,7 @@ namespace Libplanet.Net.Messages
     /// Check message to determine peer is alive.
     /// </summary>
     /// <seealso cref="PongMsg"/>
-    public class PingMsg : Message
+    public class PingMsg : MessageContent
     {
         public override MessageType Type => MessageType.Ping;
 

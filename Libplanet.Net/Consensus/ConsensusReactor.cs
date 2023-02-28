@@ -159,10 +159,10 @@ namespace Libplanet.Net.Consensus
         /// <param name="message">A message to process.</param>
         private void ProcessMessage(Message message)
         {
-            switch (message)
+            switch (message.Content)
             {
-                case ConsensusMsg consensusMessage:
-                    _consensusContext.HandleMessage(consensusMessage);
+                case ConsensusMsg consensusMsg:
+                    _consensusContext.HandleMessage(consensusMsg);
                     break;
             }
         }

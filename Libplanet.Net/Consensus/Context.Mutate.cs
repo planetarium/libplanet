@@ -82,14 +82,13 @@ namespace Libplanet.Net.Consensus
                 {
                     _logger.Debug(
                         "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
-                        "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
+                        "Validator Address: {VAddress}, " +
                         "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
                         nameof(AddMessage),
                         message,
                         message.Height,
                         message.Round,
                         message.ValidatorPublicKey.ToAddress(),
-                        message.Remote?.Address,
                         message.BlockHash,
                         _messageLog.GetTotalCount(),
                         ToString());

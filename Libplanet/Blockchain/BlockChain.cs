@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -932,7 +933,8 @@ namespace Libplanet.Blockchain
             try
             {
                 // Update states
-                DateTimeOffset setStatesStarted = DateTimeOffset.Now;
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 var totalDelta =
                     evaluations.GetTotalDelta(
                         ToStateKey,
@@ -962,17 +964,16 @@ namespace Libplanet.Blockchain
                         rootHash);
                 }
 
-                TimeSpan setStatesDuration = DateTimeOffset.Now - setStatesStarted;
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "StateUpdateDuration")
                     .Information(
                         "Finished updating the states with {KeyCount} key changes affected by " +
-                        "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms",
+                        "block #{BlockIndex} {BlockHash} in {DurationMs} ms",
                         totalDelta.Count,
                         block.Index,
                         block.Hash,
-                        setStatesDuration.TotalMilliseconds);
+                        stopwatch.ElapsedMilliseconds);
 
                 IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
                 UpdateTxExecutions(txExecutions);
@@ -1005,7 +1006,8 @@ namespace Libplanet.Blockchain
             BlockHash? stop = null,
             int count = 500)
         {
-            DateTimeOffset startTime = DateTimeOffset.Now;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             // FIXME Theoretically, we don't accept empty chain. so `tip` can't be null on this
             // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
@@ -1044,16 +1046,15 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            TimeSpan duration = DateTimeOffset.Now - startTime;
             _logger
                 .ForContext("Tag", "Metric")
                 .ForContext("Subtag", "FindHashesDuration")
                 .Information(
                     "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
-                    "in {DurationMs:F0}ms",
+                    "in {DurationMs} ms",
                     result.Count,
                     Store.ListChainIds().Count(),
-                    duration.TotalMilliseconds);
+                    stopwatch.ElapsedMilliseconds);
 
             return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
         }
@@ -1214,7 +1215,6 @@ namespace Libplanet.Blockchain
         public BlockCommit GetBlockCommit(BlockHash blockHash) =>
             GetBlockCommit(this[blockHash].Index);
 
-#pragma warning disable MEN003
         internal void Append(
             Block<T> block,
             BlockCommit blockCommit,
@@ -1241,7 +1241,7 @@ namespace Libplanet.Blockchain
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Information(
-                "Trying to append block #{BlockIndex} {BlockHash}...", block?.Index, block?.Hash);
+                "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
 
             block.ValidateTimestamp();
 
@@ -1249,54 +1249,32 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Count > 0 ? Tip : null;
             try
             {
-                InvalidBlockException ibe = ValidateNextBlock(block);
-
-                if (!(ibe is null))
+                if (ValidateNextBlock(block) is { } ibe)
                 {
-                    _logger.Error(ibe, "Failed to append invalid block {BlockHash}", block.Hash);
                     throw ibe;
                 }
 
-                InvalidBlockCommitException ibce = ValidateBlockCommit(block, blockCommit);
-
-                if (!(ibce is null))
+                if (ValidateBlockCommit(block, blockCommit) is { } ibce)
                 {
-                    _logger.Error(
-                        ibce,
-                        "Failed to append block {BlockHash} due to invalid blockCommit.",
-                        block.Hash);
                     throw ibce;
                 }
 
-                var nonceDeltas = new Dictionary<Address, long>();
+                var nonceDeltas = ValidateNonces(
+                    block.Transactions
+                        .Select(tx => tx.Signer)
+                        .Distinct()
+                        .ToDictionary(signer => signer, signer => Store.GetTxNonce(Id, signer)),
+                    block);
 
-                foreach (Transaction<T> tx1 in block.Transactions.OrderBy(tx => tx.Nonce))
+                foreach (Transaction<T> tx in block.Transactions)
                 {
-                    if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
+                    if (block.Index > 0 && Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
                             "According to BlockPolicy, this transaction is not valid.",
-                            tx1.Id,
+                            tx.Id,
                             tpve);
                     }
-
-                    Address txSigner = tx1.Signer;
-                    nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
-
-                    long expectedNonce = nonceDelta + Store.GetTxNonce(Id, txSigner);
-
-                    if (!expectedNonce.Equals(tx1.Nonce))
-                    {
-                        _logger.Error("Failed to append invalid tx {TxId}", tx1.Id);
-                        throw new InvalidTxNonceException(
-                            "Transaction nonce is invalid.",
-                            tx1.Id,
-                            expectedNonce,
-                            tx1.Nonce
-                        );
-                    }
-
-                    nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
                 _rwlock.EnterWriteLock();
@@ -1343,8 +1321,6 @@ namespace Libplanet.Blockchain
                         Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
                     }
 
-                    // Note: Genesis block is not committed by PBFT consensus, so it has no its
-                    // blockCommit.
                     if (block.Index != 0 && blockCommit is { })
                     {
                         Store.PutBlockCommit(blockCommit);
@@ -1438,7 +1414,6 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
-#pragma warning restore MEN003
 
         /// <summary>
         /// Find an approximate to the topmost common ancestor between this
@@ -1672,10 +1647,21 @@ namespace Libplanet.Blockchain
             return null;
         }
 
-#pragma warning disable SA1202
-        public InvalidBlockException ValidateNextBlock(Block<T> block)
-#pragma warning restore SA1202
+        internal InvalidBlockException ValidateNextBlock(Block<T> block)
         {
+            if (block.Index == 0)
+            {
+                return ValidateGenesisBlock(block);
+            }
+
+            long index = Count;
+            if (block.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"The expected index of block {block.Hash} is #{index}, " +
+                    $"but its index is #{block.Index}.");
+            }
+
             int actualProtocolVersion = block.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
 
@@ -1692,7 +1678,7 @@ namespace Libplanet.Blockchain
                     actualProtocolVersion
                 );
             }
-            else if (Count > 0 && actualProtocolVersion < Tip.ProtocolVersion)
+            else if (actualProtocolVersion < Tip.ProtocolVersion)
             {
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
@@ -1700,15 +1686,12 @@ namespace Libplanet.Blockchain
                 return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
-            BlockPolicyViolationException bpve = Policy.ValidateNextBlock(this, block);
-            if (bpve is { })
+            if (Policy.ValidateNextBlock(this, block) is { } bpve)
             {
                 return bpve;
             }
 
-            long index = this.Count;
-
-            Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
+            Block<T> lastBlock = this[index - 1];
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
@@ -1721,13 +1704,6 @@ namespace Libplanet.Blockchain
 
             if (!block.PreviousHash.Equals(prevHash))
             {
-                if (prevHash is null)
-                {
-                    return new InvalidBlockPreviousHashException(
-                        $"The genesis block {block.Hash} should not have previous hash, " +
-                        $"but its value is {block.PreviousHash}.");
-                }
-
                 return new InvalidBlockPreviousHashException(
                     $"The block #{index} {block.Hash} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +
@@ -1783,6 +1759,79 @@ namespace Libplanet.Blockchain
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
+        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
+        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="block"/> has
+        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
+        private static InvalidBlockException ValidateGenesisBlock(Block<T> block)
+        {
+            if (block.Index != 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(block)} must have index 0 but has index {block.Index}",
+                    nameof(block));
+            }
+
+            int actualProtocolVersion = block.ProtocolVersion;
+            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
+            {
+                return new InvalidBlockProtocolVersionException(
+                    $"The protocol version ({actualProtocolVersion}) of the block " +
+                    $"#{block.Index} {block.Hash} is not supported by this node." +
+                    $"The highest supported protocol version is {currentProtocolVersion}.",
+                    actualProtocolVersion);
+            }
+
+            if (block.PreviousHash is { } previousHash)
+            {
+                return new InvalidBlockPreviousHashException(
+                    "A genesis block should not have previous hash, " +
+                    $"but its value is {previousHash}.");
+            }
+
+            if (block.LastCommit is { } lastCommit)
+            {
+                return new InvalidBlockLastCommitException(
+                    "A genesis block should not have lastCommit, " +
+                    $"but its value is {lastCommit}.");
+            }
+
+            return null;
+        }
+
+        private static Dictionary<Address, long> ValidateNonces(
+            Dictionary<Address, long> storedNonces,
+            Block<T> block)
+        {
+            var nonceDeltas = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            {
+                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
+                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
+
+                long expectedNonce = nonceDelta + storedNonce;
+
+                if (!expectedNonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
+                        $"from expected nonce {expectedNonce}.",
+                        tx.Id,
+                        expectedNonce,
+                        tx.Nonce);
+                }
+
+                nonceDeltas[tx.Signer] = nonceDelta + 1;
+            }
+
+            return nonceDeltas;
         }
     }
 }

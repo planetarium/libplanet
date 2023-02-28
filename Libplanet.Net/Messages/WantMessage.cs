@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     /// List of message IDs that the peer want to have.
     /// </summary>
     /// <seealso cref="HaveMessage"/>
-    public class WantMessage : Message
+    public class WantMessage : MessageContent
     {
         public WantMessage(MessageId[] messageIds)
         {

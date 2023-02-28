@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A abstract base class message for consensus.
     /// </summary>
-    public abstract class ConsensusMsg : Message, IEquatable<ConsensusMsg>
+    public abstract class ConsensusMsg : MessageContent, IEquatable<ConsensusMsg>
     {
         protected const byte Nil = 0x00;
 

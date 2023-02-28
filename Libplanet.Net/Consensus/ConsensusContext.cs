@@ -79,7 +79,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A delegate method for using as broadcasting a <see cref="ConsensusMsg"/> to
+        /// A delegate method for using as broadcasting a <see cref="Message"/> to
         /// validators.
         /// </summary>
         /// <param name="message">A message to broadcast.</param>

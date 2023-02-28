@@ -26,6 +26,7 @@
 dotCover.Output.*
 dotCover.Output/
 
+# .NET
 *.suo
 *.user
 .vs/
@@ -39,6 +40,19 @@ FodyWeavers.xsd
 BenchmarkDotNet.Artifacts
 xunit.runner.console.*/
 
+# typescript
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+yarn-debug.log*
+yarn-error.log*
+
+# macOS & Windows
 Thumbs.db
 Desktop.ini
 .DS_Store

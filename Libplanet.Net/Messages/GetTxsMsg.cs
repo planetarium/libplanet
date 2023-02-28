@@ -5,7 +5,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetTxsMsg : Message
+    internal class GetTxsMsg : MessageContent
     {
         public GetTxsMsg(IEnumerable<TxId> txIds)
         {

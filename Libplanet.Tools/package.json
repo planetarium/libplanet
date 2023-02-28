@@ -8,7 +8,10 @@
     "linux",
     "win32"
   ],
-  "cpu": ["x64", "arm64"],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
   "engines": {
     "node": ">=12"
   },

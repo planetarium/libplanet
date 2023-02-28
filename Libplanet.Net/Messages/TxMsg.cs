@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
 {
-    internal class TxMsg : Message
+    internal class TxMsg : MessageContent
     {
         public TxMsg(byte[] payload)
         {
