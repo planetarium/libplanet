@@ -463,6 +463,12 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
+            // Kademlia protocol registers handle of ITransport with the services
+            // (e.g., Swarm, ConsensusReactor) to receive the heartbeat messages.
+            // For AsyncDelegate<T> Task.WhenAll(), this will yield the handler
+            // to the other services before entering to synchronous AddPeer().
+            await Task.Yield();
+
             AddPeer(message.Remote);
         }
 
