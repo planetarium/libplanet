@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
@@ -19,7 +17,7 @@ namespace Libplanet.Blockchain
     {
         /// <summary>
         /// <para>
-        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </para>
         /// <para>
         /// All unprovided and/or <see langword="null"/> arguments are reassigned accordingly
@@ -28,38 +26,36 @@ namespace Libplanet.Blockchain
         /// to the chain.
         /// </para>
         /// </summary>
-        /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
-        /// <param name="append">Whether to append the mined block immediately after mining.</param>
+        /// <param name="proposer">
+        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// </param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        public async Task<Block<T>> MineBlock(
-            PrivateKey miner,
+        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
+        public Block<T> ProposeBlock(
+            PrivateKey proposer,
             DateTimeOffset? timestamp = null,
-            bool? append = null,
             IComparer<Transaction<T>> txPriority = null,
-            CancellationToken? cancellationToken = null) =>
-                await MineBlock(
-                    miner: miner,
-                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                    append: append ?? true,
-                    maxTransactionsBytes: Policy.GetMaxTransactionsBytes(Count),
-                    maxTransactions: Policy.GetMaxTransactionsPerBlock(Count),
-                    maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(Count),
-                    txPriority: txPriority,
-                    cancellationToken: cancellationToken ?? default);
+            BlockCommit lastCommit = null) =>
+            ProposeBlock(
+                proposer: proposer,
+                timestamp: timestamp ?? DateTimeOffset.UtcNow,
+                maxTransactionsBytes: Policy.GetMaxTransactionsBytes(Count),
+                maxTransactions: Policy.GetMaxTransactionsPerBlock(Count),
+                maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(Count),
+                txPriority: txPriority,
+                lastCommit: lastCommit);
 
         /// <summary>
-        /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
-        /// <param name="append">Whether to append the mined block immediately after mining.</param>
+        /// <param name="proposer">
+        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
         /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
         /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
@@ -70,45 +66,28 @@ namespace Libplanet.Blockchain
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// </param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        internal async Task<Block<T>> MineBlock(
-            PrivateKey miner,
+        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
+        public Block<T> ProposeBlock(
+            PrivateKey proposer,
             DateTimeOffset timestamp,
-            bool append,
             long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
-            CancellationToken cancellationToken = default)
+            BlockCommit lastCommit = null)
         {
-            using var cts = new CancellationTokenSource();
-            using CancellationTokenSource cancellationTokenSource =
-                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-
-            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip)
-            {
-                try
-                {
-                    cts.Cancel();
-                }
-                catch (ObjectDisposedException)
-                {
-                    // Ignore if mining was already finished.
-                }
-            }
-
             long index = Count;
-            long difficulty = Policy.GetNextBlockDifficulty(this);
+            long difficulty = 1L;
             BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
 
             int sessionId = new System.Random().Next();
             int processId = Process.GetCurrentProcess().Id;
             _logger.Debug(
-                "{SessionId}/{ProcessId}: Starting to mine block #{Index} with " +
+                "{SessionId}/{ProcessId}: Starting to propose block #{Index} with " +
                 "difficulty {Difficulty} and previous hash {PreviousHash}...",
                 sessionId,
                 processId,
@@ -116,101 +95,67 @@ namespace Libplanet.Blockchain
                 difficulty,
                 prevHash);
 
-            var transactionsToMine = GatherTransactionsToMine(
+            var transactionsToPropose = GatherTransactionsToPropose(
                 maxTransactionsBytes: maxTransactionsBytes,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
             );
 
-            if (transactionsToMine.Count < Policy.GetMinTransactionsPerBlock(index))
+            if (transactionsToPropose.Count < Policy.GetMinTransactionsPerBlock(index))
             {
-                cts.Cancel();
                 throw new OperationCanceledException(
-                    $"Mining canceled due to insufficient number of gathered transactions " +
-                    $"to mine for the requirement of {Policy.GetMinTransactionsPerBlock(index)} " +
-                    $"given by the policy: {transactionsToMine.Count}");
+                    $"Proposal operation canceled due to insufficient number of " +
+                    $"gathered transactions to mine for the requirement of " +
+                    $"{Policy.GetMinTransactionsPerBlock(index)} " +
+                    $"given by the policy: {transactionsToPropose.Count}");
             }
 
             _logger.Verbose(
-                "{SessionId}/{ProcessId}: Mined block #{Index} will include " +
+                "{SessionId}/{ProcessId}: Propose block #{Index} will include " +
                 "{TxCount} transactions",
                 sessionId,
                 processId,
                 index,
-                transactionsToMine.Count);
+                transactionsToPropose.Count);
 
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
-            var transactions = transactionsToMine.OrderBy(tx => tx.Id).ToList();
+            var transactions = transactionsToPropose.OrderBy(tx => tx.Id).ToList();
             var blockContent = new BlockContent<T>(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
                     timestamp: timestamp,
-                    miner: miner.ToAddress(),
-                    publicKey: miner.PublicKey,
-                    difficulty: difficulty,
-                    totalDifficulty: Tip.TotalDifficulty + difficulty,
+                    miner: proposer.ToAddress(),
+                    publicKey: proposer.PublicKey,
                     previousHash: prevHash,
-                    txHash: BlockContent<T>.DeriveTxHash(transactions)),
+                    txHash: BlockContent<T>.DeriveTxHash(transactions),
+                    lastCommit: lastCommit),
                 transactions: transactions);
             PreEvaluationBlock<T> preEval;
 
-            TipChanged += WatchTip;
-
-            try
-            {
-                preEval = await Task.Run(
-                    () => blockContent.Mine(cancellationTokenSource.Token),
-                    cancellationTokenSource.Token
-                );
-            }
-            catch (OperationCanceledException)
-            {
-                if (cts.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException(
-                        "Mining canceled due to change of tip index.");
-                }
-
-                throw new OperationCanceledException(cancellationToken);
-            }
-            finally
-            {
-                TipChanged -= WatchTip;
-            }
+            preEval = blockContent.Propose();
 
             (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
-                preEval.EvaluateActions(miner, this);
+                preEval.EvaluateActions(proposer, this);
             IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, actionEvaluations);
             UpdateTxExecutions(txExecutions);
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
-                "with difficulty {Difficulty} and previous hash {PreviousHash}",
+                "with previous hash {PreviousHash}",
                 sessionId,
                 processId,
                 block.Index,
                 block.Hash,
-                block.Difficulty,
                 block.PreviousHash);
-
-            if (append)
-            {
-                Append(
-                    block,
-                    evaluateActions: true,
-                    renderBlocks: true,
-                    renderActions: true,
-                    actionEvaluations: actionEvaluations);
-            }
 
             return block;
         }
 
         /// <summary>
-        /// Gathers <see cref="Transaction{T}"/>s for mining a next block
+        /// Gathers <see cref="Transaction{T}"/>s for proposing a next block
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
         /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.</param>
@@ -224,7 +169,7 @@ namespace Libplanet.Blockchain
         /// count not exceeding <paramref name="maxTransactions"/> and the number of
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
-        internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
+        internal ImmutableList<Transaction<T>> GatherTransactionsToPropose(
             long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,

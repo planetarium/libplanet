@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex;
@@ -45,7 +44,7 @@ namespace Libplanet.Action
         /// </param>
         public UnexpectedlyTerminatedActionException(
             string message,
-            ImmutableArray<byte>? preEvaluationHash,
+            HashDigest<SHA256>? preEvaluationHash,
             long? blockIndex,
             TxId? txid,
             HashDigest<SHA256>? previousStateRootHash,
@@ -69,7 +68,7 @@ namespace Libplanet.Action
         {
             if (info.TryGetValue(nameof(PreEvaluationHash), out byte[] blockHash))
             {
-                PreEvaluationHash = blockHash.ToImmutableArray();
+                PreEvaluationHash = new HashDigest<SHA256>(blockHash);
             }
 
             if (info.TryGetValue(nameof(BlockIndex), out long blockIndex))
@@ -127,7 +126,7 @@ namespace Libplanet.Action
         /// The <see cref="Block{T}.PreEvaluationHash"/> of the <see cref="Block{T}"/> that
         /// <see cref="Action"/> belongs to.  This can be <see langword="null"/> on rehearsal mode.
         /// </summary>
-        public ImmutableArray<byte>? PreEvaluationHash { get; }
+        public HashDigest<SHA256>? PreEvaluationHash { get; }
 
         /// <summary>
         /// The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> that <see cref="Action"/>
@@ -156,7 +155,7 @@ namespace Libplanet.Action
 
             if (PreEvaluationHash is { } preEvaluationHash)
             {
-                info.AddValue(nameof(PreEvaluationHash), preEvaluationHash.ToBuilder().ToArray());
+                info.AddValue(nameof(PreEvaluationHash), preEvaluationHash.ToByteArray());
             }
 
             if (BlockIndex is long blockIndex)

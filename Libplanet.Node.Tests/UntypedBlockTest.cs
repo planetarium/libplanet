@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -14,7 +15,6 @@ namespace Libplanet.Node.Tests
 {
     public class UntypedBlockTest
     {
-        private static readonly HashAlgorithmType _sha256 = BlockMetadata.HashAlgorithmType;
         private static readonly Codec Codec = new Codec();
         private readonly PrivateKey _signerKey;
         private readonly Transaction<NullAction>[] _txs;
@@ -61,16 +61,14 @@ namespace Libplanet.Node.Tests
                     index: 0L,
                     timestamp: new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
                     publicKey: _minerKey.PublicKey,
-                    difficulty: 0L,
-                    totalDifficulty: 0L,
                     previousHash: null,
-                    txHash: BlockContent<NullAction>.DeriveTxHash(_txs)),
+                    txHash: BlockContent<NullAction>.DeriveTxHash(_txs),
+                    lastCommit: null),
                 transactions: _txs);
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.Metadata.MakeCandidateData(nonce));
-            ImmutableArray<byte> preEvalHash = _sha256.Digest(blockBytes).ToImmutableArray();
-            var proof = (nonce, preEvalHash);
-            _preEval = new PreEvaluationBlock<NullAction>(_content, proof);
+            HashDigest<SHA256> preEvalHash = HashDigest<SHA256>.DeriveFrom(blockBytes);
+            _preEval = new PreEvaluationBlock<NullAction>(_content, preEvalHash);
             _block = _preEval.Evaluate(
                 privateKey: _minerKey,
                 blockAction: null,
@@ -87,11 +85,8 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_block.ProtocolVersion, untyped.ProtocolVersion);
             Assert.Equal(_block.Index, untyped.Index);
             Assert.Equal(_block.Timestamp, untyped.Timestamp);
-            Assert.Equal(_block.Nonce, untyped.Nonce);
             Assert.Equal(_block.Miner, untyped.Miner);
             Assert.Equal(_block.PublicKey, untyped.PublicKey);
-            Assert.Equal(_block.Difficulty, untyped.Difficulty);
-            Assert.Equal(_block.TotalDifficulty, untyped.TotalDifficulty);
             Assert.Equal(_block.PreviousHash, untyped.PreviousHash);
             Assert.Equal(_block.TxHash, untyped.TxHash);
             Assert.Equal(_block.Signature, untyped.Signature);

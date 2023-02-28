@@ -1,15 +1,9 @@
-using System.Numerics;
-using Libplanet.Blockchain;
-using Libplanet.Blockchain.Policies;
-
 namespace Libplanet.Blocks
 {
     /// <summary>
     /// The very essential metadata extracted from a block.  This purposes to determine
     /// the canonical chain.
     /// </summary>
-    /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
-    /// <seealso cref="TotalDifficultyComparer"/>
     public interface IBlockExcerpt
     {
         /// <summary>
@@ -37,11 +31,5 @@ namespace Libplanet.Blocks
         /// <seealso cref="IBlockHeader.StateRootHash"/>
         /// <seealso cref="Block{T}.Hash"/>
         public BlockHash Hash { get; }
-
-        /// <summary>
-        /// The sum of a block and its all ancestors' difficulties.
-        /// </summary>
-        /// <seealso cref="Block{T}.TotalDifficulty"/>
-        public BigInteger TotalDifficulty { get; }
     }
 }

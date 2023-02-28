@@ -43,9 +43,10 @@ namespace Libplanet.Net
         /// <paramref name="blockHeader"/> as its key.
         /// </para>
         /// </summary>
-        /// <param name="blockHeader">This is the header of the <see cref="BlockChain{T}"/>
+        /// <param name="blockHeader">The header of the <see cref="BlockChain{T}"/>'s
         /// tip at the time of downloading the blocks.</param>
-        /// <param name="branch">The list of downloaded <see cref="Block{T}"/>s.</param>
+        /// <param name="branch">The list of downloaded <see cref="Block{T}"/>s and
+        /// its <see cref="BlockCommit"/>s.</param>
         public void Add(BlockHeader blockHeader, Branch<T> branch)
         {
             if (_table.ContainsKey(blockHeader))
@@ -66,7 +67,8 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
         /// tip of this round.</param>
-        /// <returns>A <see cref="List{T}"/> of <see cref="Block{T}"/>s associated with
+        /// <returns>A <see cref="List{T}"/> of <see cref="Block{T}"/>s with associated
+        /// <see cref="BlockCommit"/>s by
         /// <paramref name="thisRoundTip"/> if found, otherwise <see langword="null"/>.
         /// The result is guaranteed to be non-empty and consecutive sorted by
         /// <see cref="Block{T}.Index"/>.

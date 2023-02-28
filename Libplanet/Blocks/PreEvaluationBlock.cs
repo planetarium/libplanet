@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -24,9 +23,6 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
-    /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
-    /// <see cref="Nonce"/> which satisfies its <see cref="PreEvaluationBlockHeader.Difficulty"/>.
-    /// </remarks>
     public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>, IPreEvaluationBlock
         where T : IAction, new()
     {
@@ -38,31 +34,25 @@ namespace Libplanet.Blocks
             IEnumerable<Transaction<T>> transactions)
             : this(
                 new BlockContent<T>(preEvaluationBlockHeader, transactions),
-                (preEvaluationBlockHeader.Nonce, preEvaluationBlockHeader.PreEvaluationHash))
+                preEvaluationBlockHeader.PreEvaluationHash)
         {
         }
 
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data, a valid proof-of-work <paramref name="proof.Nonce"/>
-        /// which satisfies the required <see cref="PreEvaluationBlockHeader.Difficulty"/>,
-        /// and a <paramref name="proof.PreEvaluationHash"/> digest derived from them.
+        /// <paramref name="content"/> data, a valid <paramref name="preEvaluationHash"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="proof">A pair of a valid proof-of-work nonce which satisfies the required
-        /// <see cref="PreEvaluationBlockHeader.Difficulty"/> and a hash digest which is
-        /// derived from <paramref name="content"/> and the nonce.</param>
-        /// <exception cref="InvalidBlockNonceException">Thrown when <paramref name="proof"/>'s
-        /// <see cref="IPreEvaluationBlockHeader.Nonce"/> does not satisfy the required
-        /// <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        /// <param name="preEvaluationHash">A valid hash derived from <paramref name="content"/>.
+        /// </param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when
-        /// <paramref name="proof"/>'s hash is invalid.</exception>
+        /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         internal PreEvaluationBlock(
             BlockContent<T> content,
-            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof)
+            in HashDigest<SHA256> preEvaluationHash)
         {
+            _header = new PreEvaluationBlockHeader(content.Metadata, preEvaluationHash);
             _content = content;
-            _header = new PreEvaluationBlockHeader(content.Metadata, proof);
         }
 
         /// <summary>
@@ -92,23 +82,17 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _header.PublicKey;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _header.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _header.TotalDifficulty;
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _header.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _header.TxHash;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _header.Nonce;
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit => _header.LastCommit;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash => _header.PreEvaluationHash;
+        public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and

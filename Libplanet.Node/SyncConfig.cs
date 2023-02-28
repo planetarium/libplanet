@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -30,26 +29,6 @@ namespace Libplanet.Node
         /// Determines how often to broadcast <see cref="TxIdsMsg"/>.
         /// </summary>
         public TimeSpan TxBroadcastInterval { get; set; } = TimeSpan.FromSeconds(5);
-
-        /// <summary>
-        /// A list of <see cref="BoundPeer"/>s to be treated as static.
-        /// </summary>
-        /// <remarks>
-        /// Despite its name, static peers are not truly static in the sense that it is not kept
-        /// in a <see cref="RoutingTable"/>. <see cref="StaticPeers"/> are artificially added
-        /// to a <see cref="RoutingTable"/> periodically.
-        /// </remarks>
-        public IEnumerable<BoundPeer> StaticPeers { get; set; } = new List<BoundPeer>();
-
-        /// <summary>
-        /// Determines how often a <see cref="BoundPeer"/> from <see cref="StaticPeers"/> is
-        /// artificially added to a <see cref="RoutingTable"/>.
-        /// </summary>
-        /// <remarks>
-        /// A static <see cref="BoundPeer"/> is only added to a <see cref="RoutingTable"/> if
-        /// the dialing is successful, just like any other normal <see cref="BoundPeer"/>.
-        /// </remarks>
-        public TimeSpan StaticPeersMaintainPeriod { get; set; }
 
         /// <summary>
         /// Determines how often a <see cref="RoutingTable"/> gets refreshed.

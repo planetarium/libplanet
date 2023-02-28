@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -36,6 +36,7 @@ namespace Libplanet.Net
 
         private readonly ILogger _logger;
         private readonly IStore _store;
+        private readonly ConsensusReactor<T> _consensusReactor;
 
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
@@ -50,13 +51,21 @@ namespace Libplanet.Net
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
         /// <param name="transport">The <see cref="ITransport"/> to use for
-        /// network communication.</param>
+        /// network communication in block synchronization.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
+        /// <param name="consensusTransport">The <see cref="ITransport"/> to use for
+        /// network communication in consensus.
+        /// If null is given, the node cannot join block consensus.
+        /// </param>
+        /// <param name="consensusOption"><see cref="ConsensusReactorOption"/> for
+        /// initialize <see cref="ConsensusReactor{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             ITransport transport,
-            SwarmOptions options = null)
+            SwarmOptions options = null,
+            ITransport consensusTransport = null,
+            ConsensusReactorOption? consensusOption = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -87,6 +96,18 @@ namespace Libplanet.Net
             _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
+
+            if (consensusTransport is { } && consensusOption is { } consensusReactorOption)
+            {
+                _consensusReactor = new ConsensusReactor<T>(
+                    consensusTransport,
+                    BlockChain,
+                    consensusReactorOption.ConsensusPrivateKey,
+                    consensusReactorOption.ConsensusPeers,
+                    consensusReactorOption.SeedPeers,
+                    consensusReactorOption.TargetBlockInterval,
+                    consensusReactorOption.ContextTimeoutOptions);
+            }
         }
 
         ~Swarm()
@@ -101,6 +122,8 @@ namespace Libplanet.Net
         }
 
         public bool Running => Transport?.Running ?? false;
+
+        public bool ConsensusRunning => _consensusReactor?.Running ?? false;
 
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
@@ -118,6 +141,12 @@ namespace Libplanet.Net
         public IDictionary<BoundPeer, DateTimeOffset> LastSeenTimestamps { get; private set; }
 
         public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
+
+        /// <summary>
+        /// Returns list of the validators that consensus has in its routing table.
+        /// If the node is not joining consensus, returns <c>null</c>.
+        /// </summary>
+        public IReadOnlyList<BoundPeer> Validators => _consensusReactor?.Validators;
 
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
@@ -157,6 +186,9 @@ namespace Libplanet.Net
 
         internal SwarmOptions Options { get; }
 
+        // FIXME: This should be exposed in a better way.
+        internal ConsensusReactor<T> ConsensusReactor => _consensusReactor;
+
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
@@ -172,6 +204,7 @@ namespace Libplanet.Net
                 _workerCancellationTokenSource?.Cancel();
                 TxCompletion?.Dispose();
                 Transport?.Dispose();
+                _consensusReactor?.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
@@ -196,6 +229,10 @@ namespace Libplanet.Net
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
+                if (_consensusReactor is { })
+                {
+                    await _consensusReactor.StopAsync(cancellationToken);
+                }
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -304,6 +341,11 @@ namespace Libplanet.Net
                     () => RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken),
                 };
 
+                if (_consensusReactor is { })
+                {
+                    tasks.Add(() => _consensusReactor.StartAsync(_cancellationToken));
+                }
+
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
@@ -381,12 +423,6 @@ namespace Libplanet.Net
 
             IReadOnlyList<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
 
-            if (Options.StaticPeers.Any())
-            {
-                await AddPeersAsync(Options.StaticPeers, dialTimeout, cancellationToken)
-                    .ConfigureAwait(false);
-            }
-
             await PeerDiscovery.BootstrapAsync(
                 seedPeers,
                 dialTimeout,
@@ -446,8 +482,7 @@ namespace Libplanet.Net
                 .Select(pp =>
                     new PeerChainState(
                         pp.Item1,
-                        pp.Item2?.TipIndex ?? -1,
-                        pp.Item2?.TotalDifficulty ?? -1));
+                        pp.Item2?.TipIndex ?? -1));
         }
 
         /// <summary>
@@ -761,7 +796,7 @@ namespace Libplanet.Net
             throw new InvalidMessageContentException(errorMessage, parsedMessage.Content);
         }
 
-        internal async IAsyncEnumerable<Block<T>> GetBlocksAsync(
+        internal async IAsyncEnumerable<(Block<T>, BlockCommit)> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<BlockHash> blockHashes,
             [EnumeratorCancellation] CancellationToken cancellationToken
@@ -814,19 +849,23 @@ namespace Libplanet.Net
 
                 if (message.Content is BlocksMsg blockMessage)
                 {
-                    IList<byte[]> payloads = blockMessage.Payloads;
+                    List<byte[]> payloads = blockMessage.Payloads;
                     _logger.Information(
                         "Received {Count} blocks from {Peer}",
                         payloads.Count,
                         message.Remote);
-                    foreach (byte[] payload in payloads)
+                    for (int i = 0; i < payloads.Count; i += 2)
                     {
+                        byte[] blockPayload = payloads[i];
+                        byte[] commitPayload = payloads[i + 1];
                         cancellationToken.ThrowIfCancellationRequested();
                         Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
-                            (Bencodex.Types.Dictionary)Codec.Decode(payload)
-                        );
+                            (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
+                        BlockCommit commit = commitPayload.Length == 0
+                            ? null
+                            : new BlockCommit(commitPayload);
 
-                        yield return block;
+                        yield return (block, commit);
                         count++;
                     }
                 }
@@ -896,6 +935,42 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Gets all <see cref="BlockHash"/>es for <see cref="Block{T}"/>s needed to be downloaded
+        /// by querying <see cref="BoundPeer"/>s.
+        /// </summary>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> to use as a reference
+        /// for generating a <see cref="BlockLocator"/> when querying.  This may not necessarily
+        /// be <see cref="BlockChain"/>, the canonical <see cref="BlockChain{T}"/> instance held
+        /// by this <see cref="Swarm{T}"/> instance.</param>
+        /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
+        /// to query with their tips known.</param>
+        /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
+        /// <param name="cancellationToken">The cancellation token that should be used to propagate
+        /// a notification that this operation should be canceled.</param>
+        /// <returns>An <see cref="IAsyncEnumerable{T}"/> of <see langword="long"/> and
+        /// <see cref="BlockHash"/> pairs, where the <see langword="long"/> value is the
+        /// <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> associated with the
+        /// <see cref="BlockHash"/> value.</returns>
+        /// <exception cref="AggregateException">Thrown when failed to download
+        /// <see cref="BlockHash"/>es from a <see cref="BoundPeer"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// This method uses the tip information for each <see cref="BoundPeer"/> provided with
+        /// <paramref name="peersWithExcerpts"/> whether to make a query in the first place.
+        /// </para>
+        /// <para>
+        /// Returned list of tuples are simply concatenation of query results from different
+        /// <see cref="BoundPeer"/>s with possible duplicates.
+        /// </para>
+        /// <para>
+        /// This implicitly assumes returned <see cref="BlockHashesMsg"/> is properly
+        /// indexed with a valid branching <see cref="BlockHash"/> as its first element and
+        /// skips it when constructing the result as it is not necessary to download.
+        /// As such, returned result is simply a "dump" of possible <see cref="BlockHash"/>es
+        /// to download.
+        /// </para>
+        /// </remarks>
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
@@ -904,9 +979,7 @@ namespace Libplanet.Net
         )
         {
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
-            int peersCount = peersWithExcerpts.Count;
             var exceptions = new List<Exception>();
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
                 long peerIndex = excerpt.Index;
@@ -987,6 +1060,9 @@ namespace Libplanet.Net
                                 dlHash
                             );
 
+                            // FIXME: Probably should check if dlIndex and dlHash is
+                            // a valid hash of possible branching block by checking whether
+                            // it is already stored locally.
                             if (downloaded.Contains(dlHash) || dlHash.Equals(branchingBlock))
                             {
                                 continue;
@@ -1109,8 +1185,7 @@ namespace Libplanet.Net
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
         /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered by
-        /// the <see cref="IBlockPolicy{T}.CanonicalChainComparer"/> given by
-        /// <see cref="BlockChain{T}.Policy"/> in descending order.</returns>
+        /// <see cref="IBlockExcerpt.Index"/> in descending order.</returns>
         private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
             TimeSpan? dialTimeout,
             int maxPeersToDial,
@@ -1118,14 +1193,13 @@ namespace Libplanet.Net
         {
             Block<T> tip = BlockChain.Tip;
             BlockHash genesisHash = BlockChain.Genesis.Hash;
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
                 .Where(
                     pair => pair.Item2 is { } chainStatus &&
                         genesisHash.Equals(chainStatus.GenesisHash) &&
-                        canonComparer.Compare(chainStatus, tip) > 0)
+                        chainStatus.TipIndex > tip.Index)
                 .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
-                .OrderByDescending(pair => pair.Item2, canonComparer)
+                .OrderByDescending(pair => pair.Item2.Index)
                 .ToList();
         }
 
@@ -1297,8 +1371,7 @@ namespace Libplanet.Net
         /// <paramref name="target"/> is needed, otherwise, <see langword="false"/>.</returns>
         private bool IsBlockNeeded(IBlockExcerpt target)
         {
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-            return canonComparer.Compare(target, BlockChain.Tip) > 0;
+            return target.Index > BlockChain.Tip.Index;
         }
 
         private async Task RefreshTableAsync(

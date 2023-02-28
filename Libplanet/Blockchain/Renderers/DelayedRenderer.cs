@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Libplanet.Action;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Serilog;
@@ -34,7 +33,7 @@ namespace Libplanet.Blockchain.Renderers
     /// ]]></code>
     /// </example>
     /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
-    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IComparer{IBlockExcerpt}, IStore, int)"/>
+    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IStore, int)"/>
     /// constructor can take an <see cref="IActionRenderer{T}"/> instance as well.
     /// However, even it takes an action renderer, action-level fine-grained events won't hear.
     /// For action renderers, please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
@@ -49,8 +48,6 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives delayed events.</param>
-        /// <param name="canonicalChainComparer">The same canonical chain comparer to
-        /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// It must be greater than zero (note that zero <paramref name="confirmations"/> mean
@@ -60,7 +57,6 @@ namespace Libplanet.Blockchain.Renderers
         /// <paramref name="confirmations"/> is not greater than zero.</exception>
         public DelayedRenderer(
             IRenderer<T> renderer,
-            IComparer<IBlockExcerpt> canonicalChainComparer,
             IStore store,
             int confirmations
         )
@@ -82,7 +78,6 @@ namespace Libplanet.Blockchain.Renderers
 
             Logger = Log.ForContext(GetType());
             Renderer = renderer;
-            CanonicalChainComparer = canonicalChainComparer;
             Store = store;
             Confirmations = confirmations;
             Confirmed = new ConcurrentDictionary<BlockHash, uint>();
@@ -93,12 +88,6 @@ namespace Libplanet.Blockchain.Renderers
         /// events.
         /// </summary>
         public IRenderer<T> Renderer { get; }
-
-        /// <summary>
-        /// The same canonical chain comparer to <see cref="BlockChain{T}.Policy"/>.
-        /// </summary>
-        /// <seealso cref="IBlockPolicy{T}.CanonicalChainComparer"/>
-        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <summary>
         /// The same store to what <see cref="BlockChain{T}"/> uses.
@@ -307,34 +296,26 @@ namespace Libplanet.Blockchain.Renderers
                         );
                         Tip = confirmedBlock;
                     }
-                    else if (t.TotalDifficulty < confirmedBlock.TotalDifficulty)
+                    else if (t.Index < confirmedBlock.Index)
                     {
                         Logger.Verbose(
-                            "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its total " +
-                            "difficulty is more than the previous tip #{PreviousTipIndex} " +
-                            "{PreviousTipHash} ({NewDifficulty} > {PreviousDifficulty})",
+                            "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its index " +
+                            "is more than the previous tip #{PreviousTipIndex} {PreviousTipHash}",
                             confirmedBlock.Index,
                             confirmedBlock.Hash,
                             t.Index,
-                            t.Hash,
-                            confirmedBlock.TotalDifficulty,
-                            t.TotalDifficulty
-                        );
+                            t.Hash);
                         Tip = confirmedBlock;
                     }
                     else
                     {
                         Logger.Verbose(
                             "Although #{BlockIndex} {BlockHash} has been confirmed enough," +
-                            "its difficulty is less than the current tip #{TipIndex} {TipHash} " +
-                            "({Difficulty} < {TipDifficulty})",
+                            "its index is less than the current tip #{TipIndex} {TipHash}",
                             confirmedBlock.Index,
                             confirmedBlock.Hash,
                             t.Index,
-                            t.Hash,
-                            confirmedBlock.TotalDifficulty,
-                            t.TotalDifficulty
-                        );
+                            t.Hash);
                     }
                 }
             }

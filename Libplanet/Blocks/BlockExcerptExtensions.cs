@@ -17,7 +17,6 @@ namespace Libplanet.Blocks
                 $" {nameof(excerpt.ProtocolVersion)} = {excerpt.ProtocolVersion}," +
                 $" {nameof(excerpt.Index)} = {excerpt.Index}," +
                 $" {nameof(excerpt.Hash)} = {excerpt.Hash}," +
-                $" {nameof(excerpt.TotalDifficulty)} = {excerpt.TotalDifficulty}" +
                 " }";
         }
 
@@ -25,8 +24,7 @@ namespace Libplanet.Blocks
         {
             return excerpt.ProtocolVersion.Equals(other.ProtocolVersion)
                 && excerpt.Index.Equals(other.Index)
-                && excerpt.Hash.Equals(other.Hash)
-                && excerpt.TotalDifficulty.Equals(other.TotalDifficulty);
+                && excerpt.Hash.Equals(other.Hash);
         }
     }
 }

@@ -108,15 +108,15 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
-            Block<DumbAction> block1 = MineNext(
+            Block<DumbAction> block1 = ProposeNext(
                 genesis,
                 txs,
-                miner: _fx.Miner.PublicKey,
-                difficulty: _policy.GetNextBlockDifficulty(_blockChain)
-            ).Evaluate(_fx.Miner, _blockChain);
+                miner: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
 
             _blockChain.Append(
                 block1,
+                CreateBlockCommit(block1),
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false

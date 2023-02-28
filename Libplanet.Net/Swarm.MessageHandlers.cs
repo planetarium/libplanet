@@ -31,8 +31,7 @@ namespace Libplanet.Net
                         tip.ProtocolVersion,
                         BlockChain.Genesis.Hash,
                         tip.Index,
-                        tip.Hash,
-                        tip.TotalDifficulty
+                        tip.Hash
                     );
 
                     return Transport.ReplyMessageAsync(
@@ -232,7 +231,7 @@ namespace Libplanet.Net
                 nameof(Messages.BlocksMsg),
                 reqId);
 
-            var blocks = new List<byte[]>();
+            var payloads = new List<byte[]>();
 
             List<BlockHash> hashes = blocksMsg.BlockHashes.ToList();
             int count = 0;
@@ -245,27 +244,31 @@ namespace Libplanet.Net
                 _logger.Verbose(logMsg, count, total, hash, reqId);
                 if (_store.GetBlock<T>(hash) is { } block)
                 {
-                    byte[] payload = Codec.Encode(block.MarshalBlock());
-                    blocks.Add(payload);
+                    byte[] blockPayload = Codec.Encode(block.MarshalBlock());
+                    payloads.Add(blockPayload);
+                    byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
+                        ? commit.ToByteArray()
+                        : new byte[0];
+                    payloads.Add(commitPayload);
                     count++;
                 }
 
-                if (blocks.Count == blocksMsg.ChunkSize)
+                if (payloads.Count / 2 == blocksMsg.ChunkSize)
                 {
-                    var response = new BlocksMsg(blocks);
+                    var response = new BlocksMsg(payloads);
                     _logger.Verbose(
                         "Enqueuing a blocks reply (...{Count}/{Total})...",
                         count,
                         total
                     );
                     await Transport.ReplyMessageAsync(response, message.Identity, default);
-                    blocks.Clear();
+                    payloads.Clear();
                 }
             }
 
-            if (blocks.Any())
+            if (payloads.Any())
             {
-                var response = new BlocksMsg(blocks);
+                var response = new BlocksMsg(payloads);
                 _logger.Verbose(
                     "Enqueuing a blocks reply (...{Count}/{Total}) to {Identity}...",
                     count,
@@ -276,7 +279,7 @@ namespace Libplanet.Net
 
             if (count == 0)
             {
-                var response = new BlocksMsg(blocks);
+                var response = new BlocksMsg(payloads);
                 _logger.Verbose(
                     "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
                     count,

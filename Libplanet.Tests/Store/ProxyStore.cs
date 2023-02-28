@@ -179,5 +179,21 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc cref="IStore.PruneOutdatedChains(bool)"/>
         public void PruneOutdatedChains(bool noopWithoutCanon = false) =>
             Store.PruneOutdatedChains(noopWithoutCanon);
+
+        /// <inheritdoc />
+        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+            Store.GetBlockCommit(blockHash);
+
+        /// <inheritdoc />
+        public void PutBlockCommit(BlockCommit lastCommit) =>
+            Store.PutBlockCommit(lastCommit);
+
+        /// <inheritdoc />
+        public void DeleteBlockCommit(BlockHash blockHash) =>
+            Store.DeleteBlockCommit(blockHash);
+
+        /// <inheritdoc />
+        public IEnumerable<BlockHash> GetBlockCommitHashes() =>
+            Store.GetBlockCommitHashes();
     }
 }

@@ -112,7 +112,7 @@ public class BlockCommand
     {
         // FIXME: Declare a ICommandParameterSet type taking key ID and keystore path instead:
         PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase, ignoreStdin: true);
-        Block<NullAction> genesis = BlockChain<NullAction>.MakeGenesisBlock(
+        Block<NullAction> genesis = BlockChain<NullAction>.ProposeGenesisBlock(
             privateKey: key,
             blockAction: blockPolicyParams.GetBlockAction(),
             nativeTokenPredicate: blockPolicyParams is { } p && p.GetNativeTokens() is { } tokens

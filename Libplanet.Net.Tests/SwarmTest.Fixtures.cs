@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -23,7 +25,7 @@ namespace Libplanet.Net.Tests
 
         private readonly List<Func<Task>> _finalizers;
 
-        private static async Task<(Address, Block<DumbAction>[])>
+        private static (Address, Block<DumbAction>[])
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
             Block<DumbAction>[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
@@ -48,8 +50,10 @@ namespace Libplanet.Net.Tests
                             );
                         }
 
-                        Block<DumbAction> block = await chain.MineBlock(miner);
+                        Block<DumbAction> block = chain.ProposeBlock(
+                            miner, lastCommit: CreateBlockCommit(chain.Tip));
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
+                        chain.Append(block, CreateBlockCommit(block));
                     }
 
                     var blockList = new List<Block<DumbAction>>();
@@ -68,13 +72,41 @@ namespace Libplanet.Net.Tests
             return (blocks[1].Transactions.First().CustomActions.First().TargetAddress, blocks);
         }
 
+        private Task<Swarm<DumbAction>> CreateConsensusSwarm(
+            PrivateKey privateKey = null,
+            AppProtocolVersionOptions appProtocolVersionOptions = null,
+            HostOptions hostOptions = null,
+            SwarmOptions options = null,
+            IBlockPolicy<DumbAction> policy = null,
+            Block<DumbAction> genesis = null,
+            ConsensusReactorOption? consensusReactorOption = null)
+        {
+            return CreateSwarm(
+                privateKey,
+                appProtocolVersionOptions,
+                hostOptions,
+                options,
+                policy,
+                genesis,
+                consensusReactorOption ?? new ConsensusReactorOption
+            {
+                SeedPeers = ImmutableList<BoundPeer>.Empty,
+                ConsensusPeers = ImmutableList<BoundPeer>.Empty,
+                ConsensusPort = 0,
+                ConsensusPrivateKey = new PrivateKey(),
+                ConsensusWorkers = 100,
+                TargetBlockInterval = TimeSpan.FromSeconds(10),
+            });
+        }
+
         private async Task<Swarm<DumbAction>> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
-            Block<DumbAction> genesis = null)
+            Block<DumbAction> genesis = null,
+            ConsensusReactorOption? consensusReactorOption = null)
         {
             policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -92,7 +124,8 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 appProtocolVersionOptions,
                 hostOptions,
-                options);
+                options,
+                consensusReactorOption: consensusReactorOption);
         }
 
         private async Task<Swarm<T>> CreateSwarm<T>(
@@ -100,7 +133,9 @@ namespace Libplanet.Net.Tests
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
-            SwarmOptions options = null)
+            SwarmOptions options = null,
+            ConsensusReactorOption? consensusReactorOption = null
+        )
             where T : IAction, new()
         {
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
@@ -112,11 +147,27 @@ namespace Libplanet.Net.Tests
                 appProtocolVersionOptions,
                 hostOptions,
                 options.MessageTimestampBuffer);
+            ITransport consensusTransport = null;
+            if (consensusReactorOption is { } option)
+            {
+                var consensusHostOptions = new HostOptions(
+                    hostOptions.Host,
+                    hostOptions.IceServers,
+                    option.ConsensusPort);
+                consensusTransport = await NetMQTransport.Create(
+                    privateKey,
+                    appProtocolVersionOptions,
+                    consensusHostOptions,
+                    options.MessageTimestampBuffer);
+            }
+
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey,
                 transport,
-                options);
+                options,
+                consensusTransport: consensusTransport,
+                consensusOption: consensusReactorOption);
             _finalizers.Add(async () =>
             {
                 try

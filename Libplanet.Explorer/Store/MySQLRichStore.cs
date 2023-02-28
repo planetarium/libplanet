@@ -155,6 +155,30 @@ namespace Libplanet.Explorer.Store
             _store.PruneOutdatedChains(noopWithoutCanon);
         }
 
+        /// <inheritdoc />
+        public BlockCommit GetBlockCommit(BlockHash blockHash)
+        {
+            return _store.GetBlockCommit(blockHash);
+        }
+
+        /// <inheritdoc />
+        public void PutBlockCommit(BlockCommit blockCommit)
+        {
+            _store.PutBlockCommit(blockCommit);
+        }
+
+        /// <inheritdoc />
+        public void DeleteBlockCommit(BlockHash blockHash)
+        {
+            _store.DeleteBlockCommit(blockHash);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<BlockHash> GetBlockCommitHashes()
+        {
+            return _store.GetBlockCommitHashes();
+        }
+
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
         public void PutBlock<T>(Block<T> block)
             where T : IAction, new()

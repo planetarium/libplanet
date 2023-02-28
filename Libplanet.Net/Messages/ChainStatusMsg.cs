@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Destructurama.Attributed;
 using Libplanet.Blocks;
 
@@ -12,14 +11,12 @@ namespace Libplanet.Net.Messages
             int protocolVersion,
             BlockHash genesisHash,
             long tipIndex,
-            BlockHash tipHash,
-            BigInteger totalDifficulty)
+            BlockHash tipHash)
         {
             ProtocolVersion = protocolVersion;
             GenesisHash = genesisHash;
             TipIndex = tipIndex;
             TipHash = tipHash;
-            TotalDifficulty = totalDifficulty;
         }
 
         public ChainStatusMsg(byte[][] dataFrames)
@@ -28,7 +25,6 @@ namespace Libplanet.Net.Messages
             GenesisHash = new BlockHash(dataFrames[1]);
             TipIndex = BitConverter.ToInt64(dataFrames[2], 0);
             TipHash = new BlockHash(dataFrames[3]);
-            TotalDifficulty = new BigInteger(dataFrames[4]);
         }
 
         public int ProtocolVersion { get; }
@@ -40,8 +36,6 @@ namespace Libplanet.Net.Messages
 
         [LogAsScalar]
         public BlockHash TipHash { get; }
-
-        public BigInteger TotalDifficulty { get; }
 
         long IBlockExcerpt.Index => TipIndex;
 
@@ -56,7 +50,6 @@ namespace Libplanet.Net.Messages
             GenesisHash.ToByteArray(),
             BitConverter.GetBytes(TipIndex),
             TipHash.ToByteArray(),
-            TotalDifficulty.ToByteArray(),
         };
     }
 }

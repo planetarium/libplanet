@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -13,16 +14,10 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Messages
 {
-    [Collection("NetMQConfiguration")]
-    public class MessageTest : IDisposable
+    public class MessageTest
     {
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
-        }
-
         [Fact]
-        public void BlockHeaderMessage()
+        public void BlockHeaderMsg()
         {
             var privateKey = new PrivateKey();
             var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
@@ -32,7 +27,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
@@ -103,6 +98,53 @@ namespace Libplanet.Net.Tests.Messages
                 default(Address));
             Assert.Throws<ArgumentException>(
                 () => codec.Decode(new NetMQMessage(), true));
+        }
+
+        [Fact]
+        public void GetId()
+        {
+            var privateKey = new PrivateKey();
+            var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234));
+            var apv = new AppProtocolVersion(
+                1,
+                new Bencodex.Types.Integer(0),
+                ImmutableArray<byte>.Empty,
+                default(Address));
+            var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
+            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
+            Assert.Equal(
+                new MessageId(ByteUtil.ParseHex(
+                    "ed3951949a2067ae66ef5c0966239df7fc460b387f0f5f282b0e17d113c07e6d")),
+                message.Id);
+        }
+
+        [Fact]
+        public void InvalidVoteFlagConsensus()
+        {
+            var blockHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+
+            var preVote = TestUtils.CreateVote(
+                TestUtils.PrivateKeys[0],
+                1,
+                0,
+                blockHash,
+                VoteFlag.PreVote);
+
+            var preCommit = TestUtils.CreateVote(
+                TestUtils.PrivateKeys[0],
+                1,
+                0,
+                blockHash,
+                VoteFlag.PreCommit);
+
+            // Valid message cases
+            _ = new ConsensusPreVoteMsg(preVote);
+            _ = new ConsensusPreCommitMsg(preCommit);
+
+            // Invalid message cases
+            Assert.Throws<ArgumentException>(() => new ConsensusPreVoteMsg(preCommit));
+            Assert.Throws<ArgumentException>(() => new ConsensusPreCommitMsg(preVote));
         }
     }
 }

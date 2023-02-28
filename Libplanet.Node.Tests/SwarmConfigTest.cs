@@ -23,18 +23,11 @@ namespace Libplanet.Node.Tests
                 new List<BoundPeer>()
                 {
                     new BoundPeer(
-                        new PrivateKey().PublicKey, new DnsEndPoint("localhost", 0)),
+                        new PrivateKey().PublicKey, new DnsEndPoint("127.0.0.1", 0)),
                     new BoundPeer(
                         new PrivateKey().PublicKey, new DnsEndPoint("planetarium.com", 1004)),
                 },
                 false,
-                new List<BoundPeer>()
-                {
-                    new BoundPeer(
-                        new PrivateKey().PublicKey, new DnsEndPoint("localhost", 0)),
-                    new BoundPeer(
-                        new PrivateKey().PublicKey, new DnsEndPoint("planetarium.com", 1005)),
-                },
             },
             new object[]
             {
@@ -43,19 +36,17 @@ namespace Libplanet.Node.Tests
                 new List<IceServer>(),
                 new List<BoundPeer>(),
                 true,
-                new List<BoundPeer>(),
             },
         };
 
-        [SkippableTheory]
+        [Theory]
         [MemberData(nameof(SerializationData))]
         public void Serialization(
             string host,
             int port,
             IEnumerable<IceServer> iceServers,
             IEnumerable<BoundPeer> seedPeers,
-            bool render,
-            IEnumerable<BoundPeer> staticPeers)
+            bool render)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -93,8 +84,6 @@ namespace Libplanet.Node.Tests
                     DialTimeout = TimeSpan.FromSeconds(112),
                     BlockBroadcastInterval = TimeSpan.FromSeconds(113),
                     TxBroadcastInterval = TimeSpan.FromSeconds(114),
-                    StaticPeers = staticPeers,
-                    StaticPeersMaintainPeriod = TimeSpan.FromSeconds(115),
                     RoutingTableRefreshPeriod = TimeSpan.FromSeconds(116),
                     RoutingTableBoundPeerLifespan = TimeSpan.FromSeconds(117),
                     MaximumPollNumPeers = 118,
@@ -149,8 +138,6 @@ namespace Libplanet.Node.Tests
             Assert.Equal(first.DialTimeout, second.DialTimeout);
             Assert.Equal(first.BlockBroadcastInterval, second.BlockBroadcastInterval);
             Assert.Equal(first.TxBroadcastInterval, second.TxBroadcastInterval);
-            Assert.Equal(first.StaticPeers, second.StaticPeers);
-            Assert.Equal(first.StaticPeersMaintainPeriod, second.StaticPeersMaintainPeriod);
             Assert.Equal(first.RoutingTableRefreshPeriod, second.RoutingTableRefreshPeriod);
             Assert.Equal(first.RoutingTableBoundPeerLifespan, second.RoutingTableBoundPeerLifespan);
             Assert.Equal(first.MaximumPollNumPeers, second.MaximumPollNumPeers);

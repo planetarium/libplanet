@@ -18,7 +18,8 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Initializes a new instance of <see cref="Branch{T}"/> from <paramref name="blocks"/>.
         /// </summary>
-        /// <param name="blocks">An enumerable of <see cref="Block{T}"/>es to convert from.</param>
+        /// <param name="blocks">An enumerable of <see cref="Block{T}"/> and
+        /// <see cref="BlockCommit"/> pairs to convert from.</param>
         /// <exception cref="ArgumentException">Thrown for failing to satisfy any of the following:
         /// <list type="bullet">
         ///     <item><description>
@@ -31,29 +32,34 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </exception>
-        public Branch(IEnumerable<Block<T>> blocks)
+        public Branch(IEnumerable<(Block<T>, BlockCommit)> blocks)
         {
-            ImmutableArray<Block<T>> sorted =
-                blocks.OrderBy(block => block.Index).ToImmutableArray();
+            ImmutableArray<(Block<T>, BlockCommit)> sorted =
+                blocks.OrderBy(block => block.Item1.Index).ToImmutableArray();
             if (!sorted.Any())
             {
                 throw new ArgumentException(
                     $"Given {nameof(blocks)} must not be empty.", nameof(blocks));
             }
             else if (!sorted
-                .Zip(sorted.Skip(1), (prev, next) =>
-                    prev.Index + 1 == next.Index && prev.Hash.Equals(next.PreviousHash))
-                .All(pred => pred))
+                         .Zip(
+                             sorted.Skip(1),
+                             (prev, next) =>
+                                 prev.Item1.Index + 1 == next.Item1.Index &&
+                                 prev.Item1.Hash.Equals(next.Item1.PreviousHash))
+                         .All(pred => pred))
             {
                 throw new ArgumentException(
-                    $"Given {nameof(blocks)} must be consecutive.", nameof(blocks));
+                    $"Given {nameof(blocks)} must be consecutive.",
+                    nameof(blocks));
             }
 
             Blocks = sorted;
         }
 
         /// <summary>
-        /// An <see cref="ImmutableArray{T}"/> of <see cref="Block{T}"/>s guarenteed to satisfy
+        /// An <see cref="ImmutableArray{T}"/> of <see cref="Block{T}"/> and
+        /// <see cref="BlockCommit"/> pairs guaranteed to satisfy
         /// the following properties:
         /// <list type="bullet">
         ///     <item><description>
@@ -69,6 +75,6 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </summary>
-        public ImmutableArray<Block<T>> Blocks { get; }
+        public ImmutableArray<(Block<T>, BlockCommit)> Blocks { get; }
     }
 }

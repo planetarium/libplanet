@@ -66,7 +66,7 @@ namespace Libplanet.Net.Tests.Messages
         private MessageContent CreateMessage(MessageContent.MessageType type)
         {
             var privateKey = new PrivateKey();
-            var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("localhost", 1000));
+            var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("127.0.0.1", 1000));
             IBlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>();
             BlockChain<DumbAction> chain = MakeBlockChain(
                 policy,
@@ -91,8 +91,12 @@ namespace Libplanet.Net.Tests.Messages
                 case MessageContent.MessageType.GetTxs:
                     return new GetTxsMsg(new[] { transaction.Id });
                 case MessageContent.MessageType.Blocks:
-                    return new Libplanet.Net.Messages.BlocksMsg(
-                        new[] { codec.Encode(genesis.MarshalBlock()) });
+                    return new Libplanet.Net.Messages.BlocksMsg(new[]
+                    {
+                        BitConverter.GetBytes(2),
+                        codec.Encode(genesis.MarshalBlock()),
+                        new byte[0],
+                    });
                 case MessageContent.MessageType.Tx:
                     return new Libplanet.Net.Messages.TxMsg(transaction.Serialize(true));
                 case MessageContent.MessageType.FindNeighbors:
@@ -110,8 +114,7 @@ namespace Libplanet.Net.Tests.Messages
                         0,
                         genesis.Hash,
                         chain.Tip.Index,
-                        chain.Tip.Hash,
-                        chain.Tip.TotalDifficulty);
+                        chain.Tip.Hash);
                 case MessageContent.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
                 default:

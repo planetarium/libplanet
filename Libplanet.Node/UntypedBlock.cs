@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -84,20 +83,11 @@ namespace Libplanet.Node
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _header.Timestamp;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _header.Nonce;
-
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _header.Miner;
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _header.PublicKey;
-
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _header.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _header.TotalDifficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _header.PreviousHash;
@@ -105,11 +95,14 @@ namespace Libplanet.Node
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _header.TxHash;
 
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit => _header.LastCommit;
+
         /// <inheritdoc cref="IBlockHeader.Signature"/>
         public ImmutableArray<byte>? Signature => _header.Signature;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash => _header.PreEvaluationHash;
+        public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
         public HashDigest<SHA256> StateRootHash => _header.StateRootHash;

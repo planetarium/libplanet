@@ -109,6 +109,7 @@ namespace Libplanet.Blockchain
             throw new IncompleteBlockStatesException(offset);
         }
 
+        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet(
             BlockHash offset,
             ValidatorSetStateCompleter<T> stateCompleter)

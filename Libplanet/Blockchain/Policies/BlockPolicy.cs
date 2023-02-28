@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -18,6 +17,8 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
+        public static readonly TimeSpan DefaultTargetBlockInterval = TimeSpan.FromSeconds(5);
+
         private readonly Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>
             _validateNextBlockTx;
 
@@ -28,8 +29,6 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
-        private readonly Func<BlockChain<T>, long> _getNextBlockDifficulty;
-        private readonly Func<long, int> _getMinBlockProtocolVersion;
 
         /// <summary>
         /// <para>
@@ -45,15 +44,8 @@ namespace Libplanet.Blockchain.Policies
         /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
-        /// Set to <see cref="DifficultyAdjustment{T}.DefaultTargetBlockInterval"/>
-        /// by default.
+        /// Set to <see cref="DefaultTargetBlockInterval"/> by default.
         /// </param>
-        /// <param name="difficultyStability">Goes to <see cref="DifficultyStability"/>.
-        /// Set to <see cref="DifficultyAdjustment{T}.DefaultDifficultyStability"/>
-        /// by default.</param>
-        /// <param name="minimumDifficulty">Goes to <see cref="MinimumDifficulty"/>.
-        /// Set to <see cref="DifficultyAdjustment{T}.DefaultMinimumDifficulty"/>
-        /// by default.</param>
         /// <param name="validateNextBlockTx">The predicate that determines if
         /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
         /// <see langword="null"/> by default.</param>
@@ -61,8 +53,6 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
         /// where block's hash algorithm type, bytes count, and transactions count are validated.
         /// </param>
-        /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="getMaxTransactionsBytes">The function determining the maximum size of
         /// <see cref="Block{T}.Transactions"/> in number of <c>byte</c>s given
         /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxTransactionsBytes"/>.
@@ -80,45 +70,29 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
-        /// <param name="getMinBlockProtocolVersion">The function determining the minimum
-        /// block protocol version of a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s
-        /// index.  Set to a constant function of <c>0</c> by default.</param>
         /// <param name="nativeTokens">A fixed set of <see cref="Currency"/> objects that are
         /// supported by the blockchain as first-class citizens.  Empty by default.</param>
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
-            long? difficultyStability = null,
-            long? minimumDifficulty = null,
             Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
                 validateNextBlock = null,
-            IComparer<IBlockExcerpt>? canonicalChainComparer = null,
             Func<long, long>? getMaxTransactionsBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
-            Func<long, int>? getMinBlockProtocolVersion = null,
             IImmutableSet<Currency>? nativeTokens = null)
         {
             BlockAction = blockAction;
-            BlockInterval = blockInterval
-                ?? DifficultyAdjustment<T>.DefaultTargetBlockInterval;
-            DifficultyStability = difficultyStability
-                ?? DifficultyAdjustment<T>.DefaultDifficultyStability;
-            MinimumDifficulty = minimumDifficulty
-                ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
-            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
+            BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
             _getMaxTransactionsBytes = getMaxTransactionsBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
-            _getNextBlockDifficulty = DifficultyAdjustment<T>.AlgorithmFactory(
-                BlockInterval, DifficultyStability, MinimumDifficulty);
-            _getMinBlockProtocolVersion = getMinBlockProtocolVersion ?? (_ => 0);
 
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             if (validateNextBlock is { } vnb)
@@ -134,21 +108,10 @@ namespace Libplanet.Blockchain.Policies
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
-                    int minBlockProtocolVersion = GetMinBlockProtocolVersion(block.Index);
 
                     long blockBytes = BlockMarshaler.MarshalTransactions<T>(block.Transactions)
                         .EncodingLength;
-                    if (block.ProtocolVersion < minBlockProtocolVersion)
-                    {
-                        // NOTE: InvalidBlockProtocolVersionException would be more appropriate,
-                        // but it is not a BlockPolicyViolationException; as this is a temporary
-                        // solution to allow migration, we just use BlockPolicyViolationException.
-                        return new BlockPolicyViolationException(
-                            $"The minimum block protocol version of block #{block.Index} is " +
-                            $"{minBlockProtocolVersion} while the given block has " +
-                            $"block protocol versoin {block.ProtocolVersion}.");
-                    }
-                    else if (blockBytes > maxTransactionsBytes)
+                    if (blockBytes > maxTransactionsBytes)
                     {
                         return new InvalidBlockBytesLengthException(
                             $"The size of block #{block.Index} {block.Hash} is too large where " +
@@ -206,27 +169,8 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.
-        /// See the corresponding parameter description for
-        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
         /// </summary>
         public TimeSpan BlockInterval { get; }
-
-        /// <summary>
-        /// Stability of a series of difficulties for a <see cref="BlockChain{T}"/>.
-        /// See the corresponding parameter description for
-        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
-        /// </summary>
-        public long DifficultyStability { get; }
-
-        /// <summary>
-        /// Minimum difficulty for a <see cref="Block{T}"/>.  See the corresponding
-        /// parameter description for <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for
-        /// full detail.
-        /// </summary>
-        public long MinimumDifficulty { get; }
-
-        /// <inheritdoc/>
-        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(
@@ -244,10 +188,6 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
-            _getNextBlockDifficulty(blockChain);
-
-        /// <inheritdoc/>
         [Pure]
         public long GetMaxTransactionsBytes(long index) => _getMaxTransactionsBytes(index);
 
@@ -263,10 +203,5 @@ namespace Libplanet.Blockchain.Policies
         [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
-
-        /// <inheritdoc/>
-        [Pure]
-        public int GetMinBlockProtocolVersion(long index)
-            => _getMinBlockProtocolVersion(index);
     }
 }

@@ -22,20 +22,6 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The height of the block.",
                 resolve: x => x.Source.Index
             );
-            Field<NonNullGraphType<LongGraphType>>(
-                name: "Difficulty",
-                description: "The mining difficulty that the block's nonce has to satisfy.",
-                resolve: x => x.Source.Difficulty);
-            Field<NonNullGraphType<BigIntGraphType>>(
-                name: "TotalDifficulty",
-                description: "The total mining difficulty since the genesis including " +
-                    "the block's difficulty.",
-                resolve: x => x.Source.TotalDifficulty);
-            Field<NonNullGraphType<ByteStringType>>(
-                name: "Nonce",
-                description: "The proof-of-work nonce which satisfies the required difficulty.",
-                resolve: ctx => ctx.Source.Nonce.ToByteArray()
-            );
             Field<NonNullGraphType<AddressType>>(
                 name: "Miner",
                 description: "The address of the miner.",
@@ -75,6 +61,10 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "transactions",
                 description: "Transactions belonging to the block."
             );
+            Field<BlockCommitType>(
+                name: "LastCommit",
+                description: "The LastCommit of the block.",
+                resolve: ctx => ctx.Source.LastCommit);
 
             Name = "Block";
         }

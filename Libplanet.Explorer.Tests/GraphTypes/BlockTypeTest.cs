@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Store;
@@ -20,16 +22,24 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         public async void Query()
         {
             var privateKey = new PrivateKey();
+            var lastBlockHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
+            var lastVotes = ImmutableArray.Create(
+                new VoteMetadata(
+                    1,
+                    0,
+                    lastBlockHash,
+                    DateTimeOffset.Now,
+                    privateKey.PublicKey,
+                    VoteFlag.PreCommit).Sign(privateKey));
+            var lastBlockCommit = new BlockCommit(1, 0, lastBlockHash, lastVotes);
             var preEval = new BlockContent<NullAction>(
-                    new BlockMetadata(
-                index: 1,
-                timestamp: DateTimeOffset.UtcNow,
-                publicKey: privateKey.PublicKey,
-                difficulty: 1,
-                totalDifficulty: 1,
-                previousHash: new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                txHash: null))
-                .Mine();
+                new BlockMetadata(
+                    index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: privateKey.PublicKey,
+                    previousHash: lastBlockHash,
+                    txHash: null,
+                    lastCommit: lastBlockCommit)).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);
@@ -41,14 +51,27 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 @"{
                     index
                     hash
-                    nonce
-                    difficulty
-                    totalDifficulty
                     miner
                     publicKey
                     timestamp
                     stateRootHash
                     signature
+                    lastCommit
+                    {
+                        height
+                        round
+                        blockHash
+                        votes
+                        {
+                            height
+                            round
+                            blockHash
+                            timestamp
+                            validatorPublicKey
+                            flag
+                            signature
+                        }
+                    }
                 }";
 
             var store = new MemoryStore();
@@ -65,22 +88,38 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 ByteUtil.Hex(block.Hash.ToByteArray()),
                 resultData["hash"]);
-            Assert.Equal(block.Difficulty, resultData["difficulty"]);
-            Assert.Equal(
-                block.TotalDifficulty,
-                resultData["totalDifficulty"]);
             Assert.Equal(
                 block.Miner.ToString(),
                 resultData["miner"]);
-            Assert.Equal(
-                ByteUtil.Hex(block.Nonce.ToByteArray()),
-                resultData["nonce"]);
             Assert.Equal(
                 new DateTimeOffsetGraphType().Serialize(block.Timestamp),
                 resultData["timestamp"]);
             Assert.Equal(
                 ByteUtil.Hex(block.StateRootHash.ToByteArray()),
                 resultData["stateRootHash"]);
+
+            var expectedLastCommit = new Dictionary<string, object>()
+            {
+                { "height", lastBlockCommit.Height },
+                { "round", lastBlockCommit.Round },
+                { "blockHash", lastBlockCommit.BlockHash.ToString() },
+                { "votes", new object[]
+                    {
+                        new Dictionary<string, object>()
+                        {
+                            { "height", lastVotes[0].Height },
+                            { "round", lastVotes[0].Round },
+                            { "blockHash", lastVotes[0].BlockHash.ToString() },
+                            { "timestamp", new DateTimeOffsetGraphType().Serialize(lastVotes[0].Timestamp) },
+                            { "validatorPublicKey", lastVotes[0].ValidatorPublicKey.ToString() },
+                            { "flag", lastVotes[0].Flag.ToString() },
+                            { "signature", ByteUtil.Hex(lastVotes[0].Signature) },
+                        }
+                    }
+                },
+            };
+
+            Assert.Equal(expectedLastCommit, resultData["lastCommit"]);
         }
     }
 }

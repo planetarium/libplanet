@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
@@ -213,6 +214,19 @@ namespace Libplanet.Consensus
                 ? throw new InvalidOperationException(
                     "Cannot select a proposer from an empty list of validators.")
                 : Validators[(int)((height + round) % Validators.Count)];
+        }
+
+        /// <summary>
+        /// Checks whether <see cref="BlockCommit.Votes"/> is ordered
+        /// by <see cref="Address"/> of each <see cref="Vote.ValidatorPublicKey"/>.
+        /// </summary>
+        /// <param name="blockCommit">The <see cref="BlockCommit"/> to check.</param>
+        /// <returns><see langword="true"/> if the <see cref="BlockCommit.Votes"/> is
+        /// ordered, <see langword="false"/> otherwise.</returns>
+        public bool ValidateBlockCommitValidators(BlockCommit blockCommit)
+        {
+            return Validators.Select(validator => validator.PublicKey).SequenceEqual(
+                blockCommit.Votes.Select(vote => vote.ValidatorPublicKey).ToList());
         }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Crypto;
 
@@ -51,6 +50,30 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
+        /// Creates a <see cref="BlockHeader"/> instance from the given
+        /// <paramref name="preEvaluationBlockHeader"/> and <paramref name="stateRootHash"/>.
+        /// It also checks the sanity of the given <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="preEvaluationBlockHeader">The pre-evaluation block header.</param>
+        /// <param name="stateRootHash">The state root hash.</param>
+        /// <param name="signature">The block signature.</param>
+        /// <param name="hash">The block hash to check.</param>
+        /// <exception cref="InvalidBlockSignatureException">Thrown when
+        /// the <paramref name="signature"/> signature is invalid.</exception>
+        /// <exception cref="InvalidBlockHashException">Thrown when the given block
+        /// <paramref name="hash"/> is consistent with other arguments.</exception>
+        public BlockHeader(
+            PreEvaluationBlockHeader preEvaluationBlockHeader,
+            HashDigest<SHA256> stateRootHash,
+            ImmutableArray<byte>? signature,
+            BlockHash hash)
+            : this(
+                preEvaluationBlockHeader,
+                (stateRootHash, signature, hash))
+        {
+        }
+
+        /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance with its
         /// <paramref name="preEvaluationBlockHeader"/> and <paramref name="proof"/>.
         /// </summary>
@@ -73,13 +96,19 @@ namespace Libplanet.Blocks
         {
             BlockHash expectedHash =
                 preEvaluationBlockHeader.DeriveBlockHash(proof.StateRootHash, proof.Signature);
-            if (!preEvaluationBlockHeader.VerifySignature(proof.Signature, proof.StateRootHash))
+            if (preEvaluationBlockHeader.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                // Skip verifying signature for PoW blocks due to change of the block structure.
+                // If verification is required, use older version of LibPlanet(<0.43).
+            }
+            else if (
+                !preEvaluationBlockHeader.VerifySignature(proof.Signature, proof.StateRootHash))
             {
                 long idx = preEvaluationBlockHeader.Index;
                 string msg = preEvaluationBlockHeader.ProtocolVersion >= 2
                     ? $"The block #{idx} #{proof.Hash}'s signature is invalid."
                     : $"The block #{idx} #{proof.Hash} cannot be signed as its protocol version " +
-                        $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
+                      $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
                 throw new InvalidBlockSignatureException(
                     msg,
                     preEvaluationBlockHeader.PublicKey,
@@ -118,23 +147,16 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _preEvaluationBlockHeader.PublicKey;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _preEvaluationBlockHeader.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _preEvaluationBlockHeader.TotalDifficulty;
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _preEvaluationBlockHeader.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _preEvaluationBlockHeader.TxHash;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _preEvaluationBlockHeader.Nonce;
+        public BlockCommit? LastCommit => _preEvaluationBlockHeader.LastCommit;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash =>
+        public HashDigest<SHA256> PreEvaluationHash =>
             _preEvaluationBlockHeader.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>

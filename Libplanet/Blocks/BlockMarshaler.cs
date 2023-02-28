@@ -26,9 +26,9 @@ namespace Libplanet.Blocks
         private static readonly byte[] ProtocolVersionKey = { 0x00 };
         private static readonly byte[] IndexKey = { 0x69 }; // 'i'
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
-        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
-        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'
+        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'; Legacy, unused.
+        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'; Legacy, unused.
+        private static readonly byte[] NonceKey = { 0x6e }; // 'n'; Legacy, unused.
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
@@ -37,6 +37,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
+        private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {
@@ -44,9 +45,7 @@ namespace Libplanet.Blocks
                 metadata.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture);
             Dictionary dict = Dictionary.Empty
                 .Add(IndexKey, metadata.Index)
-                .Add(TimestampKey, timestamp)
-                .Add(DifficultyKey, metadata.Difficulty)
-                .Add(TotalDifficultyKey, metadata.TotalDifficulty);
+                .Add(TimestampKey, timestamp);
 
             if (metadata.ProtocolVersion != 0)
             {
@@ -67,21 +66,25 @@ namespace Libplanet.Blocks
                 ? dict.Add(PublicKeyKey, pubKey.Format(compress: true))
                 : dict.Add(MinerKey, metadata.Miner.ByteArray);
 
+            if (metadata.LastCommit is { } commit)
+            {
+                dict = dict.Add(LastCommitKey, commit.ByteArray);
+            }
+
             return dict;
         }
 
         public static Dictionary MarshalPreEvaluationBlockHeader(
             Dictionary marshaledMetadata,
-            Nonce nonce,
-            ImmutableArray<byte> preEvaluationHash
+            HashDigest<SHA256> preEvaluationHash
         )
         {
-            Dictionary dict = marshaledMetadata
-                .Add(NonceKey, nonce.ByteArray);
+            Dictionary dict = marshaledMetadata;
+            ImmutableArray<byte> preEvaluationHashBytes = preEvaluationHash.ByteArray;
 
-            if (!preEvaluationHash.IsDefaultOrEmpty)
+            if (!preEvaluationHashBytes.IsDefaultOrEmpty)
             {
-                dict = dict.Add(PreEvaluationHashKey, preEvaluationHash);
+                dict = dict.Add(PreEvaluationHashKey, preEvaluationHashBytes);
             }
 
             return dict;
@@ -91,7 +94,6 @@ namespace Libplanet.Blocks
         {
             return MarshalPreEvaluationBlockHeader(
                 MarshalBlockMetadata(header),
-                header.Nonce,
                 header.PreEvaluationHash
             );
         }
@@ -182,29 +184,33 @@ namespace Libplanet.Blocks
                     CultureInfo.InvariantCulture),
                 miner: miner,
                 publicKey: publicKey,
-                difficulty: marshaled.GetValue<Integer>(DifficultyKey),
-                totalDifficulty: marshaled.GetValue<Integer>(TotalDifficultyKey),
                 previousHash: marshaled.ContainsKey(PreviousHashKey)
                     ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
                     : (BlockHash?)null,
                 txHash: marshaled.ContainsKey(TxHashKey)
                     ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
-                    : (HashDigest<SHA256>?)null);
+                    : (HashDigest<SHA256>?)null,
+                lastCommit: marshaled.ContainsKey(LastCommitKey)
+                    ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
+                    : (BlockCommit?)null);
 #pragma warning restore SA1118
         }
 
-        public static Nonce UnmarshalNonce(Dictionary marshaled) =>
-            new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);
-
-        public static ImmutableArray<byte> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
-            marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray;
+        public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
+            new HashDigest<SHA256>(marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray);
 
         public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(
             Dictionary marshaled)
         {
             return new PreEvaluationBlockHeader(
                     metadata: UnmarshalBlockMetadata(marshaled),
-                    proof: (UnmarshalNonce(marshaled), UnmarshalPreEvaluationHash(marshaled)));
+                    preEvaluationHash: UnmarshalPreEvaluationHash(marshaled));
+        }
+
+        public static BlockHash UnmarshalBlockHash(Dictionary marshaledBlock)
+        {
+            Dictionary blockHeader = marshaledBlock.GetValue<Dictionary>(HeaderKey);
+            return UnmarshalBlockHeaderHash(blockHeader);
         }
 
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>

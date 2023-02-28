@@ -7,7 +7,6 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
-using Serilog;
 
 namespace Libplanet.Action
 {
@@ -302,10 +301,6 @@ namespace Libplanet.Action
         [Pure]
         public IAccountStateDelta SetValidator(Validator validator)
         {
-            Log.Debug(
-                "Update validator set with validator {PublicKey} {Power}",
-                validator.PublicKey,
-                validator.Power);
             return UpdateValidatorSet(GetValidatorSet().Update(validator));
         }
 

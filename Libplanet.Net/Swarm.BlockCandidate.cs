@@ -30,10 +30,10 @@ namespace Libplanet.Net
                         _logger.Information(
                             "Consuming branch with root #{RootIndex} {RootHash} " +
                             "and tip #{TipIndex} {TipHash}",
-                            root.Index,
-                            root.Hash,
-                            tip.Index,
-                            tip.Hash);
+                            root.Item1.Index,
+                            root.Item1.Hash,
+                            tip.Item1.Index,
+                            tip.Item1.Hash);
                         _ = BlockCandidateProcess(
                             branch,
                             cancellationToken);
@@ -85,12 +85,9 @@ namespace Libplanet.Net
                 return false;
             }
 
-            var canonComparer = BlockChain.Policy.CanonicalChainComparer;
-
             if (synced is { } syncedB
                 && !syncedB.Id.Equals(BlockChain?.Id)
-                && (canonComparer.Compare(BlockChain.Tip, syncedB.Tip) < 0)
-            )
+                && BlockChain.Tip.Index < syncedB.Tip.Index)
             {
                 _logger.Debug(
                     "Swapping chain {ChainIdA} with chain {ChainIdB}...",
@@ -124,9 +121,12 @@ namespace Libplanet.Net
             bool renderBlocks = true;
 
             Block<T> oldTip = workspace.Tip;
-            Block<T> newTip = candidate.Blocks.Last();
-            List<Block<T>> blocks = candidate.Blocks.ToList();
-            Block<T> branchpoint = FindBranchpoint(oldTip, newTip, blocks);
+            Block<T> newTip = candidate.Blocks.Last().Item1;
+            List<(Block<T>, BlockCommit)> blocks = candidate.Blocks.ToList();
+            Block<T> branchpoint = FindBranchpoint(
+                 oldTip,
+                 newTip,
+                 blocks.Select(pair => pair.Item1).ToList());
 
             if (oldTip is null || branchpoint.Equals(oldTip))
             {
@@ -168,17 +168,18 @@ namespace Libplanet.Net
             }
 
             if (!(workspace.Tip is null) &&
-                !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
+                !workspace.Tip.Hash.Equals(blocks.First().Item1.PreviousHash))
             {
                 blocks = blocks.Skip(1).ToList();
             }
 
             try
             {
-                foreach (var block in blocks)
+                foreach (var (block, commit) in blocks)
                 {
                     workspace.Append(
                         block,
+                        commit,
                         evaluateActions: evaluateActions,
                         renderBlocks: renderBlocks,
                         renderActions: renderActions);
@@ -292,11 +293,10 @@ namespace Libplanet.Net
             }
 
             var sessionRandom = new Random();
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
 
             int sessionId = sessionRandom.Next();
 
-            if (canonComparer.Compare(demand, BlockChain.Tip) <= 0)
+            if (demand.Index <= BlockChain.Tip.Index)
             {
                 return false;
             }
@@ -396,7 +396,7 @@ namespace Libplanet.Net
                 return false;
             }
 
-            IAsyncEnumerable<Block<T>> blocksAsync = GetBlocksAsync(
+            IAsyncEnumerable<(Block<T>, BlockCommit)> blocksAsync = GetBlocksAsync(
                 peer,
                 hashes.Select(pair => pair.Item2),
                 cancellationToken);

@@ -40,9 +40,9 @@ namespace Libplanet.Node
         public int BlockLocatorIndexSampleThreshold { get; set; } = 10;
 
         /// <summary>
-        /// Determines the host.  Set to <c>"localhost"</c> by default.
+        /// Determines the host.  Set to <c>"127.0.0.1"</c> by default.
         /// </summary>
-        public string? Host { get; set; } = "localhost";
+        public string? Host { get; set; } = "127.0.0.1";
 
         /// <summary>
         /// Determines the <em>incoming</em> port.  Set to <c>0</c> by default.

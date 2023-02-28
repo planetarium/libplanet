@@ -96,6 +96,7 @@ namespace Libplanet.Store
         private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
         private static readonly UPath TxIdBlockHashRootPath = UPath.Root / "txbindex";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
+        private static readonly UPath LastCommitRootPath = UPath.Root / "lastcommit";
         private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
@@ -106,6 +107,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _txExecutions;
         private readonly SubFileSystem _txIdBlockHashIndex;
         private readonly SubFileSystem _blockPerceptions;
+        private readonly SubFileSystem _blockCommits;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
@@ -211,6 +213,8 @@ namespace Libplanet.Store
             _txIdBlockHashIndex = new SubFileSystem(_root, TxIdBlockHashRootPath, owned: false);
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
+            _root.CreateDirectory(LastCommitRootPath);
+            _blockCommits = new SubFileSystem(_root, LastCommitRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
@@ -633,6 +637,67 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc />
+        public override BlockCommit GetBlockCommit(BlockHash blockHash)
+        {
+            UPath path = LastCommitPath(blockHash);
+            if (!_blockCommits.FileExists(path))
+            {
+                return null;
+            }
+
+            byte[] bytes;
+            try
+            {
+                bytes = _blockCommits.ReadAllBytes(path);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            BlockCommit blockCommit = new BlockCommit(bytes);
+            return blockCommit;
+        }
+
+        /// <inheritdoc />
+        public override void PutBlockCommit(BlockCommit blockCommit)
+        {
+            UPath path = LastCommitPath(blockCommit.BlockHash);
+            if (_blockCommits.FileExists(path))
+            {
+                return;
+            }
+
+            WriteContentAddressableFile(_blockCommits, path, blockCommit.ToByteArray());
+        }
+
+        /// <inheritdoc />
+        public override void DeleteBlockCommit(BlockHash blockHash)
+        {
+            UPath path = LastCommitPath(blockHash);
+            if (!_blockCommits.FileExists(path))
+            {
+                return;
+            }
+
+            _blockCommits.DeleteFile(path);
+        }
+
+        /// <inheritdoc/>
+        public override IEnumerable<BlockHash> GetBlockCommitHashes()
+        {
+            var hashes = new List<BlockHash>();
+
+            foreach (UPath path in _blockCommits.EnumerateFiles(UPath.Root))
+            {
+                string name = path.FullName.Split('/').LastOrDefault();
+                hashes.Add(new BlockHash(ByteUtil.ParseHex(name)));
+            }
+
+            return hashes.AsEnumerable();
+        }
+
         /// <inheritdoc/>
         public override long CountBlocks()
         {
@@ -756,6 +821,11 @@ namespace Libplanet.Store
         {
             string idHex = txid.ToHex();
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
+        }
+
+        private UPath LastCommitPath(in BlockHash blockHash)
+        {
+            return UPath.Combine(UPath.Root, blockHash.ToString());
         }
 
         private UPath TxExecutionPath(in BlockHash blockHash, in TxId txid) =>
