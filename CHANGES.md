@@ -13,114 +13,114 @@ and the specification might change in the near future.
 
 ### Deprecated APIs
 
- -  Removed `TotalDifficultyComparer` class.  [[#PBFT]]
+ -  Removed `TotalDifficultyComparer` class.  [[#2872]]
  -  Removed `IBlockPolicy<T>.GetNextBlockDifficulty()` interface method
-    and all its implementations.  [[#PBFT]]
+    and all its implementations.  [[#2872]]
  -  Removed `IBlockPolicy.TotalDifficulty` interface property and its
-    implementations.  [[#PBFT]]
- -  Removed all total difficulty related parameters.  [[#PBFT]]
+    implementations.  [[#2872]]
+ -  Removed all total difficulty related parameters.  [[#2872]]
  -  Removed `IBlockPolicy.Difficulty` interface property and its
-    implementations.  [[#PBFT]]
+    implementations.  [[#2872]]
  -  Removed `IPreEvaluationBlockHeader.Nonce` interface property and
-    its implementations.  [[#PBFT]]
- -  Removed `InvalidBlockTotalDifficultyException` class.  [[#PBFT]]
- -  Removed `InvalidBlockDifficultyException` class.  [[#PBFT]]
+    its implementations.  [[#2872]]
+ -  Removed `InvalidBlockTotalDifficultyException` class.  [[#2872]]
+ -  Removed `InvalidBlockDifficultyException` class.  [[#2872]]
  -  Removed `BlockChain<T>.MakeGenesisBlock()` and `BlockChain<T>.MineBlock()`
-    methods.  [[#PBFT]]
- -  Removed `HashAlgorithmType` class.  [[#PBFT]]
- -  Removed `PreEvaluationBlock<T>(IBlockContent<T>)` constructor.  [[#PBFT]]
+    methods.  [[#2872]]
+ -  Removed `HashAlgorithmType` class.  [[#2872]]
+ -  Removed `PreEvaluationBlock<T>(IBlockContent<T>)` constructor.  [[#2872]]
  -  Removed `IBlockPolicy.GetMinBlockProtocolVersion()` interface method.
-    [[#PBFT]]
+    [[#2872]]
 
 ### Backward-incompatible API changes
 
- -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
- -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
+ -  Added `LastCommit` property to `IBlockMetadata`.  [[#2872]]
+ -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#2872]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
-    `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
- -  Added `IStore.GetBlockCommit(BlockHash)` method.  [[#PBFT]]
- -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
- -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
- -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
+    `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#2872]]
+ -  Added `IStore.GetBlockCommit(BlockHash)` method.  [[#2872]]
+ -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#2872]]
+ -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#2872]]
+ -  Added `IStore.GetBlockCommitHashes()` method.  [[#2872]]
  -  `BlockMetadata.MakeCandidateData()` now uses a SHA256 hash of `LastCommit`
     for creating a candidate data for `PreEvaluationBlockHeader<T>`. Due to this
     change, `PreEvaluationHash` results different with previous block hash
-    computation if the `BlockMetadata.LastCommit` is not null.  [[#PBFT]]
- -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+    computation if the `BlockMetadata.LastCommit` is not null.  [[#2872]]
+ -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#2872]]
  -  Changed `BlockPolicy<T>()` constructor not to take
     `Func<long, int>` type parameter named `getMinBlockProtocolVersion`.
-    [[#PBFT]]
+    [[#2872]]
 
 ### Backward-incompatible network protocol changes
 
  -  (Libplanet.Net) Values for `Message.MessageType` are updated to
-    use entirely different values.  [[#PBFT]]
+    use entirely different values.  [[#2872]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
- -  Added `VoteFlag` enum.  [[#PBFT]]
- -  Added `IVoteMetadata` interface.  [[#PBFT]]
- -  Added `VoteMetadata` class.  [[#PBFT]]
- -  Added `Vote` class.  [[#PBFT]]
- -  Added `BlockContent.Propose()` method.  [[#PBFT]]
- -  Added `BlockCommit` class.  [[#PBFT]]
- -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
- -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
- -  Added `BlockCommitExtensions` class.  [[#PBFT]]
- -  Added `ContextTimeoutOption` class.  [[#PBFT]]
- -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#PBFT]]
- -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
- -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
- -  Added `BlockChain<T>.ValidateBlockCommit()` method.  [[#PBFT]]
- -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
+ -  Added `VoteFlag` enum.  [[#2872]]
+ -  Added `IVoteMetadata` interface.  [[#2872]]
+ -  Added `VoteMetadata` class.  [[#2872]]
+ -  Added `Vote` class.  [[#2872]]
+ -  Added `BlockContent.Propose()` method.  [[#2872]]
+ -  Added `BlockCommit` class.  [[#2872]]
+ -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#2872]]
+ -  Added `BlockChain.ProposeBlock()` method.  [[#2872]]
+ -  Added `BlockCommitExtensions` class.  [[#2872]]
+ -  Added `ContextTimeoutOption` class.  [[#2872]]
+ -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#2872]]
+ -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#2872]]
+ -  Added `InvalidBlockCommitException` class.  [[#2872]]
+ -  Added `BlockChain<T>.ValidateBlockCommit()` method.  [[#2872]]
+ -  (Libplanet.Net) Added `IReactor` interface.  [[#2872]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
-    `IReactor` interface.  [[#PBFT]]
- -  (Libplanet.Net) Added `ConsensusContext` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `Context` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `Step` enum.  [[#PBFT]]
+    `IReactor` interface.  [[#2872]]
+ -  (Libplanet.Net) Added `ConsensusContext` class.  [[#2872]]
+ -  (Libplanet.Net) Added `Context` class.  [[#2872]]
+ -  (Libplanet.Net) Added `Step` enum.  [[#2872]]
  -  (Libplanet.Net) Added `ConsensusMessage` abstract class which inherits
     `Message` abstract class.  And added classes which implements
-    `ConsensusMessage` abstract class.  [[#PBFT]]
+    `ConsensusMessage` abstract class.  [[#2872]]
      -  Added `ConsensusProposal` class.
      -  Added `ConsensusVote` class.
      -  Added `ConsensusCommit` class.
- -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#PBFT]]
+ -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#2872]]
      -  Added `ConsensusProposal` of value `0x40`.
      -  Added `ConsensusVote` of value `0x41`.
      -  Added `ConsensusCommit` of value `0x42`.
- -  (Libplanet.Net) Added `ConsensusReactorOption` struct.  [[#PBFT]]
- -  (Libplanet.Net) Added `InvalidConsensusMessageException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `InvalidHeightIncreasingException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `Message.Id` property.  [[#PBFT]]
- -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `ProposalMetadata` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `NetMQMessageCodec.ParseMessageType()`.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `BoundPeerType` class.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `BlockCommitType` class.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `VoteFlagType` class.  [[#PBFT]]
- -  (Libplanet.Explorer) Added `VoteType` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `ConsensusReactorOption` struct.  [[#2872]]
+ -  (Libplanet.Net) Added `InvalidConsensusMessageException` class.  [[#2872]]
+ -  (Libplanet.Net) Added `InvalidHeightIncreasingException` class.  [[#2872]]
+ -  (Libplanet.Net) Added `Message.Id` property.  [[#2872]]
+ -  (Libplanet.Net) Added `Gossip` class.  [[#2872]]
+ -  (Libplanet.Net) Added `Proposal` class.  [[#2872]]
+ -  (Libplanet.Net) Added `ProposalMetadata` class.  [[#2872]]
+ -  (Libplanet.Net) Added `NetMQMessageCodec.ParseMessageType()`.  [[#2872]]
+ -  (Libplanet.Explorer) Added `BoundPeerType` class.  [[#2872]]
+ -  (Libplanet.Explorer) Added `BlockCommitType` class.  [[#2872]]
+ -  (Libplanet.Explorer) Added `VoteFlagType` class.  [[#2872]]
+ -  (Libplanet.Explorer) Added `VoteType` class.  [[#2872]]
  -  (Libplanet.Explorer) Added `BlockCommitType` as a return of `BlockQuery`.
-    [[#PBFT]]
+    [[#2872]]
 
 ### Behavioral changes
 
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
-    invalid.  [[#PBFT]]
+    invalid.  [[#2872]]
  -  `BlockChain<T>.Append()` has new parameter `BlockCommit blockCommit`, which
     is a set of commits for given block. `BlockCommit` is used for checks
-    whether a block is committed in consensus.  [[#PBFT]]
+    whether a block is committed in consensus.  [[#2872]]
  -  `BlockChain<T>.Append()` method became to throw
     `InvalidBlockCommitException` when the given `BlockCommit` is invalid with
-    given block.  [[#PBFT]]
+    given block.  [[#2872]]
 
 ### Bug fixes
 
  -  (Libplanet.Explorer) Fixed a bug where `stateQuery` hadn't work
-    correctly in some situations.  [[#PBFT]]
+    correctly in some situations.  [[#2872]]
 
 ### Dependencies
  -  Added *[@planetarium/account]* npm package.  [[#2848]]
@@ -128,7 +128,7 @@ and the specification might change in the near future.
 ### CLI tools
 
 [#2848]: https://github.com/planetarium/libplanet/pull/2848
-[#PBFT]: https://github.com/planetarium/libplanet/pull/PBFT
+[#2872]: https://github.com/planetarium/libplanet/pull/2872
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
 
