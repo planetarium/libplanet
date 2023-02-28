@@ -330,10 +330,6 @@ namespace Libplanet.Net.Consensus
         private async Task HandleHaveAsync(Message msg, CancellationToken ctx)
         {
             var haveMessage = (HaveMessage)msg.Content;
-            if (!_table.Contains(msg.Remote))
-            {
-                await _protocol.AddPeersAsync(new[] { msg.Remote }, TimeSpan.FromSeconds(1), ctx);
-            }
 
             await ReplyMessagePongAsync(msg, ctx);
             MessageId[] idsToGet =
