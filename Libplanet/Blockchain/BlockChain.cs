@@ -1792,8 +1792,15 @@ namespace Libplanet.Blockchain
             if (block.PreviousHash is { } previousHash)
             {
                 return new InvalidBlockPreviousHashException(
-                    $"A genesis block should not have previous hash, " +
-                    $"but its value is {block.PreviousHash}.");
+                    "A genesis block should not have previous hash, " +
+                    $"but its value is {previousHash}.");
+            }
+
+            if (block.LastCommit is { } lastCommit)
+            {
+                return new InvalidBlockLastCommitException(
+                    "A genesis block should not have lastCommit, " +
+                    $"but its value is {lastCommit}.");
             }
 
             return null;
