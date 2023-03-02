@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -55,9 +56,16 @@ namespace Libplanet.Net
         {
             if (_table.ContainsKey(blockHeader))
             {
+                var root = branch.Blocks.First();
+                var tip = branch.Blocks.Last();
                 _logger.Debug(
-                    "Given blocks will not be added as the table already contains " +
-                    "blockheader #{Index} {BlockHash} as a key",
+                    "Given branch with root #{RootIndex} {RootHash} and " +
+                    "tip #{TipIndex} {TipHash} will not be added as the table already contains " +
+                    "blockheader #{Index} {BlockHash} as its key",
+                    root.Index,
+                    root.Hash,
+                    tip.Index,
+                    tip.Hash,
                     blockHeader.Index,
                     blockHeader.Hash);
                 return;
