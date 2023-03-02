@@ -1050,6 +1050,23 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PolymorphicAction
   nameWithType: PolymorphicAction<T>.PolymorphicAction
   nameWithType.vb: PolymorphicAction(Of T).PolymorphicAction
+- uid: Libplanet.Action.PolymorphicAction`1.ActionTypeLoader
+  name: ActionTypeLoader
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ActionTypeLoader
+  commentId: P:Libplanet.Action.PolymorphicAction`1.ActionTypeLoader
+  fullName: Libplanet.Action.PolymorphicAction<T>.ActionTypeLoader
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).ActionTypeLoader
+  nameWithType: PolymorphicAction<T>.ActionTypeLoader
+  nameWithType.vb: PolymorphicAction(Of T).ActionTypeLoader
+- uid: Libplanet.Action.PolymorphicAction`1.ActionTypeLoader*
+  name: ActionTypeLoader
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ActionTypeLoader_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.ActionTypeLoader
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.ActionTypeLoader
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).ActionTypeLoader
+  nameWithType: PolymorphicAction<T>.ActionTypeLoader
+  nameWithType.vb: PolymorphicAction(Of T).ActionTypeLoader
 - uid: Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)
   name: Execute(IActionContext)
   href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_

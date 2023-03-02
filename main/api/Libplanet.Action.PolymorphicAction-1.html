@@ -268,7 +268,7 @@ an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L169">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L163">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1__ctor" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor">PolymorphicAction()</h4>
@@ -296,7 +296,7 @@ or at least in the entry assembly of the application.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor(%600)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L183">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1__ctor__0_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor(`0)">PolymorphicAction(T)</h4>
@@ -359,10 +359,51 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_ActionTypeLoader.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.ActionTypeLoader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L185">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_ActionTypeLoader_" data-uid="Libplanet.Action.PolymorphicAction`1.ActionTypeLoader*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_ActionTypeLoader" data-uid="Libplanet.Action.PolymorphicAction`1.ActionTypeLoader">ActionTypeLoader</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Action.StaticActionTypeLoader.html">StaticActionTypeLoader</a> for <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StaticActionTypeLoader ActionTypeLoader { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.StaticActionTypeLoader.html">StaticActionTypeLoader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_ActionTypeLoader_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Every concrete action subclass of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
+has to be marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.
+Even if a superclass is marked with
+the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> its subclass also should be
+marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> if it is concrete.</p>
+<p>Also, every concrete action subclass of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
+has to be declared in the same assembly as <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>,
+or at least in the entry assembly of the application.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_InnerAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.InnerAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L192">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L200">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_InnerAction_" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_InnerAction" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction">InnerAction</h4>
@@ -404,7 +445,7 @@ or at least in the entry assembly of the application.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.PlainValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L210">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L218">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_PlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_PlainValue" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue">PlainValue</h4>
@@ -569,7 +610,7 @@ an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L251">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L259">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_Execute_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
@@ -671,7 +712,7 @@ your project as a dependency.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_GetInnerActionTypeName.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.GetInnerActionTypeName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L231">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L239">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_GetInnerActionTypeName_" data-uid="Libplanet.Action.PolymorphicAction`1.GetInnerActionTypeName*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_GetInnerActionTypeName" data-uid="Libplanet.Action.PolymorphicAction`1.GetInnerActionTypeName">GetInnerActionTypeName()</h4>
@@ -834,7 +875,7 @@ an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L236">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L244">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Bencodex_Types_Dictionary_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(Bencodex.Types.Dictionary)">LoadPlainValue(Dictionary)</h4>
@@ -999,7 +1040,7 @@ an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L245">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L253">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Bencodex_Types_IValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(Bencodex.Types.IValue)">LoadPlainValue(IValue)</h4>
@@ -1051,7 +1092,7 @@ or at least in the entry assembly of the application.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L254">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L262">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_ToString_" data-uid="Libplanet.Action.PolymorphicAction`1.ToString*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_ToString" data-uid="Libplanet.Action.PolymorphicAction`1.ToString">ToString()</h4>
@@ -1218,7 +1259,7 @@ an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.op_Implicit(%600)~Libplanet.Action.PolymorphicAction%7B%600%7D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L226">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/PolymorphicAction.cs/#L234">View Source</a>
   </span>
   <a id="Libplanet_Action_PolymorphicAction_1_op_Implicit_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit(`0)~Libplanet.Action.PolymorphicAction{`0}">Implicit(T to PolymorphicAction&lt;T&gt;)</h4>
