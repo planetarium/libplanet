@@ -74,8 +74,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // is the proposer for height 2.
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
-                privateKey: TestUtils.PrivateKeys[2],
-                validatorSet: Libplanet.Tests.TestUtils.ValidatorSet);
+                privateKey: TestUtils.PrivateKeys[2]);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -93,11 +92,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
-            // It needs a lastCommit to use, so we assume that index #1 block is already committed.
-            Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
-            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
-
+            var lastCommit = blockChain.GetBlockCommit(1);
             context.Start(lastCommit);
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
 
@@ -123,13 +118,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
-                privateKey: TestUtils.PrivateKeys[2],
-                validatorSet: TestUtils.ValidatorSet);
-
-            // Add block #1 so we can start with a last commit for height 2.
-            Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
-            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
+                privateKey: TestUtils.PrivateKeys[2]);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -158,6 +147,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 exceptionOccurred.Set();
             };
 
+            var lastCommit = blockChain.GetBlockCommit(1);
             context.Start(lastCommit);
 
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());

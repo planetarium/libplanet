@@ -41,8 +41,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var proposalMessageSent = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[3]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[3]);
 
             AsyncAutoResetEvent heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             AsyncAutoResetEvent heightThreeStepChangedToEndCommit = new AsyncAutoResetEvent();
@@ -111,8 +111,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var (_, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[1]);
 
             Assert.Equal(Step.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
@@ -124,8 +124,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var newHeightDelay = TimeSpan.FromSeconds(1);
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
             Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
@@ -140,8 +140,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[1]);
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
@@ -157,8 +157,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[1],
                 blockCommitClearThreshold: 1);
 
             // Create context of index 1.
@@ -196,8 +196,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[1]);
 
             consensusContext.StateChanged += (sender, tuple) =>
             {

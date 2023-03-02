@@ -31,8 +31,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1]);
+                policy: TestUtils.Policy,
+                privateKey: TestUtils.PrivateKeys[1]);
 
             var timeoutProcessed = new AsyncAutoResetEvent();
 
