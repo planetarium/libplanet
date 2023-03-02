@@ -71,29 +71,17 @@ jobs:
       run: |
         set -ev
         cd Libplanet.Tools/
-        if [[ "$GITHUB_REF_TYPE" = "tag" ]]; then
-          v="$GITHUB_REF_NAME"
-        else
-          v="$LATEST_VERSION"
-        fi
-        echo "version: '$v'"
-        bin/npm-test.sh "$v"
+        bin/npm-test.sh "$LATEST_VERSION"
       env:
         LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
     - if: runner.os == 'Windows'
       run: |
         $ErrorActionPreference = "Stop"
         cd Libplanet.Tools\
-        if ($env:GITHUB_REF_TYPE -eq "tag") {
-          $v = $env:GITHUB_REF_NAME
-        } else {
-          $v = $env:LATEST_VERSION
-        }
-        echo "version: '$v'"
         powershell `
           -ExecutionPolicy Bypass `
           -File bin\npm-test.ps1 `
-          -Version $v
+          -Version $env:LATEST_VERSION
       env:
         LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
 
