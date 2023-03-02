@@ -100,6 +100,7 @@ namespace Libplanet.RocksDBStore
         private const string TxIdBlockHashIndexDbName = "txbindex";
         private const string ChainDbName = "chain";
         private const string StatesKvPathDefault = "states";
+        private const string BlockCommitDbName = "blockcommit";
         private const int ForkWriteBatchSize = 100000;
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
@@ -115,6 +116,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] ForkedChainsKeyPrefix = { (byte)'f' };
         private static readonly byte[] DeletedKeyPrefix = { (byte)'d' };
         private static readonly byte[] ChainIdKeyPrefix = { (byte)'h' };
+        private static readonly byte[] BlockCommitKeyPrefix = { (byte)'L' };
 
         private static readonly byte[] EmptyBytes = new byte[0];
 
@@ -138,9 +140,11 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _txExecutionDb;
         private readonly RocksDb _txIdBlockHashIndexDb;
         private readonly RocksDb _chainDb;
+        private readonly RocksDb _blockCommitDb;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
         private readonly ReaderWriterLockSlim _rwBlockLock;
+        private readonly ReaderWriterLockSlim _rwBlockCommitLock;
         private bool _disposed = false;
         private object _chainForkDeleteLock = new object();
         private LruCache<Guid, LruCache<(int, int?), List<BlockHash>>> _indexCache;
@@ -231,6 +235,8 @@ namespace Libplanet.RocksDBStore
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxExecutionDbName));
             _txIdBlockHashIndexDb =
                 RocksDBUtils.OpenRocksDb(_options, RocksDbPath(TxIdBlockHashIndexDbName));
+            _blockCommitDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(BlockCommitDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -240,6 +246,7 @@ namespace Libplanet.RocksDBStore
 
             _rwTxLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwBlockLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+            _rwBlockCommitLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _blockDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _blockDbCache.SetPreRemoveDataMethod(db =>
@@ -1073,6 +1080,7 @@ namespace Libplanet.RocksDBStore
                     }
 
                     _txDbCache.Clear();
+                    _blockCommitDb?.Dispose();
 
                     foreach (var db in _blockDbCache.Values)
                     {
@@ -1205,6 +1213,108 @@ namespace Libplanet.RocksDBStore
             batch.Clear();
         }
 
+        /// <inheritdoc />
+        public override BlockCommit GetBlockCommit(BlockHash blockHash)
+        {
+            _rwBlockCommitLock.EnterReadLock();
+
+            try
+            {
+                byte[] key = BlockCommitKey(blockHash);
+                byte[] bytes = _blockCommitDb.Get(key);
+                if (bytes is null)
+                {
+                    return null;
+                }
+
+                return new BlockCommit(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetBlockCommit), e);
+            }
+            finally
+            {
+                _rwBlockCommitLock.ExitReadLock();
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public override void PutBlockCommit(BlockCommit blockCommit)
+        {
+            byte[] key = BlockCommitKey(blockCommit.BlockHash);
+
+            if (_blockCommitDb.Get(key) is { })
+            {
+                return;
+            }
+
+            _rwBlockCommitLock.EnterWriteLock();
+            try
+            {
+                byte[] value = blockCommit.ToByteArray();
+                _blockCommitDb.Put(key, value);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutBlockCommit), e);
+                throw;
+            }
+            finally
+            {
+                _rwBlockCommitLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void DeleteBlockCommit(BlockHash blockHash)
+        {
+            byte[] key = BlockCommitKey(blockHash);
+
+            if (!(_blockCommitDb.Get(key) is { }))
+            {
+                return;
+            }
+
+            _rwBlockCommitLock.EnterWriteLock();
+            try
+            {
+                _blockCommitDb.Remove(key);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeleteBlockCommit), e);
+                throw;
+            }
+            finally
+            {
+                _rwBlockCommitLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<BlockHash> GetBlockCommitHashes()
+        {
+            try
+            {
+                IEnumerable<Iterator> iterators = IterateDb(_blockCommitDb, new byte[] { });
+
+                // FIXME: Somehow key value comes with 0x76 prefix at the first index of
+                // byte array.
+                IEnumerable<BlockHash> hashes = iterators
+                    .Select(x => new BlockHash(x.Key().Skip(1).ToArray()))
+                    .ToArray();
+                return hashes;
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutBlockCommit), e);
+                throw;
+            }
+        }
+
         [StoreLoader("rocksdb+file")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
         {
@@ -1289,6 +1399,9 @@ namespace Libplanet.RocksDBStore
             ForkedChainsKeyPrefix
             .Concat(chainId.ToByteArray())
             .Concat(forkedChainId.ToByteArray()).ToArray();
+
+        private static byte[] BlockCommitKey(in BlockHash blockHash) =>
+            BlockCommitKeyPrefix.Concat(blockHash.ByteArray).ToArray();
 
         private static IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
         {

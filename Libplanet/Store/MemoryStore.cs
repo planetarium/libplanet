@@ -49,6 +49,9 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>> _txBlockIndices =
             new ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>>();
 
+        private readonly ConcurrentDictionary<BlockHash, BlockCommit> _blockCommits =
+            new ConcurrentDictionary<BlockHash, BlockCommit>();
+
         private Guid? _canonicalChainId;
 
         void IDisposable.Dispose()
@@ -265,6 +268,32 @@ namespace Libplanet.Store
                 ((IStore)this).DeleteChainId(id);
             }
         }
+
+        public BlockCommit GetBlockCommit(BlockHash blockHash)
+        {
+            if (!_blockCommits.ContainsKey(blockHash))
+            {
+                return null;
+            }
+
+            return _blockCommits[blockHash];
+        }
+
+        public void PutBlockCommit(BlockCommit blockCommit) =>
+            _blockCommits[blockCommit.BlockHash] = blockCommit;
+
+        public void DeleteBlockCommit(BlockHash blockHash)
+        {
+            if (!_blockCommits.ContainsKey(blockHash))
+            {
+                return;
+            }
+
+            _blockCommits.TryRemove(blockHash, out _);
+        }
+
+        public IEnumerable<BlockHash> GetBlockCommitHashes()
+            => _blockCommits.Keys;
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)

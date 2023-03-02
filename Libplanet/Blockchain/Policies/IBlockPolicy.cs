@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
@@ -26,14 +25,6 @@ namespace Libplanet.Blockchain.Policies
     public interface IBlockPolicy<T>
         where T : IAction, new()
     {
-        /// <summary>
-        /// A comparer to determine which branch is the canonical chain (i.e., best chain).
-        /// The most greater one according to this comparer is considered to be the canon.
-        /// </summary>
-        /// <seealso cref="IBlockExcerpt"/>
-        /// <seealso cref="TotalDifficultyComparer"/>
-        IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
-
         /// <summary>
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
@@ -95,23 +86,6 @@ namespace Libplanet.Blockchain.Policies
             BlockChain<T> blockChain, Block<T> nextBlock);
 
         /// <summary>
-        /// <para>
-        /// Determines a right <see cref="Block{T}.Difficulty"/>
-        /// for a new <see cref="Block{T}"/> to be mined
-        /// right after the given <paramref name="blockChain"/>.
-        /// </para>
-        /// <para>
-        /// Any specific implementation of this method should assume a genesis
-        /// <see cref="Block{T}"/> will always have zero difficulty.
-        /// </para>
-        /// </summary>
-        /// <param name="blockChain">Consecutive <see cref="Block{T}"/>s to be
-        /// followed by a new <see cref="Block{T}"/> to be mined.</param>
-        /// <returns>A right <see cref="Block{T}.Difficulty"/>
-        /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(BlockChain<T> blockChain);
-
-        /// <summary>
         /// Gets the maximum length of <see cref="Block{T}.Transactions"/> in bytes.
         /// </summary>
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
@@ -152,16 +126,5 @@ namespace Libplanet.Blockchain.Policies
         /// a valid <see cref="Block{T}"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
-
-        /// <summary>
-        /// Gets the minimum <see cref="Block{T}.ProtocolVersion"/> allowed for
-        /// a valid <see cref="Block{T}"/>.
-        /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
-        /// for which this constraint should apply.</param>
-        /// <returns>The minimum value for <see cref="Block{T}.ProtocolVersion"/> allowed for
-        /// a valid <see cref="Block{T}"/>.</returns>
-        [Pure]
-        int GetMinBlockProtocolVersion(long index);
     }
 }

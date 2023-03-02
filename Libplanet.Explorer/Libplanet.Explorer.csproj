@@ -60,6 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Net\Libplanet.Net.csproj" />
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
     <PackageReference Include="Bencodex.Json" Version="0.8.0" />

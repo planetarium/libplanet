@@ -23,27 +23,45 @@ namespace Libplanet.Tests.Blockchain
         public void Constructor()
         {
             // Cannot create empty
-            var emptySet = new List<Block<DumbAction>>();
+            var emptySet = new List<(Block<DumbAction>, BlockCommit)>();
             Assert.Throws<ArgumentException>(() => new Branch<DumbAction>(emptySet));
 
             // Cannot create with duplicates
-            var duplicateSet = new List<Block<DumbAction>>() { _fx.Block1, _fx.Block1, _fx.Block2 };
+            var duplicateSet = new List<(Block<DumbAction>, BlockCommit)>
+            {
+                (_fx.Block1, CreateBlockCommit(_fx.Block1)),
+                (_fx.Block1, CreateBlockCommit(_fx.Block1)),
+                (_fx.Block2, CreateBlockCommit(_fx.Block2)),
+            };
             Assert.Throws<ArgumentException>(() => new Branch<DumbAction>(duplicateSet));
 
             // Cannot create with non-consecutive indices
-            var nonConsecutiveIndexSet = new List<Block<DumbAction>>()
-                { _fx.Block1, _fx.Block2, _fx.Block4 };
+            var nonConsecutiveIndexSet = new List<(Block<DumbAction>, BlockCommit)>
+            {
+                (_fx.Block1, CreateBlockCommit(_fx.Block1)),
+                (_fx.Block2, CreateBlockCommit(_fx.Block2)),
+                (_fx.Block4, CreateBlockCommit(_fx.Block4)),
+            };
             Assert.Throws<ArgumentException>(() => new Branch<DumbAction>(nonConsecutiveIndexSet));
 
             // Cannot create with non-consecutive blocks
-            var nonConsecutiveHashSet = new List<Block<DumbAction>>()
-                { _fx.Block2, _fx.Block3Alt, _fx.Block4 };
+            var nonConsecutiveHashSet = new List<(Block<DumbAction>, BlockCommit)>
+            {
+                (_fx.Block2, CreateBlockCommit(_fx.Block2)),
+                (_fx.Block3Alt, CreateBlockCommit(_fx.Block3Alt)),
+                (_fx.Block4, CreateBlockCommit(_fx.Block4)),
+            };
             Assert.Throws<ArgumentException>(() => new Branch<DumbAction>(nonConsecutiveHashSet));
 
-            var shuffledSet = new List<Block<DumbAction>>()
-                { _fx.Block4, _fx.Block2, _fx.Block3, _fx.Block1 };
+            var shuffledSet = new List<(Block<DumbAction>, BlockCommit)>
+            {
+                (_fx.Block4, CreateBlockCommit(_fx.Block4)),
+                (_fx.Block2, CreateBlockCommit(_fx.Block2)),
+                (_fx.Block3, CreateBlockCommit(_fx.Block3)),
+                (_fx.Block1, CreateBlockCommit(_fx.Block1)),
+            };
             var branch = new Branch<DumbAction>(shuffledSet);
-            AssertSorted(branch.Blocks.Select(block => block.Index));
+            AssertSorted(branch.Blocks.Select(block => block.Item1.Index));
         }
     }
 }

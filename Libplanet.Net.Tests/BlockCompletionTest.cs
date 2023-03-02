@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
@@ -237,14 +238,16 @@ namespace Libplanet.Net.Tests
             //   C: 2, 6, 10, 14
             //   D: 3, 7, 11
             char[] peers = { 'A', 'B', 'C', 'D' };
-            ImmutableDictionary<char, ImmutableDictionary<BlockHash, Block<DumbAction>>>
-                peerBlocks = peers.ToImmutableDictionary(
-                    p => p,
-                    p => fixture.Skip(p - 'A').Where((_, i) => i % 4 < 1).ToImmutableDictionary(
-                        b => b.Hash,
-                        b => b
-                    )
-                );
+            ImmutableDictionary
+                <char, ImmutableDictionary<BlockHash, (Block<DumbAction>, BlockCommit)>>
+                    peerBlocks = peers.ToImmutableDictionary(
+                        p => p,
+                        p => fixture
+                            .Skip(p - 'A')
+                            .Where((_, i) => i % 4 < 1)
+                            .ToImmutableDictionary(
+                                b => b.Hash,
+                                b => (b, TestUtils.CreateBlockCommit(b))));
 
             const int initialHeight = 2;
             const int window = 5;
@@ -258,44 +261,49 @@ namespace Libplanet.Net.Tests
                 .ToImmutableArray();
             bc.Demand(initialDemands);
             _logger.Verbose("Initial demands: {0}", initialDemands);
-            IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv = bc.Complete(
+            IAsyncEnumerable<Tuple<Block<DumbAction>, BlockCommit, char>> rv = bc.Complete(
                 new[] { 'A', 'B', 'C', 'D' },
-                (peer, hashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
-                {
-                    var blocksPeerHas = peerBlocks[peer];
-                    var sent = new HashSet<BlockHash>();
-                    foreach (BlockHash hash in hashes)
+                (peer, hashes, token) => new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(
+                    async yield =>
                     {
-                        if (blocksPeerHas.ContainsKey(hash))
+                        var blocksPeerHas = peerBlocks[peer];
+                        var sent = new HashSet<BlockHash>();
+                        foreach (BlockHash hash in hashes)
                         {
-                            Block<DumbAction> block = blocksPeerHas[hash];
-                            await yield.ReturnAsync(block);
-                            sent.Add(block.Hash);
+                            if (blocksPeerHas.ContainsKey(hash))
+                            {
+                                (Block<DumbAction> block, BlockCommit commit) = blocksPeerHas[hash];
+                                await yield.ReturnAsync((block, commit));
+                                sent.Add(block.Hash);
+                            }
                         }
-                    }
 
-                    _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}", peer, sent);
-                })
+                        _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}", peer, sent);
+                    })
             );
 
-            var downloadedBlocks = new HashSet<Block<DumbAction>>();
+            var downloadedBlocks = new HashSet<Tuple<Block<DumbAction>, BlockCommit>>();
             var sourcePeers = new HashSet<char>();
-            await AsyncEnumerable.ForEachAsync(rv, pair =>
+            await AsyncEnumerable.ForEachAsync(rv, triple =>
             {
-                downloadedBlocks.Add(pair.Item1);
-                sourcePeers.Add(pair.Item2);
+                downloadedBlocks.Add(Tuple.Create(triple.Item1, triple.Item2));
+                sourcePeers.Add(triple.Item3);
             });
 
-            Assert.Equal(fixture.Skip(2).ToHashSet(), downloadedBlocks);
+            Assert.Equal(
+                fixture.Skip(2).ToHashSet(),
+                downloadedBlocks.Select(pair => pair.Item1).ToHashSet());
             Assert.Subset(peers.ToHashSet(), sourcePeers);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner),
-                demand = MineNextBlock(genesis, GenesisMiner),
-                wrong = MineNextBlock(genesis, GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
+            Block<DumbAction> demand = ProposeNextBlock(genesis, new PrivateKey());
+            BlockCommit demandCommit = TestUtils.CreateBlockCommit(demand);
+            Block<DumbAction> wrong = ProposeNextBlock(genesis, new PrivateKey());
+            BlockCommit wrongCommit = TestUtils.CreateBlockCommit(wrong);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -307,17 +315,23 @@ namespace Libplanet.Net.Tests
 
             long counter = 0;
             BlockCompletion<char, DumbAction>.BlockFetcher wrongBlockFetcher =
-                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
-                {
-                    // Provides a wrong block (i.e., not corresponding to the demand) at first call,
-                    // and then provide a proper block later calls.
-                    await yield.ReturnAsync(Interlocked.Read(ref counter) < 1 ? wrong : demand);
-                    Interlocked.Increment(ref counter);
-                });
+                (peer, blockHashes, token) =>
+                    new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(async yield =>
+                    {
+                        // Provides a wrong block (i.e., not corresponding to the demand)
+                        // at first call, and then provide a proper block later calls.
+                        await yield.ReturnAsync(Interlocked.Read(ref counter) < 1
+                            ? (wrong, wrongCommit)
+                            : (demand, demandCommit));
+                        Interlocked.Increment(ref counter);
+                    });
 
-            Tuple<Block<DumbAction>, char>[] result =
+            Tuple<Block<DumbAction>, BlockCommit, char>[] expected =
+                new[] { Tuple.Create(demand, demandCommit, 'A') };
+            Tuple<Block<DumbAction>, BlockCommit, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A' }, wrongBlockFetcher));
-            Assert.Equal(new[] { Tuple.Create(demand, 'A') }, result);
+
+            Assert.Equal(expected, result);
         }
 
         [Fact(Timeout = Timeout)]
@@ -329,35 +343,35 @@ namespace Libplanet.Net.Tests
             bc.Demand(fixture.Select(b => b.Hash));
 
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
-                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
-                {
-                    // Peer A does not respond and Peer B does respond.
-                    if (peer == 'A')
+                (peer, blockHashes, token) =>
+                    new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(async yield =>
                     {
-                        const int transportTimeout = 3_000;
-                        await Task.Delay(transportTimeout, yield.CancellationToken);
-
-                        // Technically this should throw CommunicationException, but that would
-                        // require much more scaffolding.
-                        throw new Exception("Peer failed to respond");
-                    }
-
-                    foreach (Block<DumbAction> b in fixture)
-                    {
-                        if (blockHashes.Contains(b.Hash))
+                        // Peer A does not respond and Peer B does respond.
+                        if (peer == 'A')
                         {
-                            await yield.ReturnAsync(b);
-                        }
-                    }
-                });
+                            const int transportTimeout = 3_000;
+                            await Task.Delay(transportTimeout, yield.CancellationToken);
 
-            Tuple<Block<DumbAction>, char>[] result =
+                            // Technically this should throw CommunicationException, but that would
+                            // require much more scaffolding.
+                            throw new Exception("Peer failed to respond");
+                        }
+
+                        foreach (Block<DumbAction> b in fixture)
+                        {
+                            if (blockHashes.Contains(b.Hash))
+                            {
+                                await yield.ReturnAsync((b, TestUtils.CreateBlockCommit(b)));
+                            }
+                        }
+                    });
+
+            Tuple<Block<DumbAction>, BlockCommit, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(
                     bc.Complete(new[] { 'A', 'B' }, blockFetcher));
             Assert.Equal(
-                fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
-                result.ToHashSet()
-            );
+                fixture.Select(b => (b, 'B')).ToHashSet(),
+                result.Select(triple => (triple.Item1, triple.Item3)).ToHashSet());
         }
 
         [Fact(Timeout = Timeout)]
@@ -369,29 +383,29 @@ namespace Libplanet.Net.Tests
             bc.Demand(fixture.Select(b => b.Hash));
 
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
-                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
-                {
-                    // Peer A does crash and Peer B does respond.
-                    if (peer == 'A')
+                (peer, blockHashes, token) =>
+                    new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(async yield =>
                     {
-                        throw new Exception("Peer A can't respond.");
-                    }
-
-                    foreach (Block<DumbAction> b in fixture)
-                    {
-                        if (blockHashes.Contains(b.Hash))
+                        // Peer A does crash and Peer B does respond.
+                        if (peer == 'A')
                         {
-                            await yield.ReturnAsync(b);
+                            throw new Exception("Peer A can't respond.");
                         }
-                    }
-                });
 
-            Tuple<Block<DumbAction>, char>[] result =
+                        foreach (Block<DumbAction> b in fixture)
+                        {
+                            if (blockHashes.Contains(b.Hash))
+                            {
+                                await yield.ReturnAsync((b, TestUtils.CreateBlockCommit(b)));
+                            }
+                        }
+                    });
+
+            Tuple<Block<DumbAction>, BlockCommit, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }, blockFetcher));
             Assert.Equal(
-                fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
-                result.ToHashSet()
-            );
+                fixture.Select(b => (b, 'B')).ToHashSet(),
+                result.Select(triple => (triple.Item1, triple.Item3)).ToHashSet());
         }
 
         private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
@@ -399,14 +413,15 @@ namespace Libplanet.Net.Tests
         {
             if (count >= 1)
             {
-                Block<T> block =
-                    MineGenesisBlock<T>(GenesisMiner);
+                Block<T> block = ProposeGenesisBlock<T>(GenesisProposer);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
-                    block =
-                        MineNextBlock(block, GenesisMiner);
+                    block = ProposeNextBlock(
+                        block,
+                        GenesisProposer,
+                        lastCommit: CreateBlockCommit(block));
                     yield return block;
                 }
             }

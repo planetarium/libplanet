@@ -32,11 +32,12 @@ namespace Libplanet.Tests.Blocks
             var contents = new BlockContentFixture();
             var random = new System.Random();
             var stateRootHash = random.NextHashDigest<SHA256>();
-            var preEvalBlock = contents.GenesisContent.Mine();
-            var signature = preEvalBlock.Header.MakeSignature(contents.GenesisKey, stateRootHash);
-            var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, signature);
-            var block = new Block<Arithmetic>(preEvalBlock, (stateRootHash, signature, hash));
-            AssertPreEvaluationBlocksEqual(preEvalBlock, block);
+            PreEvaluationBlock<Arithmetic> preEval = contents.GenesisContent.Propose();
+            ImmutableArray<byte> signature =
+                preEval.Header.MakeSignature(contents.GenesisKey, stateRootHash);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, signature);
+            var block = new Block<Arithmetic>(preEval, (stateRootHash, signature, hash));
+            AssertPreEvaluationBlocksEqual(preEval, block);
             AssertBytesEqual(stateRootHash, block.StateRootHash);
             AssertBytesEqual(signature, block.Signature);
         }
@@ -69,8 +70,8 @@ namespace Libplanet.Tests.Blocks
                     signer,
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
-            var blockA = MineGenesis(timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(timestamp: timestamp, transactions: txs);
+            var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
+            var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
@@ -88,8 +89,8 @@ namespace Libplanet.Tests.Blocks
                 Array.Empty<byte>()
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
-                MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.Miner),
+                ProposeNext(
+                    ProposeGenesisBlock<DumbAction>(_fx.Miner),
                     new List<Transaction<DumbAction>> { invalidTx }
                 )
             );

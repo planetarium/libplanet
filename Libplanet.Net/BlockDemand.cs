@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using Libplanet.Blocks;
 
 namespace Libplanet.Net
@@ -37,7 +36,5 @@ namespace Libplanet.Net
         public long Index => Header.Index;
 
         public BlockHash Hash => ((IBlockExcerpt)Header).Hash;
-
-        public BigInteger TotalDifficulty => Header.TotalDifficulty;
     }
 }

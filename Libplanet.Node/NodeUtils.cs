@@ -69,11 +69,10 @@ namespace Libplanet.Node
                     index: 0,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
-                    difficulty: 0,
-                    totalDifficulty: 0,
                     previousHash: null,
-                    txHash: null))
-                .Mine()
+                    txHash: null,
+                    lastCommit: null))
+                .Propose()
                 .Evaluate(
                     privateKey: privateKey,
                     blockAction: blockPolicy.BlockAction,

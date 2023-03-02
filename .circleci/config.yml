@@ -468,7 +468,7 @@ jobs:
     executor:
       name: win/server-2022
       size: xlarge
-    parallelism: 3
+    parallelism: 4
     steps: [netcore_test_base]
 
   linux-unity-test:

@@ -15,16 +15,14 @@ namespace Libplanet.Blockchain.Policies
         private readonly long _difficulty;
 
         public NullBlockPolicy(
-            BlockPolicyViolationException exceptionToThrow = null, long difficulty = 1)
+            BlockPolicyViolationException exceptionToThrow = null,
+            long difficulty = 1)
         {
             _exceptionToThrow = exceptionToThrow;
             _difficulty = difficulty;
         }
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
-
-        public IComparer<IBlockExcerpt> CanonicalChainComparer =>
-            new TotalDifficultyComparer();
 
         public IAction BlockAction => null;
 
@@ -34,9 +32,6 @@ namespace Libplanet.Blockchain.Policies
         public int GetMinTransactionsPerBlock(long index) => 0;
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
-
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
-            blockChain.Count == 0 ? 0 : _difficulty;
 
         public virtual TxPolicyViolationException ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction) => null;
@@ -61,7 +56,5 @@ namespace Libplanet.Blockchain.Policies
 
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);
-
-        public int GetMinBlockProtocolVersion(long index) => 0;
     }
 }

@@ -15,6 +15,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
@@ -116,11 +117,6 @@ in DefaultStore is used.")]
 consecutive blocks.")]
             int blockIntervalMilliseconds = 5000,
             [Option(
-                "minimum-difficulty",
-                new[] { 'm' },
-                Description = "Allowed minimum difficulty for mining blocks.")]
-            long minimumDifficulty = 1024L,
-            [Option(
                 "difficulty-bound-divisor",
                 new[] { 'D' },
                 Description = "A bound divisor to determine precision of block difficulties.")]
@@ -185,7 +181,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 host,
                 port,
                 blockIntervalMilliseconds,
-                minimumDifficulty,
                 difficultyBoundDivisor,
                 appProtocolVersionToken,
                 mysqlServer,
@@ -262,6 +257,7 @@ If omitted (default) explorer only the local blockchain store.")]
                     Console.Error.WriteLine("Creating Swarm.");
 
                     var privateKey = new PrivateKey();
+                    var consensusPrivateKey = new PrivateKey();
 
                     // FIXME: The appProtocolVersion should be fixed properly.
                     var swarmOptions = new SwarmOptions
@@ -297,6 +293,8 @@ If omitted (default) explorer only the local blockchain store.")]
                         transport,
                         options: swarmOptions);
                 }
+
+                Startup.SwarmSingleton = swarm;
 
                 using (var cts = new CancellationTokenSource())
                 using (swarm)
@@ -397,8 +395,6 @@ If omitted (default) explorer only the local blockchain store.")]
             return new BlockPolicy<T>(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
-                difficultyStability: options.DifficultyBoundDivisor,
-                minimumDifficulty: options.MinimumDifficulty,
                 getMaxTransactionsBytes: i => i > 0
                     ? options.MaxTransactionsBytes
                     : options.MaxGenesisTransactionsBytes,
@@ -447,9 +443,6 @@ If omitted (default) explorer only the local blockchain store.")]
             /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
             public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
-            public IComparer<IBlockExcerpt> CanonicalChainComparer =>
-                _impl.CanonicalChainComparer;
-
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);
 
@@ -459,29 +452,20 @@ If omitted (default) explorer only the local blockchain store.")]
             public long GetMaxTransactionsBytes(long index) =>
                 _impl.GetMaxTransactionsBytes(index);
 
-            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
-            {
-                return 0;
-            }
+            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks) => 0;
 
             public TxPolicyViolationException ValidateNextBlockTx(
-                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
-            {
-                return _impl.ValidateNextBlockTx(blockChain, transaction);
-            }
+                BlockChain<NullAction> blockChain,
+                Transaction<NullAction> transaction) =>
+                _impl.ValidateNextBlockTx(blockChain, transaction);
 
             public BlockPolicyViolationException ValidateNextBlock(
-                BlockChain<NullAction> blockChain, Block<NullAction> nextBlock
-            )
-            {
-                return _impl.ValidateNextBlock(blockChain, nextBlock);
-            }
+                BlockChain<NullAction> blockChain,
+                Block<NullAction> nextBlock
+            ) => _impl.ValidateNextBlock(blockChain, nextBlock);
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
-
-            public int GetMinBlockProtocolVersion(long index) =>
-                _impl.GetMinBlockProtocolVersion(index);
         }
 
         internal class Startup : IBlockChainContext<NullAction>
@@ -492,11 +476,15 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IStore Store => StoreSingleton;
 
+            public Swarm<NullAction> Swarm => SwarmSingleton;
+
             internal static bool PreloadedSingleton { get; set; }
 
             internal static BlockChain<NullAction> BlockChainSingleton { get; set; }
 
             internal static IStore StoreSingleton { get; set; }
+
+            internal static Swarm<NullAction> SwarmSingleton { get; set; }
         }
 
         private class NoOpStateStore : IStateStore

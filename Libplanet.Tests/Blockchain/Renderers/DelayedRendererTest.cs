@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -18,7 +17,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainA;
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainB;
         protected static readonly Block<DumbAction> _branchpoint;
-        protected IComparer<IBlockExcerpt> _canonicalChainComparer;
         protected IStore _store;
         protected ILogger _logger;
 
@@ -27,34 +25,30 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            chainA[0] = chainB[0] =
+                TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
-                _branchpoint = chainA[i] = chainB[i] = TestUtils.MineNextBlock(
+                _branchpoint = chainA[i] = chainB[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    TestUtils.GenesisMiner
+                    TestUtils.GenesisProposer,
+                    lastCommit: TestUtils.CreateBlockCommit(
+                        chainA[i - 1].Hash,
+                        chainA[i - 1].Index,
+                        0)
                 );
             }
 
-            int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNextBlock(
+                chainA[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    TestUtils.GenesisMiner,
-                    difficulty: 2
-                );
-                chainB[i] = TestUtils.MineNextBlock(
+                    TestUtils.GenesisProposer,
+                    lastCommit: TestUtils.CreateBlockCommit(chainA[i - 1]));
+                chainB[i] = TestUtils.ProposeNextBlock(
                     chainB[i - 1],
-                    TestUtils.GenesisMiner,
-                    difficulty: 2 + extraDifficulty
-                );
-
-                // The block right next the branchpoint in the chainB has 1 more difficulty than
-                // the block with the same index in the chainA, and then rest blocks have the
-                // same difficulty 2.  That means, every block after the branchpoint in the chainB
-                // has exactly 1 more difficulty than a block with the same index in the chainA.
-                extraDifficulty = 0;
+                    TestUtils.GenesisProposer,
+                    lastCommit: TestUtils.CreateBlockCommit(chainB[i - 1]));
             }
 
             _chainA = chainA;
@@ -79,8 +73,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 _chainB
             );
 
-            _canonicalChainComparer = new TotalDifficultyComparer();
-
             _store = new MemoryStore();
             foreach (Block<DumbAction> b in _chainA.Concat(_chainB))
             {
@@ -96,7 +88,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedRenderer<DumbAction>(
                     new AnonymousRenderer<DumbAction>(),
-                    _canonicalChainComparer,
                     _store,
                     confirmations: invalidConfirmations
                 )
@@ -120,7 +111,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var renderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );
@@ -162,7 +152,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(0U, reorgs);
         }
 
-        [Fact]
+        [Fact(Skip = "No fork in PBFT.")]
         public virtual void BlocksBeingAppendedInParallel()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
@@ -178,7 +168,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -23,8 +22,7 @@ namespace Libplanet.Store
         private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
         private readonly BlockMetadata _metadata;
-        private readonly Nonce _nonce;
-        private readonly ImmutableArray<byte> _preEvaluationHash;
+        private readonly HashDigest<SHA256> _preEvaluationHash;
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
@@ -35,8 +33,7 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
-            _metadata = new BlockMetadata(header);
-            _nonce = header.Nonce;
+            _metadata = header.Header.Metadata;
             _preEvaluationHash = header.PreEvaluationHash;
             StateRootHash = header.StateRootHash;
             Signature = header.Signature;
@@ -55,7 +52,6 @@ namespace Libplanet.Store
         {
             var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
             _metadata = BlockMarshaler.UnmarshalBlockMetadata(headerDict);
-            _nonce = BlockMarshaler.UnmarshalNonce(headerDict);
             _preEvaluationHash = BlockMarshaler.UnmarshalPreEvaluationHash(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
@@ -81,17 +77,14 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _metadata.PublicKey;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _metadata.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _metadata.TotalDifficulty;
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _metadata.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _metadata.TxHash;
+
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit => _metadata.LastCommit;
 
         /// <summary>
         /// The block hash.
@@ -175,9 +168,8 @@ namespace Libplanet.Store
         /// <returns>The block header.</returns>
         public BlockHeader GetHeader()
         {
-            var preEvalHeader = new PreEvaluationBlockHeader(
-                _metadata, (_nonce, _preEvaluationHash));
-            return new BlockHeader(preEvalHeader, (StateRootHash, Signature, Hash));
+            var preEvalHeader = new PreEvaluationBlockHeader(_metadata, _preEvaluationHash);
+            return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
         /// <summary>
@@ -190,7 +182,6 @@ namespace Libplanet.Store
         {
             var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
                 BlockMarshaler.MarshalBlockMetadata(_metadata),
-                _nonce,
                 _preEvaluationHash);
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(
                 preEvalHeaderDict,

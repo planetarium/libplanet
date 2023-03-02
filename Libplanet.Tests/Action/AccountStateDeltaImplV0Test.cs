@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            PreEvaluationBlock<DumbAction> preEval = TestUtils.MineNext(
+            PreEvaluationBlock<DumbAction> preEval = TestUtils.ProposeNext(
                 chain.Tip,
                 new[] { tx },
                 miner: _keys[1].PublicKey,
@@ -70,7 +70,8 @@ namespace Libplanet.Tests.Action
             );
             var stateRootHash = preEval.DetermineStateRootHash(chain);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
-            chain.Append(new Block<DumbAction>(preEval, (stateRootHash, null, hash)));
+            Block<DumbAction> block = new Block<DumbAction>(preEval, (stateRootHash, null, hash));
+            chain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,
                 chain.GetBalance(_addr[0], DumbAction.DumbCurrency)

@@ -144,7 +144,7 @@ namespace Libplanet.Action
                 "Evaluating actions in the block #{BlockIndex} " +
                 "pre-evaluation hash: {PreEvaluationHash}...",
                 block.Index,
-                ByteUtil.Hex(block.PreEvaluationHash)
+                ByteUtil.Hex(block.PreEvaluationHash.ByteArray)
             );
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -191,7 +191,7 @@ namespace Libplanet.Action
                         "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs} ms",
                         block.Transactions.Count,
                         block.Index,
-                        ByteUtil.Hex(block.PreEvaluationHash),
+                        ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
                         stopwatch.ElapsedMilliseconds);
             }
         }
@@ -252,7 +252,7 @@ namespace Libplanet.Action
                 : ImmutableList.CreateRange<IAction>(tx.CustomActions!.Cast<IAction>());
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,
-                preEvaluationHash: ImmutableArray<byte>.Empty,
+                preEvaluationHash: new HashDigest<SHA256>(new byte[HashDigest<SHA256>.Size]),
                 blockIndex: default,
                 txid: tx.Id,
                 previousStates: previousStates,
@@ -330,7 +330,7 @@ namespace Libplanet.Action
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             BlockHash? genesisHash,
-            ImmutableArray<byte> preEvaluationHash,
+            HashDigest<SHA256> preEvaluationHash,
             long blockIndex,
             TxId? txid,
             IAccountStateDelta previousStates,
@@ -371,7 +371,7 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] preEvaluationHashBytes = preEvaluationHash.ToBuilder().ToArray();
+            byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
             IAccountStateDelta states = previousStates;
@@ -401,7 +401,7 @@ namespace Libplanet.Action
                         action,
                         txid,
                         blockIndex,
-                        ByteUtil.Hex(preEvaluationHash));
+                        ByteUtil.Hex(preEvaluationHash.ByteArray));
                     throw;
                 }
                 catch (Exception e)
@@ -434,12 +434,12 @@ namespace Libplanet.Action
                             action,
                             txid,
                             blockIndex,
-                            ByteUtil.Hex(preEvaluationHash),
+                            ByteUtil.Hex(preEvaluationHash.ByteArray),
                             stateRootHash);
                         var innerMessage =
                             $"The action {action} (block #{blockIndex}, " +
-                            $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash)}, tx {txid}, " +
-                            $"previous state root hash {stateRootHash}) threw " +
+                            $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash.ByteArray)}, " +
+                            $"tx {txid}, previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
                             "See also this exception's InnerException property";
                         logger?.Error(
@@ -481,13 +481,14 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Deterministically shuffles <paramref name="txs"/> for evaluation using
-        /// <paramref name="preEvaluationHash"/> as a random seed.
+        /// <paramref name="preEvaluationHashBytes"/> as a random seed.
         /// </summary>
         /// <param name="protocolVersion">The <see cref="IBlockMetadata.ProtocolVersion"/>
         /// that <paramref name="txs"/> belong to.</param>
         /// <param name="txs">The list of <see cref="ITransaction"/>s to shuffle.</param>
-        /// <param name="preEvaluationHash">The
-        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> to use as a random seed when
+        /// <param name="preEvaluationHashBytes">The
+        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
+        /// to use as a random seed when
         /// shuffling.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ITransaction"/>s in evaluation
         /// order with the following properties:
@@ -505,11 +506,11 @@ namespace Libplanet.Action
         internal static IEnumerable<ITransaction> OrderTxsForEvaluation(
             int protocolVersion,
             IEnumerable<ITransaction> txs,
-            ImmutableArray<byte> preEvaluationHash)
+            ImmutableArray<byte> preEvaluationHashBytes)
         {
             return protocolVersion >= 3
-                ? OrderTxsForEvaluationV3(txs, preEvaluationHash)
-                : OrderTxsForEvaluationV0(txs, preEvaluationHash);
+                ? OrderTxsForEvaluationV3(txs, preEvaluationHashBytes)
+                : OrderTxsForEvaluationV0(txs, preEvaluationHashBytes);
         }
 
         /// <summary>
@@ -534,7 +535,7 @@ namespace Libplanet.Action
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
-                block.PreEvaluationHash
+                block.PreEvaluationHash.ByteArray
             ).WithMeasuringTime(
                 sw => _logger.Verbose(
                     "Took {ElapsedMilliseconds} ms to order transactions",
@@ -647,7 +648,7 @@ namespace Libplanet.Action
 
             _logger.Information(
                 $"Evaluating policy block action for block #{blockHeader.Index} " +
-                $"{ByteUtil.Hex(blockHeader.PreEvaluationHash)}");
+                $"{ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray)}");
 
             return EvaluateActions(
                 genesisHash: _genesisHash,
@@ -669,11 +670,11 @@ namespace Libplanet.Action
         [Pure]
         private static IEnumerable<ITransaction> OrderTxsForEvaluationV0(
             IEnumerable<ITransaction> txs,
-            ImmutableArray<byte> preEvaluationHash)
+            ImmutableArray<byte> preEvaluationHashBytes)
         {
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
-            var maskInteger = new BigInteger(preEvaluationHash.ToBuilder().ToArray());
+            var maskInteger = new BigInteger(preEvaluationHashBytes.ToArray());
 
             // Transactions with the same signers are grouped first and the ordering of the groups
             // is determined by the XOR aggregate of the txid's in the group with XOR bitmask
@@ -691,7 +692,7 @@ namespace Libplanet.Action
         [Pure]
         private static IEnumerable<ITransaction> OrderTxsForEvaluationV3(
             IEnumerable<ITransaction> txs,
-            ImmutableArray<byte> preEvaluationHash)
+            ImmutableArray<byte> preEvaluationHashBytes)
         {
             using SHA256 sha256 = SHA256.Create();
 
@@ -700,7 +701,7 @@ namespace Libplanet.Action
 
             // Although strictly not necessary, additional hash computation removes zero padding
             // just in case.
-            byte[] reHash = sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray());
+            byte[] reHash = sha256.ComputeHash(preEvaluationHashBytes.ToArray());
 
             // As BigInteger uses little-endian, we take the last byte for parity to prevent
             // the value of reverse directly tied to the parity of startIndex below.

@@ -164,6 +164,18 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
 
+        /// <inheritdoc/>
+        public abstract BlockCommit GetBlockCommit(BlockHash blockHash);
+
+        /// <inheritdoc/>
+        public abstract void PutBlockCommit(BlockCommit blockCommit);
+
+        /// <inheritdoc/>
+        public abstract void DeleteBlockCommit(BlockHash blockHash);
+
+        /// <inheritdoc/>
+        public abstract IEnumerable<BlockHash> GetBlockCommitHashes();
+
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {
             var sDelta = new Dictionary(

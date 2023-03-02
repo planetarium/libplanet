@@ -25,9 +25,18 @@ namespace Libplanet.Net.Tests
 
             // Ignore existing key
             var firstBranch = new Branch<DumbAction>(
-                new List<Block<DumbAction>>() { _fx.Block2, _fx.Block3, _fx.Block4 });
+                new List<(Block<DumbAction>, BlockCommit)>
+                {
+                    (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
+                    (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
+                    (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
+                });
             var secondBranch = new Branch<DumbAction>(
-                new List<Block<DumbAction>>() { _fx.Block3, _fx.Block4 });
+                new List<(Block<DumbAction>, BlockCommit)>
+                {
+                    (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
+                    (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
+                });
             table.Add(header, firstBranch);
             Assert.Equal(1, table.Count);
             table.Add(header, secondBranch);

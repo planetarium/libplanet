@@ -10,6 +10,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
@@ -85,9 +86,9 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = MineNextBlock(
-                MineGenesisBlock<DumbAction>(GenesisMiner),
-                GenesisMiner,
+            Block<DumbAction> block1 = ProposeNextBlock(
+                ProposeGenesisBlock<DumbAction>(GenesisProposer),
+                GenesisProposer,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
             Guid arbitraryChainId = Guid.NewGuid();
@@ -985,8 +986,10 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 =
-                MineNextBlock(Fx.Block2, Fx.Miner);
+            Block<DumbAction> anotherBlock3 = ProposeNextBlock(
+                Fx.Block2,
+                Fx.Proposer,
+                lastCommit: CreateBlockCommit(Fx.Block2.Hash, 2, 0));
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1036,21 +1039,21 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public async Task Copy()
+        public void Copy()
         {
             using (StoreFixture fx = FxConstructor())
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullBlockPolicy<DumbAction>();
-                var blocks = new BlockChain<DumbAction>(
+                var policy = new NullBlockPolicy<NullAction>();
+                var blocks = new BlockChain<NullAction>(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy<NullAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
+                    ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey)
                         .Evaluate(
-                            privateKey: GenesisMiner,
+                            privateKey: GenesisProposer,
                             blockAction: policy.BlockAction,
                             nativeTokenPredicate: policy.NativeTokens.Contains,
                             stateStore: fx.StateStore)
@@ -1058,9 +1061,14 @@ namespace Libplanet.Tests.Store
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
-                await blocks.MineBlock(key);
-                await blocks.MineBlock(key);
-                await blocks.MineBlock(key);
+                var block = blocks.ProposeBlock(key);
+                blocks.Append(block, CreateBlockCommit(block));
+                block = blocks.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                blocks.Append(block, CreateBlockCommit(block));
+                block = blocks.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                blocks.Append(block, CreateBlockCommit(block));
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);
@@ -1073,8 +1081,8 @@ namespace Libplanet.Tests.Store
                     foreach (BlockHash blockHash in s1.IterateIndexes(chainId))
                     {
                         Assert.Equal(
-                            s1.GetBlock<DumbAction>(blockHash),
-                            s2.GetBlock<DumbAction>(blockHash)
+                            s1.GetBlock<NullAction>(blockHash),
+                            s2.GetBlock<NullAction>(blockHash)
                         );
                     }
                 }
@@ -1090,17 +1098,116 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx = FxConstructor())
             {
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
-                // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
-                Block<DumbAction> block = MineNextBlock(
+                Block<DumbAction> block = ProposeNextBlock(
                     genesisBlock,
-                    miner: fx.Miner,
-                    protocolVersion: 0);
+                    miner: fx.Proposer);
 
                 fx.Store.PutBlock(block);
                 Block<DumbAction> storedBlock =
                     fx.Store.GetBlock<DumbAction>(block.Hash);
 
                 Assert.Equal(block, storedBlock);
+            }
+        }
+
+        [SkippableFact]
+        public void GetBlockCommit()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                // Commits with votes
+                var height = 1;
+                var round = 0;
+                var hash = fx.Block2.Hash;
+                var validators = Enumerable.Range(0, 4)
+                    .Select(x => new PrivateKey())
+                    .ToArray();
+                var votes = validators.Select(validator => new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    validator.PublicKey,
+                    VoteFlag.PreCommit).Sign(validator)).ToImmutableArray();
+
+                BlockCommit commit = new BlockCommit(height, round, hash, votes);
+                fx.Store.PutBlockCommit(commit);
+                BlockCommit storedCommitVotes =
+                    fx.Store.GetBlockCommit(commit.BlockHash);
+
+                Assert.Equal(commit, storedCommitVotes);
+            }
+        }
+
+        [SkippableFact]
+        public void GetBlockCommitIndices()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var votesOne = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block1.Hash,
+                        DateTimeOffset.UtcNow,
+                        fx.Proposer.PublicKey,
+                        VoteFlag.PreCommit).Sign(fx.Proposer));
+                var votesTwo = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        2,
+                        0,
+                        fx.Block2.Hash,
+                        DateTimeOffset.UtcNow,
+                        fx.Proposer.PublicKey,
+                        VoteFlag.PreCommit).Sign(fx.Proposer));
+
+                BlockCommit[] blockCommits =
+                {
+                    new BlockCommit(1, 0, fx.Block1.Hash, votesOne),
+                    new BlockCommit(2, 0, fx.Block2.Hash, votesTwo),
+                };
+
+                foreach (var blockCommit in blockCommits)
+                {
+                    fx.Store.PutBlockCommit(blockCommit);
+                }
+
+                IEnumerable<BlockHash> indices = fx.Store.GetBlockCommitHashes();
+
+                HashSet<long> indicesFromOperation = indices
+                    .Select(hash => fx.Store.GetBlockCommit(hash).Height)
+                    .ToHashSet();
+                HashSet<long> expectedIndices = new HashSet<long>() { 1, 2 };
+
+                Assert.Equal(indicesFromOperation, expectedIndices);
+            }
+        }
+
+        [SkippableFact]
+        public void DeleteLastCommit()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var validatorPrivateKey = new PrivateKey();
+                BlockCommit blockCommit =
+                    new BlockCommit(
+                        0,
+                        0,
+                        Fx.GenesisBlock.Hash,
+                        ImmutableArray<Vote>.Empty
+                            .Add(new VoteMetadata(
+                                0,
+                                0,
+                                Fx.GenesisBlock.Hash,
+                                DateTimeOffset.UtcNow,
+                                validatorPrivateKey.PublicKey,
+                                VoteFlag.PreCommit).Sign(validatorPrivateKey)));
+
+                fx.Store.PutBlockCommit(blockCommit);
+                Assert.NotNull(fx.Store.GetBlockCommit(blockCommit.BlockHash));
+
+                fx.Store.DeleteBlockCommit(blockCommit.BlockHash);
+                Assert.Null(fx.Store.GetBlockCommit(blockCommit.BlockHash));
             }
         }
 

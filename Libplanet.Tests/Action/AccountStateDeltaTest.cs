@@ -248,17 +248,19 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            var preEvalBlock = TestUtils.MineNext(
+            var preEvalBlock = TestUtils.ProposeNext(
                 chain.Tip,
                 new[] { tx },
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion);
             var stateRootHash = preEvalBlock.DetermineStateRootHash(chain);
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
-            chain.Append(
-                ProtocolVersion < 2
+            Block<DumbAction> block = ProtocolVersion < 2
                 ? new Block<DumbAction>(preEvalBlock, (stateRootHash, null, hash))
-                : preEvalBlock.Evaluate(privateKey, chain)
+                : preEvalBlock.Evaluate(privateKey, chain);
+            chain.Append(
+                block,
+                TestUtils.CreateBlockCommit(block)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

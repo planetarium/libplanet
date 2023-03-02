@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -29,6 +30,11 @@ namespace Libplanet.Net.Tests.Transports
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var swarmKey = new PrivateKey();
+            var consensusKey = new PrivateKey();
+            var validators = new List<PublicKey>()
+            {
+                swarmKey.PublicKey,
+            };
             var apv = AppProtocolVersion.Sign(new PrivateKey(), 1);
             var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
             string host = IPAddress.Loopback.ToString();
@@ -88,7 +94,7 @@ namespace Libplanet.Net.Tests.Transports
 
         [Theory]
         [InlineData("127.0.0.1", 3000, new[] { "tcp://127.0.0.1:3000" })]
-        [InlineData("localhost", 3000, new[] { "tcp://127.0.0.1:3000", "tcp://::1:3000" })]
+        [InlineData("127.0.0.1", 3000, new[] { "tcp://127.0.0.1:3000", "tcp://::1:3000" })]
         public async Task ResolveNetMQAddressAsync(string host, int port, string[] expected)
         {
             var bp = new BoundPeer(

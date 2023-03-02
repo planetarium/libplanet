@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Xunit;
@@ -14,14 +13,13 @@ namespace Libplanet.Tests
         [ClassData(typeof(HashcashTestData))]
         public void AnswerSatisfiesDifficulty(byte[] challenge, long difficulty)
         {
-            IEnumerable<byte[]> Stamp(Nonce nonce) => new[] { challenge, nonce.ToByteArray() };
-            (Nonce answer, ImmutableArray<byte> digest) =
-                Hashcash.Answer(Stamp, HashAlgorithmType.Of<SHA256>(), difficulty, 0);
-            Assert.True(Satisfies(digest.ToArray(), difficulty));
+            byte[] Stamp(Nonce nonce) => challenge.Concat(nonce.ToByteArray()).ToArray();
+            (Nonce answer, HashDigest<SHA256> digest) =
+                Hashcash.Answer(Stamp, difficulty, 0);
+            Assert.True(Satisfies(digest.ToByteArray(), difficulty));
             TestUtils.AssertBytesEqual(
-                digest.ToArray(),
-                SHA256.Create().ComputeHash(Stamp(answer).SelectMany(bs => bs).ToArray())
-            );
+                digest.ToByteArray(),
+                SHA256.Create().ComputeHash(Stamp(answer).ToArray()));
         }
 
         [Fact]

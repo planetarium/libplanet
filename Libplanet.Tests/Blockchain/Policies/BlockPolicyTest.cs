@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -49,72 +48,12 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void DifficultyAdjustment()
-        {
-            TimeSpan defaultInterval =
-                DifficultyAdjustment<DumbAction>.DefaultTargetBlockInterval;
-            long defaultStability =
-                DifficultyAdjustment<DumbAction>.DefaultDifficultyStability;
-            long defaultMinimum =
-                DifficultyAdjustment<DumbAction>.DefaultMinimumDifficulty;
-
-            // Should work with defaults.
-            DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                defaultInterval,
-                defaultStability,
-                defaultMinimum);
-
-            // Negative block interval.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    TimeSpan.FromMilliseconds(-5),
-                    defaultStability,
-                    defaultMinimum));
-
-            // Zero block interval.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    TimeSpan.FromMilliseconds(0),
-                    defaultStability,
-                    defaultMinimum));
-
-            // Invalid stability due to being too low.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    defaultInterval,
-                    0,
-                    defaultMinimum));
-
-            // Stability being equal to minimum difficulty should be fine.
-            DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                defaultInterval,
-                defaultMinimum,
-                defaultMinimum);
-
-            // Invalid stability in relation to minimum difficulty for stability being too high.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    defaultInterval,
-                    defaultMinimum + 1,
-                    defaultMinimum));
-
-            // Invalid minimum difficulty for being too low.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    defaultInterval,
-                    defaultStability,
-                    0));
-        }
-
-        [Fact]
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
             var a = new BlockPolicy<DumbAction>(
                 blockAction: null,
-                blockInterval: tenSec,
-                difficultyStability: 128,
-                minimumDifficulty: 1024L);
+                blockInterval: tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(
@@ -204,63 +143,8 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.NotNull(expected.InnerException);
         }
 
-        [SkippableFact]
-        public async Task GetNextBlockDifficulty()
-        {
-            Skip.IfNot(
-                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
-                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
-            );
-
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var dateTimeOffset = FixtureEpoch;
-            var chain =
-                TestUtils.MakeBlockChain(_policy, store, stateStore, timestamp: dateTimeOffset);
-            var miner = new PrivateKey();
-            Assert.Equal(
-                1024,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(1);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1032,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(3);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1040,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(7);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1040,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(9);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1048,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(13);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1048,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-        }
-
         [Fact]
-        public async Task GetMinTransactionsPerBlock()
+        public void GetMinTransactionsPerBlock()
         {
             const int policyLimit = 2;
 
@@ -277,15 +161,15 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             // Tests if MineBlock() method will throw an exception if less than the minimum
             // transactions are present
-            await Assert.ThrowsAsync<OperationCanceledException>(
-                async () => await chain.MineBlock(new PrivateKey()));
+            Assert.Throws<OperationCanceledException>(
+                () => chain.ProposeBlock(new PrivateKey()));
         }
 
         [Fact]
-        public async Task GetMaxTransactionsPerBlock()
+        public void GetMaxTransactionsPerBlock()
         {
             const int generatedTxCount = 10;
-            const int policyLimit = 2;
+            const int policyLimit = 5;
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -300,16 +184,16 @@ namespace Libplanet.Tests.Blockchain.Policies
                     .ToList();
             Assert.Equal(generatedTxCount, chain.ListStagedTransactions().Count);
 
-            var block = await chain.MineBlock(privateKey);
+            var block = chain.ProposeBlock(privateKey);
             Assert.Equal(policyLimit, block.Transactions.Count);
         }
 
         [Fact]
-        public async Task GetMaxTransactionsPerSignerPerBlock()
+        public void GetMaxTransactionsPerSignerPerBlock()
         {
             const int keyCount = 2;
             const int generatedTxCount = 10;
-            const int policyLimit = 2;
+            const int policyLimit = 4;
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -326,37 +210,12 @@ namespace Libplanet.Tests.Blockchain.Policies
                     .ToList());
             Assert.Equal(generatedTxCount * keyCount, chain.ListStagedTransactions().Count);
 
-            var block = await chain.MineBlock(minerKey);
+            var block = chain.ProposeBlock(minerKey);
             Assert.Equal(policyLimit * keyCount, block.Transactions.Count);
             privateKeys.ForEach(
                 key => Assert.Equal(
                     policyLimit,
                     block.Transactions.Count(tx => tx.Signer.Equals(key.ToAddress()))));
-        }
-
-        [Fact]
-        public async void GetMinBlockProtocolVersion()
-        {
-            var policy = new BlockPolicy<DumbAction>(
-                getMinBlockProtocolVersion: index => index <= 1 ? 0 : 4);
-            var chain = new BlockChain<DumbAction>(
-                policy,
-                _stagePolicy,
-                _fx.Store,
-                _fx.StateStore,
-                _fx.GenesisBlock);
-
-            var block1 = await chain.MineBlock(new PrivateKey(), append: false);
-            Assert.Equal(1, block1.Index);
-            Assert.Equal(0, policy.GetMinBlockProtocolVersion(block1.Index));
-            chain.Append(block1);
-
-            var block2 = await chain.MineBlock(new PrivateKey(), append: false);
-            Assert.Equal(2, block2.Index);
-            Assert.Equal(4, policy.GetMinBlockProtocolVersion(block2.Index));
-            Assert.Throws<BlockPolicyViolationException>(() => chain.Append(block2));
-            await Assert.ThrowsAsync<BlockPolicyViolationException>(
-                async () => await chain.MineBlock(new PrivateKey()));
         }
     }
 }

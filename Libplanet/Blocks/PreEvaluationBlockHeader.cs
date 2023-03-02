@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -12,15 +11,12 @@ namespace Libplanet.Blocks
     /// A block candidate without evaluating actions (in its transactions and a possible
     /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>) and state root hash.
     /// </summary>
-    /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
-    /// <see cref="Nonce"/> which satisfies its <see cref="Difficulty"/>.</remarks>
     public class PreEvaluationBlockHeader : IPreEvaluationBlockHeader
     {
         protected static readonly Codec Codec = new Codec();
 
         private readonly BlockMetadata _metadata;
-        private readonly Nonce _nonce;
-        private readonly ImmutableArray<byte> _preEvaluationHash;
+        private readonly HashDigest<SHA256> _preEvaluationHash;
 
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> by copying the fields of another
@@ -47,48 +43,28 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// pre-evaluation <paramref name="header"/>'s
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given
-        /// pre-evaluation <paramref name="header"/>'s
-        /// <see cref="IPreEvaluationBlockHeader.Nonce"/> does not satisfy the required
-        /// <see cref="IBlockMetadata.Difficulty"/>.
-        /// </exception>
         /// <seealso cref="BlockMetadata"/>
         public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
-            : this(new BlockMetadata(header), (header.Nonce, header.PreEvaluationHash))
+            : this(new BlockMetadata(header), header.PreEvaluationHash)
         {
         }
 
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/> and a valid <paramref name="proof"/>.  All other public
-        /// constructors should be redirected to this one.
+        /// <paramref name="metadata"/> and a valid <paramref name="preEvaluationHash"/>.
+        /// All other public constructors should be redirected to this one.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
-        /// as to satisfy the required <see cref="Difficulty"/>, and the hash digest which is
-        /// probably considered as to be derived from the block <paramref name="metadata"/> and the
-        /// nonce.</param>
+        /// <param name="preEvaluationHash">A valid hash derived from <paramref name="metadata"/>.
+        /// </param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when
-        /// <paramref name="proof.PreEvaluationHash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when <paramref name="proof.Nonce"/>
-        /// does not satisfy the required <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         public PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof)
+            HashDigest<SHA256> preEvaluationHash)
         {
-            CheckPreEvaluationHash(metadata, proof.Nonce, proof.PreEvaluationHash);
-            if (!ByteUtil.Satisfies(proof.PreEvaluationHash, metadata.Difficulty))
-            {
-                throw new InvalidBlockNonceException(
-                    $"Block #{metadata.Index}'s {nameof(PreEvaluationHash)} " +
-                    $"({ByteUtil.Hex(proof.PreEvaluationHash)}) with nonce ({proof.Nonce}) does " +
-                    $"not satisfy its difficulty level {metadata.Difficulty}."
-                );
-            }
-
             _metadata = metadata;
-            _nonce = proof.Nonce;
-            _preEvaluationHash = proof.PreEvaluationHash;
+            _preEvaluationHash = CheckPreEvaluationHash(metadata, preEvaluationHash);
         }
 
         /// <summary>
@@ -111,23 +87,17 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => Metadata.PublicKey;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => Metadata.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => Metadata.TotalDifficulty;
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => Metadata.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _nonce;
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit => Metadata.LastCommit;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash => _preEvaluationHash;
+        public HashDigest<SHA256> PreEvaluationHash => _preEvaluationHash;
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
@@ -145,7 +115,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? signature = null)
         {
-            Dictionary dict = Metadata.MakeCandidateData(Nonce)
+            Dictionary dict = Metadata.MakeCandidateData(default(Nonce))
                 .Add("state_root_hash", stateRootHash.ByteArray);
             if (signature is { } sig)
             {
@@ -241,42 +211,34 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest
-        /// derived from the given block <paramref name="metadata"/> and <paramref name="nonce"/>.
+        /// derived from the given block <paramref name="metadata"/>.
         /// If it's incorrect throws an <see cref="InvalidBlockPreEvaluationHashException"/>.
-        /// Throws nothing and returns a pair of the <paramref name="nonce"/> and
-        /// <paramref name="preEvaluationHash"/> instead.
+        /// Throws nothing and returns <paramref name="preEvaluationHash"/> instead.
         /// </summary>
         /// <param name="metadata">The block metadata.</param>
-        /// <param name="nonce">The proof-of-work nonce.</param>
         /// <param name="preEvaluationHash">The pre-evaluation hash digest to verify.</param>
+        /// <returns>A <paramref name="preEvaluationHash"/>
+        /// if the <paramref name="preEvaluationHash"/> is verified to be correct.</returns>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is incorrect.</exception>
-        private static void CheckPreEvaluationHash(
+        private static HashDigest<SHA256> CheckPreEvaluationHash(
             BlockMetadata metadata,
-            in Nonce nonce,
-            in ImmutableArray<byte> preEvaluationHash)
+            in HashDigest<SHA256> preEvaluationHash)
         {
-            // Since PreEvaluationHash comparison between the actual and the expected was not
-            // implemented in ProtocolVersion == 0, we need to maintain this bug on
-            // ProtocolVersion < 1 for backward compatibility:
-            if (metadata.ProtocolVersion < 1)
+            if (metadata.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
             {
-                return;
+                return preEvaluationHash;
             }
-
-            ImmutableArray<byte> expectedPreEvaluationHash =
-                metadata.DerivePreEvaluationHash(nonce);
-            if (!ByteUtil.TimingSafelyCompare(preEvaluationHash, expectedPreEvaluationHash))
+            else
             {
-                string message =
-                    $"The expected pre-evaluation hash of block #{metadata.Index} is " +
-                    ByteUtil.Hex(expectedPreEvaluationHash) +
-                    $", but its pre-evaluation hash is {ByteUtil.Hex(preEvaluationHash)}.";
-                throw new InvalidBlockPreEvaluationHashException(
-                    message,
-                    preEvaluationHash,
-                    expectedPreEvaluationHash
-                );
+                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash(default);
+                return expected.Equals(preEvaluationHash)
+                    ? expected
+                    : throw new InvalidBlockPreEvaluationHashException(
+                        $"Given {nameof(preEvaluationHash)} {preEvaluationHash} does not match " +
+                        $"the expected value {expected}.",
+                        preEvaluationHash.ByteArray,
+                        expected.ByteArray);
             }
         }
     }

@@ -21,9 +21,9 @@ namespace Libplanet.Tests
         private static readonly byte[] ProtocolVersionKey = { 0x00 };
         private static readonly byte[] IndexKey = { 0x69 }; // 'i'
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
-        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
-        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'
+        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'; Legacy, unused.
+        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'; Legacy, unused.
+        private static readonly byte[] NonceKey = { 0x6e }; // 'n'; Legacy, unused.
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
@@ -32,6 +32,7 @@ namespace Libplanet.Tests
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
+        private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
 
         // Block fields:
         private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
@@ -63,18 +64,20 @@ namespace Libplanet.Tests
                 .Add(
                     TimestampKey,
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(DifficultyKey, _fx.Genesis.Difficulty)
-                .Add(TotalDifficultyKey, _fx.Genesis.TotalDifficulty)
-                .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true));
+                .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true))
+                .Add(TxHashKey, _fx.Genesis.TxHash.Value.ByteArray);
             var expectedGenesisHeader = _marshaledGenesisMetadata
-                .Add(NonceKey, _fx.Genesis.Nonce.ByteArray)
-                .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
+                .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Genesis.Signature ?? default)
                 .Add(HashKey, _fx.Genesis.Hash.ByteArray);
+            IValue expectedGenesisTx = new List(
+                _fx.Genesis.Transactions.Select(tx => tx.Serialize(true)));
             _marshaledGenesis = Dictionary.Empty
-                .Add(HeaderKey, expectedGenesisHeader);
+                .Add(HeaderKey, expectedGenesisHeader)
+                .Add(TransactionsKey, expectedGenesisTx);
 
+            // Index #1 block does not have LastCommit.
             _marshaledNextMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.Next.ProtocolVersion)
                 .Add(IndexKey, _fx.Next.Index)
@@ -82,12 +85,9 @@ namespace Libplanet.Tests
                 .Add(
                     TimestampKey,
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(DifficultyKey, _fx.Next.Difficulty)
-                .Add(TotalDifficultyKey, _fx.Next.TotalDifficulty)
                 .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
             var expectedNextHeader = _marshaledNextMetadata
-                .Add(NonceKey, _fx.Next.Nonce.ByteArray)
-                .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash)
+                .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Next.Signature ?? default)
                 .Add(HashKey, _fx.Next.Hash.ByteArray);
@@ -101,13 +101,11 @@ namespace Libplanet.Tests
                 .Add(
                     TimestampKey,
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(DifficultyKey, _fx.HasTx.Difficulty)
-                .Add(TotalDifficultyKey, _fx.HasTx.TotalDifficulty)
                 .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
-                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray);
+                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
+                .Add(LastCommitKey, _fx.HasTx.LastCommit.ByteArray);
             var expectedHasTxHeader = _marshaledHasTxMetadata
-                .Add(NonceKey, _fx.HasTx.Nonce.ByteArray)
-                .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash)
+                .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.HasTx.Signature ?? default)
                 .Add(HashKey, _fx.HasTx.Hash.ByteArray);
@@ -137,8 +135,6 @@ namespace Libplanet.Tests
                 Dictionary.Empty
                     .Add(IndexKey, 0L)
                     .Add(TimestampKey, "2021-09-06T04:46:39.123000Z")
-                    .Add(DifficultyKey, 0L)
-                    .Add(TotalDifficultyKey, 0)
                     .Add(MinerKey, _content.GenesisContentPv0.Miner.ByteArray),
                 BlockMarshaler.MarshalBlockMetadata(_content.GenesisContentPv0)
             );
@@ -150,8 +146,6 @@ namespace Libplanet.Tests
                         PreviousHashKey,
                         _content.Block1ContentPv1.PreviousHash?.ByteArray ?? default)
                     .Add(TimestampKey, "2021-09-06T08:01:09.045000Z")
-                    .Add(DifficultyKey, 123L)
-                    .Add(TotalDifficultyKey, 123)
                     .Add(MinerKey, _content.Block1ContentPv1.Miner.ByteArray)
                     .Add(TxHashKey, _content.Block1ContentPv1.TxHash?.ByteArray ?? default),
                 BlockMarshaler.MarshalBlockMetadata(_content.Block1ContentPv1)
@@ -164,6 +158,22 @@ namespace Libplanet.Tests
             AssertBencodexEqual(_marshaledGenesis, _fx.Genesis.MarshalBlock());
             AssertBencodexEqual(_marshaledNext, _fx.Next.MarshalBlock());
             AssertBencodexEqual(_marshaledHasTx, _fx.HasTx.MarshalBlock());
+        }
+
+        [Fact]
+        public void UnmarshalBlockHash()
+        {
+            Assert.Equal(
+                _fx.Genesis.Hash,
+                BlockMarshaler.UnmarshalBlockHash(_fx.Genesis.MarshalBlock()));
+
+            Assert.Equal(
+                _fx.Next.Hash,
+                BlockMarshaler.UnmarshalBlockHash(_fx.Next.MarshalBlock()));
+
+            Assert.Equal(
+                _fx.HasTx.Hash,
+                BlockMarshaler.UnmarshalBlockHash(_fx.HasTx.MarshalBlock()));
         }
 
         [Fact]

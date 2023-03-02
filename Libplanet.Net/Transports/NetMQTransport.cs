@@ -857,7 +857,7 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Failed to process {RequestId} {Message}; discarding it",
+                    "Failed to process {Message} {RequestId}; discarding it",
                     messageType,
                     req.Id);
                 channel.Writer.TryComplete(e);

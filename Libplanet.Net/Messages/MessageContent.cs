@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
+using Destructurama.Attributed;
 using Libplanet.Blocks;
 using Libplanet.Net.Transports;
 
@@ -91,6 +95,31 @@ namespace Libplanet.Net.Messages
             /// value of the message.
             /// </summary>
             DifferentVersion = 0x30,
+
+            /// <summary>
+            /// Consensus proposal message.
+            /// </summary>
+            ConsensusProposal = 0x40,
+
+            /// <summary>
+            /// Consensus vote message.
+            /// </summary>
+            ConsensusVote = 0x41,
+
+            /// <summary>
+            /// Consensus commit message.
+            /// </summary>
+            ConsensusCommit = 0x42,
+
+            /// <summary>
+            /// List of message IDs that the peer seen recently.
+            /// </summary>
+            HaveMessage = 0x43,
+
+            /// <summary>
+            /// List of message IDs that the peer want to have.
+            /// </summary>
+            WantMessage = 0x44,
         }
 
         /// <summary>
@@ -102,5 +131,30 @@ namespace Libplanet.Net.Messages
         /// The body of the message.
         /// </summary>
         public abstract IEnumerable<byte[]> DataFrames { get; }
+
+        /// <summary>
+        /// A bytearray representing SHA-256 digest of <see cref="MessageContent"/>.
+        /// </summary>
+        /// <returns>A mutable <see cref="byte"/> array representing
+        /// SHA-256 digest of <see cref="Message"/>.
+        /// </returns>
+        [Pure]
+        [NotLogged]
+        public MessageId Id
+        {
+            get
+            {
+                var bytes = new List<byte>();
+                bytes.AddRange(BitConverter.GetBytes((int)Type));
+                foreach (byte[] ba in DataFrames)
+                {
+                    bytes.AddRange(ba);
+                }
+
+                SHA256 sha256 = SHA256.Create();
+                byte[] digest = sha256.ComputeHash(bytes.ToArray());
+                return new MessageId(digest);
+            }
+        }
     }
 }

@@ -75,6 +75,7 @@ namespace Libplanet.Node
         /// <returns>The <see cref="SwarmOptions"/> instance.</returns>
         public SwarmOptions ToSwarmOptions()
         {
+            // TODO: Should add ConsensusPeers by adding ConsensusConfig.
             return new SwarmOptions()
             {
                 TipLifespan = SyncConfig.TipLifespan,
@@ -85,8 +86,6 @@ namespace Libplanet.Node
                 TxBroadcastInterval = SyncConfig.TxBroadcastInterval,
                 BlockBroadcastInterval = SyncConfig.BlockBroadcastInterval,
                 MinimumBroadcastTarget = SyncConfig.MinimumBroadcastNumPeers,
-                StaticPeers = SyncConfig.StaticPeers.ToImmutableHashSet(),
-                StaticPeersMaintainPeriod = SyncConfig.StaticPeersMaintainPeriod,
                 RefreshLifespan = SyncConfig.RoutingTableRefreshPeriod,
                 RefreshPeriod = SyncConfig.RoutingTableRefreshPeriod,
                 BlockDemandLifespan = SyncConfig.BlockDemandLifespan,

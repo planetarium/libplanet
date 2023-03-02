@@ -263,6 +263,7 @@ namespace Libplanet.Blockchain
                 {
                     Append(
                         genesisBlock,
+                        null,
                         renderBlocks: !inFork,
                         renderActions: !inFork,
                         evaluateActions: !inFork
@@ -430,8 +431,12 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
-        /// <param name="actions">List of actions will be included in the genesis block.
+        /// <param name="customActions">List of custom actions
+        /// will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
+        /// as default.</param>
+        /// <param name="systemActions">System action that will be included in the genesis block.
+        /// If it's null, no system action will be added.
         /// as default.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
@@ -447,33 +452,47 @@ namespace Libplanet.Blockchain
         /// <returns>The genesis block mined with parameters.</returns>
         // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction and
         // nativeTokenPredicate.  (Or at least there should be such an overload.)
-        public static Block<T> MakeGenesisBlock(
-            IEnumerable<T> actions = null,
+        public static Block<T> ProposeGenesisBlock(
+            IEnumerable<T> customActions = null,
+            IEnumerable<IAction> systemActions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
             privateKey ??= new PrivateKey();
-            actions ??= ImmutableArray<T>.Empty;
+            customActions ??= ImmutableArray<T>.Empty;
+            systemActions ??= ImmutableArray<IAction>.Empty;
+            int nonce = 0;
             Transaction<T>[] transactions =
             {
                 Transaction<T>.Create(
-                    0, privateKey, null, actions, timestamp: timestamp),
+                    nonce, privateKey, null, customActions, timestamp: timestamp),
             };
+            foreach (var systemAction in systemActions)
+            {
+                nonce += 1;
+                transactions = transactions.Concat(
+                    new Transaction<T>[]
+                    {
+                        Transaction<T>.Create(
+                            nonce, privateKey, null, systemAction, timestamp: timestamp),
+                    }).ToArray();
+            }
+
+            transactions = transactions.OrderBy(tx => tx.Id).ToArray();
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
                     index: 0L,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
-                    difficulty: 0L,
-                    totalDifficulty: 0L,
                     previousHash: null,
-                    txHash: BlockContent<T>.DeriveTxHash(transactions)),
+                    txHash: BlockContent<T>.DeriveTxHash(transactions),
+                    lastCommit: null),
                 transactions: transactions);
 
-            PreEvaluationBlock<T> preEval = content.Mine();
+            PreEvaluationBlock<T> preEval = content.Propose();
             return preEval.Evaluate(
                 privateKey,
                 blockAction,
@@ -726,6 +745,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
+        /// <param name="blockCommit">A <see cref="BlockCommit"/> that has +2/3 commits for the
+        /// given block.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states which
         /// are required for action execution and rendering.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
@@ -740,12 +761,16 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
+        /// <exception cref="InvalidBlockCommitException">Thrown when the given
+        /// <paramref name="block"/> and <paramref name="blockCommit"/> is invalid.</exception>
         public void Append(
             Block<T> block,
+            BlockCommit blockCommit,
             StateCompleterSet<T>? stateCompleters = null
         ) =>
             Append(
                 block,
+                blockCommit,
                 evaluateActions: true,
                 renderBlocks: true,
                 renderActions: true,
@@ -1138,8 +1163,61 @@ namespace Libplanet.Blockchain
                 sampleAfter: threshold);
         }
 
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// </summary>
+        /// <param name="index">A index value (height) of <see cref="Block{T}"/> to retrieve.
+        /// </param>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// Following conditions will returns <see langword="null"/>:
+        /// <list type="bullet">
+        ///     <item>
+        ///         Given <see cref="Block{T}"/> <see cref="Block{T}.ProtocolVersion"/> is
+        ///         Proof-of-Work.
+        ///     </item>
+        ///     <item>
+        ///         Given <see cref="Block{T}"/> is <see cref="BlockChain{T}.Genesis"/> block.
+        ///     </item>
+        /// </list>
+        /// </returns>
+        /// <exception cref="KeyNotFoundException">Thrown if given index does not exist in the
+        /// blockchain.</exception>
+        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
+        /// </remarks>
+        public BlockCommit GetBlockCommit(long index)
+        {
+            Block<T> block = this[index];
+
+            if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                return null;
+            }
+
+            return index == Tip.Index
+                ? Store.GetBlockCommit(block.Hash)
+                : this[index + 1].LastCommit;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// </summary>
+        /// <param name="blockHash">A hash value of <see cref="Block{T}"/> to retrieve.
+        /// </param>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> hash, if
+        /// the <see cref="BlockCommit"/> of <see cref="BlockChain{T}.Genesis"/> block is requested,
+        /// then returns <see langword="null"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if given hash does not exist in the
+        /// blockchain.</exception>
+        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
+        /// </remarks>
+        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+            GetBlockCommit(this[blockHash].Index);
+
         internal void Append(
             Block<T> block,
+            BlockCommit blockCommit,
             bool evaluateActions,
             bool renderBlocks,
             bool renderActions,
@@ -1174,6 +1252,11 @@ namespace Libplanet.Blockchain
                 if (ValidateNextBlock(block) is { } ibe)
                 {
                     throw ibe;
+                }
+
+                if (ValidateBlockCommit(block, blockCommit) is { } ibce)
+                {
+                    throw ibce;
                 }
 
                 var nonceDeltas = ValidateNonces(
@@ -1236,6 +1319,16 @@ namespace Libplanet.Blockchain
                     foreach (var tx in block.Transactions)
                     {
                         Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
+                    }
+
+                    if (block.Index != 0 && blockCommit is { })
+                    {
+                        Store.PutBlockCommit(blockCommit);
+                    }
+
+                    if (block.PreviousHash is { } prevHash)
+                    {
+                        Store.DeleteBlockCommit(prevHash);
                     }
                 }
                 finally
@@ -1452,89 +1545,109 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
+        /// Cleans up every <see cref="BlockCommit"/> in the store with
+        /// <see cref="BlockCommit.Height"/> less than <paramref name="limit"/>.
         /// </summary>
-        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
-        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
-        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
-        /// <exception cref="ArgumentException">If <paramref name="block"/> has
-        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
-        private static InvalidBlockException ValidateGenesisBlock(Block<T> block)
+        /// <param name="limit">A exceptional index that is not to be removed.</param>
+        internal void CleanupBlockCommitStore(long limit)
         {
-            if (block.Index != 0)
+            List<BlockHash> hashes = Store.GetBlockCommitHashes().ToList();
+
+            _logger.Debug("Removing old BlockCommits with heights lower than {Limit}...", limit);
+            foreach (var hash in hashes)
             {
-                throw new ArgumentException(
-                    $"Given {nameof(block)} must have index 0 but has index {block.Index}",
-                    nameof(block));
+                if (Store.GetBlockCommit(hash) is { } commit && commit.Height < limit)
+                {
+                    Store.DeleteBlockCommit(hash);
+                }
+            }
+        }
+
+#pragma warning disable SA1202
+        internal InvalidBlockCommitException ValidateBlockCommit(
+            Block<T> block,
+            BlockCommit blockCommit)
+#pragma warning restore SA1202
+        {
+            if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                if (blockCommit != null)
+                {
+                    return new InvalidBlockCommitException(
+                        "PoW Block doesn't have blockCommit.");
+                }
+                else
+                {
+                    // To allow the PoW block to be appended, we skips the validation.
+                    return null;
+                }
             }
 
-            int actualProtocolVersion = block.ProtocolVersion;
-            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
-            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
+            if (block.Index == 0)
             {
-                return new InvalidBlockProtocolVersionException(
-                    $"The protocol version ({actualProtocolVersion}) of the block " +
-                    $"#{block.Index} {block.Hash} is not supported by this node." +
-                    $"The highest supported protocol version is {currentProtocolVersion}.",
-                    actualProtocolVersion);
+                if (blockCommit == null)
+                {
+                    return null;
+                }
+
+                return new InvalidBlockCommitException(
+                    "Genesis block does not have blockCommit.");
             }
 
-            if (block.Difficulty != 0)
+            if (block.Index != 0 && blockCommit == null)
             {
-                return new InvalidBlockDifficultyException(
-                    $"The expected difficulty of the block #{block.Index} {block.Hash} " +
-                    $"is 0, but its difficulty is {block.Difficulty}.");
+                return new InvalidBlockCommitException(
+                    $"Block #{block.Hash} BlockCommit is required except for the genesis block.");
             }
 
-            if (block.Difficulty != block.TotalDifficulty)
+            if (block.Index != blockCommit.Height)
             {
-                return new InvalidBlockTotalDifficultyException(
-                    $"The expected total difficulty of the block #{block.Index} " +
-                    $"{block.Hash} is {block.Difficulty}, but its total difficulty is " +
-                    $"{block.TotalDifficulty}.",
-                    block.Difficulty,
-                    block.TotalDifficulty);
+                return new InvalidBlockCommitException(
+                    "BlockCommit has height value that is not same with block index. " +
+                    $"Block index is {block.Index}, however, BlockCommit height is " +
+                    $"{blockCommit.Height}.");
             }
 
-            if (block.PreviousHash is { } previousHash)
+            if (!block.Hash.Equals(blockCommit.BlockHash))
             {
-                return new InvalidBlockPreviousHashException(
-                    $"A genesis block should not have previous hash, " +
-                    $"but its value is {block.PreviousHash}.");
+                return new InvalidBlockCommitException(
+                    $"BlockCommit has different block. Block hash is {block.Hash}, " +
+                    $"however, BlockCommit block hash is {blockCommit.BlockHash}.");
+            }
+
+            // FIXME: When the dynamic validator set is possible, the functionality of this
+            // condition should be checked once more.
+            var validators = GetValidatorSet(block.PreviousHash ?? Genesis.Hash);
+            if (!validators.ValidateBlockCommitValidators(blockCommit))
+            {
+                return new InvalidBlockCommitException(
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                    $"in states | \n " +
+                    validators.Validators.Aggregate(
+                        string.Empty, (s, key) => s + key + ", \n") +
+                    $"in blockCommit | \n " +
+                    blockCommit.Votes.Aggregate(
+                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
+            }
+
+            BigInteger commitPower = blockCommit.Votes.Aggregate(
+                BigInteger.Zero,
+                (power, vote) => power + (vote.Flag == VoteFlag.PreCommit
+                    ? validators.GetValidator(vote.ValidatorPublicKey).Power
+                    : BigInteger.Zero));
+            if (validators.TwoThirdsPower >= commitPower)
+            {
+                return new InvalidBlockCommitException(
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has insufficient vote power {commitPower} compared to 2/3 of " +
+                    $"the total power {validators.TotalPower}");
             }
 
             return null;
         }
 
-        private static Dictionary<Address, long> ValidateNonces(
-            Dictionary<Address, long> storedNonces,
-            Block<T> block)
-        {
-            var nonceDeltas = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
-            {
-                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
-                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
-
-                long expectedNonce = nonceDelta + storedNonce;
-
-                if (!expectedNonce.Equals(tx.Nonce))
-                {
-                    throw new InvalidTxNonceException(
-                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
-                        $"from expected nonce {expectedNonce}.",
-                        tx.Id,
-                        expectedNonce,
-                        tx.Nonce);
-                }
-
-                nonceDeltas[tx.Signer] = nonceDelta + 1;
-            }
-
-            return nonceDeltas;
-        }
-
-        private InvalidBlockException ValidateNextBlock(Block<T> block)
+        internal InvalidBlockException ValidateNextBlock(Block<T> block)
         {
             if (block.Index == 0)
             {
@@ -1578,30 +1691,15 @@ namespace Libplanet.Blockchain
                 return bpve;
             }
 
-            // FIXME: Difficulty comparison to policy should be part of Policy.ValidateNextBlock().
-            long difficulty = Policy.GetNextBlockDifficulty(this);
-            BigInteger totalDifficulty = this[index - 1].TotalDifficulty + block.Difficulty;
-
             Block<T> lastBlock = this[index - 1];
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
-            if (block.Difficulty < difficulty)
+            if (block.Index != index)
             {
-                return new InvalidBlockDifficultyException(
-                    $"The expected difficulty of the block #{index} {block.Hash} " +
-                    $"is {difficulty}, but its difficulty is {block.Difficulty}.");
-            }
-
-            if (block.TotalDifficulty != totalDifficulty)
-            {
-                var msg = $"The expected total difficulty of the block #{index} " +
-                          $"{block.Hash} is {totalDifficulty}, but its difficulty is " +
-                          $"{block.TotalDifficulty}.";
-                return new InvalidBlockTotalDifficultyException(
-                    msg,
-                    block.Difficulty,
-                    block.TotalDifficulty);
+                return new InvalidBlockIndexException(
+                    $"The expected index of block {block.Hash} is #{index}, " +
+                    $"but its index is #{block.Index}.");
             }
 
             if (!block.PreviousHash.Equals(prevHash))
@@ -1622,7 +1720,118 @@ namespace Libplanet.Blockchain
                     $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 
+            if (block.Index <= 1)
+            {
+                if (block.LastCommit is { })
+                {
+                    return new InvalidBlockLastCommitException(
+                        "The genesis block and the next block should not have lastCommit.");
+                }
+            }
+            else
+            {
+                // Any block after a PoW block should not have a last commit regardless of
+                // the protocol version.  As we have the target block index > 2, if it is a PoW
+                // block, the previous block would be a PoW block and is covered by this case.
+                if (lastBlock?.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+                {
+                    if (block.LastCommit is { })
+                    {
+                        return new InvalidBlockLastCommitException(
+                            "A block after a PoW block should not have lastCommit.");
+                    }
+                }
+                else
+                {
+                    if (block.LastCommit is null)
+                    {
+                        return new InvalidBlockLastCommitException(
+                            "A PBFT block that does not have zero or one index or " +
+                            "is not a block after a PoW block should have lastCommit.");
+                    }
+                }
+
+                if (ValidateBlockCommit(
+                    this[block.PreviousHash ?? Genesis.Hash], block.LastCommit) is { } e)
+                {
+                    return new InvalidBlockLastCommitException(e.Message);
+                }
+            }
+
             return null;
+        }
+
+        /// <summary>
+        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
+        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
+        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="block"/> has
+        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
+        private static InvalidBlockException ValidateGenesisBlock(Block<T> block)
+        {
+            if (block.Index != 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(block)} must have index 0 but has index {block.Index}",
+                    nameof(block));
+            }
+
+            int actualProtocolVersion = block.ProtocolVersion;
+            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
+            {
+                return new InvalidBlockProtocolVersionException(
+                    $"The protocol version ({actualProtocolVersion}) of the block " +
+                    $"#{block.Index} {block.Hash} is not supported by this node." +
+                    $"The highest supported protocol version is {currentProtocolVersion}.",
+                    actualProtocolVersion);
+            }
+
+            if (block.PreviousHash is { } previousHash)
+            {
+                return new InvalidBlockPreviousHashException(
+                    "A genesis block should not have previous hash, " +
+                    $"but its value is {previousHash}.");
+            }
+
+            if (block.LastCommit is { } lastCommit)
+            {
+                return new InvalidBlockLastCommitException(
+                    "A genesis block should not have lastCommit, " +
+                    $"but its value is {lastCommit}.");
+            }
+
+            return null;
+        }
+
+        private static Dictionary<Address, long> ValidateNonces(
+            Dictionary<Address, long> storedNonces,
+            Block<T> block)
+        {
+            var nonceDeltas = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            {
+                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
+                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
+
+                long expectedNonce = nonceDelta + storedNonce;
+
+                if (!expectedNonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
+                        $"from expected nonce {expectedNonce}.",
+                        tx.Id,
+                        expectedNonce,
+                        tx.Nonce);
+                }
+
+                nonceDeltas[tx.Signer] = nonceDelta + 1;
+            }
+
+            return nonceDeltas;
         }
     }
 }
