@@ -21,6 +21,10 @@ and the specification might change in the near future.
 
 ### Added APIs
 
+ -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
+    a way to configure action type loader to be used in `PolymorphicAction<T>`.
+    [[#2873]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -31,6 +35,7 @@ and the specification might change in the near future.
 ### CLI tools
 
 [#2848]: https://github.com/planetarium/libplanet/pull/2848
+[#2873]: https://github.com/planetarium/libplanet/pull/2873
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
 
