@@ -6,6 +6,10 @@ Version 0.49.2
 
 To be released.
 
+ -  General logging changes for better comprehension.  [[#2874]]
+
+[#2874]: https://github.com/planetarium/libplanet/pull/2874
+
 
 Version 0.49.1
 --------------

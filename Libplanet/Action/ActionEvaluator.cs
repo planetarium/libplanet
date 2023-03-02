@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -145,7 +146,8 @@ namespace Libplanet.Action
                 block.Index,
                 ByteUtil.Hex(block.PreEvaluationHash)
             );
-            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             try
             {
                 ITrie? previousBlockStatesTrie =
@@ -181,18 +183,16 @@ namespace Libplanet.Action
             }
             finally
             {
-                TimeSpan evalDuration = DateTimeOffset.Now - evaluateActionStarted;
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "BlockEvaluationDuration")
                     .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms",
+                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs} ms",
                         block.Transactions.Count,
                         block.Index,
                         ByteUtil.Hex(block.PreEvaluationHash),
-                        evalDuration.TotalMilliseconds
-                    );
+                        stopwatch.ElapsedMilliseconds);
             }
         }
 
@@ -537,13 +537,15 @@ namespace Libplanet.Action
                 block.PreEvaluationHash
             ).WithMeasuringTime(
                 sw => _logger.Verbose(
-                    "Took {ElapsedMilliseconds}ms to order transactions",
+                    "Took {ElapsedMilliseconds} ms to order transactions",
                     sw.ElapsedMilliseconds
                 )
             );
 
             foreach (ITransaction tx in orderedTxs)
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 delta = AccountStateDeltaImpl.ChooseVersion(
                     block.ProtocolVersion,
                     delta.GetStates,
@@ -552,7 +554,6 @@ namespace Libplanet.Action
                     delta.GetValidatorSet,
                     tx.Signer);
 
-                DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
                     tx: tx,
@@ -569,21 +570,20 @@ namespace Libplanet.Action
                 }
 
                 // FIXME: This is dependant on when the returned value is enumerated.
-                TimeSpan evalDuration = DateTimeOffset.Now - startTime;
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
                 logger.Information(
                     "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
-                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms",
+                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs} ms",
                     actions.Count,
                     actions.Select(action => action.ToString()!.Split('.')
                         .LastOrDefault()?.Replace(">", string.Empty)),
                     tx.Id,
                     tx.Signer,
                     tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                    evalDuration.TotalMilliseconds);
+                    stopwatch.ElapsedMilliseconds);
             }
         }
 

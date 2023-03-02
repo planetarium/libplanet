@@ -127,7 +127,7 @@ namespace Libplanet.Store
 
             stopwatch.Stop();
             _logger.Debug(
-                "Finished to copy all states {ElapsedMilliseconds}ms",
+                "Finished to copy all states {ElapsedMilliseconds} ms",
                 stopwatch.ElapsedMilliseconds);
             _logger.Verbose("Finished {MethodName}()", nameof(CopyStates));
         }
