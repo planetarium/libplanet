@@ -150,13 +150,7 @@ namespace Libplanet.Action
     public sealed class PolymorphicAction<T> : IAction
         where T : IAction
     {
-        private static readonly StaticActionTypeLoader _actionTypeLoader =
-            new StaticActionTypeLoader(
-                Assembly.GetEntryAssembly() is Assembly entryAssembly
-                    ? new[] { typeof(T).Assembly, entryAssembly }
-                    : new[] { typeof(T).Assembly },
-                typeof(T)
-            );
+        private static StaticActionTypeLoader _actionTypeLoader;
 
         private static IDictionary<string, Type> _types;
 
@@ -183,6 +177,20 @@ namespace Libplanet.Action
         public PolymorphicAction(T innerAction)
         {
             InnerAction = innerAction;
+        }
+
+        /// <summary>
+        /// <see cref="StaticActionTypeLoader"/> for <see cref="PolymorphicAction{T}"/>.
+        /// </summary>
+        public static StaticActionTypeLoader ActionTypeLoader
+        {
+            get => _actionTypeLoader ??= new StaticActionTypeLoader(
+                Assembly.GetEntryAssembly() is Assembly entryAssembly
+                    ? new[] { typeof(T).Assembly, entryAssembly }
+                    : new[] { typeof(T).Assembly },
+                typeof(T)
+            );
+            set => _actionTypeLoader = value;
         }
 
         /// <summary>
@@ -260,7 +268,7 @@ namespace Libplanet.Action
 
         private static Type GetType(string typeId)
         {
-            _types ??= _actionTypeLoader.Load();
+            _types ??= ActionTypeLoader.Load();
             return _types[typeId];
         }
     }

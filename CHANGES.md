@@ -104,6 +104,9 @@ and the specification might change in the near future.
  -  (Libplanet.Explorer) Added `VoteType` class.  [[#2872]]
  -  (Libplanet.Explorer) Added `BlockCommitType` as a return of `BlockQuery`.
     [[#2872]]
+ -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
+    a way to configure action type loader to be used in `PolymorphicAction<T>`.
+    [[#2873]]
 
 ### Behavioral changes
 
@@ -129,6 +132,7 @@ and the specification might change in the near future.
 
 [#2848]: https://github.com/planetarium/libplanet/pull/2848
 [#2872]: https://github.com/planetarium/libplanet/pull/2872
+[#2873]: https://github.com/planetarium/libplanet/pull/2873
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
 
