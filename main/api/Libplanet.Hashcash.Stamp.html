@@ -84,7 +84,7 @@ should not vary for different <code data-dev-comment-type="paramref" class="para
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Hashcash_Stamp_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate IEnumerable&lt;byte[]&gt; Stamp(Nonce nonce);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate byte[] Stamp(Nonce nonce);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -100,7 +100,7 @@ should not vary for different <code data-dev-comment-type="paramref" class="para
         <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
         <td><span class="parametername">nonce</span></td>
         <td><p>An arbitrary nonce for an attempt, provided by
-<a class="xref" href="Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_Libplanet_HashAlgorithmType_System_Int64_System_Int32_System_Threading_CancellationToken_">Answer(Hashcash.Stamp, HashAlgorithmType, Int64, Int32, CancellationToken)</a> method.</p>
+<a class="xref" href="Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_Int64_System_Int32_System_Threading_CancellationToken_">Answer(Hashcash.Stamp, Int64, Int32, CancellationToken)</a> method.</p>
 </td>
       </tr>
     </tbody>
@@ -115,7 +115,7 @@ should not vary for different <code data-dev-comment-type="paramref" class="para
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><p>Chunked <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s determined from the given <code data-dev-comment-type="paramref" class="paramref">nonce</code>.
 It should return consistently equivalent bytes for equivalent <code data-dev-comment-type="paramref" class="paramref">nonce</code>
 values.  The way how bytes are split into chunks can be flexible; regardless of the way,
@@ -126,7 +126,7 @@ they are concatenated into a single byte array.</p>
   </table>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_Libplanet_HashAlgorithmType_System_Int64_System_Int32_System_Threading_CancellationToken_">Answer(Hashcash.Stamp, HashAlgorithmType, Int64, Int32, CancellationToken)</a></div>
+      <div><a class="xref" href="Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_Int64_System_Int32_System_Threading_CancellationToken_">Answer(Hashcash.Stamp, Int64, Int32, CancellationToken)</a></div>
       <div><a class="xref" href="Libplanet.Nonce.html">Nonce</a></div>
   </div>
 </article>
@@ -140,7 +140,7 @@ they are concatenated into a single byte array.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Hashcash_Stamp.md&amp;value=---%0Auid%3A%20Libplanet.Hashcash.Stamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Hashcash.cs/#L34" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Hashcash.cs/#L33" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

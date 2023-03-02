@@ -76,6 +76,18 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
 </h3>
+      <h4><a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a></h4>
+      <section><p>A abstract base class message for consensus.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Messages.ConsensusPreCommitMsg.html">ConsensusPreCommitMsg</a></h4>
+      <section><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Messages.ConsensusPreVoteMsg.html">ConsensusPreVoteMsg</a></h4>
+      <section><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Messages.ConsensusProposalMsg.html">ConsensusProposalMsg</a></h4>
+      <section><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Net.Messages.DifferentVersionMsg.html">DifferentVersionMsg</a></h4>
       <section><p>A reply to any messages with different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.
 Contains the expected and actual <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
@@ -83,6 +95,9 @@ value of the message.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Messages.FindNeighborsMsg.html">FindNeighborsMsg</a></h4>
       <section><p>Message containing request for nearby peers.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Messages.HaveMessage.html">HaveMessage</a></h4>
+      <section><p>List of message IDs that the peer seen recently.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></h4>
       <section></section>
@@ -103,6 +118,19 @@ a decoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Messages.PongMsg.html">PongMsg</a></h4>
       <section><p>A reply to <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Messages.WantMessage.html">WantMessage</a></h4>
+      <section><p>List of message IDs that the peer want to have.</p>
+</section>
+    <h3 id="structs">Structs
+</h3>
+      <h4><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></h4>
+      <section><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </section>
     <h3 id="interfaces">Interfaces
 </h3>

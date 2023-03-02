@@ -68,17 +68,124 @@ providing measures to represent accounts for apps developed with Libplanet in
 JavaScript/TypeScript.  Note that the feature set is being actively developed,
 and the specification might change in the near future.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>Removed <code>TotalDifficultyComparer</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> interface method
+and all its implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>IBlockPolicy.TotalDifficulty</code> interface property and its
+implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed all total difficulty related parameters.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>IBlockPolicy.Difficulty</code> interface property and its
+implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>IPreEvaluationBlockHeader.Nonce</code> interface property and
+its implementations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>InvalidBlockTotalDifficultyException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>InvalidBlockDifficultyException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code> and <code>BlockChain&lt;T&gt;.MineBlock()</code>
+methods.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>HashAlgorithmType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>PreEvaluationBlock&lt;T&gt;(IBlockContent&lt;T&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Removed <code>IBlockPolicy.GetMinBlockProtocolVersion()</code> interface method.
+[<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>LastCommit</code> property to <code>IBlockMetadata</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Bumped <code>BlockMetadata.CurrentProtocolVersion</code> to 4.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Changed <code>IPreEvaluationBlockHeader.PreEvaluationHash</code> type from
+<code>ImmutableArray&lt;byte&gt;</code> to <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>IStore.GetBlockCommit(BlockHash)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>IStore.PutBlockCommit(BlockCommit)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>IStore.DeleteBlockCommit(BlockHash)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>IStore.GetBlockCommitHashes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li><code>BlockMetadata.MakeCandidateData()</code> now uses a SHA256 hash of <code>LastCommit</code>
+for creating a candidate data for <code>PreEvaluationBlockHeader&lt;T&gt;</code>. Due to this
+change, <code>PreEvaluationHash</code> results different with previous block hash
+computation if the <code>BlockMetadata.LastCommit</code> is not null.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Removed <code>SwarmOptions.StaticPeers</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Changed <code>BlockPolicy&lt;T&gt;()</code> constructor not to take
+<code>Func&lt;long, int&gt;</code> type parameter named <code>getMinBlockProtocolVersion</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>(Libplanet.Net) Values for <code>Message.MessageType</code> are updated to
+use entirely different values.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>VoteFlag</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>IVoteMetadata</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>VoteMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>Vote</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockContent.Propose()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockCommit</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockChain.ProposeGenesisBlock()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockChain.ProposeBlock()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockCommitExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>ContextTimeoutOption</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockMarshaler.UnmarshalBlockHash()</code> method. [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.GetBlockCommit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>InvalidBlockCommitException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.ValidateBlockCommit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>IReactor</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusReactor</code> class which inherits
+<code>IReactor</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>Context</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>Step</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusMessage</code> abstract class which inherits
+<code>Message</code> abstract class.  And added classes which implements
+<code>ConsensusMessage</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]
+<ul>
+<li>Added <code>ConsensusProposal</code> class.</li>
+<li>Added <code>ConsensusVote</code> class.</li>
+<li>Added <code>ConsensusCommit</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added enumeration items to <code>MessageType</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]
+<ul>
+<li>Added <code>ConsensusProposal</code> of value <code>0x40</code>.</li>
+<li>Added <code>ConsensusVote</code> of value <code>0x41</code>.</li>
+<li>Added <code>ConsensusCommit</code> of value <code>0x42</code>.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>ConsensusReactorOption</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidConsensusMessageException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidHeightIncreasingException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>Message.Id</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>Proposal</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>ProposalMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Net) Added <code>NetMQMessageCodec.ParseMessageType()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Explorer) Added <code>BoundPeerType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Explorer) Added <code>BlockCommitType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Explorer) Added <code>VoteFlagType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Explorer) Added <code>VoteType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li>(Libplanet.Explorer) Added <code>BlockCommitType</code> as a return of <code>BlockQuery</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
 <li>Added <code>PolymorphicAction&lt;T&gt;.ActionTypeLoader</code> static property to provide
 a way to configure action type loader to be used in <code>PolymorphicAction&lt;T&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/2873">#2873</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>PreEvaluationBlockHeader()</code> constructor became to throw
+<code>InvalidBlockLastCommitException</code> when its metadata's <code>LastCommit</code> is
+invalid.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Append()</code> has new parameter <code>BlockCommit blockCommit</code>, which
+is a set of commits for given block. <code>BlockCommit</code> is used for checks
+whether a block is committed in consensus.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Append()</code> method became to throw
+<code>InvalidBlockCommitException</code> when the given <code>BlockCommit</code> is invalid with
+given block.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>(Libplanet.Explorer) Fixed a bug where <code>stateQuery</code> hadn't work
+correctly in some situations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
+</ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2848">#2848</a>]</li>

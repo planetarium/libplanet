@@ -77,9 +77,10 @@
     <h3 id="classes">Classes
 </h3>
       <h4><a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a></h4>
-      <section><p>The complete block including all block contents and done proof-of-work and action
-evaluation.</p>
+      <section><p>The complete block including all block contents and action evaluation.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockContent-1.html">BlockContent&lt;T&gt;</a></h4>
       <section><p>A block content without any proofs like nonce or hash.  This represents contents of a
 block that is not yet mined.</p>
@@ -94,7 +95,7 @@ block that is not yet mined.</p>
       <section><p>Marshaling and unmarshaling block data.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a></h4>
-      <section><p>A block metadata without transactions or any proofs like nonce or hash.  This represents
+      <section><p>A block metadata without transactions or any proof hash.  This represents
 metadata of a block that is not yet mined nor proven.</p>
 <p>To represent a block content including its metadata and transactions, use
 <a class="xref" href="Libplanet.Blocks.BlockContent-1.html">BlockContent&lt;T&gt;</a>.</p>
@@ -110,7 +111,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBloc
       <section><p>An exception thrown when the encoded bytes of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> exceeds
 <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_System_Int64_">GetMaxTransactionsBytes(Int64)</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></h4>
+      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockCommitException.html">InvalidBlockCommitException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></h4>
       <section><p>Serves as the base class for exceptions related <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s' integrity and
@@ -120,7 +121,7 @@ validity.</p>
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockNonceException.html">InvalidBlockNonceException</a></h4>
+      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockLastCommitException.html">InvalidBlockLastCommitException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html">InvalidBlockPreEvaluationHashException</a></h4>
       <section><p>The exception that is thrown when the a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s
@@ -144,8 +145,6 @@ validity.</p>
 mismatches to the state root hash of the trie on the block executed in local.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTimestampException.html">InvalidBlockTimestampException</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTotalDifficultyException.html">InvalidBlockTotalDifficultyException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Blocks.InvalidBlockTxCountException.html">InvalidBlockTxCountException</a></h4>
       <section><p>An exception thrown when the count of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a>
@@ -201,19 +200,18 @@ the canonical chain.</p>
 <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_TxHash">TxHash</a>).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></h4>
-      <section><p>A common interface for blocks that have their proof-of-work
-<a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_Nonce">Nonce</a>s and
+      <section><p>A common interface for blocks that have their
 <a class="xref" href="Libplanet.Blocks.IBlockContent.html#Libplanet_Blocks_IBlockContent_Transactions">Transactions</a>, but are not evaluated yet (i.e., their state
 root hashes are not yet determined).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock-1.html">IPreEvaluationBlock&lt;T&gt;</a></h4>
-      <section><p>A common interface for blocks that have their proof-of-work
-<a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_Nonce">Nonce</a>s and
+      <section><p>A common interface for blocks that have their
+<a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash">PreEvaluationHash</a>s and
 <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks_IBlockContent_1_Transactions">Transactions</a>, but are not evaluated yet (i.e., their state
 root hashes are not yet determined).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></h4>
-      <section><p>A common interface for blocks that have their proof-of-work <a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_Nonce">Nonce</a>s,
+      <section><p>A common interface for blocks that have their proof-of-work <a class="xref" href="Libplanet.Nonce.html">Nonce</a>s,
 but are not evaluated yet (i.e., state root hash is not yet determined).</p>
 </section>
 </article>

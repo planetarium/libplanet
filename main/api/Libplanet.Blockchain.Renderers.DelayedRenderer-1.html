@@ -137,7 +137,7 @@ the delayed events relevant to these blocks are relayed to the decorated
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -160,20 +160,20 @@ var chain = new BlockChain&lt;ExampleAction>(
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%7B%600%7D%2CSystem.Collections.Generic.IComparer%7BLibplanet.Blocks.IBlockExcerpt%7D%2CLibplanet.Store.IStore%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%7B%600%7D%2CLibplanet.Store.IStore%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L61">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L58">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Collections.Generic.IComparer{Libplanet.Blocks.IBlockExcerpt},Libplanet.Store.IStore,System.Int32)">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},Libplanet.Store.IStore,System.Int32)">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html">DelayedRenderer&lt;T&gt;</a> instance decorating the given
 <code data-dev-comment-type="paramref" class="paramref">renderer</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DelayedRenderer(IRenderer&lt;T&gt; renderer, IComparer&lt;IBlockExcerpt&gt; canonicalChainComparer, IStore store, int confirmations)</code></pre>
+    <pre><code class="lang-csharp hljs">public DelayedRenderer(IRenderer&lt;T&gt; renderer, IStore store, int confirmations)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,13 +193,6 @@ implementations and receives delayed events.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</td>
-        <td><span class="parametername">canonicalChainComparer</span></td>
-        <td><p>The same canonical chain comparer to
-<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Policy">Policy</a>.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
         <td><span class="parametername">store</span></td>
         <td><p>The same store to what <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> uses.</p>
@@ -216,9 +209,9 @@ See also the <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRendere
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -244,52 +237,10 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.CanonicalChainComparer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L101">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.CanonicalChainComparer*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.CanonicalChainComparer">CanonicalChainComparer</h4>
-  <div class="markdown level1 summary"><p>The same canonical chain comparer to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Policy">Policy</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IComparer&lt;IBlockExcerpt&gt; CanonicalChainComparer { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
-constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
-However, even it takes an action renderer, action-level fine-grained events won't hear.
-For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
-</div>
-  <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_CanonicalChainComparer_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_CanonicalChainComparer">CanonicalChainComparer</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Confirmations%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L113">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L102">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmations*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmations">Confirmations</h4>
@@ -319,7 +270,7 @@ the block #N+1 and the block #N+2 are discovered.</p>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmations_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -329,7 +280,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmed.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Confirmed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L196">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L185">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmed_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmed*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmed" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Confirmed">Confirmed</h4>
@@ -360,7 +311,7 @@ the delayed events relevant to these blocks are relayed to the decorated
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Confirmed_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -384,7 +335,7 @@ var chain = new BlockChain&lt;ExampleAction>(
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Logger%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L194">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Logger*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Logger">Logger</h4>
@@ -412,7 +363,7 @@ var chain = new BlockChain&lt;ExampleAction>(
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Logger_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -422,7 +373,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Renderer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L95">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L90">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Renderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Renderer">Renderer</h4>
@@ -451,7 +402,7 @@ events.</p>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Renderer_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -461,7 +412,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Store%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L106">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L95">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Store*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Store">Store</h4>
@@ -489,7 +440,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -499,7 +450,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.Tip%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L119">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Tip*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.Tip">Tip</h4>
@@ -528,7 +479,7 @@ this property can be <span class="xref">null</span>.</p>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_Tip_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -540,7 +491,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_DiscoverBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.DiscoverBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L240">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L229">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_DiscoverBlock_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.DiscoverBlock*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_DiscoverBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.DiscoverBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">DiscoverBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -578,7 +529,7 @@ the delayed events relevant to these blocks are relayed to the decorated
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_DiscoverBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -602,7 +553,7 @@ var chain = new BlockChain&lt;ExampleAction>(
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.OnTipChanged(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L225">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L214">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.OnTipChanged*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.OnTipChanged(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">OnTipChanged(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -648,7 +599,7 @@ Otherwise <span class="xref">null</span>.</p>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_OnTipChanged_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Collections_Generic_IComparer_Libplanet_Blocks_IBlockExcerpt__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IComparer&lt;IBlockExcerpt&gt;, IStore, Int32)</a>
+<a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__Libplanet_Store_IStore_System_Int32_">DelayedRenderer(IRenderer&lt;T&gt;, IStore, Int32)</a>
 constructor can take an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance as well.
 However, even it takes an action renderer, action-level fine-grained events won't hear.
 For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a> instead.</p>
@@ -658,7 +609,7 @@ For action renderers, please use <a class="xref" href="Libplanet.Blockchain.Rend
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.RenderBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L199">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderBlock*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -703,7 +654,7 @@ the blockchain, unless it has been stale due to reorg (for that case, <a class="
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.RenderReorg(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L206">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L195">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -758,7 +709,7 @@ before <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Lib
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601.RenderReorgEnd(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L212">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L201">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorgEnd_" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorgEnd*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorgEnd(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -821,7 +772,7 @@ before <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Lib
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_DelayedRenderer_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.DelayedRenderer%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L41" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/DelayedRenderer.cs/#L40" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

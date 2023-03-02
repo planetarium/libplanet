@@ -381,6 +381,41 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteBlockCommit_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteBlockCommit(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IStore.cs/#L348">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_DeleteBlockCommit_" data-uid="Libplanet.Store.IStore.DeleteBlockCommit*"></a>
+  <h4 id="Libplanet_Store_IStore_DeleteBlockCommit_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.DeleteBlockCommit(Libplanet.Blocks.BlockHash)">DeleteBlockCommit(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Deletes a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> of given height from store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void DeleteBlockCommit(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>
+to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -626,6 +661,91 @@ block indexes.</p>
         <td><span class="parametername">T</span></td>
         <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
 to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlockCommit_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlockCommit(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IStore.cs/#L335">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_GetBlockCommit_" data-uid="Libplanet.Store.IStore.GetBlockCommit*"></a>
+  <h4 id="Libplanet_Store_IStore_GetBlockCommit_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.GetBlockCommit(Libplanet.Blocks.BlockHash)">GetBlockCommit(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> for given <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> from store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">BlockCommit GetBlockCommit(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>
+to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a></td>
+        <td><p>Returns <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> if given <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> is stored
+and available, otherwise returns <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlockCommitHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlockCommitHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IStore.cs/#L355">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_GetBlockCommitHashes_" data-uid="Libplanet.Store.IStore.GetBlockCommitHashes*"></a>
+  <h4 id="Libplanet_Store_IStore_GetBlockCommitHashes" data-uid="Libplanet.Store.IStore.GetBlockCommitHashes">GetBlockCommitHashes()</h4>
+  <div class="markdown level1 summary"><p>Gets every <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>es of <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>s from store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;BlockHash&gt; GetBlockCommitHashes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p>Returns an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>es
+of all <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>s.</p>
 </td>
       </tr>
     </tbody>
@@ -1465,6 +1585,40 @@ If the same block already exists in the store it does nothing.</p>
         <td><span class="parametername">T</span></td>
         <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
 <code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutBlockCommit_Libplanet_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutBlockCommit(Libplanet.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/IStore.cs/#L341">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_PutBlockCommit_" data-uid="Libplanet.Store.IStore.PutBlockCommit*"></a>
+  <h4 id="Libplanet_Store_IStore_PutBlockCommit_Libplanet_Blocks_BlockCommit_" data-uid="Libplanet.Store.IStore.PutBlockCommit(Libplanet.Blocks.BlockCommit)">PutBlockCommit(BlockCommit)</h4>
+  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> to the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void PutBlockCommit(BlockCommit blockCommit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a></td>
+        <td><span class="parametername">blockCommit</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> to store.</p>
 </td>
       </tr>
     </tbody>

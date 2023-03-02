@@ -76,6 +76,17 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
 </h3>
+      <h4><a class="xref" href="Libplanet.Consensus.Proposal.html">Proposal</a></h4>
+      <section><p>Represents a <a class="xref" href="Libplanet.Consensus.Proposal.html">Proposal</a> from a validator for consensus.  It contains an
+essential information <a class="xref" href="Libplanet.Consensus.ProposalMetadata.html">ProposalMetadata</a> to propose a block for a consensus
+in a height and a round, and its signature to verify. The signature is verified in
+constructor, so the instance of <a class="xref" href="Libplanet.Consensus.Proposal.html">Proposal</a> should be valid.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Consensus.ProposalMetadata.html">ProposalMetadata</a></h4>
+      <section><p>A class for constructing <a class="xref" href="Libplanet.Consensus.Proposal.html">Proposal</a>. This class contains proposal information
+in consensus of a height and a round. Use <a class="xref" href="Libplanet.Consensus.ProposalMetadata.html#Libplanet_Consensus_ProposalMetadata_Sign_Libplanet_Crypto_PrivateKey_">Sign(PrivateKey)</a> to create a
+<a class="xref" href="Libplanet.Consensus.Proposal.html">Proposal</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a></h4>
       <section><p>A class designed for a <span class="xref">langword_csharp_Validator</span> of consensus.
 A <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> consists of operator's <a class="xref" href="Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_PublicKey">PublicKey</a>
@@ -84,6 +95,23 @@ and its corresponding <span class="xref">langword_csharp_Power</span>.</p>
       <h4><a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a></h4>
       <section><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
 This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a></h4>
+      <section><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Consensus.VoteMetadata.html">VoteMetadata</a></h4>
+      <section><p>Represents a vote metadata from a validator for consensus.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Libplanet.Consensus.IVoteMetadata.html">IVoteMetadata</a></h4>
+      <section><p>A common <span class="xref">langword_csharp_interface</span> for <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>s
+and <a class="xref" href="Libplanet.Consensus.VoteMetadata.html">VoteMetadata</a>s.</p>
+</section>
+    <h3 id="enums">Enums
+</h3>
+      <h4><a class="xref" href="Libplanet.Consensus.VoteFlag.html">VoteFlag</a></h4>
+      <section><p>A State about <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>.</p>
 </section>
 </article>
           </div>

@@ -325,12 +325,12 @@ states recalculated and filled on the fly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.IBlockChainStates%601.GetValidatorSet(Libplanet.Blocks.BlockHash%2CLibplanet.Blockchain.ValidatorSetStateCompleter%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/IBlockChainStates.cs/#L90">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/IBlockChainStates.cs/#L107">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_" data-uid="Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet*"></a>
   <h4 id="Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__" data-uid="Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})">GetValidatorSet(BlockHash, ValidatorSetStateCompleter&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>A minimal interface to get states from a blockchain.</p>
-<p>Note that <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> implements this interface.</p>
+  <div class="markdown level1 summary"><p>Returns the validator set in the
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> from <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -350,12 +350,21 @@ states recalculated and filled on the fly.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
         <td><span class="parametername">offset</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the block to
+start finding the state.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blockchain.ValidatorSetStateCompleter-1.html">ValidatorSetStateCompleter</a>&lt;T&gt;</td>
         <td><span class="parametername">stateCompleter</span></td>
-        <td></td>
+        <td><p>When the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance does not
+contain states of the block, this delegate is called and its return values are used
+instead.</p>
+<p><a class="xref" href="Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_Recalculate">Recalculate</a> makes the incomplete
+states recalculated and filled on the fly.</p>
+<p><a class="xref" href="Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_Reject">Reject</a> makes the incomplete states
+(if needed) to cause <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.html">IncompleteBlockStatesException</a> instead.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -370,7 +379,9 @@ states recalculated and filled on the fly.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a></td>
-        <td></td>
+        <td><p>The validator set of type <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a> at the
+<code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
