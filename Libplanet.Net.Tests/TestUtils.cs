@@ -240,7 +240,9 @@ namespace Libplanet.Net.Tests
             for (int i = 1; i < height; i++)
             {
                 var block = blockChain.ProposeBlock(
-                    Libplanet.Tests.TestUtils.GenesisProposer,
+                    Libplanet.Tests.TestUtils.ValidatorPrivateKeyMap[
+                        Libplanet.Tests.TestUtils.ValidatorSet.GetProposer(i, 0).PublicKey
+                    ],
                     lastCommit: CreateBlockCommit(blockChain[i - 1]));
                 blockChain.Append(block, CreateBlockCommit(block));
             }

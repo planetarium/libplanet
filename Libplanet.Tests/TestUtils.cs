@@ -53,6 +53,9 @@ namespace Libplanet.Tests
                 "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a"),
         };  // The ordering here should match the ordering by address.
 
+        public static readonly Dictionary<PublicKey, PrivateKey> ValidatorPrivateKeyMap
+            = ValidatorPrivateKeys.ToDictionary(pk => pk.PublicKey, pk => pk);
+
         public static readonly ValidatorSet ValidatorSet = new ValidatorSet(
             ValidatorPrivateKeys.Select(
                 privateKey => new Validator(privateKey.PublicKey, BigInteger.One)).ToList());
