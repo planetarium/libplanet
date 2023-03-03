@@ -2,7 +2,7 @@ import { test } from "vitest";
 import * as fc from "fast-check";
 import { encodeAddress, encodeAddressSet } from "../src/address";
 import { compareUint8Array } from "../src/binary";
-import { bytesEqual } from "./bytes";
+import { bytesEqual } from "../src/bytes";
 
 test("encodeAddress", () => {
   fc.assert(

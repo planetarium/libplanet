@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import * as fc from "fast-check";
 import { encodeBlockHash } from "../src/blockhash";
-import { bytesEqual } from "./bytes";
+import { bytesEqual } from "../src/bytes";
 
 test("encodeBlockHash", () => {
   fc.assert(
