@@ -7,9 +7,10 @@
     "Libplanet.Tools"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach -p run build",
-    "prepack": "printf \"\\033[41;97mLibplanet note: `yarn pack` is not allowed on the project root level, as it produces useless empty package. use `yarn pack-all` instead.\\033[0m\n\" > /dev/stderr && false",
+    "build": "_libplanet_build=1 yarn workspaces foreach -p run build",
     "pack-all": "yarn workspaces foreach -p --include @planetarium/\\* pack",
+    "postinstall": "env | grep -E '^_libplanet_build=1$' || yarn build && echo ran yarn build",
+    "prepack": "printf \"\\033[41;97mLibplanet note: `yarn pack` is not allowed on the project root level, as it produces useless empty package. use `yarn pack-all` instead.\\033[0m\n\" > /dev/stderr && false",
     "test": "yarn workspaces foreach -p run test"
   },
   "devDependencies": {
