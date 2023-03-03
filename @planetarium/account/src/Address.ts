@@ -57,8 +57,8 @@ export class Address {
     } else if (!hex.match(/^(0x)?[0-9a-f]{40}$/i)) {
       throw new Error(
         `Expected a string of 40 hexadecimals, but ${JSON.stringify(
-          hex
-        )} was given.`
+          hex,
+        )} was given.`,
       );
     }
 
@@ -74,7 +74,7 @@ export class Address {
     const expectedChecksum = checksum(hex);
     if (expectedChecksum !== hex) {
       throw new Error(
-        `Expected checksum is 0x${expectedChecksum}, but 0x${hex} was given.`
+        `Expected checksum is 0x${expectedChecksum}, but 0x${hex} was given.`,
       );
     }
 
@@ -88,7 +88,7 @@ export class Address {
 
     if (bytes.length !== 20) {
       throw new Error(
-        `Expected 20 bytes, but ${bytes.length} bytes were given.`
+        `Expected 20 bytes, but ${bytes.length} bytes were given.`,
       );
     }
 
