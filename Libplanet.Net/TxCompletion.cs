@@ -74,17 +74,15 @@ namespace Libplanet.Net
 
             HashSet<TxId> required = GetRequiredTxIds(txIds);
 
+            _logger.Information(
+                "There are {RequiredCount} unaware transactions to receive out of {Count} TxIds",
+                required.Count,
+                txIds.Count());
+
             if (!required.Any())
             {
-                _logger.Information(
-                    "No unaware transactions to receive");
                 return;
             }
-
-            _logger.Information(
-                "Unaware transactions to receive: {TxIdCount}",
-                required.Count
-            );
 
             do
             {
@@ -177,7 +175,7 @@ namespace Libplanet.Net
                 if (stagedTxs.Any())
                 {
                     _logger.Information(
-                        "{StagedTxCount} out of {TxCount} txs from {Peer} staged successfully",
+                        "Staged {StagedTxCount} out of {TxCount} txs from {Peer}",
                         stagedTxs.Count,
                         txs.Count,
                         peer);
