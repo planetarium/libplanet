@@ -1,5 +1,6 @@
 import { Address } from "../src/Address";
 import { PublicKey } from "../src/PublicKey";
+import { RawPrivateKey } from "../src/RawPrivateKey";
 import * as fc from "fast-check";
 import { describe, expect, test } from "vitest";
 import { bytesEquals, toHex } from "./utils";
@@ -21,6 +22,10 @@ describe("Address", () => {
       ]),
     );
     expect(Address.deriveFrom(pubKey)).toHaveEqualBytes(expectedAddress);
+    const account = RawPrivateKey.generate();
+    expect(Address.deriveFrom(account)).toHaveEqualBytes(
+      Address.deriveFrom(account.publicKey),
+    );
     expect(() => Address.deriveFrom(123 as unknown as PublicKey)).toThrowError(
       /got number/i,
     );

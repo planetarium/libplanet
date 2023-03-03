@@ -1,5 +1,6 @@
 import { keccak_256 } from "@noble/hashes/sha3";
 import { PublicKey } from "./PublicKey.js";
+import { Account, isAccount } from "./Account.js";
 
 if (typeof globalThis.TextEncoder === "undefined") {
   // FIXME: This is a workaround for the lack of TextEncoder in Vitest.
@@ -41,9 +42,13 @@ export class Address {
     this.#bytes = bytes;
   }
 
-  static deriveFrom(publicKey: PublicKey): Address {
-    if (!(publicKey instanceof PublicKey)) {
-      throw new Error(`Expected PublicKey, got ${typeof publicKey}`);
+  static deriveFrom(publicKey: PublicKey | Account): Address {
+    if (isAccount(publicKey)) {
+      publicKey = publicKey.publicKey;
+    } else if (!(publicKey instanceof PublicKey)) {
+      throw new Error(
+        `Expected either PublicKey or Account, got ${typeof publicKey}`,
+      );
     }
     const pub = publicKey.toBytes("uncompressed").slice(1);
     const digest = keccak_256(pub);
