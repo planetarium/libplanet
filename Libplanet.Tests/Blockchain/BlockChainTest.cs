@@ -2124,13 +2124,12 @@ namespace Libplanet.Tests.Blockchain
             var systemActions = ValidatorPrivateKeys.Select(
                 pk => new SetValidator(new Validator(pk.PublicKey, BigInteger.One)));
 
-            BlockChain<DumbAction> blockChain =
-                new BlockChain<DumbAction>(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    storeFixture.Store,
-                    storeFixture.StateStore,
-                    BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
+            var blockChain = BlockChain<DumbAction>.Create(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                storeFixture.Store,
+                storeFixture.StateStore,
+                BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
 
             blockChain.MakeTransaction(
                 new PrivateKey(),

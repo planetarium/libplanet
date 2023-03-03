@@ -1322,6 +1322,7 @@ namespace Libplanet.Blockchain
         public BlockCommit GetBlockCommit(BlockHash blockHash) =>
             GetBlockCommit(this[blockHash].Index);
 
+#pragma warning disable MEN003
         internal void Append(
             Block<T> block,
             BlockCommit blockCommit,
@@ -1365,7 +1366,7 @@ namespace Libplanet.Blockchain
             block.ValidateTimestamp();
 
             _rwlock.EnterUpgradeableReadLock();
-            Block<T> prevTip = Count > 0 ? Tip : null;
+            Block<T> prevTip = Tip;
             try
             {
                 if (ValidateNextBlock(block) is { } ibe)
@@ -1533,6 +1534,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
+#pragma warning restore MEN003
 
         /// <summary>
         /// Find an approximate to the topmost common ancestor between this
