@@ -168,6 +168,9 @@ namespace Libplanet.Blockchain.Policies
                 try
                 {
                     _ignored.Add(id);
+                    _logger.Information(
+                        "Transaction {TxId} is marked as ignored",
+                        id);
                 }
                 finally
                 {

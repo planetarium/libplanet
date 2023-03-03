@@ -730,8 +730,13 @@ namespace Libplanet.Net.Transports
                 _logger.Verbose(waitMsg);
                 MessageRequest req = await reader.ReadAsync(cancellationToken);
 #endif
+                string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
                 long left = Interlocked.Decrement(ref _requestCount);
-                _logger.Information("Request taken; {Count} requests left", left);
+                _logger.Debug(
+                    "Request {Message} {RequestId} taken for processing; {Count} requests left",
+                    messageType,
+                    req.Id,
+                    left);
 
                 _ = SynchronizationContext.Current.PostAsync(
                     () => ProcessRequest(req, req.CancellationToken)
@@ -776,7 +781,11 @@ namespace Libplanet.Net.Transports
                 dealer.Options.Identity = req.Id.ToByteArray();
                 try
                 {
-                    _logger.Debug("Trying to connect {RequestId}", req.Id);
+                    _logger.Debug(
+                        "Trying to connect to {Peer} for request {Message} {RequestId}",
+                        req.Peer,
+                        messageType,
+                        req.Id);
                     dealer.Connect(await req.Peer.ResolveNetMQAddressAsync());
                     incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                     _logger
@@ -850,7 +859,7 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Failed to process {RequestId} {Message}; discarding it",
+                    "Failed to process {Message} {RequestId}; discarding it",
                     messageType,
                     req.Id);
                 channel.Writer.TryComplete(e);
