@@ -75,7 +75,7 @@ export class PublicKey {
     return secp256k1.verify(signature.toBytes(), msgHash, this.#point);
   }
 
-  toRawBytes(form: PublicKeyForm): Uint8Array {
+  toBytes(form: PublicKeyForm): Uint8Array {
     if (form !== "compressed" && form !== "uncompressed") {
       throw new Error(
         "Invalid public key form: choose 'compressed' or 'uncompressed'",

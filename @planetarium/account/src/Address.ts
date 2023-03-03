@@ -45,7 +45,7 @@ export class Address {
     if (!(publicKey instanceof PublicKey)) {
       throw new Error(`Expected PublicKey, got ${typeof publicKey}`);
     }
-    const pub = publicKey.toRawBytes("uncompressed").slice(1);
+    const pub = publicKey.toBytes("uncompressed").slice(1);
     const digest = keccak_256(pub);
     const addr = digest.slice(digest.length - 20);
     return new Address(addr);

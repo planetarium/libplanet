@@ -22,20 +22,16 @@ describe("RawPrivateKey", () => {
     const pubKeyBytes = new Uint8Array(
       Buffer.from(
         "02472a659c7e655cbcf688997863fb9c7a7139635929429bdc9f75f10c60ed8070",
-        "hex"
-      )
+        "hex",
+      ),
     );
-    expect(rawKey.publicKey.toRawBytes("compressed")).toStrictEqual(
-      pubKeyBytes
-    );
+    expect(rawKey.publicKey.toBytes("compressed")).toStrictEqual(pubKeyBytes);
 
     // The inputBytes should not affect the RawPrivateKey instance which
     // was created from it:
     inputBytes.fill(0, 0, inputBytes.length);
     expect(rawKey.toBytes()).toStrictEqual(new Uint8Array(bytes));
-    expect(rawKey.publicKey.toRawBytes("compressed")).toStrictEqual(
-      pubKeyBytes
-    );
+    expect(rawKey.publicKey.toBytes("compressed")).toStrictEqual(pubKeyBytes);
 
     const invalidType = [] as unknown as Uint8Array;
     expect(() => RawPrivateKey.fromBytes(invalidType)).toThrowError(
@@ -62,12 +58,10 @@ describe("RawPrivateKey", () => {
     const pubKeyBytes = new Uint8Array(
       Buffer.from(
         "02472a659c7e655cbcf688997863fb9c7a7139635929429bdc9f75f10c60ed8070",
-        "hex"
-      )
+        "hex",
+      ),
     );
-    expect(rawKey.publicKey.toRawBytes("compressed")).toStrictEqual(
-      pubKeyBytes
-    );
+    expect(rawKey.publicKey.toBytes("compressed")).toStrictEqual(pubKeyBytes);
 
     const invalidType = new Uint8Array(32) as unknown as string;
     expect(() => RawPrivateKey.fromHex(invalidType)).toThrowError(
