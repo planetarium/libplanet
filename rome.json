@@ -2,10 +2,10 @@
   "$schema": "https://github.com/rome/tools/raw/cli/v11.0.0/npm/rome/configuration_schema.json",
   "files": {
     "ignore": [
-      "./Libplanet/",
-      "./Libplanet.*/",
-      "./@planetarium/*/dist/",
-      "./@planetarium/*/coverage/",
+      "./Libplanet/**/*",
+      "./Libplanet.*/**/*",
+      "./@planetarium/*/dist/**/*",
+      "./@planetarium/*/coverage/**/*",
       "./.pnp.*"
     ]
   },
