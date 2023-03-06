@@ -545,6 +545,8 @@ namespace Libplanet.Action
 
             foreach (ITransaction tx in orderedTxs)
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 delta = AccountStateDeltaImpl.ChooseVersion(
                     block.ProtocolVersion,
                     delta.GetStates,
@@ -553,7 +555,6 @@ namespace Libplanet.Action
                     delta.GetValidatorSet,
                     tx.Signer);
 
-                DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
                     tx: tx,
@@ -570,21 +571,20 @@ namespace Libplanet.Action
                 }
 
                 // FIXME: This is dependant on when the returned value is enumerated.
-                TimeSpan evalDuration = DateTimeOffset.Now - startTime;
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
                 logger.Information(
                     "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
-                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0} ms",
+                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs} ms",
                     actions.Count,
                     actions.Select(action => action.ToString()!.Split('.')
                         .LastOrDefault()?.Replace(">", string.Empty)),
                     tx.Id,
                     tx.Signer,
                     tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                    evalDuration.TotalMilliseconds);
+                    stopwatch.ElapsedMilliseconds);
             }
         }
 

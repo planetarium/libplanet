@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -22,10 +23,14 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
+        private readonly ILogger _logger;
         private readonly ConcurrentDictionary<BlockHeader, Branch<T>> _table;
 
         public BlockCandidateTable()
         {
+            _logger = Log
+                .ForContext<BlockCandidateTable<T>>()
+                .ForContext("Source", nameof(BlockCandidateTable<T>));
             _table = new ConcurrentDictionary<BlockHeader, Branch<T>>();
         }
 
@@ -51,15 +56,29 @@ namespace Libplanet.Net
         {
             if (_table.ContainsKey(blockHeader))
             {
-                Log.Debug(
-                    "Given blocks will not be added as the table already contains " +
-                    "blockheader #{Index} {BlockHash} as a key",
+                var root = branch.Blocks.First().Item1;
+                var tip = branch.Blocks.Last().Item1;
+                _logger.Debug(
+                    "Given branch with root #{RootIndex} {RootHash} and " +
+                    "tip #{TipIndex} {TipHash} will not be added as the table already contains " +
+                    "blockheader #{Index} {BlockHash} as its key",
+                    root.Index,
+                    root.Hash,
+                    tip.Index,
+                    tip.Hash,
                     blockHeader.Index,
                     blockHeader.Hash);
                 return;
             }
 
             _table.TryAdd(blockHeader, branch);
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CandidateTableCount")
+                .Information(
+                    "There are {Count} branches in {ClassName}",
+                    _table.Count,
+                    nameof(BlockCandidateTable<T>));
         }
 
         /// <summary>
@@ -96,6 +115,14 @@ namespace Libplanet.Net
                     TryRemove(blockHeader);
                 }
             }
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CandidateTableCount")
+                .Information(
+                    "There are {Count} branches in {ClassName}",
+                    _table.Count,
+                    nameof(BlockCandidateTable<T>));
         }
     }
 }

@@ -59,7 +59,9 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="TimeSpan"/>.  See also <see cref="Lifetime"/>.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
-            _logger = Log.ForContext<VolatileStagePolicy<T>>();
+            _logger = Log
+                .ForContext<VolatileStagePolicy<T>>()
+                .ForContext("Source", nameof(VolatileStagePolicy<T>));
             Lifetime = lifetime;
             _staged = new ConcurrentDictionary<TxId, Transaction<T>>();
             _ignored = new HashSet<TxId>();
@@ -112,6 +114,12 @@ namespace Libplanet.Blockchain.Policies
                                         TimestampFormat, CultureInfo.InvariantCulture),
                                     DateTimeOffset.UtcNow.ToString(
                                         TimestampFormat, CultureInfo.InvariantCulture));
+                            _logger
+                                .ForContext("Tag", "Metric")
+                                .ForContext("Subtag", "StagedCount")
+                                .Information(
+                                    "There are {Count} transactions staged",
+                                    _staged.Count);
                         }
                     }
                     finally
@@ -160,6 +168,9 @@ namespace Libplanet.Blockchain.Policies
                 try
                 {
                     _ignored.Add(id);
+                    _logger.Information(
+                        "Transaction {TxId} is marked as ignored",
+                        id);
                 }
                 finally
                 {
