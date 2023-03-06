@@ -18,6 +18,28 @@ To be released.
     -  `ValidatorSetStateCompleters`
  -  Removed type parameter `T` for `IAction` from `ActionEvaluator` and
     `IBlockChainStates`.  [[#2703]]
+ -  (@planetarium/tx) It now depends on [@planetarium/bencodex] instead of
+    [disjukr/bencodex], so `Encodable` is replaced by `Value`.
+     -  The return type of `encodeBlockHash()` became `Value` (was `Encodable`).
+     -  The return type of `encodePublicKey()` became `Value` (was `Encodable`).
+     -  The return type of `encodeAddress()` became `Key` (was `Encodable`).
+     -  The return type of `encodeAddressSet()` became `Value`
+        (was `Encodable`).
+     -  The return type of `encodeSignedTx()` became `Dictionary`
+        (was `Map<string | Buffer, Encodable>`).
+     -  The return type of `encodeUnsignedTxWithSystemAction()` became `Value`
+        (was `Encodable`).
+     -  The return type of `encodeUnsignedTxWithCustomActions()` became `Value`
+        (was `Encodable`).
+     -  The `CustomAction` type is now an alias of `Value` (was an alias of
+        `Encodable`).
+     -  The return type of `encodeTxMetadata()` became `Dictionary`
+        (was `Map<string | Buffer, Encodable>`).
+     -  The return type of `encodeSystemAction()` became `Value`
+        (was `Encodable`).
+     -  The return type of `encodeCurrency()` became `Value` (was `Encodable`).
+     -  The return type of `encodeMint()` became `Value` (was `Encodable`).
+     -  The return type of `encodeTransfer()` became `Value` (was `Encodable`).
 
 ### Backward-incompatible network protocol changes
 
@@ -32,6 +54,8 @@ To be released.
 ### CLI tools
 
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
+[@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
+[disjukr/bencodex]: https://github.com/disjukr/bencodex
 
 
 Version 0.52.0

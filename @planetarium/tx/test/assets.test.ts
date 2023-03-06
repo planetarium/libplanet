@@ -1,4 +1,5 @@
-import { encode } from "bencodex";
+import { inspect } from "node:util";
+import { encode } from "@planetarium/bencodex";
 import { expect, test } from "vitest";
 import { Address } from "../src/address";
 import {
@@ -7,7 +8,7 @@ import {
   getCurrencyHash,
   getMajorUnit,
   getMinorUnit,
-  getSign
+  getSign,
 } from "../src/assets";
 import { fromHex, toHex } from "./hex";
 
@@ -27,7 +28,7 @@ test("encodeCurrency", () => {
     totalSupplyTrackable: false,
     maximumSupply: null,
   });
-  expect(encoded).toMatchSnapshot();
+  expect(inspect(encoded, { compact: false })).toMatchSnapshot();
   expect(encode(encoded)).toMatchSnapshot();
 
   const encoded2 = encodeCurrency({
@@ -37,7 +38,7 @@ test("encodeCurrency", () => {
     totalSupplyTrackable: true,
     maximumSupply: { major: 100n, minor: 0n },
   });
-  expect(encoded2).toMatchSnapshot();
+  expect(inspect(encoded2, { compact: false })).toMatchSnapshot();
   expect(encode(encoded2)).toMatchSnapshot();
 });
 

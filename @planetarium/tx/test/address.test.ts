@@ -10,7 +10,7 @@ test("encodeAddress", () => {
       fc.uint8Array({ minLength: 20, maxLength: 20 }),
       (bytes: Uint8Array) => {
         const addr = encodeAddress(bytes);
-        return addr instanceof ArrayBuffer && bytesEqual(addr, bytes);
+        return addr instanceof Uint8Array && bytesEqual(addr, bytes);
       },
     ),
   );
@@ -56,9 +56,9 @@ test("encodeAddressSet", () => {
         const checks = new Set(addresses.map(hex));
         const encoded = encodeAddressSet(set);
         if (!(encoded instanceof Array)) return false;
-        let prev: ArrayBuffer | null = null;
+        let prev: Uint8Array | null = null;
         for (const v of encoded) {
-          if (!(v instanceof ArrayBuffer)) return false;
+          if (!(v instanceof Uint8Array)) return false;
           if (v.byteLength !== 20 || !checks.has(hex(v))) return false;
           if (prev != null && compareUint8Array(prev, v) >= 0) return false;
           checks.delete(hex(v));

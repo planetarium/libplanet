@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { encode } from "bencodex";
+import { encode, RecordView } from "@planetarium/bencodex";
 import { execa } from "execa";
 import { describe, expect, test } from "vitest";
 import { FOO, account1, address1, address2 } from "./fixtures";
@@ -34,6 +34,7 @@ describe("signTx", () => {
       "dotnet",
       [
         "run",
+        "--no-build",
         "--project",
         join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
         "--",
@@ -78,32 +79,41 @@ describe("signTx", () => {
       updatedAddresses: new Set(),
       genesisHash: null,
       customActions: [
-        {
-          type_id: "transfer_asset",
-          values: {
-            amount: [
+        new RecordView(
+          {
+            type_id: "transfer_asset",
+            values: new RecordView(
               {
-                decimalPlaces: Buffer.from([0x02]),
-                minters: [
-                  Buffer.from(
-                    "47d082a115c63e7b58b1532d20e631538eafadde",
-                    "hex",
+                amount: [
+                  new RecordView(
+                    {
+                      decimalPlaces: Buffer.from([0x02]),
+                      minters: [
+                        Buffer.from(
+                          "47d082a115c63e7b58b1532d20e631538eafadde",
+                          "hex",
+                        ),
+                      ],
+                      ticker: "NCG",
+                    },
+                    "text",
                   ),
+                  1000n,
                 ],
-                ticker: "NCG",
+                recipient: Buffer.from(
+                  "5a533067D0cBa77490268b26195EdB10B990143D",
+                  "hex",
+                ),
+                sender: Buffer.from(
+                  "111CB8E18c6D70f5032000c5739c5ac36E793EDB",
+                  "hex",
+                ),
               },
-              1000,
-            ],
-            recipient: Buffer.from(
-              "5a533067D0cBa77490268b26195EdB10B990143D",
-              "hex",
-            ),
-            sender: Buffer.from(
-              "111CB8E18c6D70f5032000c5739c5ac36E793EDB",
-              "hex",
+              "text",
             ),
           },
-        },
+          "text",
+        ),
       ],
     };
     const signed = await signTx(unsigned, account1);
@@ -113,6 +123,7 @@ describe("signTx", () => {
       "dotnet",
       [
         "run",
+        "--no-build",
         "--project",
         join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
         "--",

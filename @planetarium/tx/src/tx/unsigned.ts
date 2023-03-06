@@ -1,9 +1,9 @@
-import { Encodable } from "bencodex";
+import { BencodexDictionary, Dictionary } from "@planetarium/bencodex";
 import { CustomAction, encodeSystemAction, SystemAction } from "../action.js";
 import { encodeTxMetadata, TxMetadata } from "./metadata.js";
 
-const SYSTEM_ACTION_KEY = Buffer.from([0x41]); // 'A'
-const CUSTOM_ACTION_KEY = Buffer.from([0x61]); // 'a'
+const SYSTEM_ACTION_KEY = new Uint8Array([0x41]); // 'A'
+const CUSTOM_ACTION_KEY = new Uint8Array([0x61]); // 'a'
 
 export interface UnsignedTxWithSystemAction extends TxMetadata {
   systemAction: SystemAction;
@@ -20,10 +20,11 @@ export interface UnsignedTxWithCustomActions extends TxMetadata {
  */
 export function encodeUnsignedTxWithSystemAction(
   metadata: UnsignedTxWithSystemAction,
-): Map<string | Buffer, Encodable> {
-  const dict = encodeTxMetadata(metadata);
-  dict.set(SYSTEM_ACTION_KEY, encodeSystemAction(metadata.systemAction));
-  return dict;
+): Dictionary {
+  return new BencodexDictionary([
+    ...encodeTxMetadata(metadata),
+    [SYSTEM_ACTION_KEY, encodeSystemAction(metadata.systemAction)],
+  ]);
 }
 
 /**
@@ -33,8 +34,9 @@ export function encodeUnsignedTxWithSystemAction(
  */
 export function encodeUnsignedTxWithCustomActions(
   metadata: UnsignedTxWithCustomActions,
-): Map<string | Buffer, Encodable> {
-  const dict = encodeTxMetadata(metadata);
-  dict.set(CUSTOM_ACTION_KEY, metadata.customActions);
-  return dict;
+): Dictionary {
+  return new BencodexDictionary([
+    ...encodeTxMetadata(metadata),
+    [CUSTOM_ACTION_KEY, metadata.customActions],
+  ]);
 }
