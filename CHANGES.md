@@ -6,6 +6,13 @@ Version 0.50.1
 
 To be released.
 
+ -  Ported changes from [Libplanet 0.49.1] and [Libplanet 0.49.2] release.
+    [#2884]
+
+[Libplanet 0.49.1]: https://www.nuget.org/packages/Libplanet/0.49.1
+[Libplanet 0.49.2]: https://www.nuget.org/packages/Libplanet/0.49.2
+[#2884]: https://github.com/planetarium/libplanet/pull/2884
+
 
 Version 0.50.0
 --------------
