@@ -95,6 +95,10 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Abstractions\Libplanet.Abstractions.csproj" />
+  </ItemGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
                          '$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />

@@ -12,7 +12,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using Libplanet.Serialization;
-using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace Libplanet
 {
