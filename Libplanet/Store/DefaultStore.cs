@@ -87,7 +87,6 @@ namespace Libplanet.Store
     public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
-        private const string TxIdBlockIndexPrefix = "txblockindex_";
         private const string TxNonceIdPrefix = "nonce_";
         private const string StatesKvPathDefault = "states";
 
@@ -232,7 +231,7 @@ namespace Libplanet.Store
         public override void DeleteChainId(Guid chainId)
         {
             _db.DropCollection(IndexCollection(chainId).Name);
-            _db.DropCollection(TxNonceId(chainId));
+            _db.DropCollection(TxNonceCollection(chainId).Name);
         }
 
         /// <inheritdoc />
@@ -570,8 +569,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            var collectionId = TxNonceId(chainId);
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            LiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
             foreach (BsonDocument doc in collection.FindAll())
             {
                 if (doc.TryGetValue("_id", out BsonValue id) && id.IsBinary)
@@ -837,20 +835,11 @@ namespace Libplanet.Store
         private UPath TxIdBlockHashIndexPath(in TxId txid, in BlockHash blockHash) =>
             TxPath(txid) / blockHash.ToString();
 
-        private string TxNonceId(in Guid chainId)
-        {
-            return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
-        }
+        private LiteCollection<HashDoc> IndexCollection(in Guid chainId) =>
+            _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
 
-        private LiteCollection<HashDoc> IndexCollection(in Guid chainId)
-        {
-            return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
-        }
-
-        private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId)
-        {
-            return _db.GetCollection<BsonDocument>(TxNonceId(chainId));
-        }
+        private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId) =>
+            _db.GetCollection<BsonDocument>($"{TxNonceIdPrefix}{FormatChainId(chainId)}");
 
         private class HashDoc
         {
