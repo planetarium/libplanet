@@ -13,6 +13,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using NetMQ;
+using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -22,7 +23,6 @@ namespace Libplanet.Net.Tests.Consensus
     [Collection("NetMQConfiguration")]
     public class ConsensusReactorTest : IDisposable
     {
-        private const int PropagationDelay = 25_000;
         private const int Timeout = 60 * 1000;
         private ILogger _logger;
 
@@ -45,12 +45,14 @@ namespace Libplanet.Net.Tests.Consensus
             var consensusReactors = new ConsensusReactor<DumbAction>[4];
             var stores = new IStore[4];
             var blockChains = new BlockChain<DumbAction>[4];
-            var fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
+            using var fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
             var validatorPeers = new List<BoundPeer>();
             var cancellationTokenSource = new CancellationTokenSource();
+            var heightChanged = new AsyncAutoResetEvent[4];
 
             for (var i = 0; i < 4; i++)
             {
+                heightChanged[i] = new AsyncAutoResetEvent();
                 validatorPeers.Add(
                     new BoundPeer(
                         TestUtils.PrivateKeys[i].PublicKey,
@@ -71,62 +73,40 @@ namespace Libplanet.Net.Tests.Consensus
                     key: TestUtils.PrivateKeys[i],
                     consensusPort: 6000 + i,
                     validatorPeers: validatorPeers,
-                    newHeightDelayMilliseconds: PropagationDelay * 2);
+                    newHeightDelayMilliseconds: 1000);
+
+                var capture = i;
+                consensusReactors[i].ConsensusContext.StateChanged += (sender, hmrs) =>
+                {
+                    if (hmrs.Height == 2)
+                    {
+                        heightChanged[capture].Set();
+                    }
+                };
             }
 
             try
             {
+                // Prevents from non-stopping reactor. 1000 is arbitrary value which is considered
+                // as preparation time.
+                cancellationTokenSource.CancelAfter(Timeout - 1000);
                 consensusReactors.AsParallel().ForAll(
                     reactor => _ = reactor.StartAsync(cancellationTokenSource.Token));
 
-                Dictionary<string, JsonElement> json;
+                await Task.WhenAll(heightChanged.Select(x =>
+                    x.WaitAsync(cancellationTokenSource.Token)));
 
-                await Task.Delay(PropagationDelay, cancellationTokenSource.Token);
                 foreach (var reactor in consensusReactors)
                 {
                     await reactor.StopAsync(cancellationTokenSource.Token);
                 }
 
-                var isPolka = new bool[4];
-
-                for (var node = 0; node < 4; ++node)
+                foreach (var i in Enumerable.Range(0, 4))
                 {
-                    json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                               consensusReactors[node].ToString())
-                           ?? throw new NullReferenceException(
-                               $"Failed to deserialize consensus reactor");
-
-                    // Genesis block exists, add 1 to the height.
-                    if (json["step"].GetString() == "EndCommit")
-                    {
-                        isPolka[node] = true;
-                    }
-                    else
-                    {
-                        Log.Error(
-                            "[Failed]: {0} {1}",
-                            json["step"].GetString(),
-                            blockChains[node].Count);
-                        isPolka[node] = false;
-                    }
-                }
-
-                Assert.Equal(4, isPolka.Sum(x => x ? 1 : 0));
-
-                for (var node = 0; node < 4; ++node)
-                {
-                    json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                               consensusReactors[node].ToString())
-                           ?? throw new NullReferenceException(
-                               $"Failed to deserialize consensus reactor");
-
-                    Assert.Equal(
-                        validatorPeers[node].Address.ToString(),
-                        json["node_id"].GetString());
-                    Assert.Equal(1, json["height"].GetInt32());
-                    Assert.Equal(2, blockChains[node].Count);
-                    Assert.Equal(0L, json["round"].GetInt32());
-                    Assert.Equal("EndCommit", json["step"].GetString());
+                    // One height will be eventually consent.
+                    Assert.Equal(2, consensusReactors[i].Height);
+                    Assert.Equal(2, blockChains[i].Count);
+                    Assert.Equal(0, consensusReactors[i].ConsensusContext.Round);
                 }
             }
             finally
@@ -134,8 +114,7 @@ namespace Libplanet.Net.Tests.Consensus
                 cancellationTokenSource.Cancel();
                 for (int i = 0; i < 4; ++i)
                 {
-                    await consensusReactors[i].StopAsync(cancellationTokenSource.Token);
-                    consensusReactors[i].Dispose();
+                    await consensusReactors[i].DisposeAsync();
                 }
             }
         }
