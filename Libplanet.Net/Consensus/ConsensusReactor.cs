@@ -147,6 +147,16 @@ namespace Libplanet.Net.Consensus
             return JsonSerializer.Serialize(dict);
         }
 
+        public async ValueTask DisposeAsync()
+        {
+            if (Running)
+            {
+                await StopAsync(CancellationToken.None);
+            }
+
+            Dispose();
+        }
+
         /// <summary>
         /// Adds <see cref="ConsensusMsg"/> to gossip.
         /// </summary>

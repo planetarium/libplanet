@@ -7,7 +7,7 @@ namespace Libplanet.Net.Consensus
     /// <summary>
     /// A interface of consensus reactors.
     /// </summary>
-    public interface IReactor : IDisposable
+    public interface IReactor : IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// Starts a reactor.
