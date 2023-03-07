@@ -290,7 +290,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
             string host = "127.0.0.1",
-            int consensusPort = 5101,
+            int consensusPort = 0,
             List<BoundPeer>? validatorPeers = null,
             int newHeightDelayMilliseconds = 10_000,
             ContextTimeoutOption? contextTimeoutOptions = null)
