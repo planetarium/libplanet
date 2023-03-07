@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action;
@@ -322,6 +323,35 @@ namespace Libplanet.Net.Tests
             Random.NextBytes(bytes);
 
             return bytes;
+        }
+
+        /// <summary>
+        /// Gets an available port in dynamic port range. This method should be used only if a port
+        /// designation is needed before the peer discovery.
+        /// </summary>
+        /// <param name="except">The ports to exclude.</param>
+        /// <param name="startingPort">A starting value of port, dynamic port value is in default.
+        /// </param>
+        /// <returns>Returns an available port.</returns>
+        public static int GetAvailablePort(IEnumerable<int> except, int startingPort = 49152)
+        {
+            var properties = IPGlobalProperties.GetIPGlobalProperties();
+
+            var tcpConnectionPorts = properties.GetActiveTcpConnections()
+                .Where(n => n.LocalEndPoint.Port >= startingPort)
+                .Select(n => n.LocalEndPoint.Port);
+
+            var tcpListenerPorts = properties.GetActiveTcpListeners()
+                .Where(n => n.Port >= startingPort)
+                .Select(n => n.Port);
+
+            var port = Enumerable
+                .Range(startingPort, ushort.MaxValue)
+                .Where(i => !tcpConnectionPorts.Contains(i))
+                .Except(except)
+                .FirstOrDefault(i => !tcpListenerPorts.Contains(i));
+
+            return port;
         }
     }
 }
