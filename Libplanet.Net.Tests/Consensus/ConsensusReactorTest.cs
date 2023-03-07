@@ -119,6 +119,47 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async void ToStringTest()
+        {
+            using var fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
+            var blockChain = TestUtils.CreateDummyBlockChain(fx);
+
+            await using var consensusReactors = TestUtils.CreateDummyConsensusReactor(
+                blockChain: blockChain,
+                key: TestUtils.PrivateKeys[0],
+                contextTimeoutOptions: new ContextTimeoutOption(
+                    1,
+                    100,
+                    100));
+
+            // Default value is NULL, and it cannot be serialized as JSON.
+            Assert.Throws<JsonException>(() => consensusReactors.ToString());
+
+            _ = consensusReactors.StartAsync(CancellationToken.None);
+            await Task.Run(
+                async () =>
+                {
+                    while (!consensusReactors.Running)
+                    {
+                        await Task.Delay(100);
+                    }
+                });
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                           consensusReactors.ToString())
+                       ?? throw new NullReferenceException(
+                           $"Failed to deserialize consensus reactor");
+
+            Assert.Equal(
+                TestUtils.PrivateKeys[0].PublicKey.ToAddress().ToString(),
+                json["node_id"].GetString());
+            Assert.Equal(1, json["height"].GetInt32());
+            Assert.Equal(1, blockChain.Count);
+            Assert.Equal(0L, json["round"].GetInt32());
+            Assert.Equal("Propose", json["step"].GetString());
+        }
+
         public void Dispose()
         {
             NetMQConfig.Cleanup(false);
