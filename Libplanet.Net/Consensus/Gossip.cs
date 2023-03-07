@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -330,10 +331,6 @@ namespace Libplanet.Net.Consensus
         private async Task HandleHaveAsync(Message msg, CancellationToken ctx)
         {
             var haveMessage = (HaveMessage)msg.Content;
-            if (!_table.Contains(msg.Remote))
-            {
-                await _protocol.AddPeersAsync(new[] { msg.Remote }, TimeSpan.FromSeconds(1), ctx);
-            }
 
             await ReplyMessagePongAsync(msg, ctx);
             MessageId[] idsToGet =
@@ -385,10 +382,13 @@ namespace Libplanet.Net.Consensus
                 wantMessage.Ids,
                 ids,
                 contents);
-            IEnumerable<Task> tasks =
-                contents.Select(c => _transport.ReplyMessageAsync(c, msg.Identity, ctx));
-            await Task.WhenAll(tasks);
-            _logger.Debug("Finished replying WantMessage.");
+
+            await contents.ParallelForEachAsync(
+                async c =>
+                    await _transport.ReplyMessageAsync(c, msg.Identity, ctx), ctx);
+
+            var id = msg is { Identity: null } ? "unknown" : new Guid(msg.Identity).ToString();
+            _logger.Debug("Finished replying WantMessage. {RequestId}", id);
         }
 
         /// <summary>
