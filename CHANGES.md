@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.51.0
 --------------
 
-To be released.
+Released on March 7, 2023.
 
 Since 0.51.0, we officially provide *[@planetarium/account]*, an npm package for
 providing measures to represent accounts for apps developed with Libplanet in
@@ -55,8 +55,6 @@ and the specification might change in the near future.
 
  -  (Libplanet.Net) Values for `Message.MessageType` are updated to
     use entirely different values.  [[#2872]]
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -134,6 +132,19 @@ and the specification might change in the near future.
 [#2872]: https://github.com/planetarium/libplanet/pull/2872
 [#2873]: https://github.com/planetarium/libplanet/pull/2873
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
+
+
+Version 0.50.1
+--------------
+
+Released on March 6, 2023.
+
+ -  Ported changes from [Libplanet 0.49.1] and [Libplanet 0.49.2] release.
+    [[#2884]]
+
+[Libplanet 0.49.1]: https://www.nuget.org/packages/Libplanet/0.49.1
+[Libplanet 0.49.2]: https://www.nuget.org/packages/Libplanet/0.49.2
+[#2884]: https://github.com/planetarium/libplanet/pull/2884
 
 
 Version 0.50.0
