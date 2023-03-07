@@ -23,7 +23,7 @@ namespace Libplanet.Net.Tests.Consensus
     [Collection("NetMQConfiguration")]
     public class ConsensusReactorTest : IDisposable
     {
-        private const int Timeout = 60 * 1000;
+        private const int Timeout = 30 * 1000;
         private ILogger _logger;
 
         public ConsensusReactorTest(ITestOutputHelper output)
