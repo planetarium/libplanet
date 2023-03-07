@@ -1,0 +1,553 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ConsensusContext&lt;T&gt;
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ConsensusContext&lt;T&gt;
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Consensus.ConsensusContext`1">
+
+
+  <h1 id="Libplanet_Net_Consensus_ConsensusContext_1" data-uid="Libplanet.Net.Consensus.ConsensusContext`1" class="text-break">Class ConsensusContext&lt;T&gt;
+</h1>
+  <div class="markdown level0 summary"><p>A class that maintains the states of a <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for block
+indices now in consensus.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ConsensusContext&lt;T&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Consensus.html">Libplanet.Net.Consensus</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
+  <h5 id="Libplanet_Net_Consensus_ConsensusContext_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ConsensusContext&lt;T&gt; : IDisposable where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__DelegateBroadcastMessage_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.%23ctor(Libplanet.Net.Consensus.ConsensusContext%7B%600%7D.DelegateBroadcastMessage%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Crypto.PrivateKey%2CSystem.TimeSpan%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L52">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1__ctor_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.#ctor*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__DelegateBroadcastMessage_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0}.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)">ConsensusContext(ConsensusContext&lt;T&gt;.DelegateBroadcastMessage, BlockChain&lt;T&gt;, PrivateKey, TimeSpan, ContextTimeoutOption)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html">ConsensusContext&lt;T&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConsensusContext(ConsensusContext&lt;T&gt;.DelegateBroadcastMessage broadcastMessage, BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, TimeSpan newHeightDelay, ContextTimeoutOption contextTimeoutOption)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.DelegateBroadcastMessage.html">ConsensusContext.DelegateBroadcastMessage</a>&lt;&gt;</td>
+        <td><span class="parametername">broadcastMessage</span></td>
+        <td><p>A delegate method that will broadcasting given
+<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> to validators.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>A blockchain that will be committed, which
+will be voted by consensus, and used for proposing a block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> for signing message and blocks.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">newHeightDelay</span></td>
+        <td><p>A time delay in starting the consensus for the next height
+block. <span class="xref">Libplanet.Net.Consensus.ConsensusContext`1.OnTipChanged(System.Object,System.ValueTuple{Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0}})</span></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a></td>
+        <td><span class="parametername">contextTimeoutOption</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a> for
+configuring a timeout for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Step">Step</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_BroadcastMessage.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.BroadcastMessage%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_BroadcastMessage_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.BroadcastMessage*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_BroadcastMessage" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.BroadcastMessage">BroadcastMessage</h4>
+  <div class="markdown level1 summary"><p>A class that maintains the states of a <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for block
+indices now in consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConsensusContext&lt;T&gt;.DelegateBroadcastMessage BroadcastMessage { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.DelegateBroadcastMessage.html">ConsensusContext.DelegateBroadcastMessage</a>&lt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_Height.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.Height%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L97">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_Height_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Height*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_Height" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Height">Height</h4>
+  <div class="markdown level1 summary"><p>The index of block that <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html">ConsensusContext&lt;T&gt;</a> is watching. The value can be
+changed by starting a consensus or appending a block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Height { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>If <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_System_Int64_">NewHeight(Int64)</a> or <span class="xref">Libplanet.Net.Consensus.ConsensusContext`1.OnTipChanged(System.Object,System.ValueTuple{Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0}})</span> is called
+before, returns current working height, otherwise returns <code>-1</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Consensus_ConsensusContext_1_Height_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_System_Int64_">NewHeight(Int64)</a></div>
+      <div><span class="xref">Libplanet.Net.Consensus.ConsensusContext`1.OnTipChanged(System.Object,System.ValueTuple{Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0}})</span></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_Round.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.Round%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L105">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_Round_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Round*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_Round" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Round">Round</h4>
+  <div class="markdown level1 summary"><p>A current round of <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> in current <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height">Height</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Round { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>If there is <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height">Height</a> returns the round
+of current <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a>, or otherwise returns -1.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_Step.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.Step%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L123">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_Step_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Step*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_Step" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Step">Step</h4>
+  <div class="markdown level1 summary"><p>The current step of <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> in current <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height">Height</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Step Step { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Consensus.Step.html">Step</a></td>
+        <td><p>If there is <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height">Height</a> returns the step
+of current <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a>, or otherwise returns
+<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Null">Null</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L141">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_Dispose_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Dispose*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_Dispose" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>A class that maintains the states of a <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for block
+indices now in consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_HandleMessage_Libplanet_Net_Messages_ConsensusMsg_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L247">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_HandleMessage_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.HandleMessage*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_HandleMessage_Libplanet_Net_Messages_ConsensusMsg_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)">HandleMessage(ConsensusMsg)</h4>
+  <div class="markdown level1 summary"><p>
+Handles a received <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> by either dispatching it to the right
+<a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> or discarding it.
+</p>
+<p>
+In particular, this discards <code data-dev-comment-type="paramref" class="paramref">consensusMessage</code> with
+<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Height">Height</a> less than <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height">Height</a>.  Otherwise,
+given <code data-dev-comment-type="paramref" class="paramref">consensusMessage</code> is passed on to a <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a>
+with <a class="xref" href="Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Height">Height</a> the same as <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Height">Height</a> of
+<code data-dev-comment-type="paramref" class="paramref">consensusMessage</code>.  If there is no such <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a>,
+then a new <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> is created for the dispatch.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HandleMessage(ConsensusMsg consensusMessage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a></td>
+        <td><span class="parametername">consensusMessage</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> received from
+any validator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">consensusMessage</code> is dispatched to
+a <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a>, <span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.NewHeight(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L164">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.NewHeight*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_System_Int64_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.NewHeight(System.Int64)">NewHeight(Int64)</h4>
+  <div class="markdown level1 summary"><p>Starts a new <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for given <code data-dev-comment-type="paramref" class="paramref">height</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void NewHeight(long height)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">height</span></td>
+        <td><p>The height of a new <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> to start.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_System_Int64__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The method is also called when the tip of the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> is
+changed (i.e., committed, synchronized).</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Consensus.InvalidHeightIncreasingException.html">InvalidHeightIncreasingException</a></td>
+        <td><p>Thrown if given
+<code data-dev-comment-type="paramref" class="paramref">height</code> is less than or equal to <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height">Height</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.cs/#L278">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_ConsensusContext_1_ToString_" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.ToString*"></a>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext_1_ToString" data-uid="Libplanet.Net.Consensus.ConsensusContext`1.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns the summary for <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext-1.html">ConsensusContext&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>Returns the current height <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a>. if there's no instance of
+<a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> for current height, returns &quot;No context&quot;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/0.51.0/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext_1.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/0.51.0/Libplanet.Net/Consensus/ConsensusContext.Event.cs/#L7" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
