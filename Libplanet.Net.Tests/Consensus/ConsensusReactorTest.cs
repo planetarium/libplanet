@@ -12,7 +12,6 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using NetMQ;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -21,7 +20,7 @@ using Xunit.Abstractions;
 namespace Libplanet.Net.Tests.Consensus
 {
     [Collection("NetMQConfiguration")]
-    public class ConsensusReactorTest : IDisposable
+    public class ConsensusReactorTest
     {
         private const int Timeout = 30 * 1000;
         private ILogger _logger;
@@ -158,11 +157,6 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(1, blockChain.Count);
             Assert.Equal(0L, json["round"].GetInt32());
             Assert.Equal("Propose", json["step"].GetString());
-        }
-
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
         }
     }
 }
