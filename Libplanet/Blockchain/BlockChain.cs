@@ -144,7 +144,8 @@ namespace Libplanet.Blockchain
                         stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: genesisBlock.Hash,
                     nativeTokenPredicate: policy.NativeTokens.Contains,
-                    actionTypeLoader: StaticActionTypeLoader.Create<T>()
+                    actionTypeLoader: StaticActionTypeLoader.Create<T>(),
+                    feeCalculator: null
                 )
             )
         {
@@ -479,7 +480,8 @@ namespace Libplanet.Blockchain
                     store.GetBlockDigest(hash)?.StateRootHash),
                 genesisHash: genesisBlock.Hash,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
-                actionTypeLoader: StaticActionTypeLoader.Create<T>()
+                actionTypeLoader: StaticActionTypeLoader.Create<T>(),
+                feeCalculator: null
             );
 
             return new BlockChain<T>(

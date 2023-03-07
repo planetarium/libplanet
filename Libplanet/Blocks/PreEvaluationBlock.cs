@@ -252,7 +252,8 @@ namespace Libplanet.Blocks
                 trieGetter: null,
                 genesisHash: null,
                 nativeTokenPredicate: nativeTokenPredicate,
-                actionTypeLoader: StaticActionTypeLoader.Create<T>()
+                actionTypeLoader: StaticActionTypeLoader.Create<T>(),
+                feeCalculator: null
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations = actionEvaluator.Evaluate(this);
             statesDelta = actionEvaluations.GetTotalDelta(
