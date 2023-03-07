@@ -62,7 +62,7 @@
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
 <h2 id="version-0510">Version 0.51.0</h2>
-<p>To be released.</p>
+<p>Released on March 7, 2023.</p>
 <p>Since 0.51.0, we officially provide <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em>, an npm package for
 providing measures to represent accounts for apps developed with Libplanet in
 JavaScript/TypeScript.  Note that the feature set is being actively developed,
@@ -112,7 +112,6 @@ computation if the <code>BlockMetadata.LastCommit</code> is not null.  [<a href=
 <li>(Libplanet.Net) Values for <code>Message.MessageType</code> are updated to
 use entirely different values.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>VoteFlag</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
@@ -191,6 +190,12 @@ correctly in some situations.  [<a href="https://github.com/planetarium/libplane
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2848">#2848</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0501">Version 0.50.1</h2>
+<p>Released on March 6, 2023.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/0.49.1">Libplanet 0.49.1</a> and <a href="https://www.nuget.org/packages/Libplanet/0.49.2">Libplanet 0.49.2</a> release.
+[<a href="https://github.com/planetarium/libplanet/pull/2884">#2884</a>]</li>
+</ul>
 <h2 id="version-0500">Version 0.50.0</h2>
 <p>Released on February 27, 2023.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
@@ -1628,7 +1633,7 @@ the inbound network traffic throughput of a node when using a <code>TurnClient</
 </ul>
 <h2 id="version-0300">Version 0.30.0</h2>
 <p>Released on March 24, 2022.</p>
-<h3 id="backward-incompatible-storage-format-changes-1">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
 <li>(Libplanet.RocksDBStore) <code>RocksDBStore</code> became not to use <a href="https://github.com/facebook/rocksdb/wiki/Column-Families">column families</a>
 to manage chain ids.  Instead, chain id is concatenated into key prefix.
@@ -1703,7 +1708,7 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 <li>The <code>Block&lt;T&gt;.CurrentProtocolVersion</code> is bumped from 2 to 3.
 [<a href="https://github.com/planetarium/libplanet/issues/1322">#1322</a>, <a href="https://github.com/planetarium/libplanet/issues/1323">#1323</a>, <a href="https://github.com/planetarium/libplanet/pull/1518">#1518</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-2">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-1">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis-21">Added APIs</h3>
 <ul>
 <li>(Libplanet.Extensions.Cocona) Added <code>PassphraseParameters</code> class.
@@ -3481,7 +3486,7 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/1117">#1117<
 time, which is configured by <code>SwarmOptions.MessageLifespan</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1160">#1160</a>, <a href="https://github.com/planetarium/libplanet/pull/1171">#1171</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-3">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-2">Backward-incompatible storage format changes</h3>
 <ul>
 <li>(Libplanet.RocksDBStore) The blocks and transactions became stored in
 multiple databases.  Each block and transaction belongs to a partition
@@ -3876,7 +3881,7 @@ was replaced by a new <code>BlockHeaderMessage</code> message type
 <li>Removed <code>blockDownloadFailed</code> parameter from <code>Swarm&lt;T&gt;.PreloadAsync()</code>
 method.  Use <code>SwarmOptions.BlockDownloadTimeout</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/1002">#1002</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-4">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-3">Backward-incompatible storage format changes</h3>
 <ul>
 <li>Added <code>RawTransaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 <li>Added <code>BlockHeader.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
@@ -4303,7 +4308,7 @@ from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li>Added <code>BlockHeaderMessage</code> message.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
 </ul>
-<h3 id="backward-incompatible-storage-format-changes-5">Backward-incompatible storage format changes</h3>
+<h3 id="backward-incompatible-storage-format-changes-4">Backward-incompatible storage format changes</h3>
 <ul>
 <li>The introduced <code>DefaultStore</code> is incompatible at the file-level with
 the <code>LiteDBStore</code> which had existed.  <code>DefaultStore</code> became to take
