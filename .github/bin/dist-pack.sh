@@ -13,7 +13,9 @@ fi
 
 version="$(cat obj/package_version.txt)"       # e.g. 0.50.0-dev.20230221015836
 version_prefix="$(cat obj/version_prefix.txt)" # e.g. 0.50.0
-version_suffix="$(cat obj/version_suffix.txt)" # e.g. dev.20230221015836+35a2dbc
+if [[ -f obj/version_suffix.txt ]]; then       # e.g. dev.20230221015836+35a2dbc
+  version_suffix="$(cat obj/version_suffix.txt)"
+fi
 
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
@@ -54,13 +56,12 @@ for project in "${executables[@]}"; do
 done
 
 for project in "${projects[@]}"; do
-  if [ -f obj/version_suffix.txt ]; then
-    version_suffix="$(cat obj/version_suffix.txt)"
+  if [[ "$version_suffix" = "" ]]; then
+    dotnet_args="-p:Version=$version"
+  else
     dotnet_args="-p:VersionPrefix=$version_prefix" \
     dotnet_args="$dotnet_args --version-suffix=$version_suffix"
     dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
-  else
-    dotnet_args="-p:Version=$version"
   fi
   # shellcheck disable=SC2086
   dotnet build -c "$configuration" $dotnet_args || \
