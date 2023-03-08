@@ -29,43 +29,43 @@ describe("PublicKey", () => {
     expect(pubKey.toHex("compressed")).toBe(compHex);
 
     const pubKey2 = PublicKey.fromBytes(
-      pubKey.toRawBytes("uncompressed"),
-      "uncompressed"
+      pubKey.toBytes("uncompressed"),
+      "uncompressed",
     );
     expect(pubKey2.toHex("compressed")).toBe(compHex);
 
     const invalidType = [] as unknown as Uint8Array;
     expect(() => PublicKey.fromBytes(invalidType, "compressed")).toThrowError(
-      /got object/i
+      /got object/i,
     );
 
     const invalidCompLength = new Uint8Array(32);
     expect(() =>
-      PublicKey.fromBytes(invalidCompLength, "compressed")
+      PublicKey.fromBytes(invalidCompLength, "compressed"),
     ).toThrowError(/got 32 bytes/i);
 
     const invalidCompHeader = new Uint8Array(33);
     invalidCompHeader[0] = 0x04;
     expect(() =>
-      PublicKey.fromBytes(invalidCompHeader, "compressed")
+      PublicKey.fromBytes(invalidCompHeader, "compressed"),
     ).toThrowError(/got 0x04/i);
 
     const invalidUncompLength = new Uint8Array(64);
     expect(() =>
-      PublicKey.fromBytes(invalidUncompLength, "uncompressed")
+      PublicKey.fromBytes(invalidUncompLength, "uncompressed"),
     ).toThrowError(/got 64 bytes/i);
 
     const invalidUncompHeader = new Uint8Array(65);
     invalidUncompHeader[0] = 0x02;
     expect(() =>
-      PublicKey.fromBytes(invalidUncompHeader, "uncompressed")
+      PublicKey.fromBytes(invalidUncompHeader, "uncompressed"),
     ).toThrowError(/got 0x02/i);
 
     expect(() =>
       PublicKey.fromBytes(
         new Uint8Array(0),
-        "invalid" as unknown as "compressed" | "uncompressed"
-      )
+        "invalid" as unknown as "compressed" | "uncompressed",
+      ),
     ).toThrowError(/invalid.*? form/i);
   });
 
@@ -78,40 +78,40 @@ describe("PublicKey", () => {
 
     const pubKey2 = PublicKey.fromHex(
       pubKey.toHex("uncompressed"),
-      "uncompressed"
+      "uncompressed",
     );
     expect(pubKey2.toHex("compressed")).toBe(compHex);
 
     const invalidType = [] as unknown as string;
     expect(() => PublicKey.fromHex(invalidType, "compressed")).toThrowError(
-      /got object/i
+      /got object/i,
     );
 
     const invalidCompLength = "0".repeat(65);
     expect(() =>
-      PublicKey.fromHex(invalidCompLength, "compressed")
+      PublicKey.fromHex(invalidCompLength, "compressed"),
     ).toThrowError(/got 65 hexadigits/i);
 
     const invalidCompHeader = "04" + "0".repeat(64);
     expect(() =>
-      PublicKey.fromHex(invalidCompHeader, "compressed")
+      PublicKey.fromHex(invalidCompHeader, "compressed"),
     ).toThrowError(/got 0x04/i);
 
     const invalidUncompLength = "0".repeat(129);
     expect(() =>
-      PublicKey.fromHex(invalidUncompLength, "uncompressed")
+      PublicKey.fromHex(invalidUncompLength, "uncompressed"),
     ).toThrowError(/got 129 hexadigits/i);
 
     const invalidUncompHeader = "02" + "0".repeat(128);
     expect(() =>
-      PublicKey.fromHex(invalidUncompHeader, "uncompressed")
+      PublicKey.fromHex(invalidUncompHeader, "uncompressed"),
     ).toThrowError(/got 0x02/i);
 
     expect(() =>
       PublicKey.fromHex(
         "",
-        "invalid" as unknown as "compressed" | "uncompressed"
-      )
+        "invalid" as unknown as "compressed" | "uncompressed",
+      ),
     ).toThrowError(/invalid.*? form/i);
   });
 
@@ -157,30 +157,28 @@ describe("PublicKey", () => {
 
     const invalidMsgType = "" as unknown as Message;
     await expect(() => pubKey.verify(invalidMsgType, sig)).rejects.toThrowError(
-      /got string/
+      /got string/,
     );
 
     const invalidSigType = "" as unknown as Signature;
     await expect(() => pubKey.verify(msg, invalidSigType)).rejects.toThrowError(
-      /got string/
+      /got string/,
     );
   });
 
-  test("toRawBytes()", () => {
+  test("toBytes()", () => {
     const pubKey = PublicKey.fromHex(compHex, "compressed");
-    expect(pubKey.toRawBytes("uncompressed")).toStrictEqual(
-      new Uint8Array(Buffer.from(uncompHex, "hex"))
+    expect(pubKey.toBytes("uncompressed")).toStrictEqual(
+      new Uint8Array(Buffer.from(uncompHex, "hex")),
     );
 
     const pubKey2 = PublicKey.fromHex(uncompHex, "uncompressed");
-    expect(pubKey2.toRawBytes("compressed")).toStrictEqual(
-      new Uint8Array(Buffer.from(compHex, "hex"))
+    expect(pubKey2.toBytes("compressed")).toStrictEqual(
+      new Uint8Array(Buffer.from(compHex, "hex")),
     );
 
     const invalidForm = "invalid" as unknown as "compressed" | "uncompressed";
-    expect(() => pubKey.toRawBytes(invalidForm)).toThrowError(
-      /invalid .*? form/i
-    );
+    expect(() => pubKey.toBytes(invalidForm)).toThrowError(/invalid .*? form/i);
   });
 
   test("toHex()", () => {

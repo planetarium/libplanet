@@ -8,8 +8,8 @@ expect.extend({
   toHaveEqualBytes: (received: HavingBytes, expected: HavingBytes) => {
     const actualBytes = received.toBytes();
     const expectedBytes = expected.toBytes();
-    const actualHex = new Buffer(actualBytes).toString("hex");
-    const expectedHex = new Buffer(expectedBytes).toString("hex");
+    const actualHex = Buffer.from(actualBytes).toString("hex");
+    const expectedHex = Buffer.from(expectedBytes).toString("hex");
     if (actualBytes.length !== expectedBytes.length) {
       return {
         message: () =>
@@ -32,6 +32,6 @@ expect.extend({
       }
     }
 
-    return { pass: true };
+    return { message: () => "passed", pass: true };
   },
 });

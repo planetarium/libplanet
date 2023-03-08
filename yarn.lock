@@ -447,7 +447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@planetarium/account@workspace:@planetarium/account":
+"@planetarium/account@workspace:@planetarium/account, @planetarium/account@workspace:^":
   version: 0.0.0-use.local
   resolution: "@planetarium/account@workspace:@planetarium/account"
   dependencies:
@@ -479,6 +479,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@planetarium/tx@workspace:@planetarium/tx"
   dependencies:
+    "@planetarium/account": "workspace:^"
     "@types/node": ^18.14.0
     "@vitest/coverage-c8": ^0.22.1
     "@vitest/ui": ^0.22.1

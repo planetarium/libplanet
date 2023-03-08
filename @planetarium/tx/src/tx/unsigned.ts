@@ -19,8 +19,8 @@ export interface UnsignedTxWithCustomActions extends TxMetadata {
  * @returns An encoded transaction.
  */
 export function encodeUnsignedTxWithSystemAction(
-  metadata: UnsignedTxWithSystemAction 
-): Encodable {
+  metadata: UnsignedTxWithSystemAction,
+): Map<string | Buffer, Encodable> {
   const dict = encodeTxMetadata(metadata);
   dict.set(SYSTEM_ACTION_KEY, encodeSystemAction(metadata.systemAction));
   return dict;
@@ -32,8 +32,8 @@ export function encodeUnsignedTxWithSystemAction(
  * @returns An encoded transaction.
  */
 export function encodeUnsignedTxWithCustomActions(
-  metadata: UnsignedTxWithCustomActions
-): Encodable {
+  metadata: UnsignedTxWithCustomActions,
+): Map<string | Buffer, Encodable> {
   const dict = encodeTxMetadata(metadata);
   dict.set(CUSTOM_ACTION_KEY, metadata.customActions);
   return dict;

@@ -19,30 +19,30 @@ export class PublicKey {
     if (form === "compressed") {
       if (bytes.length !== 33) {
         throw new Error(
-          `Invalid compressed public key: expected 33 bytes, but got ${bytes.length} bytes`
+          `Invalid compressed public key: expected 33 bytes, but got ${bytes.length} bytes`,
         );
       } else if (header !== 0x02 && header !== 0x03) {
         throw new Error(
           `Invalid compressed public key: expected either 0x02 or 0x03 as the header, but got 0x${header
             .toString(16)
-            .padStart(2, "0")}`
+            .padStart(2, "0")}`,
         );
       }
     } else if (form === "uncompressed") {
       if (bytes.length !== 65) {
         throw new Error(
-          `Invalid uncompressed public key expected 65 bytes, but got ${bytes.length} bytes`
+          `Invalid uncompressed public key expected 65 bytes, but got ${bytes.length} bytes`,
         );
       } else if (header !== 0x04) {
         throw new Error(
           `Invalid compressed public key: expected 0x04 as the header, but got 0x${header
             .toString(16)
-            .padStart(2, "0")}`
+            .padStart(2, "0")}`,
         );
       }
     } else {
       throw new Error(
-        "Invalid public key form: choose 'compressed' or 'uncompressed'"
+        "Invalid public key form: choose 'compressed' or 'uncompressed'",
       );
     }
     return new PublicKey(secp256k1.Point.fromHex(bytes));
@@ -54,11 +54,11 @@ export class PublicKey {
       throw new Error(`Expected a string, but got ${typeof hex}`);
     } else if (form === "compressed" && hex.length !== 66) {
       throw new Error(
-        `Invalid compressed public key: expected 33 hexadigits, but got ${hex.length} hexadigits`
+        `Invalid compressed public key: expected 33 hexadigits, but got ${hex.length} hexadigits`,
       );
     } else if (form === "uncompressed" && hex.length !== 130) {
       throw new Error(
-        `Invalid uncompressed public key expected 130 hexadigits, but got ${hex.length} hexadigits`
+        `Invalid uncompressed public key expected 130 hexadigits, but got ${hex.length} hexadigits`,
       );
     }
     const bytes = new Uint8Array(Buffer.from(hex, "hex"));
@@ -75,10 +75,10 @@ export class PublicKey {
     return secp256k1.verify(signature.toBytes(), msgHash, this.#point);
   }
 
-  toRawBytes(form: PublicKeyForm): Uint8Array {
+  toBytes(form: PublicKeyForm): Uint8Array {
     if (form !== "compressed" && form !== "uncompressed") {
       throw new Error(
-        "Invalid public key form: choose 'compressed' or 'uncompressed'"
+        "Invalid public key form: choose 'compressed' or 'uncompressed'",
       );
     }
     return this.#point.toRawBytes(form === "compressed");
@@ -87,7 +87,7 @@ export class PublicKey {
   toHex(form: PublicKeyForm): string {
     if (form !== "compressed" && form !== "uncompressed") {
       throw new Error(
-        "Invalid public key form: choose 'compressed' or 'uncompressed'"
+        "Invalid public key form: choose 'compressed' or 'uncompressed'",
       );
     }
     return this.#point.toHex(form === "compressed");

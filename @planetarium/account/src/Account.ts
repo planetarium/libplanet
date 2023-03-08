@@ -8,6 +8,13 @@ export interface Account {
   sign(message: Message): Promise<Signature>;
 }
 
+export function isAccount(account: unknown): account is Account {
+  return (
+    (account as { publicKey: unknown }).publicKey instanceof PublicKey &&
+    (account as { sign: unknown }).sign instanceof Function
+  );
+}
+
 export interface ExportableAccount extends Account {
   exportPrivateKey(): Promise<RawPrivateKey>;
 }

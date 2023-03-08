@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import * as fc from "fast-check";
 import { encodePublicKey } from "../src/key";
-import { bytesEqual } from "./bytes";
+import { bytesEqual } from "../src/bytes";
 
 test("encodePublicKey", () => {
   fc.assert(
