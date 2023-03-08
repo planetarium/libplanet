@@ -25,19 +25,21 @@ using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
-#pragma warning disable MEN002
     /// <summary>
+    /// <para>
     /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
     /// information.
-    /// <para>In order to watch its state changes, implement <see cref="IRenderer{T}"/>
-    /// interface and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})"/> constructor.</para>
+    /// </para>
+    /// <para>
+    /// In order to watch its state changes, implement <see cref="IRenderer{T}"/> interface
+    /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T},
+    /// IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})"/> constructor.
+    /// </para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    ///
-#pragma warning restore MEN002
     public partial class BlockChain<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
@@ -65,7 +67,8 @@ namespace Libplanet.Blockchain
         private Block<T> _genesis;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BlockChain{T}"/> class.
+        /// Initializes a new instance of the <see cref="BlockChain{T}"/> class by loading
+        /// from the given <see cref="IStore"/>.
         /// </summary>
         /// <param name="policy"><see cref="IBlockPolicy{T}"/> to use in the
         /// <see cref="BlockChain{T}"/>.</param>
@@ -83,6 +86,9 @@ namespace Libplanet.Blockchain
         /// events made by unsuccessful transactions too; see also
         /// <see cref="AtomicActionRenderer{T}"/> for workaround.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> does not
+        /// have canonical chain id set, i.e. <see cref="IStore.GetCanonicalChainId()"/> is
+        /// <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException">Thrown when either of <paramref name="store"/>
         /// or <paramref name="stateStore"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
@@ -134,9 +140,8 @@ namespace Libplanet.Blockchain
                 new ActionEvaluator<T>(
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
-                    trieGetter: hash => stateStore.GetStateRoot(
-                        store.GetBlockDigest(hash)?.StateRootHash
-                    ),
+                    trieGetter: hash =>
+                        stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: genesisBlock.Hash,
                     nativeTokenPredicate: policy.NativeTokens.Contains
                 )
@@ -165,7 +170,10 @@ namespace Libplanet.Blockchain
                 stagePolicy,
                 store,
                 stateStore,
-                store.GetCanonicalChainId() ?? Guid.NewGuid(),
+                store.GetCanonicalChainId() ??
+                    throw new ArgumentException(
+                        $"Given {nameof(store)} does not have canonical chain id set.",
+                        nameof(store)),
                 genesisBlock,
                 false,
                 renderers,
@@ -217,6 +225,11 @@ namespace Libplanet.Blockchain
             {
                 throw new ArgumentNullException(nameof(store));
             }
+            else if (store.CountIndex(id) == 0)
+            {
+                throw new ArgumentException(
+                    $"Given store does not contain chain id {id}.", nameof(store));
+            }
             else if (stateStore is null)
             {
                 throw new ArgumentNullException(nameof(stateStore));
@@ -248,23 +261,7 @@ namespace Libplanet.Blockchain
                 .ForContext("ChainId", Id);
             ActionEvaluator = actionEvaluator;
 
-            // This is triggered under two conditions, namely when forking
-            // an existing chain or creating a new one from scratch
-            // (instead of loading from the provided store).
-            if (Count == 0)
-            {
-                if (inFork)
-                {
-                    Store.AppendIndex(Id, genesisBlock.Hash);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"Given chain id {id} is not found inside store",
-                        nameof(id));
-                }
-            }
-            else if (!Genesis.Equals(genesisBlock))
+            if (!Genesis.Equals(genesisBlock))
             {
                 string msg =
                     $"The genesis block that the given {nameof(IStore)} contains does not match " +
@@ -1184,33 +1181,28 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
+            var forkedId = Guid.NewGuid();
             IEnumerable<IRenderer<T>> renderers = inheritRenderers
                 ? Renderers
                 : Enumerable.Empty<IRenderer<T>>();
-            var forked = new BlockChain<T>(
-                Policy,
-                StagePolicy,
-                Store,
-                StateStore,
-                Guid.NewGuid(),
-                Genesis,
-                true,
-                renderers,
-                _blockChainStates,
-                ActionEvaluator);
-            Guid forkedId = forked.Id;
-            _logger.Information(
-                "Forked chain at {branchPoint} from id {previousChainId} to id {forkedChainId}",
-                point,
-                Id,
-                forkedId);
             try
             {
                 _rwlock.EnterReadLock();
 
+                Store.AppendIndex(forkedId, Genesis.Hash);
+                var forked = new BlockChain<T>(
+                    Policy,
+                    StagePolicy,
+                    Store,
+                    StateStore,
+                    forkedId,
+                    Genesis,
+                    true,
+                    renderers,
+                    _blockChainStates,
+                    ActionEvaluator);
                 Store.ForkBlockIndexes(Id, forkedId, point);
                 Store.ForkTxNonces(Id, forked.Id);
-
                 for (Block<T> block = Tip;
                      block.PreviousHash is { } hash && !block.Hash.Equals(point);
                      block = _blocks[hash])
@@ -1225,13 +1217,28 @@ namespace Libplanet.Blockchain
                         Store.IncreaseTxNonce(forked.Id, address, -txCount);
                     }
                 }
+
+                _logger.Information(
+                    "Forked chain at #{Index} {Hash} from id {PreviousId} to id {ForkedId}",
+                    pointBlock.Index,
+                    pointBlock.Hash,
+                    Id,
+                    forkedId);
+
+                return forked;
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "An unexpected exception occurred while forking a chain");
+                Store.DeleteChainId(forkedId);
+                throw;
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
-
-            return forked;
         }
 
         /// <summary>
