@@ -12,10 +12,12 @@ export {
   encodeMint,
   encodeSystemAction,
   encodeTransfer,
+  encodeSetValidator,
   type CustomAction,
   type Mint,
   type SystemAction,
   type Transfer,
+  type SetValidator,
 } from "./action.js";
 export type {
   TxMetadata,

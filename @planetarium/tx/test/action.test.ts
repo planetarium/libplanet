@@ -3,12 +3,16 @@ import { expect, test } from "vitest";
 import {
   type Mint,
   type Transfer,
+  type SetValidator,
   encodeMint,
   encodeTransfer,
-  encodeSystemAction
+  encodeSystemAction,
+  encodeSetValidator
 } from "../src/action";
 import { Address } from "../src/address";
 import { Currency } from "../src/assets";
+import { PublicKey } from "../src/key";
+import { Validator } from "../src/validator";
 import { fromHex } from "./hex";
 
 const FOO: Currency = {
@@ -19,6 +23,7 @@ const FOO: Currency = {
   maximumSupply: null,
 };
 const addressA: Address = fromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
+const publicKeyA: PublicKey = fromHex("033369e95dbfd970dd9a7b4df31dcf5004d7cfd63289d26cc42bbdd01e25675b6f");
 
 test("encodeSystemAction", () => {
   const mint: Mint = {
@@ -79,6 +84,20 @@ test("encodeTransfer", () => {
     }
   };
   const encoded = encodeTransfer(transfer);
+  expect(encoded).toMatchSnapshot();
+  expect(encode(encoded)).toMatchSnapshot();
+});
+
+test("setValidator", () => {
+  const validator: Validator = {
+    publicKey: publicKeyA,
+    power: 1n,
+  }
+  const setValidator: SetValidator = {
+    type: "setValidator",
+    validator: validator
+  };
+  const encoded = encodeSetValidator(setValidator);
   expect(encoded).toMatchSnapshot();
   expect(encode(encoded)).toMatchSnapshot();
 });
