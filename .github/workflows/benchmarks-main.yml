@@ -1,8 +1,5 @@
 name: Libplanet benchmark (for merge commits)
-on:
-  push:
-    branches:
-      - main
+on: push
 
 permissions:
   contents: write
@@ -34,5 +31,5 @@ jobs:
         tool: 'benchmarkdotnet'
         output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
+        benchmark-data-dir-path: dev/bench/${{ github.ref_name }}/${{ matrix.os }}
         auto-push: true
