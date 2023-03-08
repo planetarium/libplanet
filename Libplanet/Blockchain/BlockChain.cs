@@ -68,7 +68,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain{T}"/> class by loading
-        /// from the given <see cref="IStore"/>.
+        /// the canonical chain from given <paramref name="store"/>.
         /// </summary>
         /// <param name="policy"><see cref="IBlockPolicy{T}"/> to use in the
         /// <see cref="BlockChain{T}"/>.</param>
@@ -165,6 +165,7 @@ namespace Libplanet.Blockchain
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
+#pragma warning disable SA1118  // The parameter spans multiple lines
             : this(
                 policy,
                 stagePolicy,
@@ -175,37 +176,10 @@ namespace Libplanet.Blockchain
                         $"Given {nameof(store)} does not have canonical chain id set.",
                         nameof(store)),
                 genesisBlock,
-                false,
                 renderers,
                 blockChainStates,
-                actionEvaluator
-            )
-        {
-        }
-
-        internal BlockChain(
-            IBlockPolicy<T> policy,
-            IStagePolicy<T> stagePolicy,
-            IStore store,
-            IStateStore stateStore,
-            Guid id,
-            Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers,
-            IBlockChainStates<T> blockChainStates,
-            ActionEvaluator<T> actionEvaluator
-        )
-            : this(
-                policy,
-                stagePolicy,
-                store,
-                stateStore,
-                id,
-                genesisBlock,
-                false,
-                renderers,
-                blockChainStates,
-                actionEvaluator
-            )
+                actionEvaluator)
+#pragma warning restore SA1118
         {
         }
 
@@ -216,7 +190,6 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
-            bool inFork,
             IEnumerable<IRenderer<T>> renderers,
             IBlockChainStates<T> blockChainStates,
             ActionEvaluator<T> actionEvaluator)
@@ -517,7 +490,6 @@ namespace Libplanet.Blockchain
                 stateStore,
                 id,
                 genesisBlock,
-                false,
                 renderers,
                 blockChainStates,
                 actionEvaluator);
@@ -1197,7 +1169,6 @@ namespace Libplanet.Blockchain
                     StateStore,
                     forkedId,
                     Genesis,
-                    true,
                     renderers,
                     _blockChainStates,
                     ActionEvaluator);
