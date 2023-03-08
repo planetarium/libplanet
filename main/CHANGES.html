@@ -65,9 +65,21 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li><code>BlockChain&lt;T&gt;()</code> no longer accepts an <code>IStore</code> where
+<code>IStore.GetCanonicalChainId()</code> is <code>null</code>.  For on-the-fly <code>BlockChain&lt;T&gt;</code>
+creation from scratch, use <code>BlockChain&lt;T&gt;.Create()</code> factory method instead.
+[<a href="https://github.com/planetarium/libplanet/pull/2863">#2863</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Append()</code> no longer accepts a genesis <code>Block&lt;T&gt;</code> (i.e.
+any <code>Block&lt;T&gt;</code> with an index of <code>0</code>).  [<a href="https://github.com/planetarium/libplanet/pull/2863">#2863</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockChain&lt;T&gt;.Create()</code> factory method for creating a <code>BlockChain&lt;T&gt;</code>
+with an empty <code>IStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2863">#2863</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
