@@ -242,11 +242,6 @@ namespace Libplanet.Blockchain
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
-            if (Store.GetCanonicalChainId() is null)
-            {
-                Store.SetCanonicalChainId(Id);
-            }
-
             _logger = Log
                 .ForContext<BlockChain<T>>()
                 .ForContext("Source", nameof(BlockChain<T>))
