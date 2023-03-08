@@ -1046,7 +1046,7 @@ namespace Libplanet.Tests.Store
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var policy = new NullBlockPolicy<NullAction>();
-                var blocks = new BlockChain<NullAction>(
+                var blocks = BlockChain<NullAction>.Create(
                     policy,
                     new VolatileStagePolicy<NullAction>(),
                     s1,

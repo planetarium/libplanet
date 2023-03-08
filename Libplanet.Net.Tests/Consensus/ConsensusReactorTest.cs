@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus
                         TestUtils.PrivateKeys[i].PublicKey,
                         new DnsEndPoint("127.0.0.1", 6000 + i)));
                 stores[i] = new MemoryStore();
-                blockChains[i] = new BlockChain<DumbAction>(
+                blockChains[i] = BlockChain<DumbAction>.Create(
                     TestUtils.Policy,
                     new VolatileStagePolicy<DumbAction>(),
                     stores[i],

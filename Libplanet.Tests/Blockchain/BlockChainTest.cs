@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Blockchain
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = getStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
-            _blockChain = new BlockChain<DumbAction>(
+            _blockChain = BlockChain<DumbAction>.Create(
                 _policy,
                 _stagePolicy,
                 _fx.Store,
@@ -269,64 +269,6 @@ namespace Libplanet.Tests.Blockchain
             state = chain.GetState(_fx.Address1);
 
             Assert.NotNull(state);
-        }
-
-        [Fact]
-        public void ShortCircuitActionEvaluationForUnrenderWithNoActionRenderers()
-        {
-            IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
-                DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal);
-
-            var policy = new BlockPolicy<DumbAction>();
-            var key = new PrivateKey();
-            Address miner = key.ToAddress();
-
-            using (var fx = new MemoryStoreFixture())
-            {
-                var emptyRenderer = new AnonymousRenderer<DumbAction>();
-                var chain = new BlockChain<DumbAction>(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    fx.Store,
-                    fx.StateStore,
-                    fx.GenesisBlock,
-                    renderers: new[] { emptyRenderer }
-                );
-                var actions = new[] { new DumbAction(miner, "foo") };
-                var tx = chain.MakeTransaction(key, actions);
-                Block<DumbAction> block = ProposeNext(
-                    chain.Genesis,
-                    new[] { tx },
-                    miner: key.PublicKey
-                ).Evaluate(key, chain);
-                chain.Append(block, CreateBlockCommit(block));
-                var forked = chain.Fork(chain.Genesis.Hash);
-                forked.Append(block, CreateBlockCommit(block));
-
-                DumbAction.ExecuteRecords.Value = ImmutableList<ExecuteRecord>.Empty;
-                Assert.Empty(DumbAction.ExecuteRecords.Value);
-
-                // Stale actions shouldn't be evaluated because the "renderer" here is not an
-                // IActionRenderer<T> but a vanilla IRenderer<T> which means they don't have to
-                // be unrendered.
-                var renderer = new RecordingActionRenderer<DumbAction>();
-                var newChain = new BlockChain<DumbAction>(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    fx.Store,
-                    fx.StateStore,
-                    Guid.NewGuid(),
-                    fx.GenesisBlock,
-                    renderers: new[] { renderer },
-                    blockChainStates: new BlockChainStates<DumbAction>(fx.Store, fx.StateStore),
-                    actionEvaluator: chain.ActionEvaluator
-                 );
-                chain.Swap(newChain, true)();
-
-                // 4 is for Promote action
-                Assert.Equal(4, renderer.ActionRecords.Count);
-                Assert.Empty(NonRehearsalExecutions());
-            }
         }
 
         [Fact]
@@ -579,7 +521,9 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkChainWithIncompleteBlockStates()
         {
-            (_, _, BlockChain<DumbAction> chain) = MakeIncompleteBlockStates();
+            var fx = new MemoryStoreFixture(_policy.BlockAction);
+            (_, _, BlockChain<DumbAction> chain) =
+                MakeIncompleteBlockStates(fx.Store, fx.StateStore);
             BlockChain<DumbAction> forked = chain.Fork(chain[5].Hash);
             Assert.Equal(chain[5], forked.Tip);
             Assert.Equal(6, forked.Count);
@@ -618,9 +562,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkShouldSkipExecuteAndRenderGenesis()
         {
-            Address stateKey = _fx.Address1;
             var miner = new PrivateKey();
-            var action = new DumbAction(stateKey, "genesis");
+            var action = new DumbAction(_fx.Address1, "genesis");
 
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
@@ -642,11 +585,14 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: GenesisProposer,
                     blockAction: _policy.BlockAction,
                     nativeTokenPredicate: _policy.NativeTokens.Contains,
-                    stateStore: stateStore
+                    stateStore: new TrieStateStore(new MemoryKeyValueStore())
                 );
+                Assert.Equal(1, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
+
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer<DumbAction>();
-                var blockChain = new BlockChain<DumbAction>(
+                var blockChain = BlockChain<DumbAction>.Create(
                     _policy,
                     new VolatileStagePolicy<DumbAction>(),
                     store,
@@ -655,10 +601,12 @@ namespace Libplanet.Tests.Blockchain
                     renderers: new[] { renderer }
                 );
 
-                Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
-                Assert.Equal(2, renderer.BlockRecords.Count);
-                // NOTE: AttachStateRootHash, Append
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                // Creation does not render anything
+                Assert.Equal(0, renderer.ActionRecords.Count);
+                Assert.Equal(0, renderer.BlockRecords.Count);
+                // NOTE: Validaton and write to state store
+                Assert.Equal(3, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
                 Block<DumbAction> block1 = blockChain.ProposeBlock(miner);
                 blockChain.Append(block1, CreateBlockCommit(block1));
@@ -670,10 +618,11 @@ namespace Libplanet.Tests.Blockchain
 
                 blockChain.Fork(blockChain.Tip.Hash);
 
-                Assert.Equal(1, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                Assert.Equal(0, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
                 // NOTE: AttachStateRootHash, Append
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(3, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
             }
         }
 
@@ -1120,7 +1069,7 @@ namespace Libplanet.Tests.Blockchain
                     _policy.NativeTokens.Contains,
                     fx2.StateStore
                 );
-                var chain2 = new BlockChain<DumbAction>(
+                var chain2 = BlockChain<DumbAction>.Create(
                     _policy,
                     _stagePolicy,
                     fx2.Store,
@@ -1154,10 +1103,10 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void GetStatesOnUninitializedBlockChain()
+        public void GetStatesOnCreatingBlockChain()
         {
             bool invoked = false;
-            var policy = new NullPolicyForGetStatesOnUninitializedBlockChain<DumbAction>(
+            var policy = new NullPolicyForGetStatesOnCreatingBlockChain<DumbAction>(
                 c =>
                 {
                     // ReSharper disable AccessToModifiedClosure
@@ -1184,7 +1133,7 @@ namespace Libplanet.Tests.Blockchain
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: stateStore
             );
-            var chain = new BlockChain<DumbAction>(
+            var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
@@ -1327,8 +1276,9 @@ namespace Libplanet.Tests.Blockchain
         public void GetStateWithRecalculation()
         {
             // Only chain[4] and chain[7] has stored states.
+            var fx = new MemoryStoreFixture(_policy.BlockAction);
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
-                = MakeIncompleteBlockStates();
+                = MakeIncompleteBlockStates(fx.Store, fx.StateStore);
             IStateStore stateStore = chain.StateStore;
 
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
@@ -1345,8 +1295,9 @@ namespace Libplanet.Tests.Blockchain
         public void GetStateWithComplementAll()
         {
             // Only chain[4] and chain[7] has stored states.
+            var fx = new MemoryStoreFixture(_policy.BlockAction);
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
-                = MakeIncompleteBlockStates();
+                = MakeIncompleteBlockStates(fx.Store, fx.StateStore);
             IStateStore stateStore = chain.StateStore;
 
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
@@ -1363,8 +1314,9 @@ namespace Libplanet.Tests.Blockchain
         public void GetStateWithComplementLatest()
         {
             // Only chain[4] and chain[7] has stored states.
+            var fx = new MemoryStoreFixture(_policy.BlockAction);
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
-                = MakeIncompleteBlockStates();
+                = MakeIncompleteBlockStates(fx.Store, fx.StateStore);
             IStateStore stateStore = chain.StateStore;
 
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
@@ -1450,13 +1402,13 @@ namespace Libplanet.Tests.Blockchain
             using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
             using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
             {
-                var emptyChain = new BlockChain<DumbAction>(
+                var emptyChain = BlockChain<DumbAction>.Create(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
                     emptyFx.Store,
                     emptyFx.StateStore,
                     emptyFx.GenesisBlock);
-                var fork = new BlockChain<DumbAction>(
+                var fork = BlockChain<DumbAction>.Create(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
                     forkFx.Store,
@@ -1814,28 +1766,16 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: GenesisProposer,
                 blockAction: blockPolicy.BlockAction,
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
-                stateStore: stateStore
+                stateStore: new TrieStateStore(new MemoryKeyValueStore())
             );
             var chainStates = new BlockChainStates<DumbAction>(store, stateStore);
-            var chain = new BlockChain<DumbAction>(
+            var chain = BlockChain<DumbAction>.Create(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                chainId,
                 genesisBlock,
-                renderers: renderer is null ? null : new[] { renderer },
-                blockChainStates: chainStates,
-                actionEvaluator: new ActionEvaluator<DumbAction>(
-                    _ => blockPolicy.BlockAction,
-                    chainStates,
-                    trieGetter: hash => stateStore.GetStateRoot(
-                        store.GetBlockDigest(hash)?.StateRootHash
-                    ),
-                    genesisHash: genesisBlock.Hash,
-                    nativeTokenPredicate: blockPolicy.NativeTokens.Contains
-                )
-            );
+                renderers: renderer is null ? null : new[] { renderer });
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
 
@@ -1888,7 +1828,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     int index = i * accountsCount + j;
                     Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                        store.GetTxNonce(chainId, signer),
+                        store.GetTxNonce(chain.Id, signer),
                         privateKey,
                         chain.Genesis.Hash,
                         new[] { new DumbAction(addresses[j], index.ToString()) }
@@ -1921,7 +1861,7 @@ namespace Libplanet.Tests.Blockchain
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
-                    BuildIndex(chainId, b);
+                    BuildIndex(chain.Id, b);
                     Assert.Equal(b, chain[b.Hash]);
                     if (presentIndices.Contains((int)b.Index))
                     {
@@ -1938,10 +1878,6 @@ namespace Libplanet.Tests.Blockchain
 
             return (signer, addresses, chain);
         }
-
-        private (Address, Address[] Addresses, BlockChain<DumbAction> Chain)
-            MakeIncompleteBlockStates() =>
-            MakeIncompleteBlockStates(_fx.Store, _fx.StateStore);
 
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
@@ -2024,7 +1960,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private void ConstructWithGenesisBlock()
+        private void CreateWithGenesisBlock()
         {
             var storeFixture = new MemoryStoreFixture();
             var policy = new NullBlockPolicy<DumbAction>();
@@ -2044,8 +1980,7 @@ namespace Libplanet.Tests.Blockchain
                 addresses
                     .Select((address, index) => new DumbAction(address, index.ToString()))
                     .ToArray();
-            BlockChain<DumbAction> blockChain =
-                new BlockChain<DumbAction>(
+            BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
                     storeFixture.Store,
@@ -2077,13 +2012,12 @@ namespace Libplanet.Tests.Blockchain
             var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock();
             var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock();
 
-            var blockChain = new BlockChain<DumbAction>(
+            var blockChain = BlockChain<DumbAction>.Create(
                 policy,
                 stagePolicy,
                 store,
                 stateStore,
-                genesisBlockA
-            );
+                genesisBlockA);
 
             Assert.Throws<InvalidGenesisBlockException>(() =>
             {
@@ -2092,8 +2026,7 @@ namespace Libplanet.Tests.Blockchain
                     stagePolicy,
                     store,
                     stateStore,
-                    genesisBlockB
-                );
+                    genesisBlockB);
             });
         }
 
@@ -2154,9 +2087,9 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: stateStore);
+                stateStore: new TrieStateStore(new MemoryKeyValueStore()));
 
-            var chain = new BlockChain<DumbAction>(
+            var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
@@ -2191,13 +2124,12 @@ namespace Libplanet.Tests.Blockchain
             var systemActions = ValidatorPrivateKeys.Select(
                 pk => new SetValidator(new Validator(pk.PublicKey, BigInteger.One)));
 
-            BlockChain<DumbAction> blockChain =
-                new BlockChain<DumbAction>(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    storeFixture.Store,
-                    storeFixture.StateStore,
-                    BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
+            var blockChain = BlockChain<DumbAction>.Create(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                storeFixture.Store,
+                storeFixture.StateStore,
+                BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
 
             blockChain.MakeTransaction(
                 new PrivateKey(),
@@ -2267,7 +2199,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         private class
-            NullPolicyButTxPolicyAlwaysThrows<T> : NullPolicyForGetStatesOnUninitializedBlockChain<
+            NullPolicyButTxPolicyAlwaysThrows<T> : NullPolicyForGetStatesOnCreatingBlockChain<
                 T>
             where T : IAction, new()
         {
@@ -2287,12 +2219,12 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        private class NullPolicyForGetStatesOnUninitializedBlockChain<T> : NullBlockPolicy<T>
+        private class NullPolicyForGetStatesOnCreatingBlockChain<T> : NullBlockPolicy<T>
             where T : IAction, new()
         {
             protected readonly Action<BlockChain<T>> _hook;
 
-            public NullPolicyForGetStatesOnUninitializedBlockChain(
+            public NullPolicyForGetStatesOnCreatingBlockChain(
                 Action<BlockChain<T>> hook
             )
             {

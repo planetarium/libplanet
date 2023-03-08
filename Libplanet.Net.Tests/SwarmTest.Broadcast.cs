@@ -465,7 +465,7 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < size; i++)
             {
                 fxs[i] = new MemoryStoreFixture();
-                blockChains[i] = new BlockChain<DumbAction>(
+                blockChains[i] = BlockChain<DumbAction>.Create(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
                     fxs[i].Store,

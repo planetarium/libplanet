@@ -169,18 +169,17 @@ namespace Libplanet.Tests.Blockchain
                 TestUtils.GenesisProposer,
                 policy.BlockAction,
                 policy.NativeTokens.Contains,
-                stateStore
+                new TrieStateStore(new MemoryKeyValueStore())
             );
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 
-            var chain1 = new BlockChain<DumbAction>(
+            var chain1 = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                genesisBlock
-            );
+                genesisBlock);
 
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(

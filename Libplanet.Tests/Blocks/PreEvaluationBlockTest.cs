@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blocks
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
-                var blockChain = new BlockChain<Arithmetic>(
+                var blockChain = BlockChain<Arithmetic>.Create(
                     policy,
                     stagePolicy,
                     fx.Store,
@@ -109,7 +109,7 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
                 _output.WriteLine("#1: {0}", genesis);
 
-                var blockChain = new BlockChain<Arithmetic>(
+                var blockChain = BlockChain<Arithmetic>.Create(
                     policy,
                     stagePolicy,
                     fx.Store,

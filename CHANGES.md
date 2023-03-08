@@ -10,11 +10,21 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `BlockChain<T>()` no longer accepts an `IStore` where
+    `IStore.GetCanonicalChainId()` is `null`.  For on-the-fly `BlockChain<T>`
+    creation from scratch, use `BlockChain<T>.Create()` factory method instead.
+    [[#2863]]
+ -  `BlockChain<T>.Append()` no longer accepts a genesis `Block<T>` (i.e.
+    any `Block<T>` with an index of `0`).  [[#2863]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `BlockChain<T>.Create()` factory method for creating a `BlockChain<T>`
+    with an empty `IStore`.  [[#2863]]
 
 ### Behavioral changes
 
@@ -23,6 +33,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2863]: https://github.com/planetarium/libplanet/pull/2863
 
 
 Version 0.51.0

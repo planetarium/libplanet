@@ -22,13 +22,12 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             _policy = new BlockPolicy<DumbAction>();
             _fx = new MemoryStoreFixture();
-            _chain = new BlockChain<DumbAction>(
+            _chain = BlockChain<DumbAction>.Create(
                 _policy,
                 StagePolicy,
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock);
             _key = new PrivateKey();
             _txs = Enumerable.Range(0, 5).Select(i =>
                 Transaction<DumbAction>.Create(
