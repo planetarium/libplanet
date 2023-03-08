@@ -19,13 +19,12 @@ namespace Libplanet.Benchmarks
         public ProposeBlock()
         {
             var fx = new DefaultStoreFixture();
-            _blockChain = new BlockChain<DumbAction>(
+            _blockChain = BlockChain<DumbAction>.Create(
                 new NullBlockPolicy<DumbAction>(),
                 new VolatileStagePolicy<DumbAction>(),
                 fx.Store,
                 fx.StateStore,
-                fx.GenesisBlock
-            );
+                fx.GenesisBlock);
             _privateKey = new PrivateKey();
         }
 
