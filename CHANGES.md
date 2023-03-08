@@ -9,6 +9,16 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed state completion feature with related classes as below.  [[#2703]]
+    -  `StateCompleter`
+    -  `StateCompleters`
+    -  `TotalSupplyStateCompleter`
+    -  `TotalSupplyStateCompleters`
+    -  `ValidatorSetStateCompleter`
+    -  `ValidatorSetStateCompleters`
+ -  Removed type parameter `T` for `IAction` from `ActionEvaluator` and
+    `IBlockChainStates`.  [[#2703]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -20,6 +30,8 @@ To be released.
 ### Bug fixes
 
 ### CLI tools
+
+[#2703]: https://github.com/planetarium/libplanet/pull/2703
 
 
 Version 0.52.0
