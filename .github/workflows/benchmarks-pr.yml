@@ -34,7 +34,7 @@ jobs:
         tool: 'benchmarkdotnet'
         output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
+        benchmark-data-dir-path: dev/bench/${{ github.base_ref }}/${{ matrix.os }}
         save-data-file: false
         alert-threshold: '200%'
         comment-on-alert: true
