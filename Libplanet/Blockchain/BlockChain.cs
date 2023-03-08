@@ -259,13 +259,9 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    Append(
-                        genesisBlock,
-                        null,
-                        renderBlocks: !inFork,
-                        renderActions: !inFork,
-                        evaluateActions: !inFork
-                    );
+                    throw new ArgumentException(
+                        $"Given chain id {id} is not found inside store",
+                        nameof(id));
                 }
             }
             else if (!Genesis.Equals(genesisBlock))
