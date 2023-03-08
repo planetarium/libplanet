@@ -6,6 +6,12 @@ Version 0.50.2
 
 To be released.
 
+ -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
+    a way to configure action type loader to be used in `PolymorphicAction<T>`.
+    [[#2875]]
+
+[#2875]: https://github.com/planetarium/libplanet/pull/2875
+
 
 Version 0.50.1
 --------------
