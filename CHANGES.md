@@ -16,6 +16,9 @@ To be released.
     [[#2863]]
  -  `BlockChain<T>.Append()` no longer accepts a genesis `Block<T>` (i.e.
     any `Block<T>` with an index of `0`).  [[#2863]]
+ -  `BlockChain<T>()` now throws an `ArgumentException` if provided `IStore`
+    does not have its canonical chain id set or provided chain id is not found.
+    [[#1486], [#2585], [#2889]]
 
 ### Backward-incompatible network protocol changes
 
@@ -34,7 +37,10 @@ To be released.
 
 ### CLI tools
 
+[#1486]: https://github.com/planetarium/libplanet/issues/1486
+[#2585]: https://github.com/planetarium/libplanet/issues/2585
 [#2863]: https://github.com/planetarium/libplanet/pull/2863
+[#2889]: https://github.com/planetarium/libplanet/pull/2889
 
 
 Version 0.51.0
