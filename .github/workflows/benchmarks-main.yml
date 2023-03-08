@@ -1,5 +1,8 @@
 name: Libplanet benchmark (for merge commits)
-on: push
+on:
+  pull_request:
+    types:
+      - closed
 
 permissions:
   contents: write
@@ -8,6 +11,7 @@ permissions:
 jobs:
   benchmark:
     name: Run Benchmark.Net benchmarks
+    if: github.event.pull_request.merged == true
     continue-on-error: true
     strategy:
       matrix:
@@ -31,5 +35,5 @@ jobs:
         tool: 'benchmarkdotnet'
         output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ github.ref_name }}/${{ matrix.os }}
+        benchmark-data-dir-path: dev/bench/${{ github.base_ref }}/${{ matrix.os }}
         auto-push: true
