@@ -88,6 +88,7 @@ namespace Libplanet.Store
     {
         private const string IndexColPrefix = "index_";
         private const string TxNonceIdPrefix = "nonce_";
+        private const string CommitColPrefix = "commit_";
         private const string StatesKvPathDefault = "states";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
@@ -95,7 +96,7 @@ namespace Libplanet.Store
         private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
         private static readonly UPath TxIdBlockHashRootPath = UPath.Root / "txbindex";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
-        private static readonly UPath LastCommitRootPath = UPath.Root / "lastcommit";
+        private static readonly UPath BlockCommitRootPath = UPath.Root / "blockcommit";
         private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
@@ -200,6 +201,9 @@ namespace Libplanet.Store
                 _db.Mapper.RegisterType(
                     address => address.ToByteArray(),
                     b => new Address(b.AsBinary));
+                _db.Mapper.RegisterType(
+                    commit => commit.ToByteArray(),
+                    b => new BlockCommit(b));
             }
 
             _root.CreateDirectory(TxRootPath);
@@ -212,8 +216,8 @@ namespace Libplanet.Store
             _txIdBlockHashIndex = new SubFileSystem(_root, TxIdBlockHashRootPath, owned: false);
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
-            _root.CreateDirectory(LastCommitRootPath);
-            _blockCommits = new SubFileSystem(_root, LastCommitRootPath, owned: false);
+            _root.CreateDirectory(BlockCommitRootPath);
+            _blockCommits = new SubFileSystem(_root, BlockCommitRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
@@ -232,6 +236,7 @@ namespace Libplanet.Store
         {
             _db.DropCollection(IndexCollection(chainId).Name);
             _db.DropCollection(TxNonceCollection(chainId).Name);
+            _db.DropCollection(CommitCollection(chainId).Name);
         }
 
         /// <inheritdoc />
@@ -636,9 +641,30 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
+        public override BlockCommit GetChainBlockCommit(Guid chainId)
+        {
+            LiteCollection<BsonDocument> collection = CommitCollection(chainId);
+            var docId = new BsonValue("c");
+            BsonDocument doc = collection.FindById(docId);
+            return doc is { } d && d.TryGetValue("v", out BsonValue v)
+                ? new BlockCommit(v.AsBinary)
+                : null;
+        }
+
+        /// <inheritdoc />
+        public override void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit)
+        {
+            LiteCollection<BsonDocument> collection = CommitCollection(chainId);
+            var docId = new BsonValue("c");
+            BsonDocument doc = collection.FindById(docId);
+            collection.Upsert(
+                docId,
+                new BsonDocument() { ["v"] = new BsonValue(blockCommit.ToByteArray()) });
+        }
+
         public override BlockCommit GetBlockCommit(BlockHash blockHash)
         {
-            UPath path = LastCommitPath(blockHash);
+            UPath path = BlockCommitPath(blockHash);
             if (!_blockCommits.FileExists(path))
             {
                 return null;
@@ -661,7 +687,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override void PutBlockCommit(BlockCommit blockCommit)
         {
-            UPath path = LastCommitPath(blockCommit.BlockHash);
+            UPath path = BlockCommitPath(blockCommit.BlockHash);
             if (_blockCommits.FileExists(path))
             {
                 return;
@@ -673,7 +699,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override void DeleteBlockCommit(BlockHash blockHash)
         {
-            UPath path = LastCommitPath(blockHash);
+            UPath path = BlockCommitPath(blockHash);
             if (!_blockCommits.FileExists(path))
             {
                 return;
@@ -821,7 +847,7 @@ namespace Libplanet.Store
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private UPath LastCommitPath(in BlockHash blockHash)
+        private UPath BlockCommitPath(in BlockHash blockHash)
         {
             return UPath.Combine(UPath.Root, blockHash.ToString());
         }
@@ -840,6 +866,9 @@ namespace Libplanet.Store
 
         private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId) =>
             _db.GetCollection<BsonDocument>($"{TxNonceIdPrefix}{FormatChainId(chainId)}");
+
+        private LiteCollection<BsonDocument> CommitCollection(in Guid chainId) =>
+            _db.GetCollection<BsonDocument>($"{CommitColPrefix}{FormatChainId(chainId)}");
 
         private class HashDoc
         {

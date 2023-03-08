@@ -204,6 +204,18 @@ namespace Libplanet.Tests.Store
             _store.PruneOutdatedChains();
         }
 
+        public BlockCommit GetChainBlockCommit(Guid chainId)
+        {
+            Log(nameof(GetChainBlockCommit), chainId);
+            return _store.GetChainBlockCommit(chainId);
+        }
+
+        public void PutChainBlockCommit(Guid chainId, BlockCommit blockCmmit)
+        {
+            Log(nameof(PutChainBlockCommit), blockCmmit);
+            _store.PutChainBlockCommit(chainId, blockCmmit);
+        }
+
         public BlockCommit GetBlockCommit(BlockHash blockHash)
         {
             Log(nameof(GetBlockCommit), blockHash);

@@ -326,12 +326,34 @@ namespace Libplanet.Store
         void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <summary>
-        /// Gets a <see cref="BlockCommit"/> for given <see cref="BlockHash"/> from store.
+        /// Gets a <see cref="BlockCommit"/> associated with a <see cref="BlockChain{T}"/>
+        /// with <paramref name="chainId"/> as its <see cref="BlockChain{T}.Id"/>.
+        /// </summary>
+        /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of
+        /// the <see cref="BlockChain{T}"/> to retrieve <see cref="BlockCommit"/>.</param>
+        /// <returns>Returns <see cref="BlockCommit"/> if given <paramref name="chainId"/> is
+        /// stored and available, otherwise returns <see langword="null"/>.</returns>
+        BlockCommit GetChainBlockCommit(Guid chainId);
+
+        /// <summary>
+        /// Puts a <see cref="BlockCommit"/> associated with a <see cref="BlockChain{T}"/>
+        /// with <paramref name="chainId"/> as its <see cref="BlockChain{T}.Id"/>.
+        /// The given <see cref="BlockCommit"/> should have the same <see cref="BlockHash"/>
+        /// as the <see cref="BlockChain{T}.Tip"/>.
+        /// </summary>
+        /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of
+        /// the <see cref="BlockChain{T}"/> to store <see cref="BlockCommit"/>.</param>
+        /// <param name="blockCommit">The <see cref="BlockCommit"/> to store.</param>
+        void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit);
+
+        /// <summary>
+        /// Gets the <see cref="BlockCommit"/> for given <paramref name="blockHash"/> from
+        /// the store.
         /// </summary>
         /// <param name="blockHash">The <see cref="BlockHash"/> of a <see cref="BlockCommit"/>
-        /// to get.</param>
-        /// <returns>Returns <see cref="BlockCommit"/> if given <see cref="BlockHash"/> is stored
-        /// and available, otherwise returns <see langword="null"/>.</returns>
+        /// to retrieve.</param>
+        /// <returns>Returns <see cref="BlockCommit"/> if given <paramref name="blockHash"/> is
+        /// stored and available, otherwise returns <see langword="null"/>.</returns>
         BlockCommit GetBlockCommit(BlockHash blockHash);
 
         /// <summary>

@@ -181,12 +181,20 @@ namespace Libplanet.Tests.Store
             Store.PruneOutdatedChains(noopWithoutCanon);
 
         /// <inheritdoc />
+        public BlockCommit GetChainBlockCommit(Guid chainId) =>
+            Store.GetChainBlockCommit(chainId);
+
+        /// <inheritdoc />
+        public void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit) =>
+            Store.PutChainBlockCommit(chainId, blockCommit);
+
+        /// <inheritdoc />
         public BlockCommit GetBlockCommit(BlockHash blockHash) =>
             Store.GetBlockCommit(blockHash);
 
         /// <inheritdoc />
-        public void PutBlockCommit(BlockCommit lastCommit) =>
-            Store.PutBlockCommit(lastCommit);
+        public void PutBlockCommit(BlockCommit blockCommit) =>
+            Store.PutBlockCommit(blockCommit);
 
         /// <inheritdoc />
         public void DeleteBlockCommit(BlockHash blockHash) =>

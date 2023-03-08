@@ -1245,7 +1245,7 @@ namespace Libplanet.Blockchain
         /// <param name="index">A index value (height) of <see cref="Block{T}"/> to retrieve.
         /// </param>
         /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
-        /// Following conditions will returns <see langword="null"/>:
+        /// Following conditions will return <see langword="null"/>:
         /// <list type="bullet">
         ///     <item>
         ///         Given <see cref="Block{T}"/> <see cref="Block{T}.ProtocolVersion"/> is
@@ -1271,7 +1271,7 @@ namespace Libplanet.Blockchain
             }
 
             return index == Tip.Index
-                ? Store.GetBlockCommit(block.Hash)
+                ? Store.GetChainBlockCommit(Id)
                 : this[index + 1].LastCommit;
         }
 
@@ -1412,12 +1412,7 @@ namespace Libplanet.Blockchain
 
                     if (block.Index != 0 && blockCommit is { })
                     {
-                        Store.PutBlockCommit(blockCommit);
-                    }
-
-                    if (block.PreviousHash is { } prevHash)
-                    {
-                        Store.DeleteBlockCommit(prevHash);
+                        Store.PutChainBlockCommit(Id, blockCommit);
                     }
                 }
                 finally
