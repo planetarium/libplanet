@@ -1,19 +1,19 @@
-import { encode } from "bencodex";
-import { expect, test } from "vitest";
 import {
   type Mint,
-  type Transfer,
   type SetValidator,
+  type Transfer,
   encodeMint,
-  encodeTransfer,
+  encodeSetValidator,
   encodeSystemAction,
-  encodeSetValidator
+  encodeTransfer
 } from "../src/action";
 import { Address } from "../src/address";
 import { Currency } from "../src/assets";
 import { PublicKey } from "../src/key";
 import { Validator } from "../src/validator";
 import { fromHex } from "./hex";
+import { encode } from "bencodex";
+import { expect, test } from "vitest";
 
 const FOO: Currency = {
   ticker: "FOO",

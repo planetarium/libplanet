@@ -19,7 +19,7 @@ export function encodeSystemAction(action: SystemAction): Encodable {
     };
   case "setValidator":
     return {
-      type_id: 1,
+      type_id: 2,
       values: encodeSetValidator(action),
     };
   default:
