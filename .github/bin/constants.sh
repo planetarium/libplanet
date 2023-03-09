@@ -24,6 +24,7 @@ npm_packages=(
   "@planetarium/cli"
   "@planetarium/tx"
   "@planetarium/account"
+  "@planetarium/account-aws-kms"
   "@planetarium/account-web3-secret-storage"
 )
 
