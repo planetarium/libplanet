@@ -600,8 +600,6 @@ namespace Libplanet.Net
                                 VerifiedBlockHash = deltaBlock.Hash,
                             });
                     }
-
-                    workspace.CleanupBlockCommitStore(workspace.Tip.Index);
                 }
                 catch (Exception e)
                 {
@@ -674,6 +672,7 @@ namespace Libplanet.Net
                     );
 
                     renderSwap = BlockChain.Swap(workspace, render: render);
+                    BlockChain.CleanupBlockCommitStore(BlockChain.Tip.Index);
                 }
 
                 foreach (Guid chainId in chainIds)

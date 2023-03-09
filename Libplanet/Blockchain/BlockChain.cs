@@ -1634,8 +1634,19 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockCommit.Height"/> less than <paramref name="limit"/>.
         /// </summary>
         /// <param name="limit">A exceptional index that is not to be removed.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="IsCanonical"/> is
+        /// <see langword="false"/>.</exception>
         internal void CleanupBlockCommitStore(long limit)
         {
+            // FIXME: This still isn't enough to prevent the canonical chain
+            // removing cached block commits that are needed by other non-canonical chains.
+            if (!IsCanonical)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot perform {nameof(CleanupBlockCommitStore)}() from a " +
+                    "non canonical chain.");
+            }
+
             List<BlockHash> hashes = Store.GetBlockCommitHashes().ToList();
 
             _logger.Debug("Removing old BlockCommits with heights lower than {Limit}...", limit);
