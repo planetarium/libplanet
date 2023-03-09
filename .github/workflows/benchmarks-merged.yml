@@ -1,8 +1,8 @@
 name: Libplanet benchmark (for merge commits)
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+    branches-ignore:
+      - "gh-pages"
 
 permissions:
   contents: write
@@ -11,7 +11,6 @@ permissions:
 jobs:
   benchmark:
     name: Run Benchmark.Net benchmarks
-    if: github.event.pull_request.merged == true
     continue-on-error: true
     strategy:
       matrix:
