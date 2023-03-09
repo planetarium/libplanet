@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.50.2
 --------------
 
-To be released.
+Released on March 9, 2023.
 
  -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
     a way to configure action type loader to be used in `PolymorphicAction<T>`.
