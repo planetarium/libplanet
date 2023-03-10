@@ -1,8 +1,8 @@
 name: Libplanet benchmark (for merge commits)
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
+      - "gh-pages"
 
 permissions:
   contents: write
@@ -28,11 +28,11 @@ jobs:
       run: dotnet run -p Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
     - name: Store benchmark result
-      uses: benchmark-action/github-action-benchmark@v1
+      uses: planetarium/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
         output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
+        benchmark-data-dir-path: dev/bench/${{ github.base_ref }}/${{ matrix.os }}
         auto-push: true
