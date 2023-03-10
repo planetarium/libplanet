@@ -4,8 +4,13 @@ Libplanet changelog
 Version 0.53.0
 -------------
 
-
 To be released.
+
+Since 0.53.0, we officially provide
+*[@planetarium/account-web3-secret-storage]*, an npm package for providing
+`Web3KeyStore` which implements Ethereum Web3 Secret Storage (corresponds to
+`Libplanet.KeyStore.Web3KeyStore`) and complies with the `KeyStore` interface
+defined in *[@planetarium/account]*.
 
 ### Backward-incompatible API changes
 
@@ -61,10 +66,15 @@ To be released.
 
 ### Bug fixes
 
+### Dependencies
+
+ -  Added *[@planetarium/account-web3-secret-storage]* npm package.  [[#2915]]
+
 ### CLI tools
 
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
 [#2915]: https://github.com/planetarium/libplanet/pull/2915
+[@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
 [disjukr/bencodex]: https://github.com/disjukr/bencodex
 
