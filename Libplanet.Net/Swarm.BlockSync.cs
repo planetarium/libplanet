@@ -547,7 +547,7 @@ namespace Libplanet.Net
 
                 var actionExecutionState = new ActionExecutionState()
                 {
-                    TotalBlockCount = (int)(workspace.Count - (branchpoint?.Index + 1 ?? 0)),
+                    TotalBlockCount = blockChainSlice.Count,
                     ExecutedBlockCount = 0,
                 };
                 long txsCount = 0, actionsCount = 0;
