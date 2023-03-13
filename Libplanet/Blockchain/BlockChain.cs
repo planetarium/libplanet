@@ -1173,6 +1173,11 @@ namespace Libplanet.Blockchain
                     _blockChainStates,
                     ActionEvaluator);
                 Store.ForkBlockIndexes(Id, forkedId, point);
+                if (GetBlockCommit(point) is { } p)
+                {
+                    Store.PutChainBlockCommit(forkedId, GetBlockCommit(point));
+                }
+
                 Store.ForkTxNonces(Id, forked.Id);
                 for (Block<T> block = Tip;
                      block.PreviousHash is { } hash && !block.Hash.Equals(point);
