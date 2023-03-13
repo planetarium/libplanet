@@ -4,7 +4,14 @@ Libplanet changelog
 Version 0.50.1
 --------------
 
-To be released.
+Released on March 13, 2023.
+
+### Bug fixes
+
+ -  (Libplanet.Net) Fixed a bug where `ActionExecutionState` hadn't generated
+    correctly because of wrong `TotalBlockCount`.  [[#2917]]
+
+[#2917]: https://github.com/planetarium/libplanet/pull/2917
 
 
 Version 0.51.0
