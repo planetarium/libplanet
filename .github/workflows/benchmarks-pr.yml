@@ -28,13 +28,13 @@ jobs:
       run: dotnet run --project Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
     - name: Compare benchmark result
-      uses: benchmark-action/github-action-benchmark@v1
+      uses: planetarium/github-action-benchmark@v1
       with:
         name: Benchmark.Net Benchmark
         tool: 'benchmarkdotnet'
         output-file-path: BenchmarkDotNet.Artifacts/results/Combined.Benchmarks.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        benchmark-data-dir-path: dev/bench/${{ matrix.os }}
+        benchmark-data-dir-path: dev/bench/${{ github.base_ref }}/${{ matrix.os }}
         save-data-file: false
         alert-threshold: '200%'
         comment-on-alert: true
