@@ -56,6 +56,19 @@ deployment if possible.
 [#2894]: https://github.com/planetarium/libplanet/pull/2894
 
 
+Version 0.51.1
+--------------
+
+Released on March 13, 2023.
+
+### Bug fixes
+
+ -  (Libplanet.Net) Fixed a bug where `ActionExecutionState` hadn't generated
+    correctly because of wrong `TotalBlockCount`.  [[#2917]]
+
+[#2917]: https://github.com/planetarium/libplanet/pull/2917
+
+
 Version 0.51.0
 --------------
 
