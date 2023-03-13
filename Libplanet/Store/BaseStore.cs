@@ -165,6 +165,12 @@ namespace Libplanet.Store
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <inheritdoc/>
+        public abstract BlockCommit GetChainBlockCommit(Guid chainId);
+
+        /// <inheritdoc/>
+        public abstract void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit);
+
+        /// <inheritdoc/>
         public abstract BlockCommit GetBlockCommit(BlockHash blockHash);
 
         /// <inheritdoc/>

@@ -116,7 +116,8 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] ForkedChainsKeyPrefix = { (byte)'f' };
         private static readonly byte[] DeletedKeyPrefix = { (byte)'d' };
         private static readonly byte[] ChainIdKeyPrefix = { (byte)'h' };
-        private static readonly byte[] BlockCommitKeyPrefix = { (byte)'L' };
+        private static readonly byte[] ChainBlockCommitKeyPrefix = { (byte)'M' };
+        private static readonly byte[] BlockCommitKeyPrefix = { (byte)'m' };
 
         private static readonly byte[] EmptyBytes = new byte[0];
 
@@ -1214,6 +1215,43 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc />
+        public override BlockCommit GetChainBlockCommit(Guid chainId)
+        {
+            try
+            {
+                byte[] key = ChainBlockCommitKey(chainId);
+                byte[] bytes = _chainDb.Get(key);
+                if (bytes is null)
+                {
+                    return null;
+                }
+
+                return new BlockCommit(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetChainBlockCommit), e);
+            }
+
+            return null;
+        }
+
+        public override void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit)
+        {
+            try
+            {
+                byte[] key = ChainBlockCommitKey(chainId);
+                byte[] bytes = blockCommit.ToByteArray();
+
+                _chainDb.Put(key, bytes);
+                _chainDb.Put(ChainIdKey(chainId), chainId.ToByteArray());
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutChainBlockCommit), e);
+            }
+        }
+
         public override BlockCommit GetBlockCommit(BlockHash blockHash)
         {
             _rwBlockCommitLock.EnterReadLock();
@@ -1399,6 +1437,9 @@ namespace Libplanet.RocksDBStore
             ForkedChainsKeyPrefix
             .Concat(chainId.ToByteArray())
             .Concat(forkedChainId.ToByteArray()).ToArray();
+
+        private static byte[] ChainBlockCommitKey(Guid chainId) =>
+            ChainBlockCommitKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
 
         private static byte[] BlockCommitKey(in BlockHash blockHash) =>
             BlockCommitKeyPrefix.Concat(blockHash.ByteArray).ToArray();

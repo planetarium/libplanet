@@ -1173,6 +1173,11 @@ namespace Libplanet.Blockchain
                     _blockChainStates,
                     ActionEvaluator);
                 Store.ForkBlockIndexes(Id, forkedId, point);
+                if (GetBlockCommit(point) is { } p)
+                {
+                    Store.PutChainBlockCommit(forkedId, GetBlockCommit(point));
+                }
+
                 Store.ForkTxNonces(Id, forked.Id);
                 for (Block<T> block = Tip;
                      block.PreviousHash is { } hash && !block.Hash.Equals(point);
@@ -1245,7 +1250,7 @@ namespace Libplanet.Blockchain
         /// <param name="index">A index value (height) of <see cref="Block{T}"/> to retrieve.
         /// </param>
         /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
-        /// Following conditions will returns <see langword="null"/>:
+        /// Following conditions will return <see langword="null"/>:
         /// <list type="bullet">
         ///     <item>
         ///         Given <see cref="Block{T}"/> <see cref="Block{T}.ProtocolVersion"/> is
@@ -1271,7 +1276,7 @@ namespace Libplanet.Blockchain
             }
 
             return index == Tip.Index
-                ? Store.GetBlockCommit(block.Hash)
+                ? Store.GetChainBlockCommit(Id)
                 : this[index + 1].LastCommit;
         }
 
@@ -1412,12 +1417,7 @@ namespace Libplanet.Blockchain
 
                     if (block.Index != 0 && blockCommit is { })
                     {
-                        Store.PutBlockCommit(blockCommit);
-                    }
-
-                    if (block.PreviousHash is { } prevHash)
-                    {
-                        Store.DeleteBlockCommit(prevHash);
+                        Store.PutChainBlockCommit(Id, blockCommit);
                     }
                 }
                 finally
@@ -1639,8 +1639,19 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockCommit.Height"/> less than <paramref name="limit"/>.
         /// </summary>
         /// <param name="limit">A exceptional index that is not to be removed.</param>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="IsCanonical"/> is
+        /// <see langword="false"/>.</exception>
         internal void CleanupBlockCommitStore(long limit)
         {
+            // FIXME: This still isn't enough to prevent the canonical chain
+            // removing cached block commits that are needed by other non-canonical chains.
+            if (!IsCanonical)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot perform {nameof(CleanupBlockCommitStore)}() from a " +
+                    "non canonical chain.");
+            }
+
             List<BlockHash> hashes = Store.GetBlockCommitHashes().ToList();
 
             _logger.Debug("Removing old BlockCommits with heights lower than {Limit}...", limit);

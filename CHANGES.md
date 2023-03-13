@@ -6,6 +6,11 @@ Version 0.52.0
 
 To be released.
 
+Due to changes in [[#2894]], under certain circumstances, a network ran with
+[Libplanet 0.51.0] may have difficulty getting up and running after an update
+to this version.  Thus, it is recommanded to skip [Libplanet 0.51.0] for
+deployment if possible.
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
@@ -19,6 +24,8 @@ To be released.
  -  `BlockChain<T>()` now throws an `ArgumentException` if provided `IStore`
     does not have its canonical chain id set or provided chain id is not found.
     [[#1486], [#2585], [#2889]]
+ -  Added `IStore.GetChainBlockCommit()` and `IStore.PutChainBlockCommit()`
+    interface methods.  [[#2878], [#2894]]
 
 ### Backward-incompatible network protocol changes
 
@@ -31,16 +38,22 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed `BlockChain<T>.Fork()` to copy `BlockCommit` for its newly forked
+    `BlockChain<T>.Tip`.  [[#2878], [#2894]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+[Libplanet 0.51.0]: https://www.nuget.org/packages/Libplanet/0.51.0
 [#1486]: https://github.com/planetarium/libplanet/issues/1486
 [#2585]: https://github.com/planetarium/libplanet/issues/2585
 [#2863]: https://github.com/planetarium/libplanet/pull/2863
+[#2878]: https://github.com/planetarium/libplanet/issues/2878
 [#2889]: https://github.com/planetarium/libplanet/pull/2889
+[#2894]: https://github.com/planetarium/libplanet/pull/2894
 
 
 Version 0.51.0
@@ -170,8 +183,6 @@ and the specification might change in the near future.
 
 ### Dependencies
  -  Added *[@planetarium/account]* npm package.  [[#2848]]
-
-### CLI tools
 
 [#2848]: https://github.com/planetarium/libplanet/pull/2848
 [#2872]: https://github.com/planetarium/libplanet/pull/2872

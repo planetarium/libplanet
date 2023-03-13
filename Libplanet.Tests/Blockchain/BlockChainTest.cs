@@ -984,6 +984,27 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void GetBlockCommitAfterFork()
+        {
+            Block<DumbAction> block1 = _blockChain.ProposeBlock(new PrivateKey());
+            _blockChain.Append(block1, CreateBlockCommit(block1));
+            Block<DumbAction> block2 = _blockChain.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: CreateBlockCommit(block1));
+            _blockChain.Append(block2, CreateBlockCommit(block2));
+            Block<DumbAction> block3 = _blockChain.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: CreateBlockCommit(block2));
+            _blockChain.Append(block3, CreateBlockCommit(block3));
+
+            var forked = _blockChain.Fork(block2.Hash);
+            Assert.NotNull(forked.GetBlockCommit(forked.Tip.Index));
+            Assert.Equal(
+                forked.GetBlockCommit(forked.Tip.Index),
+                block3.LastCommit);
+        }
+
+        [Fact]
         public void CleanupBlockCommitStore()
         {
             BlockCommit blockCommit1 = CreateBlockCommit(

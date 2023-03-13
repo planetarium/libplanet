@@ -186,28 +186,27 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc />
-        public BlockCommit GetBlockCommit(BlockHash blockHash)
-        {
-            return _store.GetBlockCommit(blockHash);
-        }
+        public BlockCommit GetChainBlockCommit(Guid chainId) =>
+            _store.GetChainBlockCommit(chainId);
+
+        public void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit) =>
+            _store.PutChainBlockCommit(chainId, blockCommit);
 
         /// <inheritdoc />
-        public void PutBlockCommit(BlockCommit blockCommit)
-        {
+        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+            _store.GetBlockCommit(blockHash);
+
+        /// <inheritdoc />
+        public void PutBlockCommit(BlockCommit blockCommit) =>
             _store.PutBlockCommit(blockCommit);
-        }
 
         /// <inheritdoc />
-        public void DeleteBlockCommit(BlockHash blockHash)
-        {
+        public void DeleteBlockCommit(BlockHash blockHash) =>
             _store.DeleteBlockCommit(blockHash);
-        }
 
         /// <inheritdoc />
-        public IEnumerable<BlockHash> GetBlockCommitHashes()
-        {
-            return _store.GetBlockCommitHashes();
-        }
+        public IEnumerable<BlockHash> GetBlockCommitHashes() =>
+            _store.GetBlockCommitHashes();
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
         public void PutBlock<T>(Block<T> block)

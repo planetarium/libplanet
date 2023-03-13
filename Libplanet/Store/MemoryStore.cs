@@ -52,6 +52,9 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<BlockHash, BlockCommit> _blockCommits =
             new ConcurrentDictionary<BlockHash, BlockCommit>();
 
+        private readonly ConcurrentDictionary<Guid, BlockCommit> _chainCommits =
+            new ConcurrentDictionary<Guid, BlockCommit>();
+
         private Guid? _canonicalChainId;
 
         void IDisposable.Dispose()
@@ -269,29 +272,30 @@ namespace Libplanet.Store
             }
         }
 
-        public BlockCommit GetBlockCommit(BlockHash blockHash)
-        {
-            if (!_blockCommits.ContainsKey(blockHash))
-            {
-                return null;
-            }
+        /// <inheritdoc />
+        public BlockCommit GetChainBlockCommit(Guid chainId) =>
+            _chainCommits.TryGetValue(chainId, out BlockCommit commit)
+                ? commit
+                : null;
 
-            return _blockCommits[blockHash];
-        }
+        /// <inheritdoc />
+        public void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit) =>
+            _chainCommits[chainId] = blockCommit;
 
+        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+            _blockCommits.TryGetValue(blockHash, out var commit)
+                ? commit
+                : null;
+
+        /// <inheritdoc />
         public void PutBlockCommit(BlockCommit blockCommit) =>
             _blockCommits[blockCommit.BlockHash] = blockCommit;
 
-        public void DeleteBlockCommit(BlockHash blockHash)
-        {
-            if (!_blockCommits.ContainsKey(blockHash))
-            {
-                return;
-            }
-
+        /// <inheritdoc />
+        public void DeleteBlockCommit(BlockHash blockHash) =>
             _blockCommits.TryRemove(blockHash, out _);
-        }
 
+        /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes()
             => _blockCommits.Keys;
 
