@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "VeuAnsqp0rOCUJPZ4Ovndj2lN6g+OUdbPdfuoH4K02U="
+          "hash": "/8dfLuoFu1YI4bDKPEZVSunyZUodkV88VIWWNTYu8EY="
         }
       },
       "is_incremental": false,
@@ -585,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "CfSfP6sC6Mq6lmREGfrZAdx6yYzt5XEqBBpahf9tUmc="
+          "hash": "BVksmiyczFQU551TWeJhAS9Pr89eFGqAHp3nSFJj37U="
         }
       },
       "is_incremental": false,
@@ -3633,7 +3633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.RocksDBStore.html",
-          "hash": "j6Eot+OMmAInJUpBvvEXtQ99FtgzedFvGq6DclhlgG4="
+          "hash": "jeULuQwYVvoLVuaET+uGNMlUs56skCVwFfUENb1UB/E="
         }
       },
       "is_incremental": false,
@@ -3693,7 +3693,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "7IFXpDuzD9v2wCkoLlFttuquThEsAPpkmjh+Q3h8ny4="
+          "hash": "k2+ifaTLrF+sdszvUHwlmKRVKTztZiGV9L0456+aRvo="
         }
       },
       "is_incremental": false,
@@ -3741,7 +3741,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.DefaultStore.html",
-          "hash": "+kDIfH+aLBT25F2JZIqW4BxuAKKDTnKlqpoV4FvtNL0="
+          "hash": "2L48ToT212L9lWib0dcVysT8Kade2onxzD+MgUVXUwM="
         }
       },
       "is_incremental": false,
@@ -3765,7 +3765,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStore.html",
-          "hash": "+yIhYGnyVuVm2Pp4Owidt6e1sqSA2P6UXcFOzl2Ysw4="
+          "hash": "1nwwln1iKQwJqwoSoMVmksCPQ9SEyy6DkmTChiRcefE="
         }
       },
       "is_incremental": false,
@@ -3777,7 +3777,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.MemoryStore.html",
-          "hash": "7xZo8InDYIrIOICnSIpXuluEdNXxHRdUHnYh0eXofAU="
+          "hash": "OBteiJ7OP+cpnH73jB9dfDIJhQ85ESELuc9jWF4IXs0="
         }
       },
       "is_incremental": false,

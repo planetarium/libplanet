@@ -63,6 +63,10 @@
 
 <h2 id="version-0520">Version 0.52.0</h2>
 <p>To be released.</p>
+<p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/2894">#2894</a>], under certain circumstances, a network ran with
+<a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> may have difficulty getting up and running after an update
+to this version.  Thus, it is recommanded to skip <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> for
+deployment if possible.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -75,6 +79,8 @@ any <code>Block&lt;T&gt;</code> with an index of <code>0</code>).  [<a href="htt
 <li><code>BlockChain&lt;T&gt;()</code> now throws an <code>ArgumentException</code> if provided <code>IStore</code>
 does not have its canonical chain id set or provided chain id is not found.
 [<a href="https://github.com/planetarium/libplanet/issues/1486">#1486</a>, <a href="https://github.com/planetarium/libplanet/issues/2585">#2585</a>, <a href="https://github.com/planetarium/libplanet/pull/2889">#2889</a>]</li>
+<li>Added <code>IStore.GetChainBlockCommit()</code> and <code>IStore.PutChainBlockCommit()</code>
+interface methods.  [<a href="https://github.com/planetarium/libplanet/issues/2878">#2878</a>, <a href="https://github.com/planetarium/libplanet/pull/2894">#2894</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -84,6 +90,10 @@ does not have its canonical chain id set or provided chain id is not found.
 with an empty <code>IStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2863">#2863</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Changed <code>BlockChain&lt;T&gt;.Fork()</code> to copy <code>BlockCommit</code> for its newly forked
+<code>BlockChain&lt;T&gt;.Tip</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2878">#2878</a>, <a href="https://github.com/planetarium/libplanet/pull/2894">#2894</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
@@ -218,7 +228,6 @@ correctly in some situations.  [<a href="https://github.com/planetarium/libplane
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2848">#2848</a>]</li>
 </ul>
-<h3 id="cli-tools-1">CLI tools</h3>
 <h2 id="version-0501">Version 0.50.1</h2>
 <p>Released on March 6, 2023.</p>
 <ul>
@@ -409,7 +418,7 @@ sometimes block data is in undefined state due to data corruption.
 <li>Upgrade <em>System.Text.Json</em> from <a href="https://www.nuget.org/packages/System.Text.Json/6.0.6">6.0.6</a> to
 <a href="https://www.nuget.org/packages/System.Text.Json/6.0.7">6.0.7</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
 </ul>
-<h3 id="cli-tools-2">CLI tools</h3>
+<h3 id="cli-tools-1">CLI tools</h3>
 <ul>
 <li>Added <code>planet block</code> subcommand group. [<a href="https://github.com/planetarium/libplanet/pull/2758">#2758</a>]
 <ul>
@@ -529,7 +538,7 @@ to 10 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/2718">#2
 hadn't disposed of internal sockets properly when connecting failed.
 [<a href="https://github.com/planetarium/libplanet/pull/2719">#2719</a>]</li>
 </ul>
-<h3 id="cli-tools-3">CLI tools</h3>
+<h3 id="cli-tools-2">CLI tools</h3>
 <ul>
 <li>Fixed a bug <code>planet store</code> had not recognized RocksDB store
 (<code>rocksdb+file:</code>).  [<a href="https://github.com/planetarium/libplanet/pull/2699">#2699</a>]</li>
@@ -625,7 +634,7 @@ did not work as intended.  [<a href="https://github.com/planetarium/libplanet/is
 <li>Replaced <em><a href="https://www.nuget.org/packages/BouncyCastle.NetCore/1.8.6">BouncyCastle.NetCore 1.8.6</a></em> with
 <em><a href="https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0">BouncyCastle.Cryptography 2.0.0</a></em>.  [<a href="https://github.com/planetarium/libplanet/pull/2571">#2571</a>]</li>
 </ul>
-<h3 id="cli-tools-4">CLI tools</h3>
+<h3 id="cli-tools-3">CLI tools</h3>
 <ul>
 <li>Now <code>planet</code> can be installed using Homebrew on macOS: <code>brew install planetarium/brew/planet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2555">#2555</a>]</li>
 <li>Now <code>planet</code> supports command-line completion for bash and zsh.
@@ -716,7 +725,7 @@ Use newly introduced parameterless <code>TxMetadata.ToBencodex()</code> instead.
 <li>(Libplanet.Explorer) <code>Libplanet.Explorer.Executable</code> became to work again.
 [<a href="https://github.com/planetarium/libplanet/pull/2420">#2420</a>]</li>
 </ul>
-<h3 id="cli-tools-5">CLI tools</h3>
+<h3 id="cli-tools-4">CLI tools</h3>
 <ul>
 <li>Added builds for Apple Silicon to releases.  [<a href="https://github.com/planetarium/libplanet/pull/2365">#2365</a>]</li>
 </ul>
@@ -862,7 +871,7 @@ value equality (rather than reference equality).  [<a href="https://github.com/p
 <li>Upgrade <em>System.Text.Json</em> from <a href="https://www.nuget.org/packages/System.Text.Json/4.7.2">4.7.2</a> to
 <a href="https://www.nuget.org/packages/System.Text.Json/6.0.6">6.0.6</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
 </ul>
-<h3 id="cli-tools-6">CLI tools</h3>
+<h3 id="cli-tools-5">CLI tools</h3>
 <ul>
 <li>Added <code>planet tx</code> subcommand group.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]
 <ul>
@@ -1309,7 +1318,7 @@ less than 32 bytes.  [<a href="https://github.com/planetarium/libplanet/issues/1
 rejected by <code>IceServer(Uri url)</code> constructor and exception is thrown.
 [<a href="https://github.com/planetarium/libplanet/issues/2058">#2058</a>, <a href="https://github.com/planetarium/libplanet/pull/2116">#2116</a>]</li>
 </ul>
-<h3 id="cli-tools-7">CLI tools</h3>
+<h3 id="cli-tools-6">CLI tools</h3>
 <ul>
 <li>(Libplanet.Extensions.Cocona) Upgraded <em>Cocona.Lite</em> from 1.6.* to
 <a href="https://www.nuget.org/packages/Cocona.Lite/2.0.0">2.0.*</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2101">#2101</a>]</li>
@@ -1372,7 +1381,7 @@ and no longer accepts multiple Urls for single instance.  [<a href="https://gith
 <li>(Libplanet.Net) Added <code>PreloadOptions</code> property to <code>SwarmOptions</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
 </ul>
-<h3 id="cli-tools-8">CLI tools</h3>
+<h3 id="cli-tools-7">CLI tools</h3>
 <h2 id="version-0361">Version 0.36.1</h2>
 <p>Released on May 26th, 2022.</p>
 <ul>
@@ -1426,7 +1435,7 @@ present.  Instead, it silently returns an empty string now.  [<a href="https://g
 <li>Fixed a <code>TxId(byte[])</code> constructor's bug where <code>ParamName</code> and <code>Message</code> of
 <code>ArgumentOutOfRangeException</code> it had thrown had been reversed.  [<a href="https://github.com/planetarium/libplanet/pull/1978">#1978</a>]</li>
 </ul>
-<h3 id="cli-tools-9">CLI tools</h3>
+<h3 id="cli-tools-8">CLI tools</h3>
 <h2 id="version-0351">Version 0.35.1</h2>
 <p>Released on May 23rd, 2022.</p>
 <h3 id="bug-fixes-10">Bug fixes</h3>
@@ -1492,7 +1501,7 @@ instantiated with URI scheme <code>memory:</code> using
 using <code>StoreLoaderAttribute.LoadStore()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
 </ul>
-<h3 id="cli-tools-10">CLI tools</h3>
+<h3 id="cli-tools-9">CLI tools</h3>
 <ul>
 <li>The following store URI schemes are deprecated:  [<a href="https://github.com/planetarium/libplanet/issues/1573">#1573</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]
 <ul>
@@ -1515,7 +1524,7 @@ encoding and decoding to and from <code>Bencodex.Types.Dictionary</code>.
 constructor that takes an <code>Exception</code> as their <code>Exception.InnerException</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1830">#1830</a>, <a href="https://github.com/planetarium/libplanet/pull/1912">#1912</a>, <a href="https://github.com/planetarium/libplanet/pull/1916">#1916</a>]</li>
 </ul>
-<h3 id="cli-tools-11">CLI tools</h3>
+<h3 id="cli-tools-10">CLI tools</h3>
 <ul>
 <li>Added <code>planet key sign</code> to sign a message.  [<a href="https://github.com/planetarium/libplanet/pull/1920">#1920</a>]</li>
 </ul>
@@ -1587,7 +1596,7 @@ have public constructors.</li>
 <li>No longer depends on <em>Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
 <li>No longer depends on <em>Equals.Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
 </ul>
-<h3 id="cli-tools-12">CLI tools</h3>
+<h3 id="cli-tools-11">CLI tools</h3>
 <h2 id="version-0321">Version 0.32.1</h2>
 <p>Released on April 8th, 2022.</p>
 <h3 id="behavioral-changes-17">Behavioral changes</h3>
@@ -1668,7 +1677,7 @@ the inbound network traffic throughput of a node when using a <code>TurnClient</
 to manage chain ids.  Instead, chain id is concatenated into key prefix.
 [<a href="https://github.com/planetarium/libplanet/pull/1862">#1862</a>]</li>
 </ul>
-<h3 id="cli-tools-13">CLI tools</h3>
+<h3 id="cli-tools-12">CLI tools</h3>
 <ul>
 <li>Added <code>planet store migrate-index</code> for index database migration
 (from column families based to key-prefix).  [<a href="https://github.com/planetarium/libplanet/pull/1862">#1862</a>]</li>
@@ -1771,7 +1780,7 @@ using <code>NetMQ</code> directly.  [<a href="https://github.com/planetarium/lib
 <li>(Libplanet.Extensions.Cocona) Upgraded <em>Cocona.Lite</em> from 1.5.* to
 <a href="https://www.nuget.org/packages/Cocona.Lite/1.6.0">1.6.*</a>.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
 </ul>
-<h3 id="cli-tools-14">CLI tools</h3>
+<h3 id="cli-tools-13">CLI tools</h3>
 <ul>
 <li>All <code>planet</code> subcommands taking passphrase now have <code>--passphrase-file</code>
 option besides <code>-p</code>/<code>--passphrase</code> option to read it from the specified
@@ -1905,7 +1914,7 @@ individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/pla
 <li><em>Libplanet.Net</em> assembly is now distributed as a seaprate NuGet package:
 <em><a href="https://www.nuget.org/packages/Libplanet.Net/">Libplanet.Net</a></em>.  [<a href="https://github.com/planetarium/libplanet/issues/1421">#1421</a>, <a href="https://github.com/planetarium/libplanet/pull/1760">#1760</a>]</li>
 </ul>
-<h3 id="cli-tools-15">CLI tools</h3>
+<h3 id="cli-tools-14">CLI tools</h3>
 <ul>
 <li>Upgrade <em>node-fetch</em> for *@planetarium/cli* npm package.
 [<a href="https://github.com/advisories/GHSA-r683-j2x4-v87g">CVE-2022-0235</a>, <a href="https://github.com/planetarium/libplanet/pull/1747">#1747</a>]</li>
@@ -2382,7 +2391,7 @@ of <code>IBlockPolicy&lt;T&gt;</code> now validates the type for <code>Block&lt;
 size for <code>Block&lt;T&gt;.BytesLength</code>, and count for <code>Block&lt;T&gt;.Transactions</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1504">#1504</a>, <a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
 </ul>
-<h3 id="cli-tools-16">CLI tools</h3>
+<h3 id="cli-tools-15">CLI tools</h3>
 <ul>
 <li><code>planet stats</code> command's <code>-p</code>/<code>--path</code> option no more supports the store
 type <code>monorocksdb</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1513">#1513</a>, <a href="https://github.com/planetarium/libplanet/pull/1579">#1579</a>]</li>
@@ -3024,7 +3033,7 @@ make sense.</li>
 the peer that has chain with higher difficulty, but lower index.
 [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
 </ul>
-<h3 id="cli-tools-17">CLI tools</h3>
+<h3 id="cli-tools-16">CLI tools</h3>
 <h2 id="version-0154">Version 0.15.4</h2>
 <p>Released on September 14, 2021.</p>
 <ul>
@@ -3109,7 +3118,7 @@ if the transaction was not signed.  [<a href="https://github.com/planetarium/lib
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had stopped when <code>ObjectDisposedException</code>
 is thrown during <code>NetMQTransport.DoBroadcast()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1362">#1362</a>, <a href="https://github.com/planetarium/libplanet/pull/1365">#1365</a>]</li>
 </ul>
-<h3 id="cli-tools-18">CLI tools</h3>
+<h3 id="cli-tools-17">CLI tools</h3>
 <h2 id="version-0121">Version 0.12.1</h2>
 <p>Released on July 28, 2021.</p>
 <ul>
@@ -3431,7 +3440,7 @@ an improper chain.  [<a href="https://github.com/planetarium/libplanet/issues/13
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> hadn't respond immediately under load.
 [<a href="https://github.com/planetarium/libplanet/pull/1360">#1360</a>]</li>
 </ul>
-<h3 id="cli-tools-19">CLI tools</h3>
+<h3 id="cli-tools-18">CLI tools</h3>
 <ul>
 <li>Added the option <code>--json</code> to <code>planet apv analyze</code> command to print result
 as JSON format.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
@@ -3681,7 +3690,7 @@ are guaranteed to still behave as it had done.  [<a href="https://github.com/pla
 <li>Fixed a bug where <code>TurnClient</code> hadn't released its relay connections after
 reconnecting.  [<a href="https://github.com/planetarium/libplanet/pull/1185">#1185</a>]</li>
 </ul>
-<h3 id="cli-tools-20">CLI tools</h3>
+<h3 id="cli-tools-19">CLI tools</h3>
 <ul>
 <li><code>planet mpt diff</code> command became to take 4 arguments (which was 3)
 so that it can compare state root hashes from two different
@@ -4079,7 +4088,7 @@ checks if code has common mistakes prone to made with Libplanet-powered
 game apps, e.g., breaking determinism in <code>IAction</code> implementations.
 [<a href="https://github.com/planetarium/libplanet/pull/1034">#1034</a>]</li>
 </ul>
-<h3 id="cli-tools-21">CLI tools</h3>
+<h3 id="cli-tools-20">CLI tools</h3>
 <ul>
 <li>The <code>planet</code> command became installable using <code>npm</code>.  [<a href="https://github.com/planetarium/libplanet/pull/923">#923</a>, <a href="https://github.com/planetarium/libplanet/pull/982">#982</a>]</li>
 <li>Fixed a bug that <kbd>^H</kbd> had not removed the rightmost character
@@ -4257,7 +4266,7 @@ when a block failed to be fetched due to an unexpected inner exception.
 any non-ASCII characters was passed to <code>Pbkdf2.Derive()</code> method or
 <code>ProtectedPrivateKey.Protect()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/845">#845</a>]</li>
 </ul>
-<h3 id="cli-tools-22">CLI tools</h3>
+<h3 id="cli-tools-21">CLI tools</h3>
 <ul>
 <li>Added the <code>planet</code> command and its alias <code>dotnet planet</code>.</li>
 </ul>

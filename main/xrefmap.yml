@@ -24455,6 +24455,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId
   nameWithType: RocksDBStore.GetCanonicalChainId
+- uid: Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit(System.Guid)
+  name: GetChainBlockCommit(Guid)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetChainBlockCommit_System_Guid_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit(System.Guid)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit(System.Guid)
+  nameWithType: RocksDBStore.GetChainBlockCommit(Guid)
+- uid: Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit*
+  name: GetChainBlockCommit
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetChainBlockCommit_
+  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit
+  nameWithType: RocksDBStore.GetChainBlockCommit
 - uid: Libplanet.RocksDBStore.RocksDBStore.GetTransaction*
   name: GetTransaction
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetTransaction_
@@ -24646,6 +24659,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.PutBlockCommit
   nameWithType: RocksDBStore.PutBlockCommit
+- uid: Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  name: PutChainBlockCommit(Guid, BlockCommit)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutChainBlockCommit_System_Guid_Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit(System.Guid, Libplanet.Blocks.BlockCommit)
+  nameWithType: RocksDBStore.PutChainBlockCommit(Guid, BlockCommit)
+- uid: Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit*
+  name: PutChainBlockCommit
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutChainBlockCommit_
+  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit
+  nameWithType: RocksDBStore.PutChainBlockCommit
 - uid: Libplanet.RocksDBStore.RocksDBStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutTransaction_
@@ -25318,6 +25344,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.GetCanonicalChainId
   nameWithType: BaseStore.GetCanonicalChainId
+- uid: Libplanet.Store.BaseStore.GetChainBlockCommit(System.Guid)
+  name: GetChainBlockCommit(Guid)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetChainBlockCommit_System_Guid_
+  commentId: M:Libplanet.Store.BaseStore.GetChainBlockCommit(System.Guid)
+  fullName: Libplanet.Store.BaseStore.GetChainBlockCommit(System.Guid)
+  nameWithType: BaseStore.GetChainBlockCommit(Guid)
+- uid: Libplanet.Store.BaseStore.GetChainBlockCommit*
+  name: GetChainBlockCommit
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetChainBlockCommit_
+  commentId: Overload:Libplanet.Store.BaseStore.GetChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.GetChainBlockCommit
+  nameWithType: BaseStore.GetChainBlockCommit
 - uid: Libplanet.Store.BaseStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: GetFirstTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -25509,6 +25548,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.PutBlockCommit
   nameWithType: BaseStore.PutBlockCommit
+- uid: Libplanet.Store.BaseStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  name: PutChainBlockCommit(Guid, BlockCommit)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutChainBlockCommit_System_Guid_Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.Store.BaseStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  fullName: Libplanet.Store.BaseStore.PutChainBlockCommit(System.Guid, Libplanet.Blocks.BlockCommit)
+  nameWithType: BaseStore.PutChainBlockCommit(Guid, BlockCommit)
+- uid: Libplanet.Store.BaseStore.PutChainBlockCommit*
+  name: PutChainBlockCommit
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutChainBlockCommit_
+  commentId: Overload:Libplanet.Store.BaseStore.PutChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.PutChainBlockCommit
+  nameWithType: BaseStore.PutChainBlockCommit
 - uid: Libplanet.Store.BaseStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTransaction_
@@ -26273,6 +26325,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.GetCanonicalChainId
   nameWithType: DefaultStore.GetCanonicalChainId
+- uid: Libplanet.Store.DefaultStore.GetChainBlockCommit(System.Guid)
+  name: GetChainBlockCommit(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetChainBlockCommit_System_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.GetChainBlockCommit(System.Guid)
+  fullName: Libplanet.Store.DefaultStore.GetChainBlockCommit(System.Guid)
+  nameWithType: DefaultStore.GetChainBlockCommit(Guid)
+- uid: Libplanet.Store.DefaultStore.GetChainBlockCommit*
+  name: GetChainBlockCommit
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetChainBlockCommit_
+  commentId: Overload:Libplanet.Store.DefaultStore.GetChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.GetChainBlockCommit
+  nameWithType: DefaultStore.GetChainBlockCommit
 - uid: Libplanet.Store.DefaultStore.GetTransaction*
   name: GetTransaction
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTransaction_
@@ -26451,6 +26516,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.PutBlockCommit
   nameWithType: DefaultStore.PutBlockCommit
+- uid: Libplanet.Store.DefaultStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  name: PutChainBlockCommit(Guid, BlockCommit)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutChainBlockCommit_System_Guid_Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.Store.DefaultStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  fullName: Libplanet.Store.DefaultStore.PutChainBlockCommit(System.Guid, Libplanet.Blocks.BlockCommit)
+  nameWithType: DefaultStore.PutChainBlockCommit(Guid, BlockCommit)
+- uid: Libplanet.Store.DefaultStore.PutChainBlockCommit*
+  name: PutChainBlockCommit
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutChainBlockCommit_
+  commentId: Overload:Libplanet.Store.DefaultStore.PutChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PutChainBlockCommit
+  nameWithType: DefaultStore.PutChainBlockCommit
 - uid: Libplanet.Store.DefaultStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTransaction_
@@ -26780,6 +26858,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.GetCanonicalChainId
   nameWithType: IStore.GetCanonicalChainId
+- uid: Libplanet.Store.IStore.GetChainBlockCommit(System.Guid)
+  name: GetChainBlockCommit(Guid)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetChainBlockCommit_System_Guid_
+  commentId: M:Libplanet.Store.IStore.GetChainBlockCommit(System.Guid)
+  fullName: Libplanet.Store.IStore.GetChainBlockCommit(System.Guid)
+  nameWithType: IStore.GetChainBlockCommit(Guid)
+- uid: Libplanet.Store.IStore.GetChainBlockCommit*
+  name: GetChainBlockCommit
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetChainBlockCommit_
+  commentId: Overload:Libplanet.Store.IStore.GetChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.GetChainBlockCommit
+  nameWithType: IStore.GetChainBlockCommit
 - uid: Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: GetFirstTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -26971,6 +27062,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.PutBlockCommit
   nameWithType: IStore.PutBlockCommit
+- uid: Libplanet.Store.IStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  name: PutChainBlockCommit(Guid, BlockCommit)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutChainBlockCommit_System_Guid_Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.Store.IStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  fullName: Libplanet.Store.IStore.PutChainBlockCommit(System.Guid, Libplanet.Blocks.BlockCommit)
+  nameWithType: IStore.PutChainBlockCommit(Guid, BlockCommit)
+- uid: Libplanet.Store.IStore.PutChainBlockCommit*
+  name: PutChainBlockCommit
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutChainBlockCommit_
+  commentId: Overload:Libplanet.Store.IStore.PutChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.PutChainBlockCommit
+  nameWithType: IStore.PutChainBlockCommit
 - uid: Libplanet.Store.IStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTransaction_
@@ -27090,6 +27194,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.MemoryStore.GetBlockCommitHashes
   nameWithType: MemoryStore.GetBlockCommitHashes
+- uid: Libplanet.Store.MemoryStore.GetChainBlockCommit(System.Guid)
+  name: GetChainBlockCommit(Guid)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_GetChainBlockCommit_System_Guid_
+  commentId: M:Libplanet.Store.MemoryStore.GetChainBlockCommit(System.Guid)
+  fullName: Libplanet.Store.MemoryStore.GetChainBlockCommit(System.Guid)
+  nameWithType: MemoryStore.GetChainBlockCommit(Guid)
+- uid: Libplanet.Store.MemoryStore.GetChainBlockCommit*
+  name: GetChainBlockCommit
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_GetChainBlockCommit_
+  commentId: Overload:Libplanet.Store.MemoryStore.GetChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.MemoryStore.GetChainBlockCommit
+  nameWithType: MemoryStore.GetChainBlockCommit
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
   name: IStore.AppendIndex(Guid, BlockHash)
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_
@@ -27626,6 +27743,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.MemoryStore.PutBlockCommit
   nameWithType: MemoryStore.PutBlockCommit
+- uid: Libplanet.Store.MemoryStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  name: PutChainBlockCommit(Guid, BlockCommit)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_PutChainBlockCommit_System_Guid_Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.Store.MemoryStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)
+  fullName: Libplanet.Store.MemoryStore.PutChainBlockCommit(System.Guid, Libplanet.Blocks.BlockCommit)
+  nameWithType: MemoryStore.PutChainBlockCommit(Guid, BlockCommit)
+- uid: Libplanet.Store.MemoryStore.PutChainBlockCommit*
+  name: PutChainBlockCommit
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_PutChainBlockCommit_
+  commentId: Overload:Libplanet.Store.MemoryStore.PutChainBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Store.MemoryStore.PutChainBlockCommit
+  nameWithType: MemoryStore.PutChainBlockCommit
 - uid: Libplanet.Store.MemoryStore.System#IDisposable#Dispose
   name: IDisposable.Dispose()
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_System_IDisposable_Dispose
