@@ -4,14 +4,12 @@ Libplanet changelog
 Version 0.52.0
 --------------
 
-To be released.
+Released on March 3, 2022.
 
 Due to changes in [[#2894]], under certain circumstances, a network ran with
 [Libplanet 0.51.0] may have difficulty getting up and running after an update
-to this version.  Thus, it is recommanded to skip [Libplanet 0.51.0] for
+to this version.  Thus, it is recommended to skip [Libplanet 0.51.0] for
 deployment if possible.
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -27,10 +25,6 @@ deployment if possible.
  -  Added `IStore.GetChainBlockCommit()` and `IStore.PutChainBlockCommit()`
     interface methods.  [[#2878], [#2894]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `BlockChain<T>.Create()` factory method for creating a `BlockChain<T>`
@@ -40,12 +34,6 @@ deployment if possible.
 
  -  Changed `BlockChain<T>.Fork()` to copy `BlockCommit` for its newly forked
     `BlockChain<T>.Tip`.  [[#2878], [#2894]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [Libplanet 0.51.0]: https://www.nuget.org/packages/Libplanet/0.51.0
 [#1486]: https://github.com/planetarium/libplanet/issues/1486
