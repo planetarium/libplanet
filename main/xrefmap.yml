@@ -112,78 +112,57 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluation.OutputStates
   nameWithType: ActionEvaluation.OutputStates
-- uid: Libplanet.Action.ActionEvaluator`1
-  name: ActionEvaluator<T>
-  href: api/Libplanet.Action.ActionEvaluator-1.html
-  commentId: T:Libplanet.Action.ActionEvaluator`1
-  name.vb: ActionEvaluator(Of T)
-  fullName: Libplanet.Action.ActionEvaluator<T>
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T)
-  nameWithType: ActionEvaluator<T>
-  nameWithType.vb: ActionEvaluator(Of T)
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
-  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates__0__System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
-  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates<T>, System.Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>, System.Nullable<Libplanet.Blocks.BlockHash>, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionTypeLoader)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates(Of T), System.Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie), System.Nullable(Of Libplanet.Blocks.BlockHash), System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionTypeLoader)
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency})
-  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates__0__System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates{`0},System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency})
-  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency))
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates<T>, System.Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>, System.Nullable<Libplanet.Blocks.BlockHash>, System.Predicate<Libplanet.Assets.Currency>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates(Of T), System.Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie), System.Nullable(Of Libplanet.Blocks.BlockHash), System.Predicate(Of Libplanet.Assets.Currency))
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates<T>, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates(Of T), Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency))
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor*
+- uid: Libplanet.Action.ActionEvaluator
   name: ActionEvaluator
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
-  commentId: Overload:Libplanet.Action.ActionEvaluator`1.#ctor
+  href: api/Libplanet.Action.ActionEvaluator.html
+  commentId: T:Libplanet.Action.ActionEvaluator
+  fullName: Libplanet.Action.ActionEvaluator
+  nameWithType: ActionEvaluator
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
+  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>, System.Nullable<Libplanet.Blocks.BlockHash>, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionTypeLoader)
+  fullName.vb: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie), System.Nullable(Of Libplanet.Blocks.BlockHash), System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionTypeLoader)
+  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
+  nameWithType.vb: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
+- uid: Libplanet.Action.ActionEvaluator.#ctor*
+  name: ActionEvaluator
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
+  commentId: Overload:Libplanet.Action.ActionEvaluator.#ctor
   isSpec: "True"
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator
-  nameWithType: ActionEvaluator<T>.ActionEvaluator
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Blockchain.StateCompleterSet{`0})
-  name: Evaluate(IPreEvaluationBlock, StateCompleterSet<T>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Blockchain_StateCompleterSet__0__
-  commentId: M:Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Blockchain.StateCompleterSet{`0})
-  name.vb: Evaluate(IPreEvaluationBlock, StateCompleterSet(Of T))
-  fullName: Libplanet.Action.ActionEvaluator<T>.Evaluate(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Blockchain.StateCompleterSet<T>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Blockchain.StateCompleterSet(Of T))
-  nameWithType: ActionEvaluator<T>.Evaluate(IPreEvaluationBlock, StateCompleterSet<T>)
-  nameWithType.vb: ActionEvaluator(Of T).Evaluate(IPreEvaluationBlock, StateCompleterSet(Of T))
-- uid: Libplanet.Action.ActionEvaluator`1.Evaluate*
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator
+  nameWithType: ActionEvaluator.ActionEvaluator
+- uid: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
+  name: Evaluate(IPreEvaluationBlock)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_
+  commentId: M:Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
+  fullName: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
+  nameWithType: ActionEvaluator.Evaluate(IPreEvaluationBlock)
+- uid: Libplanet.Action.ActionEvaluator.Evaluate*
   name: Evaluate
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_
-  commentId: Overload:Libplanet.Action.ActionEvaluator`1.Evaluate
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Evaluate_
+  commentId: Overload:Libplanet.Action.ActionEvaluator.Evaluate
   isSpec: "True"
-  fullName: Libplanet.Action.ActionEvaluator<T>.Evaluate
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate
-  nameWithType: ActionEvaluator<T>.Evaluate
-  nameWithType.vb: ActionEvaluator(Of T).Evaluate
-- uid: Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
+  fullName: Libplanet.Action.ActionEvaluator.Evaluate
+  nameWithType: ActionEvaluator.Evaluate
+- uid: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
   name: GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_GenerateRandomSeed_System_Byte___System_Byte___System_Byte___System_Int32_
-  commentId: M:Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Byte___System_Int32_
+  commentId: M:Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
   name.vb: GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
-  fullName: Libplanet.Action.ActionEvaluator<T>.GenerateRandomSeed(System.Byte[], System.Byte[], System.Byte[], System.Int32)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).GenerateRandomSeed(System.Byte(), System.Byte(), System.Byte(), System.Int32)
-  nameWithType: ActionEvaluator<T>.GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
-  nameWithType.vb: ActionEvaluator(Of T).GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
-- uid: Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed*
+  fullName: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[], System.Byte[], System.Byte[], System.Int32)
+  fullName.vb: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte(), System.Byte(), System.Byte(), System.Int32)
+  nameWithType: ActionEvaluator.GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
+  nameWithType.vb: ActionEvaluator.GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
+- uid: Libplanet.Action.ActionEvaluator.GenerateRandomSeed*
   name: GenerateRandomSeed
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_GenerateRandomSeed_
-  commentId: Overload:Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_GenerateRandomSeed_
+  commentId: Overload:Libplanet.Action.ActionEvaluator.GenerateRandomSeed
   isSpec: "True"
-  fullName: Libplanet.Action.ActionEvaluator<T>.GenerateRandomSeed
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).GenerateRandomSeed
-  nameWithType: ActionEvaluator<T>.GenerateRandomSeed
-  nameWithType.vb: ActionEvaluator(Of T).GenerateRandomSeed
+  fullName: Libplanet.Action.ActionEvaluator.GenerateRandomSeed
+  nameWithType: ActionEvaluator.GenerateRandomSeed
 - uid: Libplanet.Action.ActionTypeAttribute
   name: ActionTypeAttribute
   href: api/Libplanet.Action.ActionTypeAttribute.html
@@ -2779,24 +2758,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T)
   nameWithType: BlockChain<T>
   nameWithType.vb: BlockChain(Of T)
-- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0},Libplanet.Action.ActionEvaluator{`0})
-  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>, ActionEvaluator<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates__0__Libplanet_Action_ActionEvaluator__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0},Libplanet.Action.ActionEvaluator{`0})
-  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T), ActionEvaluator(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates<T>, Libplanet.Action.ActionEvaluator<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates(Of T), Libplanet.Action.ActionEvaluator(Of T))
-  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>, ActionEvaluator<T>)
-  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T), ActionEvaluator(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0})
-  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0})
-  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates(Of T))
-  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>)
-  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.ActionEvaluator)
+  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates, ActionEvaluator)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_ActionEvaluator_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.ActionEvaluator)
+  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates, ActionEvaluator)
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.ActionEvaluator)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.ActionEvaluator)
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates, ActionEvaluator)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates, ActionEvaluator)
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates)
+  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates)
+  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates)
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates)
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates)
 - uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}})
   name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___
@@ -2832,15 +2811,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ActionRenderers
   nameWithType: BlockChain<T>.ActionRenderers
   nameWithType.vb: BlockChain(Of T).ActionRenderers
-- uid: Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockCommit,System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
-  name: Append(Block<T>, BlockCommit, Nullable<StateCompleterSet<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockCommit_System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockCommit,System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
-  name.vb: Append(Block(Of T), BlockCommit, Nullable(Of StateCompleterSet(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.Append(Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockCommit, System.Nullable<Libplanet.Blockchain.StateCompleterSet<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Append(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockCommit, System.Nullable(Of Libplanet.Blockchain.StateCompleterSet(Of T)))
-  nameWithType: BlockChain<T>.Append(Block<T>, BlockCommit, Nullable<StateCompleterSet<T>>)
-  nameWithType.vb: BlockChain(Of T).Append(Block(Of T), BlockCommit, Nullable(Of StateCompleterSet(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockCommit)
+  name: Append(Block<T>, BlockCommit)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockCommit)
+  name.vb: Append(Block(Of T), BlockCommit)
+  fullName: Libplanet.Blockchain.BlockChain<T>.Append(Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockCommit)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Append(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockCommit)
+  nameWithType: BlockChain<T>.Append(Block<T>, BlockCommit)
+  nameWithType.vb: BlockChain(Of T).Append(Block(Of T), BlockCommit)
 - uid: Libplanet.Blockchain.BlockChain`1.Append*
   name: Append
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_
@@ -2919,15 +2898,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Create
   nameWithType: BlockChain<T>.Create
   nameWithType.vb: BlockChain(Of T).Create
-- uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0},System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
-  name: ExecuteActions(Block<T>, Nullable<StateCompleterSet<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_Libplanet_Blocks_Block__0__System_Nullable_Libplanet_Blockchain_StateCompleterSet__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0},System.Nullable{Libplanet.Blockchain.StateCompleterSet{`0}})
-  name.vb: ExecuteActions(Block(Of T), Nullable(Of StateCompleterSet(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.ExecuteActions(Libplanet.Blocks.Block<T>, System.Nullable<Libplanet.Blockchain.StateCompleterSet<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ExecuteActions(Libplanet.Blocks.Block(Of T), System.Nullable(Of Libplanet.Blockchain.StateCompleterSet(Of T)))
-  nameWithType: BlockChain<T>.ExecuteActions(Block<T>, Nullable<StateCompleterSet<T>>)
-  nameWithType.vb: BlockChain(Of T).ExecuteActions(Block(Of T), Nullable(Of StateCompleterSet(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0})
+  name: ExecuteActions(Block<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0})
+  name.vb: ExecuteActions(Block(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.ExecuteActions(Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ExecuteActions(Libplanet.Blocks.Block(Of T))
+  nameWithType: BlockChain<T>.ExecuteActions(Block<T>)
+  nameWithType.vb: BlockChain(Of T).ExecuteActions(Block(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions*
   name: ExecuteActions
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_
@@ -3006,24 +2985,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Genesis
   nameWithType: BlockChain<T>.Genesis
   nameWithType.vb: BlockChain(Of T).Genesis
-- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_FungibleAssetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name.vb: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name: GetBalance(Address, Currency, Nullable<BlockHash>, FungibleAssetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_FungibleAssetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name.vb: GetBalance(Address, Currency, Nullable(Of BlockHash), FungibleAssetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetBalance(Address, Currency, Nullable<BlockHash>, FungibleAssetStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, Nullable(Of BlockHash), FungibleAssetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  name: GetBalance(Address, Currency, BlockHash)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChain<T>.GetBalance(Address, Currency, BlockHash)
+  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, BlockHash)
+- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetBalance(Address, Currency, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetBalance(Address, Currency, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChain<T>.GetBalance(Address, Currency, Nullable<BlockHash>)
+  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChain`1.GetBalance*
   name: GetBalance
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_
@@ -3109,15 +3087,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStagedTransactionIds
   nameWithType: BlockChain<T>.GetStagedTransactionIds
   nameWithType.vb: BlockChain(Of T).GetStagedTransactionIds
-- uid: Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
-  name: GetState(Address, Nullable<BlockHash>, StateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_StateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
-  name.vb: GetState(Address, Nullable(Of BlockHash), StateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetState(Libplanet.Address, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.StateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState(Libplanet.Address, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.StateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetState(Address, Nullable<BlockHash>, StateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetState(Address, Nullable(Of BlockHash), StateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetState(Address, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetState(Address, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetState(Libplanet.Address, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState(Libplanet.Address, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChain<T>.GetState(Address, Nullable<BlockHash>)
+  nameWithType.vb: BlockChain(Of T).GetState(Address, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChain`1.GetState*
   name: GetState
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_
@@ -3127,24 +3105,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState
   nameWithType: BlockChain<T>.GetState
   nameWithType.vb: BlockChain(Of T).GetState
-- uid: Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
-  name: GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_Libplanet_Blockchain_StateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
-  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
-  name: GetStates(IReadOnlyList<Address>, Nullable<BlockHash>, StateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_StateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
-  name.vb: GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash), StateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.StateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.StateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetStates(IReadOnlyList<Address>, Nullable<BlockHash>, StateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash), StateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
+  name: GetStates(IReadOnlyList<Address>, BlockHash)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
+  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChain<T>.GetStates(IReadOnlyList<Address>, BlockHash)
+  nameWithType.vb: BlockChain(Of T).GetStates(IReadOnlyList(Of Address), BlockHash)
+- uid: Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChain<T>.GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
+  nameWithType.vb: BlockChain(Of T).GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChain`1.GetStates*
   name: GetStates
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_
@@ -3154,24 +3132,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates
   nameWithType: BlockChain<T>.GetStates
   nameWithType.vb: BlockChain(Of T).GetStates
-- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name.vb: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name: GetTotalSupply(Currency, Nullable<BlockHash>, TotalSupplyStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_TotalSupplyStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name.vb: GetTotalSupply(Currency, Nullable(Of BlockHash), TotalSupplyStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply(Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetTotalSupply(Currency, Nullable<BlockHash>, TotalSupplyStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetTotalSupply(Currency, Nullable(Of BlockHash), TotalSupplyStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  name: GetTotalSupply(Currency, BlockHash)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChain<T>.GetTotalSupply(Currency, BlockHash)
+  nameWithType.vb: BlockChain(Of T).GetTotalSupply(Currency, BlockHash)
+- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetTotalSupply(Currency, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetTotalSupply(Currency, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply(Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChain<T>.GetTotalSupply(Currency, Nullable<BlockHash>)
+  nameWithType.vb: BlockChain(Of T).GetTotalSupply(Currency, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply*
   name: GetTotalSupply
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_
@@ -3215,24 +3192,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTxExecution
   nameWithType: BlockChain<T>.GetTxExecution
   nameWithType.vb: BlockChain(Of T).GetTxExecution
-- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name: GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name.vb: GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name: GetValidatorSet(Nullable<BlockHash>, ValidatorSetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_ValidatorSetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name.vb: GetValidatorSet(Nullable(Of BlockHash), ValidatorSetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet(System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet(System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
-  nameWithType: BlockChain<T>.GetValidatorSet(Nullable<BlockHash>, ValidatorSetStateCompleter<T>)
-  nameWithType.vb: BlockChain(Of T).GetValidatorSet(Nullable(Of BlockHash), ValidatorSetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  name: GetValidatorSet(BlockHash)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChain<T>.GetValidatorSet(BlockHash)
+  nameWithType.vb: BlockChain(Of T).GetValidatorSet(BlockHash)
+- uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetValidatorSet(Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetValidatorSet(Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetValidatorSet(System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetValidatorSet(System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChain<T>.GetValidatorSet(Nullable<BlockHash>)
+  nameWithType.vb: BlockChain(Of T).GetValidatorSet(Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChain`1.GetValidatorSet*
   name: GetValidatorSet
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetValidatorSet_
@@ -3471,104 +3447,80 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransaction
   nameWithType: BlockChain<T>.UnstageTransaction
   nameWithType.vb: BlockChain(Of T).UnstageTransaction
-- uid: Libplanet.Blockchain.BlockChainStates`1
-  name: BlockChainStates<T>
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html
-  commentId: T:Libplanet.Blockchain.BlockChainStates`1
-  name.vb: BlockChainStates(Of T)
-  fullName: Libplanet.Blockchain.BlockChainStates<T>
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T)
-  nameWithType: BlockChainStates<T>
-  nameWithType.vb: BlockChainStates(Of T)
-- uid: Libplanet.Blockchain.BlockChainStates`1.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)
-  name: BlockChainStates(IStore, IStateStore)
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1__ctor_Libplanet_Store_IStore_Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Blockchain.BlockChainStates`1.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.BlockChainStates(Libplanet.Store.IStore, Libplanet.Store.IStateStore)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).BlockChainStates(Libplanet.Store.IStore, Libplanet.Store.IStateStore)
-  nameWithType: BlockChainStates<T>.BlockChainStates(IStore, IStateStore)
-  nameWithType.vb: BlockChainStates(Of T).BlockChainStates(IStore, IStateStore)
-- uid: Libplanet.Blockchain.BlockChainStates`1.#ctor*
+- uid: Libplanet.Blockchain.BlockChainStates
   name: BlockChainStates
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1__ctor_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.#ctor
+  href: api/Libplanet.Blockchain.BlockChainStates.html
+  commentId: T:Libplanet.Blockchain.BlockChainStates
+  fullName: Libplanet.Blockchain.BlockChainStates
+  nameWithType: BlockChainStates
+- uid: Libplanet.Blockchain.BlockChainStates.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)
+  name: BlockChainStates(IStore, IStateStore)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates__ctor_Libplanet_Store_IStore_Libplanet_Store_IStateStore_
+  commentId: M:Libplanet.Blockchain.BlockChainStates.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)
+  fullName: Libplanet.Blockchain.BlockChainStates.BlockChainStates(Libplanet.Store.IStore, Libplanet.Store.IStateStore)
+  nameWithType: BlockChainStates.BlockChainStates(IStore, IStateStore)
+- uid: Libplanet.Blockchain.BlockChainStates.#ctor*
+  name: BlockChainStates
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates__ctor_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates.#ctor
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.BlockChainStates
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).BlockChainStates
-  nameWithType: BlockChainStates<T>.BlockChainStates
-  nameWithType.vb: BlockChainStates(Of T).BlockChainStates
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_FungibleAssetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name.vb: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
-  nameWithType: BlockChainStates<T>.GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
-  nameWithType.vb: BlockChainStates(Of T).GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetBalance*
+  fullName: Libplanet.Blockchain.BlockChainStates.BlockChainStates
+  nameWithType: BlockChainStates.BlockChainStates
+- uid: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  name: GetBalance(Address, Currency, BlockHash)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChainStates.GetBalance(Address, Currency, BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetBalance*
   name: GetBalance
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetBalance_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetBalance
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBalance_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetBalance
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetBalance
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetBalance
-  nameWithType: BlockChainStates<T>.GetBalance
-  nameWithType.vb: BlockChainStates(Of T).GetBalance
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
-  name: GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_Libplanet_Blockchain_StateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
-  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter(Of T))
-  nameWithType: BlockChainStates<T>.GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
-  nameWithType.vb: BlockChainStates(Of T).GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetStates*
+  fullName: Libplanet.Blockchain.BlockChainStates.GetBalance
+  nameWithType: BlockChainStates.GetBalance
+- uid: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
+  name: GetStates(IReadOnlyList<Address>, BlockHash)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
+  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash)
+  fullName: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChainStates.GetStates(IReadOnlyList<Address>, BlockHash)
+  nameWithType.vb: BlockChainStates.GetStates(IReadOnlyList(Of Address), BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetStates*
   name: GetStates
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetStates_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetStates
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetStates_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetStates
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetStates
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetStates
-  nameWithType: BlockChainStates<T>.GetStates
-  nameWithType.vb: BlockChainStates(Of T).GetStates
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name.vb: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
-  nameWithType: BlockChainStates<T>.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
-  nameWithType.vb: BlockChainStates(Of T).GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply*
+  fullName: Libplanet.Blockchain.BlockChainStates.GetStates
+  nameWithType: BlockChainStates.GetStates
+- uid: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  name: GetTotalSupply(Currency, BlockHash)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChainStates.GetTotalSupply(Currency, BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetTotalSupply*
   name: GetTotalSupply
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetTotalSupply_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTotalSupply_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetTotalSupply
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetTotalSupply
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetTotalSupply
-  nameWithType: BlockChainStates<T>.GetTotalSupply
-  nameWithType.vb: BlockChainStates(Of T).GetTotalSupply
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name: GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name.vb: GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
-  nameWithType: BlockChainStates<T>.GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
-  nameWithType.vb: BlockChainStates(Of T).GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
-- uid: Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet*
+  fullName: Libplanet.Blockchain.BlockChainStates.GetTotalSupply
+  nameWithType: BlockChainStates.GetTotalSupply
+- uid: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  name: GetValidatorSet(BlockHash)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetValidatorSet_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  nameWithType: BlockChainStates.GetValidatorSet(BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetValidatorSet*
   name: GetValidatorSet
-  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetValidatorSet_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetValidatorSet
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetValidatorSet_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetValidatorSet
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetValidatorSet
-  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetValidatorSet
-  nameWithType: BlockChainStates<T>.GetValidatorSet
-  nameWithType.vb: BlockChainStates(Of T).GetValidatorSet
+  fullName: Libplanet.Blockchain.BlockChainStates.GetValidatorSet
+  nameWithType: BlockChainStates.GetValidatorSet
 - uid: Libplanet.Blockchain.BlockLocator
   name: BlockLocator
   href: api/Libplanet.Blockchain.BlockLocator.html
@@ -3681,137 +3633,67 @@ references:
   fullName.vb: Libplanet.Blockchain.Branch(Of T).Blocks
   nameWithType: Branch<T>.Blocks
   nameWithType.vb: Branch(Of T).Blocks
-- uid: Libplanet.Blockchain.FungibleAssetStateCompleter`1
-  name: FungibleAssetStateCompleter<T>
-  href: api/Libplanet.Blockchain.FungibleAssetStateCompleter-1.html
-  commentId: T:Libplanet.Blockchain.FungibleAssetStateCompleter`1
-  name.vb: FungibleAssetStateCompleter(Of T)
-  fullName: Libplanet.Blockchain.FungibleAssetStateCompleter<T>
-  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleter(Of T)
-  nameWithType: FungibleAssetStateCompleter<T>
-  nameWithType.vb: FungibleAssetStateCompleter(Of T)
-- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1
-  name: FungibleAssetStateCompleters<T>
-  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html
-  commentId: T:Libplanet.Blockchain.FungibleAssetStateCompleters`1
-  name.vb: FungibleAssetStateCompleters(Of T)
-  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>
-  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T)
-  nameWithType: FungibleAssetStateCompleters<T>
-  nameWithType.vb: FungibleAssetStateCompleters(Of T)
-- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementAll
-  name: ComplementAll
-  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_ComplementAll
-  commentId: F:Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementAll
-  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>.ComplementAll
-  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).ComplementAll
-  nameWithType: FungibleAssetStateCompleters<T>.ComplementAll
-  nameWithType.vb: FungibleAssetStateCompleters(Of T).ComplementAll
-- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementLatest
-  name: ComplementLatest
-  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_ComplementLatest
-  commentId: F:Libplanet.Blockchain.FungibleAssetStateCompleters`1.ComplementLatest
-  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>.ComplementLatest
-  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).ComplementLatest
-  nameWithType: FungibleAssetStateCompleters<T>.ComplementLatest
-  nameWithType.vb: FungibleAssetStateCompleters(Of T).ComplementLatest
-- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.Recalculate
-  name: Recalculate
-  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_Recalculate
-  commentId: F:Libplanet.Blockchain.FungibleAssetStateCompleters`1.Recalculate
-  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>.Recalculate
-  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).Recalculate
-  nameWithType: FungibleAssetStateCompleters<T>.Recalculate
-  nameWithType.vb: FungibleAssetStateCompleters(Of T).Recalculate
-- uid: Libplanet.Blockchain.FungibleAssetStateCompleters`1.Reject
-  name: Reject
-  href: api/Libplanet.Blockchain.FungibleAssetStateCompleters-1.html#Libplanet_Blockchain_FungibleAssetStateCompleters_1_Reject
-  commentId: F:Libplanet.Blockchain.FungibleAssetStateCompleters`1.Reject
-  fullName: Libplanet.Blockchain.FungibleAssetStateCompleters<T>.Reject
-  fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).Reject
-  nameWithType: FungibleAssetStateCompleters<T>.Reject
-  nameWithType.vb: FungibleAssetStateCompleters(Of T).Reject
-- uid: Libplanet.Blockchain.IBlockChainStates`1
-  name: IBlockChainStates<T>
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html
-  commentId: T:Libplanet.Blockchain.IBlockChainStates`1
-  name.vb: IBlockChainStates(Of T)
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T)
-  nameWithType: IBlockChainStates<T>
-  nameWithType.vb: IBlockChainStates(Of T)
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_FungibleAssetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
-  name.vb: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
-  nameWithType: IBlockChainStates<T>.GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
-  nameWithType.vb: IBlockChainStates(Of T).GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetBalance*
+- uid: Libplanet.Blockchain.IBlockChainStates
+  name: IBlockChainStates
+  href: api/Libplanet.Blockchain.IBlockChainStates.html
+  commentId: T:Libplanet.Blockchain.IBlockChainStates
+  fullName: Libplanet.Blockchain.IBlockChainStates
+  nameWithType: IBlockChainStates
+- uid: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  name: GetBalance(Address, Currency, BlockHash)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  nameWithType: IBlockChainStates.GetBalance(Address, Currency, BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetBalance*
   name: GetBalance
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetBalance_
-  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetBalance
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBalance_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetBalance
   isSpec: "True"
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetBalance
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetBalance
-  nameWithType: IBlockChainStates<T>.GetBalance
-  nameWithType.vb: IBlockChainStates(Of T).GetBalance
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
-  name: GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_Libplanet_Blockchain_StateCompleter__0__
-  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
-  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter(Of T))
-  nameWithType: IBlockChainStates<T>.GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
-  nameWithType.vb: IBlockChainStates(Of T).GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetStates*
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetBalance
+  nameWithType: IBlockChainStates.GetBalance
+- uid: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
+  name: GetStates(IReadOnlyList<Address>, BlockHash)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
+  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash)
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash)
+  nameWithType: IBlockChainStates.GetStates(IReadOnlyList<Address>, BlockHash)
+  nameWithType.vb: IBlockChainStates.GetStates(IReadOnlyList(Of Address), BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetStates*
   name: GetStates
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetStates_
-  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetStates
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetStates_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetStates
   isSpec: "True"
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetStates
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetStates
-  nameWithType: IBlockChainStates<T>.GetStates
-  nameWithType.vb: IBlockChainStates(Of T).GetStates
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
-  name.vb: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
-  nameWithType: IBlockChainStates<T>.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
-  nameWithType.vb: IBlockChainStates(Of T).GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply*
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetStates
+  nameWithType: IBlockChainStates.GetStates
+- uid: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  name: GetTotalSupply(Currency, BlockHash)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
+  nameWithType: IBlockChainStates.GetTotalSupply(Currency, BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply*
   name: GetTotalSupply
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_
-  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTotalSupply_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetTotalSupply
   isSpec: "True"
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetTotalSupply
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetTotalSupply
-  nameWithType: IBlockChainStates<T>.GetTotalSupply
-  nameWithType.vb: IBlockChainStates(Of T).GetTotalSupply
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name: GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_ValidatorSetStateCompleter__0__
-  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet(Libplanet.Blocks.BlockHash,Libplanet.Blockchain.ValidatorSetStateCompleter{`0})
-  name.vb: GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter<T>)
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetValidatorSet(Libplanet.Blocks.BlockHash, Libplanet.Blockchain.ValidatorSetStateCompleter(Of T))
-  nameWithType: IBlockChainStates<T>.GetValidatorSet(BlockHash, ValidatorSetStateCompleter<T>)
-  nameWithType.vb: IBlockChainStates(Of T).GetValidatorSet(BlockHash, ValidatorSetStateCompleter(Of T))
-- uid: Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet*
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply
+  nameWithType: IBlockChainStates.GetTotalSupply
+- uid: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  name: GetValidatorSet(BlockHash)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetValidatorSet_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
+  nameWithType: IBlockChainStates.GetValidatorSet(BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet*
   name: GetValidatorSet
-  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetValidatorSet_
-  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetValidatorSet
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetValidatorSet_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetValidatorSet
   isSpec: "True"
-  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetValidatorSet
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetValidatorSet
-  nameWithType: IBlockChainStates<T>.GetValidatorSet
-  nameWithType.vb: IBlockChainStates(Of T).GetValidatorSet
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet
+  nameWithType: IBlockChainStates.GetValidatorSet
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
@@ -7357,265 +7239,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.NonblockRenderer(Of T).RenderReorgEnd
   nameWithType: NonblockRenderer<T>.RenderReorgEnd
   nameWithType.vb: NonblockRenderer(Of T).RenderReorgEnd
-- uid: Libplanet.Blockchain.StateCompleter`1
-  name: StateCompleter<T>
-  href: api/Libplanet.Blockchain.StateCompleter-1.html
-  commentId: T:Libplanet.Blockchain.StateCompleter`1
-  name.vb: StateCompleter(Of T)
-  fullName: Libplanet.Blockchain.StateCompleter<T>
-  fullName.vb: Libplanet.Blockchain.StateCompleter(Of T)
-  nameWithType: StateCompleter<T>
-  nameWithType.vb: StateCompleter(Of T)
-- uid: Libplanet.Blockchain.StateCompleters`1
-  name: StateCompleters<T>
-  href: api/Libplanet.Blockchain.StateCompleters-1.html
-  commentId: T:Libplanet.Blockchain.StateCompleters`1
-  name.vb: StateCompleters(Of T)
-  fullName: Libplanet.Blockchain.StateCompleters<T>
-  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T)
-  nameWithType: StateCompleters<T>
-  nameWithType.vb: StateCompleters(Of T)
-- uid: Libplanet.Blockchain.StateCompleters`1.ComplementAll
-  name: ComplementAll
-  href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_ComplementAll
-  commentId: F:Libplanet.Blockchain.StateCompleters`1.ComplementAll
-  fullName: Libplanet.Blockchain.StateCompleters<T>.ComplementAll
-  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T).ComplementAll
-  nameWithType: StateCompleters<T>.ComplementAll
-  nameWithType.vb: StateCompleters(Of T).ComplementAll
-- uid: Libplanet.Blockchain.StateCompleters`1.ComplementLatest
-  name: ComplementLatest
-  href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_ComplementLatest
-  commentId: F:Libplanet.Blockchain.StateCompleters`1.ComplementLatest
-  fullName: Libplanet.Blockchain.StateCompleters<T>.ComplementLatest
-  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T).ComplementLatest
-  nameWithType: StateCompleters<T>.ComplementLatest
-  nameWithType.vb: StateCompleters(Of T).ComplementLatest
-- uid: Libplanet.Blockchain.StateCompleters`1.Recalculate
-  name: Recalculate
-  href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_Recalculate
-  commentId: F:Libplanet.Blockchain.StateCompleters`1.Recalculate
-  fullName: Libplanet.Blockchain.StateCompleters<T>.Recalculate
-  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T).Recalculate
-  nameWithType: StateCompleters<T>.Recalculate
-  nameWithType.vb: StateCompleters(Of T).Recalculate
-- uid: Libplanet.Blockchain.StateCompleters`1.Reject
-  name: Reject
-  href: api/Libplanet.Blockchain.StateCompleters-1.html#Libplanet_Blockchain_StateCompleters_1_Reject
-  commentId: F:Libplanet.Blockchain.StateCompleters`1.Reject
-  fullName: Libplanet.Blockchain.StateCompleters<T>.Reject
-  fullName.vb: Libplanet.Blockchain.StateCompleters(Of T).Reject
-  nameWithType: StateCompleters<T>.Reject
-  nameWithType.vb: StateCompleters(Of T).Reject
-- uid: Libplanet.Blockchain.StateCompleterSet`1
-  name: StateCompleterSet<T>
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html
-  commentId: T:Libplanet.Blockchain.StateCompleterSet`1
-  name.vb: StateCompleterSet(Of T)
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T)
-  nameWithType: StateCompleterSet<T>
-  nameWithType.vb: StateCompleterSet(Of T)
-- uid: Libplanet.Blockchain.StateCompleterSet`1.ComplementAll
-  name: ComplementAll
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ComplementAll
-  commentId: F:Libplanet.Blockchain.StateCompleterSet`1.ComplementAll
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ComplementAll
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ComplementAll
-  nameWithType: StateCompleterSet<T>.ComplementAll
-  nameWithType.vb: StateCompleterSet(Of T).ComplementAll
-- uid: Libplanet.Blockchain.StateCompleterSet`1.ComplementLatest
-  name: ComplementLatest
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ComplementLatest
-  commentId: F:Libplanet.Blockchain.StateCompleterSet`1.ComplementLatest
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ComplementLatest
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ComplementLatest
-  nameWithType: StateCompleterSet<T>.ComplementLatest
-  nameWithType.vb: StateCompleterSet(Of T).ComplementLatest
-- uid: Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter
-  name: FungibleAssetStateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_FungibleAssetStateCompleter
-  commentId: P:Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.FungibleAssetStateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).FungibleAssetStateCompleter
-  nameWithType: StateCompleterSet<T>.FungibleAssetStateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).FungibleAssetStateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter*
-  name: FungibleAssetStateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_FungibleAssetStateCompleter_
-  commentId: Overload:Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.FungibleAssetStateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).FungibleAssetStateCompleter
-  nameWithType: StateCompleterSet<T>.FungibleAssetStateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).FungibleAssetStateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.Recalculate
-  name: Recalculate
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_Recalculate
-  commentId: F:Libplanet.Blockchain.StateCompleterSet`1.Recalculate
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.Recalculate
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).Recalculate
-  nameWithType: StateCompleterSet<T>.Recalculate
-  nameWithType.vb: StateCompleterSet(Of T).Recalculate
-- uid: Libplanet.Blockchain.StateCompleterSet`1.Reject
-  name: Reject
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_Reject
-  commentId: F:Libplanet.Blockchain.StateCompleterSet`1.Reject
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.Reject
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).Reject
-  nameWithType: StateCompleterSet<T>.Reject
-  nameWithType.vb: StateCompleterSet(Of T).Reject
-- uid: Libplanet.Blockchain.StateCompleterSet`1.StateCompleter
-  name: StateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_StateCompleter
-  commentId: P:Libplanet.Blockchain.StateCompleterSet`1.StateCompleter
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.StateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).StateCompleter
-  nameWithType: StateCompleterSet<T>.StateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).StateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.StateCompleter*
-  name: StateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_StateCompleter_
-  commentId: Overload:Libplanet.Blockchain.StateCompleterSet`1.StateCompleter
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.StateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).StateCompleter
-  nameWithType: StateCompleterSet<T>.StateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).StateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter
-  name: TotalSupplyStateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter
-  commentId: P:Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.TotalSupplyStateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).TotalSupplyStateCompleter
-  nameWithType: StateCompleterSet<T>.TotalSupplyStateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).TotalSupplyStateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter*
-  name: TotalSupplyStateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter_
-  commentId: Overload:Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.TotalSupplyStateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).TotalSupplyStateCompleter
-  nameWithType: StateCompleterSet<T>.TotalSupplyStateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).TotalSupplyStateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter
-  name: ValidatorSetStateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ValidatorSetStateCompleter
-  commentId: P:Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ValidatorSetStateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ValidatorSetStateCompleter
-  nameWithType: StateCompleterSet<T>.ValidatorSetStateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).ValidatorSetStateCompleter
-- uid: Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter*
-  name: ValidatorSetStateCompleter
-  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_ValidatorSetStateCompleter_
-  commentId: Overload:Libplanet.Blockchain.StateCompleterSet`1.ValidatorSetStateCompleter
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.StateCompleterSet<T>.ValidatorSetStateCompleter
-  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).ValidatorSetStateCompleter
-  nameWithType: StateCompleterSet<T>.ValidatorSetStateCompleter
-  nameWithType.vb: StateCompleterSet(Of T).ValidatorSetStateCompleter
-- uid: Libplanet.Blockchain.TotalSupplyStateCompleter`1
-  name: TotalSupplyStateCompleter<T>
-  href: api/Libplanet.Blockchain.TotalSupplyStateCompleter-1.html
-  commentId: T:Libplanet.Blockchain.TotalSupplyStateCompleter`1
-  name.vb: TotalSupplyStateCompleter(Of T)
-  fullName: Libplanet.Blockchain.TotalSupplyStateCompleter<T>
-  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleter(Of T)
-  nameWithType: TotalSupplyStateCompleter<T>
-  nameWithType.vb: TotalSupplyStateCompleter(Of T)
-- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1
-  name: TotalSupplyStateCompleters<T>
-  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html
-  commentId: T:Libplanet.Blockchain.TotalSupplyStateCompleters`1
-  name.vb: TotalSupplyStateCompleters(Of T)
-  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>
-  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T)
-  nameWithType: TotalSupplyStateCompleters<T>
-  nameWithType.vb: TotalSupplyStateCompleters(Of T)
-- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementAll
-  name: ComplementAll
-  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_ComplementAll
-  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementAll
-  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.ComplementAll
-  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).ComplementAll
-  nameWithType: TotalSupplyStateCompleters<T>.ComplementAll
-  nameWithType.vb: TotalSupplyStateCompleters(Of T).ComplementAll
-- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementLatest
-  name: ComplementLatest
-  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_ComplementLatest
-  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementLatest
-  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.ComplementLatest
-  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).ComplementLatest
-  nameWithType: TotalSupplyStateCompleters<T>.ComplementLatest
-  nameWithType.vb: TotalSupplyStateCompleters(Of T).ComplementLatest
-- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.Recalculate
-  name: Recalculate
-  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_Recalculate
-  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.Recalculate
-  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.Recalculate
-  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).Recalculate
-  nameWithType: TotalSupplyStateCompleters<T>.Recalculate
-  nameWithType.vb: TotalSupplyStateCompleters(Of T).Recalculate
-- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.Reject
-  name: Reject
-  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_Reject
-  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.Reject
-  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.Reject
-  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).Reject
-  nameWithType: TotalSupplyStateCompleters<T>.Reject
-  nameWithType.vb: TotalSupplyStateCompleters(Of T).Reject
-- uid: Libplanet.Blockchain.ValidatorSetStateCompleter`1
-  name: ValidatorSetStateCompleter<T>
-  href: api/Libplanet.Blockchain.ValidatorSetStateCompleter-1.html
-  commentId: T:Libplanet.Blockchain.ValidatorSetStateCompleter`1
-  name.vb: ValidatorSetStateCompleter(Of T)
-  fullName: Libplanet.Blockchain.ValidatorSetStateCompleter<T>
-  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleter(Of T)
-  nameWithType: ValidatorSetStateCompleter<T>
-  nameWithType.vb: ValidatorSetStateCompleter(Of T)
-- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1
-  name: ValidatorSetStateCompleters<T>
-  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html
-  commentId: T:Libplanet.Blockchain.ValidatorSetStateCompleters`1
-  name.vb: ValidatorSetStateCompleters(Of T)
-  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>
-  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T)
-  nameWithType: ValidatorSetStateCompleters<T>
-  nameWithType.vb: ValidatorSetStateCompleters(Of T)
-- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementAll
-  name: ComplementAll
-  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_ComplementAll
-  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementAll
-  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.ComplementAll
-  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).ComplementAll
-  nameWithType: ValidatorSetStateCompleters<T>.ComplementAll
-  nameWithType.vb: ValidatorSetStateCompleters(Of T).ComplementAll
-- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementLatest
-  name: ComplementLatest
-  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_ComplementLatest
-  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.ComplementLatest
-  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.ComplementLatest
-  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).ComplementLatest
-  nameWithType: ValidatorSetStateCompleters<T>.ComplementLatest
-  nameWithType.vb: ValidatorSetStateCompleters(Of T).ComplementLatest
-- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.Recalculate
-  name: Recalculate
-  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_Recalculate
-  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.Recalculate
-  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.Recalculate
-  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).Recalculate
-  nameWithType: ValidatorSetStateCompleters<T>.Recalculate
-  nameWithType.vb: ValidatorSetStateCompleters(Of T).Recalculate
-- uid: Libplanet.Blockchain.ValidatorSetStateCompleters`1.Reject
-  name: Reject
-  href: api/Libplanet.Blockchain.ValidatorSetStateCompleters-1.html#Libplanet_Blockchain_ValidatorSetStateCompleters_1_Reject
-  commentId: F:Libplanet.Blockchain.ValidatorSetStateCompleters`1.Reject
-  fullName: Libplanet.Blockchain.ValidatorSetStateCompleters<T>.Reject
-  fullName.vb: Libplanet.Blockchain.ValidatorSetStateCompleters(Of T).Reject
-  nameWithType: ValidatorSetStateCompleters<T>.Reject
-  nameWithType.vb: ValidatorSetStateCompleters(Of T).Reject
 - uid: Libplanet.Blocks
   name: Libplanet.Blocks
   href: api/Libplanet.Blocks.html
@@ -10517,15 +10140,15 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore)
   nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore)
   nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore)
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blockchain.StateCompleterSet{`0},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
-  name: DetermineStateRootHash(BlockChain<T>, StateCompleterSet<T>, out IImmutableDictionary<String, IValue>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__Libplanet_Blockchain_StateCompleterSet__0__System_Collections_Immutable_IImmutableDictionary_System_String_Bencodex_Types_IValue___
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blockchain.StateCompleterSet{`0},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
-  name.vb: DetermineStateRootHash(BlockChain(Of T), StateCompleterSet(Of T), ByRef IImmutableDictionary(Of String, IValue))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Blockchain.BlockChain<T>, Libplanet.Blockchain.StateCompleterSet<T>, out System.Collections.Immutable.IImmutableDictionary<System.String, Bencodex.Types.IValue>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blockchain.StateCompleterSet(Of T), ByRef System.Collections.Immutable.IImmutableDictionary(Of System.String, Bencodex.Types.IValue))
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>, StateCompleterSet<T>, out IImmutableDictionary<String, IValue>)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(BlockChain(Of T), StateCompleterSet(Of T), ByRef IImmutableDictionary(Of String, IValue))
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
+  name: DetermineStateRootHash(BlockChain<T>, out IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__System_Collections_Immutable_IImmutableDictionary_System_String_Bencodex_Types_IValue___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
+  name.vb: DetermineStateRootHash(BlockChain(Of T), ByRef IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Blockchain.BlockChain<T>, out System.Collections.Immutable.IImmutableDictionary<System.String, Bencodex.Types.IValue>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Blockchain.BlockChain(Of T), ByRef System.Collections.Immutable.IImmutableDictionary(Of System.String, Bencodex.Types.IValue))
+  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>, out IImmutableDictionary<String, IValue>)
+  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(BlockChain(Of T), ByRef IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})
   name: DetermineStateRootHash(BlockChain<T>)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__

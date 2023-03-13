@@ -64,6 +64,20 @@
 <h2 id="version-0530">Version 0.53.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed state completion feature with related classes as below.  [<a href="https://github.com/planetarium/libplanet/pull/2703">#2703</a>]
+<ul>
+<li><code>StateCompleter</code></li>
+<li><code>StateCompleters</code></li>
+<li><code>TotalSupplyStateCompleter</code></li>
+<li><code>TotalSupplyStateCompleters</code></li>
+<li><code>ValidatorSetStateCompleter</code></li>
+<li><code>ValidatorSetStateCompleters</code></li>
+</ul>
+</li>
+<li>Removed type parameter <code>T</code> for <code>IAction</code> from <code>ActionEvaluator</code> and
+<code>IBlockChainStates</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2703">#2703</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
