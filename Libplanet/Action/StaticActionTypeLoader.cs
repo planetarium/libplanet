@@ -28,6 +28,8 @@ namespace Libplanet.Action
             _types = null;
         }
 
+        internal Type? BaseType => _baseType;
+
         /// <summary>
         /// Load action types inherited the base type given in the constructor from assemblies.
         /// </summary>
@@ -44,6 +46,17 @@ namespace Libplanet.Action
         /// <returns>A dictionary made of action id to action type pairs.</returns>
         public IEnumerable<Type> LoadAllActionTypes(IActionTypeLoaderContext context)
             => LoadAllActionTypesImpl(_assembliesSet);
+
+        internal static StaticActionTypeLoader Create<T>()
+            where T : IAction, new()
+        {
+            return new StaticActionTypeLoader(
+                Assembly.GetEntryAssembly() is Assembly entryAssembly
+                    ? new[] { typeof(T).Assembly, entryAssembly }
+                    : new[] { typeof(T).Assembly },
+                typeof(T)
+            );
+        }
 
         internal IDictionary<string, Type> Load() =>
             _types ??= LoadImpl(_assembliesSet, _baseType);

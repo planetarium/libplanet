@@ -12,19 +12,12 @@ using static Libplanet.Blockchain.KeyConverters;
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// A default implementation of <see cref="IBlockChainStates{T}" /> interface.
+    /// A default implementation of <see cref="IBlockChainStates" /> interface.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
-    public class BlockChainStates<T> : IBlockChainStates<T>
-        where T : IAction, new()
+    public class BlockChainStates : IBlockChainStates
     {
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
-
-        // Temporary fields for backward compatibility.
-        // FIXME This field and related codes should be deleted
-        // if we make a decision about StateCompleter deprecation.
-        private BlockChain<T>? _blockChain;
 
         public BlockChainStates(IStore store, IStateStore stateStore)
         {
@@ -32,11 +25,10 @@ namespace Libplanet.Blockchain
             _stateStore = stateStore;
         }
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetStates"/>
+        /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset,
-            StateCompleter<T> stateCompleter)
+            BlockHash offset)
         {
             HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
             if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
@@ -45,20 +37,14 @@ namespace Libplanet.Blockchain
                 return _stateStore.GetStates(stateRootHash, rawKeys);
             }
 
-            if (!(_blockChain is null))
-            {
-                return stateCompleter(_blockChain, offset, addresses);
-            }
-
             throw new IncompleteBlockStatesException(offset);
         }
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetBalance"/>
+        /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset,
-            FungibleAssetStateCompleter<T> stateCompleter)
+            BlockHash offset)
         {
             HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
             if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
@@ -71,19 +57,13 @@ namespace Libplanet.Blockchain
                     : currency * 0;
             }
 
-            if (!(_blockChain is null))
-            {
-                return stateCompleter(_blockChain, offset, address, currency);
-            }
-
             throw new IncompleteBlockStatesException(offset);
         }
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetTotalSupply"/>
+        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset,
-            TotalSupplyStateCompleter<T> stateCompleter)
+            BlockHash offset)
         {
             if (!currency.TotalSupplyTrackable)
             {
@@ -101,18 +81,11 @@ namespace Libplanet.Blockchain
                     : currency * 0;
             }
 
-            if (!(_blockChain is null))
-            {
-                return stateCompleter(_blockChain, offset, currency);
-            }
-
             throw new IncompleteBlockStatesException(offset);
         }
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
-        public ValidatorSet GetValidatorSet(
-            BlockHash offset,
-            ValidatorSetStateCompleter<T> stateCompleter)
+        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
+        public ValidatorSet GetValidatorSet(BlockHash offset)
         {
             HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
             if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
@@ -124,17 +97,7 @@ namespace Libplanet.Blockchain
                     : new ValidatorSet();
             }
 
-            if (!(_blockChain is null))
-            {
-                return stateCompleter(_blockChain, offset);
-            }
-
             throw new IncompleteBlockStatesException(offset);
-        }
-
-        internal void Bind(BlockChain<T> blockChain)
-        {
-            _blockChain = blockChain;
         }
     }
 }

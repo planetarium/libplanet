@@ -40,7 +40,7 @@ namespace Libplanet.Blockchain
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public partial class BlockChain<T> : IBlockChainStates<T>
+    public partial class BlockChain<T> : IBlockChainStates
         where T : IAction, new()
     {
         // FIXME: The _rwlock field should be private.
@@ -51,7 +51,7 @@ namespace Libplanet.Blockchain
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
         private readonly ILogger _logger;
-        private readonly IBlockChainStates<T> _blockChainStates;
+        private readonly IBlockChainStates _blockChainStates;
 
         /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
@@ -109,7 +109,7 @@ namespace Libplanet.Blockchain
                 stateStore,
                 genesisBlock,
                 renderers,
-                new BlockChainStates<T>(store, stateStore)
+                new BlockChainStates(store, stateStore)
             )
         {
         }
@@ -117,7 +117,7 @@ namespace Libplanet.Blockchain
 #pragma warning disable MEN002
 #pragma warning disable CS1573
         /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})" />
-        /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> implementation to state lookup.</param>
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> implementation to state lookup.</param>
         public BlockChain(
             IBlockPolicy<T> policy,
             IStagePolicy<T> stagePolicy,
@@ -125,7 +125,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
-            IBlockChainStates<T> blockChainStates
+            IBlockChainStates blockChainStates
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
@@ -137,13 +137,14 @@ namespace Libplanet.Blockchain
                 genesisBlock,
                 renderers,
                 blockChainStates,
-                new ActionEvaluator<T>(
+                new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     trieGetter: hash =>
                         stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: genesisBlock.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionTypeLoader.Create<T>()
                 )
             )
         {
@@ -151,8 +152,8 @@ namespace Libplanet.Blockchain
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
-        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}}, IBlockChainStates{T})" />
-        /// <param name="actionEvaluator">The <see cref="ActionEvaluator{T}" /> implementation to calculate next states when append new blocks.</param>
+        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}}, IBlockChainStates)" />
+        /// <param name="actionEvaluator">The <see cref="ActionEvaluator" /> implementation to calculate next states when append new blocks.</param>
         public BlockChain(
             IBlockPolicy<T> policy,
             IStagePolicy<T> stagePolicy,
@@ -160,8 +161,8 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
-            IBlockChainStates<T> blockChainStates,
-            ActionEvaluator<T> actionEvaluator
+            IBlockChainStates blockChainStates,
+            ActionEvaluator actionEvaluator
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
@@ -178,8 +179,8 @@ namespace Libplanet.Blockchain
                 genesisBlock,
                 renderers,
                 blockChainStates,
-                actionEvaluator)
-#pragma warning restore SA1118
+                actionEvaluator
+            )
         {
         }
 
@@ -191,8 +192,8 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
-            IBlockChainStates<T> blockChainStates,
-            ActionEvaluator<T> actionEvaluator)
+            IBlockChainStates blockChainStates,
+            ActionEvaluator actionEvaluator)
         {
             if (store is null)
             {
@@ -215,10 +216,6 @@ namespace Libplanet.Blockchain
             StateStore = stateStore;
 
             _blockChainStates = blockChainStates;
-            if (_blockChainStates is BlockChainStates<T> bindableImpl)
-            {
-                bindableImpl.Bind(this);
-            }
 
             _blocks = new BlockSet<T>(store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
@@ -322,7 +319,7 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore { get; }
 
-        internal ActionEvaluator<T> ActionEvaluator { get; }
+        internal ActionEvaluator ActionEvaluator { get; }
 
         /// <summary>
         /// Whether the instance is canonical or not.
@@ -474,14 +471,16 @@ namespace Libplanet.Blockchain
             policy.NativeTokens.Contains,
             stateStore);
 
-            var blockChainStates = new BlockChainStates<T>(store, stateStore);
-            var actionEvaluator = new ActionEvaluator<T>(
+            var blockChainStates = new BlockChainStates(store, stateStore);
+            var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 blockChainStates: blockChainStates,
                 trieGetter: hash => stateStore.GetStateRoot(
                     store.GetBlockDigest(hash)?.StateRootHash),
                 genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: policy.NativeTokens.Contains);
+                nativeTokenPredicate: policy.NativeTokens.Contains,
+                actionTypeLoader: StaticActionTypeLoader.Create<T>()
+            );
 
             return new BlockChain<T>(
                 policy,
@@ -636,26 +635,16 @@ namespace Libplanet.Blockchain
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
         /// the state.  It will be The tip of the <see cref="BlockChain{T}"/> if it is
         /// <see langword="null"/>.</param>
-        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
-        /// contain states dirty of the block which lastly updated states of a requested address,
-        /// this delegate is called and its return value is used instead.
-        /// <para><see cref="StateCompleters{T}.Recalculate"/> makes the incomplete states
-        /// recalculated and filled on the fly.</para>
-        /// <para><see cref="StateCompleters{T}.Reject"/> (which is default) makes the incomplete
-        /// states (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
-        /// </param>
         /// <returns>The current state of given <paramref name="address"/>.  This can be
         /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
         public IValue GetState(
             Address address,
-            BlockHash? offset = null,
-            StateCompleter<T> stateCompleter = null
+            BlockHash? offset = null
         ) =>
             Count > 0
             ? GetStates(
                     new[] { address },
-                    offset ?? Tip.Hash,
-                    stateCompleter ?? StateCompleters<T>.Reject
+                    offset ?? Tip.Hash
                 )[0]
             : null;
 
@@ -665,36 +654,25 @@ namespace Libplanet.Blockchain
         /// <param name="addresses">Addresses of states to query.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
         /// the states.  <see cref="Tip"/> by default.</param>
-        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
-        /// contain states of the block, this delegate is called and its return values are used
-        /// instead.
-        /// <para><see cref="StateCompleters{T}.Recalculate"/> makes the incomplete states
-        /// recalculated and filled on the fly.</para>
-        /// <para><see cref="StateCompleters{T}.Reject"/> (which is default) makes the incomplete
-        /// states (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
-        /// </param>
         /// <returns>The states associated to the specified <paramref name="addresses"/>.
         /// Associated values are ordered in the same way to the corresponding
         /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
         /// </returns>
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash? offset = null,
-            StateCompleter<T> stateCompleter = null
+            BlockHash? offset = null
         ) =>
             Count > 0
                 ? GetStates(
                     addresses,
-                    offset ?? Tip.Hash,
-                    stateCompleter ?? StateCompleters<T>.Reject
+                    offset ?? Tip.Hash
                 )
                 : new IValue[addresses.Count];
 
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset,
-            StateCompleter<T> stateCompleter
-        ) => _blockChainStates.GetStates(addresses, offset, stateCompleter);
+            BlockHash offset
+        ) => _blockChainStates.GetStates(addresses, offset);
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
@@ -705,37 +683,26 @@ namespace Libplanet.Blockchain
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be the tip of the
         /// <see cref="BlockChain{T}"/> if it is <see langword="null"/>.</param>
-        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
-        /// contain states dirty of the block which lastly updated states of a requested address,
-        /// this delegate is called and its return value is used instead.
-        /// <para><see cref="FungibleAssetStateCompleters{T}.Recalculate"/> makes the incomplete
-        /// states recalculated and filled on the fly.</para>
-        /// <para><see cref="FungibleAssetStateCompleters{T}.Reject"/> (which is default) makes
-        /// the incomplete states (if needed) to cause <see cref="IncompleteBlockStatesException"/>
-        /// instead.</para></param>
         /// <returns>The <paramref name="address"/>'s current balance (or balance as of the given
         /// <paramref name="offset"/>) of the <paramref name="currency"/>.
         /// </returns>
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash? offset = null,
-            FungibleAssetStateCompleter<T> stateCompleter = null
+            BlockHash? offset = null
         ) =>
             GetBalance(
                 address,
                 currency,
-                offset ?? Tip.Hash,
-                stateCompleter ?? FungibleAssetStateCompleters<T>.Reject
+                offset ?? Tip.Hash
             );
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetBalance"/>
+        /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset,
-            FungibleAssetStateCompleter<T> stateCompleter
-        ) => _blockChainStates.GetBalance(address, currency, offset, stateCompleter);
+            BlockHash offset
+        ) => _blockChainStates.GetBalance(address, currency, offset);
 
         /// <summary>
         /// Gets the total supply of a <paramref name="currency"/> in the
@@ -745,48 +712,29 @@ namespace Libplanet.Blockchain
         /// <param name="currency">The currency type to query.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state.</param>
-        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
-        /// contain states of the block, this delegate is called and its return values are used
-        /// instead.
-        /// <para><see cref="FungibleAssetStateCompleters{T}.Recalculate"/> makes the incomplete
-        /// states recalculated and filled on the fly.</para>
-        /// <para><see cref="FungibleAssetStateCompleters{T}.Reject"/> makes the incomplete states
-        /// (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
-        /// </param>
         /// <returns>The total supply value of <paramref name="currency"/> at
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash? offset = null,
-            TotalSupplyStateCompleter<T> stateCompleter = null
+            BlockHash? offset = null
         ) =>
             GetTotalSupply(
                 currency,
-                offset ?? Tip.Hash,
-                stateCompleter ?? TotalSupplyStateCompleters<T>.Reject
+                offset ?? Tip.Hash
             );
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetTotalSupply"/>
+        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset,
-            TotalSupplyStateCompleter<T> stateCompleter
-        ) => _blockChainStates.GetTotalSupply(currency, offset, stateCompleter);
+            BlockHash offset
+        ) => _blockChainStates.GetTotalSupply(currency, offset);
 
-        public ValidatorSet GetValidatorSet(
-            BlockHash? offset = null,
-            ValidatorSetStateCompleter<T> stateCompleter = null
-        ) =>
-            GetValidatorSet(
-                offset ?? Tip.Hash,
-                stateCompleter ?? ValidatorSetStateCompleters<T>.Reject
-            );
+        public ValidatorSet GetValidatorSet(BlockHash? offset = null) =>
+            GetValidatorSet(offset ?? Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
-        public ValidatorSet GetValidatorSet(
-            BlockHash offset,
-            ValidatorSetStateCompleter<T> stateCompleter
-        ) => _blockChainStates.GetValidatorSet(offset, stateCompleter);
+        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
+        public ValidatorSet GetValidatorSet(BlockHash offset) =>
+            _blockChainStates.GetValidatorSet(offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
@@ -814,10 +762,6 @@ namespace Libplanet.Blockchain
         /// to add.</param>
         /// <param name="blockCommit">A <see cref="BlockCommit"/> that has +2/3 commits for the
         /// given block.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states which
-        /// are required for action execution and rendering.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
-        /// </param>
         /// <exception cref="BlockPolicyViolationException">Thrown when given
         /// <paramref name="block"/> does not satisfy any of the constraints
         /// validated by <see cref="IBlockPolicy{T}.ValidateNextBlock"/> of <see cref="Policy"/>.
@@ -832,16 +776,14 @@ namespace Libplanet.Blockchain
         /// <paramref name="block"/> and <paramref name="blockCommit"/> is invalid.</exception>
         public void Append(
             Block<T> block,
-            BlockCommit blockCommit,
-            StateCompleterSet<T>? stateCompleters = null
+            BlockCommit blockCommit
         ) =>
             Append(
                 block,
                 blockCommit,
                 evaluateActions: true,
                 renderBlocks: true,
-                renderActions: true,
-                stateCompleters: stateCompleters
+                renderActions: true
             );
 
         /// <summary>
@@ -978,24 +920,15 @@ namespace Libplanet.Blockchain
         /// results.
         /// </summary>
         /// <param name="block">A block to execute.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete previous block
-        /// states.  <see cref="StateCompleterSet{T}.Recalculate"/> by default.
-        /// </param>
         /// <returns>The result of action evaluations of the given <paramref name="block"/>.
         /// </returns>
         /// <remarks>This method is idempotent (except for rendering).  If the given
         /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
         /// Exposed as public for benchmarking.
         /// </remarks>
-        public IReadOnlyList<ActionEvaluation> ExecuteActions(
-            Block<T> block,
-            StateCompleterSet<T>? stateCompleters = null
-        )
+        public IReadOnlyList<ActionEvaluation> ExecuteActions(Block<T> block)
         {
-            IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
-                block,
-                stateCompleters ?? StateCompleterSet<T>.Recalculate
-            );
+            IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(block);
             _rwlock.EnterWriteLock();
             try
             {
@@ -1303,8 +1236,7 @@ namespace Libplanet.Blockchain
             bool evaluateActions,
             bool renderBlocks,
             bool renderActions,
-            IReadOnlyList<ActionEvaluation> actionEvaluations = null,
-            StateCompleterSet<T>? stateCompleters = null
+            IReadOnlyList<ActionEvaluation> actionEvaluations = null
         )
         {
             if (Count == 0)
@@ -1329,10 +1261,6 @@ namespace Libplanet.Blockchain
             }
 
             renderActions = renderActions && renderBlocks && ActionRenderers.Any();
-
-            // Since rendering process requires every step's states, if required block states
-            // are incomplete they are complemented anyway:
-            stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
             _logger.Information(
                 "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
@@ -1479,8 +1407,8 @@ namespace Libplanet.Blockchain
                         {
                             RenderActions(
                                 evaluations: actionEvaluations,
-                                block: block,
-                                stateCompleters: (StateCompleterSet<T>)stateCompleters);
+                                block: block
+                            );
                         }
 
                         foreach (IActionRenderer<T> renderer in ActionRenderers)

@@ -18,8 +18,7 @@ namespace Libplanet.Blockchain
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         internal System.Action Swap(
             BlockChain<T> other,
-            bool render,
-            StateCompleterSet<T>? stateCompleters = null)
+            bool render)
         {
             if (!IsCanonical)
             {
@@ -30,10 +29,6 @@ namespace Libplanet.Blockchain
             {
                 throw new ArgumentNullException(nameof(other));
             }
-
-            // As render/unrender processing requires every step's states from the branchpoint
-            // to the new/stale tip, incomplete states need to be complemented anyway...
-            StateCompleterSet<T> completers = stateCompleters ?? StateCompleterSet<T>.Recalculate;
 
             if (Tip.Equals(other.Tip))
             {
@@ -128,8 +123,7 @@ namespace Libplanet.Blockchain
                     newTip: newTip,
                     branchpoint: branchpoint,
                     rewindPath: rewindPath,
-                    fastForwardPath: fastForwardPath,
-                    stateCompleters: completers);
+                    fastForwardPath: fastForwardPath);
             }
             finally
             {
@@ -145,8 +139,7 @@ namespace Libplanet.Blockchain
             Block<T> newTip,
             Block<T> branchpoint,
             IReadOnlyList<BlockHash> rewindPath,
-            IReadOnlyList<BlockHash> fastForwardPath,
-            StateCompleterSet<T> stateCompleters)
+            IReadOnlyList<BlockHash> fastForwardPath)
         {
             // If there is no rewind, it is not considered as a reorg.
             bool reorg = rewindPath.Count > 0;
@@ -167,8 +160,7 @@ namespace Libplanet.Blockchain
                 oldTip: oldTip,
                 newTip: newTip,
                 branchpoint: branchpoint,
-                rewindPath: rewindPath,
-                stateCompleters: stateCompleters);
+                rewindPath: rewindPath);
 
             if (render)
             {
@@ -185,8 +177,7 @@ namespace Libplanet.Blockchain
                 oldTip: oldTip,
                 newTip: newTip,
                 branchpoint: branchpoint,
-                fastForwardPath: fastForwardPath,
-                stateCompleters: stateCompleters);
+                fastForwardPath: fastForwardPath);
 
             if (render && reorg)
             {
@@ -205,8 +196,7 @@ namespace Libplanet.Blockchain
             Block<T> oldTip,
             Block<T> newTip,
             Block<T> branchpoint,
-            IReadOnlyList<BlockHash> rewindPath,
-            StateCompleterSet<T> stateCompleters)
+            IReadOnlyList<BlockHash> rewindPath)
         {
             if (render && ActionRenderers.Any())
             {
@@ -219,13 +209,11 @@ namespace Libplanet.Blockchain
                 {
                     Block<T> block = Store.GetBlock<T>(hash);
                     ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, stateCompleters)
-                            .ToImmutableList().Reverse();
+                        ActionEvaluator.Evaluate(block).ToImmutableList().Reverse();
 
                     count += UnrenderActions(
                         evaluations: evaluations,
-                        block: block,
-                        stateCompleters: stateCompleters);
+                        block: block);
                 }
 
                 _logger.Debug(
@@ -240,8 +228,7 @@ namespace Libplanet.Blockchain
             Block<T> oldTip,
             Block<T> newTip,
             Block<T> branchpoint,
-            IReadOnlyList<BlockHash> fastForwardPath,
-            StateCompleterSet<T> stateCompleters)
+            IReadOnlyList<BlockHash> fastForwardPath)
         {
             if (render && ActionRenderers.Any())
             {
@@ -252,12 +239,12 @@ namespace Libplanet.Blockchain
                 {
                     Block<T> block = Store.GetBlock<T>(hash);
                     ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, stateCompleters).ToImmutableList();
+                        ActionEvaluator.Evaluate(block).ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
-                        block: block,
-                        stateCompleters: stateCompleters);
+                        block: block
+                    );
                 }
 
                 _logger.Debug(
@@ -278,13 +265,10 @@ namespace Libplanet.Blockchain
         /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
         /// <see langword="null"/>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
-        /// <param name="stateCompleters">The strategy to complement incomplete block states.
-        /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
         /// <returns>The number of actions rendered.</returns>
         internal long RenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
-            Block<T> block,
-            StateCompleterSet<T> stateCompleters)
+            Block<T> block)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -295,7 +279,7 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.Evaluate(block, stateCompleters);
+                evaluations = ActionEvaluator.Evaluate(block);
             }
 
             long count = 0;
@@ -337,8 +321,7 @@ namespace Libplanet.Blockchain
 
         internal long UnrenderActions(
             IReadOnlyList<ActionEvaluation> evaluations,
-            Block<T> block,
-            StateCompleterSet<T> stateCompleters)
+            Block<T> block)
         {
             _logger.Debug(
                 "Unrender actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
@@ -346,8 +329,7 @@ namespace Libplanet.Blockchain
             if (evaluations is null)
             {
                 evaluations =
-                    ActionEvaluator.Evaluate(block, stateCompleters)
-                        .Reverse().ToImmutableList();
+                    ActionEvaluator.Evaluate(block).Reverse().ToImmutableList();
             }
 
             long count = 0;

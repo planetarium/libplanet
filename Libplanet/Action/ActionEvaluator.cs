@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Reflection;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.Sys;
@@ -24,25 +23,24 @@ namespace Libplanet.Action
     /// <summary>
     /// Class responsible for handling of <see cref="IAction"/> evaluations.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// the <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public class ActionEvaluator<T>
-        where T : IAction, new()
+    public class ActionEvaluator
     {
         private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
-        private readonly IBlockChainStates<T> _blockChainStates;
+        private readonly IBlockChainStates _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
         private readonly IActionTypeLoader _actionTypeLoader;
 
+#pragma warning disable MEN002
+#pragma warning disable CS1573
         /// <summary>
-        /// Creates a new <see cref="ActionEvaluator{T}"/>.
+        /// Creates a new <see cref="ActionEvaluator"/>.
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
-        /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
@@ -51,35 +49,10 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        public ActionEvaluator(
-            PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates<T> blockChainStates,
-            Func<BlockHash, ITrie>? trieGetter,
-            BlockHash? genesisHash,
-            Predicate<Currency> nativeTokenPredicate)
-        : this(
-            policyBlockActionGetter,
-            blockChainStates,
-            trieGetter,
-            genesisHash,
-            nativeTokenPredicate,
-            new StaticActionTypeLoader(
-                Assembly.GetEntryAssembly() is Assembly entryAssembly
-                    ? new[] { typeof(T).Assembly, entryAssembly }
-                    : new[] { typeof(T).Assembly },
-                typeof(T)
-            )
-        )
-        {
-        }
-
-#pragma warning disable MEN002
-#pragma warning disable CS1573
-        /// <inheritdoc cref="ActionEvaluator{T}(PolicyBlockActionGetter, IBlockChainStates{T}, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
         /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates<T> blockChainStates,
+            IBlockChainStates blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate,
@@ -88,8 +61,8 @@ namespace Libplanet.Action
 #pragma warning restore MEN002
 #pragma warning restore CS1573
         {
-            _logger = Log.ForContext<ActionEvaluator<T>>()
-                .ForContext("Source", nameof(ActionEvaluator<T>));
+            _logger = Log.ForContext<ActionEvaluator>()
+                .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
@@ -124,7 +97,6 @@ namespace Libplanet.Action
         /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="ActionEvaluation"/>s.</returns>
@@ -136,9 +108,7 @@ namespace Libplanet.Action
         /// the end.</para>
         /// </remarks>
         [Pure]
-        public IReadOnlyList<ActionEvaluation> Evaluate(
-            IPreEvaluationBlock block,
-            StateCompleterSet<T> stateCompleterSet)
+        public IReadOnlyList<ActionEvaluation> Evaluate(IPreEvaluationBlock block)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -154,8 +124,7 @@ namespace Libplanet.Action
                     !(_trieGetter is null) && block.PreviousHash is { } h
                     ? _trieGetter(h)
                     : null;
-                IAccountStateDelta previousStates =
-                    GetPreviousBlockOutputStates(block, stateCompleterSet);
+                IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
 
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
@@ -233,14 +202,23 @@ namespace Libplanet.Action
         /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
         /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </returns>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// the <see cref="Transaction{T}"/>'s type parameter.</typeparam>
         /// <remarks>
         /// A mock evaluation is performed on <paramref name="tx"/> using a mock
         /// <see cref="Block{T}"/> for its evaluation context and a mock
         /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
         /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </remarks>
-        internal static IImmutableSet<Address> GetUpdatedAddresses(Transaction<T> tx)
+        internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction<T> tx)
+            where T : IAction, new()
         {
+            // FIXME this static method(and related APIs) should be removed since it doesn't
+            // compatible with action type loader.
+            // see also:
+            // - https://github.com/planetarium/libplanet/issues/368
+            // - https://github.com/planetarium/libplanet/discussions/2440
+            // - https://github.com/planetarium/libplanet/pull/2703#discussion_r1130315141
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
@@ -620,7 +598,7 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy when
-        /// this <see cref="ActionEvaluator{T}"/> was instantiated for a given
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
@@ -731,16 +709,14 @@ namespace Libplanet.Action
         /// <paramref name="blockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of block to reference.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
         /// <see cref="Block{T}"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader blockHeader,
-            StateCompleterSet<T> stateCompleterSet)
+            IPreEvaluationBlockHeader blockHeader)
         {
             var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
-                InitializeAccountGettersPair(blockHeader, stateCompleterSet);
+                InitializeAccountGettersPair(blockHeader);
             Address miner = blockHeader.Miner;
 
             return AccountStateDeltaImpl.ChooseVersion(
@@ -754,8 +730,7 @@ namespace Libplanet.Action
 
         private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
             InitializeAccountGettersPair(
-            IPreEvaluationBlockHeader blockHeader,
-            StateCompleterSet<T> stateCompleterSet)
+            IPreEvaluationBlockHeader blockHeader)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
@@ -766,20 +741,18 @@ namespace Libplanet.Action
             {
                 accountStateGetter = addresses => _blockChainStates.GetStates(
                     addresses,
-                    previousHash,
-                    stateCompleterSet.StateCompleter);
+                    previousHash
+                );
                 accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
                     address,
                     currency,
-                    previousHash,
-                    stateCompleterSet.FungibleAssetStateCompleter);
+                    previousHash
+                );
                 totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
                     currency,
-                    previousHash,
-                    stateCompleterSet.TotalSupplyStateCompleter);
-                validatorSetGetter = () => _blockChainStates.GetValidatorSet(
-                    previousHash,
-                    stateCompleterSet.ValidatorSetStateCompleter);
+                    previousHash
+                );
+                validatorSetGetter = () => _blockChainStates.GetValidatorSet(previousHash);
             }
             else
             {
@@ -815,12 +788,17 @@ namespace Libplanet.Action
                         action = (IAction)Activator.CreateInstance(actionType)!;
                         action.LoadPlainValue(pv["values"]);
                     }
+                    else if (_actionTypeLoader is StaticActionTypeLoader loader &&
+                             loader.BaseType is { } baseActionType)
+                    {
+                        action = (IAction)Activator.CreateInstance(baseActionType)!;
+                        action.LoadPlainValue(rawAction);
+                    }
                     else
                     {
-                        // FIXME: Just fallback, do we really need non-polymorphic action?
-                        //        is it possible?
-                        action = new T();
-                        action.LoadPlainValue(rawAction);
+                        throw new InvalidOperationException(
+                            $"Failed to instantiate given action: {rawAction}"
+                        );
                     }
 
                     yield return action;

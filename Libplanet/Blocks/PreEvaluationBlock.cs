@@ -246,15 +246,15 @@ namespace Libplanet.Blocks
                 );
             }
 
-            var actionEvaluator = new ActionEvaluator<T>(
+            var actionEvaluator = new ActionEvaluator(
                 _ => blockAction,
-                blockChainStates: NullChainStates<T>.Instance,
+                blockChainStates: NullChainStates.Instance,
                 trieGetter: null,
                 genesisHash: null,
-                nativeTokenPredicate: nativeTokenPredicate
+                nativeTokenPredicate: nativeTokenPredicate,
+                actionTypeLoader: StaticActionTypeLoader.Create<T>()
             );
-            IReadOnlyList<ActionEvaluation> actionEvaluations =
-                actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);
+            IReadOnlyList<ActionEvaluation> actionEvaluations = actionEvaluator.Evaluate(this);
             statesDelta = actionEvaluations.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
             ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, statesDelta);
@@ -269,7 +269,7 @@ namespace Libplanet.Blocks
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
         public HashDigest<SHA256> DetermineStateRootHash(BlockChain<T> blockChain) =>
-            DetermineStateRootHash(blockChain, StateCompleterSet<T>.Recalculate, out _);
+            DetermineStateRootHash(blockChain, out _);
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and an optional
@@ -277,23 +277,20 @@ namespace Libplanet.Blocks
         /// the <see cref="Block{T}.StateRootHash"/>.
         /// </summary>
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
-        /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use when
-        /// it needs states unevaluated yet.</param>
         /// <param name="statesDelta">Returns made changes on states.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
         public HashDigest<SHA256> DetermineStateRootHash(
             BlockChain<T> blockChain,
-            StateCompleterSet<T> stateCompleterSet,
             out IImmutableDictionary<string, IValue> statesDelta
         ) =>
-            CalculateStateRootHash(blockChain, stateCompleterSet, out statesDelta).StateRootHash;
+            CalculateStateRootHash(blockChain, out statesDelta).StateRootHash;
 
         internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
             EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =
-                CalculateStateRootHash(blockChain, StateCompleterSet<T>.Recalculate, out _);
+                CalculateStateRootHash(blockChain, out _);
             return (Sign(privateKey, stateRootHash), evals);
         }
 
@@ -302,7 +299,6 @@ namespace Libplanet.Blocks
             IReadOnlyList<ActionEvaluation> ActionEvaluations
         ) CalculateStateRootHash(
             BlockChain<T> blockChain,
-            StateCompleterSet<T> stateCompleterSet,
             out IImmutableDictionary<string, IValue> statesDelta
         )
         {
@@ -313,7 +309,7 @@ namespace Libplanet.Blocks
             try
             {
                 IReadOnlyList<ActionEvaluation> actionEvaluations =
-                    blockChain.ActionEvaluator.Evaluate(this, stateCompleterSet);
+                    blockChain.ActionEvaluator.Evaluate(this);
                 logger.Verbose(
                     "Start to calculate the total delta of states made in block #{BlockIndex}...",
                     Index

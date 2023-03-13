@@ -25,8 +25,8 @@ public class StateQueryTest
     public async Task Balance()
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
-        (IBlockChainStates<NullAction>, IBlockPolicy<NullAction>) source = (
-            new MockChainStates<NullAction>(),
+        (IBlockChainStates, IBlockPolicy<NullAction>) source = (
+            new MockChainStates(),
             new BlockPolicy<NullAction>(nativeTokens: ImmutableHashSet.Create(currency))
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
@@ -85,8 +85,8 @@ public class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-         (IBlockChainStates<NullAction>, IBlockPolicy<NullAction>) source = (
-            new MockChainStates<NullAction>(),
+         (IBlockChainStates, IBlockPolicy<NullAction>) source = (
+            new MockChainStates(),
             new BlockPolicy<NullAction>(
                 nativeTokens: ImmutableHashSet.Create(currency, legacyToken)
             )
@@ -155,8 +155,8 @@ public class StateQueryTest
     [Fact]
     public async Task Validators()
     {
-         (IBlockChainStates<NullAction>, IBlockPolicy<NullAction>) source = (
-            new MockChainStates<NullAction>(),
+         (IBlockChainStates, IBlockPolicy<NullAction>) source = (
+            new MockChainStates(),
             new BlockPolicy<NullAction>()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
@@ -181,33 +181,28 @@ public class StateQueryTest
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
 
-    private class MockChainStates<T> : IBlockChainStates<T>
-        where T : IAction, new()
+    private class MockChainStates : IBlockChainStates
     {
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset,
-            StateCompleter<T> stateCompleter
+            BlockHash offset
         ) =>
             new IValue[addresses.Count];
 
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset,
-            FungibleAssetStateCompleter<T> stateCompleter
+            BlockHash offset
         ) =>
             currency * 123;
 
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset,
-            TotalSupplyStateCompleter<T> stateCompleter
+            BlockHash offset
         ) =>
             currency * 10000;
 
-        public ValidatorSet GetValidatorSet(BlockHash offset,
-            ValidatorSetStateCompleter<T> stateCompleter)
+        public ValidatorSet GetValidatorSet(BlockHash offset)
             => new ValidatorSet(new List<Validator>
             {
                 new(

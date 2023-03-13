@@ -454,7 +454,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b1, CreateBlockCommit(b1));
             Assert.Equal(
                 txsA,
-                ActionEvaluator<DumbAction>.OrderTxsForEvaluation(
+                ActionEvaluator.OrderTxsForEvaluation(
                     b1.ProtocolVersion,
                     b1.Transactions,
                     b1.PreEvaluationHash.ByteArray

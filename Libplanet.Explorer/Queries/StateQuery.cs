@@ -14,7 +14,7 @@ using Libplanet.Explorer.GraphTypes;
 namespace Libplanet.Explorer.Queries;
 
 public class StateQuery<T>
-    : ObjectGraphType<(IBlockChainStates<T> ChainStates, IBlockPolicy<T> Policy)>
+    : ObjectGraphType<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)>
     where T : IAction, new()
 {
     public StateQuery()
@@ -47,7 +47,7 @@ public class StateQuery<T>
     }
 
     private static Currency GetNativeTokenFromHash(
-        IResolveFieldContext<(IBlockChainStates<T> ChainStates, IBlockPolicy<T> Policy)> context,
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context,
         string paramName
     )
     {
@@ -78,7 +78,7 @@ public class StateQuery<T>
     }
 
     private static object ResolveBalance(
-        IResolveFieldContext<(IBlockChainStates<T> ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = GetNativeTokenFromHash(context, "currencyHash");
@@ -100,13 +100,12 @@ public class StateQuery<T>
         return context.Source.ChainStates.GetBalance(
             owner,
             currency,
-            offset,
-            FungibleAssetStateCompleters<T>.Reject
+            offset
         );
     }
 
     private static object? ResolveTotalSupply(
-        IResolveFieldContext<(IBlockChainStates<T> ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
     {
         Currency currency = GetNativeTokenFromHash(context, "currencyHash");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
@@ -135,13 +134,12 @@ public class StateQuery<T>
 
         return context.Source.ChainStates.GetTotalSupply(
             currency,
-            offset,
-            TotalSupplyStateCompleters<T>.Reject
+            offset
         );
     }
 
     private static object? ResolveValidatorSet(
-        IResolveFieldContext<(IBlockChainStates<T> ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
     {
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
         BlockHash offset;
@@ -157,9 +155,6 @@ public class StateQuery<T>
             );
         }
 
-        return context.Source.ChainStates.GetValidatorSet(
-            offset,
-            ValidatorSetStateCompleters<T>.Reject
-        ).Validators;
+        return context.Source.ChainStates.GetValidatorSet(offset).Validators;
     }
 }
