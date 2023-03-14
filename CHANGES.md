@@ -4,7 +4,12 @@ Libplanet changelog
 Version 0.48.1
 --------------
 
-To be released.
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.47.1] release.  [[#2931]]
+
+[Libplanet 0.47.1]: https://www.nuget.org/packages/Libplanet/0.47.1
+[#2931]: https://github.com/planetarium/libplanet/pull/2931
 
 
 Version 0.48.0
@@ -49,6 +54,18 @@ Released on Februrary 14, 2023.
 [#2800]: https://github.com/planetarium/libplanet/issues/2800
 [#2803]: https://github.com/planetarium/libplanet/pull/2803
 [#2805]: https://github.com/planetarium/libplanet/pull/2805
+
+
+Version 0.47.1
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.46.2] and [Libplanet 0.46.3].  [[#2929]]
+
+[Libplanet 0.46.2]: https://www.nuget.org/packages/Libplanet/0.46.2
+[Libplanet 0.46.3]: https://www.nuget.org/packages/Libplanet/0.46.3
+[#2929]: https://github.com/planetarium/libplanet/pull/2929
 
 
 Version 0.47.0
@@ -156,6 +173,26 @@ Released on February 6, 2023.
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
+
+
+Version 0.46.3
+--------------
+
+Released on March 14, 2023.
+
+ -  Fixed `Validator.Encoded` to be more compact.  [[#2927]]
+
+[#2927]: https://github.com/planetarium/libplanet/pull/2927
+
+
+Version 0.46.2
+--------------
+
+Released on February 16th, 2023.
+
+ -  Fix memory issues when preloading.  [[#2804]]
+
+[#2804]: https://github.com/planetarium/libplanet/pull/2804
 
 
 Version 0.46.1
