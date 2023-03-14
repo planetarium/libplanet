@@ -66,6 +66,21 @@ deployment if possible.
 [#2894]: https://github.com/planetarium/libplanet/pull/2894
 
 
+Version 0.51.2
+--------------
+
+Released on March 15, 2023.
+
+ -  Ported changes from [Libplanet 0.50.3] release.  [[#2937]]
+ -  Fixed `BlockCommit.Encoded` to be more compact.  [[#2938]]
+ -  Fixed `Vote.Encoded` and `Proposal.Encoded` to be more compact.  [[#2943]]
+
+[Libplanet 0.50.3]: https://www.nuget.org/packages/Libplanet/0.50.3
+[#2937]: https://github.com/planetarium/libplanet/pull/2937
+[#2938]: https://github.com/planetarium/libplanet/pull/2938
+[#2943]: https://github.com/planetarium/libplanet/pull/2943
+
+
 Version 0.51.1
 --------------
 
@@ -214,6 +229,29 @@ and the specification might change in the near future.
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
 
+Version 0.50.3
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.49.3] release.  [[#2935]]
+
+[Libplanet 0.49.3]: https://www.nuget.org/packages/Libplanet/0.49.3
+[#2935]: https://github.com/planetarium/libplanet/pull/2935
+
+
+Version 0.50.2
+--------------
+
+Released on March 9, 2023.
+
+ -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
+    a way to configure action type loader to be used in `PolymorphicAction<T>`.
+    [[#2875]]
+
+[#2875]: https://github.com/planetarium/libplanet/pull/2875
+
+
 Version 0.50.1
 --------------
 
@@ -274,6 +312,27 @@ Released on February 27, 2023.
 [#2845]: https://github.com/planetarium/libplanet/pull/2845
 
 
+Version 0.49.3
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.48.1] release.  [[#2933]]
+
+[Libplanet 0.48.1]: https://www.nuget.org/packages/Libplanet/0.48.1
+[#2933]: https://github.com/planetarium/libplanet/pull/2933
+
+
+Version 0.49.2
+--------------
+
+Released on March 3, 2023.
+
+ -  General logging changes for better comprehension.  [[#2874]]
+
+[#2874]: https://github.com/planetarium/libplanet/pull/2874
+
+
 Version 0.49.1
 --------------
 
@@ -319,6 +378,17 @@ Released on February 20, 2023.
 [#2822]: https://github.com/planetarium/libplanet/pull/2822
 
 
+Version 0.48.1
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.47.1] release.  [[#2931]]
+
+[Libplanet 0.47.1]: https://www.nuget.org/packages/Libplanet/0.47.1
+[#2931]: https://github.com/planetarium/libplanet/pull/2931
+
+
 Version 0.48.0
 --------------
 
@@ -361,6 +431,18 @@ Released on February 14, 2023.
 [#2800]: https://github.com/planetarium/libplanet/issues/2800
 [#2803]: https://github.com/planetarium/libplanet/pull/2803
 [#2805]: https://github.com/planetarium/libplanet/pull/2805
+
+
+Version 0.47.1
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.46.2] and [Libplanet 0.46.3].  [[#2929]]
+
+[Libplanet 0.46.2]: https://www.nuget.org/packages/Libplanet/0.46.2
+[Libplanet 0.46.3]: https://www.nuget.org/packages/Libplanet/0.46.3
+[#2929]: https://github.com/planetarium/libplanet/pull/2929
 
 
 Version 0.47.0
@@ -468,6 +550,16 @@ Released on February 6, 2023.
 [Bencodex 0.8.0]: https://www.nuget.org/packages/Bencodex/0.8.0
 [Bencodex.Json 0.8.0]: https://www.nuget.org/packages/Bencodex.Json/0.8.0
 [System.Text.Json 6.0.7]: https://www.nuget.org/packages/System.Text.Json/6.0.7
+
+
+Version 0.46.3
+--------------
+
+Released on March 14, 2023.
+
+ -  Fixed `Validator.Encoded` to be more compact.  [[#2927]]
+
+[#2927]: https://github.com/planetarium/libplanet/pull/2927
 
 
 Version 0.46.2
