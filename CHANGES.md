@@ -4,7 +4,11 @@ Libplanet changelog
 Version 0.46.3
 --------------
 
-To be released
+Released on March 14, 2023.
+
+ -  Fixed `Validator.Encoded` to be more compact.  [[#2927]]
+
+[#2927]: https://github.com/planetarium/libplanet/pull/2927
 
 
 Version 0.46.2
