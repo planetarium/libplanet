@@ -14,8 +14,9 @@ namespace Libplanet.Consensus
     /// </summary>
     public class Validator : IEquatable<Validator>
     {
-        private const string PublicKeyKey = "pubKey";
-        private const string PowerKey = "pow";
+        private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
+        private static readonly byte[] PowerKey = { 0x70 }; // 'p'
+
         private static Codec _codec = new Codec();
 
         /// <summary>
