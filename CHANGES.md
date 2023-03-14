@@ -78,6 +78,27 @@ Released on February 27, 2023.
 [#2845]: https://github.com/planetarium/libplanet/pull/2845
 
 
+Version 0.49.3
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.48.1] release.  [[#2933]]
+
+[Libplanet 0.48.1]: https://www.nuget.org/packages/Libplanet/0.48.1
+[#2933]: https://github.com/planetarium/libplanet/pull/2933
+
+
+Version 0.49.2
+--------------
+
+Released on March 3, 2023.
+
+ -  General logging changes for better comprehension.  [[#2874]]
+
+[#2874]: https://github.com/planetarium/libplanet/pull/2874
+
+
 Version 0.49.1
 --------------
 
