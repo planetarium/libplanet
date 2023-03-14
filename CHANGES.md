@@ -4,7 +4,12 @@ Libplanet changelog
 Version 0.49.3
 --------------
 
-To be released.
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.48.1] release.  [[#2933]]
+
+[Libplanet 0.48.1]: https://www.nuget.org/packages/Libplanet/0.48.1
+[#2933]: https://github.com/planetarium/libplanet/pull/2933
 
 
 Version 0.49.2
