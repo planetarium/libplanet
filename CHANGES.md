@@ -455,6 +455,29 @@ Released on March 9, 2023.
 [#2875]: https://github.com/planetarium/libplanet/pull/2875
 
 
+Version 0.50.3
+--------------
+
+Released on March 14, 2023.
+
+ -  Ported changes from [Libplanet 0.49.3] release.  [[#2935]]
+
+[Libplanet 0.49.3]: https://www.nuget.org/packages/Libplanet/0.49.3
+[#2935]: https://github.com/planetarium/libplanet/pull/2935
+
+
+Version 0.50.2
+--------------
+
+Released on March 9, 2023.
+
+ -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
+    a way to configure action type loader to be used in `PolymorphicAction<T>`.
+    [[#2875]]
+
+[#2875]: https://github.com/planetarium/libplanet/pull/2875
+
+
 Version 0.50.1
 --------------
 
