@@ -16,10 +16,10 @@ namespace Libplanet.Blocks
 {
     public sealed class BlockCommit : IEquatable<BlockCommit>
     {
-        internal const string HeightKey = "height";
-        internal const string RoundKey = "round";
-        internal const string BlockHashKey = "block_hash";
-        private const string VotesKey = "votes";
+        private static readonly byte[] HeightKey = { 0x48 };    // 'H'
+        private static readonly byte[] RoundKey = { 0x52 };     // 'R'
+        private static readonly byte[] BlockHashKey = { 0x68 }; // 'h'
+        private static readonly byte[] VotesKey = { 0x56 };     // 'V'
 
         private static Codec _codec = new Codec();
 

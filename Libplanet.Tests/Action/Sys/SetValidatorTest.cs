@@ -105,8 +105,8 @@ namespace Libplanet.Tests.Action.Sys
                     ""\ufefftype_id"": ""2"",
                     ""\uFEFFvalues"": {
                         ""\uFEFFvalidator"": {
-                        ""\uFEFFpow"": ""0x01"",
-                        ""\uFEFFpubKey"": ""0x03b5a24aa2112720423bad39a0205182379d6f2b33e3487c9ab6cc8fc496f8a548""
+                        ""0x50"": ""0x03b5a24aa2112720423bad39a0205182379d6f2b33e3487c9ab6cc8fc496f8a548"",
+                        ""0x70"": ""0x01""
                         }
                     }
                 }

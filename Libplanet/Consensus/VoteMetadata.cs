@@ -15,12 +15,12 @@ namespace Libplanet.Consensus
     public class VoteMetadata : IVoteMetadata, IEquatable<VoteMetadata>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private const string HeightKey = "height";
-        private const string RoundKey = "round";
-        private const string BlockHashKey = "block_hash";
-        private const string TimestampKey = "timestamp";
-        private const string ValidatorPublicKeyKey = "validator_public_key";
-        private const string FlagKey = "vote_flag";
+        private static readonly byte[] HeightKey = { 0x48 };                // 'H'
+        private static readonly byte[] RoundKey = { 0x52 };                 // 'R'
+        private static readonly byte[] TimestampKey = { 0x74 };             // 't'
+        private static readonly byte[] BlockHashKey = { 0x68 };             // 'h'
+        private static readonly byte[] ValidatorPublicKeyKey = { 0x50 };    // 'P'
+        private static readonly byte[] FlagKey = { 0x46 };                  // 'F'
 
         private static readonly Codec _codec = new Codec();
 
