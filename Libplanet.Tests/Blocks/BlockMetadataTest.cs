@@ -123,7 +123,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", 4)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("eae2c77210d9a1a4ce4fdd68479e5b49d91c341ac071e51f3a525030a131270b"));
+                    ParseHex("8905c623d9e4a32a6b405168e6f244d70b2dab87c6c10814d956ae4f7a44ae77"));
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
@@ -239,7 +239,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
-                FromHex("5a1284960596e71bd90b089741af3f44b4fc04f829acf836d52c8da5bd070166"),
+                FromHex("834ee1a2f50d5fc5376b96f94bdaa634f983bdef9de713d3985c2de7ea215bbd"),
                 hash.ByteArray);
 
             hash = Block1Metadata.DerivePreEvaluationHash(
