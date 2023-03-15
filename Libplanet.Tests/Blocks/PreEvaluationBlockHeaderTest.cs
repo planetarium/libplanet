@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("eae2c77210d9a1a4ce4fdd68479e5b49d91c341ac071e51f3a525030a131270b"));
+                    ParseHex("8905c623d9e4a32a6b405168e6f244d70b2dab87c6c10814d956ae4f7a44ae77"));
             var genesis = new PreEvaluationBlockHeader(
                 _contents.GenesisMetadata,
                 _contents.GenesisMetadata.DerivePreEvaluationHash(default));
@@ -204,22 +204,22 @@ namespace Libplanet.Tests.Blocks
                 _contents.GenesisMetadata,
                 _contents.GenesisMetadata.DerivePreEvaluationHash(default));
             AssertBytesEqual(
-                fromHex("164f3b65f29e7b1a2440582c31fdcf9e26277c7ac389b139ac7c1b7c0e7b880b"),
+                fromHex("362a34ef5b99b0d168342a8bfd499448e86db2dd0eb4fe938e7e178d062cc797"),
                 genesis.DeriveBlockHash(default, null)
             );
             AssertBytesEqual(
-                fromHex("221ec2ef2c752547eae2b9f04300a3322ded62d747862e5aee9434aa8584fd68"),
+                fromHex("280a78bd0b500a6b2fd9a560a0c4802c26bad181bd1117207ceba64e51588ff5"),
                 genesis.DeriveBlockHash(
                     default,
                     genesis.MakeSignature(_contents.GenesisKey, default)
                 )
             );
             AssertBytesEqual(
-                fromHex("edb7a84ac4ce3a7f2a11e0abe6c2deabe0583fd5a626784809f5fcf335de4ed9"),
+                fromHex("c8f123e73f94df091faf8a8021fdbcf91bc40401a7d6e4531b0cd8ab1a128917"),
                 genesis.DeriveBlockHash(arbitraryHash, null)
             );
             AssertBytesEqual(
-                fromHex("775015344e34a842d00db61f3f2e427678821f882b556ec7daacd1b1e77bb34b"),
+                fromHex("4fc0d218fd88d5338591e2cd15d5ac15a7eb458008b084832965938670123911"),
                 genesis.DeriveBlockHash(
                     arbitraryHash,
                     genesis.MakeSignature(_contents.GenesisKey, arbitraryHash))
