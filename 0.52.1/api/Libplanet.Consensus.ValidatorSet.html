@@ -1,0 +1,1125 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ValidatorSet
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ValidatorSet
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Consensus.ValidatorSet">
+
+
+  <h1 id="Libplanet_Consensus_ValidatorSet" data-uid="Libplanet.Consensus.ValidatorSet" class="text-break">Class ValidatorSet
+</h1>
+  <div class="markdown level0 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ValidatorSet</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Consensus.html">Libplanet.Consensus</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Consensus_ValidatorSet_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ValidatorSet : IEquatable&lt;ValidatorSet&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L22">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet__ctor_" data-uid="Libplanet.Consensus.ValidatorSet.#ctor*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet__ctor" data-uid="Libplanet.Consensus.ValidatorSet.#ctor">ValidatorSet()</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of an empty <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a>.
+to <a class="xref" href="Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators">Validators</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValidatorSet()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet__ctor_Bencodex_Types_List_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.%23ctor(Bencodex.Types.List)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L62">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet__ctor_" data-uid="Libplanet.Consensus.ValidatorSet.#ctor*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet__ctor_Bencodex_Types_List_" data-uid="Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.List)">ValidatorSet(List)</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValidatorSet(List encoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.List</span></td>
+        <td><span class="parametername">encoded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet__ctor_System_Collections_Generic_List_Libplanet_Consensus_Validator__.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.%23ctor(System.Collections.Generic.List%7BLibplanet.Consensus.Validator%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet__ctor_" data-uid="Libplanet.Consensus.ValidatorSet.#ctor*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet__ctor_System_Collections_Generic_List_Libplanet_Consensus_Validator__" data-uid="Libplanet.Consensus.ValidatorSet.#ctor(System.Collections.Generic.List{Libplanet.Consensus.Validator})">ValidatorSet(List&lt;Validator&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a>.  Given <code data-dev-comment-type="paramref" class="paramref">validators</code>
+is ordered internally by <a class="xref" href="Libplanet.Address.html">Address</a> before getting assigned
+to <a class="xref" href="Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators">Validators</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValidatorSet(List&lt;Validator&gt; validators)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>&gt;</td>
+        <td><span class="parametername">validators</span></td>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of validators to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when one of the following is true:</p>
+<ul><li>There is a duplicate among <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s for
+<code data-dev-comment-type="paramref" class="paramref">validators</code>.
+</li><li>There is a <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> with zero power.
+</li></ul>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Encoded.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Encoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L111">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Encoded_" data-uid="Libplanet.Consensus.ValidatorSet.Encoded*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Encoded" data-uid="Libplanet.Consensus.ValidatorSet.Encoded">Encoded</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List Encoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.List</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L119">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Item_" data-uid="Libplanet.Consensus.ValidatorSet.Item*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Item_System_Int32_" data-uid="Libplanet.Consensus.ValidatorSet.Item(System.Int32)">Item[Int32]</h4>
+  <div class="markdown level1 summary"><p>Gets the validator at given <code data-dev-comment-type="paramref" class="paramref">index</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Validator this[int index] { get; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The index to search.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a></td>
+        <td><p>The validator at given <code data-dev-comment-type="paramref" class="paramref">index</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_OneThirdCount.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.OneThirdCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L104">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_OneThirdCount_" data-uid="Libplanet.Consensus.ValidatorSet.OneThirdCount*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_OneThirdCount" data-uid="Libplanet.Consensus.ValidatorSet.OneThirdCount">OneThirdCount</h4>
+  <div class="markdown level1 summary"><p>The one third of validator count, rounded down.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OneThirdCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_OneThirdPower.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.OneThirdPower%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L109">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_OneThirdPower_" data-uid="Libplanet.Consensus.ValidatorSet.OneThirdPower*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_OneThirdPower" data-uid="Libplanet.Consensus.ValidatorSet.OneThirdPower">OneThirdPower</h4>
+  <div class="markdown level1 summary"><p>The one third of validator total power, rounded down.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger OneThirdPower { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_PublicKeys.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.PublicKeys%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L77">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_PublicKeys_" data-uid="Libplanet.Consensus.ValidatorSet.PublicKeys*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_PublicKeys" data-uid="Libplanet.Consensus.ValidatorSet.PublicKeys">PublicKeys</h4>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList&lt;T&gt;</a> of public keys of validators.
+This is guaranteed to be ordered by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableList&lt;PublicKey&gt; PublicKeys { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_TotalCount.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.TotalCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L83">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_TotalCount_" data-uid="Libplanet.Consensus.ValidatorSet.TotalCount*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_TotalCount" data-uid="Libplanet.Consensus.ValidatorSet.TotalCount">TotalCount</h4>
+  <div class="markdown level1 summary"><p>The total number of validators.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TotalCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_TotalPower.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.TotalPower%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_TotalPower_" data-uid="Libplanet.Consensus.ValidatorSet.TotalPower*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_TotalPower" data-uid="Libplanet.Consensus.ValidatorSet.TotalPower">TotalPower</h4>
+  <div class="markdown level1 summary"><p>The total power of validators.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger TotalPower { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_TwoThirdsCount.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.TwoThirdsCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L94">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_TwoThirdsCount_" data-uid="Libplanet.Consensus.ValidatorSet.TwoThirdsCount*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_TwoThirdsCount" data-uid="Libplanet.Consensus.ValidatorSet.TwoThirdsCount">TwoThirdsCount</h4>
+  <div class="markdown level1 summary"><p>The two thirds of validator count, rounded down.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TwoThirdsCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_TwoThirdsPower.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.TwoThirdsPower%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_TwoThirdsPower_" data-uid="Libplanet.Consensus.ValidatorSet.TwoThirdsPower*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_TwoThirdsPower" data-uid="Libplanet.Consensus.ValidatorSet.TwoThirdsPower">TwoThirdsPower</h4>
+  <div class="markdown level1 summary"><p>The two thirds of validator total power, rounded down.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger TwoThirdsPower { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Validators.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Validators%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L71">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Validators_" data-uid="Libplanet.Consensus.ValidatorSet.Validators*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Validators" data-uid="Libplanet.Consensus.ValidatorSet.Validators">Validators</h4>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList&lt;T&gt;</a> of validators.  This is guaranteed to be ordered
+by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableList&lt;Validator&gt; Validators { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList</a>&lt;<a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Contains_Libplanet_Consensus_Validator_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Contains(Libplanet.Consensus.Validator)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L140">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Contains_" data-uid="Libplanet.Consensus.ValidatorSet.Contains*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Contains_Libplanet_Consensus_Validator_" data-uid="Libplanet.Consensus.ValidatorSet.Contains(Libplanet.Consensus.Validator)">Contains(Validator)</h4>
+  <div class="markdown level1 summary"><p>Checks if given <code data-dev-comment-type="paramref" class="paramref">validator</code> is a member of <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a>.
+Checks both of <a class="xref" href="Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_PublicKey">PublicKey</a> and <a class="xref" href="Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Power">Power</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(Validator validator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a></td>
+        <td><span class="parametername">validator</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if given <code data-dev-comment-type="paramref" class="paramref">validator</code>
+is in <a class="xref" href="Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators">Validators</a>, <span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Equals_Libplanet_Consensus_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L181">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Equals_" data-uid="Libplanet.Consensus.ValidatorSet.Equals*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Equals_Libplanet_Consensus_ValidatorSet_" data-uid="Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)">Equals(ValidatorSet)</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(ValidatorSet other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L185">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Equals_" data-uid="Libplanet.Consensus.ValidatorSet.Equals*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Equals_System_Object_" data-uid="Libplanet.Consensus.ValidatorSet.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L188">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_GetHashCode_" data-uid="Libplanet.Consensus.ValidatorSet.GetHashCode*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_GetHashCode" data-uid="Libplanet.Consensus.ValidatorSet.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_GetProposer_System_Int64_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.GetProposer(System.Int64%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L209">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_GetProposer_" data-uid="Libplanet.Consensus.ValidatorSet.GetProposer*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_GetProposer_System_Int64_System_Int32_" data-uid="Libplanet.Consensus.ValidatorSet.GetProposer(System.Int64,System.Int32)">GetProposer(Int64, Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets the proposer for a given context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Validator GetProposer(long height, int round)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">height</span></td>
+        <td><p>The height of the context under consideration.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">round</span></td>
+        <td><p>The round of the context under consideration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> deterministically chosen from
+<a class="xref" href="Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators">Validators</a>, <code data-dev-comment-type="paramref" class="paramref">height</code>, and <code data-dev-comment-type="paramref" class="paramref">round</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when
+<a class="xref" href="Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Validators">Validators</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_GetValidator_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.GetValidator(Libplanet.Crypto.PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L121">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_GetValidator_" data-uid="Libplanet.Consensus.ValidatorSet.GetValidator*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_GetValidator_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Consensus.ValidatorSet.GetValidator(Libplanet.Crypto.PublicKey)">GetValidator(PublicKey)</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Validator GetValidator(PublicKey publicKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_GetValidators_System_Collections_Generic_IEnumerable_Libplanet_Crypto_PublicKey__.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.GetValidators(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.PublicKey%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L124">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_GetValidators_" data-uid="Libplanet.Consensus.ValidatorSet.GetValidators*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_GetValidators_System_Collections_Generic_IEnumerable_Libplanet_Crypto_PublicKey__" data-uid="Libplanet.Consensus.ValidatorSet.GetValidators(System.Collections.Generic.IEnumerable{Libplanet.Crypto.PublicKey})">GetValidators(IEnumerable&lt;PublicKey&gt;)</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableList&lt;Validator&gt; GetValidators(IEnumerable&lt;PublicKey&gt; publicKeys)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td><span class="parametername">publicKeys</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList</a>&lt;<a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_GetValidatorsPower_System_Collections_Generic_List_Libplanet_Crypto_PublicKey__.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.GetValidatorsPower(System.Collections.Generic.List%7BLibplanet.Crypto.PublicKey%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L127">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_GetValidatorsPower_" data-uid="Libplanet.Consensus.ValidatorSet.GetValidatorsPower*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_GetValidatorsPower_System_Collections_Generic_List_Libplanet_Crypto_PublicKey__" data-uid="Libplanet.Consensus.ValidatorSet.GetValidatorsPower(System.Collections.Generic.List{Libplanet.Crypto.PublicKey})">GetValidatorsPower(List&lt;PublicKey&gt;)</h4>
+  <div class="markdown level1 summary"><p>A wrapper class for a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> of <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>s.
+This standardizes the ordering of validators by <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger GetValidatorsPower(List&lt;PublicKey&gt; publicKeys)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td><span class="parametername">publicKeys</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_Update_Libplanet_Consensus_Validator_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.Update(Libplanet.Consensus.Validator)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L162">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_Update_" data-uid="Libplanet.Consensus.ValidatorSet.Update*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_Update_Libplanet_Consensus_Validator_" data-uid="Libplanet.Consensus.ValidatorSet.Update(Libplanet.Consensus.Validator)">Update(Validator)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a> that has been updated with
+given <code data-dev-comment-type="paramref" class="paramref">validator</code> according to the following rule:</p>
+<ul><li>
+        If <code data-dev-comment-type="paramref" class="paramref">validator</code>&apos;s power is zero, the <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>
+        with the same <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> is removed, if it exists.
+        If no matching <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> is found, no change is made.
+</li><li>
+    If <code data-dev-comment-type="paramref" class="paramref">validator</code>&apos;s power is positive, the <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>
+    with the same <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> is overwritten, if it exists.
+    If no matching <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> is found, <code data-dev-comment-type="paramref" class="paramref">validator</code>
+    is added to the set.
+</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public ValidatorSet Update(Validator validator)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a></td>
+        <td><span class="parametername">validator</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a> to update.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a></td>
+        <td><p>New <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a> updated with
+given <code data-dev-comment-type="paramref" class="paramref">validator</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet_ValidateBlockCommitValidators_Libplanet_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet.ValidateBlockCommitValidators(Libplanet.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L226">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_ValidatorSet_ValidateBlockCommitValidators_" data-uid="Libplanet.Consensus.ValidatorSet.ValidateBlockCommitValidators*"></a>
+  <h4 id="Libplanet_Consensus_ValidatorSet_ValidateBlockCommitValidators_Libplanet_Blocks_BlockCommit_" data-uid="Libplanet.Consensus.ValidatorSet.ValidateBlockCommitValidators(Libplanet.Blocks.BlockCommit)">ValidateBlockCommitValidators(BlockCommit)</h4>
+  <div class="markdown level1 summary"><p>Checks whether <a class="xref" href="Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Votes">Votes</a> is ordered
+by <a class="xref" href="Libplanet.Address.html">Address</a> of each <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_ValidatorPublicKey">ValidatorPublicKey</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ValidateBlockCommitValidators(BlockCommit blockCommit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a></td>
+        <td><span class="parametername">blockCommit</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Votes">Votes</a> is
+ordered, <span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/0.52.1/apiSpec/new?filename=Libplanet_Consensus_ValidatorSet.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.ValidatorSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/0.52.1/Libplanet/Consensus/ValidatorSet.cs/#L16" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
