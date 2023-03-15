@@ -77,6 +77,31 @@
 </li>
 <li>Removed type parameter <code>T</code> for <code>IAction</code> from <code>ActionEvaluator</code> and
 <code>IBlockChainStates</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2703">#2703</a>]</li>
+<li>(@planetarium/tx) It now depends on <a href="https://www.npmjs.com/package/@planetarium/bencodex">@planetarium/bencodex</a> instead of
+<a href="https://github.com/disjukr/bencodex">disjukr/bencodex</a>, so <code>Encodable</code> is replaced by <code>Value</code>.
+<ul>
+<li>The return type of <code>encodeBlockHash()</code> became <code>Value</code> (was <code>Encodable</code>).</li>
+<li>The return type of <code>encodePublicKey()</code> became <code>Value</code> (was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeAddress()</code> became <code>Key</code> (was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeAddressSet()</code> became <code>Value</code>
+(was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeSignedTx()</code> became <code>Dictionary</code>
+(was <code>Map&lt;string | Buffer, Encodable&gt;</code>).</li>
+<li>The return type of <code>encodeUnsignedTxWithSystemAction()</code> became <code>Value</code>
+(was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeUnsignedTxWithCustomActions()</code> became <code>Value</code>
+(was <code>Encodable</code>).</li>
+<li>The <code>CustomAction</code> type is now an alias of <code>Value</code> (was an alias of
+<code>Encodable</code>).</li>
+<li>The return type of <code>encodeTxMetadata()</code> became <code>Dictionary</code>
+(was <code>Map&lt;string | Buffer, Encodable&gt;</code>).</li>
+<li>The return type of <code>encodeSystemAction()</code> became <code>Value</code>
+(was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeCurrency()</code> became <code>Value</code> (was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeMint()</code> became <code>Value</code> (was <code>Encodable</code>).</li>
+<li>The return type of <code>encodeTransfer()</code> became <code>Value</code> (was <code>Encodable</code>).</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
