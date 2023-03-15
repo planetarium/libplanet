@@ -17,12 +17,12 @@ namespace Libplanet.Consensus
     public class ProposalMetadata : IEquatable<ProposalMetadata>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private const string HeightKey = "height";
-        private const string RoundKey = "round";
-        private const string TimestampKey = "timestamp";
-        private const string ValidatorPublicKeyKey = "validator_public_key";
-        private const string BlockKey = "block";
-        private const string ValidRoundKey = "valid_round";
+        private static readonly byte[] HeightKey = { 0x48 };                // 'H'
+        private static readonly byte[] RoundKey = { 0x52 };                 // 'R'
+        private static readonly byte[] TimestampKey = { 0x74 };             // 't'
+        private static readonly byte[] ValidatorPublicKeyKey = { 0x50 };    // 'P'
+        private static readonly byte[] BlockKey = { 0x42 };                 // 'B'
+        private static readonly byte[] ValidRoundKey = { 0x56 };            // 'V'
 
         private static Codec _codec = new Codec();
 

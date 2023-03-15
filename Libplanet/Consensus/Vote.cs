@@ -18,7 +18,7 @@ namespace Libplanet.Consensus
     /// </summary>
     public class Vote : IVoteMetadata, IEquatable<Vote>
     {
-        private const string SignatureKey = "signature";
+        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
 
         private static readonly Codec _codec = new Codec();
         private readonly VoteMetadata _metadata;

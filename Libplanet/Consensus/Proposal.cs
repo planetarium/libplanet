@@ -18,7 +18,8 @@ namespace Libplanet.Consensus
     /// </summary>
     public class Proposal : IEquatable<Proposal>
     {
-        internal const string SignatureKey = "signature";
+        // FIXME: This should be private.  Left as internal for testing reasons.
+        internal static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static Codec _codec = new Codec();
 
         private readonly ProposalMetadata _proposalMetadata;
