@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.51.2
 --------------
 
-To be released.
+Released on March 15, 2023.
 
  -  Ported changes from [Libplanet 0.50.3] release.  [[#2937]]
  -  Fixed `BlockCommit.Encoded` to be more compact.  [[#2938]]
