@@ -79,6 +79,17 @@ defined in *[@planetarium/account]*.
 [disjukr/bencodex]: https://github.com/disjukr/bencodex
 
 
+Version 0.52.1
+--------------
+
+Released on March 15, 2023.
+
+ -  Ported changes from [Libplanet 0.51.2] release.  [[#2946]]
+
+[Libplanet 0.51.2]: https://www.nuget.org/packages/Libplanet/0.51.2
+[#2946]: https://github.com/planetarium/libplanet/pull/2946
+
+
 Version 0.52.0
 --------------
 
