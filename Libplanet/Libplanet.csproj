@@ -64,7 +64,6 @@ https://docs.libplanet.io/</Description>
   <ItemGroup>
     <PackageReference Include="Bencodex" Version="0.8.0" />
     <PackageReference Include="Bencodex.Json" Version="0.8.0" />
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
@@ -97,6 +96,7 @@ https://docs.libplanet.io/</Description>
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet.Abstractions\Libplanet.Abstractions.csproj" />
+    <ProjectReference Include="..\Libplanet.Crypto\Libplanet.Crypto.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
