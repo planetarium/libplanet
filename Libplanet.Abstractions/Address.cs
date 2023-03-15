@@ -10,7 +10,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet
@@ -96,22 +95,6 @@ namespace Libplanet
         /// <seealso cref="ToByteArray()"/>
         public Address(byte[] address)
             : this(address.ToImmutableArray())
-        {
-        }
-
-        /// <summary>
-        /// Derives the corresponding <see cref="Address"/> from a <see
-        /// cref="PublicKey"/>.
-        /// <para>Note that there is an equivalent extension method
-        /// <see cref="AddressExtensions.ToAddress(PublicKey)"/>, which enables
-        /// a code like <c>publicKey.ToAddress()</c> instead of
-        /// <c>new Address(publicKey)</c>, for convenience.</para>
-        /// </summary>
-        /// <param name="publicKey">A <see cref="PublicKey"/> to derive
-        /// the corresponding <see cref="Address"/> from.</param>
-        /// <seealso cref="AddressExtensions.ToAddress(PublicKey)"/>
-        public Address(PublicKey publicKey)
-            : this(DeriveAddress(publicKey))
         {
         }
 
@@ -288,21 +271,13 @@ namespace Libplanet
             return address;
         }
 
-        private static byte[] CalculateHash(byte[] value)
+        internal static byte[] CalculateHash(byte[] value)
         {
             var digest = new KeccakDigest(256);
             var output = new byte[digest.GetDigestSize()];
             digest.BlockUpdate(value, 0, value.Length);
             digest.DoFinal(output, 0);
             return output;
-        }
-
-        private static ImmutableArray<byte> DeriveAddress(PublicKey key)
-        {
-            byte[] hashPayload = key.Format(false).Skip(1).ToArray();
-            var output = CalculateHash(hashPayload);
-
-            return output.Skip(output.Length - Size).ToImmutableArray();
         }
 
         private static ImmutableArray<byte> DeriveAddress(string hex)

@@ -54,7 +54,7 @@ namespace Libplanet.Tests
                         0x8a, 0x43, 0x90, 0xf0,
                     }
                 ),
-                new Address(key)
+                key.ToAddress()
             );
         }
 

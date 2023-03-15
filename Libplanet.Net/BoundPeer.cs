@@ -92,7 +92,7 @@ namespace Libplanet.Net
         /// <seealso cref="PublicKey"/>
         [LogAsScalar]
         [Pure]
-        public Address Address => new Address(PublicKey);
+        public Address Address => PublicKey.ToAddress();
 
         /// <summary>
         /// The corresponding <see cref="DnsEndPoint"/> of this peer.

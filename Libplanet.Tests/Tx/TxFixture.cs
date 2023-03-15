@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Tx
                     0x7e, 0xfb,
                 }
             );
-            var recipient = new Address(PrivateKey1.PublicKey);
+            var recipient = PrivateKey1.PublicKey.ToAddress();
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
             Tx = Transaction<PolymorphicAction<BaseAction>>.Create(

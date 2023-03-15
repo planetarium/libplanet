@@ -87,7 +87,7 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="ITxMetadata.Signer"/>
         /// <remarks>This is automatically derived from <see cref="PublicKey"/>.</remarks>
-        public Address Signer => new Address(PublicKey);
+        public Address Signer => PublicKey.ToAddress();
 
         /// <inheritdoc cref="ITxMetadata.UpdatedAddresses"/>
         public IImmutableSet<Address> UpdatedAddresses { get; set; } =

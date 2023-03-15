@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+using System.Linq;
 using Libplanet.Crypto;
 
 namespace Libplanet
@@ -19,10 +21,9 @@ namespace Libplanet
         /// the corresponding <see cref="Address"/> from.</param>
         /// <returns>The corresponding <see cref="Address"/> derived from
         /// <paramref name="publicKey"/>.</returns>
-        /// <seealso cref="Address(PublicKey)"/>
         public static Address ToAddress(this PublicKey publicKey)
         {
-            return new Address(publicKey);
+            return new Address(DeriveAddress(publicKey));
         }
 
         /// <summary>
@@ -37,7 +38,15 @@ namespace Libplanet
         /// <paramref name="privateKey"/>.</returns>
         public static Address ToAddress(this PrivateKey privateKey)
         {
-            return new Address(privateKey.PublicKey);
+            return privateKey.PublicKey.ToAddress();
+        }
+
+        private static ImmutableArray<byte> DeriveAddress(PublicKey key)
+        {
+            byte[] hashPayload = key.Format(false).Skip(1).ToArray();
+            var output = Address.CalculateHash(hashPayload);
+
+            return output.Skip(output.Length - Address.Size).ToImmutableArray();
         }
     }
 }

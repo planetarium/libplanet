@@ -131,7 +131,7 @@ namespace Libplanet.Net
                 version,
                 extra,
                 ImmutableArray.Create(signer.Sign(GetMessage(version, extra))),
-                new Address(signer.PublicKey)
+                signer.PublicKey.ToAddress()
             );
         }
 
@@ -229,7 +229,7 @@ namespace Libplanet.Net
         /// the <see cref="Signer"/>.</returns>
         [Pure]
         public bool Verify(PublicKey publicKey) =>
-            Signer.Equals(new Address(publicKey)) &&
+            Signer.Equals(publicKey.ToAddress()) &&
             publicKey.Verify(GetMessage(Version, Extra), Signature.ToBuilder().ToArray());
 
         /// <inheritdoc/>

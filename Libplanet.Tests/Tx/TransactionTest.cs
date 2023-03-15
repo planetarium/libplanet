@@ -104,7 +104,7 @@ namespace Libplanet.Tests.Tx
             );
 
             Assert.Equal(
-                new Address(privateKey.PublicKey),
+                privateKey.PublicKey.ToAddress(),
                 tx.Signer
             );
             Assert.Equal(
@@ -283,7 +283,7 @@ namespace Libplanet.Tests.Tx
             );
 
             Assert.Equal(
-                new Address(privateKey.PublicKey),
+                privateKey.PublicKey.ToAddress(),
                 tx.Signer
             );
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
@@ -420,7 +420,7 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
-            Assert.Equal(new Address(publicKey), tx.Signer);
+            Assert.Equal(publicKey.ToAddress(), tx.Signer);
             Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             AssertBytesEqual(
                 new byte[]
@@ -496,10 +496,10 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(
-                ImmutableHashSet.Create(new Address(publicKey)),
+                ImmutableHashSet.Create(publicKey.ToAddress()),
                 tx.UpdatedAddresses
             );
-            Assert.Equal(new Address(publicKey), tx.Signer);
+            Assert.Equal(publicKey.ToAddress(), tx.Signer);
             Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             AssertBytesEqual(
                 new byte[]
@@ -532,14 +532,14 @@ namespace Libplanet.Tests.Tx
                 ((Bencodex.Types.Dictionary)tx.CustomActions[0].InnerAction.PlainValue)
                     .GetValue<Binary>("target_address").ByteArray;
             AssertBytesEqual(
-                new Address(publicKey).ByteArray,
+                publicKey.ToAddress().ByteArray,
                 targetAddress
             );
             Assert.Equal(
                 Bencodex.Types.Dictionary.Empty
                     .Add("weapon", "wand")
                     .Add("target", "orc")
-                    .Add("target_address", new Address(publicKey).ByteArray),
+                    .Add("target_address", publicKey.ToAddress().ByteArray),
                 tx.CustomActions[0].InnerAction.PlainValue
             );
             Assert.IsType<Sleep>(tx.CustomActions[1].InnerAction);
