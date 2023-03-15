@@ -251,9 +251,11 @@ Released on March 15, 2023.
 [#2943]: https://github.com/planetarium/libplanet/pull/2943
 
  -  Ported changes from [Libplanet 0.50.3] release.  [[#2937]]
+ -  Fixed `BlockCommit.Encoded` to be more compact.  [[#2938]]
 
 [Libplanet 0.50.3]: https://www.nuget.org/packages/Libplanet/0.50.3
 [#2937]: https://github.com/planetarium/libplanet/pull/2937
+[#2938]: https://github.com/planetarium/libplanet/pull/2938
 
 
 Version 0.51.1
