@@ -456,13 +456,19 @@ __metadata:
     "@types/node": ^18.13.0
     "@vitest/coverage-c8": ^0.22.1
     "@vitest/ui": ^0.22.1
-    bencodex: ^0.1.1
     fast-check: ^3.1.2
     nanobundle: ^1.5.0
     vite: ^4.1.1
     vitest: ^0.22.1
   languageName: unknown
   linkType: soft
+
+"@planetarium/bencodex@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@planetarium/bencodex@npm:0.2.2"
+  checksum: 48d4e32012ce7d798696ab78f9dcce9e7646bcf3fae4f9e45b00ae5c3aa7ce3f92ac4082dbee2b4e9466da86b9768ddebe418090ed790bcc5951c8dd37f2cd2b
+  languageName: node
+  linkType: hard
 
 "@planetarium/cli@workspace:Libplanet.Tools":
   version: 0.0.0-use.local
@@ -480,10 +486,10 @@ __metadata:
   resolution: "@planetarium/tx@workspace:@planetarium/tx"
   dependencies:
     "@planetarium/account": "workspace:^"
+    "@planetarium/bencodex": ^0.2.2
     "@types/node": ^18.14.0
     "@vitest/coverage-c8": ^0.22.1
     "@vitest/ui": ^0.22.1
-    bencodex: ^0.1.1
     execa: ^6.1.0
     fast-check: ^3.1.2
     nanobundle: ^1.5.0
@@ -708,13 +714,6 @@ __metadata:
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
   checksum: 9706c088a283058a8a99e0bf91b0a2f75497f185980d9ffa8b304de1d9e58ebda7c72c07ebf01dadedaac5b2907b2c6f566f660d62bd336c3468e960403b9d65
-  languageName: node
-  linkType: hard
-
-"bencodex@npm:^0.1.1":
-  version: 0.1.2
-  resolution: "bencodex@npm:0.1.2"
-  checksum: 0e6a7b34d039ccb18219ccbcf7a9a5473eca0a2deb38aadc923d219e19aacb301af0cf0c7350b04b38b7f498f23639b55c9a45a95253a77afbe2a86419ae6e51
   languageName: node
   linkType: hard
 

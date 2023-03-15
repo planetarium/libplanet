@@ -1,4 +1,4 @@
-import { Encodable, encode } from "bencodex";
+import { encode, RecordValue, RecordView, Value } from "@planetarium/bencodex";
 import { Address, encodeAddressSet } from "./address.js";
 
 export interface Currency {
@@ -12,13 +12,12 @@ export interface Currency {
   } | null;
 }
 
-export function encodeCurrency(currency: Currency): Encodable {
-  const minters: Encodable = currency.minters === null
-    ? null
-    : encodeAddressSet(currency.minters);
-  const serialized: Encodable = {
+export function encodeCurrency(currency: Currency): Value {
+  const minters: Value =
+    currency.minters === null ? null : encodeAddressSet(currency.minters);
+  const serialized: RecordValue = {
     ticker: currency.ticker,
-    decimals: currency.decimalPlaces,
+    decimals: BigInt(currency.decimalPlaces),
     minters,
   };
 
@@ -35,7 +34,7 @@ export function encodeCurrency(currency: Currency): Encodable {
     serialized.totalSupplyTrackable = true;
   }
 
-  return serialized;
+  return new RecordView(serialized, "text");
 }
 
 export async function getCurrencyHash(currency: Currency): Promise<Uint8Array> {

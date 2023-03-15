@@ -45,6 +45,6 @@
   },
   "dependencies": {
     "@planetarium/account": "workspace:^",
-    "bencodex": "^0.1.1"
+    "@planetarium/bencodex": "^0.2.2"
   }
 }

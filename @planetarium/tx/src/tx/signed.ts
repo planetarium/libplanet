@@ -1,4 +1,4 @@
-import { Encodable, encode } from "bencodex";
+import { BencodexDictionary, Dictionary, encode } from "@planetarium/bencodex";
 import { Account, Address, Signature } from "@planetarium/account";
 import {
   type UnsignedTxWithSystemAction,
@@ -8,7 +8,7 @@ import {
 } from "./unsigned.js";
 import { bytesEqual } from "../bytes.js";
 
-const SIGNATURE_KEY = Buffer.from([0x53]); // 'S'
+const SIGNATURE_KEY = new Uint8Array([0x53]); // 'S'
 
 export type SignedTx<
   T extends UnsignedTxWithSystemAction | UnsignedTxWithCustomActions,
@@ -40,14 +40,11 @@ export async function signTx(
 
 export function encodeSignedTx<
   T extends UnsignedTxWithSystemAction | UnsignedTxWithCustomActions,
->(tx: SignedTx<T>): Map<string | Buffer, Encodable> {
+>(tx: SignedTx<T>): Dictionary {
   const dict =
     "systemAction" in tx
       ? encodeUnsignedTxWithSystemAction(tx)
       : encodeUnsignedTxWithCustomActions(tx);
   const sig = tx.signature.toBytes();
-  const sigBuffer = new ArrayBuffer(sig.length);
-  new Uint8Array(sigBuffer).set(sig);
-  dict.set(SIGNATURE_KEY, sigBuffer);
-  return dict;
+  return new BencodexDictionary([...dict, [SIGNATURE_KEY, sig]]);
 }

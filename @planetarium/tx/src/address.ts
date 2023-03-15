@@ -1,19 +1,20 @@
-import { Encodable } from "bencodex";
+import { Key, Value } from "@planetarium/bencodex";
 import { compareUint8Array } from "./binary.js";
 
-export type Address = Uint8Array;  // TODO: proper type definition
+export type Address = Uint8Array; // TODO: proper type definition
 
-export function encodeAddress(address: Address): Encodable {
+export function encodeAddress(address: Address): Key {
   if (address.length !== 20) {
-    throw new TypeError(`Address must be 20 bytes long, but got ${
-      address.length} bytes.`);
+    throw new TypeError(
+      `Address must be 20 bytes long, but got ${address.length} bytes.`,
+    );
   }
-  return address.buffer;
+  return address;
 }
 
-export function encodeAddressSet(addresses: Set<Address>): Encodable {
+export function encodeAddressSet(addresses: Set<Address>): Value {
   const array: Address[] = [];
-  addresses.forEach(addr => array.push(addr));
+  addresses.forEach((addr) => array.push(addr));
   array.sort(compareUint8Array);
   return array.map(encodeAddress);
 }

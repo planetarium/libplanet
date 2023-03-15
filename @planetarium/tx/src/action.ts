@@ -1,23 +1,29 @@
-import { Encodable } from "bencodex";
+import { RecordView, Value } from "@planetarium/bencodex";
 import { Address, encodeAddress } from "./address.js";
 import { encodeCurrency, FungibleAssetValue } from "./assets.js";
 
 export type SystemAction = Mint | Transfer;
 
-export function encodeSystemAction(action: SystemAction): Encodable {
+export function encodeSystemAction(action: SystemAction): Value {
   switch (action.type) {
-  case "mint":
-    return {
-      type_id: 0,
-      values: encodeMint(action),
-    };
-  case "transfer":
-    return {
-      type_id: 1,
-      values: encodeTransfer(action),
-    };
-  default:
-    throw new TypeError(`Unknown action type: ${action["type"]}`);
+    case "mint":
+      return new RecordView(
+        {
+          type_id: 0n,
+          values: encodeMint(action),
+        },
+        "text",
+      );
+    case "transfer":
+      return new RecordView(
+        {
+          type_id: 1n,
+          values: encodeTransfer(action),
+        },
+        "text",
+      );
+    default:
+      throw new TypeError(`Unknown action type: ${action["type"]}`);
   }
 }
 
@@ -27,12 +33,15 @@ export interface Mint {
   amount: FungibleAssetValue;
 }
 
-export function encodeMint(action: Mint): Encodable {
-  return {
-    recipient: encodeAddress(action.recipient),
-    currency: encodeCurrency(action.amount.currency),
-    amount: action.amount.rawValue,
-  };
+export function encodeMint(action: Mint): Value {
+  return new RecordView(
+    {
+      recipient: encodeAddress(action.recipient),
+      currency: encodeCurrency(action.amount.currency),
+      amount: action.amount.rawValue,
+    },
+    "text",
+  );
 }
 
 export interface Transfer {
@@ -41,12 +50,15 @@ export interface Transfer {
   amount: FungibleAssetValue;
 }
 
-export function encodeTransfer(action: Transfer): Encodable {
-  return {
-    recipient: encodeAddress(action.recipient),
-    currency: encodeCurrency(action.amount.currency),
-    amount: action.amount.rawValue,
-  };
+export function encodeTransfer(action: Transfer): Value {
+  return new RecordView(
+    {
+      recipient: encodeAddress(action.recipient),
+      currency: encodeCurrency(action.amount.currency),
+      amount: action.amount.rawValue,
+    },
+    "text",
+  );
 }
 
-export type CustomAction = Encodable;
+export type CustomAction = Value;

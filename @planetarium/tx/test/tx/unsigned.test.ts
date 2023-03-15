@@ -1,8 +1,11 @@
 import { join } from "node:path";
-import { encode } from "bencodex";
+import { encode, RecordView } from "@planetarium/bencodex";
 import { execa } from "execa";
 import { expect, test } from "vitest";
-import { encodeUnsignedTxWithCustomActions, encodeUnsignedTxWithSystemAction } from "../../src/tx/unsigned";
+import {
+  encodeUnsignedTxWithCustomActions,
+  encodeUnsignedTxWithSystemAction,
+} from "../../src/tx/unsigned";
 import { FOO, key1, key2 } from "./fixtures";
 
 test("encodeUnsignedTxWithSystemAction", async () => {
@@ -27,6 +30,7 @@ test("encodeUnsignedTxWithSystemAction", async () => {
     "dotnet",
     [
       "run",
+      "--no-build",
       "--project",
       join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
       "--",
@@ -72,21 +76,38 @@ test("encodeUnsignedTxWithCustomActions", async () => {
     updatedAddresses: new Set(),
     genesisHash: null,
     customActions: [
-      {
-        type_id: "transfer_asset",
-        values: {
-          amount: [
-            {
-              decimalPlaces: Buffer.from([0x02]),
-              minters: [Buffer.from("47d082a115c63e7b58b1532d20e631538eafadde", "hex")],
-              ticker: "NCG",
-            },
-            1000,
-          ],
-          recipient: Buffer.from("5a533067D0cBa77490268b26195EdB10B990143D", "hex"),
-          sender: Buffer.from("111CB8E18c6D70f5032000c5739c5ac36E793EDB", "hex"),
+      new RecordView(
+        {
+          type_id: "transfer_asset",
+          values: {
+            amount: [
+              new RecordView(
+                {
+                  decimalPlaces: new Uint8Array([0x02]),
+                  minters: [
+                    new Uint8Array(
+                      Buffer.from(
+                        "47d082a115c63e7b58b1532d20e631538eafadde",
+                        "hex",
+                      ),
+                    ),
+                  ],
+                  ticker: "NCG",
+                },
+                "text",
+              ),
+              1000n,
+            ],
+            recipient: new Uint8Array(
+              Buffer.from("5a533067D0cBa77490268b26195EdB10B990143D", "hex"),
+            ),
+            sender: new Uint8Array(
+              Buffer.from("111CB8E18c6D70f5032000c5739c5ac36E793EDB", "hex"),
+            ),
+          },
         },
-      },
+        "text",
+      ),
     ],
   });
   const payload = encode(encoded);
@@ -94,6 +115,7 @@ test("encodeUnsignedTxWithCustomActions", async () => {
     "dotnet",
     [
       "run",
+      "--no-build",
       "--project",
       join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
       "--",
@@ -102,7 +124,9 @@ test("encodeUnsignedTxWithCustomActions", async () => {
       "--unsigned",
       "-",
     ],
-    { input: payload },
+    {
+      input: Buffer.from(payload),
+    },
   );
   expect(JSON.parse(stdout)).toStrictEqual({
     id: "f03738f2d844906e1e5f889b6445e4cef6833444c2a5fc335a15fad074da8f2e",
@@ -117,12 +141,10 @@ test("encodeUnsignedTxWithCustomActions", async () => {
           "\ufeffamount": [
             {
               "\ufeffdecimalPlaces": "0x02",
-              "\ufeffminters": [
-                "0x47d082a115c63e7b58b1532d20e631538eafadde"
-              ],
+              "\ufeffminters": ["0x47d082a115c63e7b58b1532d20e631538eafadde"],
               "\ufeffticker": "\ufeffNCG",
             },
-            "1000"
+            "1000",
           ],
           "\ufeffsender": "0x111cb8e18c6d70f5032000c5739c5ac36e793edb",
           "\ufeffrecipient": "0x5a533067d0cba77490268b26195edb10b990143d",
