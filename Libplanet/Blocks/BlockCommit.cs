@@ -19,7 +19,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] HeightKey = { 0x48 };    // 'H'
         private static readonly byte[] RoundKey = { 0x52 };     // 'R'
         private static readonly byte[] BlockHashKey = { 0x68 }; // 'h'
-        private static readonly byte[] VotesKey = { 0x56 };
+        private static readonly byte[] VotesKey = { 0x56 };     // 'V'
 
         private static Codec _codec = new Codec();
 
