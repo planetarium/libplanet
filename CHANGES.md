@@ -299,7 +299,7 @@ and the specification might change in the near future.
 Version 0.50.4
 --------------
 
-To be released.
+Released on March 16, 2023.
 
  -  Fixed `Validator.Encoded` to use a proper type `Bencodex.Types.Integer`
     for `Validator.Power` instead of `Bencodex.Types.Binary`.  [[#2949]]
