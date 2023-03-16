@@ -46,7 +46,7 @@ namespace Libplanet.Consensus
         public Validator(Bencodex.Types.Dictionary encoded)
             : this(
                 new PublicKey(encoded.GetValue<Binary>(PublicKeyKey).ByteArray),
-                new BigInteger(encoded.GetValue<Binary>(PowerKey).ToByteArray()))
+                new BigInteger(encoded.GetValue<Integer>(PowerKey)))
         {
         }
 
@@ -69,7 +69,7 @@ namespace Libplanet.Consensus
         [JsonIgnore]
         public Bencodex.Types.Dictionary Encoded => Dictionary.Empty
             .Add(PublicKeyKey, PublicKey.Format(true))
-            .Add(PowerKey, Power.ToByteArray());
+            .Add(PowerKey, Power);
 
         public static bool operator ==(Validator obj, Validator other)
         {
