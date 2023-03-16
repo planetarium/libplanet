@@ -24,6 +24,7 @@ npm_packages=(
   "@planetarium/cli"
   "@planetarium/tx"
   "@planetarium/account"
+  "@planetarium/account-web3-secret-storage"
 )
 
 # https://docs.microsoft.com/en-us/dotnet/core/rid-catalog

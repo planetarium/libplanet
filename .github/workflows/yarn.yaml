@@ -1,3 +1,4 @@
+name: yarn
 on:
   push:
     branches: ["*"]

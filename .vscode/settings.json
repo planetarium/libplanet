@@ -52,10 +52,16 @@
   "eslint.nodePath": ".yarn/sdks",
   "[typescript]": {
     "editor.defaultFormatter": "rome.rome",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.rome": true
+    }
   },
   "[javascript]": {
     "editor.defaultFormatter": "rome.rome",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.rome": true
+    }
   }
 }
