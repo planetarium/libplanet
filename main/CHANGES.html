@@ -63,6 +63,11 @@
 
 <h2 id="version-0530">Version 0.53.0</h2>
 <p>To be released.</p>
+<p>Since 0.53.0, we officially provide
+<em><a href="https://www.npmjs.com/package/@planetarium/account-web3-secret-storage">@planetarium/account-web3-secret-storage</a></em>, an npm package for providing
+<code>Web3KeyStore</code> which implements Ethereum Web3 Secret Storage (corresponds to
+<code>Libplanet.KeyStore.Web3KeyStore</code>) and complies with the <code>KeyStore</code> interface
+defined in <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em>.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed state completion feature with related classes as below.  [<a href="https://github.com/planetarium/libplanet/pull/2703">#2703</a>]
@@ -106,8 +111,26 @@
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(@planetarium/account) Added key store abstractions.  [<a href="https://github.com/planetarium/libplanet/pull/2915">#2915</a>]
+<ul>
+<li>Added <code>AccountDeletion</code> type.</li>
+<li>Added <code>AccountGeneration</code> type.</li>
+<li>Added <code>AccountImportation</code> type.</li>
+<li>Added <code>AccountMetadata</code> type.</li>
+<li>Added <code>AccountRetrieval</code> type.</li>
+<li>Added <code>ImportableKeyStore</code> interface.</li>
+<li>Added <code>KeyStore</code> interface.</li>
+<li>Added <code>MutableKeyStore</code> interface.</li>
+</ul>
+</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account-web3-secret-storage">@planetarium/account-web3-secret-storage</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2915">#2915</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0520">Version 0.52.0</h2>
 <p>Released on March 3, 2022.</p>
@@ -273,7 +296,7 @@ given block.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#287
 <li>(Libplanet.Explorer) Fixed a bug where <code>stateQuery</code> hadn't work
 correctly in some situations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
 </ul>
-<h3 id="dependencies">Dependencies</h3>
+<h3 id="dependencies-1">Dependencies</h3>
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2848">#2848</a>]</li>
 </ul>
@@ -382,7 +405,7 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/2794">#2794</a>
 with an empty <code>BlocksMsg</code> if no requested <code>Block&lt;T&gt;</code>s are found.
 [<a href="https://github.com/planetarium/libplanet/issues/2800">#2800</a>, <a href="https://github.com/planetarium/libplanet/pull/2803">#2803</a>]</li>
 </ul>
-<h3 id="dependencies-1">Dependencies</h3>
+<h3 id="dependencies-2">Dependencies</h3>
 <ul>
 <li>(@planetarium/tx) Because <code>globalThis.crypto</code> API is available since
 Node.js version 19.0.0, it now explicitly requires 19.0.0 or later.
@@ -456,7 +479,7 @@ sometimes block data is in undefined state due to data corruption.
 <code>TimeSpan.MaxValue</code> as its argument would not behave properly and throw an
 <code>ArgumentOutOfRangeException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2783">#2783</a>, <a href="https://github.com/planetarium/libplanet/pull/2784">#2784</a>]</li>
 </ul>
-<h3 id="dependencies-2">Dependencies</h3>
+<h3 id="dependencies-3">Dependencies</h3>
 <ul>
 <li>Upgrade <em>Bencodex</em> from
 <a href="https://www.nuget.org/packages/Bencodex/0.7.0-dev.20220923062845">0.7.0-dev.20220923062845</a> to
@@ -678,7 +701,7 @@ and <code>ActionEvaluator&lt;T&gt;</code> directly.  [<a href="https://github.co
 <li>(Libplanet.Net) Fixed a bug where <code>AppProtocolVersion.GetHashCode()</code>
 did not work as intended.  [<a href="https://github.com/planetarium/libplanet/issues/2518">#2518</a>, <a href="https://github.com/planetarium/libplanet/pull/2520">#2520</a>]</li>
 </ul>
-<h3 id="dependencies-3">Dependencies</h3>
+<h3 id="dependencies-4">Dependencies</h3>
 <ul>
 <li>Replaced <em><a href="https://www.nuget.org/packages/BouncyCastle.NetCore/1.8.6">BouncyCastle.NetCore 1.8.6</a></em> with
 <em><a href="https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0">BouncyCastle.Cryptography 2.0.0</a></em>.  [<a href="https://github.com/planetarium/libplanet/pull/2571">#2571</a>]</li>
@@ -909,7 +932,7 @@ value equality (rather than reference equality).  [<a href="https://github.com/p
 <li>Interface methods <code>IComparable.CompareTo()</code> and
 <code>IComparable&lt;T&gt;.CompareTo()</code> for <code>Address</code> are now accessible.  [<a href="https://github.com/planetarium/libplanet/pull/2384">#2384</a>]</li>
 </ul>
-<h3 id="dependencies-4">Dependencies</h3>
+<h3 id="dependencies-5">Dependencies</h3>
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/tx">@planetarium/tx</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
 <li>Now depends on <a href="https://www.nuget.org/packages/Bencodex.Json/0.7.0-dev.20220923062845"><em>Bencodex.Json</em>
@@ -974,7 +997,7 @@ to <code>max-transactions-bytes</code> and <code>max-genesis-bytes</code> to
 <li>(Libplanet.Explorer) Added <code>LibplanetExplorerSchema</code> class.
 [<a href="https://github.com/planetarium/libplanet/issues/2065">#2065</a>, [#2198]]</li>
 </ul>
-<h3 id="dependencies-5">Dependencies</h3>
+<h3 id="dependencies-6">Dependencies</h3>
 <ul>
 <li>Upgraded <em>Bencodex</em> from <a href="https://www.nuget.org/packages/Bencodex/0.4.0">0.4.0</a> to <a href="https://www.nuget.org/packages/Bencodex/0.5.0">0.5.0</a>.
 [<a href="https://github.com/planetarium/libplanet/pull/2283">#2283</a>]</li>
@@ -1640,7 +1663,7 @@ have public constructors.</li>
 <li>(Libplanet.Net) <code>IMessageCodec.Encode()</code> now requires a <em>matching</em>
 <code>PrivateKey</code> to be provided for <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1904">#1904</a>, <a href="https://github.com/planetarium/libplanet/pull/1905">#1905</a>]</li>
 </ul>
-<h3 id="dependencies-6">Dependencies</h3>
+<h3 id="dependencies-7">Dependencies</h3>
 <ul>
 <li>No longer depends on <em>Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
 <li>No longer depends on <em>Equals.Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
@@ -1824,7 +1847,7 @@ using <code>NetMQ</code> directly.  [<a href="https://github.com/planetarium/lib
 <li>(Libplanet.Net) Fixed a leak in handling <code>DealerSocket</code>s inside
 <code>NetMQTransport.DoBroadcast()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1819">#1819</a>, <a href="https://github.com/planetarium/libplanet/pull/1825">#1825</a>]</li>
 </ul>
-<h3 id="dependencies-7">Dependencies</h3>
+<h3 id="dependencies-8">Dependencies</h3>
 <ul>
 <li>(Libplanet.Extensions.Cocona) Upgraded <em>Cocona.Lite</em> from 1.5.* to
 <a href="https://www.nuget.org/packages/Cocona.Lite/1.6.0">1.6.*</a>.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
@@ -1958,7 +1981,7 @@ synchronization mechanisms.  [<a href="https://github.com/planetarium/libplanet/
 <li>New log output tagged with <code>Metric</code> added to measure evaluation time for
 individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/planetarium/libplanet/issues/1755">#1755</a>, <a href="https://github.com/planetarium/libplanet/pull/1758">#1758</a>]</li>
 </ul>
-<h3 id="dependencies-8">Dependencies</h3>
+<h3 id="dependencies-9">Dependencies</h3>
 <ul>
 <li><em>Libplanet.Net</em> assembly is now distributed as a seaprate NuGet package:
 <em><a href="https://www.nuget.org/packages/Libplanet.Net/">Libplanet.Net</a></em>.  [<a href="https://github.com/planetarium/libplanet/issues/1421">#1421</a>, <a href="https://github.com/planetarium/libplanet/pull/1760">#1760</a>]</li>
@@ -2306,7 +2329,7 @@ the bucket is empty instead of faulting.  [<a href="https://github.com/planetari
 <li><code>TxCompletion.Demand()</code> no longer requests <code>Transaction&lt;T&gt;</code>s already in
 storage.  [<a href="https://github.com/planetarium/libplanet/pull/1649">#1649</a>]</li>
 </ul>
-<h3 id="dependencies-9">Dependencies</h3>
+<h3 id="dependencies-10">Dependencies</h3>
 <ul>
 <li>Upgraded <em>Bencodex</em> from 0.4.0-dev.20211123080042+d7f6c810 to
 <a href="https://www.nuget.org/packages/Bencodex/0.4.0">0.4.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/1636">#1636</a>]</li>
@@ -2361,7 +2384,7 @@ be serialized and deserialized.  [<a href="https://github.com/planetarium/libpla
 when inner action's <code>.PlainValue</code> returns other value than
 <code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1628">#1628</a>]</li>
 </ul>
-<h3 id="dependencies-10">Dependencies</h3>
+<h3 id="dependencies-11">Dependencies</h3>
 <ul>
 <li><em>Libplanet.Stun</em> assembly is now distributed as a seaprate NuGet package:
 <a href="https://www.nuget.org/packages/Libplanet.Stun/"><em>Libplanet.Stun</em></a>.  [<a href="https://github.com/planetarium/libplanet/issues/813">#813</a>, <a href="https://github.com/planetarium/libplanet/pull/1279">#1279</a>, <a href="https://github.com/planetarium/libplanet/pull/1625">#1625</a>]</li>
