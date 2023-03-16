@@ -6,6 +6,11 @@ Version 0.50.4
 
 To be released.
 
+ -  Fixed `Validator.Encoded` to use a proper type `Bencodex.Types.Integer`
+    for `Validator.Power` instead of `Bencodex.Types.Binary`.  [[#2949]]
+
+[#2949]: https://github.com/planetarium/libplanet/pull/2949
+
 
 Version 0.50.3
 --------------
