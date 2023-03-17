@@ -12,7 +12,7 @@ import {
   OriginType,
   ScheduleKeyDeletionCommand,
 } from "@aws-sdk/client-kms";
-import { PublicKey, Signature } from "@planetarium/account";
+import { PublicKey } from "@planetarium/account";
 import { AggregateError } from "es-aggregate-error";
 import { randomUUID } from "node:crypto";
 import { hostname, userInfo } from "node:os";
@@ -20,9 +20,9 @@ import { inspect } from "node:util";
 import { afterEach, describe, expect, test } from "vitest";
 
 const envsConfigured =
-  process.env.AWS_ACCESS_KEY_ID &&
-  process.env.AWS_SECRET_ACCESS_KEY &&
-  process.env.AWS_REGION;
+  !!process.env.AWS_ACCESS_KEY_ID &&
+  !!process.env.AWS_SECRET_ACCESS_KEY &&
+  !!process.env.AWS_REGION;
 
 interface FixtureKey {
   keyId: AwsKmsKeyId;
@@ -33,14 +33,16 @@ interface FixtureKey {
 
 describe.runIf(envsConfigured)("AwsKmsKeyStore", async () => {
   const client = new KMSClient({});
-  console.info("The below tests are run on the following AWS session:");
-  console.table({
-    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-    AWS_REGION: process.env.AWS_REGION,
-  });
+  if (envsConfigured) {
+    console.info("The below tests are run on the following AWS session:");
+    console.table({
+      AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+      AWS_REGION: process.env.AWS_REGION,
+    });
+  }
 
   const listCmd = new ListKeysCommand({ Limit: 1000 });
-  const keysList = await client.send(listCmd);
+  const keysList = envsConfigured ? await client.send(listCmd) : { Keys: null };
   const listWindow = Math.max((keysList.Keys ?? []).length / 2, 2);
   const testSessionId = randomUUID();
   const store = new AwsKmsKeyStore(client, {

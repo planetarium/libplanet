@@ -13,7 +13,7 @@
     "build": "yarn && nanobundle build",
     "prepack": "yarn && yarn build",
     "dev": "yarn test",
-    "test": "yarn && yarn run -T tsc -p tsconfig.json && vitest run; printf \"\\033[41;97mNOTE: running this test suite too many times may be costly, as this creates and deletes AWS KMS keys during testing. KMS keys are prorated per hour for the price of \\$1.00 per key.\\033[0m\n\" > /dev/stderr",
+    "test": "bash -c 'yarn && yarn run -T tsc -p tsconfig.json && vitest run; status=$?; printf \"\\033[41;97mNOTE: running this test suite too many times may be costly, as this creates and deletes AWS KMS keys during testing. KMS keys are prorated per hour for the price of \\$1.00 per key.\\033[0m\n\" > /dev/stderr; exit $status'",
     "coverage": "yarn && vitest run --coverage"
   },
   "repository": {

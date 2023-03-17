@@ -6,11 +6,16 @@ Version 0.53.0
 
 To be released.
 
-Since 0.53.0, we officially provide
-*[@planetarium/account-web3-secret-storage]*, an npm package for providing
-`Web3KeyStore` which implements Ethereum Web3 Secret Storage (corresponds to
-`Libplanet.KeyStore.Web3KeyStore`) and complies with the `KeyStore` interface
-defined in *[@planetarium/account]*.
+Since 0.53.0, we officially provide *[@planetarium/account-web3-secret-storage]*
+and *[@planetarium/account-aws-kms]*, which are npm packages that provides
+`KeyStore` implementations that comply with *[@planetarium/account]*.
+
+ -  *@planetarium/account-web3-secret-storage*: An npm package for providing
+    `Web3KeyStore` which implements Ethereum Web3 Secret Storage (corresponds to
+    `Libplanet.KeyStore.Web3KeyStore`).
+
+ -  *@planetarium/account-aws-kms*: An npm package for providing
+    `AwsKmsKeyStore` which implements `Account` and uses AWS KMS as the backend.
 
 Due to changes in [[#2961]] and [[#2970]], a network ran with
 [Libplanet 0.51.0] or [Libplanet 0.52.0] is not compatible with this version.
@@ -101,11 +106,16 @@ deployment if possible.
 
 ### Behavioral changes
 
+ -  (@planetarium/account) `Signature.fromBytes()` and `Signature.fromHex()`
+    no more accept signatures with high S.  Signatures with high S need to be
+    normalized first so that they get rid of high S.  [[#2962]]
+
 ### Bug fixes
 
 ### Dependencies
 
  -  Added *[@planetarium/account-web3-secret-storage]* npm package.  [[#2915]]
+ -  Added *[@planetarium/account-aws-kms]* npm package.  [[#2962]]
 
 ### CLI tools
 
@@ -117,8 +127,10 @@ deployment if possible.
 [#2955]: https://github.com/planetarium/libplanet/pull/2955
 [#2959]: https://github.com/planetarium/libplanet/pull/2959
 [#2961]: https://github.com/planetarium/libplanet/pull/2961
+[#2962]: https://github.com/planetarium/libplanet/pull/2962
 [#2970]: https://github.com/planetarium/libplanet/pull/2970
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
+[@planetarium/account-aws-kms]: https://www.npmjs.com/package/@planetarium/account-aws-kms
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
 [disjukr/bencodex]: https://github.com/disjukr/bencodex
 

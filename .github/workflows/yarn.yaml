@@ -27,12 +27,12 @@ jobs:
     - name: Run yarn test w/o AWS cred for PR unrelated to account-aws-kms
       if: |
         github.event_name == 'pull_request' &&
-        steps.account-aws-kms-changes.outputs.any_changes != 'true'
+        steps.account-aws-kms-changes.outputs.any_changed != 'true'
       run: yarn test
     - name: Run yarn test w/ AWS cred for push and PR related to account-aws-kms
       if: |
         github.event_name != 'pull_request' ||
-        steps.account-aws-kms-changes.outputs.any_changes == 'true'
+        steps.account-aws-kms-changes.outputs.any_changed == 'true'
       run: yarn test
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
