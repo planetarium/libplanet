@@ -1,6 +1,6 @@
-import * as secp256k1 from "@noble/secp256k1";
 import { Message, hashMessage } from "./Message.js";
 import Signature from "./Signature.js";
+import * as secp256k1 from "@noble/secp256k1";
 
 export type PublicKeyForm = "compressed" | "uncompressed";
 

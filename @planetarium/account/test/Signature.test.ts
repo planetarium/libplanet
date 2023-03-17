@@ -1,6 +1,6 @@
 import { Signature } from "../src/Signature";
-import { describe, expect, test } from "vitest";
 import { inspect } from "node:util";
+import { describe, expect, test } from "vitest";
 
 describe("Signature", () => {
   const sigBytes = new Uint8Array([
@@ -26,12 +26,32 @@ describe("Signature", () => {
     inputBytes.fill(0, 0, inputBytes.length);
     expect(sig.toBytes()).toStrictEqual(sigBytes);
     expect(sig.toHex()).toBe(sigHex);
+
+    // A signature with high S is disallowed:
+    const sigWithHighS = new Uint8Array([
+      0x30, 0x45, 0x02, 0x20, 0x38, 0x43, 0x16, 0xdb, 0x7c, 0xfe, 0x12, 0x60,
+      0x6e, 0xa0, 0x54, 0x29, 0xd4, 0x4c, 0x10, 0xe0, 0xff, 0x8b, 0xd2, 0x8c,
+      0xc8, 0x73, 0xff, 0x10, 0x41, 0x4e, 0xbc, 0x40, 0x10, 0xe5, 0x9e, 0xe7,
+      0x02, 0x21, 0x00, 0xb7, 0xf4, 0x80, 0xd3, 0xcc, 0x9f, 0x65, 0x35, 0xcd,
+      0xe2, 0x96, 0x02, 0x63, 0xf7, 0x80, 0xeb, 0x82, 0xae, 0x5b, 0xe5, 0xdb,
+      0xba, 0x1d, 0x43, 0xaa, 0x16, 0x35, 0x62, 0xc6, 0x75, 0x85, 0xa7,
+    ]);
+    expect(() => Signature.fromBytes(sigWithHighS)).throws(
+      RangeError,
+      "high S",
+    );
   });
 
   test("fromHex()", () => {
     const sig = Signature.fromHex(sigHex);
     expect(sig.toHex()).toBe(sigHex);
     expect(sig.toBytes()).toStrictEqual(sigBytes);
+
+    // A signature with high S is disallowed:
+    const sigWithHighS =
+      "30450220384316db7cfe12606ea05429d44c10e0ff8bd28cc873ff10414ebc4010e59ee" +
+      "7022100b7f480d3cc9f6535cde2960263f780eb82ae5be5dbba1d43aa163562c67585a7";
+    expect(() => Signature.fromHex(sigWithHighS)).throws(RangeError, "high S");
   });
 
   test("toBytes()", () => {

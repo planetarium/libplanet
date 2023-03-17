@@ -4,6 +4,11 @@ export class Signature {
   readonly #signature: secp256k1.Signature;
 
   private constructor(signature: secp256k1.Signature) {
+    if (signature.hasHighS())
+      throw new RangeError(
+        "A signature with high S is unsupported; " +
+          "normalize it to get rid of high S",
+      );
     this.#signature = signature;
   }
 
