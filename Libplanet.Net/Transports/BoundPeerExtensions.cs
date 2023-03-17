@@ -68,16 +68,22 @@ namespace Libplanet.Net.Transports
             return $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
         }
 
+        /// <summary>
+        /// Get IPv4 TCP address <see cref="string"/> of given <see cref="BoundPeer"/>
+        /// to be used on NetMQ transport.
+        /// </summary>
+        /// <param name="peer">The <see cref="BoundPeer"/> to get TCP NetMQ address.</param>
+        /// <returns>IPv4 TCP address <see cref="string"/> of given <paramref name="peer"/>.
+        /// </returns>
+        /// <exception cref="TransportException">Thrown if failed to resolve address for given peer.
+        /// </exception>
         internal static async Task<string> ResolveNetMQAddressAsync(this BoundPeer peer)
         {
             string addr = peer.EndPoint.Host;
 
             IPAddress[] addresses = await Dns.GetHostAddressesAsync(addr).ConfigureAwait(false);
 
-            // FIXME Dns.GetHostAddressesAsync() seems to always return at least one ip or throw
-            // `SocketException`. if we can be sure, also should fix it to always assume there
-            // is at least one instead of throwing additional `TransportException`.
-            // And, for now IPs are restricted with IPv4, and have to be fixed later on.
+            // FIXME IPs are restricted with IPv4 for now, and have to be fixed later on.
             string ipv4 = addresses.FirstOrDefault(
                 addr => addr.AddressFamily is AddressFamily.InterNetwork)?.ToString()
                 ?? throw new TransportException($"Failed to resolve for {addr}");
