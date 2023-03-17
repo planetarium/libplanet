@@ -161,8 +161,7 @@ namespace Libplanet.Blocks
 
                 if (!Votes.IsEmpty)
                 {
-                    var bencodexVotes = Votes.Select(x => x.ByteArray);
-                    dict = dict.Add(VotesKey, new List(bencodexVotes));
+                    dict = dict.Add(VotesKey, new List(Votes.Select(x => x.Bencoded)));
                 }
 
                 return dict;
