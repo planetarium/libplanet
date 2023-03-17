@@ -74,6 +74,7 @@ namespace Libplanet.Consensus
         [JsonIgnore]
         public Address OperatorAddress => PublicKey.ToAddress();
 
+        /// <inheritdoc/>
         [JsonIgnore]
         public Bencodex.Types.IValue Bencoded => Dictionary.Empty
             .Add(PublicKeyKey, PublicKey.Format(true))
