@@ -12,12 +12,10 @@ namespace Libplanet.Consensus
     /// A <see cref="Validator"/> consists of operator's <see cref="PublicKey"/>
     /// and its corresponding <see langword="Power"/>.
     /// </summary>
-    public class Validator : IEquatable<Validator>
+    public class Validator : IEquatable<Validator>, IBencodable
     {
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PowerKey = { 0x70 }; // 'p'
-
-        private static Codec _codec = new Codec();
 
         /// <summary>
         /// Creates an instance of <see cref="Validator"/>, with given <paramref name="publicKey"/>
@@ -43,10 +41,20 @@ namespace Libplanet.Consensus
             Power = power;
         }
 
-        public Validator(Bencodex.Types.Dictionary encoded)
+        public Validator(Bencodex.Types.IValue bencoded)
+            : this(bencoded is Bencodex.Types.Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private Validator(Bencodex.Types.Dictionary bencoded)
             : this(
-                new PublicKey(encoded.GetValue<Binary>(PublicKeyKey).ByteArray),
-                new BigInteger(encoded.GetValue<Integer>(PowerKey)))
+                new PublicKey(bencoded.GetValue<Binary>(PublicKeyKey).ByteArray),
+                new BigInteger(bencoded.GetValue<Integer>(PowerKey)))
         {
         }
 
@@ -67,7 +75,7 @@ namespace Libplanet.Consensus
         public Address OperatorAddress => PublicKey.ToAddress();
 
         [JsonIgnore]
-        public Bencodex.Types.Dictionary Encoded => Dictionary.Empty
+        public Bencodex.Types.IValue Bencoded => Dictionary.Empty
             .Add(PublicKeyKey, PublicKey.Format(true))
             .Add(PowerKey, Power);
 

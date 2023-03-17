@@ -31,7 +31,7 @@ namespace Libplanet.Action.Sys
 
         /// <inheritdoc cref="IAction.PlainValue"/>
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add("validator", Validator.Encoded);
+            .Add("validator", Validator.Bencoded);
 
         /// <inheritdoc cref="IAction.LoadPlainValue(IValue)"/>
         public void LoadPlainValue(IValue plainValue)

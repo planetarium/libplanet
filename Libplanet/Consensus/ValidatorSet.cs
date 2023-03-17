@@ -109,7 +109,7 @@ namespace Libplanet.Consensus
         public BigInteger OneThirdPower => TotalPower / 3;
 
         public Bencodex.Types.List Encoded => new Bencodex.Types.List(
-            Validators.Select(validator => validator.Encoded));
+            Validators.Select(validator => validator.Bencoded));
 
         /// <summary>
         /// Gets the validator at given <paramref name="index"/>.

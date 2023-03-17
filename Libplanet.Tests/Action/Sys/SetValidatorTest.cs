@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Action.Sys
             var validator = new Validator(publicKey, power);
             var action = new SetValidator(validator);
             AssertBencodexEqual(
-                Bencodex.Types.Dictionary.Empty.Add("validator", validator.Encoded),
+                Bencodex.Types.Dictionary.Empty.Add("validator", validator.Bencoded),
                 action.PlainValue);
         }
 
@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var validator = new Validator(new PrivateKey().PublicKey, new BigInteger(1));
             var action = new SetValidator();
-            action.LoadPlainValue(Dictionary.Empty.Add("validator", validator.Encoded));
+            action.LoadPlainValue(Dictionary.Empty.Add("validator", validator.Bencoded));
             Assert.Equal(validator, action.Validator);
         }
 
