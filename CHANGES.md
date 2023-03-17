@@ -51,6 +51,9 @@ defined in *[@planetarium/account]*.
         and `ValidatorSet(List)` to `Validator(IValue)`.
      -  Changed `Validator.Encoded` to `Validator.Bencoded`
         and `ValidatorSet.Encoded` to `ValidatorSet.Bencoded`.
+ -  Changed `BlockCommit` to implement `IBencodable`.  [[#2955]]
+     -  Changed `BlockCommit(Dictionary)` to `BlockCommit(IValue)`.
+     -  Changed `BlockCommit.Encoded` to `BlockCommit.Bencoded`.
 
 ### Backward-incompatible network protocol changes
 
@@ -81,6 +84,7 @@ defined in *[@planetarium/account]*.
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
 [#2915]: https://github.com/planetarium/libplanet/pull/2915
 [#2954]: https://github.com/planetarium/libplanet/pull/2954
+[#2955]: https://github.com/planetarium/libplanet/pull/2955
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
 [disjukr/bencodex]: https://github.com/disjukr/bencodex
