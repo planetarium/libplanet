@@ -7648,6 +7648,12 @@ references:
   commentId: T:Libplanet.Blocks.BlockCommit
   fullName: Libplanet.Blocks.BlockCommit
   nameWithType: BlockCommit
+- uid: Libplanet.Blocks.BlockCommit.#ctor(Bencodex.Types.IValue)
+  name: BlockCommit(IValue)
+  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Blocks.BlockCommit.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Blocks.BlockCommit.BlockCommit(Bencodex.Types.IValue)
+  nameWithType: BlockCommit.BlockCommit(IValue)
 - uid: Libplanet.Blocks.BlockCommit.#ctor(System.Byte[])
   name: BlockCommit(Byte[])
   href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit__ctor_System_Byte___
@@ -7673,6 +7679,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockCommit.BlockCommit
   nameWithType: BlockCommit.BlockCommit
+- uid: Libplanet.Blocks.BlockCommit.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Bencoded
+  commentId: P:Libplanet.Blocks.BlockCommit.Bencoded
+  fullName: Libplanet.Blocks.BlockCommit.Bencoded
+  nameWithType: BlockCommit.Bencoded
+- uid: Libplanet.Blocks.BlockCommit.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Bencoded_
+  commentId: Overload:Libplanet.Blocks.BlockCommit.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockCommit.Bencoded
+  nameWithType: BlockCommit.Bencoded
 - uid: Libplanet.Blocks.BlockCommit.BlockHash
   name: BlockHash
   href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_BlockHash
@@ -7699,19 +7718,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockCommit.ByteArray
   nameWithType: BlockCommit.ByteArray
-- uid: Libplanet.Blocks.BlockCommit.Encoded
-  name: Encoded
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Encoded
-  commentId: P:Libplanet.Blocks.BlockCommit.Encoded
-  fullName: Libplanet.Blocks.BlockCommit.Encoded
-  nameWithType: BlockCommit.Encoded
-- uid: Libplanet.Blocks.BlockCommit.Encoded*
-  name: Encoded
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Encoded_
-  commentId: Overload:Libplanet.Blocks.BlockCommit.Encoded
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockCommit.Encoded
-  nameWithType: BlockCommit.Encoded
 - uid: Libplanet.Blocks.BlockCommit.Equals(Libplanet.Blocks.BlockCommit)
   name: Equals(BlockCommit)
   href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Equals_Libplanet_Blocks_BlockCommit_
