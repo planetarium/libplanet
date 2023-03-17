@@ -107,6 +107,15 @@ defined in <em><a href="https://www.npmjs.com/package/@planetarium/account">@pla
 <li>The return type of <code>encodeTransfer()</code> became <code>Value</code> (was <code>Encodable</code>).</li>
 </ul>
 </li>
+<li>(Libplanet.Net) Changed <code>Validator</code> and <code>ValidatorSet</code> to implement
+<code>IBencodable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2954">#2954</a>]
+<ul>
+<li>Changed <code>Validator(Dictionary)</code> to <code>Validator(IValue)</code>
+and <code>ValidatorSet(List)</code> to <code>Validator(IValue)</code>.</li>
+<li>Changed <code>Validator.Encoded</code> to <code>Validator.Bencoded</code>
+and <code>ValidatorSet.Encoded</code> to <code>ValidatorSet.Bencoded</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

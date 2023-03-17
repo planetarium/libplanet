@@ -11297,12 +11297,12 @@ references:
   commentId: T:Libplanet.Consensus.Validator
   fullName: Libplanet.Consensus.Validator
   nameWithType: Validator
-- uid: Libplanet.Consensus.Validator.#ctor(Bencodex.Types.Dictionary)
-  name: Validator(Dictionary)
-  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator__ctor_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Consensus.Validator.#ctor(Bencodex.Types.Dictionary)
-  fullName: Libplanet.Consensus.Validator.Validator(Bencodex.Types.Dictionary)
-  nameWithType: Validator.Validator(Dictionary)
+- uid: Libplanet.Consensus.Validator.#ctor(Bencodex.Types.IValue)
+  name: Validator(IValue)
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Consensus.Validator.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Consensus.Validator.Validator(Bencodex.Types.IValue)
+  nameWithType: Validator.Validator(IValue)
 - uid: Libplanet.Consensus.Validator.#ctor(Libplanet.Crypto.PublicKey,System.Numerics.BigInteger)
   name: Validator(PublicKey, BigInteger)
   href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator__ctor_Libplanet_Crypto_PublicKey_System_Numerics_BigInteger_
@@ -11316,19 +11316,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.Validator.Validator
   nameWithType: Validator.Validator
-- uid: Libplanet.Consensus.Validator.Encoded
-  name: Encoded
-  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Encoded
-  commentId: P:Libplanet.Consensus.Validator.Encoded
-  fullName: Libplanet.Consensus.Validator.Encoded
-  nameWithType: Validator.Encoded
-- uid: Libplanet.Consensus.Validator.Encoded*
-  name: Encoded
-  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Encoded_
-  commentId: Overload:Libplanet.Consensus.Validator.Encoded
+- uid: Libplanet.Consensus.Validator.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Bencoded
+  commentId: P:Libplanet.Consensus.Validator.Bencoded
+  fullName: Libplanet.Consensus.Validator.Bencoded
+  nameWithType: Validator.Bencoded
+- uid: Libplanet.Consensus.Validator.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Bencoded_
+  commentId: Overload:Libplanet.Consensus.Validator.Bencoded
   isSpec: "True"
-  fullName: Libplanet.Consensus.Validator.Encoded
-  nameWithType: Validator.Encoded
+  fullName: Libplanet.Consensus.Validator.Bencoded
+  nameWithType: Validator.Bencoded
 - uid: Libplanet.Consensus.Validator.Equals(Libplanet.Consensus.Validator)
   name: Equals(Validator)
   href: api/Libplanet.Consensus.Validator.html#Libplanet_Consensus_Validator_Equals_Libplanet_Consensus_Validator_
@@ -11451,12 +11451,12 @@ references:
   commentId: M:Libplanet.Consensus.ValidatorSet.#ctor
   fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet()
   nameWithType: ValidatorSet.ValidatorSet()
-- uid: Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.List)
-  name: ValidatorSet(List)
-  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor_Bencodex_Types_List_
-  commentId: M:Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.List)
-  fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet(Bencodex.Types.List)
-  nameWithType: ValidatorSet.ValidatorSet(List)
+- uid: Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.IValue)
+  name: ValidatorSet(IValue)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Consensus.ValidatorSet.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet(Bencodex.Types.IValue)
+  nameWithType: ValidatorSet.ValidatorSet(IValue)
 - uid: Libplanet.Consensus.ValidatorSet.#ctor(System.Collections.Generic.List{Libplanet.Consensus.Validator})
   name: ValidatorSet(List<Validator>)
   href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet__ctor_System_Collections_Generic_List_Libplanet_Consensus_Validator__
@@ -11473,6 +11473,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.ValidatorSet.ValidatorSet
   nameWithType: ValidatorSet.ValidatorSet
+- uid: Libplanet.Consensus.ValidatorSet.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Bencoded
+  commentId: P:Libplanet.Consensus.ValidatorSet.Bencoded
+  fullName: Libplanet.Consensus.ValidatorSet.Bencoded
+  nameWithType: ValidatorSet.Bencoded
+- uid: Libplanet.Consensus.ValidatorSet.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Bencoded_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.Bencoded
+  nameWithType: ValidatorSet.Bencoded
 - uid: Libplanet.Consensus.ValidatorSet.Contains(Libplanet.Consensus.Validator)
   name: Contains(Validator)
   href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Contains_Libplanet_Consensus_Validator_
@@ -11486,19 +11499,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.ValidatorSet.Contains
   nameWithType: ValidatorSet.Contains
-- uid: Libplanet.Consensus.ValidatorSet.Encoded
-  name: Encoded
-  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Encoded
-  commentId: P:Libplanet.Consensus.ValidatorSet.Encoded
-  fullName: Libplanet.Consensus.ValidatorSet.Encoded
-  nameWithType: ValidatorSet.Encoded
-- uid: Libplanet.Consensus.ValidatorSet.Encoded*
-  name: Encoded
-  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Encoded_
-  commentId: Overload:Libplanet.Consensus.ValidatorSet.Encoded
-  isSpec: "True"
-  fullName: Libplanet.Consensus.ValidatorSet.Encoded
-  nameWithType: ValidatorSet.Encoded
 - uid: Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)
   name: Equals(ValidatorSet)
   href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Equals_Libplanet_Consensus_ValidatorSet_
