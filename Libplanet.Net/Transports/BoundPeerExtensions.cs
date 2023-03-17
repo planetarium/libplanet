@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -77,11 +78,9 @@ namespace Libplanet.Net.Transports
             // `SocketException`. if we can be sure, also should fix it to always assume there
             // is at least one instead of throwing additional `TransportException`.
             // And, for now IPs are restricted with IPv4, and have to be fixed later on.
-            IPAddress ip = addresses.FirstOrDefault()
+            string ipv4 = addresses.FirstOrDefault(
+                addr => addr.AddressFamily is AddressFamily.InterNetwork)?.ToString()
                 ?? throw new TransportException($"Failed to resolve for {addr}");
-            string ipv4 = ip.Equals(IPAddress.IPv6Loopback)
-                ? IPAddress.Loopback.ToString()
-                : ip.MapToIPv4().ToString();
             int port = peer.EndPoint.Port;
 
             return $"tcp://{ipv4}:{port}";
