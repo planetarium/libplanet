@@ -61,7 +61,7 @@ namespace Libplanet.Action
             {
                 totalDelta = totalDelta.SetItem(
                     validatorSetKey,
-                    validatorSet.Encoded
+                    validatorSet.Bencoded
                 );
             }
 

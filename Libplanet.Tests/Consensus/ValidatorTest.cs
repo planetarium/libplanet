@@ -27,7 +27,7 @@ namespace Libplanet.Tests.Consensus
         {
             PublicKey publicKey = new PrivateKey().PublicKey;
             Validator validator = new Validator(publicKey, BigInteger.One);
-            Validator unmarshalledValidator = new Validator(validator.Encoded);
+            Validator unmarshalledValidator = new Validator(validator.Bencoded);
             Assert.Equal(validator, unmarshalledValidator);
             Assert.Equal(validator.PublicKey, unmarshalledValidator.PublicKey);
             Assert.Equal(validator.Power, unmarshalledValidator.Power);

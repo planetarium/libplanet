@@ -45,6 +45,12 @@ defined in *[@planetarium/account]*.
      -  The return type of `encodeCurrency()` became `Value` (was `Encodable`).
      -  The return type of `encodeMint()` became `Value` (was `Encodable`).
      -  The return type of `encodeTransfer()` became `Value` (was `Encodable`).
+ -  (Libplanet.Net) Changed `Validator` and `ValidatorSet` to implement
+    `IBencodable`.  [[#2954]]
+     -  Changed `Validator(Dictionary)` to `Validator(IValue)`
+        and `ValidatorSet(List)` to `Validator(IValue)`.
+     -  Changed `Validator.Encoded` to `Validator.Bencoded`
+        and `ValidatorSet.Encoded` to `ValidatorSet.Bencoded`.
 
 ### Backward-incompatible network protocol changes
 
@@ -74,6 +80,7 @@ defined in *[@planetarium/account]*.
 
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
 [#2915]: https://github.com/planetarium/libplanet/pull/2915
+[#2954]: https://github.com/planetarium/libplanet/pull/2954
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
 [disjukr/bencodex]: https://github.com/disjukr/bencodex
