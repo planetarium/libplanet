@@ -399,6 +399,17 @@ and the specification might change in the near future.
 [#2882]: https://github.com/planetarium/libplanet/pull/2882
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
+Version 0.50.5
+--------------
+
+Released on March 17, 2023.
+
+### Bug fixes
+
+-  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
+   because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
+
+[#2956]: https://github.com/planetarium/libplanet/pull/2956
 
 Version 0.50.4
 --------------
