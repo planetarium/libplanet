@@ -57,6 +57,12 @@ defined in *[@planetarium/account]*.
  -  Changed `BlockHash` to implement `IBencodable`.  [[#2959]]
      -  Changed `BlockHash(Binary)` to `BlockHash(IValue)`.
      -  Added `BlockHash.Bencoded` property.
+ -  (Libplanet.Net) Changed `VoteMetadata` and `Vote` to implement
+    `IBencodable`.  [[#2961]]
+     -  Changed `VoteMetadata(Dictionary)` to `VoteMetadata(IValue)`
+        and `Vote(Dictionary)` to `Vote(IValue)`.
+     -  Changed `VoteMetadata.Encoded` to `VoteMetadata.Bencoded`
+        and `Vote.Encoded` to `Vote.Bencoded`.
 
 ### Backward-incompatible network protocol changes
 
@@ -89,6 +95,7 @@ defined in *[@planetarium/account]*.
 [#2954]: https://github.com/planetarium/libplanet/pull/2954
 [#2955]: https://github.com/planetarium/libplanet/pull/2955
 [#2959]: https://github.com/planetarium/libplanet/pull/2959
+[#2961]: https://github.com/planetarium/libplanet/pull/2961
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
 [disjukr/bencodex]: https://github.com/disjukr/bencodex
