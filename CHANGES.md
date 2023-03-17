@@ -399,6 +399,12 @@ and the specification might change in the near future.
 [#2882]: https://github.com/planetarium/libplanet/pull/2882
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
+Version 0.50.6
+--------------
+
+To be released.
+
+
 Version 0.50.5
 --------------
 
