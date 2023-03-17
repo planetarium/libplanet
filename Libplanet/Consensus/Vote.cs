@@ -16,7 +16,7 @@ namespace Libplanet.Consensus
     /// <summary>
     /// Represents a <see cref="Vote"/> from a validator for consensus.
     /// </summary>
-    public class Vote : IVoteMetadata, IEquatable<Vote>
+    public class Vote : IVoteMetadata, IEquatable<Vote>, IBencodable
     {
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
 
@@ -73,10 +73,20 @@ namespace Libplanet.Consensus
         {
         }
 
+        public Vote(Bencodex.Types.IValue bencoded)
+            : this(bencoded is Bencodex.Types.Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
 #pragma warning disable SA1118 // The parameter spans multiple lines
-        public Vote(Dictionary encoded)
+        private Vote(Bencodex.Types.Dictionary encoded)
             : this(
-                new VoteMetadata(encoded),
+                new VoteMetadata((IValue)encoded),
                 encoded.ContainsKey(SignatureKey)
                     ? encoded.GetValue<Binary>(SignatureKey).ToImmutableArray()
                     : ImmutableArray<byte>.Empty)
@@ -108,15 +118,16 @@ namespace Libplanet.Consensus
         /// </summary>
         public ImmutableArray<byte> Signature { get; }
 
+        /// <inheritdoc/>
         [JsonIgnore]
-        public Dictionary Encoded =>
+        public Bencodex.Types.IValue Bencoded =>
             !Signature.IsEmpty
-                ? _metadata.Encoded.Add(SignatureKey, Signature)
-                : _metadata.Encoded;
+                ? ((Bencodex.Types.Dictionary)_metadata.Bencoded).Add(SignatureKey, Signature)
+                : _metadata.Bencoded;
 
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        public byte[] ToByteArray() => _codec.Encode(Encoded);
+        public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         /// <summary>
         /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
