@@ -86,7 +86,7 @@ namespace Libplanet.Consensus
                 height: encoded.GetValue<Integer>(HeightKey),
                 round: encoded.GetValue<Integer>(RoundKey),
                 blockHash: encoded.ContainsKey(BlockHashKey)
-                    ? new BlockHash(encoded.GetValue<Binary>(BlockHashKey).ByteArray)
+                    ? new BlockHash(encoded.GetValue<IValue>(BlockHashKey))
                     : (BlockHash?)null,
                 timestamp: DateTimeOffset.ParseExact(
                     encoded.GetValue<Text>(TimestampKey),

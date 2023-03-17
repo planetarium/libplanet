@@ -67,10 +67,9 @@ namespace Libplanet.Tx
         public TxMetadata(Bencodex.Types.Dictionary dictionary)
         {
             Nonce = dictionary.GetValue<Integer>(NonceKey);
-            GenesisHash
-                = dictionary.TryGetValue(new Binary(GenesisHashKey), out IValue v) && v is Binary g
-                ? new BlockHash(g.ByteArray)
-                : (BlockHash?)null;
+            GenesisHash = dictionary.TryGetValue(new Binary(GenesisHashKey), out IValue v)
+                    ? new BlockHash(v)
+                    : (BlockHash?)null;
             UpdatedAddresses = dictionary.GetValue<List>(UpdatedAddressesKey)
                 .Select(v => new Address(v))
                 .ToImmutableHashSet();
