@@ -71,7 +71,7 @@ namespace Libplanet.Action
                     {
                         new KeyValuePair<string, IValue?>(
                             ValidatorSetKey,
-                            delta.GetValidatorSet().Encoded),
+                            delta.GetValidatorSet().Bencoded),
                     });
             }
 

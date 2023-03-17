@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
+using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -13,7 +14,7 @@ namespace Libplanet.Consensus
     /// A wrapper class for a <see cref="List{T}"/> of <see cref="Validator"/>s.
     /// This standardizes the ordering of validators by <see cref="Address"/>.
     /// </summary>
-    public class ValidatorSet : IEquatable<ValidatorSet>
+    public class ValidatorSet : IEquatable<ValidatorSet>, IBencodable
     {
         /// <summary>
         /// Creates an instance of an empty <see cref="ValidatorSet"/>.
@@ -58,9 +59,19 @@ namespace Libplanet.Consensus
                 .ToImmutableList();
         }
 
+        public ValidatorSet(Bencodex.Types.IValue bencoded)
+            : this(bencoded is Bencodex.Types.List list
+                ? list
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.List)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
         // FIXME: Order should be checked when deserializing.
-        public ValidatorSet(Bencodex.Types.List encoded)
-            : this(encoded.Select(elem => new Validator((Bencodex.Types.Dictionary)elem)).ToList())
+        private ValidatorSet(Bencodex.Types.List bencoded)
+            : this(bencoded.Select(elem => new Validator(elem)).ToList())
         {
         }
 
@@ -108,8 +119,8 @@ namespace Libplanet.Consensus
         /// </summary>
         public BigInteger OneThirdPower => TotalPower / 3;
 
-        public Bencodex.Types.List Encoded => new Bencodex.Types.List(
-            Validators.Select(validator => validator.Bencoded));
+        public Bencodex.Types.IValue Bencoded =>
+            new Bencodex.Types.List(Validators.Select(validator => validator.Bencoded));
 
         /// <summary>
         /// Gets the validator at given <paramref name="index"/>.
