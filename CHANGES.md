@@ -6,6 +6,14 @@ Version 0.51.3
 
 To be released.
 
+ -  (@planetarium/account) Fixed `PublicKey.verify()` to accept signatures
+    with high S besides low S (so that it is consitent with
+    `PublicKey.Verify()`'s behavior from .NET *Libplanet*).  [[#2957]]
+ -  (@planetarium/account) Fixed `PublicKey` to have a human-readable
+    inspection string on Node.js.  [[#2957]]
+
+[#2957]: https://github.com/planetarium/libplanet/pull/2957
+
 
 Version 0.51.2
 --------------

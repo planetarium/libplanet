@@ -72,7 +72,9 @@ export class PublicKey {
       throw new Error(`Expected Signature, but got ${typeof signature}`);
     }
     const msgHash = await hashMessage(message);
-    return secp256k1.verify(signature.toBytes(), msgHash, this.#point);
+    return secp256k1.verify(signature.toBytes(), msgHash, this.#point, {
+      strict: false,
+    });
   }
 
   toRawBytes(form: PublicKeyForm): Uint8Array {
@@ -87,10 +89,14 @@ export class PublicKey {
   toHex(form: PublicKeyForm): string {
     if (form !== "compressed" && form !== "uncompressed") {
       throw new Error(
-        "Invalid public key form: choose 'compressed' or 'uncompressed'"
+        "Invalid public key form: choose 'compressed' or 'uncompressed'",
       );
     }
     return this.#point.toHex(form === "compressed");
+  }
+
+  [Symbol.for("nodejs.util.inspect.custom")]() {
+    return `PublicKey { ${this.toHex("compressed")} }`;
   }
 }
 
