@@ -4,7 +4,14 @@ Libplanet changelog
 Version 0.50.5
 --------------
 
-To be released.
+Released on March 17, 2023.
+
+### Bug fixes
+
+ -  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
+    because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
+
+[#2956]: https://github.com/planetarium/libplanet/pull/2956
 
 
 Version 0.50.4
