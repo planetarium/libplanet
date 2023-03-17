@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 # This workflow checks if the build (compilation) succeeds without any errors.
 # Although the build is done in CircleCI as well, to speed up the build time
 # some checks are turned off in CircleCI.  To conduct the complete checks
@@ -7,8 +8,8 @@
 # - https://github.com/planetarium/libplanet/pull/977
 # - https://github.com/planetarium/libplanet/issues/976
 on:
-  push: []
-  pull_request: []
+  push: null
+  pull_request: null
 name: check-build
 
 jobs:

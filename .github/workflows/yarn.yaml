@@ -1,8 +1,10 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: yarn
 on:
   push:
     branches: ["*"]
     tags: ["*"]
+  pull_request: null
 
 jobs:
   build:
