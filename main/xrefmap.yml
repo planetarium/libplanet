@@ -8132,6 +8132,12 @@ references:
   commentId: T:Libplanet.Blocks.BlockHash
   fullName: Libplanet.Blocks.BlockHash
   nameWithType: BlockHash
+- uid: Libplanet.Blocks.BlockHash.#ctor(Bencodex.Types.IValue)
+  name: BlockHash(IValue)
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Blocks.BlockHash.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Blocks.BlockHash.BlockHash(Bencodex.Types.IValue)
+  nameWithType: BlockHash.BlockHash(IValue)
 - uid: Libplanet.Blocks.BlockHash.#ctor(System.Byte[])
   name: BlockHash(Byte[])
   href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash__ctor_System_Byte___
@@ -8157,6 +8163,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHash.BlockHash
   nameWithType: BlockHash.BlockHash
+- uid: Libplanet.Blocks.BlockHash.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Bencoded
+  commentId: P:Libplanet.Blocks.BlockHash.Bencoded
+  fullName: Libplanet.Blocks.BlockHash.Bencoded
+  nameWithType: BlockHash.Bencoded
+- uid: Libplanet.Blocks.BlockHash.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_Bencoded_
+  commentId: Overload:Libplanet.Blocks.BlockHash.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHash.Bencoded
+  nameWithType: BlockHash.Bencoded
 - uid: Libplanet.Blocks.BlockHash.ByteArray
   name: ByteArray
   href: api/Libplanet.Blocks.BlockHash.html#Libplanet_Blocks_BlockHash_ByteArray

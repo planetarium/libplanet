@@ -79,6 +79,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</div>
+    <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -98,16 +99,53 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonConverter(typeof(BlockHashJsonConverter))]
 [Serializable]
-public readonly struct BlockHash : ISerializable, IEquatable&lt;BlockHash&gt;</code></pre>
+public readonly struct BlockHash : ISerializable, IEquatable&lt;BlockHash&gt;, IBencodable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L69">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockHash__ctor_" data-uid="Libplanet.Blocks.BlockHash.#ctor*"></a>
+  <h4 id="Libplanet_Blocks_BlockHash__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Blocks.BlockHash.#ctor(Bencodex.Types.IValue)">BlockHash(IValue)</h4>
+  <div class="markdown level1 summary"><p>A value type to represent SHA-256 digest of <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash(IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blocks_BlockHash__ctor_Bencodex_Types_IValue__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L63">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L64">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash__ctor_" data-uid="Libplanet.Blocks.BlockHash.#ctor*"></a>
   <h4 id="Libplanet_Blocks_BlockHash__ctor_System_Byte___" data-uid="Libplanet.Blocks.BlockHash.#ctor(System.Byte[])">BlockHash(Byte[])</h4>
@@ -169,7 +207,7 @@ a <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.%23ctor(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L41">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L42">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash__ctor_" data-uid="Libplanet.Blocks.BlockHash.#ctor*"></a>
   <h4 id="Libplanet_Blocks_BlockHash__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Blocks.BlockHash.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">BlockHash(in ImmutableArray&lt;Byte&gt;)</h4>
@@ -227,7 +265,7 @@ a SHA-256 digest of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_Size.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.Size%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L27">View Source</a>
   </span>
   <h4 id="Libplanet_Blocks_BlockHash_Size" data-uid="Libplanet.Blocks.BlockHash.Size">Size</h4>
   <div class="markdown level1 summary"><p>The size of bytes that each <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> consists of.</p>
@@ -260,10 +298,45 @@ a SHA-256 digest of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockHash_Bencoded_" data-uid="Libplanet.Blocks.BlockHash.Bencoded*"></a>
+  <h4 id="Libplanet_Blocks_BlockHash_Bencoded" data-uid="Libplanet.Blocks.BlockHash.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p>A value type to represent SHA-256 digest of <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blocks_BlockHash_Bencoded_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L80">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L95">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_ByteArray_" data-uid="Libplanet.Blocks.BlockHash.ByteArray*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_ByteArray" data-uid="Libplanet.Blocks.BlockHash.ByteArray">ByteArray</h4>
@@ -304,7 +377,7 @@ instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_DeriveFrom_System_Collections_Generic_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.DeriveFrom(System.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L119">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L137">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_DeriveFrom_" data-uid="Libplanet.Blocks.BlockHash.DeriveFrom*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_DeriveFrom_System_Collections_Generic_IReadOnlyList_System_Byte__" data-uid="Libplanet.Blocks.BlockHash.DeriveFrom(System.Collections.Generic.IReadOnlyList{System.Byte})">DeriveFrom(IReadOnlyList&lt;Byte&gt;)</h4>
@@ -359,7 +432,7 @@ public static BlockHash DeriveFrom(IReadOnlyList&lt;byte&gt; blockBytes)</code><
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_Equals_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.Equals(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L140">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L157">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_Equals_" data-uid="Libplanet.Blocks.BlockHash.Equals*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_Equals_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blocks.BlockHash.Equals(Libplanet.Blocks.BlockHash)">Equals(BlockHash)</h4>
@@ -412,7 +485,7 @@ public readonly bool Equals(BlockHash other)</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L164">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L181">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_Equals_" data-uid="Libplanet.Blocks.BlockHash.Equals*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_Equals_System_Object_" data-uid="Libplanet.Blocks.BlockHash.Equals(System.Object)">Equals(Object)</h4>
@@ -467,7 +540,7 @@ public override readonly bool Equals(object obj)</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_FromHashDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.FromHashDigest(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L110">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L128">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_FromHashDigest_" data-uid="Libplanet.Blocks.BlockHash.FromHashDigest*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_FromHashDigest_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Blocks.BlockHash.FromHashDigest(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">FromHashDigest(HashDigest&lt;SHA256&gt;)</h4>
@@ -522,7 +595,7 @@ public static BlockHash FromHashDigest(HashDigest&lt;SHA256&gt; hashDigest)</cod
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_FromString_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.FromString(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L99">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_FromString_" data-uid="Libplanet.Blocks.BlockHash.FromString*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_FromString_System_String_" data-uid="Libplanet.Blocks.BlockHash.FromString(System.String)">FromString(String)</h4>
@@ -614,7 +687,7 @@ is not a valid hexadecimal string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L169">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L186">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_GetHashCode_" data-uid="Libplanet.Blocks.BlockHash.GetHashCode*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_GetHashCode" data-uid="Libplanet.Blocks.BlockHash.GetHashCode">GetHashCode()</h4>
@@ -652,7 +725,7 @@ public override readonly int GetHashCode()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L185">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L202">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_GetObjectData_" data-uid="Libplanet.Blocks.BlockHash.GetObjectData*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Blocks.BlockHash.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -694,7 +767,7 @@ public override readonly int GetHashCode()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L135">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L153">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_ToByteArray_" data-uid="Libplanet.Blocks.BlockHash.ToByteArray*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_ToByteArray" data-uid="Libplanet.Blocks.BlockHash.ToByteArray">ToByteArray()</h4>
@@ -733,7 +806,7 @@ any mutations on that array does not affect to the block hash object.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L189">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L206">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockHash_ToString_" data-uid="Libplanet.Blocks.BlockHash.ToString*"></a>
   <h4 id="Libplanet_Blocks_BlockHash_ToString" data-uid="Libplanet.Blocks.BlockHash.ToString">ToString()</h4>
@@ -773,6 +846,9 @@ public override readonly string ToString()</code></pre>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
+  <div>
+      <span class="xref">Bencodex.IBencodable</span>
+  </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a></div>
@@ -788,7 +864,7 @@ public override readonly string ToString()</code></pre>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockHash.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
