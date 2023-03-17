@@ -76,11 +76,15 @@ namespace Libplanet.Net.Transports
             // FIXME Dns.GetHostAddressesAsync() seems to always return at least one ip or throw
             // `SocketException`. if we can be sure, also should fix it to always assume there
             // is at least one instead of throwing additional `TransportException`.
-            string ip = addresses.FirstOrDefault()?.ToString()
+            // And, for now IPs are restricted with IPv4, and have to be fixed later on.
+            IPAddress ip = addresses.FirstOrDefault()
                 ?? throw new TransportException($"Failed to resolve for {addr}");
+            string ipv4 = ip.Equals(IPAddress.IPv6Loopback)
+                ? IPAddress.Loopback.ToString()
+                : ip.MapToIPv4().ToString();
             int port = peer.EndPoint.Port;
 
-            return $"tcp://{ip}:{port}";
+            return $"tcp://{ipv4}:{port}";
         }
     }
 }
