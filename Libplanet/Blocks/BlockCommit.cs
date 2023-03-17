@@ -14,7 +14,7 @@ using Libplanet.Consensus;
 
 namespace Libplanet.Blocks
 {
-    public sealed class BlockCommit : IEquatable<BlockCommit>
+    public sealed class BlockCommit : IEquatable<BlockCommit>, IBencodable
     {
         private static readonly byte[] HeightKey = { 0x48 };    // 'H'
         private static readonly byte[] RoundKey = { 0x52 };     // 'R'
@@ -108,7 +108,17 @@ namespace Libplanet.Blocks
         }
 
         public BlockCommit(byte[] marshaled)
-            : this((Dictionary)_codec.Decode(marshaled))
+            : this(_codec.Decode(marshaled))
+        {
+        }
+
+        public BlockCommit(Bencodex.Types.IValue bencoded)
+            : this(bencoded is Bencodex.Types.Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
         {
         }
 
@@ -118,13 +128,13 @@ namespace Libplanet.Blocks
             Justification =
                 "Multiple lines are Vote decoding. Redirect Bencodex value to public " +
                 "constructor for checking not allowed values.")]
-        internal BlockCommit(Dictionary dictionary)
+        private BlockCommit(Bencodex.Types.Dictionary bencoded)
             : this(
-                dictionary.GetValue<Integer>(HeightKey),
-                dictionary.GetValue<Integer>(RoundKey),
-                new BlockHash(dictionary.GetValue<Binary>(BlockHashKey).ByteArray),
-                dictionary.ContainsKey(VotesKey)
-                    ? dictionary.GetValue<List>(VotesKey)
+                bencoded.GetValue<Integer>(HeightKey),
+                bencoded.GetValue<Integer>(RoundKey),
+                new BlockHash(bencoded.GetValue<Binary>(BlockHashKey).ByteArray),
+                bencoded.ContainsKey(VotesKey)
+                    ? bencoded.GetValue<List>(VotesKey)
                         .Select(vote => new Vote((Binary)vote))
                         .ToImmutableArray()
                     : ImmutableArray<Vote>.Empty)
@@ -140,7 +150,7 @@ namespace Libplanet.Blocks
         public ImmutableArray<Vote> Votes { get; }
 
         [JsonIgnore]
-        public Dictionary Encoded
+        public Bencodex.Types.IValue Bencoded
         {
             get
             {
@@ -161,7 +171,7 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        public byte[] ToByteArray() => _codec.Encode(Encoded);
+        public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         public bool Equals(BlockCommit? other)
         {
