@@ -185,7 +185,7 @@ namespace Libplanet.Blocks
                 miner: miner,
                 publicKey: publicKey,
                 previousHash: marshaled.ContainsKey(PreviousHashKey)
-                    ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
+                    ? new BlockHash(marshaled.GetValue<IValue>(PreviousHashKey))
                     : (BlockHash?)null,
                 txHash: marshaled.ContainsKey(TxHashKey)
                     ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
@@ -214,7 +214,7 @@ namespace Libplanet.Blocks
         }
 
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>
-            new BlockHash(marshaledBlockHeader.GetValue<Binary>(HashKey).ByteArray);
+            new BlockHash(marshaledBlockHeader.GetValue<IValue>(HashKey));
 
         public static HashDigest<SHA256> UnmarshalBlockHeaderStateRootHash(
             Dictionary marshaledBlockHeader

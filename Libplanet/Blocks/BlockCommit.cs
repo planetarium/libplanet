@@ -132,7 +132,7 @@ namespace Libplanet.Blocks
             : this(
                 bencoded.GetValue<Integer>(HeightKey),
                 bencoded.GetValue<Integer>(RoundKey),
-                new BlockHash(bencoded.GetValue<Binary>(BlockHashKey).ByteArray),
+                new BlockHash(bencoded.GetValue<IValue>(BlockHashKey)),
                 bencoded.ContainsKey(VotesKey)
                     ? bencoded.GetValue<List>(VotesKey)
                         .Select(vote => new Vote((Binary)vote))

@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bencodex;
 using Libplanet.Serialization;
 
 namespace Libplanet.Blocks
@@ -18,7 +19,7 @@ namespace Libplanet.Blocks
     /// <seealso cref="Block{T}.Hash"/>
     [JsonConverter(typeof(BlockHashJsonConverter))]
     [Serializable]
-    public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>
+    public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>, IBencodable
     {
         /// <summary>
         /// The size of bytes that each <see cref="BlockHash"/> consists of.
@@ -61,8 +62,22 @@ namespace Libplanet.Blocks
         /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
         /// </exception>
         public BlockHash(byte[] blockHash)
-            : this((blockHash ?? throw new ArgumentNullException(nameof(blockHash)))
-                .ToImmutableArray())
+            : this(blockHash.ToImmutableArray())
+        {
+        }
+
+        public BlockHash(Bencodex.Types.IValue bencoded)
+            : this(bencoded is Bencodex.Types.Binary binary
+                ? binary
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private BlockHash(Bencodex.Types.Binary bencoded)
+            : this(bencoded.ByteArray)
         {
         }
 
@@ -79,6 +94,9 @@ namespace Libplanet.Blocks
         /// <seealso cref="ToByteArray()"/>
         public ImmutableArray<byte> ByteArray =>
             _byteArray.IsDefault ? _defaultByteArray : _byteArray;
+
+        /// <inheritdoc/>
+        public Bencodex.Types.IValue Bencoded => new Bencodex.Types.Binary(ByteArray);
 
         /// <summary>
         /// Converts a given hexadecimal representation of a block hash into
@@ -133,8 +151,7 @@ namespace Libplanet.Blocks
         /// </returns>
         /// <seealso cref="ByteArray"/>
         [Pure]
-        public byte[] ToByteArray() =>
-            ByteArray.ToBuilder().ToArray();
+        public byte[] ToByteArray() => ByteArray.ToArray();
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]

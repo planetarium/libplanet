@@ -20,12 +20,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void DisallowNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => new BlockHash(null));
-        }
-
-        [Fact]
         public void LengthCheck()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new BlockHash(new byte[0]));
