@@ -11,24 +11,6 @@ namespace Libplanet.Tests.Consensus
         private static Bencodex.Codec _codec = new Bencodex.Codec();
 
         [Fact]
-        public void MarshalVoteMetadata()
-        {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
-            var key = new PrivateKey();
-            var voteMetadata = new VoteMetadata(
-                1,
-                2,
-                hash,
-                DateTimeOffset.UtcNow,
-                key.PublicKey,
-                VoteFlag.PreCommit);
-            byte[] marshaled = voteMetadata.ToByteArray();
-            var unMarshaled = new VoteMetadata(
-                (Bencodex.Types.Dictionary)_codec.Decode(marshaled));
-            Assert.Equal(voteMetadata, unMarshaled);
-        }
-
-        [Fact]
         public void NullBlockHashNotAllowedForNullAndUnknown()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
@@ -54,6 +36,23 @@ namespace Libplanet.Tests.Consensus
                 DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
                 VoteFlag.Unknown));
+        }
+
+        [Fact]
+        public void Bencoded()
+        {
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+            var key = new PrivateKey();
+            var expected = new VoteMetadata(
+                1,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit);
+            var decoded = new VoteMetadata(expected.Bencoded);
+            Assert.Equal(expected, decoded);
+            Assert.Equal(expected, decoded);
         }
     }
 }

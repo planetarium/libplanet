@@ -152,14 +152,6 @@ namespace Libplanet.Consensus
         }
 
         /// <summary>
-        /// Marshaled <see cref="VoteMetadata"/> data.  This is used as a payload for
-        /// signing.
-        /// </summary>
-        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
-
-        public byte[] ToByteArray() => _codec.Encode(Bencoded);
-
-        /// <summary>
         /// Signs a <see cref="VoteMetadata"/> to create a <see cref="Vote"/>
         /// using given <paramref name="signer"/>.
         /// </summary>
@@ -170,7 +162,7 @@ namespace Libplanet.Consensus
         public Vote Sign(PrivateKey? signer)
         {
             return signer is PrivateKey key
-                ? new Vote(this, key.Sign(ByteArray).ToImmutableArray())
+                ? new Vote(this, key.Sign(_codec.Encode(Bencoded)).ToImmutableArray())
                 : new Vote(this, ImmutableArray<byte>.Empty);
         }
 

@@ -9,6 +9,8 @@ namespace Libplanet.Net.Messages
     /// </summary>
     public class ConsensusPreCommitMsg : ConsensusMsg
     {
+        private static Bencodex.Codec _codec = new Bencodex.Codec();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusPreCommitMsg"/> class.
         /// </summary>
@@ -35,7 +37,7 @@ namespace Libplanet.Net.Messages
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
         public ConsensusPreCommitMsg(byte[][] dataframes)
-            : this(new Vote(dataframes[0]))
+            : this(new Vote(_codec.Decode(dataframes[0])))
         {
         }
 
@@ -47,7 +49,7 @@ namespace Libplanet.Net.Messages
 
         /// <inheritdoc cref="MessageContent.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames =>
-            new List<byte[]> { PreCommit.ToByteArray() };
+            new List<byte[]> { _codec.Encode(PreCommit.Bencoded) };
 
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusCommit;
