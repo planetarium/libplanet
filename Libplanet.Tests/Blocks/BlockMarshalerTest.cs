@@ -103,7 +103,7 @@ namespace Libplanet.Tests
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
                 .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
-                .Add(LastCommitKey, _fx.HasTx.LastCommit.ByteArray);
+                .Add(LastCommitKey, _fx.HasTx.LastCommit.Bencoded);
             var expectedHasTxHeader = _marshaledHasTxMetadata
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)
