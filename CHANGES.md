@@ -12,6 +12,11 @@ Since 0.53.0, we officially provide
 `Libplanet.KeyStore.Web3KeyStore`) and complies with the `KeyStore` interface
 defined in *[@planetarium/account]*.
 
+Due to changes in [[#2961]], a network ran with [Libplanet 0.51.0] or
+[Libplanet 0.52.0] is not compatible with this version.  Thus, it is
+recommended to skip [Libplanet 0.51.0] and [Libplanet 0.52.0] for
+deployment if possible.
+
 ### Backward-incompatible API changes
 
  -  Removed state completion feature with related classes as below.  [[#2703]]
@@ -63,6 +68,8 @@ defined in *[@planetarium/account]*.
         and `Vote(Dictionary)` to `Vote(IValue)`.
      -  Changed `VoteMetadata.Encoded` to `VoteMetadata.Bencoded`
         and `Vote.Encoded` to `Vote.Bencoded`.
+ -  (Libplanet.Net) Changed `BlockCommit`'s `IValue` encoding format.
+    [[#2961]]
 
 ### Backward-incompatible network protocol changes
 
@@ -90,6 +97,7 @@ defined in *[@planetarium/account]*.
 
 ### CLI tools
 
+[Libplanet 0.52.0]: https://www.nuget.org/packages/Libplanet/0.52.0
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
 [#2915]: https://github.com/planetarium/libplanet/pull/2915
 [#2954]: https://github.com/planetarium/libplanet/pull/2954
