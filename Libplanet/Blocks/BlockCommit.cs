@@ -107,11 +107,6 @@ namespace Libplanet.Blocks
             Votes = votes;
         }
 
-        public BlockCommit(byte[] marshaled)
-            : this(_codec.Decode(marshaled))
-        {
-        }
-
         public BlockCommit(Bencodex.Types.IValue bencoded)
             : this(bencoded is Bencodex.Types.Dictionary dict
                 ? dict
@@ -168,10 +163,6 @@ namespace Libplanet.Blocks
             }
         }
 
-        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
-
-        public byte[] ToByteArray() => _codec.Encode(Bencoded);
-
         public bool Equals(BlockCommit? other)
         {
             return other is BlockCommit commit &&
@@ -196,7 +187,8 @@ namespace Libplanet.Blocks
         /// Gets a <see cref="SHA256"/> digested <see cref="BlockCommit"/> hash value.
         /// </summary>
         /// <returns>Returns a <see cref="SHA256"/> digested <see cref="BlockCommit"/>.</returns>
-        public HashDigest<SHA256> ToHash() => HashDigest<SHA256>.DeriveFrom(ToByteArray());
+        public HashDigest<SHA256> ToHash() =>
+            HashDigest<SHA256>.DeriveFrom(_codec.Encode(Bencoded));
 
         /// <inheritdoc/>
         [Pure]

@@ -437,7 +437,7 @@ namespace Libplanet.Tests.Blockchain
                 lastCommit: blockCommit);
 
             Assert.NotNull(block.LastCommit);
-            AssertBytesEqual(block.LastCommit.ByteArray, blockCommit.ByteArray);
+            Assert.Equal(block.LastCommit, blockCommit);
         }
 
         [Fact]

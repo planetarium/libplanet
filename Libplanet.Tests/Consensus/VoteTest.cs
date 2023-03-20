@@ -142,7 +142,6 @@ namespace Libplanet.Tests.Consensus
                 VoteFlag.PreCommit).Sign(key);
             var decoded = new Vote(expected.Bencoded);
             Assert.Equal(expected, decoded);
-            Assert.Equal(expected, decoded);
         }
     }
 }

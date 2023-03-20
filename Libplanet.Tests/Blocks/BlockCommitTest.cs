@@ -13,33 +13,12 @@ namespace Libplanet.Tests.Blocks
 {
     public class BlockCommitTest
     {
+        private static readonly Bencodex.Codec _codec = new Bencodex.Codec();
         private readonly ITestOutputHelper _output;
 
         public BlockCommitTest(ITestOutputHelper output)
         {
             _output = output;
-        }
-
-        [Fact]
-        public void Marshalling()
-        {
-            var fx = new MemoryStoreFixture();
-            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
-            var votes = keys.Select(key =>
-                new VoteMetadata(
-                    1,
-                    0,
-                    fx.Hash1,
-                    DateTimeOffset.Now,
-                    key.PublicKey,
-                    VoteFlag.PreCommit).Sign(key))
-                .ToImmutableArray();
-            var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);
-
-            byte[] marshaled = blockCommit.ToByteArray();
-            var unMarshaled = new BlockCommit(marshaled);
-
-            Assert.Equal(blockCommit, unMarshaled);
         }
 
         [Fact]
@@ -59,7 +38,7 @@ namespace Libplanet.Tests.Blocks
             var blockCommit = new BlockCommit(1, 0, randomHash, votes);
 
             var commitHash = blockCommit.ToHash();
-            var expected = HashDigest<SHA256>.DeriveFrom(blockCommit.ToByteArray());
+            var expected = HashDigest<SHA256>.DeriveFrom(_codec.Encode(blockCommit.Bencoded));
 
             Assert.Equal(commitHash, expected);
         }
@@ -200,6 +179,25 @@ namespace Libplanet.Tests.Blocks
                     VoteFlag.PreCommit).Sign(keys[0]))
                 .AddRange(preCommitVotes.Skip(1));
             _ = new BlockCommit(height, round, hash, votes);
+        }
+
+        [Fact]
+        public void Bencoded()
+        {
+            var fx = new MemoryStoreFixture();
+            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
+            var votes = keys.Select(key =>
+                new VoteMetadata(
+                    1,
+                    0,
+                    fx.Hash1,
+                    DateTimeOffset.Now,
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key))
+                .ToImmutableArray();
+            var expected = new BlockCommit(1, 0, fx.Hash1, votes);
+            var decoded = new BlockCommit(expected.Bencoded);
+            Assert.Equal(expected, decoded);
         }
     }
 }
