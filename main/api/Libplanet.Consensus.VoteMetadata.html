@@ -84,6 +84,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Consensus.IVoteMetadata.html">IVoteMetadata</a></div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Consensus.VoteMetadata.html">VoteMetadata</a>&gt;</div>
+    <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -107,25 +108,25 @@
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Consensus_VoteMetadata_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VoteMetadata : IVoteMetadata, IEquatable&lt;VoteMetadata&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class VoteMetadata : IVoteMetadata, IEquatable&lt;VoteMetadata&gt;, IBencodable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L84">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L83">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata__ctor_" data-uid="Libplanet.Consensus.VoteMetadata.#ctor*"></a>
-  <h4 id="Libplanet_Consensus_VoteMetadata__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.Dictionary)">VoteMetadata(Dictionary)</h4>
+  <h4 id="Libplanet_Consensus_VoteMetadata__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)">VoteMetadata(IValue)</h4>
   <div class="markdown level1 summary"><p>Represents a vote metadata from a validator for consensus.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public VoteMetadata(Dictionary encoded)</code></pre>
+    <pre><code class="lang-csharp hljs">public VoteMetadata(IValue bencoded)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,8 +139,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.Dictionary</span></td>
-        <td><span class="parametername">encoded</span></td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -235,10 +236,42 @@ or <a class="xref" href="Libplanet.Consensus.VoteFlag.html#Libplanet_Consensus_V
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L131">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_VoteMetadata_Bencoded_" data-uid="Libplanet.Consensus.VoteMetadata.Bencoded*"></a>
+  <h4 id="Libplanet_Consensus_VoteMetadata_Bencoded" data-uid="Libplanet.Consensus.VoteMetadata.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p>Represents a vote metadata from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L109">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_BlockHash_" data-uid="Libplanet.Consensus.VoteMetadata.BlockHash*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_BlockHash" data-uid="Libplanet.Consensus.VoteMetadata.BlockHash">BlockHash</h4>
@@ -269,7 +302,7 @@ or <a class="xref" href="Libplanet.Consensus.VoteFlag.html#Libplanet_Consensus_V
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L158">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_ByteArray_" data-uid="Libplanet.Consensus.VoteMetadata.ByteArray*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_ByteArray" data-uid="Libplanet.Consensus.VoteMetadata.ByteArray">ByteArray</h4>
@@ -298,42 +331,10 @@ signing.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Encoded.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Encoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L120">View Source</a>
-  </span>
-  <a id="Libplanet_Consensus_VoteMetadata_Encoded_" data-uid="Libplanet.Consensus.VoteMetadata.Encoded*"></a>
-  <h4 id="Libplanet_Consensus_VoteMetadata_Encoded" data-uid="Libplanet.Consensus.VoteMetadata.Encoded">Encoded</h4>
-  <div class="markdown level1 summary"><p>Represents a vote metadata from a validator for consensus.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonIgnore]
-public Dictionary Encoded { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Bencodex.Types.Dictionary</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Flag.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Flag%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L118">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L128">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Flag_" data-uid="Libplanet.Consensus.VoteMetadata.Flag*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Flag" data-uid="Libplanet.Consensus.VoteMetadata.Flag">Flag</h4>
@@ -364,7 +365,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Height.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Height%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L103">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L113">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Height_" data-uid="Libplanet.Consensus.VoteMetadata.Height*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Height" data-uid="Libplanet.Consensus.VoteMetadata.Height">Height</h4>
@@ -395,7 +396,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Round.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Round%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L106">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L116">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Round_" data-uid="Libplanet.Consensus.VoteMetadata.Round*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Round" data-uid="Libplanet.Consensus.VoteMetadata.Round">Round</h4>
@@ -426,7 +427,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L112">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L122">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Timestamp_" data-uid="Libplanet.Consensus.VoteMetadata.Timestamp*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Timestamp" data-uid="Libplanet.Consensus.VoteMetadata.Timestamp">Timestamp</h4>
@@ -457,7 +458,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_ValidatorPublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.ValidatorPublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L115">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L125">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_ValidatorPublicKey_" data-uid="Libplanet.Consensus.VoteMetadata.ValidatorPublicKey*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_ValidatorPublicKey" data-uid="Libplanet.Consensus.VoteMetadata.ValidatorPublicKey">ValidatorPublicKey</h4>
@@ -490,7 +491,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Equals_Libplanet_Consensus_VoteMetadata_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Equals(Libplanet.Consensus.VoteMetadata)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L167">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L178">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Equals_" data-uid="Libplanet.Consensus.VoteMetadata.Equals*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Equals_Libplanet_Consensus_VoteMetadata_" data-uid="Libplanet.Consensus.VoteMetadata.Equals(Libplanet.Consensus.VoteMetadata)">Equals(VoteMetadata)</h4>
@@ -538,7 +539,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L183">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L194">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Equals_" data-uid="Libplanet.Consensus.VoteMetadata.Equals*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Equals_System_Object_" data-uid="Libplanet.Consensus.VoteMetadata.Equals(System.Object)">Equals(Object)</h4>
@@ -588,7 +589,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L187">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L198">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_GetHashCode_" data-uid="Libplanet.Consensus.VoteMetadata.GetHashCode*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_GetHashCode" data-uid="Libplanet.Consensus.VoteMetadata.GetHashCode">GetHashCode()</h4>
@@ -621,7 +622,7 @@ public Dictionary Encoded { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_Sign_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.Sign(Libplanet.Crypto.PrivateKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L159">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L170">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_Sign_" data-uid="Libplanet.Consensus.VoteMetadata.Sign*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_Sign_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Consensus.VoteMetadata.Sign(Libplanet.Crypto.PrivateKey)">Sign(PrivateKey)</h4>
@@ -673,7 +674,7 @@ using given <code data-dev-comment-type="paramref" class="paramref">signer</code
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Consensus_VoteMetadata_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.VoteMetadata.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L149">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Consensus/VoteMetadata.cs/#L160">View Source</a>
   </span>
   <a id="Libplanet_Consensus_VoteMetadata_ToByteArray_" data-uid="Libplanet.Consensus.VoteMetadata.ToByteArray*"></a>
   <h4 id="Libplanet_Consensus_VoteMetadata_ToByteArray" data-uid="Libplanet.Consensus.VoteMetadata.ToByteArray">ToByteArray()</h4>
@@ -705,6 +706,9 @@ using given <code data-dev-comment-type="paramref" class="paramref">signer</code
   </div>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">Bencodex.IBencodable</span>
   </div>
 </article>
           </div>

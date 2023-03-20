@@ -11766,12 +11766,12 @@ references:
   commentId: T:Libplanet.Consensus.Vote
   fullName: Libplanet.Consensus.Vote
   nameWithType: Vote
-- uid: Libplanet.Consensus.Vote.#ctor(Bencodex.Types.Dictionary)
-  name: Vote(Dictionary)
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote__ctor_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Consensus.Vote.#ctor(Bencodex.Types.Dictionary)
-  fullName: Libplanet.Consensus.Vote.Vote(Bencodex.Types.Dictionary)
-  nameWithType: Vote.Vote(Dictionary)
+- uid: Libplanet.Consensus.Vote.#ctor(Bencodex.Types.IValue)
+  name: Vote(IValue)
+  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Consensus.Vote.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Consensus.Vote.Vote(Bencodex.Types.IValue)
+  nameWithType: Vote.Vote(IValue)
 - uid: Libplanet.Consensus.Vote.#ctor(Libplanet.Consensus.VoteMetadata,System.Collections.Immutable.ImmutableArray{System.Byte})
   name: Vote(VoteMetadata, ImmutableArray<Byte>)
   href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote__ctor_Libplanet_Consensus_VoteMetadata_System_Collections_Immutable_ImmutableArray_System_Byte__
@@ -11797,6 +11797,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.Vote.Vote
   nameWithType: Vote.Vote
+- uid: Libplanet.Consensus.Vote.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Bencoded
+  commentId: P:Libplanet.Consensus.Vote.Bencoded
+  fullName: Libplanet.Consensus.Vote.Bencoded
+  nameWithType: Vote.Bencoded
+- uid: Libplanet.Consensus.Vote.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Bencoded_
+  commentId: Overload:Libplanet.Consensus.Vote.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Vote.Bencoded
+  nameWithType: Vote.Bencoded
 - uid: Libplanet.Consensus.Vote.BlockHash
   name: BlockHash
   href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_BlockHash
@@ -11823,19 +11836,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.Vote.ByteArray
   nameWithType: Vote.ByteArray
-- uid: Libplanet.Consensus.Vote.Encoded
-  name: Encoded
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Encoded
-  commentId: P:Libplanet.Consensus.Vote.Encoded
-  fullName: Libplanet.Consensus.Vote.Encoded
-  nameWithType: Vote.Encoded
-- uid: Libplanet.Consensus.Vote.Encoded*
-  name: Encoded
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Encoded_
-  commentId: Overload:Libplanet.Consensus.Vote.Encoded
-  isSpec: "True"
-  fullName: Libplanet.Consensus.Vote.Encoded
-  nameWithType: Vote.Encoded
 - uid: Libplanet.Consensus.Vote.Equals(Libplanet.Consensus.Vote)
   name: Equals(Vote)
   href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Equals_Libplanet_Consensus_Vote_
@@ -12021,12 +12021,12 @@ references:
   commentId: T:Libplanet.Consensus.VoteMetadata
   fullName: Libplanet.Consensus.VoteMetadata
   nameWithType: VoteMetadata
-- uid: Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.Dictionary)
-  name: VoteMetadata(Dictionary)
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata__ctor_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.Dictionary)
-  fullName: Libplanet.Consensus.VoteMetadata.VoteMetadata(Bencodex.Types.Dictionary)
-  nameWithType: VoteMetadata.VoteMetadata(Dictionary)
+- uid: Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)
+  name: VoteMetadata(IValue)
+  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Consensus.VoteMetadata.VoteMetadata(Bencodex.Types.IValue)
+  nameWithType: VoteMetadata.VoteMetadata(IValue)
 - uid: Libplanet.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
   name: VoteMetadata(Int64, Int32, Nullable<BlockHash>, DateTimeOffset, PublicKey, VoteFlag)
   href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_System_Nullable_Libplanet_Blocks_BlockHash__System_DateTimeOffset_Libplanet_Crypto_PublicKey_Libplanet_Consensus_VoteFlag_
@@ -12043,6 +12043,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.VoteMetadata.VoteMetadata
   nameWithType: VoteMetadata.VoteMetadata
+- uid: Libplanet.Consensus.VoteMetadata.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_Bencoded
+  commentId: P:Libplanet.Consensus.VoteMetadata.Bencoded
+  fullName: Libplanet.Consensus.VoteMetadata.Bencoded
+  nameWithType: VoteMetadata.Bencoded
+- uid: Libplanet.Consensus.VoteMetadata.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_Bencoded_
+  commentId: Overload:Libplanet.Consensus.VoteMetadata.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.VoteMetadata.Bencoded
+  nameWithType: VoteMetadata.Bencoded
 - uid: Libplanet.Consensus.VoteMetadata.BlockHash
   name: BlockHash
   href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_BlockHash
@@ -12069,19 +12082,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.VoteMetadata.ByteArray
   nameWithType: VoteMetadata.ByteArray
-- uid: Libplanet.Consensus.VoteMetadata.Encoded
-  name: Encoded
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_Encoded
-  commentId: P:Libplanet.Consensus.VoteMetadata.Encoded
-  fullName: Libplanet.Consensus.VoteMetadata.Encoded
-  nameWithType: VoteMetadata.Encoded
-- uid: Libplanet.Consensus.VoteMetadata.Encoded*
-  name: Encoded
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_Encoded_
-  commentId: Overload:Libplanet.Consensus.VoteMetadata.Encoded
-  isSpec: "True"
-  fullName: Libplanet.Consensus.VoteMetadata.Encoded
-  nameWithType: VoteMetadata.Encoded
 - uid: Libplanet.Consensus.VoteMetadata.Equals(Libplanet.Consensus.VoteMetadata)
   name: Equals(VoteMetadata)
   href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_Equals_Libplanet_Consensus_VoteMetadata_
