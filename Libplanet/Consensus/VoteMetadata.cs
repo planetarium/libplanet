@@ -12,7 +12,7 @@ namespace Libplanet.Consensus
     /// <summary>
     /// Represents a vote metadata from a validator for consensus.
     /// </summary>
-    public class VoteMetadata : IVoteMetadata, IEquatable<VoteMetadata>
+    public class VoteMetadata : IVoteMetadata, IEquatable<VoteMetadata>, IBencodable
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly byte[] HeightKey = { 0x48 };                // 'H'
@@ -80,21 +80,31 @@ namespace Libplanet.Consensus
             Flag = flag;
         }
 
+        public VoteMetadata(Bencodex.Types.IValue bencoded)
+            : this(bencoded is Bencodex.Types.Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
 #pragma warning disable SA1118 // The parameter spans multiple lines
-        public VoteMetadata(Dictionary encoded)
+        private VoteMetadata(Bencodex.Types.Dictionary bencoded)
             : this(
-                height: encoded.GetValue<Integer>(HeightKey),
-                round: encoded.GetValue<Integer>(RoundKey),
-                blockHash: encoded.ContainsKey(BlockHashKey)
-                    ? new BlockHash(encoded.GetValue<IValue>(BlockHashKey))
+                height: bencoded.GetValue<Integer>(HeightKey),
+                round: bencoded.GetValue<Integer>(RoundKey),
+                blockHash: bencoded.ContainsKey(BlockHashKey)
+                    ? new BlockHash(bencoded.GetValue<IValue>(BlockHashKey))
                     : (BlockHash?)null,
                 timestamp: DateTimeOffset.ParseExact(
-                    encoded.GetValue<Text>(TimestampKey),
+                    bencoded.GetValue<Text>(TimestampKey),
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
-                    encoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray),
-                flag: (VoteFlag)(long)encoded.GetValue<Integer>(FlagKey))
+                    bencoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray),
+                flag: (VoteFlag)(long)bencoded.GetValue<Integer>(FlagKey))
         {
         }
 #pragma warning restore SA1118
@@ -117,8 +127,9 @@ namespace Libplanet.Consensus
         /// <inheritdoc/>
         public VoteFlag Flag { get; }
 
+        /// <inheritdoc/>
         [JsonIgnore]
-        public Dictionary Encoded
+        public Bencodex.Types.IValue Bencoded
         {
             get
             {
@@ -146,7 +157,7 @@ namespace Libplanet.Consensus
         /// </summary>
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        public byte[] ToByteArray() => _codec.Encode(Encoded);
+        public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         /// <summary>
         /// Signs a <see cref="VoteMetadata"/> to create a <see cref="Vote"/>

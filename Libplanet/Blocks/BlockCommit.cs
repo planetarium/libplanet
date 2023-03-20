@@ -135,7 +135,7 @@ namespace Libplanet.Blocks
                 new BlockHash(bencoded.GetValue<IValue>(BlockHashKey)),
                 bencoded.ContainsKey(VotesKey)
                     ? bencoded.GetValue<List>(VotesKey)
-                        .Select(vote => new Vote((Binary)vote))
+                        .Select(vote => new Vote(vote))
                         .ToImmutableArray()
                     : ImmutableArray<Vote>.Empty)
         {
@@ -161,8 +161,7 @@ namespace Libplanet.Blocks
 
                 if (!Votes.IsEmpty)
                 {
-                    var bencodexVotes = Votes.Select(x => x.ByteArray);
-                    dict = dict.Add(VotesKey, new List(bencodexVotes));
+                    dict = dict.Add(VotesKey, new List(Votes.Select(x => x.Bencoded)));
                 }
 
                 return dict;
