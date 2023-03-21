@@ -202,8 +202,8 @@ namespace Libplanet.Store
                     address => address.ToByteArray(),
                     b => new Address(b.AsBinary));
                 _db.Mapper.RegisterType(
-                    commit => commit.ToByteArray(),
-                    b => new BlockCommit(b));
+                    commit => Codec.Encode(commit.Bencoded),
+                    b => new BlockCommit(Codec.Decode(b)));
             }
 
             _root.CreateDirectory(TxRootPath);
@@ -647,7 +647,7 @@ namespace Libplanet.Store
             var docId = new BsonValue("c");
             BsonDocument doc = collection.FindById(docId);
             return doc is { } d && d.TryGetValue("v", out BsonValue v)
-                ? new BlockCommit(v.AsBinary)
+                ? new BlockCommit(Codec.Decode(v))
                 : null;
         }
 
@@ -659,7 +659,7 @@ namespace Libplanet.Store
             BsonDocument doc = collection.FindById(docId);
             collection.Upsert(
                 docId,
-                new BsonDocument() { ["v"] = new BsonValue(blockCommit.ToByteArray()) });
+                new BsonDocument() { ["v"] = new BsonValue(Codec.Encode(blockCommit.Bencoded)) });
         }
 
         public override BlockCommit GetBlockCommit(BlockHash blockHash)
@@ -680,7 +680,7 @@ namespace Libplanet.Store
                 return null;
             }
 
-            BlockCommit blockCommit = new BlockCommit(bytes);
+            BlockCommit blockCommit = new BlockCommit(Codec.Decode(bytes));
             return blockCommit;
         }
 
@@ -693,7 +693,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            WriteContentAddressableFile(_blockCommits, path, blockCommit.ToByteArray());
+            WriteContentAddressableFile(_blockCommits, path, Codec.Encode(blockCommit.Bencoded));
         }
 
         /// <inheritdoc />

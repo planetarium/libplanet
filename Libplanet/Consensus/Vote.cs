@@ -43,7 +43,8 @@ namespace Libplanet.Consensus
                         $"{VoteFlag.PreVote} or {VoteFlag.PreCommit}",
                         nameof(signature));
                 }
-                else if (!metadata.ValidatorPublicKey.Verify(metadata.ByteArray, signature))
+                else if (!metadata.ValidatorPublicKey.Verify(
+                    _codec.Encode(metadata.Bencoded), signature))
                 {
                     throw new ArgumentException(
                         $"Given {nameof(signature)} is invalid.",
@@ -61,16 +62,6 @@ namespace Libplanet.Consensus
 
             _metadata = metadata;
             Signature = signature;
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Vote"/> instance.
-        /// </summary>
-        /// <param name="marshaled">Marshaled value of the <see cref="Vote"/>.
-        /// <seealso cref="ByteArray"/></param>
-        public Vote(byte[] marshaled)
-            : this((Dictionary)_codec.Decode(marshaled))
-        {
         }
 
         public Vote(Bencodex.Types.IValue bencoded)
@@ -125,10 +116,6 @@ namespace Libplanet.Consensus
                 ? ((Bencodex.Types.Dictionary)_metadata.Bencoded).Add(SignatureKey, Signature)
                 : _metadata.Bencoded;
 
-        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
-
-        public byte[] ToByteArray() => _codec.Encode(Bencoded);
-
         /// <summary>
         /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
         /// <see cref="Validator"/>.
@@ -139,7 +126,8 @@ namespace Libplanet.Consensus
         [Pure]
         public bool Verify() =>
             !Signature.IsEmpty &&
-            ValidatorPublicKey.Verify(_metadata.ByteArray.ToImmutableArray(), Signature);
+            ValidatorPublicKey.Verify(
+                _codec.Encode(_metadata.Bencoded).ToImmutableArray(), Signature);
 
         /// <inheritdoc/>
         [Pure]

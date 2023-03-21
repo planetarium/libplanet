@@ -9,22 +9,7 @@ namespace Libplanet.Tests.Consensus
 {
     public class VoteTest
     {
-        [Fact]
-        public void MarshalVote()
-        {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
-            var key = new PrivateKey();
-            var vote = new VoteMetadata(
-                1,
-                2,
-                hash,
-                DateTimeOffset.UtcNow,
-                key.PublicKey,
-                VoteFlag.PreCommit).Sign(key);
-            byte[] marshaled = vote.ToByteArray();
-            var unMarshaled = new Vote(marshaled);
-            Assert.Equal(vote, unMarshaled);
-        }
+        private static Bencodex.Codec _codec = new Bencodex.Codec();
 
         [Fact]
         public void Sign()
@@ -40,7 +25,7 @@ namespace Libplanet.Tests.Consensus
                 VoteFlag.PreCommit);
             Vote vote = voteMetadata.Sign(privateKey);
             Assert.True(
-                privateKey.PublicKey.Verify(voteMetadata.ByteArray, vote.Signature));
+                privateKey.PublicKey.Verify(_codec.Encode(voteMetadata.Bencoded), vote.Signature));
         }
 
         [Fact]
@@ -64,7 +49,7 @@ namespace Libplanet.Tests.Consensus
             Assert.Throws<ArgumentException>(() =>
                 new Vote(
                     voteMetadata,
-                    key.Sign(voteMetadata.ByteArray).ToImmutableArray()));
+                    key.Sign(_codec.Encode(voteMetadata.Bencoded).ToImmutableArray())));
         }
 
         [Fact]
@@ -127,12 +112,12 @@ namespace Libplanet.Tests.Consensus
             Assert.Throws<ArgumentException>(() =>
                 new Vote(
                     nullMetadata,
-                    key.Sign(nullMetadata.ByteArray).ToImmutableArray()));
+                    key.Sign(_codec.Encode(nullMetadata.Bencoded)).ToImmutableArray()));
             Assert.Throws<ArgumentException>(() => unknownMetadata.Sign(key));
             Assert.Throws<ArgumentException>(() =>
                 new Vote(
                     unknownMetadata,
-                    key.Sign(unknownMetadata.ByteArray).ToImmutableArray()));
+                    key.Sign(_codec.Encode(unknownMetadata.Bencoded)).ToImmutableArray()));
         }
 
         [Fact]
@@ -141,6 +126,22 @@ namespace Libplanet.Tests.Consensus
             var voteMetadata = new VoteMetadata(
                 0, 0, null, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.PreCommit);
             Assert.Throws<ArgumentException>(() => new Vote(voteMetadata, default));
+        }
+
+        [Fact]
+        public void Bencoded()
+        {
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+            var key = new PrivateKey();
+            var expected = new VoteMetadata(
+                1,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key);
+            var decoded = new Vote(expected.Bencoded);
+            Assert.Equal(expected, decoded);
         }
     }
 }

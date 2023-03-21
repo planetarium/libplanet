@@ -12,9 +12,9 @@ Since 0.53.0, we officially provide
 `Libplanet.KeyStore.Web3KeyStore`) and complies with the `KeyStore` interface
 defined in *[@planetarium/account]*.
 
-Due to changes in [[#2961]], a network ran with [Libplanet 0.51.0] or
-[Libplanet 0.52.0] is not compatible with this version.  Thus, it is
-recommended to skip [Libplanet 0.51.0] and [Libplanet 0.52.0] for
+Due to changes in [[#2961]] and [[#2970]], a network ran with
+[Libplanet 0.51.0] or [Libplanet 0.52.0] is not compatible with this version.
+Thus, it is recommended to skip [Libplanet 0.51.0] and [Libplanet 0.52.0] for
 deployment if possible.
 
 ### Backward-incompatible API changes
@@ -68,12 +68,21 @@ deployment if possible.
         and `Vote(Dictionary)` to `Vote(IValue)`.
      -  Changed `VoteMetadata.Encoded` to `VoteMetadata.Bencoded`
         and `Vote.Encoded` to `Vote.Bencoded`.
- -  (Libplanet.Net) Changed `BlockCommit`'s `IValue` encoding format.
-    [[#2961]]
+ -  Removed `byte` array related APIs from `BlockCommit`, `Vote`,
+    `VoteMetadata`.  [[#2970]]
+     -  Removed `BlockCommit(byte[])`, `BlockCommit.ByteArray`,
+        and `BlockCommit.ToByteArray()`.
+     -  Removed `Vote(byte[])`, `Vote.ByteArray`, and `Vote.ToByteArray()`.
+     -  Removed `VoteMetadata(byte[])`, `VoteMetadata.ByteArray`,
+        and `VoteMetadata.ToByteArray()`.
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
+
+ -  (Libplanet.Net) Changed `BlockCommit`'s `IValue` encoding format.
+    [[#2961]]
+ -  Changed `Block<T>`'s `IValue` encoding format.  [[#2970]]
 
 ### Added APIs
 
@@ -104,6 +113,7 @@ deployment if possible.
 [#2955]: https://github.com/planetarium/libplanet/pull/2955
 [#2959]: https://github.com/planetarium/libplanet/pull/2959
 [#2961]: https://github.com/planetarium/libplanet/pull/2961
+[#2970]: https://github.com/planetarium/libplanet/pull/2970
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex
 [disjukr/bencodex]: https://github.com/disjukr/bencodex

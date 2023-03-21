@@ -1226,7 +1226,7 @@ namespace Libplanet.RocksDBStore
                     return null;
                 }
 
-                return new BlockCommit(bytes);
+                return new BlockCommit(Codec.Decode(bytes));
             }
             catch (Exception e)
             {
@@ -1241,7 +1241,7 @@ namespace Libplanet.RocksDBStore
             try
             {
                 byte[] key = ChainBlockCommitKey(chainId);
-                byte[] bytes = blockCommit.ToByteArray();
+                byte[] bytes = Codec.Encode(blockCommit.Bencoded);
 
                 _chainDb.Put(key, bytes);
                 _chainDb.Put(ChainIdKey(chainId), chainId.ToByteArray());
@@ -1265,7 +1265,7 @@ namespace Libplanet.RocksDBStore
                     return null;
                 }
 
-                return new BlockCommit(bytes);
+                return new BlockCommit(Codec.Decode(bytes));
             }
             catch (Exception e)
             {
@@ -1292,7 +1292,7 @@ namespace Libplanet.RocksDBStore
             _rwBlockCommitLock.EnterWriteLock();
             try
             {
-                byte[] value = blockCommit.ToByteArray();
+                byte[] value = Codec.Encode(blockCommit.Bencoded);
                 _blockCommitDb.Put(key, value);
             }
             catch (Exception e)

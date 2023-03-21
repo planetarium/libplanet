@@ -68,7 +68,7 @@ namespace Libplanet.Blocks
 
             if (metadata.LastCommit is { } commit)
             {
-                dict = dict.Add(LastCommitKey, commit.ByteArray);
+                dict = dict.Add(LastCommitKey, commit.Bencoded);
             }
 
             return dict;
@@ -191,7 +191,7 @@ namespace Libplanet.Blocks
                     ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
                     : (HashDigest<SHA256>?)null,
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
-                    ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
+                    ? new BlockCommit(marshaled.GetValue<IValue>(LastCommitKey))
                     : (BlockCommit?)null);
 #pragma warning restore SA1118
         }

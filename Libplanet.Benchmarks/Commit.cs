@@ -17,7 +17,7 @@ namespace Libplanet.Benchmarks
         private PrivateKey[] _privateKeys;
         private BlockHash _blockHash;
         private BlockCommit _blockCommit;
-        private byte[] _unMarshalledBlockCommit;
+        private Bencodex.Types.IValue _encodedBlockCommit;
 
         [Params(4, 10, 25, 50, MaxValidatorSize)]
         // ReSharper disable once MemberCanBePrivate.Global
@@ -33,17 +33,17 @@ namespace Libplanet.Benchmarks
             SetupVotes();
         }
 
-        [IterationSetup(Target = nameof(UnmarshalBlockCommit))]
-        public void PrepareUnmarshalling()
+        [IterationSetup(Target = nameof(DecodeBlockCommit))]
+        public void PrepareDecode()
         {
             _blockCommit = new BlockCommit(1, 0, _blockHash, _votes.Take(ValidatorSize).ToImmutableArray());
-            _unMarshalledBlockCommit = _blockCommit.ToByteArray();
+            _encodedBlockCommit = _blockCommit.Bencoded;
         }
 
         [Benchmark]
-        public void UnmarshalBlockCommit()
+        public void DecodeBlockCommit()
         {
-            _blockCommit = new BlockCommit(_unMarshalledBlockCommit);
+            _blockCommit = new BlockCommit(_encodedBlockCommit);
         }
 
         private void SetupKeys()

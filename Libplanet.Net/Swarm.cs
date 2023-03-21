@@ -863,7 +863,7 @@ namespace Libplanet.Net
                             (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
                         BlockCommit commit = commitPayload.Length == 0
                             ? null
-                            : new BlockCommit(commitPayload);
+                            : new BlockCommit(Codec.Decode(commitPayload));
 
                         yield return (block, commit);
                         count++;
