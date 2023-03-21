@@ -7654,15 +7654,6 @@ references:
   commentId: M:Libplanet.Blocks.BlockCommit.#ctor(Bencodex.Types.IValue)
   fullName: Libplanet.Blocks.BlockCommit.BlockCommit(Bencodex.Types.IValue)
   nameWithType: BlockCommit.BlockCommit(IValue)
-- uid: Libplanet.Blocks.BlockCommit.#ctor(System.Byte[])
-  name: BlockCommit(Byte[])
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit__ctor_System_Byte___
-  commentId: M:Libplanet.Blocks.BlockCommit.#ctor(System.Byte[])
-  name.vb: BlockCommit(Byte())
-  fullName: Libplanet.Blocks.BlockCommit.BlockCommit(System.Byte[])
-  fullName.vb: Libplanet.Blocks.BlockCommit.BlockCommit(System.Byte())
-  nameWithType: BlockCommit.BlockCommit(Byte[])
-  nameWithType.vb: BlockCommit.BlockCommit(Byte())
 - uid: Libplanet.Blocks.BlockCommit.#ctor(System.Int64,System.Int32,Libplanet.Blocks.BlockHash,System.Collections.Immutable.ImmutableArray{Libplanet.Consensus.Vote})
   name: BlockCommit(Int64, Int32, BlockHash, ImmutableArray<Vote>)
   href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit__ctor_System_Int64_System_Int32_Libplanet_Blocks_BlockHash_System_Collections_Immutable_ImmutableArray_Libplanet_Consensus_Vote__
@@ -7705,19 +7696,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockCommit.BlockHash
   nameWithType: BlockCommit.BlockHash
-- uid: Libplanet.Blocks.BlockCommit.ByteArray
-  name: ByteArray
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_ByteArray
-  commentId: P:Libplanet.Blocks.BlockCommit.ByteArray
-  fullName: Libplanet.Blocks.BlockCommit.ByteArray
-  nameWithType: BlockCommit.ByteArray
-- uid: Libplanet.Blocks.BlockCommit.ByteArray*
-  name: ByteArray
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_ByteArray_
-  commentId: Overload:Libplanet.Blocks.BlockCommit.ByteArray
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockCommit.ByteArray
-  nameWithType: BlockCommit.ByteArray
 - uid: Libplanet.Blocks.BlockCommit.Equals(Libplanet.Blocks.BlockCommit)
   name: Equals(BlockCommit)
   href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_Equals_Libplanet_Blocks_BlockCommit_
@@ -7776,19 +7754,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockCommit.Round
   nameWithType: BlockCommit.Round
-- uid: Libplanet.Blocks.BlockCommit.ToByteArray
-  name: ToByteArray()
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_ToByteArray
-  commentId: M:Libplanet.Blocks.BlockCommit.ToByteArray
-  fullName: Libplanet.Blocks.BlockCommit.ToByteArray()
-  nameWithType: BlockCommit.ToByteArray()
-- uid: Libplanet.Blocks.BlockCommit.ToByteArray*
-  name: ToByteArray
-  href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_ToByteArray_
-  commentId: Overload:Libplanet.Blocks.BlockCommit.ToByteArray
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockCommit.ToByteArray
-  nameWithType: BlockCommit.ToByteArray
 - uid: Libplanet.Blocks.BlockCommit.ToHash
   name: ToHash()
   href: api/Libplanet.Blocks.BlockCommit.html#Libplanet_Blocks_BlockCommit_ToHash
@@ -11781,15 +11746,6 @@ references:
   fullName.vb: Libplanet.Consensus.Vote.Vote(Libplanet.Consensus.VoteMetadata, System.Collections.Immutable.ImmutableArray(Of System.Byte))
   nameWithType: Vote.Vote(VoteMetadata, ImmutableArray<Byte>)
   nameWithType.vb: Vote.Vote(VoteMetadata, ImmutableArray(Of Byte))
-- uid: Libplanet.Consensus.Vote.#ctor(System.Byte[])
-  name: Vote(Byte[])
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote__ctor_System_Byte___
-  commentId: M:Libplanet.Consensus.Vote.#ctor(System.Byte[])
-  name.vb: Vote(Byte())
-  fullName: Libplanet.Consensus.Vote.Vote(System.Byte[])
-  fullName.vb: Libplanet.Consensus.Vote.Vote(System.Byte())
-  nameWithType: Vote.Vote(Byte[])
-  nameWithType.vb: Vote.Vote(Byte())
 - uid: Libplanet.Consensus.Vote.#ctor*
   name: Vote
   href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote__ctor_
@@ -11823,19 +11779,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.Vote.BlockHash
   nameWithType: Vote.BlockHash
-- uid: Libplanet.Consensus.Vote.ByteArray
-  name: ByteArray
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_ByteArray
-  commentId: P:Libplanet.Consensus.Vote.ByteArray
-  fullName: Libplanet.Consensus.Vote.ByteArray
-  nameWithType: Vote.ByteArray
-- uid: Libplanet.Consensus.Vote.ByteArray*
-  name: ByteArray
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_ByteArray_
-  commentId: Overload:Libplanet.Consensus.Vote.ByteArray
-  isSpec: "True"
-  fullName: Libplanet.Consensus.Vote.ByteArray
-  nameWithType: Vote.ByteArray
 - uid: Libplanet.Consensus.Vote.Equals(Libplanet.Consensus.Vote)
   name: Equals(Vote)
   href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Equals_Libplanet_Consensus_Vote_
@@ -11933,19 +11876,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.Vote.Timestamp
   nameWithType: Vote.Timestamp
-- uid: Libplanet.Consensus.Vote.ToByteArray
-  name: ToByteArray()
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_ToByteArray
-  commentId: M:Libplanet.Consensus.Vote.ToByteArray
-  fullName: Libplanet.Consensus.Vote.ToByteArray()
-  nameWithType: Vote.ToByteArray()
-- uid: Libplanet.Consensus.Vote.ToByteArray*
-  name: ToByteArray
-  href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_ToByteArray_
-  commentId: Overload:Libplanet.Consensus.Vote.ToByteArray
-  isSpec: "True"
-  fullName: Libplanet.Consensus.Vote.ToByteArray
-  nameWithType: Vote.ToByteArray
 - uid: Libplanet.Consensus.Vote.ToString
   name: ToString()
   href: api/Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_ToString
@@ -12069,19 +11999,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.VoteMetadata.BlockHash
   nameWithType: VoteMetadata.BlockHash
-- uid: Libplanet.Consensus.VoteMetadata.ByteArray
-  name: ByteArray
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_ByteArray
-  commentId: P:Libplanet.Consensus.VoteMetadata.ByteArray
-  fullName: Libplanet.Consensus.VoteMetadata.ByteArray
-  nameWithType: VoteMetadata.ByteArray
-- uid: Libplanet.Consensus.VoteMetadata.ByteArray*
-  name: ByteArray
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_ByteArray_
-  commentId: Overload:Libplanet.Consensus.VoteMetadata.ByteArray
-  isSpec: "True"
-  fullName: Libplanet.Consensus.VoteMetadata.ByteArray
-  nameWithType: VoteMetadata.ByteArray
 - uid: Libplanet.Consensus.VoteMetadata.Equals(Libplanet.Consensus.VoteMetadata)
   name: Equals(VoteMetadata)
   href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_Equals_Libplanet_Consensus_VoteMetadata_
@@ -12179,19 +12096,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.VoteMetadata.Timestamp
   nameWithType: VoteMetadata.Timestamp
-- uid: Libplanet.Consensus.VoteMetadata.ToByteArray
-  name: ToByteArray()
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_ToByteArray
-  commentId: M:Libplanet.Consensus.VoteMetadata.ToByteArray
-  fullName: Libplanet.Consensus.VoteMetadata.ToByteArray()
-  nameWithType: VoteMetadata.ToByteArray()
-- uid: Libplanet.Consensus.VoteMetadata.ToByteArray*
-  name: ToByteArray
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_ToByteArray_
-  commentId: Overload:Libplanet.Consensus.VoteMetadata.ToByteArray
-  isSpec: "True"
-  fullName: Libplanet.Consensus.VoteMetadata.ToByteArray
-  nameWithType: VoteMetadata.ToByteArray
 - uid: Libplanet.Consensus.VoteMetadata.ValidatorPublicKey
   name: ValidatorPublicKey
   href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata_ValidatorPublicKey

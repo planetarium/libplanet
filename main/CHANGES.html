@@ -68,9 +68,9 @@
 <code>Web3KeyStore</code> which implements Ethereum Web3 Secret Storage (corresponds to
 <code>Libplanet.KeyStore.Web3KeyStore</code>) and complies with the <code>KeyStore</code> interface
 defined in <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em>.</p>
-<p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>], a network ran with <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> or
-<a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> is not compatible with this version.  Thus, it is
-recommended to skip <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> and <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> for
+<p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>] and [<a href="https://github.com/planetarium/libplanet/pull/2970">#2970</a>], a network ran with
+<a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> or <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> is not compatible with this version.
+Thus, it is recommended to skip <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> and <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> for
 deployment if possible.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -141,11 +141,24 @@ and <code>Vote(Dictionary)</code> to <code>Vote(IValue)</code>.</li>
 and <code>Vote.Encoded</code> to <code>Vote.Bencoded</code>.</li>
 </ul>
 </li>
-<li>(Libplanet.Net) Changed <code>BlockCommit</code>'s <code>IValue</code> encoding format.
-[<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>]</li>
+<li>Removed <code>byte</code> array related APIs from <code>BlockCommit</code>, <code>Vote</code>,
+<code>VoteMetadata</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2970">#2970</a>]
+<ul>
+<li>Removed <code>BlockCommit(byte[])</code>, <code>BlockCommit.ByteArray</code>,
+and <code>BlockCommit.ToByteArray()</code>.</li>
+<li>Removed <code>Vote(byte[])</code>, <code>Vote.ByteArray</code>, and <code>Vote.ToByteArray()</code>.</li>
+<li>Removed <code>VoteMetadata(byte[])</code>, <code>VoteMetadata.ByteArray</code>,
+and <code>VoteMetadata.ToByteArray()</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<ul>
+<li>(Libplanet.Net) Changed <code>BlockCommit</code>'s <code>IValue</code> encoding format.
+[<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>]</li>
+<li>Changed <code>Block&lt;T&gt;</code>'s <code>IValue</code> encoding format.  [<a href="https://github.com/planetarium/libplanet/pull/2970">#2970</a>]</li>
+</ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>(@planetarium/account) Added key store abstractions.  [<a href="https://github.com/planetarium/libplanet/pull/2915">#2915</a>]
