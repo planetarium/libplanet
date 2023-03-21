@@ -3,7 +3,7 @@ using Libplanet.Consensus;
 
 namespace Libplanet.Action
 {
-    internal static class ValidatorStateExtensions
+    public static class ValidatorStateExtensions
     {
         public static ValidatorSet GetValidatorSet(this IAccountStateDelta delta)
         {
