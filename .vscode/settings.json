@@ -9,6 +9,7 @@
   },
   "csharp.semanticHighlighting.enabled": true,
   "cSpell.words": [
+    "bencoded",
     "Bencodex",
     "Bitcoin",
     "Ethereum",

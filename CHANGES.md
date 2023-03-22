@@ -71,6 +71,15 @@ deployment if possible.
  -  Changed `BlockHash` to implement `IBencodable`.  [[#2959]]
      -  Changed `BlockHash(Binary)` to `BlockHash(IValue)`.
      -  Added `BlockHash.Bencoded` property.
+ -  Removed `ITxMetadata` interface.  [[#2977]]
+     -  The signature of `Transaction<T>(ITxMetadata, IAction, byte[])`
+        constructor became `Transaction<T>(TxMetadata, IAction, byte[])`.
+     -  The signature of `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])`
+        constructor became `Transaction<T>(TxMetadata, IEnumerable<T>, byte[])`.
+     -  The signature of `TxMetadata(ITxMetadata)` constructor became
+        `TxMetadata(ITransaction)`.
+ -  Removed `ITxExcerpt` interface.  [[#1997], [#2977]]
+ -  Removed `TxExcerptExtensions` static class.  [[#1997], [#2977]]
  -  (Libplanet.Net) Changed `VoteMetadata` and `Vote` to implement
     `IBencodable`.  [[#2961]]
      -  Changed `VoteMetadata(Dictionary)` to `VoteMetadata(IValue)`
@@ -97,6 +106,7 @@ deployment if possible.
 
 ### Added APIs
 
+ -  Added `TransactionExtensions` static class.  [[#2977]]
  -  (@planetarium/account) Added key store abstractions.  [[#2915]]
      -  Added `AccountDeletion` type.
      -  Added `AccountGeneration` type.
@@ -126,6 +136,7 @@ deployment if possible.
 ### CLI tools
 
 [Libplanet 0.52.0]: https://www.nuget.org/packages/Libplanet/0.52.0
+[#1997]: https://github.com/planetarium/libplanet/issues/1997
 [#2566]: https://github.com/planetarium/libplanet/pull/2566
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
 [#2915]: https://github.com/planetarium/libplanet/pull/2915
@@ -136,6 +147,7 @@ deployment if possible.
 [#2962]: https://github.com/planetarium/libplanet/pull/2962
 [#2970]: https://github.com/planetarium/libplanet/pull/2970
 [#2971]: https://github.com/planetarium/libplanet/pull/2971
+[#2977]: https://github.com/planetarium/libplanet/pull/2977
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/account-aws-kms]: https://www.npmjs.com/package/@planetarium/account-aws-kms
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex

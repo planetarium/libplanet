@@ -11,10 +11,9 @@ using Libplanet.Crypto;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// A concrete class implementing <see cref="ITxMetadata"/>.  It's used to represent drafts
-    /// of unsigned <see cref="Transaction{T}"/>s.
+    /// A <see cref="Transaction{T}"/> without actions and signature.
     /// </summary>
-    public sealed class TxMetadata : ITxMetadata
+    public sealed class TxMetadata
     {
         internal static readonly byte[] CustomActionsKey = { 0x61 }; // 'a'
         internal static readonly byte[] SystemActionKey = { 0x41 }; // 'A'
@@ -43,10 +42,10 @@ namespace Libplanet.Tx
         /// <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">The transaction metadata whose data to copy.</param>
-        /// <remarks><see cref="ITxMetadata.Signer"/> from the specified <paramref name="metadata"/>
-        /// is ignored.  <see cref="Signer"/> field is automatically derived from
-        /// <see cref="PublicKey"/> instead.</remarks>
-        public TxMetadata(ITxMetadata metadata)
+        /// <remarks><see cref="ITransaction.Signer"/> from the specified
+        /// <paramref name="metadata"/> is ignored.  <see cref="Signer"/> field is automatically
+        /// derived from <see cref="PublicKey"/> instead.</remarks>
+        public TxMetadata(ITransaction metadata)
         {
             Nonce = metadata.Nonce;
             GenesisHash = metadata.GenesisHash;
@@ -81,24 +80,45 @@ namespace Libplanet.Tx
             ).ToUniversalTime();
         }
 
-        /// <inheritdoc cref="ITxMetadata.Nonce"/>
+        /// <summary>
+        /// The number of previous <see cref="Transaction{T}"/>s committed by
+        /// the <see cref="Signer"/> of this transaction.  This nonce is used for preventing
+        /// replay attack.
+        /// </summary>
         public long Nonce { get; set; }
 
-        /// <inheritdoc cref="ITxMetadata.Signer"/>
+        /// <summary>
+        /// A <see cref="Address"/> of the account who signs this transaction.
+        /// This is derived from the <see cref="PublicKey"/>.
+        /// </summary>
         /// <remarks>This is automatically derived from <see cref="PublicKey"/>.</remarks>
         public Address Signer => new Address(PublicKey);
 
-        /// <inheritdoc cref="ITxMetadata.UpdatedAddresses"/>
+        /// <summary>
+        /// An approximated list of addresses whose states would be affected by actions in this
+        /// transaction.  However, it could be wrong.
+        /// </summary>
+        /// <remarks>See also https://github.com/planetarium/libplanet/issues/368 .</remarks>
         public IImmutableSet<Address> UpdatedAddresses { get; set; } =
             ImmutableHashSet<Address>.Empty;
 
-        /// <inheritdoc cref="ITxMetadata.Timestamp"/>
+        /// <summary>
+        /// The time this transaction is created and signed.
+        /// </summary>
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
 
-        /// <inheritdoc cref="ITxMetadata.PublicKey"/>
+        /// <summary>
+        /// A <see cref="PublicKey"/> of the account who signs this transaction.
+        /// The <see cref="Signer"/> address is always corresponding to this
+        /// for each transaction.  This cannot be <see langword="null"/>.
+        /// </summary>
         public PublicKey PublicKey { get; }
 
-        /// <inheritdoc cref="ITxMetadata.GenesisHash"/>
+        /// <summary>
+        /// A <see cref="HashDigest{SHA256}"/> value of the genesis which this transaction is made
+        /// from.  This can be <see langword="null"/> iff the transaction is contained in
+        /// the genesis block.
+        /// </summary>
         public BlockHash? GenesisHash { get; set; }
 
         [Pure]
