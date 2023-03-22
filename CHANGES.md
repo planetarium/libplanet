@@ -75,6 +75,8 @@ deployment if possible.
      -  Removed `Vote(byte[])`, `Vote.ByteArray`, and `Vote.ToByteArray()`.
      -  Removed `VoteMetadata(byte[])`, `VoteMetadata.ByteArray`,
         and `VoteMetadata.ToByteArray()`.
+ -  `ActionEvaluator()` constructor now explicitly requires a new
+    `feeCalculator` parameter.  [[#2566]]
 
 ### Backward-incompatible network protocol changes
 
@@ -95,6 +97,7 @@ deployment if possible.
      -  Added `ImportableKeyStore` interface.
      -  Added `KeyStore` interface.
      -  Added `MutableKeyStore` interface.
+ -  Added `IFeeCalculator` interface. [[#2566]]
 
 ### Behavioral changes
 
@@ -107,6 +110,7 @@ deployment if possible.
 ### CLI tools
 
 [Libplanet 0.52.0]: https://www.nuget.org/packages/Libplanet/0.52.0
+[#2566]: https://github.com/planetarium/libplanet/pull/2566
 [#2703]: https://github.com/planetarium/libplanet/pull/2703
 [#2915]: https://github.com/planetarium/libplanet/pull/2915
 [#2954]: https://github.com/planetarium/libplanet/pull/2954

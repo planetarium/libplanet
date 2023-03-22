@@ -29,6 +29,8 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
         public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
+        public IFeeCalculator FeeCalculator => null;
+
         public int GetMinTransactionsPerBlock(long index) => 0;
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;

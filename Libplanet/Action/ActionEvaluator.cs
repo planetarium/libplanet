@@ -32,6 +32,7 @@ namespace Libplanet.Action
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
         private readonly IActionTypeLoader _actionTypeLoader;
+        private readonly IFeeCalculator? _feeCalculator;
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
@@ -50,13 +51,15 @@ namespace Libplanet.Action
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
+        /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate,
-            IActionTypeLoader actionTypeLoader
+            IActionTypeLoader actionTypeLoader,
+            IFeeCalculator? feeCalculator
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
@@ -69,6 +72,7 @@ namespace Libplanet.Action
             _genesisHash = genesisHash;
             _nativeTokenPredicate = nativeTokenPredicate;
             _actionTypeLoader = actionTypeLoader;
+            _feeCalculator = feeCalculator;
         }
 
         /// <summary>
@@ -240,7 +244,8 @@ namespace Libplanet.Action
                 actions: actions,
                 rehearsal: true,
                 previousBlockStatesTrie: null,
-                nativeTokenPredicate: _ => true);
+                nativeTokenPredicate: _ => true,
+                feeCalculator: null);
 
             if (evaluations.Any())
             {
@@ -284,6 +289,7 @@ namespace Libplanet.Action
         /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="feeCalculator">Fee calculator.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -320,6 +326,7 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
+            IFeeCalculator? feeCalculator = null,
             ILogger? logger = null)
         {
             ActionContext CreateActionContext(
@@ -356,13 +363,39 @@ namespace Libplanet.Action
             foreach (IAction action in actions)
             {
                 Exception? exc = null;
+                IAccountStateDelta nextStates = states;
                 ActionContext context = CreateActionContext(states, seed);
-                IAccountStateDelta nextStates = context.PreviousStates;
                 try
                 {
                     DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
-                    nextStates = action.Execute(context);
                     TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
+
+                    if (blockIndex == 0)
+                    {
+                        logger?.Verbose("The actions in the genesis block don't be charged");
+                    }
+                    else if (rehearsal)
+                    {
+                        logger?.Verbose("rehearsal don't be charged");
+                    }
+                    else if (blockAction)
+                    {
+                        logger?.Verbose("blockAction don't be charged");
+                    }
+                    else if (feeCalculator is null)
+                    {
+                        logger?.Verbose("No fee calculator given, skip charging");
+                    }
+                    else
+                    {
+                        logger?.Verbose($"Measuring fee of {action} started");
+                        FungibleAssetValue fee = feeCalculator.CalculateFee(action);
+                        logger?.Verbose($"Measured fee of {action} is {fee}");
+                        nextStates = states = states.TransferAsset(signer, miner, fee);
+                        context = CreateActionContext(states, seed);
+                    }
+
+                    nextStates = action.Execute(context);
                     logger?.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms");
                 }
                 catch (OutOfMemoryException e)
@@ -400,12 +433,12 @@ namespace Libplanet.Action
                     }
                     else
                     {
-                        var stateRootHash = context.PreviousStateRootHash;
                         var message =
                             "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
                             "pre-evaluation hash {PreEvaluationHash} and previous " +
                             "state root hash {StateRootHash} threw an exception " +
                             "during execution";
+                        HashDigest<SHA256>? stateRootHash = context.PreviousStateRootHash;
                         logger?.Error(
                             e,
                             message,
@@ -593,7 +626,8 @@ namespace Libplanet.Action
                 actions: actions,
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                nativeTokenPredicate: _nativeTokenPredicate);
+                nativeTokenPredicate: _nativeTokenPredicate,
+                feeCalculator: _feeCalculator);
         }
 
         /// <summary>
