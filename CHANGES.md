@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.50.6
 --------------
 
-To be released.
+Released on March 22, 2023.
 
  -  Remove `SetValidator` system action.  [[#2972]]
  -  `ValidatorStateExtensions` is now public.  [[#2972]]
