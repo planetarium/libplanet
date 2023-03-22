@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.54.0
 -------------
 
-Released on March 17, 2023.
+To be released.
 
 ### Backward-incompatible API changes
 
@@ -231,10 +231,9 @@ Released on March 17, 2023.
 
 ### Bug fixes
 
- -  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
-    because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
+ -  Ported changes from [Libplanet 0.50.5] release.  [[#2956]]
 
-[#2956]: https://github.com/planetarium/libplanet/pull/2956
+[Libplanet 0.50.5]: https://www.nuget.org/packages/Libplanet/0.50.5
 
 
 Version 0.51.2
@@ -402,7 +401,7 @@ and the specification might change in the near future.
 Version 0.50.6
 --------------
 
-To be released.
+Released on March 22, 2023.
 
  -  Remove `SetValidator` system action.  [[#2972]]
  -  `ValidatorStateExtensions` is now public.  [[#2972]]
@@ -432,11 +431,6 @@ Released on March 16, 2023.
 
 [#2949]: https://github.com/planetarium/libplanet/pull/2949
 
- -  Fixed `Validator.Encoded` to use a proper type `Bencodex.Types.Integer`
-    for `Validator.Power` instead of `Bencodex.Types.Binary`.  [[#2949]]
-
-[#2949]: https://github.com/planetarium/libplanet/pull/2949
-
 
 Version 0.50.3
 --------------
@@ -460,12 +454,6 @@ Released on March 9, 2023.
 
 [#2875]: https://github.com/planetarium/libplanet/pull/2875
 
- -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
-    a way to configure action type loader to be used in `PolymorphicAction<T>`.
-    [[#2875]]
-
-[#2875]: https://github.com/planetarium/libplanet/pull/2875
-
 
 Version 0.50.1
 --------------
@@ -474,13 +462,6 @@ Released on March 6, 2023.
 
  -  Ported changes from [Libplanet 0.49.1] and [Libplanet 0.49.2] release.
     [[#2884]]
-
-[Libplanet 0.49.1]: https://www.nuget.org/packages/Libplanet/0.49.1
-[Libplanet 0.49.2]: https://www.nuget.org/packages/Libplanet/0.49.2
-[#2884]: https://github.com/planetarium/libplanet/pull/2884
-
- -  Ported changes from [Libplanet 0.49.1] and [Libplanet 0.49.2] release.
-    [#2884]
 
 [Libplanet 0.49.1]: https://www.nuget.org/packages/Libplanet/0.49.1
 [Libplanet 0.49.2]: https://www.nuget.org/packages/Libplanet/0.49.2
