@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 on:
   push:
     branches-ignore:
@@ -6,7 +7,7 @@ on:
     - "*"
   schedule:
   - cron: 59 14 * * *
-  pull_request: []
+  pull_request: null
 name: main
 
 jobs:

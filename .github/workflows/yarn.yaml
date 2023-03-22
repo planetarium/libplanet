@@ -1,8 +1,10 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: yarn
 on:
   push:
     branches: ["*"]
     tags: ["*"]
+  pull_request: null
 
 jobs:
   build:
@@ -18,7 +20,24 @@ jobs:
         cache: yarn
     - run: yarn install --immutable  # TODO: cache and apply --immutable-cache --check-cache
     - run: yarn build
-    - run: yarn test
+    - id: account-aws-kms-changes
+      uses: tj-actions/changed-files@v35
+      with:
+        files: "@planetarium/account-aws-kms"
+    - name: Run yarn test w/o AWS cred for PR unrelated to account-aws-kms
+      if: |
+        github.event_name == 'pull_request' &&
+        steps.account-aws-kms-changes.outputs.any_changed != 'true'
+      run: yarn test
+    - name: Run yarn test w/ AWS cred for push and PR related to account-aws-kms
+      if: |
+        github.event_name != 'pull_request' ||
+        steps.account-aws-kms-changes.outputs.any_changed == 'true'
+      run: yarn test
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
     - run: yarn pack-all
 
   libplanet-tools-npm-install-test:
