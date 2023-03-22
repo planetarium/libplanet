@@ -63,11 +63,18 @@
 
 <h2 id="version-0530">Version 0.53.0</h2>
 <p>To be released.</p>
-<p>Since 0.53.0, we officially provide
-<em><a href="https://www.npmjs.com/package/@planetarium/account-web3-secret-storage">@planetarium/account-web3-secret-storage</a></em>, an npm package for providing
+<p>Since 0.53.0, we officially provide <em><a href="https://www.npmjs.com/package/@planetarium/account-web3-secret-storage">@planetarium/account-web3-secret-storage</a></em>
+and <em><a href="https://www.npmjs.com/package/@planetarium/account-aws-kms">@planetarium/account-aws-kms</a></em>, which are npm packages that provides
+<code>KeyStore</code> implementations that comply with <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em>.</p>
+<ul>
+<li><p>*@planetarium/account-web3-secret-storage*: An npm package for providing
 <code>Web3KeyStore</code> which implements Ethereum Web3 Secret Storage (corresponds to
-<code>Libplanet.KeyStore.Web3KeyStore</code>) and complies with the <code>KeyStore</code> interface
-defined in <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em>.</p>
+<code>Libplanet.KeyStore.Web3KeyStore</code>).</p>
+</li>
+<li><p>*@planetarium/account-aws-kms*: An npm package for providing
+<code>AwsKmsKeyStore</code> which implements <code>Account</code> and uses AWS KMS as the backend.</p>
+</li>
+</ul>
 <p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>] and [<a href="https://github.com/planetarium/libplanet/pull/2970">#2970</a>], a network ran with
 <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> or <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> is not compatible with this version.
 Thus, it is recommended to skip <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> and <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> for
@@ -178,10 +185,16 @@ and <code>VoteMetadata.ToByteArray()</code>.</li>
 <li>Added <code>IFeeCalculator</code> interface. [<a href="https://github.com/planetarium/libplanet/pull/2566">#2566</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(@planetarium/account) <code>Signature.fromBytes()</code> and <code>Signature.fromHex()</code>
+no more accept signatures with high S.  Signatures with high S need to be
+normalized first so that they get rid of high S.  [<a href="https://github.com/planetarium/libplanet/pull/2962">#2962</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account-web3-secret-storage">@planetarium/account-web3-secret-storage</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2915">#2915</a>]</li>
+<li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account-aws-kms">@planetarium/account-aws-kms</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2962">#2962</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0521">Version 0.52.1</h2>
