@@ -144,6 +144,48 @@ Note that all index dependent sub-policies are ignored for genesis <a class="xre
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_FeeCalculator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.FeeCalculator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_FeeCalculator_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.FeeCalculator*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_FeeCalculator" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.FeeCalculator">FeeCalculator</h4>
+  <div class="markdown level1 summary"><p>
+An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are valid.
+</p>
+<p>
+An implementation of this interface should perform <em>all policy dependent checks</em>,
+such as whether a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has the right difficulty,
+a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has the right signer, etc.
+</p>
+<p>
+Note that all index dependent sub-policies are ignored for genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+IFeeCalculator FeeCalculator { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IFeeCalculator.html">IFeeCalculator</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_NativeTokens.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.NativeTokens%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -182,7 +224,7 @@ IImmutableSet&lt;Currency&gt; NativeTokens { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.GetMaxTransactionsBytes(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L95">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L98">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes(System.Int64)">GetMaxTransactionsBytes(Int64)</h4>
@@ -234,7 +276,7 @@ to accept.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.GetMaxTransactionsPerBlock(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L116">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)">GetMaxTransactionsPerBlock(Int64)</h4>
@@ -288,7 +330,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.GetMaxTransactionsPerSignerPerBlock(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L127">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L130">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)">GetMaxTransactionsPerSignerPerBlock(Int64)</h4>
@@ -342,7 +384,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.GetMinTransactionsPerBlock(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L105">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMinTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMinTransactionsPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMinTransactionsPerBlock(System.Int64)">GetMinTransactionsPerBlock(Int64)</h4>
@@ -396,7 +438,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.ValidateNextBlock(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L85">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</h4>
@@ -463,7 +505,7 @@ call <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Lib
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L65">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</h4>

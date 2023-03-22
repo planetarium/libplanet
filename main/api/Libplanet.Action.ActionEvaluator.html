@@ -114,19 +114,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.%23ctor(Libplanet.Action.PolicyBlockActionGetter%2CLibplanet.Blockchain.IBlockChainStates%2CSystem.Func%7BLibplanet.Blocks.BlockHash%2CLibplanet.Store.Trie.ITrie%7D%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Predicate%7BLibplanet.Assets.Currency%7D%2CLibplanet.Action.IActionTypeLoader)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_Libplanet_Action_IFeeCalculator_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.%23ctor(Libplanet.Action.PolicyBlockActionGetter%2CLibplanet.Blockchain.IBlockChainStates%2CSystem.Func%7BLibplanet.Blocks.BlockHash%2CLibplanet.Store.Trie.ITrie%7D%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Predicate%7BLibplanet.Assets.Currency%7D%2CLibplanet.Action.IActionTypeLoader%2CLibplanet.Action.IFeeCalculator)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L53">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator__ctor_" data-uid="Libplanet.Action.ActionEvaluator.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_" data-uid="Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)">ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func&lt;BlockHash, ITrie&gt;, Nullable&lt;BlockHash&gt;, Predicate&lt;Currency&gt;, IActionTypeLoader)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_Libplanet_Action_IFeeCalculator_" data-uid="Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader,Libplanet.Action.IFeeCalculator)">ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func&lt;BlockHash, ITrie&gt;, Nullable&lt;BlockHash&gt;, Predicate&lt;Currency&gt;, IActionTypeLoader, IFeeCalculator)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.ActionEvaluator.html">ActionEvaluator</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluator(PolicyBlockActionGetter policyBlockActionGetter, IBlockChainStates blockChainStates, Func&lt;BlockHash, ITrie&gt; trieGetter, BlockHash? genesisHash, Predicate&lt;Currency&gt; nativeTokenPredicate, IActionTypeLoader actionTypeLoader)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluator(PolicyBlockActionGetter policyBlockActionGetter, IBlockChainStates blockChainStates, Func&lt;BlockHash, ITrie&gt; trieGetter, BlockHash? genesisHash, Predicate&lt;Currency&gt; nativeTokenPredicate, IActionTypeLoader actionTypeLoader, IFeeCalculator feeCalculator)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -179,6 +179,12 @@ the specified <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>
         <td><p>A <a class="xref" href="Libplanet.Action.IActionTypeLoader.html">IActionTypeLoader</a> implementation using action type lookup.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IFeeCalculator.html">IFeeCalculator</a></td>
+        <td><span class="parametername">feeCalculator</span></td>
+        <td><p>Fee calculator.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
@@ -188,7 +194,7 @@ the specified <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L110">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator_Evaluate_" data-uid="Libplanet.Action.ActionEvaluator.Evaluate*"></a>
   <h4 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_" data-uid="Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)">Evaluate(IPreEvaluationBlock)</h4>
@@ -248,7 +254,7 @@ the end.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte%5B%5D%2CSystem.Byte%5B%5D%2CSystem.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L84">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator_GenerateRandomSeed_" data-uid="Libplanet.Action.ActionEvaluator.GenerateRandomSeed*"></a>
   <h4 id="Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Byte___System_Int32_" data-uid="Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)">GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)</h4>
