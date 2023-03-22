@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
@@ -94,10 +95,25 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        IValue? IAccountStateView.GetState(Address address) =>
-            UpdatedStates.TryGetValue(address, out IValue? value)
+        IValue? IAccountStateView.GetState(Address address)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var states = UpdatedStates.TryGetValue(address, out IValue? value)
                 ? value
                 : StateGetter(new[] { address })[0];
+            Log.Logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "GetStateDuration")
+                .Information(
+                    "Took {DurationMs} ms to get state from {Address}, " +
+                    "which has length {EncodedLength} and is {ValueKind}",
+                    stopwatch.ElapsedMilliseconds,
+                    address,
+                    states?.EncodingLength,
+                    states?.Kind);
+            return states;
+        }
 
         /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
