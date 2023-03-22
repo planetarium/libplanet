@@ -17,6 +17,9 @@ and *[@planetarium/account-aws-kms]*, which are npm packages that provides
  -  *@planetarium/account-aws-kms*: An npm package for providing
     `AwsKmsKeyStore` which implements `Account` and uses AWS KMS as the backend.
 
+Since 0.53.0, we do not provide *Libplanet.Node* package anymore.  If you still
+need the package, use 0.52.0 or its patched versions.
+
 Due to changes in [[#2961]] and [[#2970]], a network ran with
 [Libplanet 0.51.0] or [Libplanet 0.52.0] is not compatible with this version.
 Thus, it is recommended to skip [Libplanet 0.51.0] and [Libplanet 0.52.0] for
@@ -24,6 +27,7 @@ deployment if possible.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Node) Removed `Libplanet.Node` namespace.  [[#2971]]
  -  Removed state completion feature with related classes as below.  [[#2703]]
     -  `StateCompleter`
     -  `StateCompleters`
@@ -116,6 +120,8 @@ deployment if possible.
 
  -  Added *[@planetarium/account-web3-secret-storage]* npm package.  [[#2915]]
  -  Added *[@planetarium/account-aws-kms]* npm package.  [[#2962]]
+ -  Removed *Libplanet.Node* package.  *Libplanet.Node* 0.52.0 was its last
+    minor release.  [[#2971]]
 
 ### CLI tools
 
@@ -129,6 +135,7 @@ deployment if possible.
 [#2961]: https://github.com/planetarium/libplanet/pull/2961
 [#2962]: https://github.com/planetarium/libplanet/pull/2962
 [#2970]: https://github.com/planetarium/libplanet/pull/2970
+[#2971]: https://github.com/planetarium/libplanet/pull/2971
 [@planetarium/account-web3-secret-storage]: https://www.npmjs.com/package/@planetarium/account-web3-secret-storage
 [@planetarium/account-aws-kms]: https://www.npmjs.com/package/@planetarium/account-aws-kms
 [@planetarium/bencodex]: https://www.npmjs.com/package/@planetarium/bencodex

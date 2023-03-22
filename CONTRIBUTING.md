@@ -100,10 +100,6 @@ on GitHub consists of several projects.  There are two types of projects:
     *Libplanet*.  This is distributed as a distinct NuGet package:
     *[Libplanet.Net]*.
 
- -  *Libplanet.Node*: User-friendly façade API for building your own
-     peer-to-peer network.  This is distributed as a distinct NuGet package:
-    *[Libplanet.Node]*.
-
  -  *Libplanet.Stun*: The project dedicated to implement [TURN & STUN].
     This is distributed as a distinct NuGet package: *[Libplanet.Stun]*.
 
@@ -146,8 +142,6 @@ on GitHub consists of several projects.  There are two types of projects:
 
  -  *Libplanet.Net.Tests*: Unit tests of the *Libplanet.Net* project.
 
- -  *Libplanet.Node.Tests*: Unit tests of the *Libplanet.Node* project.
-
  -  *Libplanet.Stun.Tests*: Unit tests of the *Libplanet.Stun* project.
 
  -  *Libplanet.Crypto.Secp256k1.Tests*: Unit tests of
@@ -168,7 +162,6 @@ on GitHub consists of several projects.  There are two types of projects:
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
-[Libplanet.Node]: https://www.nuget.org/packages/Libplanet.Node/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
 [libsecp256k1]: https://github.com/bitcoin-core/secp256k1
 [RocksDB]: https://rocksdb.org/
