@@ -6,6 +6,11 @@ Version 0.50.6
 
 To be released.
 
+ -  Remove `SetValidator` system action.  [[#2972]]
+ -  `ValidatorStateExtensions` is now public.  [[#2972]]
+
+[#2972]: https://github.com/planetarium/libplanet/pull/2972
+
 
 Version 0.50.5
 --------------
