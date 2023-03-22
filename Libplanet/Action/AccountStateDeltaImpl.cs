@@ -106,12 +106,12 @@ namespace Libplanet.Action
                 .ForContext("Tag", "Metric")
                 .ForContext("Subtag", "GetStateDuration")
                 .Information(
-                    "Took {DurationMs} ms to get state from {Address}, " +
-                    "which has length {EncodedLength} and is {ValueKind}",
+                    "Took {DurationMs} ms to get state of legnth {Length} and kind {Kind} " +
+                    "from {Address}",
                     stopwatch.ElapsedMilliseconds,
-                    address,
                     states?.EncodingLength,
-                    states?.Kind);
+                    states?.Kind,
+                    address);
             return states;
         }
 

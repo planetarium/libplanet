@@ -624,7 +624,8 @@ namespace Libplanet.Action
                     stopwatch.ElapsedMilliseconds,
                     actions,
                     tx.Id,
-                    tx.Signer);
+                    tx.Signer,
+                    tx.Nonce);
             return EvaluateActions(
                 genesisHash: _genesisHash,
                 preEvaluationHash: blockHeader.PreEvaluationHash,
