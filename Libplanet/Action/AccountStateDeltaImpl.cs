@@ -8,6 +8,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
+using LruCacheNet;
 using Serilog;
 
 namespace Libplanet.Action
@@ -18,6 +19,8 @@ namespace Libplanet.Action
     [Pure]
     internal class AccountStateDeltaImpl : IValidatorSupportStateDelta, IAccountStateDelta
     {
+        private const int CacheSize = 1_000;
+
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
         /// </summary>
@@ -46,6 +49,27 @@ namespace Libplanet.Action
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
             Signer = signer;
+            CachedStates = new LruCache<Address, IValue?>(CacheSize);
+        }
+
+        internal AccountStateDeltaImpl(
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
+            Address signer,
+            LruCache<Address, IValue?> cachedStates
+        )
+        {
+            StateGetter = accountStateGetter;
+            BalanceGetter = accountBalanceGetter;
+            TotalSupplyGetter = totalSupplyGetter;
+            ValidatorSetGetter = validatorSetGetter;
+            UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
+            UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
+            UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
+            Signer = signer;
+            CachedStates = cachedStates;
         }
 
         /// <inheritdoc/>
@@ -93,27 +117,48 @@ namespace Libplanet.Action
 
         protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
+        protected LruCache<Address, IValue?> CachedStates { get; }
+
         /// <inheritdoc/>
         [Pure]
         IValue? IAccountStateView.GetState(Address address)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var cached = UpdatedStates.TryGetValue(address, out IValue? value);
-            var states = cached
-                ? value
-                : StateGetter(new[] { address })[0];
+            IValue? states = null;
+            bool updated = false;
+            bool cached = false;
+            if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
+            {
+                updated = true;
+                states = updatedValue;
+            }
+            else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
+            {
+                cached = true;
+                states = cachedValue;
+            }
+            else
+            {
+                if (StateGetter(new[] { address })[0] is { } value)
+                {
+                    states = value;
+                    CachedStates.AddOrUpdate(address, states);
+                }
+            }
+
             Log.Logger
                 .ForContext("Tag", "Metric")
                 .ForContext("Subtag", "GetStateDuration")
                 .Information(
                     "Took {DurationMs} ms to get state of legnth {Length} and kind {Kind} " +
-                    "from {Address} (fetch from store: {Direct})",
+                    "from {Address} (from updated: {Updated}, from cached: {Cached})",
                     stopwatch.ElapsedMilliseconds,
                     states?.EncodingLength,
                     states?.Kind,
                     address,
-                    !cached);
+                    updated,
+                    cached);
             return states;
         }
 
@@ -126,12 +171,21 @@ namespace Libplanet.Action
             int length = addresses.Count;
             IValue?[] values = new IValue?[length];
             var notFound = new List<Address>(length);
+            int updatedCount = 0;
+            int cachedCount = 0;
             for (int i = 0; i < length; i++)
             {
                 Address address = addresses[i];
-                if (UpdatedStates.TryGetValue(address, out IValue? v))
+                if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
                 {
-                    values[i] = v;
+                    values[i] = updatedValue;
+                    updatedCount++;
+                    continue;
+                }
+                else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
+                {
+                    values[i] = cachedValue;
+                    cachedCount++;
                     continue;
                 }
 
@@ -144,6 +198,11 @@ namespace Libplanet.Action
                 if (addresses[i].Equals(notFound[j]))
                 {
                     values[i] = restValues[j];
+                    if (restValues[j] is { } value)
+                    {
+                        CachedStates.AddOrUpdate(notFound[j], restValues[j]);
+                    }
+
                     j++;
                 }
             }
@@ -153,10 +212,11 @@ namespace Libplanet.Action
                 .ForContext("Subtag", "GetStatesDuration")
                 .Information(
                     "Took {DurationMs} ms to get states from {Count} addresses " +
-                    "(fetch from store count: {DirectCount})",
+                    "(from updated count: {UpdatedCount}, from cached count: {CachedCount})",
                     stopwatch.ElapsedMilliseconds,
                     addresses.Count,
-                    notFound.Count);
+                    updatedCount,
+                    cachedCount);
             return values;
         }
 
@@ -395,7 +455,8 @@ namespace Libplanet.Action
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
-                Signer)
+                Signer,
+                CachedStates)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
