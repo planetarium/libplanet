@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -7,6 +8,7 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Store;
+using LruCacheNet;
 using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
@@ -18,8 +20,10 @@ namespace Libplanet.Blockchain
     public class BlockChainStates<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
+        private const int CacheSize = 100;
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
+        private readonly LruCache<CacheKey, IReadOnlyList<IValue?>> _stateCache;
 
         // Temporary fields for backward compatibility.
         // FIXME This field and related codes should be deleted
@@ -30,6 +34,7 @@ namespace Libplanet.Blockchain
         {
             _store = store;
             _stateStore = stateStore;
+            _stateCache = new LruCache<CacheKey, IReadOnlyList<IValue?>>(CacheSize);
         }
 
         /// <inheritdoc cref="IBlockChainStates{T}.GetStates"/>
@@ -38,16 +43,28 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             StateCompleter<T> stateCompleter)
         {
+            var cacheKey = new CacheKey(offset, addresses);
+            if (_stateCache.TryGetValue(
+                    cacheKey,
+                    out IReadOnlyList<IValue?> value))
+            {
+                return value;
+            }
+
             HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
             if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
             {
                 string[] rawKeys = addresses.Select(ToStateKey).ToArray();
-                return _stateStore.GetStates(stateRootHash, rawKeys);
+                IReadOnlyList<IValue?> fetched = _stateStore.GetStates(stateRootHash, rawKeys);
+                _stateCache.AddOrUpdate(cacheKey, fetched);
+                return fetched;
             }
 
-            if (!(_blockChain is null))
+            if (_blockChain is { } chain)
             {
-                return stateCompleter(_blockChain, offset, addresses);
+                IReadOnlyList<IValue?> fetched = stateCompleter(chain, offset, addresses);
+                _stateCache.AddOrUpdate(cacheKey, fetched);
+                return fetched;
             }
 
             throw new IncompleteBlockStatesException(offset);
@@ -134,6 +151,35 @@ namespace Libplanet.Blockchain
         internal void Bind(BlockChain<T> blockChain)
         {
             _blockChain = blockChain;
+        }
+
+        private struct CacheKey : IEquatable<CacheKey>
+        {
+            public CacheKey(BlockHash blockHash, IReadOnlyList<Address> addresses)
+            {
+                BlockHash = blockHash;
+                Addresses = addresses;
+            }
+
+            public BlockHash BlockHash { get; }
+
+            public IReadOnlyList<Address> Addresses { get; }
+
+            public bool Equals(CacheKey other) =>
+                BlockHash.Equals(BlockHash) && Addresses.SequenceEqual(other.Addresses);
+
+            public override bool Equals(object? obj) => obj is CacheKey other && Equals(other);
+
+            public override int GetHashCode()
+            {
+                int hash = 17;
+                foreach (Address address in Addresses)
+                {
+                    hash = unchecked(hash * 31 + address.GetHashCode());
+                }
+
+                return HashCode.Combine(hash, BlockHash);
+            }
         }
     }
 }
