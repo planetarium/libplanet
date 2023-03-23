@@ -75,12 +75,15 @@ and <em><a href="https://www.npmjs.com/package/@planetarium/account-aws-kms">@pl
 <code>AwsKmsKeyStore</code> which implements <code>Account</code> and uses AWS KMS as the backend.</p>
 </li>
 </ul>
+<p>Since 0.53.0, we do not provide <em>Libplanet.Node</em> package anymore.  If you still
+need the package, use 0.52.0 or its patched versions.</p>
 <p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>] and [<a href="https://github.com/planetarium/libplanet/pull/2970">#2970</a>], a network ran with
 <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> or <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> is not compatible with this version.
 Thus, it is recommended to skip <a href="https://www.nuget.org/packages/Libplanet/0.51.0">Libplanet 0.51.0</a> and <a href="https://www.nuget.org/packages/Libplanet/0.52.0">Libplanet 0.52.0</a> for
 deployment if possible.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>(Libplanet.Node) Removed <code>Libplanet.Node</code> namespace.  [<a href="https://github.com/planetarium/libplanet/pull/2971">#2971</a>]</li>
 <li>Removed state completion feature with related classes as below.  [<a href="https://github.com/planetarium/libplanet/pull/2703">#2703</a>]
 <ul>
 <li><code>StateCompleter</code></li>
@@ -195,6 +198,8 @@ normalized first so that they get rid of high S.  [<a href="https://github.com/p
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account-web3-secret-storage">@planetarium/account-web3-secret-storage</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2915">#2915</a>]</li>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account-aws-kms">@planetarium/account-aws-kms</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2962">#2962</a>]</li>
+<li>Removed <em>Libplanet.Node</em> package.  <em>Libplanet.Node</em> 0.52.0 was its last
+minor release.  [<a href="https://github.com/planetarium/libplanet/pull/2971">#2971</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0521">Version 0.52.1</h2>
