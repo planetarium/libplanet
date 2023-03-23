@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -44,6 +45,8 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             StateCompleter<T> stateCompleter)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             var cacheKey = new CacheKey(offset, addresses);
             if (_stateCache.TryGetValue(
                     cacheKey,
@@ -52,22 +55,28 @@ namespace Libplanet.Blockchain
                 Log
                     .ForContext("Source", nameof(BlockChainStates<T>))
                     .Debug(
-                        "Cached values found for {MethodName}(); returning cahced values",
-                        nameof(GetStates));
+                        "Cached values found for {MethodName}() in {DurationMs} ms for " +
+                        "{Count} addresses; returning cahced values",
+                        nameof(GetStates),
+                        stopwatch.ElapsedMilliseconds,
+                        addresses.Count);
                 return value;
             }
 
-            Log
-                .ForContext("Source", nameof(BlockChainStates<T>))
-                .Debug(
-                    "Cached values not found for {MethodName}(); returning values from store",
-                    nameof(GetStates));
             HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
             if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
             {
                 string[] rawKeys = addresses.Select(ToStateKey).ToArray();
                 IReadOnlyList<IValue?> fetched = _stateStore.GetStates(stateRootHash, rawKeys);
                 _stateCache.AddOrUpdate(cacheKey, fetched);
+                Log
+                    .ForContext("Source", nameof(BlockChainStates<T>))
+                    .Debug(
+                        "Cached values not found for {MethodName}(); " +
+                        "took {DurationMs} ms to fetch values for {Count} addresses from store",
+                        nameof(GetStates),
+                        stopwatch.ElapsedMilliseconds,
+                        addresses.Count);
                 return fetched;
             }
 
@@ -75,6 +84,14 @@ namespace Libplanet.Blockchain
             {
                 IReadOnlyList<IValue?> fetched = stateCompleter(chain, offset, addresses);
                 _stateCache.AddOrUpdate(cacheKey, fetched);
+                Log
+                    .ForContext("Source", nameof(BlockChainStates<T>))
+                    .Debug(
+                        "Cached values not found for {MethodName}(); " +
+                        "took {DurationMs} ms to fetch values for {Count} addresses from store",
+                        nameof(GetStates),
+                        stopwatch.ElapsedMilliseconds,
+                        addresses.Count);
                 return fetched;
             }
 
