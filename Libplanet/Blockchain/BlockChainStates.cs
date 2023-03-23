@@ -9,6 +9,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Store;
 using LruCacheNet;
+using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
@@ -48,9 +49,19 @@ namespace Libplanet.Blockchain
                     cacheKey,
                     out IReadOnlyList<IValue?> value))
             {
+                Log
+                    .ForContext("Source", nameof(BlockChainStates<T>))
+                    .Debug(
+                        "Cached values found for {MethodName}(); returning cahced values",
+                        nameof(GetStates));
                 return value;
             }
 
+            Log
+                .ForContext("Source", nameof(BlockChainStates<T>))
+                .Debug(
+                    "Cached values not found for {MethodName}(); returning values from store",
+                    nameof(GetStates));
             HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
             if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
             {
