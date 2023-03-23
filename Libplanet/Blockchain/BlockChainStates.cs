@@ -56,14 +56,14 @@ namespace Libplanet.Blockchain
             {
                 string[] rawKeys = addresses.Select(ToStateKey).ToArray();
                 IReadOnlyList<IValue?> fetched = _stateStore.GetStates(stateRootHash, rawKeys);
-                _stateCache.Add(cacheKey, fetched);
+                _stateCache.AddOrUpdate(cacheKey, fetched);
                 return fetched;
             }
 
-            if (!(_blockChain is null))
+            if (_blockChain is { } chain)
             {
-                IReadOnlyList<IValue?> fetched = stateCompleter(_blockChain, offset, addresses);
-                _stateCache.Add(cacheKey, fetched);
+                IReadOnlyList<IValue?> fetched = stateCompleter(chain, offset, addresses);
+                _stateCache.AddOrUpdate(cacheKey, fetched);
                 return fetched;
             }
 
