@@ -99,7 +99,8 @@ namespace Libplanet.Action
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var states = UpdatedStates.TryGetValue(address, out IValue? value)
+            var cached = UpdatedStates.TryGetValue(address, out IValue? value);
+            var states = cached
                 ? value
                 : StateGetter(new[] { address })[0];
             Log.Logger
@@ -107,11 +108,12 @@ namespace Libplanet.Action
                 .ForContext("Subtag", "GetStateDuration")
                 .Information(
                     "Took {DurationMs} ms to get state of legnth {Length} and kind {Kind} " +
-                    "from {Address}",
+                    "from {Address} (fetch from store: {Direct})",
                     stopwatch.ElapsedMilliseconds,
                     states?.EncodingLength,
                     states?.Kind,
-                    address);
+                    address,
+                    !cached);
             return states;
         }
 
@@ -119,6 +121,8 @@ namespace Libplanet.Action
         [Pure]
         IReadOnlyList<IValue?> IAccountStateView.GetStates(IReadOnlyList<Address> addresses)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             int length = addresses.Count;
             IValue?[] values = new IValue?[length];
             var notFound = new List<Address>(length);
@@ -144,6 +148,15 @@ namespace Libplanet.Action
                 }
             }
 
+            Log.Logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "GetStatesDuration")
+                .Information(
+                    "Took {DurationMs} ms to get states from {Count} addresses " +
+                    "(fetch from store count: {DirectCount})",
+                    stopwatch.ElapsedMilliseconds,
+                    addresses.Count,
+                    notFound.Count);
             return values;
         }
 
