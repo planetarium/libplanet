@@ -214,6 +214,14 @@ namespace Libplanet.Tests.Tx
             public Dictionary SystemAction => null;
 
             public IImmutableList<IValue> CustomActions => null;
+
+            public TxActionList Actions => TxCustomActionList.Empty;
+
+            bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
+
+            bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata other) => false;
+
+            bool IEquatable<IUnsignedTx>.Equals(IUnsignedTx other) => false;
         }
     }
 }

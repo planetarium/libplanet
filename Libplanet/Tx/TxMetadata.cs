@@ -42,7 +42,7 @@ namespace Libplanet.Tx
         /// <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">The transaction metadata whose data to copy.</param>
-        /// <remarks><see cref="ITransaction.Signer"/> from the specified
+        /// <remarks><see cref="ITxSigningMetadata.Signer"/> from the specified
         /// <paramref name="metadata"/> is ignored.  <see cref="Signer"/> field is automatically
         /// derived from <see cref="PublicKey"/> instead.</remarks>
         public TxMetadata(ITransaction metadata)

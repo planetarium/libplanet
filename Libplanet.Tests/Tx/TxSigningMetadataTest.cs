@@ -1,0 +1,82 @@
+using System;
+using Libplanet.Crypto;
+using Libplanet.Tx;
+using Xunit;
+
+namespace Libplanet.Tests.Tx
+{
+    public class TxSigningMetadataTest
+    {
+        private static readonly PublicKey PublicKey = new PublicKey(
+            ByteUtil.ParseHex(
+                "03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"));
+
+        [Fact]
+        public void Constructor()
+        {
+            var metadata = new TxSigningMetadata(PublicKey, 123L);
+            Assert.Equal(PublicKey.ToAddress(), metadata.Signer);
+            Assert.Equal(PublicKey, metadata.PublicKey);
+            Assert.Equal(123L, metadata.Nonce);
+
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => new TxSigningMetadata(PublicKey, -1L));
+        }
+
+        [Fact]
+        public void CopyConstructor()
+        {
+            var metadata = new TxSigningMetadata(PublicKey, 123L);
+            var copy = new TxSigningMetadata(metadata);
+            Assert.Equal(PublicKey.ToAddress(), copy.Signer);
+            Assert.Equal(PublicKey, copy.PublicKey);
+            Assert.Equal(123L, copy.Nonce);
+
+            var copyFromInterface = new TxSigningMetadata(new MockingTxSigningMetadata());
+            Assert.Equal(PublicKey.ToAddress(), copyFromInterface.Signer);
+            Assert.Equal(PublicKey, copyFromInterface.PublicKey);
+            Assert.Equal(123L, copyFromInterface.Nonce);
+        }
+
+        [Fact]
+        public void Equality()
+        {
+            var metadata = new TxSigningMetadata(PublicKey, 123L);
+            var copy = new TxSigningMetadata(metadata);
+            Assert.True(metadata.Equals(copy));
+            Assert.True(metadata.Equals((object)copy));
+            Assert.Equal(metadata.GetHashCode(), copy.GetHashCode());
+
+            var mock = new MockingTxSigningMetadata();
+            Assert.True(metadata.Equals(mock));
+            Assert.True(metadata.Equals((object)mock));
+
+            var diffPublicKey = new TxSigningMetadata(new PrivateKey().PublicKey, 123L);
+            Assert.False(metadata.Equals(diffPublicKey));
+            Assert.False(metadata.Equals((object)diffPublicKey));
+            Assert.NotEqual(metadata.GetHashCode(), diffPublicKey.GetHashCode());
+            Assert.False(diffPublicKey.Equals(mock));
+            Assert.False(diffPublicKey.Equals((object)mock));
+            Assert.NotEqual(diffPublicKey.GetHashCode(), mock.GetHashCode());
+
+            var diffNonce = new TxSigningMetadata(PublicKey, 456L);
+            Assert.False(metadata.Equals(diffNonce));
+            Assert.False(metadata.Equals((object)diffNonce));
+            Assert.NotEqual(metadata.GetHashCode(), diffNonce.GetHashCode());
+            Assert.False(diffNonce.Equals(mock));
+            Assert.False(diffNonce.Equals((object)mock));
+            Assert.NotEqual(diffNonce.GetHashCode(), mock.GetHashCode());
+        }
+
+        private class MockingTxSigningMetadata : ITxSigningMetadata
+        {
+            long ITxSigningMetadata.Nonce => 123L;
+
+            Address ITxSigningMetadata.Signer => PublicKey.ToAddress();
+
+            PublicKey ITxSigningMetadata.PublicKey => PublicKey;
+
+            bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata other) => false;
+        }
+    }
+}

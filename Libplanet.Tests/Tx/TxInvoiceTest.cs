@@ -1,0 +1,160 @@
+using System;
+using System.Collections.Immutable;
+using Libplanet.Action;
+using Libplanet.Blocks;
+using Libplanet.Tests.Common.Action;
+using Libplanet.Tx;
+using Xunit;
+
+namespace Libplanet.Tests.Tx
+{
+    public class TxInvoiceTest
+    {
+        public static readonly Address AddressA =
+            new Address("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
+
+        public static readonly Address AddressB =
+            new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");
+
+        [Fact]
+        public void PlainConstructor()
+        {
+            var random = new System.Random();
+            var genesisHash = random.NextBlockHash();
+            var updatedAddresses = ImmutableHashSet.Create(
+                random.NextAddress(),
+                random.NextAddress());
+            var timestamp = DateTimeOffset.UtcNow;
+            var actions = new TxCustomActionList(new IAction[]
+            {
+                new DumbAction(random.NextAddress(), "foo"),
+                new DumbAction(random.NextAddress(), "bar"),
+            });
+            var invoice = new TxInvoice(
+                genesisHash,
+                updatedAddresses,
+                timestamp,
+                actions
+            );
+            Assert.Equal(genesisHash, invoice.GenesisHash);
+            Assert.True(updatedAddresses.SetEquals(invoice.UpdatedAddresses));
+            Assert.Equal(timestamp, invoice.Timestamp);
+            Assert.Equal(actions, invoice.Actions);
+        }
+
+        [Fact]
+        public void ShortcutConstructor()
+        {
+            var before = DateTimeOffset.UtcNow;
+            var invoice = new TxInvoice();
+            var after = DateTimeOffset.UtcNow;
+            Assert.Null(invoice.GenesisHash);
+            Assert.Empty(invoice.UpdatedAddresses);
+            Assert.InRange(invoice.Timestamp, before, after);
+            Assert.IsType<TxCustomActionList>(invoice.Actions);
+            Assert.Empty(invoice.Actions);
+        }
+
+        [Fact]
+        public void CopyConstructor()
+        {
+            var random = new System.Random();
+            var genesisHash = random.NextBlockHash();
+            var updatedAddresses = ImmutableHashSet.Create(
+                random.NextAddress(),
+                random.NextAddress());
+            var timestamp = DateTimeOffset.UtcNow;
+            var actions = new TxCustomActionList(new IAction[]
+            {
+                new DumbAction(random.NextAddress(), "foo"),
+                new DumbAction(random.NextAddress(), "bar"),
+            });
+            var original = new TxInvoice(
+                genesisHash,
+                updatedAddresses,
+                timestamp,
+                actions
+            );
+            var copy = new TxInvoice(original);
+            Assert.Equal(genesisHash, copy.GenesisHash);
+            Assert.True(updatedAddresses.SetEquals(copy.UpdatedAddresses));
+            Assert.Equal(timestamp, copy.Timestamp);
+            Assert.Equal(actions, copy.Actions);
+
+            var mock = new MockTxInvoice();
+            var copyFromInterface = new TxInvoice(mock);
+            Assert.Equal(mock.GenesisHash, copyFromInterface.GenesisHash);
+            Assert.True(mock.UpdatedAddresses.SetEquals(copyFromInterface.UpdatedAddresses));
+            Assert.Equal(mock.Timestamp, copyFromInterface.Timestamp);
+            Assert.Equal(mock.Actions, copyFromInterface.Actions);
+        }
+
+        [Fact]
+        public void Equality()
+        {
+            var genesisHash = BlockHash.FromString(
+                "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
+            var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
+            var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
+            var actions = new TxCustomActionList(new IAction[]
+            {
+                new DumbAction(AddressA, "foo"),
+                new DumbAction(AddressB, "bar"),
+            });
+            var invoice1 = new TxInvoice(
+                genesisHash,
+                updatedAddresses,
+                timestamp,
+                actions
+            );
+            var invoice2 = new TxInvoice(
+                genesisHash,
+                updatedAddresses,
+                timestamp,
+                actions
+            );
+            Assert.True(invoice1.Equals(invoice2));
+            Assert.True(invoice1.Equals((object)invoice2));
+            Assert.Equal(invoice1.GetHashCode(), invoice2.GetHashCode());
+
+            var mock = new MockTxInvoice();
+            Assert.True(invoice1.Equals(mock));
+            Assert.True(invoice1.Equals((object)mock));
+
+            Assert.False(invoice1.Equals(null));
+
+            for (int i = 0; i < 4; i++)
+            {
+                var invoice = new TxInvoice(
+                    i == 0 ? (BlockHash?)null : genesisHash,
+                    i == 1 ? null : updatedAddresses,
+                    i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
+                    i == 3 ? null : actions
+                );
+                Assert.False(invoice1.Equals(invoice));
+                Assert.False(invoice1.Equals((object)invoice));
+                Assert.NotEqual(invoice1.GetHashCode(), invoice.GetHashCode());
+            }
+        }
+
+        private class MockTxInvoice : ITxInvoice
+        {
+            public IImmutableSet<Address> UpdatedAddresses =>
+                ImmutableHashSet.Create(AddressA, AddressB);
+
+            public DateTimeOffset Timestamp =>
+                new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
+
+            public BlockHash? GenesisHash => BlockHash.FromString(
+                "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
+
+            public TxActionList Actions => new TxCustomActionList(new IAction[]
+            {
+                new DumbAction(AddressA, "foo"),
+                new DumbAction(AddressB, "bar"),
+            });
+
+            bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
+        }
+    }
+}

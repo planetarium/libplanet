@@ -1,6 +1,7 @@
 namespace Libplanet.Extensions.Cocona.Commands;
 
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -74,7 +75,7 @@ public class TxCommand
         Transaction<NullAction> tx;
         try
         {
-            tx = Transaction<NullAction>.Deserialize(bytes, validate: false);
+            tx = TxMarshaler.DeserializeTransactionWithoutVerification<NullAction>(bytes);
         }
         catch (Exception e)
         {
@@ -105,7 +106,8 @@ public class TxCommand
         {
             try
             {
-                tx.Validate();
+                // TODO: refactor
+                var txToVerify = new Transaction<NullAction>(tx, tx.Signature.ToImmutableArray());
             }
             catch (Exception e)
             {

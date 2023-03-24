@@ -617,7 +617,6 @@ namespace Libplanet.Blockchain
             {
                 if (Store.GetTransaction<T>(txId) is { } transaction)
                 {
-                    transaction.Validate();
                     return transaction;
                 }
 

@@ -8,17 +8,64 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `TxMetadata` class.  [[#1164], [#2986]]
+     -  Removed `Transaction<T>(TxMetadata, IAction, byte[])` constructor.
+     -  Removed `Transaction<T>(TxMetadata, IEnumerable<T>, byte[])`
+        constructor.
+ -  Reorganized `ITransaction` interface in general.  [[#1164], [#2986]]
+     -  `ITransaction` now inherits `IUnsignedTx` interface instead of having
+        properties such as `GenesisHash`, `UpdatedAddresses`, `Timestamp`,
+        `Nonce`, `Signer`, and `PublicKey`.
+     -  `SystemAction` property is replaced by `Actions` property which is
+        inherited from `IUnsignedTx` interface.
+     -  `CustomActions` property is replaced by `Actions` property which is
+        inherited from `IUnsignedTx` interface.
+ -  `Transaction<T>` no more accept empty `Signature` as a valid state.
+    Instead, you should use `UnsignedTx` class to represent an unsigned
+    transaction.  [[#1164], [#2986]]
+     -  Removed `Transaction<T>(long, Address, PublicKey, BlockHash?,
+        IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])`
+        constructor.
+     -  Removed `Transaction<T>.CreateUnsigned()` static method.
+     -  Removed `Transaction<T>.Validate()` method.
+     -  Removed `sign` parameter from `Transaction<T>.Serialize()` method.
+     -  Removed `validate` parameter from `Transaction<T>.Deserialize()`
+        method.
+ -  `Transaction<T>` now has `Actions` in a uniform way regardless they
+    are custom actions or system actions, through `TxActionList` abstract
+    class.  [[#1164], [#2986]]
+     -  Changed the type of `Transaction<T>.Actions` property from
+        `IImmutableList<IAction>` to `TxActionList`, which is also an
+        `IReadOnlyList<IAction>`.  The property once was deprecated
+        in favour of `Transaction<T>.CustomActions` and
+        `Transaction<T>.SystemAction`, but now it replaces them both.
+     -  Removed `Transaction<T>.CustomActions` property.
+     -  Removed `Transaction<T>.SystemAction` property.
+ -  `Transaction<T>(Bencodex.Types.Dictionary)` constructor is removed.
+    Use `TxMarshaler.UnmarshalTransaction<T>()` method instead.  [[#2986]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `ITxInvoice` interface.  [[#1164], [#2986]]
+ -  Added `ITxSigningMetadata` interface.  [[#1164], [#2986]]
+ -  Added `IUnsignedTx` interface.  [[#1164], [#2986]]
+ -  Added `TxInvoice` class.  [[#1164], [#2986]]
+ -  Added `TxSigningMetadata` class.  [[#1164], [#2986]]
+ -  Added `UnsignedTx` class.  [[#1164], [#2986]]
+ -  Added `Transaction<T>(IUnsignedTx, ImmutableArray<byte>)`.
+    [[#1164], [#2986]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+[#2986]: https://github.com/planetarium/libplanet/pull/2986
 
 
 Version 0.53.1

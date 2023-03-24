@@ -75,25 +75,5 @@ namespace Libplanet.Tests.Blocks
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
-
-        [Fact]
-        public void DetectInvalidTxSignature()
-        {
-            var txMeta = new TxMetadata(_fx.TxFixture.PublicKey1)
-            {
-                GenesisHash = _fx.Genesis.Hash,
-            };
-            var invalidTx = new Transaction<DumbAction>(
-                txMeta,
-                Enumerable.Empty<DumbAction>(),
-                Array.Empty<byte>()
-            );
-            Assert.Throws<InvalidTxSignatureException>(() =>
-                ProposeNext(
-                    ProposeGenesisBlock<DumbAction>(_fx.Miner),
-                    new List<Transaction<DumbAction>> { invalidTx }
-                )
-            );
-        }
     }
 }

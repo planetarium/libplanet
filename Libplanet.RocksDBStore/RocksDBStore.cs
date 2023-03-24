@@ -691,7 +691,8 @@ namespace Libplanet.RocksDBStore
 
                 byte[] txBytes = txDb.Get(key);
 
-                Transaction<T> tx = Transaction<T>.Deserialize(txBytes, false);
+                Transaction<T> tx =
+                    TxMarshaler.DeserializeTransactionWithoutVerification<T>(txBytes);
                 _txCache.AddOrUpdate(txid, tx);
                 return tx;
             }
@@ -735,7 +736,7 @@ namespace Libplanet.RocksDBStore
                     }
                 }
 
-                txDb.Put(key, tx.Serialize(true));
+                txDb.Put(key, tx.Serialize());
                 _txIndexDb.Put(key, RocksDBStoreBitConverter.GetBytes(txDbName));
                 _txCache.AddOrUpdate(tx.Id, tx);
             }

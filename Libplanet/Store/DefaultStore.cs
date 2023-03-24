@@ -350,9 +350,17 @@ namespace Libplanet.Store
                 return null;
             }
 
-            Transaction<T> tx = Transaction<T>.Deserialize(bytes, false);
-            _txCache.AddOrUpdate(txid, tx);
-            return tx;
+            IValue txNode = Codec.Decode(bytes);
+            if (txNode is Bencodex.Types.Dictionary dict)
+            {
+                Transaction<T> tx = TxMarshaler.UnmarshalTransactionWithoutVerification<T>(dict);
+                _txCache.AddOrUpdate(txid, tx);
+                return tx;
+            }
+
+            throw new DecodingException(
+                $"Expected {typeof(Dictionary).FullName}, but {txNode.GetType().Name} is given"
+            );
         }
 
         /// <inheritdoc/>
@@ -363,7 +371,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.Serialize(true));
+            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.Serialize());
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 

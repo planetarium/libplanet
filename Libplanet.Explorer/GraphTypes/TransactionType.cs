@@ -60,7 +60,7 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "A serialized tx payload in base64 string.",
                 resolve: x =>
                 {
-                    byte[] bytes = x.Source.Serialize(true);
+                    byte[] bytes = x.Source.Serialize();
                     return Convert.ToBase64String(bytes);
                 });
 
