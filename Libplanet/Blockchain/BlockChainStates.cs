@@ -25,7 +25,7 @@ namespace Libplanet.Blockchain
         private const int CacheSize = 1_000;
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
-        private readonly LruCache<CacheKey, IReadOnlyList<IValue?>> _stateCache;
+        private readonly LruCache<CacheKey, IValue?> _stateCache;
 
         // Temporary fields for backward compatibility.
         // FIXME This field and related codes should be deleted
@@ -36,7 +36,7 @@ namespace Libplanet.Blockchain
         {
             _store = store;
             _stateStore = stateStore;
-            _stateCache = new LruCache<CacheKey, IReadOnlyList<IValue?>>(CacheSize);
+            _stateCache = new LruCache<CacheKey, IValue?>(CacheSize);
         }
 
         /// <inheritdoc cref="IBlockChainStates{T}.GetStates"/>
@@ -47,52 +47,88 @@ namespace Libplanet.Blockchain
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            var cacheKey = new CacheKey(offset, addresses);
-            if (_stateCache.TryGetValue(
-                    cacheKey,
-                    out IReadOnlyList<IValue?> value))
+            int length = addresses.Count;
+            List<int> uncachedIndices = new List<int>(length);
+            IValue?[] result = new IValue?[length];
+            var cacheKeys = addresses.Select(address => new CacheKey(offset, address)).ToList();
+
+            for (int i = 0; i < length; i++)
             {
-                Log
-                    .ForContext("Source", nameof(BlockChainStates<T>))
-                    .Debug(
-                        "Cached values found for {MethodName}() in {DurationMs} ms for " +
-                        "{Count} addresses; returning cahced values",
-                        nameof(GetStates),
-                        stopwatch.ElapsedMilliseconds,
-                        addresses.Count);
-                return value;
+                if (_stateCache.TryGetValue(cacheKeys[i], out IValue? cachedValue) &&
+                    cachedValue is { } cv)
+                {
+                    result[i] = cv;
+                }
+                else
+                {
+                    uncachedIndices.Add(i);
+                }
             }
 
-            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
+            if (uncachedIndices.Count == 0)
             {
-                string[] rawKeys = addresses.Select(ToStateKey).ToArray();
-                IReadOnlyList<IValue?> fetched = _stateStore.GetStates(stateRootHash, rawKeys);
-                _stateCache.AddOrUpdate(cacheKey, fetched);
                 Log
                     .ForContext("Source", nameof(BlockChainStates<T>))
                     .Debug(
-                        "Cached values not found for {MethodName}(); " +
-                        "took {DurationMs} ms to fetch values for {Count} addresses from store",
-                        nameof(GetStates),
+                        "Took {DurationMs} ms to fetch values for {MethodName}() via " +
+                        "cache (total count: {TotalCount}, cache count: {CacheCount})",
                         stopwatch.ElapsedMilliseconds,
-                        addresses.Count);
-                return fetched;
+                        nameof(GetStates),
+                        addresses.Count,
+                        addresses.Count - uncachedIndices.Count);
+                return result;
+            }
+
+            IReadOnlyList<Address> uncachedAddresses =
+                uncachedIndices.Select(index => addresses[index]).ToArray();
+
+            if (_store.GetStateRootHash(offset) is { } h && _stateStore.ContainsStateRoot(h))
+            {
+                string[] rawKeys = uncachedAddresses.Select(ToStateKey).ToArray();
+                IReadOnlyList<IValue?> fetched = _stateStore.GetStates(h, rawKeys);
+                foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
+                {
+                    result[v] = fetched[i];
+                    if (fetched[i] is { } f)
+                    {
+                        _stateCache.AddOrUpdate(cacheKeys[v], fetched[i]);
+                    }
+                }
+
+                Log
+                    .ForContext("Source", nameof(BlockChainStates<T>))
+                    .Debug(
+                        "Took {DurationMs} ms to fetch values for {MethodName}() via " +
+                        "state store (total count: {TotalCount}, cache count: {CacheCount})",
+                        stopwatch.ElapsedMilliseconds,
+                        nameof(GetStates),
+                        addresses.Count,
+                        addresses.Count - uncachedIndices.Count);
+                return result;
             }
 
             if (_blockChain is { } chain)
             {
-                IReadOnlyList<IValue?> fetched = stateCompleter(chain, offset, addresses);
-                _stateCache.AddOrUpdate(cacheKey, fetched);
+                IReadOnlyList<IValue?> fetched = stateCompleter(chain, offset, uncachedAddresses);
+                foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
+                {
+                    result[v] = fetched[i];
+                    if (fetched[i] is { } f)
+                    {
+                        _stateCache.AddOrUpdate(cacheKeys[v], fetched[i]);
+                    }
+                }
+
                 Log
                     .ForContext("Source", nameof(BlockChainStates<T>))
                     .Debug(
-                        "Cached values not found for {MethodName}(); " +
-                        "took {DurationMs} ms to fetch values for {Count} addresses from store",
-                        nameof(GetStates),
+                        "Took {DurationMs} ms to fetch values for {MethodName}() via " +
+                        "state completer (total count: {TotalCount}, cache count: {CacheCount})",
                         stopwatch.ElapsedMilliseconds,
-                        addresses.Count);
-                return fetched;
+                        nameof(GetStates),
+                        addresses.Count,
+                        addresses.Count - uncachedIndices.Count);
+                return result;
             }
 
             throw new IncompleteBlockStatesException(offset);
@@ -183,31 +219,22 @@ namespace Libplanet.Blockchain
 
         private struct CacheKey : IEquatable<CacheKey>
         {
-            public CacheKey(BlockHash blockHash, IReadOnlyList<Address> addresses)
+            public CacheKey(BlockHash blockHash, Address address)
             {
                 BlockHash = blockHash;
-                Addresses = addresses;
+                Address = address;
             }
 
-            public BlockHash BlockHash { get; }
+            private BlockHash BlockHash { get; }
 
-            public IReadOnlyList<Address> Addresses { get; }
+            private Address Address { get; }
 
             public bool Equals(CacheKey other) =>
-                BlockHash.Equals(BlockHash) && Addresses.SequenceEqual(other.Addresses);
+                BlockHash.Equals(BlockHash) && Address.Equals(other.Address);
 
             public override bool Equals(object? obj) => obj is CacheKey other && Equals(other);
 
-            public override int GetHashCode()
-            {
-                int hash = 17;
-                foreach (Address address in Addresses)
-                {
-                    hash = unchecked(hash * 31 + address.GetHashCode());
-                }
-
-                return HashCode.Combine(hash, BlockHash);
-            }
+            public override int GetHashCode() => HashCode.Combine(BlockHash, Address);
         }
     }
 }
