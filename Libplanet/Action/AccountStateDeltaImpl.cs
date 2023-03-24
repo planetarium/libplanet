@@ -126,16 +126,12 @@ namespace Libplanet.Action
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             IValue? states = null;
-            bool updated = false;
-            bool cached = false;
             if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
             {
-                updated = true;
                 states = updatedValue;
             }
             else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
             {
-                cached = true;
                 states = cachedValue;
             }
             else
@@ -147,18 +143,6 @@ namespace Libplanet.Action
                 }
             }
 
-            Log.Logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "GetStateDuration")
-                .Information(
-                    "Took {DurationMs} ms to get state of legnth {Length} and kind {Kind} " +
-                    "from {Address} (from updated: {Updated}, from cached: {Cached})",
-                    stopwatch.ElapsedMilliseconds,
-                    states?.EncodingLength,
-                    states?.Kind,
-                    address,
-                    updated,
-                    cached);
             return states;
         }
 
@@ -171,21 +155,17 @@ namespace Libplanet.Action
             int length = addresses.Count;
             IValue?[] values = new IValue?[length];
             var notFound = new List<Address>(length);
-            int updatedCount = 0;
-            int cachedCount = 0;
             for (int i = 0; i < length; i++)
             {
                 Address address = addresses[i];
                 if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
                 {
                     values[i] = updatedValue;
-                    updatedCount++;
                     continue;
                 }
                 else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
                 {
                     values[i] = cachedValue;
-                    cachedCount++;
                     continue;
                 }
 
@@ -207,16 +187,6 @@ namespace Libplanet.Action
                 }
             }
 
-            Log.Logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "GetStatesDuration")
-                .Information(
-                    "Took {DurationMs} ms to get states from {Count} addresses " +
-                    "(from updated count: {UpdatedCount}, from cached count: {CachedCount})",
-                    stopwatch.ElapsedMilliseconds,
-                    addresses.Count,
-                    updatedCount,
-                    cachedCount);
             return values;
         }
 
