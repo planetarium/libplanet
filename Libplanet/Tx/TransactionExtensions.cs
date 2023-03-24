@@ -5,9 +5,9 @@ using Libplanet.Blocks;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// Useful extension methods for <see cref="ITxExcerpt"/>.
+    /// Useful extension methods for <see cref="ITransaction"/>.
     /// </summary>
-    public static class TxExcerptExtensions
+    public static class TransactionExtensions
     {
         /// <summary>
         /// Validates if <paramref name="transactions"/> has valid nonces.
@@ -16,7 +16,6 @@ namespace Libplanet.Tx
         /// <param name="transactions">A list of transactions.  Their order does not matter.</param>
         /// <param name="blockIndex">The index of the block that transactions will belong to.
         /// It's only used for exception messages.</param>
-        /// <typeparam name="T">A transaction type.</typeparam>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
@@ -25,16 +24,17 @@ namespace Libplanet.Tx
         /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
         /// inconsistent genesis hashes.</exception>
         // FIXME: Needs a unit tests.  See also BlockContentTest.Transactions* tests.
-        public static void ValidateTxNonces<T>(this IEnumerable<T> transactions, long blockIndex)
-            where T : ITxExcerpt
+        public static void ValidateTxNonces(
+            this IEnumerable<ITransaction> transactions,
+            long blockIndex)
         {
-            IEnumerable<IGrouping<Address, T>> signerTxs =
+            IEnumerable<IGrouping<Address, ITransaction>> signerTxs =
                 transactions.OrderBy(tx => tx.Nonce).GroupBy(tx => tx.Signer);
             BlockHash? genesisHash = null;
-            foreach (IGrouping<Address, T> txs in signerTxs)
+            foreach (IGrouping<Address, ITransaction> txs in signerTxs)
             {
                 long lastNonce = -1L;
-                foreach (T tx in txs)
+                foreach (ITransaction tx in txs)
                 {
                     long nonce = tx.Nonce;
                     if (lastNonce >= 0 && lastNonce + 1 != nonce)

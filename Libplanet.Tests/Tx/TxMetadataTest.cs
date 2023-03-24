@@ -56,8 +56,9 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CopyConstructor()
         {
-            var meta1 = new TxMetadata(_key1.PublicKey)
+            var meta1 = new MetadataTransaction
             {
+                PublicKey = _key1.PublicKey,
                 Nonce = 123L,
                 Timestamp = new DateTimeOffset(2022, 5, 23, 10, 2, 0, default),
             };
@@ -69,8 +70,9 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(meta1.PublicKey, copy1.PublicKey);
             AssertBytesEqual(meta1.GenesisHash, copy1.GenesisHash);
 
-            var meta2 = new TxMetadata(_key2.PublicKey)
+            var meta2 = new MetadataTransaction
             {
+                PublicKey = _key2.PublicKey,
                 Nonce = 0L,
                 UpdatedAddresses = new[]
                 {
@@ -188,6 +190,30 @@ namespace Libplanet.Tests.Tx
             AssertBencodexEqual(
                 expected2,
                 meta2.ToBencodex());
+        }
+
+        private class MetadataTransaction : ITransaction
+        {
+            public TxId Id { get; set; } = default(TxId);
+
+            public long Nonce { get; set; } = 0L;
+
+            public Address Signer => PublicKey.ToAddress();
+
+            public IImmutableSet<Address> UpdatedAddresses { get; set; } =
+                ImmutableHashSet<Address>.Empty;
+
+            public DateTimeOffset Timestamp { get; set; }
+
+            public PublicKey PublicKey { get; set; }
+
+            public BlockHash? GenesisHash { get; set; }
+
+            public byte[] Signature => Array.Empty<byte>();
+
+            public Dictionary SystemAction => null;
+
+            public IImmutableList<IValue> CustomActions => null;
         }
     }
 }

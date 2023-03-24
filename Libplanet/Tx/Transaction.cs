@@ -54,11 +54,11 @@ namespace Libplanet.Tx
         /// <see langword="null"/>, and goes to the <see cref="SystemAction"/> property.</param>
         /// <param name="signature">A digital signature of the content of this
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
-        /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
+        /// <see cref="ITransaction.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        public Transaction(ITxMetadata metadata, IAction systemAction, byte[] signature)
+        public Transaction(TxMetadata metadata, IAction systemAction, byte[] signature)
         {
-            _metadata = new TxMetadata(metadata);
+            _metadata = metadata;
             _systemAction = Registry.Serialize(systemAction);
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
@@ -74,11 +74,11 @@ namespace Libplanet.Tx
         /// the <see cref="CustomActions"/> property.</param>
         /// <param name="signature">A digital signature of the content of this
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
-        /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
+        /// <see cref="ITransaction.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        public Transaction(ITxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
+        public Transaction(TxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
         {
-            _metadata = new TxMetadata(metadata);
+            _metadata = metadata;
             _customActions = customActions.Select(ca => ca.PlainValue).ToImmutableList();
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
@@ -125,7 +125,7 @@ namespace Libplanet.Tx
         /// or it will throw <see cref="InvalidTxSignatureException"/>.
         /// This is copied and then assigned to the <see cref="Signature"/>
         /// property.</param>
-        [Obsolete("Use constructors taking ITxMetadata or static factory methods instead.")]
+        [Obsolete("Use constructors taking TxMetadata or static factory methods instead.")]
         public Transaction(
             long nonce,
             Address signer,
@@ -198,13 +198,13 @@ namespace Libplanet.Tx
             }
         }
 
-        /// <inheritdoc cref="ITxMetadata.Nonce"/>
+        /// <inheritdoc cref="ITransaction.Nonce"/>
         public long Nonce => _metadata.Nonce;
 
-        /// <inheritdoc cref="ITxMetadata.Signer"/>
+        /// <inheritdoc cref="ITransaction.Signer"/>
         public Address Signer => _metadata.Signer;
 
-        /// <inheritdoc cref="ITxMetadata.UpdatedAddresses"/>
+        /// <inheritdoc cref="ITransaction.UpdatedAddresses"/>
         public IImmutableSet<Address> UpdatedAddresses => _metadata.UpdatedAddresses;
 
         /// <summary>
@@ -278,13 +278,13 @@ namespace Libplanet.Tx
 
         IImmutableList<IValue>? ITransaction.CustomActions => _customActions;
 
-        /// <inheritdoc cref="ITxMetadata.Timestamp"/>
+        /// <inheritdoc cref="ITransaction.Timestamp"/>
         public DateTimeOffset Timestamp => _metadata.Timestamp;
 
-        /// <inheritdoc cref="ITxMetadata.PublicKey"/>
+        /// <inheritdoc cref="ITransaction.PublicKey"/>
         public PublicKey PublicKey => _metadata.PublicKey;
 
-        /// <inheritdoc cref="ITxMetadata.GenesisHash"/>
+        /// <inheritdoc cref="ITransaction.GenesisHash"/>
         public BlockHash? GenesisHash => _metadata.GenesisHash;
 
         /// <summary>

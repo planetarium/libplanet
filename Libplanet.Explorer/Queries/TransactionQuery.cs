@@ -212,12 +212,12 @@ namespace Libplanet.Explorer.Queries
                         );
                     var signedTransaction = unsignedTransaction.SystemAction is { } sysAction
                         ? new Transaction<T>(
-                            metadata: unsignedTransaction,
+                            metadata: new TxMetadata(unsignedTransaction),
                             systemAction: sysAction,
                             signature: signature
                         )
                         : new Transaction<T>(
-                            metadata: unsignedTransaction,
+                            metadata: new TxMetadata(unsignedTransaction),
                             customActions: unsignedTransaction.CustomActions,
                             signature: signature
                         );

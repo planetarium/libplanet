@@ -268,7 +268,7 @@ namespace Libplanet.Action
         /// the <see cref="IPreEvaluationBlock"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// that <paramref name="actions"/> belong to.</param>
-        /// <param name="txid">The <see cref="ITxExcerpt.Id"/> of the
+        /// <param name="txid">The <see cref="ITransaction.Id"/> of the
         /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.
         /// This can be <see langword="null"/> on rehearsal mode or if an <see cref="IAction"/> is a
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
@@ -504,10 +504,10 @@ namespace Libplanet.Action
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ITransaction"/>s in evaluation
         /// order with the following properties:
         /// <list type="bullet">
-        /// <item><see cref="ITransaction"/>s with the same <see cref="ITxMetadata.Signer"/>
+        /// <item><see cref="ITransaction"/>s with the same <see cref="ITransaction.Signer"/>
         /// value appear consecutive in the list.</item>
-        /// <item><see cref="ITransaction"/>s with the same <see cref="ITxMetadata.Signer"/>
-        /// value are ordered by <see cref="ITxMetadata.Nonce"/> value in ascending order.</item>
+        /// <item><see cref="ITransaction"/>s with the same <see cref="ITransaction.Signer"/>
+        /// value are ordered by <see cref="ITransaction.Nonce"/> value in ascending order.</item>
         /// </list>
         /// </returns>
         /// <remarks>
