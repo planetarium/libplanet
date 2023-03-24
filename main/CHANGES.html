@@ -142,6 +142,18 @@ and <code>ValidatorSet.Encoded</code> to <code>ValidatorSet.Bencoded</code>.</li
 <li>Added <code>BlockHash.Bencoded</code> property.</li>
 </ul>
 </li>
+<li>Removed <code>ITxMetadata</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2977">#2977</a>]
+<ul>
+<li>The signature of <code>Transaction&lt;T&gt;(ITxMetadata, IAction, byte[])</code>
+constructor became <code>Transaction&lt;T&gt;(TxMetadata, IAction, byte[])</code>.</li>
+<li>The signature of <code>Transaction&lt;T&gt;(ITxMetadata, IEnumerable&lt;T&gt;, byte[])</code>
+constructor became <code>Transaction&lt;T&gt;(TxMetadata, IEnumerable&lt;T&gt;, byte[])</code>.</li>
+<li>The signature of <code>TxMetadata(ITxMetadata)</code> constructor became
+<code>TxMetadata(ITransaction)</code>.</li>
+</ul>
+</li>
+<li>Removed <code>ITxExcerpt</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1997">#1997</a>, <a href="https://github.com/planetarium/libplanet/pull/2977">#2977</a>]</li>
+<li>Removed <code>TxExcerptExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1997">#1997</a>, <a href="https://github.com/planetarium/libplanet/pull/2977">#2977</a>]</li>
 <li>(Libplanet.Net) Changed <code>VoteMetadata</code> and <code>Vote</code> to implement
 <code>IBencodable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2961">#2961</a>]
 <ul>
@@ -173,6 +185,7 @@ and <code>VoteMetadata.ToByteArray()</code>.</li>
 </ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>TransactionExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/2977">#2977</a>]</li>
 <li>(@planetarium/account) Added key store abstractions.  [<a href="https://github.com/planetarium/libplanet/pull/2915">#2915</a>]
 <ul>
 <li>Added <code>AccountDeletion</code> type.</li>

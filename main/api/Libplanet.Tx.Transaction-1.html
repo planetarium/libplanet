@@ -85,8 +85,6 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</div>
     <div><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></div>
-    <div><a class="xref" href="Libplanet.Tx.ITxExcerpt.html">ITxExcerpt</a></div>
-    <div><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -110,7 +108,7 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_Transaction_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Transaction&lt;T&gt; : IEquatable&lt;Transaction&lt;T&gt;&gt;, ITransaction, ITxExcerpt, ITxMetadata where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Transaction&lt;T&gt; : IEquatable&lt;Transaction&lt;T&gt;&gt;, ITransaction where T : IAction, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,20 +175,20 @@ representation of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transac
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_Libplanet_Action_IAction_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.%23ctor(Libplanet.Tx.ITxMetadata%2CLibplanet.Action.IAction%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_Libplanet_Action_IAction_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.%23ctor(Libplanet.Tx.TxMetadata%2CLibplanet.Action.IAction%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1__ctor_" data-uid="Libplanet.Tx.Transaction`1.#ctor*"></a>
-  <h4 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_Libplanet_Action_IAction_System_Byte___" data-uid="Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,Libplanet.Action.IAction,System.Byte[])">Transaction(ITxMetadata, IAction, Byte[])</h4>
+  <h4 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_Libplanet_Action_IAction_System_Byte___" data-uid="Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,Libplanet.Action.IAction,System.Byte[])">Transaction(TxMetadata, IAction, Byte[])</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance by copying data from a specified
 transaction <code data-dev-comment-type="paramref" class="paramref">metadata</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transaction(ITxMetadata metadata, IAction systemAction, byte[] signature)</code></pre>
+    <pre><code class="lang-csharp hljs">public Transaction(TxMetadata metadata, IAction systemAction, byte[] signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -203,7 +201,7 @@ transaction <code data-dev-comment-type="paramref" class="paramref">metadata</co
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></td>
+        <td><a class="xref" href="Libplanet.Tx.TxMetadata.html">TxMetadata</a></td>
         <td><span class="parametername">metadata</span></td>
         <td><p>The transaction metadata that contains data to copy.</p>
 </td>
@@ -220,33 +218,33 @@ transaction <code data-dev-comment-type="paramref" class="paramref">metadata</co
         <td><span class="parametername">signature</span></td>
         <td><p>A digital signature of the content of this
 <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.  This has to be signed by <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s
-<a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a>. This is copied and then assigned to
+<a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey">PublicKey</a>. This is copied and then assigned to
 the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature">Signature</a> property.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_Libplanet_Action_IAction_System_Byte____seealso">See Also</h5>
+  <h5 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_Libplanet_Action_IAction_System_Byte____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
       <div><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction</a>&lt;T&gt;</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.%23ctor(Libplanet.Tx.ITxMetadata%2CSystem.Collections.Generic.IEnumerable%7B%600%7D%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.%23ctor(Libplanet.Tx.TxMetadata%2CSystem.Collections.Generic.IEnumerable%7B%600%7D%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1__ctor_" data-uid="Libplanet.Tx.Transaction`1.#ctor*"></a>
-  <h4 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___" data-uid="Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])">Transaction(ITxMetadata, IEnumerable&lt;T&gt;, Byte[])</h4>
+  <h4 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___" data-uid="Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])">Transaction(TxMetadata, IEnumerable&lt;T&gt;, Byte[])</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance by copying data from a specified
 transaction <code data-dev-comment-type="paramref" class="paramref">metadata</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transaction(ITxMetadata metadata, IEnumerable&lt;T&gt; customActions, byte[] signature)</code></pre>
+    <pre><code class="lang-csharp hljs">public Transaction(TxMetadata metadata, IEnumerable&lt;T&gt; customActions, byte[] signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -259,7 +257,7 @@ transaction <code data-dev-comment-type="paramref" class="paramref">metadata</co
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></td>
+        <td><a class="xref" href="Libplanet.Tx.TxMetadata.html">TxMetadata</a></td>
         <td><span class="parametername">metadata</span></td>
         <td><p>The transaction metadata that contains data to copy.</p>
 </td>
@@ -277,13 +275,13 @@ the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transacti
         <td><span class="parametername">signature</span></td>
         <td><p>A digital signature of the content of this
 <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.  This has to be signed by <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s
-<a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a>. This is copied and then assigned to
+<a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey">PublicKey</a>. This is copied and then assigned to
 the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature">Signature</a> property.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte____seealso">See Also</h5>
+  <h5 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
       <div><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction</a>&lt;T&gt;</div>
@@ -308,7 +306,7 @@ For the most cases, the façade factory <a class="xref" href="Libplanet.Tx.Trans
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use constructors taking ITxMetadata or static factory methods instead.&quot;)]
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use constructors taking TxMetadata or static factory methods instead.&quot;)]
 public Transaction(long nonce, Address signer, PublicKey publicKey, BlockHash? genesisHash, IImmutableSet&lt;Address&gt; updatedAddresses, DateTimeOffset timestamp, IEnumerable&lt;T&gt; customActions, byte[] signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -571,7 +569,7 @@ content.</p>
   <a id="Libplanet_Tx_Transaction_1_Nonce_" data-uid="Libplanet.Tx.Transaction`1.Nonce*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Nonce" data-uid="Libplanet.Tx.Transaction`1.Nonce">Nonce</h4>
   <div class="markdown level1 summary"><p>The number of previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s committed by
-the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer">Signer</a> of this transaction.  This nonce is used for preventing
+the <a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer">Signer</a> of this transaction.  This nonce is used for preventing
 replay attack.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -608,8 +606,8 @@ replay attack.</p>
   </span>
   <a id="Libplanet_Tx_Transaction_1_PublicKey_" data-uid="Libplanet.Tx.Transaction`1.PublicKey*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_PublicKey" data-uid="Libplanet.Tx.Transaction`1.PublicKey">PublicKey</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.
-The <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer">Signer</a> address is always corresponding to this
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey">PublicKey</a> of the account who signs this transaction.
+The <a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer">Signer</a> address is always corresponding to this
 for each transaction.  This cannot be <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -692,8 +690,8 @@ array if the transaction is not signed yet.</p>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Signer_" data-uid="Libplanet.Tx.Transaction`1.Signer*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Signer" data-uid="Libplanet.Tx.Transaction`1.Signer">Signer</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.
-This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a>.</p>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Address.html">Address</a> of the account who signs this transaction.
+This is derived from the <a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey">PublicKey</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1787,12 +1785,6 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
   </div>
   <div>
       <a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Tx.ITxExcerpt.html">ITxExcerpt</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

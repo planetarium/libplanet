@@ -29953,6 +29953,58 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.CustomActions
   nameWithType: ITransaction.CustomActions
+- uid: Libplanet.Tx.ITransaction.GenesisHash
+  name: GenesisHash
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_GenesisHash
+  commentId: P:Libplanet.Tx.ITransaction.GenesisHash
+  fullName: Libplanet.Tx.ITransaction.GenesisHash
+  nameWithType: ITransaction.GenesisHash
+- uid: Libplanet.Tx.ITransaction.GenesisHash*
+  name: GenesisHash
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_GenesisHash_
+  commentId: Overload:Libplanet.Tx.ITransaction.GenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.GenesisHash
+  nameWithType: ITransaction.GenesisHash
+- uid: Libplanet.Tx.ITransaction.Id
+  name: Id
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Id
+  commentId: P:Libplanet.Tx.ITransaction.Id
+  fullName: Libplanet.Tx.ITransaction.Id
+  nameWithType: ITransaction.Id
+- uid: Libplanet.Tx.ITransaction.Id*
+  name: Id
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Id_
+  commentId: Overload:Libplanet.Tx.ITransaction.Id
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.Id
+  nameWithType: ITransaction.Id
+- uid: Libplanet.Tx.ITransaction.Nonce
+  name: Nonce
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Nonce
+  commentId: P:Libplanet.Tx.ITransaction.Nonce
+  fullName: Libplanet.Tx.ITransaction.Nonce
+  nameWithType: ITransaction.Nonce
+- uid: Libplanet.Tx.ITransaction.Nonce*
+  name: Nonce
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Nonce_
+  commentId: Overload:Libplanet.Tx.ITransaction.Nonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.Nonce
+  nameWithType: ITransaction.Nonce
+- uid: Libplanet.Tx.ITransaction.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey
+  commentId: P:Libplanet.Tx.ITransaction.PublicKey
+  fullName: Libplanet.Tx.ITransaction.PublicKey
+  nameWithType: ITransaction.PublicKey
+- uid: Libplanet.Tx.ITransaction.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey_
+  commentId: Overload:Libplanet.Tx.ITransaction.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.PublicKey
+  nameWithType: ITransaction.PublicKey
 - uid: Libplanet.Tx.ITransaction.Signature
   name: Signature
   href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signature
@@ -29966,6 +30018,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.Signature
   nameWithType: ITransaction.Signature
+- uid: Libplanet.Tx.ITransaction.Signer
+  name: Signer
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer
+  commentId: P:Libplanet.Tx.ITransaction.Signer
+  fullName: Libplanet.Tx.ITransaction.Signer
+  nameWithType: ITransaction.Signer
+- uid: Libplanet.Tx.ITransaction.Signer*
+  name: Signer
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer_
+  commentId: Overload:Libplanet.Tx.ITransaction.Signer
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.Signer
+  nameWithType: ITransaction.Signer
 - uid: Libplanet.Tx.ITransaction.SystemAction
   name: SystemAction
   href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction
@@ -29979,109 +30044,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.SystemAction
   nameWithType: ITransaction.SystemAction
-- uid: Libplanet.Tx.ITxExcerpt
-  name: ITxExcerpt
-  href: api/Libplanet.Tx.ITxExcerpt.html
-  commentId: T:Libplanet.Tx.ITxExcerpt
-  fullName: Libplanet.Tx.ITxExcerpt
-  nameWithType: ITxExcerpt
-- uid: Libplanet.Tx.ITxExcerpt.Id
-  name: Id
-  href: api/Libplanet.Tx.ITxExcerpt.html#Libplanet_Tx_ITxExcerpt_Id
-  commentId: P:Libplanet.Tx.ITxExcerpt.Id
-  fullName: Libplanet.Tx.ITxExcerpt.Id
-  nameWithType: ITxExcerpt.Id
-- uid: Libplanet.Tx.ITxExcerpt.Id*
-  name: Id
-  href: api/Libplanet.Tx.ITxExcerpt.html#Libplanet_Tx_ITxExcerpt_Id_
-  commentId: Overload:Libplanet.Tx.ITxExcerpt.Id
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITxExcerpt.Id
-  nameWithType: ITxExcerpt.Id
-- uid: Libplanet.Tx.ITxMetadata
-  name: ITxMetadata
-  href: api/Libplanet.Tx.ITxMetadata.html
-  commentId: T:Libplanet.Tx.ITxMetadata
-  fullName: Libplanet.Tx.ITxMetadata
-  nameWithType: ITxMetadata
-- uid: Libplanet.Tx.ITxMetadata.GenesisHash
-  name: GenesisHash
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_GenesisHash
-  commentId: P:Libplanet.Tx.ITxMetadata.GenesisHash
-  fullName: Libplanet.Tx.ITxMetadata.GenesisHash
-  nameWithType: ITxMetadata.GenesisHash
-- uid: Libplanet.Tx.ITxMetadata.GenesisHash*
-  name: GenesisHash
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_GenesisHash_
-  commentId: Overload:Libplanet.Tx.ITxMetadata.GenesisHash
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITxMetadata.GenesisHash
-  nameWithType: ITxMetadata.GenesisHash
-- uid: Libplanet.Tx.ITxMetadata.Nonce
-  name: Nonce
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Nonce
-  commentId: P:Libplanet.Tx.ITxMetadata.Nonce
-  fullName: Libplanet.Tx.ITxMetadata.Nonce
-  nameWithType: ITxMetadata.Nonce
-- uid: Libplanet.Tx.ITxMetadata.Nonce*
-  name: Nonce
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Nonce_
-  commentId: Overload:Libplanet.Tx.ITxMetadata.Nonce
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITxMetadata.Nonce
-  nameWithType: ITxMetadata.Nonce
-- uid: Libplanet.Tx.ITxMetadata.PublicKey
-  name: PublicKey
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey
-  commentId: P:Libplanet.Tx.ITxMetadata.PublicKey
-  fullName: Libplanet.Tx.ITxMetadata.PublicKey
-  nameWithType: ITxMetadata.PublicKey
-- uid: Libplanet.Tx.ITxMetadata.PublicKey*
-  name: PublicKey
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey_
-  commentId: Overload:Libplanet.Tx.ITxMetadata.PublicKey
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITxMetadata.PublicKey
-  nameWithType: ITxMetadata.PublicKey
-- uid: Libplanet.Tx.ITxMetadata.Signer
-  name: Signer
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer
-  commentId: P:Libplanet.Tx.ITxMetadata.Signer
-  fullName: Libplanet.Tx.ITxMetadata.Signer
-  nameWithType: ITxMetadata.Signer
-- uid: Libplanet.Tx.ITxMetadata.Signer*
-  name: Signer
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer_
-  commentId: Overload:Libplanet.Tx.ITxMetadata.Signer
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITxMetadata.Signer
-  nameWithType: ITxMetadata.Signer
-- uid: Libplanet.Tx.ITxMetadata.Timestamp
+- uid: Libplanet.Tx.ITransaction.Timestamp
   name: Timestamp
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Timestamp
-  commentId: P:Libplanet.Tx.ITxMetadata.Timestamp
-  fullName: Libplanet.Tx.ITxMetadata.Timestamp
-  nameWithType: ITxMetadata.Timestamp
-- uid: Libplanet.Tx.ITxMetadata.Timestamp*
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Timestamp
+  commentId: P:Libplanet.Tx.ITransaction.Timestamp
+  fullName: Libplanet.Tx.ITransaction.Timestamp
+  nameWithType: ITransaction.Timestamp
+- uid: Libplanet.Tx.ITransaction.Timestamp*
   name: Timestamp
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Timestamp_
-  commentId: Overload:Libplanet.Tx.ITxMetadata.Timestamp
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Timestamp_
+  commentId: Overload:Libplanet.Tx.ITransaction.Timestamp
   isSpec: "True"
-  fullName: Libplanet.Tx.ITxMetadata.Timestamp
-  nameWithType: ITxMetadata.Timestamp
-- uid: Libplanet.Tx.ITxMetadata.UpdatedAddresses
+  fullName: Libplanet.Tx.ITransaction.Timestamp
+  nameWithType: ITransaction.Timestamp
+- uid: Libplanet.Tx.ITransaction.UpdatedAddresses
   name: UpdatedAddresses
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_UpdatedAddresses
-  commentId: P:Libplanet.Tx.ITxMetadata.UpdatedAddresses
-  fullName: Libplanet.Tx.ITxMetadata.UpdatedAddresses
-  nameWithType: ITxMetadata.UpdatedAddresses
-- uid: Libplanet.Tx.ITxMetadata.UpdatedAddresses*
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_UpdatedAddresses
+  commentId: P:Libplanet.Tx.ITransaction.UpdatedAddresses
+  fullName: Libplanet.Tx.ITransaction.UpdatedAddresses
+  nameWithType: ITransaction.UpdatedAddresses
+- uid: Libplanet.Tx.ITransaction.UpdatedAddresses*
   name: UpdatedAddresses
-  href: api/Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_UpdatedAddresses_
-  commentId: Overload:Libplanet.Tx.ITxMetadata.UpdatedAddresses
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_UpdatedAddresses_
+  commentId: Overload:Libplanet.Tx.ITransaction.UpdatedAddresses
   isSpec: "True"
-  fullName: Libplanet.Tx.ITxMetadata.UpdatedAddresses
-  nameWithType: ITxMetadata.UpdatedAddresses
+  fullName: Libplanet.Tx.ITransaction.UpdatedAddresses
+  nameWithType: ITransaction.UpdatedAddresses
 - uid: Libplanet.Tx.Transaction`1
   name: Transaction<T>
   href: api/Libplanet.Tx.Transaction-1.html
@@ -30099,24 +30087,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
   nameWithType: Transaction<T>.Transaction(Dictionary)
   nameWithType.vb: Transaction(Of T).Transaction(Dictionary)
-- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,Libplanet.Action.IAction,System.Byte[])
-  name: Transaction(ITxMetadata, IAction, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_Libplanet_Action_IAction_System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,Libplanet.Action.IAction,System.Byte[])
-  name.vb: Transaction(ITxMetadata, IAction, Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.ITxMetadata, Libplanet.Action.IAction, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.ITxMetadata, Libplanet.Action.IAction, System.Byte())
-  nameWithType: Transaction<T>.Transaction(ITxMetadata, IAction, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(ITxMetadata, IAction, Byte())
-- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name: Transaction(ITxMetadata, IEnumerable<T>, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name.vb: Transaction(ITxMetadata, IEnumerable(Of T), Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.ITxMetadata, System.Collections.Generic.IEnumerable<T>, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.ITxMetadata, System.Collections.Generic.IEnumerable(Of T), System.Byte())
-  nameWithType: Transaction<T>.Transaction(ITxMetadata, IEnumerable<T>, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(ITxMetadata, IEnumerable(Of T), Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,Libplanet.Action.IAction,System.Byte[])
+  name: Transaction(TxMetadata, IAction, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_Libplanet_Action_IAction_System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,Libplanet.Action.IAction,System.Byte[])
+  name.vb: Transaction(TxMetadata, IAction, Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.TxMetadata, Libplanet.Action.IAction, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.TxMetadata, Libplanet.Action.IAction, System.Byte())
+  nameWithType: Transaction<T>.Transaction(TxMetadata, IAction, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(TxMetadata, IAction, Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])
+  name: Transaction(TxMetadata, IEnumerable<T>, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])
+  name.vb: Transaction(TxMetadata, IEnumerable(Of T), Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.TxMetadata, System.Collections.Generic.IEnumerable<T>, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.TxMetadata, System.Collections.Generic.IEnumerable(Of T), System.Byte())
+  nameWithType: Transaction<T>.Transaction(TxMetadata, IEnumerable<T>, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(TxMetadata, IEnumerable(Of T), Byte())
 - uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
   name: Transaction(Int64, Address, PublicKey, Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_DateTimeOffset_System_Collections_Generic_IEnumerable__0__System_Byte___
@@ -30526,28 +30514,28 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Validate
   nameWithType: Transaction<T>.Validate
   nameWithType.vb: Transaction(Of T).Validate
-- uid: Libplanet.Tx.TxExcerptExtensions
-  name: TxExcerptExtensions
-  href: api/Libplanet.Tx.TxExcerptExtensions.html
-  commentId: T:Libplanet.Tx.TxExcerptExtensions
-  fullName: Libplanet.Tx.TxExcerptExtensions
-  nameWithType: TxExcerptExtensions
-- uid: Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces*
+- uid: Libplanet.Tx.TransactionExtensions
+  name: TransactionExtensions
+  href: api/Libplanet.Tx.TransactionExtensions.html
+  commentId: T:Libplanet.Tx.TransactionExtensions
+  fullName: Libplanet.Tx.TransactionExtensions
+  nameWithType: TransactionExtensions
+- uid: Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable{Libplanet.Tx.ITransaction},System.Int64)
+  name: ValidateTxNonces(IEnumerable<ITransaction>, Int64)
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_ValidateTxNonces_System_Collections_Generic_IEnumerable_Libplanet_Tx_ITransaction__System_Int64_
+  commentId: M:Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable{Libplanet.Tx.ITransaction},System.Int64)
+  name.vb: ValidateTxNonces(IEnumerable(Of ITransaction), Int64)
+  fullName: Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable<Libplanet.Tx.ITransaction>, System.Int64)
+  fullName.vb: Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable(Of Libplanet.Tx.ITransaction), System.Int64)
+  nameWithType: TransactionExtensions.ValidateTxNonces(IEnumerable<ITransaction>, Int64)
+  nameWithType.vb: TransactionExtensions.ValidateTxNonces(IEnumerable(Of ITransaction), Int64)
+- uid: Libplanet.Tx.TransactionExtensions.ValidateTxNonces*
   name: ValidateTxNonces
-  href: api/Libplanet.Tx.TxExcerptExtensions.html#Libplanet_Tx_TxExcerptExtensions_ValidateTxNonces_
-  commentId: Overload:Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_ValidateTxNonces_
+  commentId: Overload:Libplanet.Tx.TransactionExtensions.ValidateTxNonces
   isSpec: "True"
-  fullName: Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces
-  nameWithType: TxExcerptExtensions.ValidateTxNonces
-- uid: Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces``1(System.Collections.Generic.IEnumerable{``0},System.Int64)
-  name: ValidateTxNonces<T>(IEnumerable<T>, Int64)
-  href: api/Libplanet.Tx.TxExcerptExtensions.html#Libplanet_Tx_TxExcerptExtensions_ValidateTxNonces__1_System_Collections_Generic_IEnumerable___0__System_Int64_
-  commentId: M:Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces``1(System.Collections.Generic.IEnumerable{``0},System.Int64)
-  name.vb: ValidateTxNonces(Of T)(IEnumerable(Of T), Int64)
-  fullName: Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces<T>(System.Collections.Generic.IEnumerable<T>, System.Int64)
-  fullName.vb: Libplanet.Tx.TxExcerptExtensions.ValidateTxNonces(Of T)(System.Collections.Generic.IEnumerable(Of T), System.Int64)
-  nameWithType: TxExcerptExtensions.ValidateTxNonces<T>(IEnumerable<T>, Int64)
-  nameWithType.vb: TxExcerptExtensions.ValidateTxNonces(Of T)(IEnumerable(Of T), Int64)
+  fullName: Libplanet.Tx.TransactionExtensions.ValidateTxNonces
+  nameWithType: TransactionExtensions.ValidateTxNonces
 - uid: Libplanet.Tx.TxExecution
   name: TxExecution
   href: api/Libplanet.Tx.TxExecution.html
@@ -30930,12 +30918,12 @@ references:
   commentId: M:Libplanet.Tx.TxMetadata.#ctor(Libplanet.Crypto.PublicKey)
   fullName: Libplanet.Tx.TxMetadata.TxMetadata(Libplanet.Crypto.PublicKey)
   nameWithType: TxMetadata.TxMetadata(PublicKey)
-- uid: Libplanet.Tx.TxMetadata.#ctor(Libplanet.Tx.ITxMetadata)
-  name: TxMetadata(ITxMetadata)
-  href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITxMetadata_
-  commentId: M:Libplanet.Tx.TxMetadata.#ctor(Libplanet.Tx.ITxMetadata)
-  fullName: Libplanet.Tx.TxMetadata.TxMetadata(Libplanet.Tx.ITxMetadata)
-  nameWithType: TxMetadata.TxMetadata(ITxMetadata)
+- uid: Libplanet.Tx.TxMetadata.#ctor(Libplanet.Tx.ITransaction)
+  name: TxMetadata(ITransaction)
+  href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITransaction_
+  commentId: M:Libplanet.Tx.TxMetadata.#ctor(Libplanet.Tx.ITransaction)
+  fullName: Libplanet.Tx.TxMetadata.TxMetadata(Libplanet.Tx.ITransaction)
+  nameWithType: TxMetadata.TxMetadata(ITransaction)
 - uid: Libplanet.Tx.TxMetadata.#ctor*
   name: TxMetadata
   href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata__ctor_

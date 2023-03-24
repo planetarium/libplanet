@@ -72,18 +72,13 @@
 
   <h1 id="Libplanet_Tx_TxMetadata" data-uid="Libplanet.Tx.TxMetadata" class="text-break">Class TxMetadata
 </h1>
-  <div class="markdown level0 summary"><p>A concrete class implementing <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a>.  It's used to represent drafts
-of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+  <div class="markdown level0 summary"><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> without actions and signature.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">TxMetadata</span></div>
-  </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -110,7 +105,7 @@ of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&l
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_TxMetadata_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class TxMetadata : ITxMetadata</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class TxMetadata</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -119,7 +114,7 @@ of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&l
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L67">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata__ctor_" data-uid="Libplanet.Tx.TxMetadata.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxMetadata__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Tx.TxMetadata.#ctor(Bencodex.Types.Dictionary)">TxMetadata(Dictionary)</h4>
@@ -177,7 +172,7 @@ of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&l
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata__ctor_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.%23ctor(Libplanet.Crypto.PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L36">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata__ctor_" data-uid="Libplanet.Tx.TxMetadata.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxMetadata__ctor_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Tx.TxMetadata.#ctor(Libplanet.Crypto.PublicKey)">TxMetadata(PublicKey)</h4>
@@ -209,20 +204,20 @@ Other fields can be set using property setters.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITxMetadata_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.%23ctor(Libplanet.Tx.ITxMetadata)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITransaction_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.%23ctor(Libplanet.Tx.ITransaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L49">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata__ctor_" data-uid="Libplanet.Tx.TxMetadata.#ctor*"></a>
-  <h4 id="Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITxMetadata_" data-uid="Libplanet.Tx.TxMetadata.#ctor(Libplanet.Tx.ITxMetadata)">TxMetadata(ITxMetadata)</h4>
+  <h4 id="Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITransaction_" data-uid="Libplanet.Tx.TxMetadata.#ctor(Libplanet.Tx.ITransaction)">TxMetadata(ITransaction)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Tx.TxMetadata.html">TxMetadata</a> instance by copying fields from the specified
 <code data-dev-comment-type="paramref" class="paramref">metadata</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxMetadata(ITxMetadata metadata)</code></pre>
+    <pre><code class="lang-csharp hljs">public TxMetadata(ITransaction metadata)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -235,17 +230,17 @@ Other fields can be set using property setters.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></td>
+        <td><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></td>
         <td><span class="parametername">metadata</span></td>
         <td><p>The transaction metadata whose data to copy.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITxMetadata__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p><a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer">Signer</a> from the specified <code data-dev-comment-type="paramref" class="paramref">metadata</code>
-is ignored.  <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_Signer">Signer</a> field is automatically derived from
-<a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_PublicKey">PublicKey</a> instead.</p>
+  <h5 id="Libplanet_Tx_TxMetadata__ctor_Libplanet_Tx_ITransaction__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer">Signer</a> from the specified
+<code data-dev-comment-type="paramref" class="paramref">metadata</code> is ignored.  <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_Signer">Signer</a> field is automatically
+derived from <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_PublicKey">PublicKey</a> instead.</p>
 </div>
   <h3 id="properties">Properties
 </h3>
@@ -254,7 +249,7 @@ is ignored.  <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxM
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_GenesisHash.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.GenesisHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L102">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L122">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_GenesisHash_" data-uid="Libplanet.Tx.TxMetadata.GenesisHash*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_GenesisHash" data-uid="Libplanet.Tx.TxMetadata.GenesisHash">GenesisHash</h4>
@@ -287,12 +282,12 @@ the genesis block.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.Nonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L85">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_Nonce_" data-uid="Libplanet.Tx.TxMetadata.Nonce*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_Nonce" data-uid="Libplanet.Tx.TxMetadata.Nonce">Nonce</h4>
   <div class="markdown level1 summary"><p>The number of previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s committed by
-the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer">Signer</a> of this transaction.  This nonce is used for preventing
+the <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_Signer">Signer</a> of this transaction.  This nonce is used for preventing
 replay attack.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -320,12 +315,12 @@ replay attack.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L99">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L115">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_PublicKey_" data-uid="Libplanet.Tx.TxMetadata.PublicKey*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_PublicKey" data-uid="Libplanet.Tx.TxMetadata.PublicKey">PublicKey</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.
-The <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_Signer">Signer</a> address is always corresponding to this
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.
+The <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_Signer">Signer</a> address is always corresponding to this
 for each transaction.  This cannot be <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -353,12 +348,12 @@ for each transaction.  This cannot be <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.Signer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L89">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L95">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_Signer_" data-uid="Libplanet.Tx.TxMetadata.Signer*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_Signer" data-uid="Libplanet.Tx.TxMetadata.Signer">Signer</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.
-This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Libplanet_Tx_ITxMetadata_PublicKey">PublicKey</a>.</p>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Address.html">Address</a> of the account who signs this transaction.
+This is derived from the <a class="xref" href="Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_PublicKey">PublicKey</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -388,7 +383,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L96">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_Timestamp_" data-uid="Libplanet.Tx.TxMetadata.Timestamp*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_Timestamp" data-uid="Libplanet.Tx.TxMetadata.Timestamp">Timestamp</h4>
@@ -419,7 +414,7 @@ This is derived from the <a class="xref" href="Libplanet.Tx.ITxMetadata.html#Lib
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.UpdatedAddresses%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L102">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_UpdatedAddresses_" data-uid="Libplanet.Tx.TxMetadata.UpdatedAddresses*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_UpdatedAddresses" data-uid="Libplanet.Tx.TxMetadata.UpdatedAddresses">UpdatedAddresses</h4>
@@ -446,6 +441,9 @@ transaction.  However, it could be wrong.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Tx_TxMetadata_UpdatedAddresses_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>See also <a href="https://github.com/planetarium/libplanet/issues/368">https://github.com/planetarium/libplanet/issues/368</a> .</p>
+</div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -453,12 +451,11 @@ transaction.  However, it could be wrong.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L104">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L124">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_ToBencodex_" data-uid="Libplanet.Tx.TxMetadata.ToBencodex*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_ToBencodex" data-uid="Libplanet.Tx.TxMetadata.ToBencodex">ToBencodex()</h4>
-  <div class="markdown level1 summary"><p>A concrete class implementing <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a>.  It's used to represent drafts
-of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> without actions and signature.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -486,12 +483,11 @@ public Dictionary ToBencodex()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L128">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L148">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxMetadata_ToString_" data-uid="Libplanet.Tx.TxMetadata.ToString*"></a>
   <h4 id="Libplanet_Tx_TxMetadata_ToString" data-uid="Libplanet.Tx.TxMetadata.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>A concrete class implementing <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a>.  It's used to represent drafts
-of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> without actions and signature.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -516,10 +512,6 @@ public override string ToString()</code></pre>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a>
-  </div>
 </article>
           </div>
 
@@ -531,7 +523,7 @@ public override string ToString()</code></pre>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxMetadata.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxMetadata%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxMetadata.cs/#L16" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

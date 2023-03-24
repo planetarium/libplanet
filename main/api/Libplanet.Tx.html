@@ -103,8 +103,8 @@ when appending to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html
       <section><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Tx.TxExcerptExtensions.html">TxExcerptExtensions</a></h4>
-      <section><p>Useful extension methods for <a class="xref" href="Libplanet.Tx.ITxExcerpt.html">ITxExcerpt</a>.</p>
+      <h4><a class="xref" href="Libplanet.Tx.TransactionExtensions.html">TransactionExtensions</a></h4>
+      <section><p>Useful extension methods for <a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a></h4>
       <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
@@ -117,8 +117,7 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
 actions.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxMetadata.html">TxMetadata</a></h4>
-      <section><p>A concrete class implementing <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a>.  It's used to represent drafts
-of unsigned <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+      <section><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> without actions and signature.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a></h4>
       <section><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> violates
@@ -140,15 +139,9 @@ and 64 characters in hexadecimal.
     <h3 id="interfaces">Interfaces
 </h3>
       <h4><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></h4>
-      <section><p>Similar to <a class="xref" href="Libplanet.Tx.ITxExcerpt.html">ITxExcerpt</a> except that it has <a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signature">Signature</a>,
-<a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction">SystemAction</a> and <a class="xref" href="Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_CustomActions">CustomActions</a> as well.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Tx.ITxExcerpt.html">ITxExcerpt</a></h4>
-      <section><p>Similar to <a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a> except that it has <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> as well.
-Note that this does not contain actions or signature.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Tx.ITxMetadata.html">ITxMetadata</a></h4>
-      <section><p>A common interface for transactions that do not have any proofs nor actions.</p>
+      <section><p>An abstract interface for a transaction.  Unlike <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, it deals
+with custom actions in a non-generic way.  Instead, they are represented as
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
 </section>
 </article>
           </div>
