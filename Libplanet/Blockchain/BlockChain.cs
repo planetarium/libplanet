@@ -917,9 +917,14 @@ namespace Libplanet.Blockchain
                         ToTotalSupplyKey,
                         ValidatorSetKey);
                 const string deltaMsg =
-                    "Summarized the states delta with {KeyCount} key changes " +
-                    "made by block #{BlockIndex} {BlockHash}";
-                _logger.Debug(deltaMsg, totalDelta.Count, block.Index, block.Hash);
+                    "Summarized the states delta with {Count} key changes " +
+                    "made by block #{BlockIndex} {BlockHash} in {DurationMs} ms";
+                _logger.Debug(
+                    deltaMsg,
+                    totalDelta.Count,
+                    block.Index,
+                    block.Hash,
+                    stopwatch.ElapsedMilliseconds);
 
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
