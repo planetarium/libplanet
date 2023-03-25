@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
-using LruCacheNet;
 using Serilog;
 
 namespace Libplanet.Action
@@ -19,8 +17,6 @@ namespace Libplanet.Action
     [Pure]
     internal class AccountStateDeltaImpl : IValidatorSupportStateDelta, IAccountStateDelta
     {
-        private const int CacheSize = 1_000;
-
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
         /// </summary>
@@ -49,27 +45,6 @@ namespace Libplanet.Action
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
             Signer = signer;
-            CachedStates = new LruCache<Address, IValue?>(CacheSize);
-        }
-
-        internal AccountStateDeltaImpl(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer,
-            LruCache<Address, IValue?> cachedStates
-        )
-        {
-            StateGetter = accountStateGetter;
-            BalanceGetter = accountBalanceGetter;
-            TotalSupplyGetter = totalSupplyGetter;
-            ValidatorSetGetter = validatorSetGetter;
-            UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
-            UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
-            Signer = signer;
-            CachedStates = cachedStates;
         }
 
         /// <inheritdoc/>
@@ -86,7 +61,7 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         IImmutableDictionary<Address, IImmutableSet<Currency>>
             IAccountStateDelta.UpdatedFungibleAssets =>
-            UpdatedFungibles.GroupBy(kv => kv.Key.Item1).ToImmutableDictionary(
+                UpdatedFungibles.GroupBy(kv => kv.Key.Item1).ToImmutableDictionary(
                 g => g.Key,
                 g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2).ToImmutableHashSet()
             );
@@ -117,41 +92,17 @@ namespace Libplanet.Action
 
         protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
-        protected LruCache<Address, IValue?> CachedStates { get; }
-
         /// <inheritdoc/>
         [Pure]
-        IValue? IAccountStateView.GetState(Address address)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            IValue? states = null;
-            if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
-            {
-                states = updatedValue;
-            }
-            else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
-            {
-                states = cachedValue;
-            }
-            else
-            {
-                if (StateGetter(new[] { address })[0] is { } value)
-                {
-                    states = value;
-                    CachedStates.AddOrUpdate(address, states);
-                }
-            }
-
-            return states;
-        }
+        IValue? IAccountStateView.GetState(Address address) =>
+            UpdatedStates.TryGetValue(address, out IValue? value)
+                ? value
+                : StateGetter(new[] { address })[0];
 
         /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
         IReadOnlyList<IValue?> IAccountStateView.GetStates(IReadOnlyList<Address> addresses)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
             int length = addresses.Count;
             IValue?[] values = new IValue?[length];
             var notFoundIndices = new List<int>(length);
@@ -161,10 +112,6 @@ namespace Libplanet.Action
                 if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
                 {
                     values[i] = updatedValue;
-                }
-                else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
-                {
-                    values[i] = cachedValue;
                 }
                 else
                 {
@@ -179,10 +126,6 @@ namespace Libplanet.Action
                 foreach ((var v, var i) in notFoundIndices.Select((v, i) => (v, i)))
                 {
                     values[v] = restValues[i];
-                    if (restValues[i] is { } value)
-                    {
-                        CachedStates.AddOrUpdate(addresses[v], value);
-                    }
                 }
             }
 
@@ -424,8 +367,7 @@ namespace Libplanet.Action
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
-                Signer,
-                CachedStates)
+                Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
