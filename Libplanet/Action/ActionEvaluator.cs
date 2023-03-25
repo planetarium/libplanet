@@ -155,16 +155,6 @@ namespace Libplanet.Action
                     : null;
                 IAccountStateDelta previousStates =
                     GetPreviousBlockOutputStates(block, stateCompleterSet);
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "FetchPreviousStatesDuration")
-                    .Information(
-                        "Took {DurationMs} ms to fetch previous block output states for " +
-                        "block #{Index} pre-evaluation hash {PreEvaluationHash}",
-                        stopwatch.ElapsedMilliseconds,
-                        block.Index,
-                        ByteUtil.Hex(block.PreEvaluationHash));
-
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
                     previousStates: previousStates,
