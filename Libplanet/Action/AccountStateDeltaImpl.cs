@@ -154,36 +154,35 @@ namespace Libplanet.Action
             stopwatch.Start();
             int length = addresses.Count;
             IValue?[] values = new IValue?[length];
-            var notFound = new List<Address>(length);
+            var notFoundIndices = new List<int>(length);
             for (int i = 0; i < length; i++)
             {
                 Address address = addresses[i];
                 if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
                 {
                     values[i] = updatedValue;
-                    continue;
                 }
                 else if (CachedStates.TryGetValue(address, out IValue? cachedValue))
                 {
                     values[i] = cachedValue;
-                    continue;
                 }
-
-                notFound.Add(address);
+                else
+                {
+                    notFoundIndices.Add(i);
+                }
             }
 
-            IReadOnlyList<IValue?> restValues = StateGetter(notFound);
-            for (int i = 0, j = 0; i < length && j < notFound.Count; i++)
+            if (notFoundIndices.Count > 0)
             {
-                if (addresses[i].Equals(notFound[j]))
+                IReadOnlyList<IValue?> restValues = StateGetter(
+                    notFoundIndices.Select(index => addresses[index]).ToArray());
+                foreach ((var v, var i) in notFoundIndices.Select((v, i) => (v, i)))
                 {
-                    values[i] = restValues[j];
-                    if (restValues[j] is { } value)
+                    values[v] = restValues[i];
+                    if (restValues[i] is { } value)
                     {
-                        CachedStates.AddOrUpdate(notFound[j], restValues[j]);
+                        CachedStates.AddOrUpdate(addresses[v], value);
                     }
-
-                    j++;
                 }
             }
 
