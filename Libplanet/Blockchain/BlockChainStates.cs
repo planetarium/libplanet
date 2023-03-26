@@ -22,7 +22,7 @@ namespace Libplanet.Blockchain
     public class BlockChainStates<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
-        private const int CacheSize = 10_000;
+        private const int CacheSize = 1_000;
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
         private readonly LruCache<CacheKey, IValue?> _stateCache;
