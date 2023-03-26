@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
@@ -208,6 +209,39 @@ namespace Libplanet.Blockchain
             }
 
             throw new IncompleteBlockStatesException(offset);
+        }
+
+        internal void CacheStates(Block<T> block, IReadOnlyList<ActionEvaluation> evaluations)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            int count = 0;
+            IImmutableSet<Address> addresses = evaluations
+                .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
+                .ToImmutableHashSet();
+            IAccountStateDelta? lastStates = evaluations.Count > 0
+                ? evaluations[evaluations.Count - 1].OutputStates
+                : null;
+
+            _stateCache.NewTip(block.Hash, block.PreviousHash);
+            foreach (Address address in addresses)
+            {
+                if (lastStates?.GetState(address) is { } value)
+                {
+                    _stateCache.AddOrUpdate(block.Hash, address, value);
+                }
+            }
+
+            Log
+                .ForContext("Source", nameof(BlockChainStates<T>))
+                .Debug(
+                    "Took {DurationMs} ms to cache {ValueCount} values " +
+                    "for {AddressCount} addresses for {MethodName}()",
+                    stopwatch.ElapsedMilliseconds,
+                    count,
+                    addresses.Count,
+                    nameof(CacheStates));
+            _stateCache.Report();
         }
 
         internal void Bind(BlockChain<T> blockChain)

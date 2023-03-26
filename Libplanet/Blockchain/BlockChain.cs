@@ -944,6 +944,8 @@ namespace Libplanet.Blockchain
                         rootHash);
                 }
 
+                ((BlockChainStates<T>)_blockChainStates).CacheStates(block, evaluations);
+
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "StateUpdateDuration")
