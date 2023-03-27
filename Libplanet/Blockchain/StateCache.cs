@@ -24,9 +24,9 @@ namespace Libplanet.Blockchain
 
         public bool TryGetValue(BlockHash blockHash, Address address, out IValue? value)
         {
-            if (_tip is { } tip)
+            if (_tip is { } tip && tip.BlockHash.Equals(blockHash))
             {
-                return _tip.TryGetValue(blockHash, address, out value);
+                return tip.TryGetValue(address, out value);
             }
             else
             {
@@ -37,9 +37,9 @@ namespace Libplanet.Blockchain
 
         public void AddOrUpdate(BlockHash blockHash, Address address, IValue? value)
         {
-            if (_tip is { } tip)
+            if (_tip is { } tip && tip.BlockHash.Equals(blockHash))
             {
-                tip.AddOrUpdate(blockHash, address, value);
+                tip.AddOrUpdate(address, value);
             }
         }
 
@@ -140,23 +140,17 @@ namespace Libplanet.Blockchain
 
         public BlockHash BlockHash { get; }
 
-        public bool TryGetValue(BlockHash blockHash, Address address, out IValue? value)
+        public bool TryGetValue(Address address, out IValue? value)
         {
-            if (blockHash.Equals(BlockHash))
+            _getAttemptCount++;
+            if (_cache.TryGetValue(address, out value))
             {
-                _getAttemptCount++;
-                if (_cache.TryGetValue(address, out value))
-                {
-                    _getSuccessCount++;
-                    return true;
-                }
-
-                value = null;
-                return false;
+                _getSuccessCount++;
+                return true;
             }
             else if (_previous is { } previous)
             {
-                return previous.TryGetValue(blockHash, address, out value);
+                return previous.TryGetValue(address, out value);
             }
             else
             {
@@ -165,17 +159,10 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public void AddOrUpdate(BlockHash blockHash, Address address, IValue? value)
+        public void AddOrUpdate(Address address, IValue? value)
         {
-            if (blockHash.Equals(BlockHash))
-            {
-                _cache.AddOrUpdate(address, value);
-                _addCount++;
-            }
-            else if (_previous is { } previous)
-            {
-                previous.AddOrUpdate(blockHash, address, value);
-            }
+            _cache.AddOrUpdate(address, value);
+            _addCount++;
         }
 
         /// <summary>
@@ -203,11 +190,12 @@ namespace Libplanet.Blockchain
                 .ForContext("Subtag", "BlockStateCacheReport")
                 .Debug(
                     "BlockHash: {BlockHash}, GetAttempts: {GetAttemptCount}, " +
-                    "GetSuccesses: {GetSuccessCount}, Adds: {AddCount}",
+                    "GetSuccesses: {GetSuccessCount}, Adds: {AddCount}, Cached: {CacheCount}",
                     BlockHash,
                     _getAttemptCount,
                     _getSuccessCount,
-                    _addCount);
+                    _addCount,
+                    _cache.Count);
             if (_previous is { } previous)
             {
                 previous.Report();
