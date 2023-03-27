@@ -2,9 +2,9 @@ Libplanet changelog
 ===================
 
 Version 0.53.0
--------------
+--------------
 
-To be released.
+Released on March 27, 2023.
 
 Since 0.53.0, we officially provide *[@planetarium/account-web3-secret-storage]*
 and *[@planetarium/account-aws-kms]*, which are npm packages that provides
@@ -96,8 +96,6 @@ deployment if possible.
  -  `ActionEvaluator()` constructor now explicitly requires a new
     `feeCalculator` parameter.  [[#2566]]
 
-### Backward-incompatible network protocol changes
-
 ### Backward-incompatible storage format changes
 
  -  (Libplanet.Net) Changed `BlockCommit`'s `IValue` encoding format.
@@ -123,8 +121,6 @@ deployment if possible.
  -  (@planetarium/account) `Signature.fromBytes()` and `Signature.fromHex()`
     no more accept signatures with high S.  Signatures with high S need to be
     normalized first so that they get rid of high S.  [[#2962]]
-
-### Bug fixes
 
 ### Dependencies
 
