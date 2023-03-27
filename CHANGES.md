@@ -67,6 +67,8 @@ To be released.
  -  Added `UnsignedTx` class.  [[#1164], [#2986]]
  -  Added `Transaction<T>(IUnsignedTx, ImmutableArray<byte>)`.
     [[#1164], [#2986]]
+ -  (Libplanet.Net) Added `Context<T>.IsCurrentRoundProposer()` method.
+    [[#2996]]
  -  Added `BlockChain<T>.DetermineGenesisStateRootHash()`,
     `BlockChain<T>.EvaluateGenesis()`,
     `BlockChain<T>.DetermineBlockStateRootHash()`,
@@ -109,9 +111,15 @@ To be released.
 
 ### Bug fixes
 
+ -  In `PreVote` block validation, `Context<T>.IsValid()`, validate the block
+    header and also the block content (e.g., Tx nonces, Policy defined
+    validation rules, or state root hash.)  [[#2973], [#2996]]
+
 ### CLI tools
 
 [#2986]: https://github.com/planetarium/libplanet/pull/2986
+[#2973]: https://github.com/planetarium/libplanet/issues/2973
+[#2996]: https://github.com/planetarium/libplanet/pull/2995
 
 
 Version 0.53.2
