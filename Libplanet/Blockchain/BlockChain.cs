@@ -1201,7 +1201,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                if (ValidateNextBlock(block) is { } ibe)
+                if (ValidateNextBlockHeader(block) is { } ibe)
                 {
                     throw ibe;
                 }
@@ -1608,7 +1608,7 @@ namespace Libplanet.Blockchain
             return null;
         }
 
-        internal InvalidBlockException ValidateNextBlock(Block<T> block)
+        internal InvalidBlockException ValidateNextBlockHeader(Block<T> block)
         {
             if (block.Index == 0)
             {

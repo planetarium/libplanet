@@ -307,7 +307,7 @@ namespace Libplanet.Net.Consensus
         private Block<T>? GetValue()
         {
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
-            if (_blockChain.ValidateNextBlock(block) is { } e)
+            if (_blockChain.ValidateNextBlockHeader(block) is { } e)
             {
                 _logger.Error(
                     e, "Could not propose a valid block");
