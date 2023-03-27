@@ -372,6 +372,9 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        private bool IsCurrentRoundProposer() =>
+            _validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey;
+
         /// <summary>
         /// Creates a signed <see cref="Vote"/> for a <see cref="ConsensusPreVoteMsg"/> or
         /// a <see cref="ConsensusPreCommitMsg"/>.
