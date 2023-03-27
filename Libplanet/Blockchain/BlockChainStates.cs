@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
@@ -9,7 +10,6 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Store;
-using LruCacheNet;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
 
@@ -25,7 +25,7 @@ namespace Libplanet.Blockchain
         private const int CacheSize = 1_000;
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
-        private readonly LruCache<CacheKey, IValue?> _stateCache;
+        private readonly StateCache _stateCache;
 
         // Temporary fields for backward compatibility.
         // FIXME This field and related codes should be deleted
@@ -36,7 +36,7 @@ namespace Libplanet.Blockchain
         {
             _store = store;
             _stateStore = stateStore;
-            _stateCache = new LruCache<CacheKey, IValue?>(CacheSize);
+            _stateCache = new StateCache();
         }
 
         /// <inheritdoc cref="IBlockChainStates{T}.GetStates"/>
@@ -50,11 +50,10 @@ namespace Libplanet.Blockchain
             int length = addresses.Count;
             List<int> uncachedIndices = new List<int>(length);
             IValue?[] result = new IValue?[length];
-            var cacheKeys = addresses.Select(address => new CacheKey(offset, address)).ToList();
 
             for (int i = 0; i < length; i++)
             {
-                if (_stateCache.TryGetValue(cacheKeys[i], out IValue? cachedValue) &&
+                if (_stateCache.TryGetValue(offset, addresses[i], out IValue? cachedValue) &&
                     cachedValue is { } cv)
                 {
                     result[i] = cv;
@@ -91,7 +90,7 @@ namespace Libplanet.Blockchain
                     result[v] = fetched[i];
                     if (fetched[i] is { } f)
                     {
-                        _stateCache.AddOrUpdate(cacheKeys[v], fetched[i]);
+                        _stateCache.AddOrUpdate(offset, addresses[v], fetched[i]);
                     }
                 }
 
@@ -115,7 +114,7 @@ namespace Libplanet.Blockchain
                     result[v] = fetched[i];
                     if (fetched[i] is { } f)
                     {
-                        _stateCache.AddOrUpdate(cacheKeys[v], fetched[i]);
+                        _stateCache.AddOrUpdate(offset, addresses[v], fetched[i]);
                     }
                 }
 
@@ -212,29 +211,42 @@ namespace Libplanet.Blockchain
             throw new IncompleteBlockStatesException(offset);
         }
 
+        internal void CacheStates(Block<T> block, IReadOnlyList<ActionEvaluation> evaluations)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            int count = 0;
+            IImmutableSet<Address> addresses = evaluations
+                .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
+                .ToImmutableHashSet();
+            IAccountStateDelta? lastStates = evaluations.Count > 0
+                ? evaluations[evaluations.Count - 1].OutputStates
+                : null;
+
+            _stateCache.NewTip(block.Hash, block.PreviousHash);
+            foreach (Address address in addresses)
+            {
+                if (lastStates?.GetState(address) is { } value)
+                {
+                    _stateCache.AddOrUpdate(block.Hash, address, value);
+                }
+            }
+
+            Log
+                .ForContext("Source", nameof(BlockChainStates<T>))
+                .Debug(
+                    "Took {DurationMs} ms to cache {ValueCount} values " +
+                    "for {AddressCount} addresses for {MethodName}()",
+                    stopwatch.ElapsedMilliseconds,
+                    count,
+                    addresses.Count,
+                    nameof(CacheStates));
+            _stateCache.Report();
+        }
+
         internal void Bind(BlockChain<T> blockChain)
         {
             _blockChain = blockChain;
-        }
-
-        private struct CacheKey : IEquatable<CacheKey>
-        {
-            public CacheKey(BlockHash blockHash, Address address)
-            {
-                BlockHash = blockHash;
-                Address = address;
-            }
-
-            private BlockHash BlockHash { get; }
-
-            private Address Address { get; }
-
-            public bool Equals(CacheKey other) =>
-                BlockHash.Equals(BlockHash) && Address.Equals(other.Address);
-
-            public override bool Equals(object? obj) => obj is CacheKey other && Equals(other);
-
-            public override int GetHashCode() => HashCode.Combine(BlockHash, Address);
         }
     }
 }
