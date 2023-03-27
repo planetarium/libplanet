@@ -356,5 +356,4 @@ The checklist to prepare the next release:
      8. Add a new section for the next unreleased minor version to the
         changelog, with the sentence <q>To be released</q> (no release date).
      9. Commit the changes with a message <q>Version bump</q>.
-    10. Send a pull request to the upstream's
-        *<var>X</var>.<var>Y</var>-maintenance* branch.
+    10. Send a pull request to the upstream's main branch.
