@@ -1,0 +1,1002 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct MessageId
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct MessageId
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Messages.MessageId">
+
+
+  <h1 id="Libplanet_Net_Messages_MessageId" data-uid="Libplanet.Net.Messages.MessageId" class="text-break">Struct MessageId
+</h1>
+  <div class="markdown level0 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Messages.html">Libplanet.Net.Messages</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
+  <h5 id="Libplanet_Net_Messages_MessageId_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public struct MessageId : ISerializable, IComparable&lt;MessageId&gt;, IComparable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L41">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId__ctor_" data-uid="Libplanet.Net.Messages.MessageId.#ctor*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId__ctor_System_Byte___" data-uid="Libplanet.Net.Messages.MessageId.#ctor(System.Byte[])">MessageId(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MessageId(byte[] messageId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">messageId</span></td>
+        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
+a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.  It must not be <span class="xref">null</span>,
+and its <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> must be the same to
+<a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">messageId</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> is not
+the same to the required <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId__ctor_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L54">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId__ctor_" data-uid="Libplanet.Net.Messages.MessageId.#ctor*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.Messages.MessageId.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">MessageId(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MessageId(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_Size.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.Size%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L27">View Source</a>
+  </span>
+  <h4 id="Libplanet_Net_Messages_MessageId_Size" data-uid="Libplanet.Net.Messages.MessageId.Size">Size</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> takes.</p>
+<p>As a message ID is a SHA-256 digest, it is 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int Size = 32</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_Size_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L68">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_ByteArray_" data-uid="Libplanet.Net.Messages.MessageId.ByteArray*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_ByteArray" data-uid="Libplanet.Net.Messages.MessageId.ByteArray">ByteArray</h4>
+  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is immutable.  For a mutable array, use
+<a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_ToByteArray">ToByteArray()</a> method instead.</p>
+</div>
+  <h5 id="Libplanet_Net_Messages_MessageId_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_ToByteArray">ToByteArray()</a></div>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_CompareTo_Libplanet_Net_Messages_MessageId_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.CompareTo(Libplanet.Net.Messages.MessageId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L156">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_CompareTo_" data-uid="Libplanet.Net.Messages.MessageId.CompareTo*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_CompareTo_Libplanet_Net_Messages_MessageId_" data-uid="Libplanet.Net.Messages.MessageId.CompareTo(Libplanet.Net.Messages.MessageId)">CompareTo(MessageId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(MessageId other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_CompareTo_Libplanet_Net_Messages_MessageId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.CompareTo(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L171">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_CompareTo_" data-uid="Libplanet.Net.Messages.MessageId.CompareTo*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_CompareTo_System_Object_" data-uid="Libplanet.Net.Messages.MessageId.CompareTo(System.Object)">CompareTo(Object)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_CompareTo_System_Object__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_Equals_Libplanet_Net_Messages_MessageId_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.Equals(Libplanet.Net.Messages.MessageId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L120">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_Equals_" data-uid="Libplanet.Net.Messages.MessageId.Equals*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_Equals_Libplanet_Net_Messages_MessageId_" data-uid="Libplanet.Net.Messages.MessageId.Equals(Libplanet.Net.Messages.MessageId)">Equals(MessageId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(MessageId other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_Equals_Libplanet_Net_Messages_MessageId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L122">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_Equals_" data-uid="Libplanet.Net.Messages.MessageId.Equals*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_Equals_System_Object_" data-uid="Libplanet.Net.Messages.MessageId.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.equals#system-valuetype-equals(system-object)">ValueType.Equals(Object)</a></div>
+  <h5 id="Libplanet_Net_Messages_MessageId_Equals_System_Object__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_FromHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.FromHex(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_FromHex_" data-uid="Libplanet.Net.Messages.MessageId.FromHex*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_FromHex_System_String_" data-uid="Libplanet.Net.Messages.MessageId.FromHex(System.String)">FromHex(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> value from a <code data-dev-comment-type="paramref" class="paramref">hex</code> string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MessageId FromHex(string hex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">hex</span></td>
+        <td><p>A hexadecimal string which encodes a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
+This has to contain 64 hexadecimal digits and must not be <span class="xref">null</span>
+This is usually made by <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_ToHex">ToHex()</a> method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><p>A corresponding <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
+string is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> is shorter or longer than 64 characters.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
+not a valid hexadecimal string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_FromHex_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_ToHex">ToHex()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L124">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_GetHashCode_" data-uid="Libplanet.Net.Messages.MessageId.GetHashCode*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_GetHashCode" data-uid="Libplanet.Net.Messages.MessageId.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
+  <h5 id="Libplanet_Net_Messages_MessageId_GetHashCode_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L187">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_GetObjectData_" data-uid="Libplanet.Net.Messages.MessageId.GetObjectData*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.Messages.MessageId.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L137">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_ToByteArray_" data-uid="Libplanet.Net.Messages.MessageId.ToByteArray*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_ToByteArray" data-uid="Libplanet.Net.Messages.MessageId.ToByteArray">ToByteArray()</h4>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] ToByteArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A new mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
+Since a returned array is created every time the method is called,
+any mutations on that array does not affect to
+the <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_ToByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_ByteArray">ByteArray</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.ToHex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L144">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_ToHex_" data-uid="Libplanet.Net.Messages.MessageId.ToHex*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_ToHex" data-uid="Libplanet.Net.Messages.MessageId.ToHex">ToHex()</h4>
+  <div class="markdown level1 summary"><p>Gets a hexadecimal form of a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public string ToHex()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>64 hexadecimal characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_ToHex_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L152">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_ToString_" data-uid="Libplanet.Net.Messages.MessageId.ToString*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_ToString" data-uid="Libplanet.Net.Messages.MessageId.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>'s representative string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A string which represents this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
+  <h5 id="Libplanet_Net_Messages_MessageId_ToString_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <h3 id="operators">Operators
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_op_Equality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.op_Equality(Libplanet.Net.Messages.MessageId%2CLibplanet.Net.Messages.MessageId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L81">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_op_Equality_" data-uid="Libplanet.Net.Messages.MessageId.op_Equality*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_op_Equality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId_" data-uid="Libplanet.Net.Messages.MessageId.op_Equality(Libplanet.Net.Messages.MessageId,Libplanet.Net.Messages.MessageId)">Equality(MessageId, MessageId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(MessageId left, MessageId right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_op_Equality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_op_Inequality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.op_Inequality(Libplanet.Net.Messages.MessageId%2CLibplanet.Net.Messages.MessageId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L83">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId_op_Inequality_" data-uid="Libplanet.Net.Messages.MessageId.op_Inequality*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId_op_Inequality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId_" data-uid="Libplanet.Net.Messages.MessageId.op_Inequality(Libplanet.Net.Messages.MessageId,Libplanet.Net.Messages.MessageId)">Inequality(MessageId, MessageId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(MessageId left, MessageId right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId_op_Inequality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/0.53.0/apiSpec/new?filename=Libplanet_Net_Messages_MessageId.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/0.53.0/Libplanet.Net/Messages/MessageId.cs/#L19" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
