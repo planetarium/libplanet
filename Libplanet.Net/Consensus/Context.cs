@@ -306,6 +306,8 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="null"/>.</returns>
         private Block<T>? GetValue()
         {
+            // NOTE: Block body validation is bypassed due to ProposeBlock calculates the action
+            // Evaluations before the block is proposed.
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
             if (_blockChain.ValidateNextBlockHeader(block) is { } e)
             {
@@ -359,6 +361,31 @@ namespace Libplanet.Net.Consensus
             {
                 var exception = _blockChain.ValidateNextBlock(block);
                 bool isValid = exception is null;
+
+                if (!isValid)
+                {
+                    _logger.Debug(
+                        exception,
+                        "BlockHeader #{Index} {Block} is invalid. {@E}",
+                        block.Index,
+                        block,
+                        exception);
+
+                    _blockHashCache.AddReplace(block.Hash, false);
+                    return false;
+                }
+
+                try
+                {
+                    // Skipping the action evaluations if itself is a proposer.
+                    _blockChain.ValidateNextBlockContent(block, !IsCurrentRoundProposer());
+                }
+                catch (Exception e)
+                {
+                    exception = e;
+                }
+
+                isValid = exception is null;
                 _logger.Debug(
                     exception,
                     "Block #{Index} {Block} is valid? {Bool}. {@E}",
