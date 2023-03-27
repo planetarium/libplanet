@@ -228,6 +228,7 @@ namespace Libplanet.Blockchain
             {
                 if (lastStates?.GetState(address) is { } value)
                 {
+                    count++;
                     _stateCache.AddOrUpdate(block.Hash, address, value);
                 }
             }
