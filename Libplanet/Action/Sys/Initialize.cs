@@ -34,7 +34,7 @@ namespace Libplanet.Action.Sys
         {
             get
             {
-                IValue encodedValidatorSet = ValidatorSet?.Encoded ?? (IValue)default(Null);
+                IValue encodedValidatorSet = ValidatorSet?.Bencoded ?? (IValue)default(Null);
                 IValue encodedStates = States is { } s
                     ? new Dictionary(
                         s.Select(
