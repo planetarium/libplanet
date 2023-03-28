@@ -391,7 +391,6 @@ commands:
             if [[
               $project == Libplanet.Analyzers.Tests
               || $project == Libplanet.Tests
-              || $project == Libplanet.Node.Tests
             ]]
             then
               args+=("$PWD/$project/bin/Release/net47/$project.dll")
