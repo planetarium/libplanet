@@ -6,6 +6,12 @@ Version 0.50.7
 
 To be released.
 
+ -  Optimized internal byte array to hex string conversion in several places.
+    [[#2989], [#3007]]
+
+[#2989]: https://github.com/planetarium/libplanet/issues/2989
+[#3007]: https://github.com/planetarium/libplanet/pull/3007
+
 
 Version 0.50.6
 --------------
