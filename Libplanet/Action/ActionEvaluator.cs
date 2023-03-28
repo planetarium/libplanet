@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -142,7 +141,7 @@ namespace Libplanet.Action
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
-                "pre-evaluation hash: {PreEvaluationHash}...",
+                "pre-evaluation hash {PreEvaluationHash}...",
                 block.Index,
                 ByteUtil.Hex(block.PreEvaluationHash)
             );
@@ -156,7 +155,6 @@ namespace Libplanet.Action
                     : null;
                 IAccountStateDelta previousStates =
                     GetPreviousBlockOutputStates(block, stateCompleterSet);
-
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
                     previousStates: previousStates,
@@ -188,7 +186,7 @@ namespace Libplanet.Action
                     .ForContext("Subtag", "BlockEvaluationDuration")
                     .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs} ms",
+                        "pre-evaluation hash {PreEvaluationHash} evaluated in {DurationMs} ms",
                         block.Transactions.Count,
                         block.Index,
                         ByteUtil.Hex(block.PreEvaluationHash),
@@ -382,10 +380,16 @@ namespace Libplanet.Action
                 IAccountStateDelta nextStates = context.PreviousStates;
                 try
                 {
-                    DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
                     nextStates = action.Execute(context);
-                    TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
-                    logger?.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms");
+                    logger?
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "ActionExecutionTime")
+                        .Information(
+                            "Action {Action} took {DurationMs} ms to execute",
+                            action,
+                            stopwatch.ElapsedMilliseconds);
                 }
                 catch (OutOfMemoryException e)
                 {
@@ -570,20 +574,21 @@ namespace Libplanet.Action
                 }
 
                 // FIXME: This is dependant on when the returned value is enumerated.
-                const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
                 logger.Information(
-                    "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
-                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs} ms",
+                    "Took {DurationMs} ms to evaluate {ActionCount} actions {ActionTypes} " +
+                    "in transaction {TxId} by {Signer} as a part of block #{Index} " +
+                    "pre-evaluation hash {PreEvaluationHash}",
+                    stopwatch.ElapsedMilliseconds,
                     actions.Count,
                     actions.Select(action => action.ToString()!.Split('.')
                         .LastOrDefault()?.Replace(">", string.Empty)),
                     tx.Id,
                     tx.Signer,
-                    tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                    stopwatch.ElapsedMilliseconds);
+                    block.Index,
+                    ByteUtil.Hex(block.PreEvaluationHash));
             }
         }
 
@@ -595,10 +600,11 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             IAction? systemAction = CreateSystemAction(tx);
             IEnumerable<IAction> customActions = CreateCustomActions(
                 ActionTypeLoaderContext.From(blockHeader), tx);
-
             ImmutableList<IAction> actions = systemAction is { }
                 ? ImmutableList.Create(systemAction)
                 : ImmutableList.CreateRange(customActions);
@@ -614,7 +620,8 @@ namespace Libplanet.Action
                 actions: actions,
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                nativeTokenPredicate: _nativeTokenPredicate);
+                nativeTokenPredicate: _nativeTokenPredicate,
+                logger: _logger);
         }
 
         /// <summary>
