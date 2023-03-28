@@ -495,8 +495,8 @@ namespace Libplanet.Tests.Action
                     new[] { "A", "B", "C", null, "RecordRehearsal:False" },
                     _txFx.Address3
                 ),
-                (1, 0, new[] { "A", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address1),
+                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))

@@ -115,7 +115,7 @@ namespace Libplanet.Net.Tests.Messages
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             Assert.Equal(
                 new MessageId(ByteUtil.ParseHex(
-                    "4349c4086805d5513f0e0fa7dce9e0001e577ca2de60dc89902fdff82e2e92db")),
+                    "171013efec9807237b793df73d8625281e8f6b0c0e28f7b5ec4211f227be5b88")),
                 message.Id);
         }
 
