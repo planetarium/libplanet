@@ -1,14 +1,13 @@
 using System;
-using System.Text.Json.Serialization;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Consensus;
 
-namespace Libplanet.Action.Sys
+namespace Libplanet.Tests.Common.Action
 {
     /// <summary>
-    /// A system action that promotes given address to the validator.
+    /// An action that promotes given address to the validator.
     /// </summary>
-    [JsonConverter(typeof(SysActionJsonConverter))]
     public sealed class SetValidator : IAction, IEquatable<SetValidator>, IEquatable<IAction>
     {
         /// <summary>
@@ -20,11 +19,9 @@ namespace Libplanet.Action.Sys
             Validator = validator;
         }
 
-        internal SetValidator()
+        public SetValidator()
         {
-            Validator = null!;
-
-            // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
+            Validator = null;
         }
 
         public Validator Validator { get; private set; }
@@ -47,13 +44,14 @@ namespace Libplanet.Action.Sys
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(SetValidator? other) => other is { } o && Validator.Equals(o.Validator);
+        public bool Equals(SetValidator other) =>
+            other is SetValidator o && Validator.Equals(o.Validator);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(IAction? other) => other is SetValidator o && Equals(o);
+        public bool Equals(IAction other) => other is SetValidator o && Equals(o);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
-        public override bool Equals(object? obj) => obj is SetValidator o && Equals(o);
+        public override bool Equals(object obj) => obj is SetValidator o && Equals(o);
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode() => Validator.GetHashCode();

@@ -434,8 +434,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         nonce++,
                         GenesisProposer,
                         null,
-                        systemAction: new SetValidator(
-                            new Validator(validator.PublicKey, validator.Power)),
+                        systemAction: new Initialize(
+                            validatorSet: validatorSet,
+                            states: ImmutableDictionary.Create<Address, IValue>()
+                        ),
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 

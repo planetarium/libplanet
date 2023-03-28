@@ -6,6 +6,12 @@ Version 0.51.4
 
 To be released.
 
+-  Ported changes from [Libplanet 0.50.6] release.  [[#2975]]
+-  Introduced a new `Initialize` system action.  [[#2975]]
+
+[Libplanet 0.50.6]: https://www.nuget.org/packages/Libplanet/0.50.6
+[#2975]: https://github.com/planetarium/libplanet/pull/2975
+
 
 Version 0.51.3
 --------------
