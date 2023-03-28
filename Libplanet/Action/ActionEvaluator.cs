@@ -600,8 +600,6 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             IAction? systemAction = CreateSystemAction(tx);
             IEnumerable<IAction> customActions = CreateCustomActions(
                 ActionTypeLoaderContext.From(blockHeader), tx);

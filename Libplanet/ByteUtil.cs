@@ -86,7 +86,7 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Renders a hexadecimal string from a <see cref="byte"/> array.
+        /// Renders a hexadecimal string in lowercase from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
         /// the corresponding hexadecimal string.
@@ -109,7 +109,7 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Renders a hexadecimal string from a <see cref="byte"/> array.
+        /// Renders a hexadecimal string in lowercase from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
         /// the corresponding hexadecimal string.
