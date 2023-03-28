@@ -80,12 +80,16 @@ namespace Libplanet.Net.Tests
             return privateKey;
         }
 
-        public static BlockChain<DumbAction> CreateDummyBlockChain(MemoryStoreFixture fx)
+        public static BlockChain<DumbAction> CreateDummyBlockChain(
+            MemoryStoreFixture fx,
+            IBlockPolicy<DumbAction>? policy = null,
+            Block<DumbAction>? genesisBlock = null)
         {
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
-                Policy,
+                policy ?? Policy,
                 fx.Store,
-                new TrieStateStore(new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()),
+                genesisBlock: genesisBlock);
 
             return blockChain;
         }
@@ -226,7 +230,7 @@ namespace Libplanet.Net.Tests
         {
             policy ??= Policy;
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockChain = CreateDummyBlockChain(fx);
+            var blockChain = CreateDummyBlockChain(fx, policy);
             ConsensusContext<DumbAction>? consensusContext = null;
 
             privateKey ??= PrivateKeys[1];

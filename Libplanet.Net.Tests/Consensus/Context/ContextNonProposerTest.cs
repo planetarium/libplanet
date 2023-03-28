@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
+using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -225,6 +229,77 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
                     invalidBlock, TestUtils.PrivateKeys[1]));
+
+            await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
+            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(1, context.Height);
+            Assert.Equal(0, context.Round);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task EnterPreVoteNilOnInvalidBlockContent()
+        {
+            // NOTE: This test does not check tx nonces, different state root hash.
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            var timeoutProcessed = false;
+            var nilPreVoteSent = new AsyncAutoResetEvent();
+            var invalidKey = new PrivateKey();
+            var policy = new BlockPolicy<DumbAction>(
+                blockAction: new MinerReward(1),
+                getMaxTransactionsBytes: _ => 50 * 1024,
+                validateNextBlockTx: IsSignerValid);
+
+            TxPolicyViolationException? IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+            {
+                var validAddress = TestUtils.PrivateKeys[1].PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
+            }
+
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                policy: policy,
+                privateKey: TestUtils.PrivateKeys[0]);
+            context.StateChanged += (_, evnetArgs) =>
+            {
+                if (evnetArgs.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+            };
+            context.TimeoutProcessed += (_, __) =>
+            {
+                timeoutProcessed = true;
+            };
+            context.MessageBroadcasted += (_, message) =>
+            {
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                {
+                    nilPreVoteSent.Set();
+                }
+            };
+
+            using var fx = new MemoryStoreFixture(policy.BlockAction);
+            var diffPolicyBlockChain =
+                TestUtils.CreateDummyBlockChain(fx, policy, blockChain.Genesis);
+
+            var invalidTx = diffPolicyBlockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+
+            Block<DumbAction> invalidBlock = Libplanet.Tests.TestUtils.ProposeNext(
+                    blockChain.Genesis,
+                    new[] { invalidTx },
+                    miner: TestUtils.PrivateKeys[1].PublicKey,
+                    blockInterval: TimeSpan.FromSeconds(10)
+                )
+                .Evaluate(TestUtils.PrivateKeys[1], diffPolicyBlockChain);
+
+            context.Start();
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(
+                    invalidBlock,
+                    TestUtils.PrivateKeys[1]));
 
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
