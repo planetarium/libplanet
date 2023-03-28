@@ -247,18 +247,11 @@ Released on March 17, 2023.
 
 [Libplanet 0.50.5]: https://www.nuget.org/packages/Libplanet/0.50.5
 
-### Bug fixes
-
- -  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
-    because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
-
-[#2956]: https://github.com/planetarium/libplanet/pull/2956
-
 
 Version 0.51.2
 --------------
 
-To be released.
+Released on March 15, 2023.
 
  -  Ported changes from [Libplanet 0.50.3] release.  [[#2937]]
  -  Fixed `BlockCommit.Encoded` to be more compact.  [[#2938]]
@@ -449,29 +442,6 @@ Released on March 16, 2023.
     for `Validator.Power` instead of `Bencodex.Types.Binary`.  [[#2949]]
 
 [#2949]: https://github.com/planetarium/libplanet/pull/2949
-
-
-Version 0.50.3
---------------
-
-Released on March 14, 2023.
-
- -  Ported changes from [Libplanet 0.49.3] release.  [[#2935]]
-
-[Libplanet 0.49.3]: https://www.nuget.org/packages/Libplanet/0.49.3
-[#2935]: https://github.com/planetarium/libplanet/pull/2935
-
-
-Version 0.50.2
---------------
-
-Released on March 9, 2023.
-
- -  Added `PolymorphicAction<T>.ActionTypeLoader` static property to provide
-    a way to configure action type loader to be used in `PolymorphicAction<T>`.
-    [[#2875]]
-
-[#2875]: https://github.com/planetarium/libplanet/pull/2875
 
 
 Version 0.50.3
