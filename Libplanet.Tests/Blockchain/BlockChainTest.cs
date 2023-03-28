@@ -358,7 +358,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 ActionRenderer = (a, __, nextStates) =>
                 {
-                    if (!(a is SetValidator))
+                    if (!(a is Initialize))
                     {
                         throw new SomeException("thrown by renderer");
                     }
@@ -2107,7 +2107,7 @@ namespace Libplanet.Tests.Blockchain
                 ),
             };
 
-            BlockChain<DumbAction> blockChain =
+            BlockChain<SetValidator> blockChain =
                 new BlockChain<SetValidator>(
                     policy,
                     new VolatileStagePolicy<SetValidator>(),
