@@ -3,7 +3,7 @@ using Libplanet.Consensus;
 
 namespace Libplanet.Action
 {
-    internal interface IValidatorSupportStateDelta
+    public interface IValidatorSupportStateDelta
     {
         /// <summary>
         /// Returns the validator set.
