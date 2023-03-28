@@ -6,7 +6,6 @@ projects=(
   "Libplanet"
   "Libplanet.Stun"
   "Libplanet.Net"
-  "Libplanet.Node"
   "Libplanet.Crypto.Secp256k1"
   "Libplanet.RocksDBStore"
   "Libplanet.Analyzers"
