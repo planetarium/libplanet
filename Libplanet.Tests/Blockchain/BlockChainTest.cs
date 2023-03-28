@@ -2108,7 +2108,7 @@ namespace Libplanet.Tests.Blockchain
             };
 
             BlockChain<SetValidator> blockChain =
-                new BlockChain<SetValidator>(
+                BlockChain<SetValidator>.Create(
                     policy,
                     new VolatileStagePolicy<SetValidator>(),
                     storeFixture.Store,
