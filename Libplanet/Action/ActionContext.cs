@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using System.Threading;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
@@ -11,6 +13,9 @@ namespace Libplanet.Action
 {
     internal class ActionContext : IActionContext
     {
+        public static readonly AsyncLocal<Stopwatch> GetStateTimer = new AsyncLocal<Stopwatch>();
+        public static readonly AsyncLocal<int> GetStateCount = new AsyncLocal<int>();
+
         private readonly int _randomSeed;
         private readonly ITrie? _previousBlockStatesTrie;
         private readonly Predicate<Currency>? _nativeTokenPredicate;
@@ -43,6 +48,9 @@ namespace Libplanet.Action
             BlockAction = blockAction;
             _nativeTokenPredicate = nativeTokenPredicate;
             Logs = logs ?? new List<string>();
+
+            GetStateTimer.Value = new Stopwatch();
+            GetStateCount.Value = 0;
         }
 
         public BlockHash? GenesisHash { get; }
