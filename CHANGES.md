@@ -276,8 +276,6 @@ deployment if possible.
  -  Removed *Libplanet.Node* package.  *Libplanet.Node* 0.52.0 was its last
     minor release.  [[#2971]]
 
-### CLI tools
-
 [Libplanet 0.52.0]: https://www.nuget.org/packages/Libplanet/0.52.0
 [#1997]: https://github.com/planetarium/libplanet/issues/1997
 [#2566]: https://github.com/planetarium/libplanet/pull/2566
