@@ -24,7 +24,7 @@ To be released.
 Version 0.53.1
 --------------
 
-To be released.
+Released on March 28, 2023.
 
  -  Ported changes from [Libplanet 0.50.6] release.  [[#3010]]
  -  Introduced a new `Initialize` system action.  [[#3010]
