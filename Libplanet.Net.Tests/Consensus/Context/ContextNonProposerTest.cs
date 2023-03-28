@@ -186,7 +186,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task EnterPreVoteNilOnInvalidBlock()
+        public async Task EnterPreVoteNilOnInvalidBlockHeader()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var timeoutProcessed = false;
@@ -212,11 +212,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     nilPreVoteSent.Set();
                 }
             };
-            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+
+            // 1. ProtocolVersion should be matched.
+            // 2. Index should be increased monotonically.
+            // 3. Timestamp should be increased monotonically.
+            // 4. PreviousHash should be matched with Tip hash.
             var invalidBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                    index: blockChain.Tip.Index + 1,
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion - 1,
+                    index: blockChain.Tip.Index + 2,
                     timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                     miner: TestUtils.PrivateKeys[1].PublicKey.ToAddress(),
                     publicKey: TestUtils.PrivateKeys[1].PublicKey,
