@@ -1,6 +1,26 @@
 Libplanet changelog
 ===================
 
+Version 0.54.0
+-------------
+
+To be released.
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+
 Version 0.53.0
 --------------
 
@@ -202,6 +222,19 @@ deployment if possible.
 [#2878]: https://github.com/planetarium/libplanet/issues/2878
 [#2889]: https://github.com/planetarium/libplanet/pull/2889
 [#2894]: https://github.com/planetarium/libplanet/pull/2894
+
+
+Version 0.51.3
+--------------
+
+Released on March 17, 2023.
+
+### Bug fixes
+
+ -  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
+    because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
+
+[#2956]: https://github.com/planetarium/libplanet/pull/2956
 
 
 Version 0.51.2
