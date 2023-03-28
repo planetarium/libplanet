@@ -257,6 +257,13 @@ with an empty <code>IStore</code>.  [<a href="https://github.com/planetarium/lib
 <li>Changed <code>BlockChain&lt;T&gt;.Fork()</code> to copy <code>BlockCommit</code> for its newly forked
 <code>BlockChain&lt;T&gt;.Tip</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2878">#2878</a>, <a href="https://github.com/planetarium/libplanet/pull/2894">#2894</a>]</li>
 </ul>
+<h2 id="version-0513">Version 0.51.3</h2>
+<p>Released on March 17, 2023.</p>
+<h3 id="bug-fixes-1">Bug fixes</h3>
+<ul>
+<li>(Libplanet.Net) Fixed a bug where <code>DealerSocket</code> cannot connect to peers
+because of IPv4 return of <code>ResolveNetMQAddressAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2956">#2956</a>]</li>
+</ul>
 <h2 id="version-0512">Version 0.51.2</h2>
 <p>Released on March 15, 2023.</p>
 <ul>
@@ -266,7 +273,7 @@ with an empty <code>IStore</code>.  [<a href="https://github.com/planetarium/lib
 </ul>
 <h2 id="version-0511">Version 0.51.1</h2>
 <p>Released on March 13, 2023.</p>
-<h3 id="bug-fixes-1">Bug fixes</h3>
+<h3 id="bug-fixes-2">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Fixed a bug where <code>ActionExecutionState</code> hadn't generated
 correctly because of wrong <code>TotalBlockCount</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2917">#2917</a>]</li>
@@ -393,7 +400,7 @@ whether a block is committed in consensus.  [<a href="https://github.com/planeta
 <code>InvalidBlockCommitException</code> when the given <code>BlockCommit</code> is invalid with
 given block.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
 </ul>
-<h3 id="bug-fixes-2">Bug fixes</h3>
+<h3 id="bug-fixes-3">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Explorer) Fixed a bug where <code>stateQuery</code> hadn't work
 correctly in some situations.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
@@ -503,7 +510,7 @@ to <code>Branch&lt;T&gt;?</code>.  [<a href="https://github.com/planetarium/libp
 <li><code>Swarm&lt;T&gt;</code> became not to spawn multiple task for process <code>BlockDemand</code>
 for the same <code>BoundPeer</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2808">#2808</a>, <a href="https://github.com/planetarium/libplanet/pull/2814">#2814</a>]</li>
 </ul>
-<h3 id="bug-fixes-3">Bug fixes</h3>
+<h3 id="bug-fixes-4">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>NetMQTransport</code>'s overall throughput had been dropped
 when hostname resolving for some peers was delayed.  [<a href="https://github.com/planetarium/libplanet/pull/2817">#2817</a>]</li>
@@ -602,7 +609,7 @@ JSON.</li>
 <li>Added <code>TxId(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
 <li>Added <code>ByteUtil.ParseHexToImmutable()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
 </ul>
-<h3 id="bug-fixes-4">Bug fixes</h3>
+<h3 id="bug-fixes-5">Bug fixes</h3>
 <ul>
 <li>Fixed a JSON serializer bug where a <code>Transaction&lt;T&gt;</code> serialized into JSON
 had lacked the content of its <code>PublicKey</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2756">#2756</a>]</li>
@@ -747,7 +754,7 @@ creating an instance.  [<a href="https://github.com/planetarium/libplanet/issues
 <li>Changed the default <code>VolatileStagePolicy&lt;T&gt;.Lifetime</code> from 3 hours
 to 10 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/2718">#2718</a>]</li>
 </ul>
-<h3 id="bug-fixes-5">Bug fixes</h3>
+<h3 id="bug-fixes-6">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Fixed a bug <code>NetMQTransport</code> log shows socket count wrongly.
 [<a href="https://github.com/planetarium/libplanet/pull/2708">#2708</a>]</li>
@@ -841,7 +848,7 @@ and <code>ActionEvaluator&lt;T&gt;</code> directly.  [<a href="https://github.co
 <li>Added <code>IBlockPolicy.GetMinBlockProtocolVersion()</code> interface method.
 [<a href="https://github.com/planetarium/libplanet/pull/2593">#2593</a>]</li>
 </ul>
-<h3 id="bug-fixes-6">Bug fixes</h3>
+<h3 id="bug-fixes-7">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Fixed a bug where <code>AppProtocolVersion.GetHashCode()</code>
 did not work as intended.  [<a href="https://github.com/planetarium/libplanet/issues/2518">#2518</a>, <a href="https://github.com/planetarium/libplanet/pull/2520">#2520</a>]</li>
@@ -937,7 +944,7 @@ Use newly introduced parameterless <code>TxMetadata.ToBencodex()</code> instead.
 <ul>
 <li>Optimized <code>ByteUtil.CalculateHash()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/2437">#2437</a>, <a href="https://github.com/planetarium/libplanet/pull/2459">#2459</a>]</li>
 </ul>
-<h3 id="bug-fixes-7">Bug fixes</h3>
+<h3 id="bug-fixes-8">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Explorer) <code>Libplanet.Explorer.Executable</code> became to work again.
 [<a href="https://github.com/planetarium/libplanet/pull/2420">#2420</a>]</li>
@@ -1072,7 +1079,7 @@ value equality (rather than reference equality).  [<a href="https://github.com/p
 <li>A <code>ValidateAppProtocolVersion</code> became allow validation of different extra.
 [<a href="https://github.com/planetarium/libplanet/pull/2380">#2380</a>]</li>
 </ul>
-<h3 id="bug-fixes-8">Bug fixes</h3>
+<h3 id="bug-fixes-9">Bug fixes</h3>
 <ul>
 <li>Interface methods <code>IComparable.CompareTo()</code> and
 <code>IComparable&lt;T&gt;.CompareTo()</code> for <code>Address</code> are now accessible.  [<a href="https://github.com/planetarium/libplanet/pull/2384">#2384</a>]</li>
@@ -1527,7 +1534,7 @@ the entry assembly of the application besides the same assembly as <code>T</code
 when multiple subtypes of <code>T</code> are associated with the same
 <code>ActionTypeAttribute.TypeIdentifier</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2142">#2142</a>]</li>
 </ul>
-<h3 id="bug-fixes-9">Bug fixes</h3>
+<h3 id="bug-fixes-10">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>PrivateKey()</code> constructor had returned an invalid key
 less than 32 bytes.  [<a href="https://github.com/planetarium/libplanet/issues/1696">#1696</a>, <a href="https://github.com/planetarium/libplanet/pull/2091">#2091</a>]</li>
@@ -1642,7 +1649,7 @@ became to ignore its second parameter <code>Address signer</code>.  Instead,
 <code>Transaction&lt;T&gt;.Signer</code> property is now automatically derived from its
 <code>PublicKey</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1978">#1978</a>]</li>
 </ul>
-<h3 id="bug-fixes-10">Bug fixes</h3>
+<h3 id="bug-fixes-11">Bug fixes</h3>
 <ul>
 <li>Fixed <code>InvalidOperationException</code> thrown by <code>PublicKey.Verify()</code> method
 if <code>signature</code> is a <code>default(ImmutableArray&lt;byte&gt;)</code>.  Instead, it silently
@@ -1655,7 +1662,7 @@ present.  Instead, it silently returns an empty string now.  [<a href="https://g
 <h3 id="cli-tools-9">CLI tools</h3>
 <h2 id="version-0351">Version 0.35.1</h2>
 <p>Released on May 23rd, 2022.</p>
-<h3 id="bug-fixes-11">Bug fixes</h3>
+<h3 id="bug-fixes-12">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Wrongly assigned default value to
 <code>TimeoutOptions.PreloadDialTimeout</code> fixed.  [<a href="https://github.com/planetarium/libplanet/pull/1983">#1983</a>]</li>
@@ -1862,7 +1869,7 @@ a different <code>AppProtocolVersion</code> from the local version.  [<a href="h
 <code>Message</code> to a <code>Peer</code> with a different <code>AppProtocolVersion</code> that is not
 signed by a trusted source.  [<a href="https://github.com/planetarium/libplanet/pull/1890">#1890</a>]</li>
 </ul>
-<h3 id="bug-fixes-12">Bug fixes</h3>
+<h3 id="bug-fixes-13">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Internal dictionaries of a <code>KBucket</code> are made to be
 concurrent.  [<a href="https://github.com/planetarium/libplanet/issues/1872">#1872</a>, <a href="https://github.com/planetarium/libplanet/pull/1879">#1879</a>]</li>
@@ -1880,7 +1887,7 @@ changed to <code>Kademlia.CalculateDifference()</code> to better indicate its be
 <li>(Libplanet.Net) <code>Kademlia.CalculateDistance()</code> method reimplemented with
 return type <code>int</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1877">#1877</a>]</li>
 </ul>
-<h3 id="bug-fixes-13">Bug fixes</h3>
+<h3 id="bug-fixes-14">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Stun) Increased the number of internal proxies to increase
 the inbound network traffic throughput of a node when using a <code>TurnClient</code>.
@@ -1987,7 +1994,7 @@ instead of other methods that use it.  [<a href="https://github.com/planetarium/
 <code>NetMQTransport.SendMessageAsync()</code> internally instead of
 using <code>NetMQ</code> directly.  [<a href="https://github.com/planetarium/libplanet/issues/1722">#1722</a>, <a href="https://github.com/planetarium/libplanet/pull/1824">#1824</a>]</li>
 </ul>
-<h3 id="bug-fixes-14">Bug fixes</h3>
+<h3 id="bug-fixes-15">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Fixed a leak in handling <code>DealerSocket</code>s inside
 <code>NetMQTransport.DoBroadcast()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1819">#1819</a>, <a href="https://github.com/planetarium/libplanet/pull/1825">#1825</a>]</li>
@@ -2237,7 +2244,7 @@ into two parallel tasks.</li>
 </ul>
 </li>
 </ul>
-<h3 id="bug-fixes-15">Bug fixes</h3>
+<h3 id="bug-fixes-16">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where unnecessary additional attempts were made to
 unresponsive <code>Peer</code>s when discovering a <code>Peer</code> through <code>KademliaProtocol</code>.
@@ -2400,7 +2407,7 @@ it is expired or ignored.</li>
 <li>New log output tagged with <code>Metric</code> added to measure execution time for
 <code>BlockChain&lt;T&gt;.FindNextHashes()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1669">#1669</a>]</li>
 </ul>
-<h3 id="bug-fixes-16">Bug fixes</h3>
+<h3 id="bug-fixes-17">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>TxCompletion</code> had broadcasted invalid transactions.
 [<a href="https://github.com/planetarium/libplanet/pull/1661">#1661</a>]</li>
@@ -2467,7 +2474,7 @@ since <a href="https://www.nuget.org/packages/Bencodex/0.4.0">Bencodex 0.4.0</a>
 </ul>
 </li>
 </ul>
-<h3 id="bug-fixes-17">Bug fixes</h3>
+<h3 id="bug-fixes-18">Bug fixes</h3>
 <ul>
 <li><code>KBucket.Head</code> and <code>KBucket.Tail</code> now properly return <code>null</code> if
 the bucket is empty instead of faulting.  [<a href="https://github.com/planetarium/libplanet/pull/1631">#1631</a>]</li>
@@ -2521,7 +2528,7 @@ the canonical chain while syncing recent blocks.  [<a href="https://github.com/p
 <li>More streamlined structured logging together with additional logs
 tagged as <code>Metric</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1627">#1627</a>]</li>
 </ul>
-<h3 id="bug-fixes-18">Bug fixes</h3>
+<h3 id="bug-fixes-19">Bug fixes</h3>
 <ul>
 <li><code>InvalidMagicCookieException</code> and <code>InvalidTimestampException</code> can now
 be serialized and deserialized.  [<a href="https://github.com/planetarium/libplanet/pull/1613">#1613</a>]</li>
@@ -2730,7 +2737,7 @@ The polling is triggered when <code>Swarm&lt;T&gt;.BlockChain</code>'s <code>Tip
 unchanged for a while.  Expiration time for tips can be configured
 through <code>SwarmOptions.TipLifespan</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1557">#1557</a>]</li>
 </ul>
-<h3 id="bug-fixes-19">Bug fixes</h3>
+<h3 id="bug-fixes-20">Bug fixes</h3>
 <ul>
 <li>Fixed <code>DefaultStore.ForkBlockIndexes()</code> method's bug that it had done
 silently no-op when a given <code>sourceChainId</code> had not existed, which had not
@@ -3048,7 +3055,7 @@ If a block lacks public key, <code>InvalidBlockPublicKeyException</code> is thro
 <li><code>PublicKey.ToString()</code> method now returns its hexadecimal representation
 in compressed form.  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
-<h3 id="bug-fixes-20">Bug fixes</h3>
+<h3 id="bug-fixes-21">Bug fixes</h3>
 <ul>
 <li>Fixed <code>NullReferenceException</code> that <code>PublicKey.Verify()</code> method had thrown
 with a non-null empty <code>signature</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
@@ -3207,7 +3214,7 @@ as well.  [<a href="https://github.com/planetarium/libplanet/pull/1423">#1423</a
 <li><code>Swarm&lt;T&gt;</code> became to sync transactions from multiple peers
 at the same time.  [<a href="https://github.com/planetarium/libplanet/issues/1420">#1420</a>, <a href="https://github.com/planetarium/libplanet/pull/1478">#1478</a>]</li>
 </ul>
-<h3 id="bug-fixes-21">Bug fixes</h3>
+<h3 id="bug-fixes-22">Bug fixes</h3>
 <ul>
 <li>Improper sanity checks for <code>targetBlockInterval</code> (changed from the old name
 <code>blockInterval</code>), <code>minimumDifficulty</code>, and <code>difficultyStability</code> (changed
@@ -3244,7 +3251,7 @@ make sense.</li>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became to sync blocks from multiple peers.  [<a href="https://github.com/planetarium/libplanet/issues/1419">#1419</a>, <a href="https://github.com/planetarium/libplanet/pull/1425">#1425</a>]</li>
 </ul>
-<h3 id="bug-fixes-22">Bug fixes</h3>
+<h3 id="bug-fixes-23">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;.PreloadAsync()</code> failed to sync blocks from
 the peer that has chain with higher difficulty, but lower index.
@@ -3330,7 +3337,7 @@ is set to <code>true</code>.  [<a href="https://github.com/planetarium/libplanet
 <li><code>Transaction&lt;T&gt;.Validate()</code> became to throw <code>InvalidTxSignatureException</code>
 if the transaction was not signed.  [<a href="https://github.com/planetarium/libplanet/pull/1378">#1378</a>]</li>
 </ul>
-<h3 id="bug-fixes-23">Bug fixes</h3>
+<h3 id="bug-fixes-24">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had stopped when <code>ObjectDisposedException</code>
 is thrown during <code>NetMQTransport.DoBroadcast()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1362">#1362</a>, <a href="https://github.com/planetarium/libplanet/pull/1365">#1365</a>]</li>
@@ -3612,7 +3619,7 @@ call.  [<a href="https://github.com/planetarium/libplanet/pull/1347">#1347</a>]<
 <li><code>BlockChain&lt;T&gt;.ExecuteActions()</code> became no longer throw
 <code>InvalidTxUpdatedAddressesException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/1389">#1389</a>]</li>
 </ul>
-<h3 id="bug-fixes-24">Bug fixes</h3>
+<h3 id="bug-fixes-25">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where executing <code>Transaction&lt;T&gt;.Actions</code> had not been atomic.
 <code>Actions</code> in a <code>Transaction&lt;T&gt;</code> now became executed all or nothing at all.
@@ -3889,7 +3896,7 @@ context.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1218</a
 </ul>
 </li>
 </ul>
-<h3 id="bug-fixes-25">Bug fixes</h3>
+<h3 id="bug-fixes-26">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>BlockChain&lt;T&gt;.MineBlock()</code> was not automatically
 cancelled when the tip of the chain was changed occasionally.  [<a href="https://github.com/planetarium/libplanet/pull/1141">#1141</a>]</li>
@@ -4270,7 +4277,7 @@ used <code>Block&lt;T&gt;</code>s are unable to be appended to <code>BlockChain&
 so that they become faster to get.  [<a href="https://github.com/planetarium/libplanet/pull/1013">#1013</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to do not render blocks.  [<a href="https://github.com/planetarium/libplanet/pull/1029">#1029</a>]</li>
 </ul>
-<h3 id="bug-fixes-26">Bug fixes</h3>
+<h3 id="bug-fixes-27">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had failed to receive a request from TURN relay
 connections.  [<a href="https://github.com/planetarium/libplanet/issues/404">#404</a>, <a href="https://github.com/planetarium/libplanet/issues/871">#871</a>, <a href="https://github.com/planetarium/libplanet/pull/890">#890</a>]</li>
@@ -4456,7 +4463,7 @@ creation.  [<a href="https://github.com/planetarium/libplanet/issues/817">#817</
 connections.  [<a href="https://github.com/planetarium/libplanet/pull/846">#846</a>]</li>
 <li>Improved response throughput of <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/849">#849</a>]</li>
 </ul>
-<h3 id="bug-fixes-27">Bug fixes</h3>
+<h3 id="bug-fixes-28">Bug fixes</h3>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became not to sync the same <code>Block&lt;T&gt;</code>s or <code>Transaction&lt;T&gt;</code>s
 multiple times.  [<a href="https://github.com/planetarium/libplanet/pull/784">#784</a>]</li>
@@ -4648,7 +4655,7 @@ then select an additional peers so that the total is 10.</li>
 </ul>
 </li>
 </ul>
-<h3 id="bug-fixes-28">Bug fixes</h3>
+<h3 id="bug-fixes-29">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the canonical chain could be deleted if <code>Swarm&lt;T&gt;</code> failed
 to download blocks due to network connection.  [<a href="https://github.com/planetarium/libplanet/pull/675">#675</a>]</li>
@@ -4788,7 +4795,7 @@ the <code>Block&lt;T&gt;</code> more than once.  [<a href="https://github.com/pl
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to try downloading blocks from all neighbor
 peers, even if any peer among them is unavailable to send blocks.  [<a href="https://github.com/planetarium/libplanet/pull/636">#636</a>]</li>
 </ul>
-<h3 id="bug-fixes-29">Bug fixes</h3>
+<h3 id="bug-fixes-30">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had tried to update a peer infinitely when
 the peer is evicted from its table.  [<a href="https://github.com/planetarium/libplanet/pull/566">#566</a>]</li>
@@ -4937,7 +4944,7 @@ and transactions in each group (per signer) are ordered by
 <li><code>LiteDBStore()</code> became to create the database in memory if the <code>path</code>
 parameter is <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/521">#521</a>]</li>
 </ul>
-<h3 id="bug-fixes-30">Bug fixes</h3>
+<h3 id="bug-fixes-31">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
@@ -4949,14 +4956,14 @@ occurred during fetching block from other peers.  [<a href="https://github.com/p
 </ul>
 <h2 id="version-053">Version 0.5.3</h2>
 <p>Released on September 9, 2019.</p>
-<h3 id="bug-fixes-31">Bug fixes</h3>
+<h3 id="bug-fixes-32">Bug fixes</h3>
 <ul>
 <li>Fix bug where <code>IAccountStateDelta.GetState()</code> hadn't returned proper state
 when the block action is evaluated.  [<a href="https://github.com/planetarium/libplanet/pull/500">#500</a>]</li>
 </ul>
 <h2 id="version-052">Version 0.5.2</h2>
 <p>Released on August 29, 2019.</p>
-<h3 id="bug-fixes-32">Bug fixes</h3>
+<h3 id="bug-fixes-33">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> method had thrown <code>LiteException</code>
 (or other exception depending on <code>IStore</code>), which indicates a state
@@ -4969,7 +4976,7 @@ transactions.  [<a href="https://github.com/planetarium/libplanet/issues/352">#3
 </ul>
 <h2 id="version-051">Version 0.5.1</h2>
 <p>Released on August 28, 2019.</p>
-<h3 id="bug-fixes-33">Bug fixes</h3>
+<h3 id="bug-fixes-34">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>ArgumentNullException</code> had been thrown when a blockchain,
 which consists of incomplete states (i.e., precalculated states downloaded
@@ -5065,7 +5072,7 @@ the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.
 <code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/423">#423</a>]</li>
 <li><code>PrivateKey(byte[])</code> constructor became to check validity.  [<a href="https://github.com/planetarium/libplanet/pull/438">#438</a>]</li>
 </ul>
-<h3 id="bug-fixes-34">Bug fixes</h3>
+<h3 id="bug-fixes-35">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the <code>LiteDBStore.IterateStagedTransactionIds()</code> returns
 duplicated transaction ids.  [<a href="https://github.com/planetarium/libplanet/pull/366">#366</a>]</li>
@@ -5093,7 +5100,7 @@ took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
-<h3 id="bug-fixes-35">Bug fixes</h3>
+<h3 id="bug-fixes-36">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the <code>BlockChain&lt;T&gt;.GetStates()</code> method had not returned
 the latest state when there are multiple addresses.  [<a href="https://github.com/planetarium/libplanet/pull/346">#346</a>]</li>
@@ -5191,7 +5198,7 @@ references in the replaced chain.  [<a href="https://github.com/planetarium/libp
 under the circumstances that the height of
 the <code>BlockChain&lt;T&gt;</code> object is high.  [<a href="https://github.com/planetarium/libplanet/issues/282">#282</a>, <a href="https://github.com/planetarium/libplanet/pull/299">#299</a>]</li>
 </ul>
-<h3 id="bug-fixes-36">Bug fixes</h3>
+<h3 id="bug-fixes-37">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> reported <code>TaskCanceledException</code> as an unknown
 exception while stopping.  [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
@@ -5326,7 +5333,7 @@ current nonce.  [<a href="https://github.com/planetarium/libplanet/pull/246">#24
 <li><code>Swarm</code> became to enforce <code>ForceDotNet.Force()</code> in <a href="https://github.com/somdoron/AsyncIO">AsyncIO</a> while
 it's running on Mono runtime.  [<a href="https://github.com/planetarium/libplanet/pull/247">#247</a>]</li>
 </ul>
-<h3 id="bug-fixes-37">Bug fixes</h3>
+<h3 id="bug-fixes-38">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that TURN relay had been disconnected when being connected for
 longer than 5 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>

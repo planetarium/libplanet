@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "ZpnLx+ODHVbsCYSP6dUgSgflYLgPHZIezGU+RXDfeug="
+          "hash": "Zpq55cODT36mskMtYzs3H44K7ipe2klIoDo1RaMc1R8="
         }
       },
       "is_incremental": false,
@@ -3201,7 +3201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.BoundPeerExtensions.html",
-          "hash": "sJddxZ3GNjUDfIKv10aQvyMZ9vHmiKA3vV9yvlhhKEc="
+          "hash": "y2d0jaJw41StNdKfrElIzeSzNJstnY0w52zXubBWLbY="
         }
       },
       "is_incremental": false,
