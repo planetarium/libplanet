@@ -224,6 +224,18 @@ deployment if possible.
 [#2894]: https://github.com/planetarium/libplanet/pull/2894
 
 
+Version 0.51.4
+--------------
+
+Released on March 28, 2023.
+
+-  Ported changes from [Libplanet 0.50.6] release.  [[#2975]]
+-  Introduced a new `Initialize` system action.  [[#2975]]
+
+[Libplanet 0.50.6]: https://www.nuget.org/packages/Libplanet/0.50.6
+[#2975]: https://github.com/planetarium/libplanet/pull/2975
+
+
 Version 0.51.3
 --------------
 

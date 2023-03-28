@@ -358,7 +358,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 ActionRenderer = (a, __, nextStates) =>
                 {
-                    if (!(a is SetValidator))
+                    if (!(a is Initialize))
                     {
                         throw new SomeException("thrown by renderer");
                     }
@@ -1938,7 +1938,15 @@ namespace Libplanet.Tests.Blockchain
             var validatorPrivKey = new PrivateKey();
             var systemActions = new IAction[]
             {
-                new SetValidator(new Validator(validatorPrivKey.PublicKey, BigInteger.One)),
+                new Initialize(
+                    states: ImmutableDictionary.Create<Address, IValue>(),
+                    validatorSet: new ValidatorSet(
+                        new List<Validator>
+                        {
+                            new Validator(validatorPrivKey.PublicKey, BigInteger.One),
+                        }
+                    )
+                ),
             };
 
             var actions =
@@ -2077,7 +2085,7 @@ namespace Libplanet.Tests.Blockchain
         private void ValidateNextBlockCommitOnValidatorSetChange()
         {
             var storeFixture = new MemoryStoreFixture();
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<SetValidator>();
 
             var addresses = ImmutableList<Address>.Empty
                 .Add(storeFixture.Address1)
@@ -2086,19 +2094,34 @@ namespace Libplanet.Tests.Blockchain
 
             var newValidatorPrivKey = new PrivateKey();
             var newValidators = ValidatorPrivateKeys.Append(newValidatorPrivKey);
-            var systemActions = ValidatorPrivateKeys.Select(
-                pk => new SetValidator(new Validator(pk.PublicKey, BigInteger.One)));
+            var initialValidatorSet = new ValidatorSet(
+                ValidatorPrivateKeys.Select(
+                    pk => new Validator(pk.PublicKey, BigInteger.One)
+                ).ToList()
+            );
+            var systemActions = new[]
+            {
+                new Initialize(
+                    validatorSet: initialValidatorSet,
+                    states: ImmutableDictionary.Create<Address, IValue>()
+                ),
+            };
 
-            var blockChain = BlockChain<DumbAction>.Create(
-                policy,
-                new VolatileStagePolicy<DumbAction>(),
-                storeFixture.Store,
-                storeFixture.StateStore,
-                BlockChain<DumbAction>.ProposeGenesisBlock(systemActions: systemActions));
+            BlockChain<SetValidator> blockChain =
+                new BlockChain<SetValidator>(
+                    policy,
+                    new VolatileStagePolicy<SetValidator>(),
+                    storeFixture.Store,
+                    storeFixture.StateStore,
+                    BlockChain<SetValidator>.ProposeGenesisBlock(systemActions: systemActions));
 
             blockChain.MakeTransaction(
                 new PrivateKey(),
-                new SetValidator(new Validator(newValidatorPrivKey.PublicKey, BigInteger.One)));
+                new[]
+                {
+                    new SetValidator(new Validator(newValidatorPrivKey.PublicKey, BigInteger.One)),
+                }
+            );
             var newBlock = blockChain.ProposeBlock(new PrivateKey());
             var newBlockCommit = new BlockCommit(
                 newBlock.Index, 0, newBlock.Hash, ValidatorPrivateKeys.Select(
@@ -2115,7 +2138,11 @@ namespace Libplanet.Tests.Blockchain
 
             blockChain.MakeTransaction(
                 new PrivateKey(),
-                new SetValidator(new Validator(new PrivateKey().PublicKey, BigInteger.One)));
+                new[]
+                {
+                    new SetValidator(new Validator(new PrivateKey().PublicKey, BigInteger.One)),
+                }
+            );
             var nextBlock = blockChain.ProposeBlock(
                 new PrivateKey(), lastCommit: newBlockCommit);
             var nextBlockCommit = new BlockCommit(
@@ -2133,7 +2160,11 @@ namespace Libplanet.Tests.Blockchain
 
             blockChain.MakeTransaction(
                 new PrivateKey(),
-                new SetValidator(new Validator(new PrivateKey().PublicKey, BigInteger.One)));
+                new[]
+                {
+                    new SetValidator(new Validator(new PrivateKey().PublicKey, BigInteger.One)),
+                }
+            );
             var invalidCommitBlock = blockChain.ProposeBlock(
                 new PrivateKey(), lastCommit: nextBlockCommit);
 
