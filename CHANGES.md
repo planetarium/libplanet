@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.52.2
 --------------
 
-To be released.
+Released on March 28, 2023.
 
 -  Ported changes from [Libplanet 0.50.6] release.  [[#2976]]
 -  Introduced a new `Initialize` system action.  [[#2976]]
