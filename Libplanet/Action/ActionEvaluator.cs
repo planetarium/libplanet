@@ -399,9 +399,13 @@ namespace Libplanet.Action
                         .ForContext("Tag", "Metric")
                         .ForContext("Subtag", "ActionExecutionTime")
                         .Information(
-                            "Action {Action} took {DurationMs} ms to execute",
+                            "Action {Action} took {DurationMs} ms to execute, " +
+                            "GetState called {GetStateCount} times " +
+                            "and took {GetStateDurationMs} ms",
                             action,
-                            stopwatch.ElapsedMilliseconds);
+                            stopwatch.ElapsedMilliseconds,
+                            ActionContext.GetStateCount.Value,
+                            ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
                 }
                 catch (OutOfMemoryException e)
                 {
