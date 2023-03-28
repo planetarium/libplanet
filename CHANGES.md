@@ -6,11 +6,11 @@ Version 0.53.1
 
 To be released.
 
- -  Ported changes from [Libplanet 0.50.6] release.  [[#3006]]
- -  Introduced a new `Initialize` system action.  [[#3006]
+ -  Ported changes from [Libplanet 0.50.6] release.  [[#3010]]
+ -  Introduced a new `Initialize` system action.  [[#3010]
 
 [Libplanet 0.50.6]: https://www.nuget.org/packages/Libplanet/0.50.6
-[#3006]: https://github.com/planetarium/libplanet/pull/2976
+[#3010]: https://github.com/planetarium/libplanet/pull/3010
 
 
 Version 0.53.0
