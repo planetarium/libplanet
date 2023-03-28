@@ -94,16 +94,24 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        IValue? IAccountStateView.GetState(Address address) =>
-            UpdatedStates.TryGetValue(address, out IValue? value)
+        IValue? IAccountStateView.GetState(Address address)
+        {
+            ActionContext.GetStateTimer.Value?.Start();
+            ActionContext.GetStateCount.Value += 1;
+            var state = UpdatedStates.TryGetValue(address, out IValue? value)
                 ? value
                 : StateGetter(new[] { address })[0];
+            ActionContext.GetStateTimer.Value?.Stop();
+            return state;
+        }
 
         /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
         IReadOnlyList<IValue?> IAccountStateView.GetStates(IReadOnlyList<Address> addresses)
         {
+            ActionContext.GetStateTimer.Value?.Start();
             int length = addresses.Count;
+            ActionContext.GetStateCount.Value += length;
             IValue?[] values = new IValue?[length];
             var notFoundIndices = new List<int>(length);
             for (int i = 0; i < length; i++)
@@ -129,6 +137,7 @@ namespace Libplanet.Action
                 }
             }
 
+            ActionContext.GetStateTimer.Value?.Stop();
             return values;
         }
 
