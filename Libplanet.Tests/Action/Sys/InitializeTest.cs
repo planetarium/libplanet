@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Action.Sys
             var action = new Initialize(_validatorSet, _states);
             AssertBencodexEqual(
                 new List(
-                    _validatorSet.Encoded,
+                    _validatorSet.Bencoded,
                     Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")
                 ),
                 action.PlainValue
@@ -131,7 +131,7 @@ namespace Libplanet.Tests.Action.Sys
         public void Deserialize()
         {
             var encoded = new List(
-                _validatorSet.Encoded,
+                _validatorSet.Bencoded,
                 Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")
             );
             var action = new Initialize();
