@@ -1312,6 +1312,93 @@ references:
   commentId: N:Libplanet.Action.Sys
   fullName: Libplanet.Action.Sys
   nameWithType: Libplanet.Action.Sys
+- uid: Libplanet.Action.Sys.Initialize
+  name: Initialize
+  href: api/Libplanet.Action.Sys.Initialize.html
+  commentId: T:Libplanet.Action.Sys.Initialize
+  fullName: Libplanet.Action.Sys.Initialize
+  nameWithType: Initialize
+- uid: Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Consensus.ValidatorSet,System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue})
+  name: Initialize(ValidatorSet, IImmutableDictionary<Address, IValue>)
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize__ctor_Libplanet_Consensus_ValidatorSet_System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_Bencodex_Types_IValue__
+  commentId: M:Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Consensus.ValidatorSet,System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue})
+  name.vb: Initialize(ValidatorSet, IImmutableDictionary(Of Address, IValue))
+  fullName: Libplanet.Action.Sys.Initialize.Initialize(Libplanet.Consensus.ValidatorSet, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, Bencodex.Types.IValue>)
+  fullName.vb: Libplanet.Action.Sys.Initialize.Initialize(Libplanet.Consensus.ValidatorSet, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, Bencodex.Types.IValue))
+  nameWithType: Initialize.Initialize(ValidatorSet, IImmutableDictionary<Address, IValue>)
+  nameWithType.vb: Initialize.Initialize(ValidatorSet, IImmutableDictionary(Of Address, IValue))
+- uid: Libplanet.Action.Sys.Initialize.#ctor*
+  name: Initialize
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize__ctor_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.Initialize
+  nameWithType: Initialize.Initialize
+- uid: Libplanet.Action.Sys.Initialize.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.Sys.Initialize.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.Sys.Initialize.Execute(Libplanet.Action.IActionContext)
+  nameWithType: Initialize.Execute(IActionContext)
+- uid: Libplanet.Action.Sys.Initialize.Execute*
+  name: Execute
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_Execute_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.Execute
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.Execute
+  nameWithType: Initialize.Execute
+- uid: Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)
+  name: LoadPlainValue(IValue)
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_LoadPlainValue_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)
+  nameWithType: Initialize.LoadPlainValue(IValue)
+- uid: Libplanet.Action.Sys.Initialize.LoadPlainValue*
+  name: LoadPlainValue
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_LoadPlainValue_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.LoadPlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.LoadPlainValue
+  nameWithType: Initialize.LoadPlainValue
+- uid: Libplanet.Action.Sys.Initialize.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_PlainValue
+  commentId: P:Libplanet.Action.Sys.Initialize.PlainValue
+  fullName: Libplanet.Action.Sys.Initialize.PlainValue
+  nameWithType: Initialize.PlainValue
+- uid: Libplanet.Action.Sys.Initialize.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_PlainValue_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.PlainValue
+  nameWithType: Initialize.PlainValue
+- uid: Libplanet.Action.Sys.Initialize.States
+  name: States
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_States
+  commentId: P:Libplanet.Action.Sys.Initialize.States
+  fullName: Libplanet.Action.Sys.Initialize.States
+  nameWithType: Initialize.States
+- uid: Libplanet.Action.Sys.Initialize.States*
+  name: States
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_States_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.States
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.States
+  nameWithType: Initialize.States
+- uid: Libplanet.Action.Sys.Initialize.ValidatorSet
+  name: ValidatorSet
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_ValidatorSet
+  commentId: P:Libplanet.Action.Sys.Initialize.ValidatorSet
+  fullName: Libplanet.Action.Sys.Initialize.ValidatorSet
+  nameWithType: Initialize.ValidatorSet
+- uid: Libplanet.Action.Sys.Initialize.ValidatorSet*
+  name: ValidatorSet
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_ValidatorSet_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.ValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.ValidatorSet
+  nameWithType: Initialize.ValidatorSet
 - uid: Libplanet.Action.Sys.Mint
   name: Mint
   href: api/Libplanet.Action.Sys.Mint.html
@@ -1434,115 +1521,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Mint.Recipient
   nameWithType: Mint.Recipient
-- uid: Libplanet.Action.Sys.SetValidator
-  name: SetValidator
-  href: api/Libplanet.Action.Sys.SetValidator.html
-  commentId: T:Libplanet.Action.Sys.SetValidator
-  fullName: Libplanet.Action.Sys.SetValidator
-  nameWithType: SetValidator
-- uid: Libplanet.Action.Sys.SetValidator.#ctor(Libplanet.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator__ctor_Libplanet_Consensus_Validator_
-  commentId: M:Libplanet.Action.Sys.SetValidator.#ctor(Libplanet.Consensus.Validator)
-  fullName: Libplanet.Action.Sys.SetValidator.SetValidator(Libplanet.Consensus.Validator)
-  nameWithType: SetValidator.SetValidator(Validator)
-- uid: Libplanet.Action.Sys.SetValidator.#ctor*
-  name: SetValidator
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator__ctor_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.SetValidator
-  nameWithType: SetValidator.SetValidator
-- uid: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.IAction)
-  name: Equals(IAction)
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_Libplanet_Action_IAction_
-  commentId: M:Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.IAction)
-  fullName: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.IAction)
-  nameWithType: SetValidator.Equals(IAction)
-- uid: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.Sys.SetValidator)
-  name: Equals(SetValidator)
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_Libplanet_Action_Sys_SetValidator_
-  commentId: M:Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.Sys.SetValidator)
-  fullName: Libplanet.Action.Sys.SetValidator.Equals(Libplanet.Action.Sys.SetValidator)
-  nameWithType: SetValidator.Equals(SetValidator)
-- uid: Libplanet.Action.Sys.SetValidator.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_System_Object_
-  commentId: M:Libplanet.Action.Sys.SetValidator.Equals(System.Object)
-  fullName: Libplanet.Action.Sys.SetValidator.Equals(System.Object)
-  nameWithType: SetValidator.Equals(Object)
-- uid: Libplanet.Action.Sys.SetValidator.Equals*
-  name: Equals
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Equals_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.Equals
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.Equals
-  nameWithType: SetValidator.Equals
-- uid: Libplanet.Action.Sys.SetValidator.Execute(Libplanet.Action.IActionContext)
-  name: Execute(IActionContext)
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Execute_Libplanet_Action_IActionContext_
-  commentId: M:Libplanet.Action.Sys.SetValidator.Execute(Libplanet.Action.IActionContext)
-  fullName: Libplanet.Action.Sys.SetValidator.Execute(Libplanet.Action.IActionContext)
-  nameWithType: SetValidator.Execute(IActionContext)
-- uid: Libplanet.Action.Sys.SetValidator.Execute*
-  name: Execute
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Execute_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.Execute
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.Execute
-  nameWithType: SetValidator.Execute
-- uid: Libplanet.Action.Sys.SetValidator.GetHashCode
-  name: GetHashCode()
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_GetHashCode
-  commentId: M:Libplanet.Action.Sys.SetValidator.GetHashCode
-  fullName: Libplanet.Action.Sys.SetValidator.GetHashCode()
-  nameWithType: SetValidator.GetHashCode()
-- uid: Libplanet.Action.Sys.SetValidator.GetHashCode*
-  name: GetHashCode
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_GetHashCode_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.GetHashCode
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.GetHashCode
-  nameWithType: SetValidator.GetHashCode
-- uid: Libplanet.Action.Sys.SetValidator.LoadPlainValue(Bencodex.Types.IValue)
-  name: LoadPlainValue(IValue)
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_LoadPlainValue_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Action.Sys.SetValidator.LoadPlainValue(Bencodex.Types.IValue)
-  fullName: Libplanet.Action.Sys.SetValidator.LoadPlainValue(Bencodex.Types.IValue)
-  nameWithType: SetValidator.LoadPlainValue(IValue)
-- uid: Libplanet.Action.Sys.SetValidator.LoadPlainValue*
-  name: LoadPlainValue
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_LoadPlainValue_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.LoadPlainValue
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.LoadPlainValue
-  nameWithType: SetValidator.LoadPlainValue
-- uid: Libplanet.Action.Sys.SetValidator.PlainValue
-  name: PlainValue
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_PlainValue
-  commentId: P:Libplanet.Action.Sys.SetValidator.PlainValue
-  fullName: Libplanet.Action.Sys.SetValidator.PlainValue
-  nameWithType: SetValidator.PlainValue
-- uid: Libplanet.Action.Sys.SetValidator.PlainValue*
-  name: PlainValue
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_PlainValue_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.PlainValue
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.PlainValue
-  nameWithType: SetValidator.PlainValue
-- uid: Libplanet.Action.Sys.SetValidator.Validator
-  name: Validator
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Validator
-  commentId: P:Libplanet.Action.Sys.SetValidator.Validator
-  fullName: Libplanet.Action.Sys.SetValidator.Validator
-  nameWithType: SetValidator.Validator
-- uid: Libplanet.Action.Sys.SetValidator.Validator*
-  name: Validator
-  href: api/Libplanet.Action.Sys.SetValidator.html#Libplanet_Action_Sys_SetValidator_Validator_
-  commentId: Overload:Libplanet.Action.Sys.SetValidator.Validator
-  isSpec: "True"
-  fullName: Libplanet.Action.Sys.SetValidator.Validator
-  nameWithType: SetValidator.Validator
 - uid: Libplanet.Action.Sys.Transfer
   name: Transfer
   href: api/Libplanet.Action.Sys.Transfer.html
@@ -1822,6 +1800,38 @@ references:
   commentId: T:Libplanet.Action.ValidatorSetGetter
   fullName: Libplanet.Action.ValidatorSetGetter
   nameWithType: ValidatorSetGetter
+- uid: Libplanet.Action.ValidatorStateExtensions
+  name: ValidatorStateExtensions
+  href: api/Libplanet.Action.ValidatorStateExtensions.html
+  commentId: T:Libplanet.Action.ValidatorStateExtensions
+  fullName: Libplanet.Action.ValidatorStateExtensions
+  nameWithType: ValidatorStateExtensions
+- uid: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet(Libplanet.Action.IAccountStateDelta)
+  name: GetValidatorSet(IAccountStateDelta)
+  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_GetValidatorSet_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Action.ValidatorStateExtensions.GetValidatorSet(Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet(Libplanet.Action.IAccountStateDelta)
+  nameWithType: ValidatorStateExtensions.GetValidatorSet(IAccountStateDelta)
+- uid: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.ValidatorStateExtensions.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet
+  nameWithType: ValidatorStateExtensions.GetValidatorSet
+- uid: Libplanet.Action.ValidatorStateExtensions.SetValidator(Libplanet.Action.IAccountStateDelta,Libplanet.Consensus.Validator)
+  name: SetValidator(IAccountStateDelta, Validator)
+  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_SetValidator_Libplanet_Action_IAccountStateDelta_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Action.ValidatorStateExtensions.SetValidator(Libplanet.Action.IAccountStateDelta,Libplanet.Consensus.Validator)
+  fullName: Libplanet.Action.ValidatorStateExtensions.SetValidator(Libplanet.Action.IAccountStateDelta, Libplanet.Consensus.Validator)
+  nameWithType: ValidatorStateExtensions.SetValidator(IAccountStateDelta, Validator)
+- uid: Libplanet.Action.ValidatorStateExtensions.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_SetValidator_
+  commentId: Overload:Libplanet.Action.ValidatorStateExtensions.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.ValidatorStateExtensions.SetValidator
+  nameWithType: ValidatorStateExtensions.SetValidator
 - uid: Libplanet.Address
   name: Address
   href: api/Libplanet.Address.html
