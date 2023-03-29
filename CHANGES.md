@@ -8,10 +8,12 @@ To be released.
 
  -  Optimized internal byte array to hex string conversion in several places.
     [[#2989], [#3007]]
+ -  `IValidatorSupportStateDelta` is now public [[#3017]]
  -  Optimized `BlockChainState.GetStates()` by caching results.  [[#3018]]
 
 [#2989]: https://github.com/planetarium/libplanet/issues/2989
 [#3007]: https://github.com/planetarium/libplanet/pull/3007
+[#3017]: https://github.com/planetarium/libplanet/pull/3017
 [#3018]: https://github.com/planetarium/libplanet/pull/3018
 
 
