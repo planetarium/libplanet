@@ -58,7 +58,6 @@ namespace Libplanet.Blockchain
                 uncachedIndices.Select(index => addresses[index]).ToArray();
             if (_store.GetStateRootHash(offset) is { } h && _stateStore.ContainsStateRoot(h))
             {
-                string[] rawKeys = uncachedAddresses.Select(ToStateKey).ToArray();
                 IReadOnlyList<IValue?> fetched = uncachedAddresses
                     .Select(a => _stateStore.GetStates(h, new string[] { ToStateKey(a) })[0])
                     .AsParallel()
