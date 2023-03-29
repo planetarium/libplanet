@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 
 namespace Libplanet.Tx
 {
@@ -61,5 +64,52 @@ namespace Libplanet.Tx
                 }
             }
         }
+
+        /// <inheritdoc cref="UnsignedTx(ITxInvoice, ITxSigningMetadata)" />
+        /// <returns>An <see cref="UnsignedTx"/> instance.</returns>
+        public static UnsignedTx Combine(
+            this ITxInvoice invoice,
+            ITxSigningMetadata signingMetadata
+        ) =>
+            new UnsignedTx(invoice, signingMetadata);
+
+        /// <summary>
+        /// Creates a new <see cref="Transaction{T}"/> instance by signing the given
+        /// <paramref name="invoice"/> with the given <paramref name="privateKey"/>.
+        /// </summary>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It determines the type of
+        /// <see cref="Transaction{T}"/> to create.</typeparam>
+        /// <param name="invoice">The <see cref="ITxInvoice"/> to sign.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to sign the transaction.</param>
+        /// <param name="nonce">The nonce to use for the transaction.</param>
+        /// <returns>A <see cref="Transaction{T}"/> instance.</returns>
+        public static Transaction<T> Sign<T>(
+            this ITxInvoice invoice,
+            PrivateKey privateKey,
+            long nonce)
+            where T : IAction, new()
+        =>
+            invoice.Combine(new TxSigningMetadata(privateKey.PublicKey, nonce)).Sign<T>(privateKey);
+
+        /// <inheritdoc cref="Transaction{T}(IUnsignedTx, PrivateKey)" />
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It determines the type of
+        /// <see cref="Transaction{T}"/> to create.</typeparam>
+        /// <returns>A <see cref="Transaction{T}"/> instance.</returns>
+        public static Transaction<T> Sign<T>(this IUnsignedTx unsignedTx, PrivateKey privateKey)
+            where T : IAction, new()
+        =>
+            new Transaction<T>(unsignedTx, privateKey);
+
+        /// <inheritdoc cref="Transaction{T}(IUnsignedTx, ImmutableArray{byte})" />
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It determines the type of
+        /// <see cref="Transaction{T}"/> to create.</typeparam>
+        /// <returns>A <see cref="Transaction{T}"/> instance.</returns>
+        public static Transaction<T> Verify<T>(
+            this IUnsignedTx unsignedTx,
+            ImmutableArray<byte> signature
+        )
+            where T : IAction, new()
+        =>
+            new Transaction<T>(unsignedTx, signature);
     }
 }
