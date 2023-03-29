@@ -593,7 +593,7 @@ namespace Libplanet.Action
                     tx.Id,
                     tx.Signer,
                     block.Index,
-                    ByteUtil.Hex(block.PreEvaluationHash));
+                    ByteUtil.Hex(block.PreEvaluationHash.ToByteArray()));
             }
         }
 
