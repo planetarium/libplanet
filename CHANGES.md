@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.50.7
 --------------
 
-To be released.
+Released on March 29, 2023.
 
  -  Optimized internal byte array to hex string conversion in several places.
     [[#2989], [#3007]]
