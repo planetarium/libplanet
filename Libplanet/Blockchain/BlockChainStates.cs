@@ -18,11 +18,13 @@ namespace Libplanet.Blockchain
     {
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
+        private readonly ChainStateCache _stateCache;
 
         public BlockChainStates(IStore store, IStateStore stateStore)
         {
             _store = store;
             _stateStore = stateStore;
+            _stateCache = new ChainStateCache();
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
@@ -30,11 +32,46 @@ namespace Libplanet.Blockchain
             IReadOnlyList<Address> addresses,
             BlockHash offset)
         {
-            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
+            int length = addresses.Count;
+            List<int> uncachedIndices = new List<int>(length);
+            IValue?[] result = new IValue?[length];
+
+            for (int i = 0; i < length; i++)
             {
-                string[] rawKeys = addresses.Select(ToStateKey).ToArray();
-                return _stateStore.GetStates(stateRootHash, rawKeys);
+                if (_stateCache.TryGetValue(offset, addresses[i], out IValue? cachedValue) &&
+                    cachedValue is { } cv)
+                {
+                    result[i] = cv;
+                }
+                else
+                {
+                    uncachedIndices.Add(i);
+                }
+            }
+
+            if (uncachedIndices.Count == 0)
+            {
+                return result;
+            }
+
+            IReadOnlyList<Address> uncachedAddresses =
+                uncachedIndices.Select(index => addresses[index]).ToArray();
+            if (_store.GetStateRootHash(offset) is { } h && _stateStore.ContainsStateRoot(h))
+            {
+                IReadOnlyList<IValue?> fetched = uncachedAddresses
+                    .Select(a => _stateStore.GetStates(h, new string[] { ToStateKey(a) })[0])
+                    .AsParallel()
+                    .ToList();
+                foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
+                {
+                    result[v] = fetched[i];
+                    if (fetched[i] is { } f)
+                    {
+                        _stateCache.AddOrUpdate(offset, addresses[v], fetched[i]);
+                    }
+                }
+
+                return result;
             }
 
             throw new IncompleteBlockStatesException(offset);

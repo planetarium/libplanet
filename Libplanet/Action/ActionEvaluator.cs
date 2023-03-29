@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -116,7 +115,7 @@ namespace Libplanet.Action
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
-                "pre-evaluation hash: {PreEvaluationHash}...",
+                "pre-evaluation hash {PreEvaluationHash}...",
                 block.Index,
                 ByteUtil.Hex(block.PreEvaluationHash.ByteArray)
             );
@@ -161,7 +160,7 @@ namespace Libplanet.Action
                     .ForContext("Subtag", "BlockEvaluationDuration")
                     .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs} ms",
+                        "pre-evaluation hash {PreEvaluationHash} evaluated in {DurationMs} ms",
                         block.Transactions.Count,
                         block.Index,
                         ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
@@ -367,8 +366,8 @@ namespace Libplanet.Action
                 ActionContext context = CreateActionContext(states, seed);
                 try
                 {
-                    DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
-                    TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
 
                     if (blockIndex == 0)
                     {
@@ -396,7 +395,17 @@ namespace Libplanet.Action
                     }
 
                     nextStates = action.Execute(context);
-                    logger?.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms");
+                    logger?
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "ActionExecutionTime")
+                        .Information(
+                            "Action {Action} took {DurationMs} ms to execute, " +
+                            "GetState called {GetStateCount} times " +
+                            "and took {GetStateDurationMs} ms",
+                            action,
+                            stopwatch.ElapsedMilliseconds,
+                            ActionContext.GetStateCount.Value,
+                            ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
                 }
                 catch (OutOfMemoryException e)
                 {
@@ -582,20 +591,21 @@ namespace Libplanet.Action
                 }
 
                 // FIXME: This is dependant on when the returned value is enumerated.
-                const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
                 logger.Information(
-                    "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
-                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs} ms",
+                    "Took {DurationMs} ms to evaluate {ActionCount} actions {ActionTypes} " +
+                    "in transaction {TxId} by {Signer} as a part of block #{Index} " +
+                    "pre-evaluation hash {PreEvaluationHash}",
+                    stopwatch.ElapsedMilliseconds,
                     actions.Count,
                     actions.Select(action => action.ToString()!.Split('.')
                         .LastOrDefault()?.Replace(">", string.Empty)),
                     tx.Id,
                     tx.Signer,
-                    tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                    stopwatch.ElapsedMilliseconds);
+                    block.Index,
+                    ByteUtil.Hex(block.PreEvaluationHash.ByteArray));
             }
         }
 
@@ -610,7 +620,6 @@ namespace Libplanet.Action
             IAction? systemAction = CreateSystemAction(tx);
             IEnumerable<IAction> customActions = CreateCustomActions(
                 ActionTypeLoaderContext.From(blockHeader), tx);
-
             ImmutableList<IAction> actions = systemAction is { }
                 ? ImmutableList.Create(systemAction)
                 : ImmutableList.CreateRange(customActions);
@@ -627,7 +636,8 @@ namespace Libplanet.Action
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 nativeTokenPredicate: _nativeTokenPredicate,
-                feeCalculator: _feeCalculator);
+                feeCalculator: _feeCalculator,
+                logger: _logger);
         }
 
         /// <summary>
