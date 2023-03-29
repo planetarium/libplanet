@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -41,8 +40,6 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             StateCompleter<T> stateCompleter)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             int length = addresses.Count;
             List<int> uncachedIndices = new List<int>(length);
             IValue?[] result = new IValue?[length];
