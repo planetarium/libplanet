@@ -8,6 +8,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) Replaced parameter `newHeightDelay` with `contextMinInterval`
+    from `ConsensusContext` and `ConsensusReactor`.  [[#3026]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -15,6 +18,11 @@ To be released.
 ### Added APIs
 
 ### Behavioral changes
+
+ - (Libplanet.Net) `ConsensusContext.NewHeight()` will be called immediately
+   right after `BlockChain<T>.Tip` changed.  [[#3026]]
+ - (Libplanet.Net) `BlockChain<T>.Append` will be suspended till
+   `contextMinInterval` arrives.  [[#3026]]
 
 ### Bug fixes
 

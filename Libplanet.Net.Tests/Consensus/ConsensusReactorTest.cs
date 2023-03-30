@@ -71,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus
                     key: TestUtils.PrivateKeys[i],
                     consensusPort: 6000 + i,
                     validatorPeers: validatorPeers,
-                    newHeightDelayMilliseconds: PropagationDelay * 2);
+                    contextMinIntervalMilliseconds: PropagationDelay * 2);
             }
 
             try
@@ -124,7 +124,7 @@ namespace Libplanet.Net.Tests.Consensus
                         validatorPeers[node].Address.ToString(),
                         json["node_id"].GetString());
                     Assert.Equal(1, json["height"].GetInt32());
-                    Assert.Equal(2, blockChains[node].Count);
+                    Assert.Equal(1, blockChains[node].Count);
                     Assert.Equal(0L, json["round"].GetInt32());
                     Assert.Equal("EndCommit", json["step"].GetString());
                 }

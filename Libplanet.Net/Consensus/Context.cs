@@ -104,6 +104,7 @@ namespace Libplanet.Net.Consensus
         private Block<T>? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private DateTimeOffset _startTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context{T}"/> class.

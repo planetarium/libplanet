@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -274,7 +276,27 @@ namespace Libplanet.Net.Consensus
                         block4.Index,
                         block4.Hash,
                         ToString());
-                    _blockChain.Append(block4, GetBlockCommit());
+                    Task.Run(
+                        async () =>
+                        {
+                            var contextIntervalLacked = ConsensusContext.ContextMinInterval
+                                - (DateTime.UtcNow - _startTime);
+                            if (contextIntervalLacked.Ticks > 0)
+                            {
+                                _logger.Debug(
+                                    "Waiting lacked context interval {Delay}ms for " +
+                                    "block #{Index} {Hash} (context: {Context})",
+                                    contextIntervalLacked.TotalMilliseconds,
+                                    block4.Index,
+                                    block4.Hash,
+                                    ToString());
+                                await Task.Delay(
+                                    contextIntervalLacked, _cancellationTokenSource.Token);
+                            }
+
+                            _blockChain.Append(block4, GetBlockCommit());
+                        },
+                        _cancellationTokenSource.Token);
                 }
                 catch (Exception e)
                 {

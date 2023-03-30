@@ -39,8 +39,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             ConsensusProposalMsg? proposal = null;
             var proposalMessageSent = new AsyncAutoResetEvent();
+            var contextMinInterval = TimeSpan.FromSeconds(1);
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
+                contextMinInterval,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[3]);
 
@@ -70,6 +71,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     proposalMessageSent.Set();
                 }
             };
+            AsyncAutoResetEvent heightThreeTipChangedToFour = new AsyncAutoResetEvent();
+            blockChain.TipChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.OldTip.Index == 2 && eventArgs.NewTip.Index == 3)
+                {
+                    heightThreeTipChangedToFour.Set();
+                }
+            };
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var blockCommit = TestUtils.CreateBlockCommit(block);
@@ -80,6 +89,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Wait for context of height 3 to start.
             await heightThreeStepChangedToPropose.WaitAsync();
+            var newHeightThreeTime = DateTimeOffset.UtcNow;
             Assert.Equal(3, consensusContext.Height);
 
             // Cannot call NewHeight() with invalid heights.
@@ -98,7 +108,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Waiting for commit.
             await heightThreeStepChangedToEndCommit.WaitAsync();
+            Assert.Equal(2, blockChain.Tip.Index);
+
+            // Waiting for appending
+            await heightThreeTipChangedToFour.WaitAsync();
+            var tipChangedThreeTime = DateTimeOffset.UtcNow;
             Assert.Equal(3, blockChain.Tip.Index);
+            var timeError = 500;
+            Assert.True(
+                ((tipChangedThreeTime - newHeightThreeTime) - contextMinInterval).Duration() <
+                    TimeSpan.FromMilliseconds(timeError));
 
             // Next height starts normally.
             await heightFourStepChangedToPropose.WaitAsync();
@@ -119,19 +138,17 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         }
 
         [Fact(Timeout = Timeout)]
-        public async void NewHeightWhenTipChanged()
+        public void NewHeightWhenTipChanged()
         {
-            var newHeightDelay = TimeSpan.FromSeconds(1);
+            var contextMinInterval = TimeSpan.FromSeconds(1);
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                newHeightDelay,
+                contextMinInterval,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
             Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(-1, consensusContext.Height);
-            await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
         }
 
