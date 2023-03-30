@@ -406,7 +406,9 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers = null)
+            IEnumerable<IRenderer<T>> renderers = null,
+            IBlockChainStates blockChainStates = null,
+            ActionEvaluator actionEvaluator = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)
@@ -472,8 +474,8 @@ namespace Libplanet.Blockchain
             policy.NativeTokens.Contains,
             stateStore);
 
-            var blockChainStates = new BlockChainStates(store, stateStore);
-            var actionEvaluator = new ActionEvaluator(
+            blockChainStates ??= new BlockChainStates(store, stateStore);
+            actionEvaluator ??= new ActionEvaluator(
                 _ => policy.BlockAction,
                 blockChainStates: blockChainStates,
                 trieGetter: hash => stateStore.GetStateRoot(
