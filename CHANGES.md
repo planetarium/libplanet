@@ -524,28 +524,6 @@ and the specification might change in the near future.
 [#2882]: https://github.com/planetarium/libplanet/pull/2882
 [@planetarium/account]: https://www.npmjs.com/package/@planetarium/account
 
-Version 0.50.6
---------------
-
-Released on March 22, 2023.
-
- -  Remove `SetValidator` system action.  [[#2972]]
- -  `ValidatorStateExtensions` is now public.  [[#2972]]
-
-[#2972]: https://github.com/planetarium/libplanet/pull/2972
-
-
-Version 0.50.5
---------------
-
-Released on March 17, 2023.
-
-### Bug fixes
-
--  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
-   because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
-
-[#2956]: https://github.com/planetarium/libplanet/pull/2956
 
 Version 0.50.7
 --------------
