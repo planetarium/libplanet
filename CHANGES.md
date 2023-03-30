@@ -7,9 +7,12 @@ Version 0.53.2
 To be released.
 
  -  Ported changes from [Libplanet 0.50.7] release.  [[#3022]]
+ -  `BlockChain<T>.Create()` is now get `IBlockChainState` and
+    `ActionEvaluator` as parameters.  [[#3028]]
 
 [Libplanet 0.50.7]: https://www.nuget.org/packages/Libplanet/0.50.7
 [#3022]: https://github.com/planetarium/libplanet/pull/3022
+[#3028]: https://github.com/planetarium/libplanet/pull/3028
 
 
 Version 0.53.1
