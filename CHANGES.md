@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.53.2
 --------------
 
-To be released.
+Released on March 31, 2023.
 
  -  Ported changes from [Libplanet 0.50.7] release.  [[#3022]]
  -  `BlockChain<T>.Create()` is now get `IBlockChainState` and
