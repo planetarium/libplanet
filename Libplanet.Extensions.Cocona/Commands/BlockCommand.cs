@@ -1,3 +1,10 @@
+using System.Collections.Immutable;
+using System.Linq;
+using System.Numerics;
+using Bencodex.Types;
+using Libplanet.Action.Sys;
+using Libplanet.Consensus;
+
 namespace Libplanet.Extensions.Cocona.Commands;
 
 using System;
@@ -117,7 +124,14 @@ public class BlockCommand
             blockAction: blockPolicyParams.GetBlockAction(),
             nativeTokenPredicate: blockPolicyParams is { } p && p.GetNativeTokens() is { } tokens
                 ? tokens.Contains
-                : null
+                : null,
+            systemActions: ImmutableArray<IAction>.Empty
+                .Add(
+                    new Initialize(
+                        new ValidatorSet(
+                            ImmutableList<Validator>.Empty
+                                .Add(new Validator(key.PublicKey, BigInteger.One))
+                                .ToList()), ImmutableDictionary<Address, IValue>.Empty))
         );
         using Stream stream = file == "-"
             ? Console.OpenStandardOutput()
