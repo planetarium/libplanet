@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Libplanet.Blocks;
 
 namespace Libplanet.Tx
@@ -88,6 +89,7 @@ namespace Libplanet.Tx
         public DateTimeOffset Timestamp { get; }
 
         /// <inheritdoc cref="ITxInvoice.Actions" />
+        [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions { get; }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>

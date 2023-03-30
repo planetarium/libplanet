@@ -9,9 +9,10 @@ using Bencodex.Types;
 
 namespace Libplanet.Action
 {
-    internal class ActionListJsonConverter : JsonConverter<object>
+    internal sealed class ActionListJsonConverter : JsonConverter<object>
     {
-        private BencodexJsonConverter _bencodexJsonConverter = new BencodexJsonConverter();
+        private static readonly BencodexJsonConverter BencodexJsonConverter =
+            new BencodexJsonConverter();
 
         public override bool CanConvert(Type typeToConvert) =>
             typeToConvert.GetInterfaces().Any(i =>
@@ -56,7 +57,7 @@ namespace Libplanet.Action
                     break;
                 }
 
-                IValue actionValue = _bencodexJsonConverter.Read(ref reader, actionType, options)
+                IValue actionValue = BencodexJsonConverter.Read(ref reader, actionType, options)
                     ?? throw new JsonException("Failed to deserialize an action.");
                 var action = (IAction)Activator.CreateInstance(actionType)!;
                 action.LoadPlainValue(actionValue);
@@ -80,7 +81,7 @@ namespace Libplanet.Action
             writer.WriteStartArray();
             foreach (IAction action in actions)
             {
-                _bencodexJsonConverter.Write(writer, action.PlainValue, options);
+                BencodexJsonConverter.Write(writer, action.PlainValue, options);
             }
 
             writer.WriteEndArray();

@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -73,6 +74,7 @@ namespace Libplanet.Tx
         public BlockHash? GenesisHash => _invoice.GenesisHash;
 
         /// <inheritdoc cref="ITxInvoice.Actions" />
+        [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions => _invoice.Actions;
 
         /// <inheritdoc cref="ITxSigningMetadata.Nonce" />

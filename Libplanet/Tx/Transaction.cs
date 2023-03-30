@@ -154,7 +154,7 @@ namespace Libplanet.Tx
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
         /// This can be empty, but cannot be <see langword="null"/>.
         /// </summary>
-        [JsonIgnore]
+        [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions => _unsignedTx.Actions;
 
         /// <summary>
@@ -163,8 +163,7 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="CustomActions"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonConverter(typeof(SysActionJsonConverter))]
+        [JsonIgnore]
         public IAction? SystemAction => Actions is TxSystemActionList sysActions
             ? sysActions.SystemAction
             : null;  // TODO: Remove this property.
@@ -176,8 +175,7 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="SystemAction"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonConverter(typeof(ActionListJsonConverter))]
+        [JsonIgnore]
         public IImmutableList<T>? CustomActions => Actions is TxCustomActionList actions
             ? actions.CustomActions.OfType<T>().ToImmutableList()
             : null;  // TODO: Remove this property.

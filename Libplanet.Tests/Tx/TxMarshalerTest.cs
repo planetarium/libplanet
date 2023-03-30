@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -154,6 +155,24 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void UnmarshalTransactionSignature()
+        {
+            AssertBytesEqual(
+                ImmutableArray.Create(new byte[]
+                {
+                    0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
+                    0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
+                    0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
+                    0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
+                    0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
+                    0x7d, 0x37, 0x67, 0xe1, 0xe9,
+                }),
+                TxMarshaler.UnmarshalTransactionSignature(_marshaledTransaction));
+
+            Assert.Null(TxMarshaler.UnmarshalTransactionSignature(_marshaledUnsignedTx));
+        }
+
+        [Fact]
         public void UnmarshalTransaction()
         {
             PublicKey publicKey = new PrivateKey(
@@ -195,6 +214,9 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
+
+            Assert.Throws<DecodingException>(() =>
+                TxMarshaler.UnmarshalTransaction<DumbAction>(_marshaledUnsignedTx));
         }
 
         [Fact]
@@ -267,6 +289,9 @@ namespace Libplanet.Tests.Tx
                     .Add("zone_id", 10),
                 tx.CustomActions[1].InnerAction.PlainValue
             );
+            Assert.Throws<DecodingException>(() =>
+                TxMarshaler.UnmarshalTransaction<DumbAction>(
+                    _marshaledUnsignedTxWithCustomActions));
         }
     }
 }

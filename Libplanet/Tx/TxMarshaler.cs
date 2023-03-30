@@ -105,7 +105,7 @@ namespace Libplanet.Tx
             );
 
         [Pure]
-        public static IUnsignedTx UnmarshalUnsignedTx<T>(Bencodex.Types.Dictionary dictionary)
+        public static UnsignedTx UnmarshalUnsignedTx<T>(Bencodex.Types.Dictionary dictionary)
             where T : IAction, new()
         =>
             new UnsignedTx(
@@ -114,14 +114,24 @@ namespace Libplanet.Tx
             );
 
         [Pure]
+        public static ImmutableArray<byte>? UnmarshalTransactionSignature(
+            Bencodex.Types.Dictionary dictionary
+        ) =>
+            dictionary.TryGetValue(SignatureKey, out IValue v)
+                ? (Binary)v
+                : (ImmutableArray<byte>?)null;
+
+        [Pure]
         public static Transaction<T> UnmarshalTransaction<T>(Bencodex.Types.Dictionary dictionary)
             where T : IAction, new()
         {
-            ImmutableArray<byte> sig
-                = dictionary.TryGetValue(SignatureKey, out IValue s) && s is Binary bin
-                ? bin
-                : new Binary(new byte[0]);
-            return new Transaction<T>(UnmarshalUnsignedTx<T>(dictionary), sig);
+            ImmutableArray<byte>? sig = UnmarshalTransactionSignature(dictionary);
+            if (!(sig is { } signature))
+            {
+                throw new DecodingException("Transaction signature is missing.");
+            }
+
+            return new Transaction<T>(UnmarshalUnsignedTx<T>(dictionary), signature);
         }
 
         [Pure]
@@ -159,7 +169,7 @@ namespace Libplanet.Tx
                 ? bin
                 : new Binary(new byte[0]);
             return new Transaction<T>(
-                (UnsignedTx)UnmarshalUnsignedTx<T>(dictionary),
+                UnmarshalUnsignedTx<T>(dictionary),
                 alreadyVerifiedSignature: sig);
         }
 

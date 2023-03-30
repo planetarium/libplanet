@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using Bencodex;
+using Bencodex.Types;
 using global::Cocona;
 using global::Cocona.Help;
 using Libplanet.Action;
@@ -12,6 +14,8 @@ using Libplanet.Tx;
 
 public class TxCommand
 {
+    private static readonly Codec Codec = new Codec();
+
     [Command(Description = "Analyze the given signed or unsigned transaction.")]
     public int Analyze(
         [Argument(
@@ -45,37 +49,53 @@ public class TxCommand
             );
         }
 
-        byte[] bytes;
-        string sourceName;
-        if (file == "-")
-        {
-            sourceName = "stdin";
-            using var stdin = Console.OpenStandardInput();
-            using var buffer = new MemoryStream();
-            stdin.CopyTo(buffer);
-            bytes = buffer.GetBuffer();
-            Array.Resize(ref bytes, (int)buffer.Length);
-        }
-        else
-        {
-            sourceName = $"file {file}";
-            try
-            {
-                bytes = File.ReadAllBytes(file);
-            }
-            catch (Exception)
-            {
-                throw new CommandExitedException(
-                    $"Failed to read the file {file}; it may not exist nor be readable.",
-                    -1
-                );
-            }
-        }
-
-        Transaction<NullAction> tx;
+        IValue rawTx;
+        string sourceName = string.Empty;
         try
         {
-            tx = TxMarshaler.DeserializeTransactionWithoutVerification<NullAction>(bytes);
+            if (file == "-")
+            {
+                sourceName = "stdin";
+                using var stdin = Console.OpenStandardInput();
+                rawTx = Codec.Decode(stdin);
+            }
+            else
+            {
+                sourceName = $"file {file}";
+                try
+                {
+                    using FileStream fileStream = File.OpenRead(file);
+                    rawTx = Codec.Decode(fileStream);
+                }
+                catch (IOException)
+                {
+                    throw new CommandExitedException(
+                        $"Failed to read the file {file}; it may not exist nor be readable.",
+                        -1
+                    );
+                }
+            }
+        }
+        catch (DecodingException e)
+        {
+            throw new CommandExitedException(
+                $"Failed to decode the {sourceName} as a Bencodex tree: {e}",
+                -1
+            );
+        }
+
+        if (rawTx is not Bencodex.Types.Dictionary txDict)
+        {
+            throw new CommandExitedException(
+                $"The {sourceName} is not a Bencodex dictionary.",
+                -1
+            );
+        }
+
+        UnsignedTx unsignedTx;
+        try
+        {
+            unsignedTx = TxMarshaler.UnmarshalUnsignedTx<NullAction>(txDict);
         }
         catch (Exception e)
         {
@@ -85,15 +105,8 @@ public class TxCommand
             );
         }
 
-        if (!unsigned && !tx.Signature.Any())
-        {
-            throw new CommandExitedException(
-                "The transaction is unsigned.  If you want to analyze it anyway, " +
-                    "use the -u/--unsigned option.",
-                -1
-            );
-        }
-        else if (unsigned && tx.Signature.Any())
+        ImmutableArray<byte>? signature = TxMarshaler.UnmarshalTransactionSignature(txDict);
+        if (unsigned && signature is not null)
         {
             throw new CommandExitedException(
                 "The transaction is signed, but the -u/--unsigned option is given.",
@@ -102,12 +115,21 @@ public class TxCommand
         }
 
         bool invalid = false;
+        Transaction<NullAction>? tx = null;
         if (!unsigned)
         {
+            if (signature is not { } sig)
+            {
+                throw new CommandExitedException(
+                    "The transaction is unsigned.  If you want to analyze it anyway, " +
+                        "use the -u/--unsigned option.",
+                    -1
+                );
+            }
+
             try
             {
-                // TODO: refactor
-                var txToVerify = new Transaction<NullAction>(tx, tx.Signature.ToImmutableArray());
+                tx = new Transaction<NullAction>(unsignedTx, sig);
             }
             catch (Exception e)
             {
@@ -143,7 +165,20 @@ public class TxCommand
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             IgnoreReadOnlyProperties = false,
         };
-        JsonSerializer.Serialize(writer, tx, serializerOptions);
+
+        // Note that JsonSerializer.Serialize() is a generic method, so it depends on
+        // compile-time types.  In other words, we cannot replace the below with a single line
+        // with a ternary operator, as it lets the compiler infer the type parameter of
+        // JsonSerializer.Serialize() to be IUnsignedTx even when the tx is not null:
+        if (tx is { } txObj)
+        {
+            JsonSerializer.Serialize(writer, txObj, serializerOptions);
+        }
+        else
+        {
+            JsonSerializer.Serialize(writer, unsignedTx, serializerOptions);
+        }
+
         writer.Flush();
         Console.WriteLine();
         return invalid ? -1 : 0;

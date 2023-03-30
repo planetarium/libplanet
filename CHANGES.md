@@ -61,6 +61,39 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Transaction<T>` no more supports deserialization from JSON when it contains
+    custom actions.  However, it still can be deserialized from JSON when it
+    contains a system action.  [[#2986]]
+
+ -  The JSON representation of `Transaction<T>` now includes the `"actions"`
+    field, which includes a system action or a list of custom actions and
+    a `"type"` field denoting one of `"system"` or `"custom"`.
+
+    For example:
+
+    ~~~~ json
+    {
+       // ... other fields
+       "actions": {
+         "type": "system",
+         "systemAction": {
+           // system action details
+         }
+       }
+    }
+    ~~~~
+
+    Instead of:
+
+    ~~~~ json
+    {
+       // ... other fields
+      "systemAction": {
+         // system action details
+      }
+    }
+    ~~~~
+
 ### Bug fixes
 
 ### CLI tools
