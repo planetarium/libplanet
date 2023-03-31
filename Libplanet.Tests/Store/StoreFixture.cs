@@ -106,12 +106,13 @@ namespace Libplanet.Tests.Store
             var preEval = TestUtils.ProposeGenesis<DumbAction>(
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
-            var evals = BlockChain<DumbAction>.EvaluateGenesis(
-                preEval,
-                blockAction,
-                nativeTokens is null ? _ => true : (Predicate<Currency>)nativeTokens.Contains);
-            var stateRootHash = BlockChain<DumbAction>.DetermineGenesisStateRootHash(evals);
-            GenesisBlock = preEval.Sign(Proposer, stateRootHash);
+            GenesisBlock = preEval.Sign(
+                Proposer,
+                BlockChain<DumbAction>.DetermineGenesisStateRootHash(
+                    preEval,
+                    blockAction,
+                    nativeTokens is null ? _ => true : (Predicate<Currency>)nativeTokens.Contains,
+                    out IReadOnlyList<ActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;

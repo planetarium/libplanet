@@ -430,8 +430,11 @@ namespace Libplanet.Blockchain
             // to check the state root hash validity
             var preEval = new PreEvaluationBlock<T>(
                 genesisBlock.Header, genesisBlock.Transactions);
-            var evals = EvaluateGenesis(preEval, policy.BlockAction, policy.NativeTokens.Contains);
-            var computedStateRootHash = DetermineGenesisStateRootHash(evals);
+            var computedStateRootHash = DetermineGenesisStateRootHash(
+                preEval,
+                policy.BlockAction,
+                policy.NativeTokens.Contains,
+                out IReadOnlyList<ActionEvaluation> evals);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
@@ -560,7 +563,10 @@ namespace Libplanet.Blockchain
             PreEvaluationBlock<T> preEval = content.Propose();
             IReadOnlyList<ActionEvaluation> evals = EvaluateGenesis(
                 preEval, blockAction, nativeTokenPredicate);
-            return preEval.Sign(privateKey, DetermineGenesisStateRootHash(evals));
+            return preEval.Sign(
+                privateKey,
+                DetermineGenesisStateRootHash(
+                    preEval, blockAction, nativeTokenPredicate, out _));
         }
 
         /// <summary>
@@ -1232,8 +1238,10 @@ namespace Libplanet.Blockchain
                             "Executing actions in block #{BlockIndex} {BlockHash}...",
                             block.Index,
                             block.Hash);
-                        actionEvaluations = ExecuteActions(block);
-                        CommitEvaluations(block, actionEvaluations);
+                        ValidateBlockStateRootHash(block, out actionEvaluations);
+                        IEnumerable<TxExecution> txExecutions =
+                            MakeTxExecutions(block, actionEvaluations);
+                        UpdateTxExecutions(txExecutions);
 
                         _logger.Information(
                             "Executed actions in block #{BlockIndex} {BlockHash}",
@@ -1518,11 +1526,9 @@ namespace Libplanet.Blockchain
             }
         }
 
-#pragma warning disable SA1202
         internal InvalidBlockCommitException ValidateBlockCommit(
             Block<T> block,
             BlockCommit blockCommit)
-#pragma warning restore SA1202
         {
             if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
             {
@@ -1714,6 +1720,41 @@ namespace Libplanet.Blockchain
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Validates a result obtained from <see cref="EvaluateBlock"/> by
+        /// comparing the state root hash calculated using <see cref="DetermineBlockStateRootHash"/>
+        /// to the one in <paramref name="block"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="Block{T}"/> to validate against.</param>
+        /// <param name="evaluations">The list of <see cref="ActionEvaluation"/>s
+        /// from which to extract the states to commit.</param>
+        /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
+        /// calculated by commiting to the <see cref="IStateStore"/> does not match
+        /// the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/>.</exception>
+        /// <remarks>
+        /// Since the state root hash for can only be calculated from making a commit
+        /// to an <see cref="IStateStore"/>, this always has a side-effect to the
+        /// <see cref="IStateStore"/> regardless of whether the state root hash
+        /// obdatined through commiting to the <see cref="IStateStore"/>
+        /// matches the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/> or not.
+        /// </remarks>
+        /// <seealso cref="EvaluateBlock"/>
+        /// <seealso cref="DetermineBlockStateRootHash"/>
+        internal void ValidateBlockStateRootHash(
+            Block<T> block, out IReadOnlyList<ActionEvaluation> evaluations)
+        {
+            var rootHash = DetermineBlockStateRootHash(block, out evaluations);
+            if (!rootHash.Equals(block.StateRootHash))
+            {
+                var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
+                    $"is {block.StateRootHash}, but the execution result is {rootHash}.";
+                throw new InvalidBlockStateRootHashException(
+                    message,
+                    block.StateRootHash,
+                    rootHash);
+            }
         }
 
         /// <summary>

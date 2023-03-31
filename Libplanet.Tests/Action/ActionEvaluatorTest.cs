@@ -82,12 +82,13 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent<RandomAction>.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
-            var evals = BlockChain<RandomAction>.EvaluateGenesis(
-                noStateRootBlock,
-                null,
-                _ => true);
             Block<RandomAction> stateRootBlock = noStateRootBlock.Sign(
-                GenesisProposer, BlockChain<RandomAction>.DetermineGenesisStateRootHash(evals));
+                GenesisProposer,
+                BlockChain<RandomAction>.DetermineGenesisStateRootHash(
+                    noStateRootBlock,
+                    null,
+                    _ => true,
+                    out IReadOnlyList<ActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             var actionEvaluator =

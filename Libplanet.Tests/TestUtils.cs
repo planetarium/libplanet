@@ -512,12 +512,13 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Predicate<Currency> nativeTokenPredicate = null)
                 where T : IAction, new()
         {
-            var evals = BlockChain<T>.EvaluateGenesis(
-                preEval,
-                blockAction,
-                nativeTokenPredicate ?? (Predicate<Currency>)(_ => true));
-            var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(evals);
-            return preEval.Sign(privateKey, stateRootHash);
+            return preEval.Sign(
+                privateKey,
+                BlockChain<T>.DetermineGenesisStateRootHash(
+                    preEval,
+                    blockAction,
+                    nativeTokenPredicate ?? (Predicate<Currency>)(_ => true),
+                    out _));
         }
 
         public static PreEvaluationBlock<T> ProposeNext<T>(
@@ -633,11 +634,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     validatorSet,
                     timestamp,
                     protocolVersion);
-                var evals = BlockChain<T>.EvaluateGenesis(
+                var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(
                     preEval,
                     policy.BlockAction,
-                    policy.NativeTokens.Contains);
-                var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(evals);
+                    policy.NativeTokens.Contains,
+                    out _);
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
                         preEval,
