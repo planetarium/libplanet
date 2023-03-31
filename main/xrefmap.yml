@@ -29963,19 +29963,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.CustomActions
   nameWithType: ITransaction.CustomActions
-- uid: Libplanet.Tx.ITransaction.GenesisHash
-  name: GenesisHash
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_GenesisHash
-  commentId: P:Libplanet.Tx.ITransaction.GenesisHash
-  fullName: Libplanet.Tx.ITransaction.GenesisHash
-  nameWithType: ITransaction.GenesisHash
-- uid: Libplanet.Tx.ITransaction.GenesisHash*
-  name: GenesisHash
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_GenesisHash_
-  commentId: Overload:Libplanet.Tx.ITransaction.GenesisHash
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.GenesisHash
-  nameWithType: ITransaction.GenesisHash
 - uid: Libplanet.Tx.ITransaction.Id
   name: Id
   href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Id
@@ -29989,32 +29976,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.Id
   nameWithType: ITransaction.Id
-- uid: Libplanet.Tx.ITransaction.Nonce
-  name: Nonce
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Nonce
-  commentId: P:Libplanet.Tx.ITransaction.Nonce
-  fullName: Libplanet.Tx.ITransaction.Nonce
-  nameWithType: ITransaction.Nonce
-- uid: Libplanet.Tx.ITransaction.Nonce*
-  name: Nonce
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Nonce_
-  commentId: Overload:Libplanet.Tx.ITransaction.Nonce
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.Nonce
-  nameWithType: ITransaction.Nonce
-- uid: Libplanet.Tx.ITransaction.PublicKey
-  name: PublicKey
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey
-  commentId: P:Libplanet.Tx.ITransaction.PublicKey
-  fullName: Libplanet.Tx.ITransaction.PublicKey
-  nameWithType: ITransaction.PublicKey
-- uid: Libplanet.Tx.ITransaction.PublicKey*
-  name: PublicKey
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_PublicKey_
-  commentId: Overload:Libplanet.Tx.ITransaction.PublicKey
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.PublicKey
-  nameWithType: ITransaction.PublicKey
 - uid: Libplanet.Tx.ITransaction.Signature
   name: Signature
   href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signature
@@ -30028,19 +29989,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.Signature
   nameWithType: ITransaction.Signature
-- uid: Libplanet.Tx.ITransaction.Signer
-  name: Signer
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer
-  commentId: P:Libplanet.Tx.ITransaction.Signer
-  fullName: Libplanet.Tx.ITransaction.Signer
-  nameWithType: ITransaction.Signer
-- uid: Libplanet.Tx.ITransaction.Signer*
-  name: Signer
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signer_
-  commentId: Overload:Libplanet.Tx.ITransaction.Signer
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.Signer
-  nameWithType: ITransaction.Signer
 - uid: Libplanet.Tx.ITransaction.SystemAction
   name: SystemAction
   href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction
@@ -30054,32 +30002,115 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.SystemAction
   nameWithType: ITransaction.SystemAction
-- uid: Libplanet.Tx.ITransaction.Timestamp
-  name: Timestamp
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Timestamp
-  commentId: P:Libplanet.Tx.ITransaction.Timestamp
-  fullName: Libplanet.Tx.ITransaction.Timestamp
-  nameWithType: ITransaction.Timestamp
-- uid: Libplanet.Tx.ITransaction.Timestamp*
-  name: Timestamp
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Timestamp_
-  commentId: Overload:Libplanet.Tx.ITransaction.Timestamp
+- uid: Libplanet.Tx.ITxInvoice
+  name: ITxInvoice
+  href: api/Libplanet.Tx.ITxInvoice.html
+  commentId: T:Libplanet.Tx.ITxInvoice
+  fullName: Libplanet.Tx.ITxInvoice
+  nameWithType: ITxInvoice
+- uid: Libplanet.Tx.ITxInvoice.Actions
+  name: Actions
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_Actions
+  commentId: P:Libplanet.Tx.ITxInvoice.Actions
+  fullName: Libplanet.Tx.ITxInvoice.Actions
+  nameWithType: ITxInvoice.Actions
+- uid: Libplanet.Tx.ITxInvoice.Actions*
+  name: Actions
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_Actions_
+  commentId: Overload:Libplanet.Tx.ITxInvoice.Actions
   isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.Timestamp
-  nameWithType: ITransaction.Timestamp
-- uid: Libplanet.Tx.ITransaction.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_UpdatedAddresses
-  commentId: P:Libplanet.Tx.ITransaction.UpdatedAddresses
-  fullName: Libplanet.Tx.ITransaction.UpdatedAddresses
-  nameWithType: ITransaction.UpdatedAddresses
-- uid: Libplanet.Tx.ITransaction.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_UpdatedAddresses_
-  commentId: Overload:Libplanet.Tx.ITransaction.UpdatedAddresses
+  fullName: Libplanet.Tx.ITxInvoice.Actions
+  nameWithType: ITxInvoice.Actions
+- uid: Libplanet.Tx.ITxInvoice.GenesisHash
+  name: GenesisHash
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_GenesisHash
+  commentId: P:Libplanet.Tx.ITxInvoice.GenesisHash
+  fullName: Libplanet.Tx.ITxInvoice.GenesisHash
+  nameWithType: ITxInvoice.GenesisHash
+- uid: Libplanet.Tx.ITxInvoice.GenesisHash*
+  name: GenesisHash
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_GenesisHash_
+  commentId: Overload:Libplanet.Tx.ITxInvoice.GenesisHash
   isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.UpdatedAddresses
-  nameWithType: ITransaction.UpdatedAddresses
+  fullName: Libplanet.Tx.ITxInvoice.GenesisHash
+  nameWithType: ITxInvoice.GenesisHash
+- uid: Libplanet.Tx.ITxInvoice.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_Timestamp
+  commentId: P:Libplanet.Tx.ITxInvoice.Timestamp
+  fullName: Libplanet.Tx.ITxInvoice.Timestamp
+  nameWithType: ITxInvoice.Timestamp
+- uid: Libplanet.Tx.ITxInvoice.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_Timestamp_
+  commentId: Overload:Libplanet.Tx.ITxInvoice.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxInvoice.Timestamp
+  nameWithType: ITxInvoice.Timestamp
+- uid: Libplanet.Tx.ITxInvoice.UpdatedAddresses
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_UpdatedAddresses
+  commentId: P:Libplanet.Tx.ITxInvoice.UpdatedAddresses
+  fullName: Libplanet.Tx.ITxInvoice.UpdatedAddresses
+  nameWithType: ITxInvoice.UpdatedAddresses
+- uid: Libplanet.Tx.ITxInvoice.UpdatedAddresses*
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_UpdatedAddresses_
+  commentId: Overload:Libplanet.Tx.ITxInvoice.UpdatedAddresses
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxInvoice.UpdatedAddresses
+  nameWithType: ITxInvoice.UpdatedAddresses
+- uid: Libplanet.Tx.ITxSigningMetadata
+  name: ITxSigningMetadata
+  href: api/Libplanet.Tx.ITxSigningMetadata.html
+  commentId: T:Libplanet.Tx.ITxSigningMetadata
+  fullName: Libplanet.Tx.ITxSigningMetadata
+  nameWithType: ITxSigningMetadata
+- uid: Libplanet.Tx.ITxSigningMetadata.Nonce
+  name: Nonce
+  href: api/Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx_ITxSigningMetadata_Nonce
+  commentId: P:Libplanet.Tx.ITxSigningMetadata.Nonce
+  fullName: Libplanet.Tx.ITxSigningMetadata.Nonce
+  nameWithType: ITxSigningMetadata.Nonce
+- uid: Libplanet.Tx.ITxSigningMetadata.Nonce*
+  name: Nonce
+  href: api/Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx_ITxSigningMetadata_Nonce_
+  commentId: Overload:Libplanet.Tx.ITxSigningMetadata.Nonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxSigningMetadata.Nonce
+  nameWithType: ITxSigningMetadata.Nonce
+- uid: Libplanet.Tx.ITxSigningMetadata.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx_ITxSigningMetadata_PublicKey
+  commentId: P:Libplanet.Tx.ITxSigningMetadata.PublicKey
+  fullName: Libplanet.Tx.ITxSigningMetadata.PublicKey
+  nameWithType: ITxSigningMetadata.PublicKey
+- uid: Libplanet.Tx.ITxSigningMetadata.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx_ITxSigningMetadata_PublicKey_
+  commentId: Overload:Libplanet.Tx.ITxSigningMetadata.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxSigningMetadata.PublicKey
+  nameWithType: ITxSigningMetadata.PublicKey
+- uid: Libplanet.Tx.ITxSigningMetadata.Signer
+  name: Signer
+  href: api/Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx_ITxSigningMetadata_Signer
+  commentId: P:Libplanet.Tx.ITxSigningMetadata.Signer
+  fullName: Libplanet.Tx.ITxSigningMetadata.Signer
+  nameWithType: ITxSigningMetadata.Signer
+- uid: Libplanet.Tx.ITxSigningMetadata.Signer*
+  name: Signer
+  href: api/Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx_ITxSigningMetadata_Signer_
+  commentId: Overload:Libplanet.Tx.ITxSigningMetadata.Signer
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxSigningMetadata.Signer
+  nameWithType: ITxSigningMetadata.Signer
+- uid: Libplanet.Tx.IUnsignedTx
+  name: IUnsignedTx
+  href: api/Libplanet.Tx.IUnsignedTx.html
+  commentId: T:Libplanet.Tx.IUnsignedTx
+  fullName: Libplanet.Tx.IUnsignedTx
+  nameWithType: IUnsignedTx
 - uid: Libplanet.Tx.Transaction`1
   name: Transaction<T>
   href: api/Libplanet.Tx.Transaction-1.html
@@ -30089,41 +30120,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T)
   nameWithType: Transaction<T>
   nameWithType.vb: Transaction(Of T)
-- uid: Libplanet.Tx.Transaction`1.#ctor(Bencodex.Types.Dictionary)
-  name: Transaction(Dictionary)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Bencodex.Types.Dictionary)
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Bencodex.Types.Dictionary)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
-  nameWithType: Transaction<T>.Transaction(Dictionary)
-  nameWithType.vb: Transaction(Of T).Transaction(Dictionary)
-- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,Libplanet.Action.IAction,System.Byte[])
-  name: Transaction(TxMetadata, IAction, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_Libplanet_Action_IAction_System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,Libplanet.Action.IAction,System.Byte[])
-  name.vb: Transaction(TxMetadata, IAction, Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.TxMetadata, Libplanet.Action.IAction, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.TxMetadata, Libplanet.Action.IAction, System.Byte())
-  nameWithType: Transaction<T>.Transaction(TxMetadata, IAction, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(TxMetadata, IAction, Byte())
-- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name: Transaction(TxMetadata, IEnumerable<T>, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_TxMetadata_System_Collections_Generic_IEnumerable__0__System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.TxMetadata,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name.vb: Transaction(TxMetadata, IEnumerable(Of T), Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.TxMetadata, System.Collections.Generic.IEnumerable<T>, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.TxMetadata, System.Collections.Generic.IEnumerable(Of T), System.Byte())
-  nameWithType: Transaction<T>.Transaction(TxMetadata, IEnumerable<T>, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(TxMetadata, IEnumerable(Of T), Byte())
-- uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name: Transaction(Int64, Address, PublicKey, Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_DateTimeOffset_System_Collections_Generic_IEnumerable__0__System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,System.Collections.Generic.IEnumerable{`0},System.Byte[])
-  name.vb: Transaction(Int64, Address, PublicKey, Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.DateTimeOffset, System.Collections.Generic.IEnumerable<T>, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.DateTimeOffset, System.Collections.Generic.IEnumerable(Of T), System.Byte())
-  nameWithType: Transaction<T>.Transaction(Int64, Address, PublicKey, Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(Int64, Address, PublicKey, Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)
+  name: Transaction(IUnsignedTx, PrivateKey)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.IUnsignedTx, Libplanet.Crypto.PrivateKey)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.IUnsignedTx, Libplanet.Crypto.PrivateKey)
+  nameWithType: Transaction<T>.Transaction(IUnsignedTx, PrivateKey)
+  nameWithType.vb: Transaction(Of T).Transaction(IUnsignedTx, PrivateKey)
+- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})
+  name: Transaction(IUnsignedTx, ImmutableArray<Byte>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})
+  name.vb: Transaction(IUnsignedTx, ImmutableArray(Of Byte))
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.IUnsignedTx, System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.IUnsignedTx, System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: Transaction<T>.Transaction(IUnsignedTx, ImmutableArray<Byte>)
+  nameWithType.vb: Transaction(Of T).Transaction(IUnsignedTx, ImmutableArray(Of Byte))
 - uid: Libplanet.Tx.Transaction`1.#ctor*
   name: Transaction
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_
@@ -30177,33 +30190,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Create
   nameWithType: Transaction<T>.Create
   nameWithType.vb: Transaction(Of T).Create
-- uid: Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_System_Int64_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Action_IAction_System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Action.IAction, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Action.IAction, System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction<T>.CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-- uid: Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_System_Int64_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable__0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction<T>.CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-- uid: Libplanet.Tx.Transaction`1.CreateUnsigned*
-  name: CreateUnsigned
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_
-  commentId: Overload:Libplanet.Tx.Transaction`1.CreateUnsigned
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned
-  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned
-  nameWithType: Transaction<T>.CreateUnsigned
-  nameWithType.vb: Transaction(Of T).CreateUnsigned
 - uid: Libplanet.Tx.Transaction`1.CustomActions
   name: CustomActions
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions
@@ -30221,15 +30207,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).CustomActions
   nameWithType: Transaction<T>.CustomActions
   nameWithType.vb: Transaction(Of T).CustomActions
-- uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[],System.Boolean)
-  name: Deserialize(Byte[], Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.Deserialize(System.Byte[],System.Boolean)
-  name.vb: Deserialize(Byte(), Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.Deserialize(System.Byte[], System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Deserialize(System.Byte(), System.Boolean)
-  nameWithType: Transaction<T>.Deserialize(Byte[], Boolean)
-  nameWithType.vb: Transaction(Of T).Deserialize(Byte(), Boolean)
+- uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
+  name: Deserialize(Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
+  name.vb: Deserialize(Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Deserialize(System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Deserialize(System.Byte())
+  nameWithType: Transaction<T>.Deserialize(Byte[])
+  nameWithType.vb: Transaction(Of T).Deserialize(Byte())
 - uid: Libplanet.Tx.Transaction`1.Deserialize*
   name: Deserialize
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_
@@ -30388,14 +30374,14 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).PublicKey
   nameWithType: Transaction<T>.PublicKey
   nameWithType.vb: Transaction(Of T).PublicKey
-- uid: Libplanet.Tx.Transaction`1.Serialize(System.Boolean)
-  name: Serialize(Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Serialize_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.Serialize(System.Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.Serialize(System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Serialize(System.Boolean)
-  nameWithType: Transaction<T>.Serialize(Boolean)
-  nameWithType.vb: Transaction(Of T).Serialize(Boolean)
+- uid: Libplanet.Tx.Transaction`1.Serialize
+  name: Serialize()
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Serialize
+  commentId: M:Libplanet.Tx.Transaction`1.Serialize
+  fullName: Libplanet.Tx.Transaction<T>.Serialize()
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Serialize()
+  nameWithType: Transaction<T>.Serialize()
+  nameWithType.vb: Transaction(Of T).Serialize()
 - uid: Libplanet.Tx.Transaction`1.Serialize*
   name: Serialize
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Serialize_
@@ -30439,6 +30425,63 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Signer
   nameWithType: Transaction<T>.Signer
   nameWithType.vb: Transaction(Of T).Signer
+- uid: Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
+  name: IEquatable<ITxInvoice>.Equals(ITxInvoice)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_
+  commentId: M:Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
+  name.vb: System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(ITxInvoice)
+  fullName: Libplanet.Tx.Transaction<T>.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(Libplanet.Tx.ITxInvoice)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(Libplanet.Tx.ITxInvoice)
+  nameWithType: Transaction<T>.IEquatable<ITxInvoice>.Equals(ITxInvoice)
+  nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(ITxInvoice)
+- uid: Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals*
+  name: IEquatable<ITxInvoice>.Equals
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_
+  commentId: Overload:Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  fullName: Libplanet.Tx.Transaction<T>.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  nameWithType: Transaction<T>.IEquatable<ITxInvoice>.Equals
+  nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+- uid: Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)
+  name: IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)
+  name.vb: System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  fullName: Libplanet.Tx.Transaction<T>.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(Libplanet.Tx.ITxSigningMetadata)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: Transaction<T>.IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(ITxSigningMetadata)
+- uid: Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals*
+  name: IEquatable<ITxSigningMetadata>.Equals
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_
+  commentId: Overload:Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  fullName: Libplanet.Tx.Transaction<T>.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  nameWithType: Transaction<T>.IEquatable<ITxSigningMetadata>.Equals
+  nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+- uid: Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals(Libplanet.Tx.IUnsignedTx)
+  name: IEquatable<IUnsignedTx>.Equals(IUnsignedTx)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_Libplanet_Tx_IUnsignedTx_
+  commentId: M:Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals(Libplanet.Tx.IUnsignedTx)
+  name.vb: System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(IUnsignedTx)
+  fullName: Libplanet.Tx.Transaction<T>.System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(Libplanet.Tx.IUnsignedTx)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(Libplanet.Tx.IUnsignedTx)
+  nameWithType: Transaction<T>.IEquatable<IUnsignedTx>.Equals(IUnsignedTx)
+  nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(IUnsignedTx)
+- uid: Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals*
+  name: IEquatable<IUnsignedTx>.Equals
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_
+  commentId: Overload:Libplanet.Tx.Transaction`1.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
+  fullName: Libplanet.Tx.Transaction<T>.System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
+  fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
+  nameWithType: Transaction<T>.IEquatable<IUnsignedTx>.Equals
+  nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
 - uid: Libplanet.Tx.Transaction`1.SystemAction
   name: SystemAction
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction
@@ -30473,23 +30516,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Timestamp
   nameWithType: Transaction<T>.Timestamp
   nameWithType.vb: Transaction(Of T).Timestamp
-- uid: Libplanet.Tx.Transaction`1.ToBencodex(System.Boolean)
-  name: ToBencodex(Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToBencodex_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.ToBencodex(System.Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.ToBencodex(System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).ToBencodex(System.Boolean)
-  nameWithType: Transaction<T>.ToBencodex(Boolean)
-  nameWithType.vb: Transaction(Of T).ToBencodex(Boolean)
-- uid: Libplanet.Tx.Transaction`1.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToBencodex_
-  commentId: Overload:Libplanet.Tx.Transaction`1.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.ToBencodex
-  fullName.vb: Libplanet.Tx.Transaction(Of T).ToBencodex
-  nameWithType: Transaction<T>.ToBencodex
-  nameWithType.vb: Transaction(Of T).ToBencodex
 - uid: Libplanet.Tx.Transaction`1.UpdatedAddresses
   name: UpdatedAddresses
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_UpdatedAddresses
@@ -30507,29 +30533,50 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).UpdatedAddresses
   nameWithType: Transaction<T>.UpdatedAddresses
   nameWithType.vb: Transaction(Of T).UpdatedAddresses
-- uid: Libplanet.Tx.Transaction`1.Validate
-  name: Validate()
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Validate
-  commentId: M:Libplanet.Tx.Transaction`1.Validate
-  fullName: Libplanet.Tx.Transaction<T>.Validate()
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Validate()
-  nameWithType: Transaction<T>.Validate()
-  nameWithType.vb: Transaction(Of T).Validate()
-- uid: Libplanet.Tx.Transaction`1.Validate*
-  name: Validate
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Validate_
-  commentId: Overload:Libplanet.Tx.Transaction`1.Validate
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.Validate
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Validate
-  nameWithType: Transaction<T>.Validate
-  nameWithType.vb: Transaction(Of T).Validate
 - uid: Libplanet.Tx.TransactionExtensions
   name: TransactionExtensions
   href: api/Libplanet.Tx.TransactionExtensions.html
   commentId: T:Libplanet.Tx.TransactionExtensions
   fullName: Libplanet.Tx.TransactionExtensions
   nameWithType: TransactionExtensions
+- uid: Libplanet.Tx.TransactionExtensions.Combine(Libplanet.Tx.ITxInvoice,Libplanet.Tx.ITxSigningMetadata)
+  name: Combine(ITxInvoice, ITxSigningMetadata)
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Combine_Libplanet_Tx_ITxInvoice_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.TransactionExtensions.Combine(Libplanet.Tx.ITxInvoice,Libplanet.Tx.ITxSigningMetadata)
+  fullName: Libplanet.Tx.TransactionExtensions.Combine(Libplanet.Tx.ITxInvoice, Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: TransactionExtensions.Combine(ITxInvoice, ITxSigningMetadata)
+- uid: Libplanet.Tx.TransactionExtensions.Combine*
+  name: Combine
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Combine_
+  commentId: Overload:Libplanet.Tx.TransactionExtensions.Combine
+  isSpec: "True"
+  fullName: Libplanet.Tx.TransactionExtensions.Combine
+  nameWithType: TransactionExtensions.Combine
+- uid: Libplanet.Tx.TransactionExtensions.Sign*
+  name: Sign
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Sign_
+  commentId: Overload:Libplanet.Tx.TransactionExtensions.Sign
+  isSpec: "True"
+  fullName: Libplanet.Tx.TransactionExtensions.Sign
+  nameWithType: TransactionExtensions.Sign
+- uid: Libplanet.Tx.TransactionExtensions.Sign``1(Libplanet.Tx.ITxInvoice,Libplanet.Crypto.PrivateKey,System.Int64)
+  name: Sign<T>(ITxInvoice, PrivateKey, Int64)
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Sign__1_Libplanet_Tx_ITxInvoice_Libplanet_Crypto_PrivateKey_System_Int64_
+  commentId: M:Libplanet.Tx.TransactionExtensions.Sign``1(Libplanet.Tx.ITxInvoice,Libplanet.Crypto.PrivateKey,System.Int64)
+  name.vb: Sign(Of T)(ITxInvoice, PrivateKey, Int64)
+  fullName: Libplanet.Tx.TransactionExtensions.Sign<T>(Libplanet.Tx.ITxInvoice, Libplanet.Crypto.PrivateKey, System.Int64)
+  fullName.vb: Libplanet.Tx.TransactionExtensions.Sign(Of T)(Libplanet.Tx.ITxInvoice, Libplanet.Crypto.PrivateKey, System.Int64)
+  nameWithType: TransactionExtensions.Sign<T>(ITxInvoice, PrivateKey, Int64)
+  nameWithType.vb: TransactionExtensions.Sign(Of T)(ITxInvoice, PrivateKey, Int64)
+- uid: Libplanet.Tx.TransactionExtensions.Sign``1(Libplanet.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)
+  name: Sign<T>(IUnsignedTx, PrivateKey)
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Sign__1_Libplanet_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Tx.TransactionExtensions.Sign``1(Libplanet.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)
+  name.vb: Sign(Of T)(IUnsignedTx, PrivateKey)
+  fullName: Libplanet.Tx.TransactionExtensions.Sign<T>(Libplanet.Tx.IUnsignedTx, Libplanet.Crypto.PrivateKey)
+  fullName.vb: Libplanet.Tx.TransactionExtensions.Sign(Of T)(Libplanet.Tx.IUnsignedTx, Libplanet.Crypto.PrivateKey)
+  nameWithType: TransactionExtensions.Sign<T>(IUnsignedTx, PrivateKey)
+  nameWithType.vb: TransactionExtensions.Sign(Of T)(IUnsignedTx, PrivateKey)
 - uid: Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable{Libplanet.Tx.ITransaction},System.Int64)
   name: ValidateTxNonces(IEnumerable<ITransaction>, Int64)
   href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_ValidateTxNonces_System_Collections_Generic_IEnumerable_Libplanet_Tx_ITransaction__System_Int64_
@@ -30546,6 +30593,244 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TransactionExtensions.ValidateTxNonces
   nameWithType: TransactionExtensions.ValidateTxNonces
+- uid: Libplanet.Tx.TransactionExtensions.Verify*
+  name: Verify
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Verify_
+  commentId: Overload:Libplanet.Tx.TransactionExtensions.Verify
+  isSpec: "True"
+  fullName: Libplanet.Tx.TransactionExtensions.Verify
+  nameWithType: TransactionExtensions.Verify
+- uid: Libplanet.Tx.TransactionExtensions.Verify``1(Libplanet.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})
+  name: Verify<T>(IUnsignedTx, ImmutableArray<Byte>)
+  href: api/Libplanet.Tx.TransactionExtensions.html#Libplanet_Tx_TransactionExtensions_Verify__1_Libplanet_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Tx.TransactionExtensions.Verify``1(Libplanet.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})
+  name.vb: Verify(Of T)(IUnsignedTx, ImmutableArray(Of Byte))
+  fullName: Libplanet.Tx.TransactionExtensions.Verify<T>(Libplanet.Tx.IUnsignedTx, System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Tx.TransactionExtensions.Verify(Of T)(Libplanet.Tx.IUnsignedTx, System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: TransactionExtensions.Verify<T>(IUnsignedTx, ImmutableArray<Byte>)
+  nameWithType.vb: TransactionExtensions.Verify(Of T)(IUnsignedTx, ImmutableArray(Of Byte))
+- uid: Libplanet.Tx.TxActionList
+  name: TxActionList
+  href: api/Libplanet.Tx.TxActionList.html
+  commentId: T:Libplanet.Tx.TxActionList
+  fullName: Libplanet.Tx.TxActionList
+  nameWithType: TxActionList
+- uid: Libplanet.Tx.TxActionList.Count
+  name: Count
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Count
+  commentId: P:Libplanet.Tx.TxActionList.Count
+  fullName: Libplanet.Tx.TxActionList.Count
+  nameWithType: TxActionList.Count
+- uid: Libplanet.Tx.TxActionList.Count*
+  name: Count
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Count_
+  commentId: Overload:Libplanet.Tx.TxActionList.Count
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.Count
+  nameWithType: TxActionList.Count
+- uid: Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)
+  name: Equals(TxActionList)
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_
+  commentId: M:Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)
+  fullName: Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)
+  nameWithType: TxActionList.Equals(TxActionList)
+- uid: Libplanet.Tx.TxActionList.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_System_Object_
+  commentId: M:Libplanet.Tx.TxActionList.Equals(System.Object)
+  fullName: Libplanet.Tx.TxActionList.Equals(System.Object)
+  nameWithType: TxActionList.Equals(Object)
+- uid: Libplanet.Tx.TxActionList.Equals*
+  name: Equals
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_
+  commentId: Overload:Libplanet.Tx.TxActionList.Equals
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.Equals
+  nameWithType: TxActionList.Equals
+- uid: Libplanet.Tx.TxActionList.FromBencodex*
+  name: FromBencodex
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_FromBencodex_
+  commentId: Overload:Libplanet.Tx.TxActionList.FromBencodex
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.FromBencodex
+  nameWithType: TxActionList.FromBencodex
+- uid: Libplanet.Tx.TxActionList.FromBencodex``1(Bencodex.Types.Dictionary)
+  name: FromBencodex<T>(Dictionary)
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_FromBencodex__1_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxActionList.FromBencodex``1(Bencodex.Types.Dictionary)
+  name.vb: FromBencodex(Of T)(Dictionary)
+  fullName: Libplanet.Tx.TxActionList.FromBencodex<T>(Bencodex.Types.Dictionary)
+  fullName.vb: Libplanet.Tx.TxActionList.FromBencodex(Of T)(Bencodex.Types.Dictionary)
+  nameWithType: TxActionList.FromBencodex<T>(Dictionary)
+  nameWithType.vb: TxActionList.FromBencodex(Of T)(Dictionary)
+- uid: Libplanet.Tx.TxActionList.GetEnumerator
+  name: GetEnumerator()
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_GetEnumerator
+  commentId: M:Libplanet.Tx.TxActionList.GetEnumerator
+  fullName: Libplanet.Tx.TxActionList.GetEnumerator()
+  nameWithType: TxActionList.GetEnumerator()
+- uid: Libplanet.Tx.TxActionList.GetEnumerator*
+  name: GetEnumerator
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_GetEnumerator_
+  commentId: Overload:Libplanet.Tx.TxActionList.GetEnumerator
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.GetEnumerator
+  nameWithType: TxActionList.GetEnumerator
+- uid: Libplanet.Tx.TxActionList.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_GetHashCode
+  commentId: M:Libplanet.Tx.TxActionList.GetHashCode
+  fullName: Libplanet.Tx.TxActionList.GetHashCode()
+  nameWithType: TxActionList.GetHashCode()
+- uid: Libplanet.Tx.TxActionList.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_GetHashCode_
+  commentId: Overload:Libplanet.Tx.TxActionList.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.GetHashCode
+  nameWithType: TxActionList.GetHashCode
+- uid: Libplanet.Tx.TxActionList.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Item_System_Int32_
+  commentId: P:Libplanet.Tx.TxActionList.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Libplanet.Tx.TxActionList.Item[System.Int32]
+  fullName.vb: Libplanet.Tx.TxActionList.Item(System.Int32)
+  nameWithType: TxActionList.Item[Int32]
+  nameWithType.vb: TxActionList.Item(Int32)
+- uid: Libplanet.Tx.TxActionList.Item*
+  name: Item
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Item_
+  commentId: Overload:Libplanet.Tx.TxActionList.Item
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.Item
+  nameWithType: TxActionList.Item
+- uid: Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  fullName: Libplanet.Tx.TxActionList.System.Collections.IEnumerable.GetEnumerator()
+  nameWithType: TxActionList.IEnumerable.GetEnumerator()
+  nameWithType.vb: TxActionList.System.Collections.IEnumerable.GetEnumerator()
+- uid: Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator*
+  name: IEnumerable.GetEnumerator
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator
+  isSpec: "True"
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+  fullName: Libplanet.Tx.TxActionList.System.Collections.IEnumerable.GetEnumerator
+  nameWithType: TxActionList.IEnumerable.GetEnumerator
+  nameWithType.vb: TxActionList.System.Collections.IEnumerable.GetEnumerator
+- uid: Libplanet.Tx.TxActionList.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_ToBencodex
+  commentId: M:Libplanet.Tx.TxActionList.ToBencodex
+  fullName: Libplanet.Tx.TxActionList.ToBencodex()
+  nameWithType: TxActionList.ToBencodex()
+- uid: Libplanet.Tx.TxActionList.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_ToBencodex_
+  commentId: Overload:Libplanet.Tx.TxActionList.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.ToBencodex
+  nameWithType: TxActionList.ToBencodex
+- uid: Libplanet.Tx.TxCustomActionList
+  name: TxCustomActionList
+  href: api/Libplanet.Tx.TxCustomActionList.html
+  commentId: T:Libplanet.Tx.TxCustomActionList
+  fullName: Libplanet.Tx.TxCustomActionList
+  nameWithType: TxCustomActionList
+- uid: Libplanet.Tx.TxCustomActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
+  name: TxCustomActionList(IEnumerable<IAction>)
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__
+  commentId: M:Libplanet.Tx.TxCustomActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
+  name.vb: TxCustomActionList(IEnumerable(Of IAction))
+  fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList(System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>)
+  fullName.vb: Libplanet.Tx.TxCustomActionList.TxCustomActionList(System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction))
+  nameWithType: TxCustomActionList.TxCustomActionList(IEnumerable<IAction>)
+  nameWithType.vb: TxCustomActionList.TxCustomActionList(IEnumerable(Of IAction))
+- uid: Libplanet.Tx.TxCustomActionList.#ctor*
+  name: TxCustomActionList
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList
+  nameWithType: TxCustomActionList.TxCustomActionList
+- uid: Libplanet.Tx.TxCustomActionList.Count
+  name: Count
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Count
+  commentId: P:Libplanet.Tx.TxCustomActionList.Count
+  fullName: Libplanet.Tx.TxCustomActionList.Count
+  nameWithType: TxCustomActionList.Count
+- uid: Libplanet.Tx.TxCustomActionList.Count*
+  name: Count
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Count_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.Count
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.Count
+  nameWithType: TxCustomActionList.Count
+- uid: Libplanet.Tx.TxCustomActionList.CustomActions
+  name: CustomActions
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_CustomActions
+  commentId: P:Libplanet.Tx.TxCustomActionList.CustomActions
+  fullName: Libplanet.Tx.TxCustomActionList.CustomActions
+  nameWithType: TxCustomActionList.CustomActions
+- uid: Libplanet.Tx.TxCustomActionList.CustomActions*
+  name: CustomActions
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_CustomActions_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.CustomActions
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.CustomActions
+  nameWithType: TxCustomActionList.CustomActions
+- uid: Libplanet.Tx.TxCustomActionList.Empty
+  name: Empty
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Empty
+  commentId: F:Libplanet.Tx.TxCustomActionList.Empty
+  fullName: Libplanet.Tx.TxCustomActionList.Empty
+  nameWithType: TxCustomActionList.Empty
+- uid: Libplanet.Tx.TxCustomActionList.GetEnumerator
+  name: GetEnumerator()
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_GetEnumerator
+  commentId: M:Libplanet.Tx.TxCustomActionList.GetEnumerator
+  fullName: Libplanet.Tx.TxCustomActionList.GetEnumerator()
+  nameWithType: TxCustomActionList.GetEnumerator()
+- uid: Libplanet.Tx.TxCustomActionList.GetEnumerator*
+  name: GetEnumerator
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_GetEnumerator_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.GetEnumerator
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.GetEnumerator
+  nameWithType: TxCustomActionList.GetEnumerator
+- uid: Libplanet.Tx.TxCustomActionList.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Item_System_Int32_
+  commentId: P:Libplanet.Tx.TxCustomActionList.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Libplanet.Tx.TxCustomActionList.Item[System.Int32]
+  fullName.vb: Libplanet.Tx.TxCustomActionList.Item(System.Int32)
+  nameWithType: TxCustomActionList.Item[Int32]
+  nameWithType.vb: TxCustomActionList.Item(Int32)
+- uid: Libplanet.Tx.TxCustomActionList.Item*
+  name: Item
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Item_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.Item
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.Item
+  nameWithType: TxCustomActionList.Item
+- uid: Libplanet.Tx.TxCustomActionList.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_ToBencodex
+  commentId: M:Libplanet.Tx.TxCustomActionList.ToBencodex
+  fullName: Libplanet.Tx.TxCustomActionList.ToBencodex()
+  nameWithType: TxCustomActionList.ToBencodex()
+- uid: Libplanet.Tx.TxCustomActionList.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_ToBencodex_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.ToBencodex
+  nameWithType: TxCustomActionList.ToBencodex
 - uid: Libplanet.Tx.TxExecution
   name: TxExecution
   href: api/Libplanet.Tx.TxExecution.html
@@ -30910,6 +31195,330 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxId.ToString
   nameWithType: TxId.ToString
+- uid: Libplanet.Tx.TxInvoice
+  name: TxInvoice
+  href: api/Libplanet.Tx.TxInvoice.html
+  commentId: T:Libplanet.Tx.TxInvoice
+  fullName: Libplanet.Tx.TxInvoice
+  nameWithType: TxInvoice
+- uid: Libplanet.Tx.TxInvoice.#ctor(Libplanet.Tx.ITxInvoice)
+  name: TxInvoice(ITxInvoice)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_Libplanet_Tx_ITxInvoice_
+  commentId: M:Libplanet.Tx.TxInvoice.#ctor(Libplanet.Tx.ITxInvoice)
+  fullName: Libplanet.Tx.TxInvoice.TxInvoice(Libplanet.Tx.ITxInvoice)
+  nameWithType: TxInvoice.TxInvoice(ITxInvoice)
+- uid: Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{System.DateTimeOffset},Libplanet.Tx.TxActionList)
+  name: TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_System_DateTimeOffset__Libplanet_Tx_TxActionList_
+  commentId: M:Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{System.DateTimeOffset},Libplanet.Tx.TxActionList)
+  name.vb: TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList)
+  fullName: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Address>, System.Nullable<System.DateTimeOffset>, Libplanet.Tx.TxActionList)
+  fullName.vb: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset), Libplanet.Tx.TxActionList)
+  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList)
+  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList)
+- uid: Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,Libplanet.Tx.TxActionList)
+  name: TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_DateTimeOffset_Libplanet_Tx_TxActionList_
+  commentId: M:Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,Libplanet.Tx.TxActionList)
+  name.vb: TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList)
+  fullName: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.DateTimeOffset, Libplanet.Tx.TxActionList)
+  fullName.vb: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.DateTimeOffset, Libplanet.Tx.TxActionList)
+  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList)
+  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList)
+- uid: Libplanet.Tx.TxInvoice.#ctor*
+  name: TxInvoice
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_
+  commentId: Overload:Libplanet.Tx.TxInvoice.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.TxInvoice
+  nameWithType: TxInvoice.TxInvoice
+- uid: Libplanet.Tx.TxInvoice.Actions
+  name: Actions
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Actions
+  commentId: P:Libplanet.Tx.TxInvoice.Actions
+  fullName: Libplanet.Tx.TxInvoice.Actions
+  nameWithType: TxInvoice.Actions
+- uid: Libplanet.Tx.TxInvoice.Actions*
+  name: Actions
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Actions_
+  commentId: Overload:Libplanet.Tx.TxInvoice.Actions
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.Actions
+  nameWithType: TxInvoice.Actions
+- uid: Libplanet.Tx.TxInvoice.Equals(Libplanet.Tx.TxInvoice)
+  name: Equals(TxInvoice)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Equals_Libplanet_Tx_TxInvoice_
+  commentId: M:Libplanet.Tx.TxInvoice.Equals(Libplanet.Tx.TxInvoice)
+  fullName: Libplanet.Tx.TxInvoice.Equals(Libplanet.Tx.TxInvoice)
+  nameWithType: TxInvoice.Equals(TxInvoice)
+- uid: Libplanet.Tx.TxInvoice.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Equals_System_Object_
+  commentId: M:Libplanet.Tx.TxInvoice.Equals(System.Object)
+  fullName: Libplanet.Tx.TxInvoice.Equals(System.Object)
+  nameWithType: TxInvoice.Equals(Object)
+- uid: Libplanet.Tx.TxInvoice.Equals*
+  name: Equals
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Equals_
+  commentId: Overload:Libplanet.Tx.TxInvoice.Equals
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.Equals
+  nameWithType: TxInvoice.Equals
+- uid: Libplanet.Tx.TxInvoice.GenesisHash
+  name: GenesisHash
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GenesisHash
+  commentId: P:Libplanet.Tx.TxInvoice.GenesisHash
+  fullName: Libplanet.Tx.TxInvoice.GenesisHash
+  nameWithType: TxInvoice.GenesisHash
+- uid: Libplanet.Tx.TxInvoice.GenesisHash*
+  name: GenesisHash
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GenesisHash_
+  commentId: Overload:Libplanet.Tx.TxInvoice.GenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.GenesisHash
+  nameWithType: TxInvoice.GenesisHash
+- uid: Libplanet.Tx.TxInvoice.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GetHashCode
+  commentId: M:Libplanet.Tx.TxInvoice.GetHashCode
+  fullName: Libplanet.Tx.TxInvoice.GetHashCode()
+  nameWithType: TxInvoice.GetHashCode()
+- uid: Libplanet.Tx.TxInvoice.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GetHashCode_
+  commentId: Overload:Libplanet.Tx.TxInvoice.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.GetHashCode
+  nameWithType: TxInvoice.GetHashCode
+- uid: Libplanet.Tx.TxInvoice.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
+  name: IEquatable<ITxInvoice>.Equals(ITxInvoice)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_
+  commentId: M:Libplanet.Tx.TxInvoice.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
+  name.vb: System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(ITxInvoice)
+  fullName: Libplanet.Tx.TxInvoice.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(Libplanet.Tx.ITxInvoice)
+  nameWithType: TxInvoice.IEquatable<ITxInvoice>.Equals(ITxInvoice)
+  nameWithType.vb: TxInvoice.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(ITxInvoice)
+- uid: Libplanet.Tx.TxInvoice.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals*
+  name: IEquatable<ITxInvoice>.Equals
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_
+  commentId: Overload:Libplanet.Tx.TxInvoice.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  fullName: Libplanet.Tx.TxInvoice.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  nameWithType: TxInvoice.IEquatable<ITxInvoice>.Equals
+  nameWithType.vb: TxInvoice.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+- uid: Libplanet.Tx.TxInvoice.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Timestamp
+  commentId: P:Libplanet.Tx.TxInvoice.Timestamp
+  fullName: Libplanet.Tx.TxInvoice.Timestamp
+  nameWithType: TxInvoice.Timestamp
+- uid: Libplanet.Tx.TxInvoice.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_Timestamp_
+  commentId: Overload:Libplanet.Tx.TxInvoice.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.Timestamp
+  nameWithType: TxInvoice.Timestamp
+- uid: Libplanet.Tx.TxInvoice.ToString
+  name: ToString()
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_ToString
+  commentId: M:Libplanet.Tx.TxInvoice.ToString
+  fullName: Libplanet.Tx.TxInvoice.ToString()
+  nameWithType: TxInvoice.ToString()
+- uid: Libplanet.Tx.TxInvoice.ToString*
+  name: ToString
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_ToString_
+  commentId: Overload:Libplanet.Tx.TxInvoice.ToString
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.ToString
+  nameWithType: TxInvoice.ToString
+- uid: Libplanet.Tx.TxInvoice.UpdatedAddresses
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_UpdatedAddresses
+  commentId: P:Libplanet.Tx.TxInvoice.UpdatedAddresses
+  fullName: Libplanet.Tx.TxInvoice.UpdatedAddresses
+  nameWithType: TxInvoice.UpdatedAddresses
+- uid: Libplanet.Tx.TxInvoice.UpdatedAddresses*
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_UpdatedAddresses_
+  commentId: Overload:Libplanet.Tx.TxInvoice.UpdatedAddresses
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.UpdatedAddresses
+  nameWithType: TxInvoice.UpdatedAddresses
+- uid: Libplanet.Tx.TxMarshaler
+  name: TxMarshaler
+  href: api/Libplanet.Tx.TxMarshaler.html
+  commentId: T:Libplanet.Tx.TxMarshaler
+  fullName: Libplanet.Tx.TxMarshaler
+  nameWithType: TxMarshaler
+- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx*
+  name: DeserializeUnsignedTx
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx
+  nameWithType: TxMarshaler.DeserializeUnsignedTx
+- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Byte[])
+  name: DeserializeUnsignedTx<T>(Byte[])
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx__1_System_Byte___
+  commentId: M:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Byte[])
+  name.vb: DeserializeUnsignedTx(Of T)(Byte())
+  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx<T>(System.Byte[])
+  fullName.vb: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(Of T)(System.Byte())
+  nameWithType: TxMarshaler.DeserializeUnsignedTx<T>(Byte[])
+  nameWithType.vb: TxMarshaler.DeserializeUnsignedTx(Of T)(Byte())
+- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Collections.Immutable.ImmutableArray{System.Byte})
+  name: DeserializeUnsignedTx<T>(ImmutableArray<Byte>)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx__1_System_Collections_Immutable_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Collections.Immutable.ImmutableArray{System.Byte})
+  name.vb: DeserializeUnsignedTx(Of T)(ImmutableArray(Of Byte))
+  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx<T>(System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(Of T)(System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: TxMarshaler.DeserializeUnsignedTx<T>(ImmutableArray<Byte>)
+  nameWithType.vb: TxMarshaler.DeserializeUnsignedTx(Of T)(ImmutableArray(Of Byte))
+- uid: Libplanet.Tx.TxMarshaler.MarshalTransaction*
+  name: MarshalTransaction
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTransaction_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.MarshalTransaction
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.MarshalTransaction
+  nameWithType: TxMarshaler.MarshalTransaction
+- uid: Libplanet.Tx.TxMarshaler.MarshalTransaction``1(Libplanet.Tx.Transaction{``0})
+  name: MarshalTransaction<T>(Transaction<T>)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTransaction__1_Libplanet_Tx_Transaction___0__
+  commentId: M:Libplanet.Tx.TxMarshaler.MarshalTransaction``1(Libplanet.Tx.Transaction{``0})
+  name.vb: MarshalTransaction(Of T)(Transaction(Of T))
+  fullName: Libplanet.Tx.TxMarshaler.MarshalTransaction<T>(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Tx.TxMarshaler.MarshalTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
+  nameWithType: TxMarshaler.MarshalTransaction<T>(Transaction<T>)
+  nameWithType.vb: TxMarshaler.MarshalTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Tx.TxMarshaler.MarshalTxInvoice(Libplanet.Tx.ITxInvoice)
+  name: MarshalTxInvoice(ITxInvoice)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTxInvoice_Libplanet_Tx_ITxInvoice_
+  commentId: M:Libplanet.Tx.TxMarshaler.MarshalTxInvoice(Libplanet.Tx.ITxInvoice)
+  fullName: Libplanet.Tx.TxMarshaler.MarshalTxInvoice(Libplanet.Tx.ITxInvoice)
+  nameWithType: TxMarshaler.MarshalTxInvoice(ITxInvoice)
+- uid: Libplanet.Tx.TxMarshaler.MarshalTxInvoice*
+  name: MarshalTxInvoice
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTxInvoice_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.MarshalTxInvoice
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.MarshalTxInvoice
+  nameWithType: TxMarshaler.MarshalTxInvoice
+- uid: Libplanet.Tx.TxMarshaler.MarshalTxSigningMetadata(Libplanet.Tx.ITxSigningMetadata)
+  name: MarshalTxSigningMetadata(ITxSigningMetadata)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTxSigningMetadata_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.TxMarshaler.MarshalTxSigningMetadata(Libplanet.Tx.ITxSigningMetadata)
+  fullName: Libplanet.Tx.TxMarshaler.MarshalTxSigningMetadata(Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: TxMarshaler.MarshalTxSigningMetadata(ITxSigningMetadata)
+- uid: Libplanet.Tx.TxMarshaler.MarshalTxSigningMetadata*
+  name: MarshalTxSigningMetadata
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTxSigningMetadata_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.MarshalTxSigningMetadata
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.MarshalTxSigningMetadata
+  nameWithType: TxMarshaler.MarshalTxSigningMetadata
+- uid: Libplanet.Tx.TxMarshaler.MarshalUnsignedTx(Libplanet.Tx.IUnsignedTx)
+  name: MarshalUnsignedTx(IUnsignedTx)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalUnsignedTx_Libplanet_Tx_IUnsignedTx_
+  commentId: M:Libplanet.Tx.TxMarshaler.MarshalUnsignedTx(Libplanet.Tx.IUnsignedTx)
+  fullName: Libplanet.Tx.TxMarshaler.MarshalUnsignedTx(Libplanet.Tx.IUnsignedTx)
+  nameWithType: TxMarshaler.MarshalUnsignedTx(IUnsignedTx)
+- uid: Libplanet.Tx.TxMarshaler.MarshalUnsignedTx*
+  name: MarshalUnsignedTx
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalUnsignedTx_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.MarshalUnsignedTx
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.MarshalUnsignedTx
+  nameWithType: TxMarshaler.MarshalUnsignedTx
+- uid: Libplanet.Tx.TxMarshaler.SerializeUnsignedTx(Libplanet.Tx.IUnsignedTx)
+  name: SerializeUnsignedTx(IUnsignedTx)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_SerializeUnsignedTx_Libplanet_Tx_IUnsignedTx_
+  commentId: M:Libplanet.Tx.TxMarshaler.SerializeUnsignedTx(Libplanet.Tx.IUnsignedTx)
+  fullName: Libplanet.Tx.TxMarshaler.SerializeUnsignedTx(Libplanet.Tx.IUnsignedTx)
+  nameWithType: TxMarshaler.SerializeUnsignedTx(IUnsignedTx)
+- uid: Libplanet.Tx.TxMarshaler.SerializeUnsignedTx*
+  name: SerializeUnsignedTx
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_SerializeUnsignedTx_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.SerializeUnsignedTx
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.SerializeUnsignedTx
+  nameWithType: TxMarshaler.SerializeUnsignedTx
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTransaction*
+  name: UnmarshalTransaction
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTransaction_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.UnmarshalTransaction
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTransaction
+  nameWithType: TxMarshaler.UnmarshalTransaction
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTransaction``1(Bencodex.Types.Dictionary)
+  name: UnmarshalTransaction<T>(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTransaction__1_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalTransaction``1(Bencodex.Types.Dictionary)
+  name.vb: UnmarshalTransaction(Of T)(Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTransaction<T>(Bencodex.Types.Dictionary)
+  fullName.vb: Libplanet.Tx.TxMarshaler.UnmarshalTransaction(Of T)(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalTransaction<T>(Dictionary)
+  nameWithType.vb: TxMarshaler.UnmarshalTransaction(Of T)(Dictionary)
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature(Bencodex.Types.Dictionary)
+  name: UnmarshalTransactionSignature(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTransactionSignature_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalTransactionSignature(Dictionary)
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature*
+  name: UnmarshalTransactionSignature
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTransactionSignature_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature
+  nameWithType: TxMarshaler.UnmarshalTransactionSignature
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice*
+  name: UnmarshalTxInvoice
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxInvoice_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice
+  nameWithType: TxMarshaler.UnmarshalTxInvoice
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice``1(Bencodex.Types.Dictionary)
+  name: UnmarshalTxInvoice<T>(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxInvoice__1_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice``1(Bencodex.Types.Dictionary)
+  name.vb: UnmarshalTxInvoice(Of T)(Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice<T>(Bencodex.Types.Dictionary)
+  fullName.vb: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice(Of T)(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalTxInvoice<T>(Dictionary)
+  nameWithType.vb: TxMarshaler.UnmarshalTxInvoice(Of T)(Dictionary)
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)
+  name: UnmarshalTxSigningMetadata(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxSigningMetadata_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalTxSigningMetadata(Dictionary)
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata*
+  name: UnmarshalTxSigningMetadata
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxSigningMetadata_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata
+  nameWithType: TxMarshaler.UnmarshalTxSigningMetadata
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx*
+  name: UnmarshalUnsignedTx
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalUnsignedTx_
+  commentId: Overload:Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx
+  nameWithType: TxMarshaler.UnmarshalUnsignedTx
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx``1(Bencodex.Types.Dictionary)
+  name: UnmarshalUnsignedTx<T>(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalUnsignedTx__1_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx``1(Bencodex.Types.Dictionary)
+  name.vb: UnmarshalUnsignedTx(Of T)(Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx<T>(Bencodex.Types.Dictionary)
+  fullName.vb: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx(Of T)(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalUnsignedTx<T>(Dictionary)
+  nameWithType.vb: TxMarshaler.UnmarshalUnsignedTx(Of T)(Dictionary)
 - uid: Libplanet.Tx.TxMetadata
   name: TxMetadata
   href: api/Libplanet.Tx.TxMetadata.html
@@ -31070,6 +31679,132 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxPolicyViolationException.TxPolicyViolationException
   nameWithType: TxPolicyViolationException.TxPolicyViolationException
+- uid: Libplanet.Tx.TxSigningMetadata
+  name: TxSigningMetadata
+  href: api/Libplanet.Tx.TxSigningMetadata.html
+  commentId: T:Libplanet.Tx.TxSigningMetadata
+  fullName: Libplanet.Tx.TxSigningMetadata
+  nameWithType: TxSigningMetadata
+- uid: Libplanet.Tx.TxSigningMetadata.#ctor(Libplanet.Crypto.PublicKey,System.Int64)
+  name: TxSigningMetadata(PublicKey, Int64)
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata__ctor_Libplanet_Crypto_PublicKey_System_Int64_
+  commentId: M:Libplanet.Tx.TxSigningMetadata.#ctor(Libplanet.Crypto.PublicKey,System.Int64)
+  fullName: Libplanet.Tx.TxSigningMetadata.TxSigningMetadata(Libplanet.Crypto.PublicKey, System.Int64)
+  nameWithType: TxSigningMetadata.TxSigningMetadata(PublicKey, Int64)
+- uid: Libplanet.Tx.TxSigningMetadata.#ctor(Libplanet.Tx.ITxSigningMetadata)
+  name: TxSigningMetadata(ITxSigningMetadata)
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata__ctor_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.TxSigningMetadata.#ctor(Libplanet.Tx.ITxSigningMetadata)
+  fullName: Libplanet.Tx.TxSigningMetadata.TxSigningMetadata(Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: TxSigningMetadata.TxSigningMetadata(ITxSigningMetadata)
+- uid: Libplanet.Tx.TxSigningMetadata.#ctor*
+  name: TxSigningMetadata
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata__ctor_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.TxSigningMetadata
+  nameWithType: TxSigningMetadata.TxSigningMetadata
+- uid: Libplanet.Tx.TxSigningMetadata.Equals(Libplanet.Tx.TxSigningMetadata)
+  name: Equals(TxSigningMetadata)
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Equals_Libplanet_Tx_TxSigningMetadata_
+  commentId: M:Libplanet.Tx.TxSigningMetadata.Equals(Libplanet.Tx.TxSigningMetadata)
+  fullName: Libplanet.Tx.TxSigningMetadata.Equals(Libplanet.Tx.TxSigningMetadata)
+  nameWithType: TxSigningMetadata.Equals(TxSigningMetadata)
+- uid: Libplanet.Tx.TxSigningMetadata.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Equals_System_Object_
+  commentId: M:Libplanet.Tx.TxSigningMetadata.Equals(System.Object)
+  fullName: Libplanet.Tx.TxSigningMetadata.Equals(System.Object)
+  nameWithType: TxSigningMetadata.Equals(Object)
+- uid: Libplanet.Tx.TxSigningMetadata.Equals*
+  name: Equals
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Equals_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.Equals
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.Equals
+  nameWithType: TxSigningMetadata.Equals
+- uid: Libplanet.Tx.TxSigningMetadata.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_GetHashCode
+  commentId: M:Libplanet.Tx.TxSigningMetadata.GetHashCode
+  fullName: Libplanet.Tx.TxSigningMetadata.GetHashCode()
+  nameWithType: TxSigningMetadata.GetHashCode()
+- uid: Libplanet.Tx.TxSigningMetadata.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_GetHashCode_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.GetHashCode
+  nameWithType: TxSigningMetadata.GetHashCode
+- uid: Libplanet.Tx.TxSigningMetadata.Nonce
+  name: Nonce
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Nonce
+  commentId: P:Libplanet.Tx.TxSigningMetadata.Nonce
+  fullName: Libplanet.Tx.TxSigningMetadata.Nonce
+  nameWithType: TxSigningMetadata.Nonce
+- uid: Libplanet.Tx.TxSigningMetadata.Nonce*
+  name: Nonce
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Nonce_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.Nonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.Nonce
+  nameWithType: TxSigningMetadata.Nonce
+- uid: Libplanet.Tx.TxSigningMetadata.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_PublicKey
+  commentId: P:Libplanet.Tx.TxSigningMetadata.PublicKey
+  fullName: Libplanet.Tx.TxSigningMetadata.PublicKey
+  nameWithType: TxSigningMetadata.PublicKey
+- uid: Libplanet.Tx.TxSigningMetadata.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_PublicKey_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.PublicKey
+  nameWithType: TxSigningMetadata.PublicKey
+- uid: Libplanet.Tx.TxSigningMetadata.Signer
+  name: Signer
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Signer
+  commentId: P:Libplanet.Tx.TxSigningMetadata.Signer
+  fullName: Libplanet.Tx.TxSigningMetadata.Signer
+  nameWithType: TxSigningMetadata.Signer
+- uid: Libplanet.Tx.TxSigningMetadata.Signer*
+  name: Signer
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_Signer_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.Signer
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.Signer
+  nameWithType: TxSigningMetadata.Signer
+- uid: Libplanet.Tx.TxSigningMetadata.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)
+  name: IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.TxSigningMetadata.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)
+  name.vb: System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  fullName: Libplanet.Tx.TxSigningMetadata.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: TxSigningMetadata.IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  nameWithType.vb: TxSigningMetadata.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(ITxSigningMetadata)
+- uid: Libplanet.Tx.TxSigningMetadata.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals*
+  name: IEquatable<ITxSigningMetadata>.Equals
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  fullName: Libplanet.Tx.TxSigningMetadata.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  nameWithType: TxSigningMetadata.IEquatable<ITxSigningMetadata>.Equals
+  nameWithType.vb: TxSigningMetadata.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+- uid: Libplanet.Tx.TxSigningMetadata.ToString
+  name: ToString()
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_ToString
+  commentId: M:Libplanet.Tx.TxSigningMetadata.ToString
+  fullName: Libplanet.Tx.TxSigningMetadata.ToString()
+  nameWithType: TxSigningMetadata.ToString()
+- uid: Libplanet.Tx.TxSigningMetadata.ToString*
+  name: ToString
+  href: api/Libplanet.Tx.TxSigningMetadata.html#Libplanet_Tx_TxSigningMetadata_ToString_
+  commentId: Overload:Libplanet.Tx.TxSigningMetadata.ToString
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSigningMetadata.ToString
+  nameWithType: TxSigningMetadata.ToString
 - uid: Libplanet.Tx.TxSuccess
   name: TxSuccess
   href: api/Libplanet.Tx.TxSuccess.html
@@ -31157,3 +31892,337 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxSuccess.UpdatedStates
   nameWithType: TxSuccess.UpdatedStates
+- uid: Libplanet.Tx.TxSystemActionList
+  name: TxSystemActionList
+  href: api/Libplanet.Tx.TxSystemActionList.html
+  commentId: T:Libplanet.Tx.TxSystemActionList
+  fullName: Libplanet.Tx.TxSystemActionList
+  nameWithType: TxSystemActionList
+- uid: Libplanet.Tx.TxSystemActionList.#ctor(Libplanet.Action.IAction)
+  name: TxSystemActionList(IAction)
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_Libplanet_Action_IAction_
+  commentId: M:Libplanet.Tx.TxSystemActionList.#ctor(Libplanet.Action.IAction)
+  fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList(Libplanet.Action.IAction)
+  nameWithType: TxSystemActionList.TxSystemActionList(IAction)
+- uid: Libplanet.Tx.TxSystemActionList.#ctor*
+  name: TxSystemActionList
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList
+  nameWithType: TxSystemActionList.TxSystemActionList
+- uid: Libplanet.Tx.TxSystemActionList.Count
+  name: Count
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Count
+  commentId: P:Libplanet.Tx.TxSystemActionList.Count
+  fullName: Libplanet.Tx.TxSystemActionList.Count
+  nameWithType: TxSystemActionList.Count
+- uid: Libplanet.Tx.TxSystemActionList.Count*
+  name: Count
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Count_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.Count
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.Count
+  nameWithType: TxSystemActionList.Count
+- uid: Libplanet.Tx.TxSystemActionList.GetEnumerator
+  name: GetEnumerator()
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_GetEnumerator
+  commentId: M:Libplanet.Tx.TxSystemActionList.GetEnumerator
+  fullName: Libplanet.Tx.TxSystemActionList.GetEnumerator()
+  nameWithType: TxSystemActionList.GetEnumerator()
+- uid: Libplanet.Tx.TxSystemActionList.GetEnumerator*
+  name: GetEnumerator
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_GetEnumerator_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.GetEnumerator
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.GetEnumerator
+  nameWithType: TxSystemActionList.GetEnumerator
+- uid: Libplanet.Tx.TxSystemActionList.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Item_System_Int32_
+  commentId: P:Libplanet.Tx.TxSystemActionList.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Libplanet.Tx.TxSystemActionList.Item[System.Int32]
+  fullName.vb: Libplanet.Tx.TxSystemActionList.Item(System.Int32)
+  nameWithType: TxSystemActionList.Item[Int32]
+  nameWithType.vb: TxSystemActionList.Item(Int32)
+- uid: Libplanet.Tx.TxSystemActionList.Item*
+  name: Item
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Item_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.Item
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.Item
+  nameWithType: TxSystemActionList.Item
+- uid: Libplanet.Tx.TxSystemActionList.SystemAction
+  name: SystemAction
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_SystemAction
+  commentId: P:Libplanet.Tx.TxSystemActionList.SystemAction
+  fullName: Libplanet.Tx.TxSystemActionList.SystemAction
+  nameWithType: TxSystemActionList.SystemAction
+- uid: Libplanet.Tx.TxSystemActionList.SystemAction*
+  name: SystemAction
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_SystemAction_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.SystemAction
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.SystemAction
+  nameWithType: TxSystemActionList.SystemAction
+- uid: Libplanet.Tx.TxSystemActionList.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_ToBencodex
+  commentId: M:Libplanet.Tx.TxSystemActionList.ToBencodex
+  fullName: Libplanet.Tx.TxSystemActionList.ToBencodex()
+  nameWithType: TxSystemActionList.ToBencodex()
+- uid: Libplanet.Tx.TxSystemActionList.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_ToBencodex_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.ToBencodex
+  nameWithType: TxSystemActionList.ToBencodex
+- uid: Libplanet.Tx.UnsignedTx
+  name: UnsignedTx
+  href: api/Libplanet.Tx.UnsignedTx.html
+  commentId: T:Libplanet.Tx.UnsignedTx
+  fullName: Libplanet.Tx.UnsignedTx
+  nameWithType: UnsignedTx
+- uid: Libplanet.Tx.UnsignedTx.#ctor(Libplanet.Tx.ITxInvoice,Libplanet.Tx.ITxSigningMetadata)
+  name: UnsignedTx(ITxInvoice, ITxSigningMetadata)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx__ctor_Libplanet_Tx_ITxInvoice_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.UnsignedTx.#ctor(Libplanet.Tx.ITxInvoice,Libplanet.Tx.ITxSigningMetadata)
+  fullName: Libplanet.Tx.UnsignedTx.UnsignedTx(Libplanet.Tx.ITxInvoice, Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: UnsignedTx.UnsignedTx(ITxInvoice, ITxSigningMetadata)
+- uid: Libplanet.Tx.UnsignedTx.#ctor(Libplanet.Tx.IUnsignedTx)
+  name: UnsignedTx(IUnsignedTx)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx__ctor_Libplanet_Tx_IUnsignedTx_
+  commentId: M:Libplanet.Tx.UnsignedTx.#ctor(Libplanet.Tx.IUnsignedTx)
+  fullName: Libplanet.Tx.UnsignedTx.UnsignedTx(Libplanet.Tx.IUnsignedTx)
+  nameWithType: UnsignedTx.UnsignedTx(IUnsignedTx)
+- uid: Libplanet.Tx.UnsignedTx.#ctor(Libplanet.Tx.TxInvoice,Libplanet.Tx.TxSigningMetadata)
+  name: UnsignedTx(TxInvoice, TxSigningMetadata)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx__ctor_Libplanet_Tx_TxInvoice_Libplanet_Tx_TxSigningMetadata_
+  commentId: M:Libplanet.Tx.UnsignedTx.#ctor(Libplanet.Tx.TxInvoice,Libplanet.Tx.TxSigningMetadata)
+  fullName: Libplanet.Tx.UnsignedTx.UnsignedTx(Libplanet.Tx.TxInvoice, Libplanet.Tx.TxSigningMetadata)
+  nameWithType: UnsignedTx.UnsignedTx(TxInvoice, TxSigningMetadata)
+- uid: Libplanet.Tx.UnsignedTx.#ctor*
+  name: UnsignedTx
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx__ctor_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.UnsignedTx
+  nameWithType: UnsignedTx.UnsignedTx
+- uid: Libplanet.Tx.UnsignedTx.Actions
+  name: Actions
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Actions
+  commentId: P:Libplanet.Tx.UnsignedTx.Actions
+  fullName: Libplanet.Tx.UnsignedTx.Actions
+  nameWithType: UnsignedTx.Actions
+- uid: Libplanet.Tx.UnsignedTx.Actions*
+  name: Actions
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Actions_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.Actions
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.Actions
+  nameWithType: UnsignedTx.Actions
+- uid: Libplanet.Tx.UnsignedTx.CreateSignature(Libplanet.Crypto.PrivateKey)
+  name: CreateSignature(PrivateKey)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_CreateSignature_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Tx.UnsignedTx.CreateSignature(Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.Tx.UnsignedTx.CreateSignature(Libplanet.Crypto.PrivateKey)
+  nameWithType: UnsignedTx.CreateSignature(PrivateKey)
+- uid: Libplanet.Tx.UnsignedTx.CreateSignature*
+  name: CreateSignature
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_CreateSignature_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.CreateSignature
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.CreateSignature
+  nameWithType: UnsignedTx.CreateSignature
+- uid: Libplanet.Tx.UnsignedTx.Equals(Libplanet.Tx.UnsignedTx)
+  name: Equals(UnsignedTx)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Equals_Libplanet_Tx_UnsignedTx_
+  commentId: M:Libplanet.Tx.UnsignedTx.Equals(Libplanet.Tx.UnsignedTx)
+  fullName: Libplanet.Tx.UnsignedTx.Equals(Libplanet.Tx.UnsignedTx)
+  nameWithType: UnsignedTx.Equals(UnsignedTx)
+- uid: Libplanet.Tx.UnsignedTx.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Equals_System_Object_
+  commentId: M:Libplanet.Tx.UnsignedTx.Equals(System.Object)
+  fullName: Libplanet.Tx.UnsignedTx.Equals(System.Object)
+  nameWithType: UnsignedTx.Equals(Object)
+- uid: Libplanet.Tx.UnsignedTx.Equals*
+  name: Equals
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Equals_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.Equals
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.Equals
+  nameWithType: UnsignedTx.Equals
+- uid: Libplanet.Tx.UnsignedTx.GenesisHash
+  name: GenesisHash
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GenesisHash
+  commentId: P:Libplanet.Tx.UnsignedTx.GenesisHash
+  fullName: Libplanet.Tx.UnsignedTx.GenesisHash
+  nameWithType: UnsignedTx.GenesisHash
+- uid: Libplanet.Tx.UnsignedTx.GenesisHash*
+  name: GenesisHash
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GenesisHash_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.GenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.GenesisHash
+  nameWithType: UnsignedTx.GenesisHash
+- uid: Libplanet.Tx.UnsignedTx.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GetHashCode
+  commentId: M:Libplanet.Tx.UnsignedTx.GetHashCode
+  fullName: Libplanet.Tx.UnsignedTx.GetHashCode()
+  nameWithType: UnsignedTx.GetHashCode()
+- uid: Libplanet.Tx.UnsignedTx.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GetHashCode_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.GetHashCode
+  nameWithType: UnsignedTx.GetHashCode
+- uid: Libplanet.Tx.UnsignedTx.Nonce
+  name: Nonce
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Nonce
+  commentId: P:Libplanet.Tx.UnsignedTx.Nonce
+  fullName: Libplanet.Tx.UnsignedTx.Nonce
+  nameWithType: UnsignedTx.Nonce
+- uid: Libplanet.Tx.UnsignedTx.Nonce*
+  name: Nonce
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Nonce_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.Nonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.Nonce
+  nameWithType: UnsignedTx.Nonce
+- uid: Libplanet.Tx.UnsignedTx.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_PublicKey
+  commentId: P:Libplanet.Tx.UnsignedTx.PublicKey
+  fullName: Libplanet.Tx.UnsignedTx.PublicKey
+  nameWithType: UnsignedTx.PublicKey
+- uid: Libplanet.Tx.UnsignedTx.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_PublicKey_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.PublicKey
+  nameWithType: UnsignedTx.PublicKey
+- uid: Libplanet.Tx.UnsignedTx.Signer
+  name: Signer
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Signer
+  commentId: P:Libplanet.Tx.UnsignedTx.Signer
+  fullName: Libplanet.Tx.UnsignedTx.Signer
+  nameWithType: UnsignedTx.Signer
+- uid: Libplanet.Tx.UnsignedTx.Signer*
+  name: Signer
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Signer_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.Signer
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.Signer
+  nameWithType: UnsignedTx.Signer
+- uid: Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
+  name: IEquatable<ITxInvoice>.Equals(ITxInvoice)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_
+  commentId: M:Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
+  name.vb: System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(ITxInvoice)
+  fullName: Libplanet.Tx.UnsignedTx.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(Libplanet.Tx.ITxInvoice)
+  nameWithType: UnsignedTx.IEquatable<ITxInvoice>.Equals(ITxInvoice)
+  nameWithType.vb: UnsignedTx.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals(ITxInvoice)
+- uid: Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals*
+  name: IEquatable<ITxInvoice>.Equals
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  fullName: Libplanet.Tx.UnsignedTx.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+  nameWithType: UnsignedTx.IEquatable<ITxInvoice>.Equals
+  nameWithType.vb: UnsignedTx.System.IEquatable<Libplanet.Tx.ITxInvoice>.Equals
+- uid: Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)
+  name: IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_Libplanet_Tx_ITxSigningMetadata_
+  commentId: M:Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)
+  name.vb: System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  fullName: Libplanet.Tx.UnsignedTx.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(Libplanet.Tx.ITxSigningMetadata)
+  nameWithType: UnsignedTx.IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata)
+  nameWithType.vb: UnsignedTx.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals(ITxSigningMetadata)
+- uid: Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals*
+  name: IEquatable<ITxSigningMetadata>.Equals
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  fullName: Libplanet.Tx.UnsignedTx.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+  nameWithType: UnsignedTx.IEquatable<ITxSigningMetadata>.Equals
+  nameWithType.vb: UnsignedTx.System.IEquatable<Libplanet.Tx.ITxSigningMetadata>.Equals
+- uid: Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals(Libplanet.Tx.IUnsignedTx)
+  name: IEquatable<IUnsignedTx>.Equals(IUnsignedTx)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_Libplanet_Tx_IUnsignedTx_
+  commentId: M:Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals(Libplanet.Tx.IUnsignedTx)
+  name.vb: System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(IUnsignedTx)
+  fullName: Libplanet.Tx.UnsignedTx.System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(Libplanet.Tx.IUnsignedTx)
+  nameWithType: UnsignedTx.IEquatable<IUnsignedTx>.Equals(IUnsignedTx)
+  nameWithType.vb: UnsignedTx.System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals(IUnsignedTx)
+- uid: Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals*
+  name: IEquatable<IUnsignedTx>.Equals
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
+  fullName: Libplanet.Tx.UnsignedTx.System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
+  nameWithType: UnsignedTx.IEquatable<IUnsignedTx>.Equals
+  nameWithType.vb: UnsignedTx.System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
+- uid: Libplanet.Tx.UnsignedTx.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Timestamp
+  commentId: P:Libplanet.Tx.UnsignedTx.Timestamp
+  fullName: Libplanet.Tx.UnsignedTx.Timestamp
+  nameWithType: UnsignedTx.Timestamp
+- uid: Libplanet.Tx.UnsignedTx.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Timestamp_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.Timestamp
+  nameWithType: UnsignedTx.Timestamp
+- uid: Libplanet.Tx.UnsignedTx.ToString
+  name: ToString()
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_ToString
+  commentId: M:Libplanet.Tx.UnsignedTx.ToString
+  fullName: Libplanet.Tx.UnsignedTx.ToString()
+  nameWithType: UnsignedTx.ToString()
+- uid: Libplanet.Tx.UnsignedTx.ToString*
+  name: ToString
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_ToString_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.ToString
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.ToString
+  nameWithType: UnsignedTx.ToString
+- uid: Libplanet.Tx.UnsignedTx.UpdatedAddresses
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_UpdatedAddresses
+  commentId: P:Libplanet.Tx.UnsignedTx.UpdatedAddresses
+  fullName: Libplanet.Tx.UnsignedTx.UpdatedAddresses
+  nameWithType: UnsignedTx.UpdatedAddresses
+- uid: Libplanet.Tx.UnsignedTx.UpdatedAddresses*
+  name: UpdatedAddresses
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_UpdatedAddresses_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.UpdatedAddresses
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.UpdatedAddresses
+  nameWithType: UnsignedTx.UpdatedAddresses
+- uid: Libplanet.Tx.UnsignedTx.VerifySignature(System.Collections.Immutable.ImmutableArray{System.Byte})
+  name: VerifySignature(ImmutableArray<Byte>)
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_VerifySignature_System_Collections_Immutable_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Tx.UnsignedTx.VerifySignature(System.Collections.Immutable.ImmutableArray{System.Byte})
+  name.vb: VerifySignature(ImmutableArray(Of Byte))
+  fullName: Libplanet.Tx.UnsignedTx.VerifySignature(System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Tx.UnsignedTx.VerifySignature(System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: UnsignedTx.VerifySignature(ImmutableArray<Byte>)
+  nameWithType.vb: UnsignedTx.VerifySignature(ImmutableArray(Of Byte))
+- uid: Libplanet.Tx.UnsignedTx.VerifySignature*
+  name: VerifySignature
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_VerifySignature_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.VerifySignature
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.VerifySignature
+  nameWithType: UnsignedTx.VerifySignature

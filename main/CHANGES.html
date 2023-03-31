@@ -64,10 +64,97 @@
 <h2 id="version-0540">Version 0.54.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>TxMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li>Removed <code>Transaction&lt;T&gt;(TxMetadata, IAction, byte[])</code> constructor.</li>
+<li>Removed <code>Transaction&lt;T&gt;(TxMetadata, IEnumerable&lt;T&gt;, byte[])</code>
+constructor.</li>
+</ul>
+</li>
+<li>Reorganized <code>ITransaction</code> interface in general.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li><code>ITransaction</code> now inherits <code>IUnsignedTx</code> interface instead of having
+properties such as <code>GenesisHash</code>, <code>UpdatedAddresses</code>, <code>Timestamp</code>,
+<code>Nonce</code>, <code>Signer</code>, and <code>PublicKey</code>.</li>
+<li><code>SystemAction</code> property is replaced by <code>Actions</code> property which is
+inherited from <code>IUnsignedTx</code> interface.</li>
+<li><code>CustomActions</code> property is replaced by <code>Actions</code> property which is
+inherited from <code>IUnsignedTx</code> interface.</li>
+</ul>
+</li>
+<li><code>Transaction&lt;T&gt;</code> no more accept empty <code>Signature</code> as a valid state.
+Instead, you should use <code>UnsignedTx</code> class to represent an unsigned
+transaction.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li>Removed <code>Transaction&lt;T&gt;(long, Address, PublicKey, BlockHash?, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, byte[])</code>
+constructor.</li>
+<li>Removed <code>Transaction&lt;T&gt;.CreateUnsigned()</code> static method.</li>
+<li>Removed <code>Transaction&lt;T&gt;.Validate()</code> method.</li>
+<li>Removed <code>sign</code> parameter from <code>Transaction&lt;T&gt;.Serialize()</code> method.</li>
+<li>Removed <code>validate</code> parameter from <code>Transaction&lt;T&gt;.Deserialize()</code>
+method.</li>
+</ul>
+</li>
+<li><code>Transaction&lt;T&gt;</code> now has <code>Actions</code> in a uniform way regardless they
+are custom actions or system actions, through <code>TxActionList</code> abstract
+class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li>Changed the type of <code>Transaction&lt;T&gt;.Actions</code> property from
+<code>IImmutableList&lt;IAction&gt;</code> to <code>TxActionList</code>, which is also an
+<code>IReadOnlyList&lt;IAction&gt;</code>.  The property once was deprecated
+in favour of <code>Transaction&lt;T&gt;.CustomActions</code> and
+<code>Transaction&lt;T&gt;.SystemAction</code>, but now it replaces them both.</li>
+<li>Removed <code>Transaction&lt;T&gt;.CustomActions</code> property.</li>
+<li>Removed <code>Transaction&lt;T&gt;.SystemAction</code> property.</li>
+</ul>
+</li>
+<li><code>Transaction&lt;T&gt;(Bencodex.Types.Dictionary)</code> constructor is removed.
+Use <code>TxMarshaler.UnmarshalTransaction&lt;T&gt;()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>ITxInvoice</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>ITxSigningMetadata</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>IUnsignedTx</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>TxInvoice</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>TxSigningMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>UnsignedTx</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;(IUnsignedTx, ImmutableArray&lt;byte&gt;)</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><p><code>Transaction&lt;T&gt;</code> no more supports deserialization from JSON when it contains
+custom actions.  However, it still can be deserialized from JSON when it
+contains a system action.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</p>
+</li>
+<li><p>The JSON representation of <code>Transaction&lt;T&gt;</code> now includes the <code>&quot;actions&quot;</code>
+field, which includes a system action or a list of custom actions and
+a <code>&quot;type&quot;</code> field denoting one of <code>&quot;system&quot;</code> or <code>&quot;custom&quot;</code>.</p>
+<p>For example:</p>
+<pre><code class="lang-json">{
+   // ... other fields
+   &quot;actions&quot;: {
+     &quot;type&quot;: &quot;system&quot;,
+     &quot;systemAction&quot;: {
+       // system action details
+     }
+   }
+}
+</code></pre>
+<p>Instead of:</p>
+<pre><code class="lang-json">{
+   // ... other fields
+  &quot;systemAction&quot;: {
+     // system action details
+  }
+}
+</code></pre>
+</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0531">Version 0.53.1</h2>

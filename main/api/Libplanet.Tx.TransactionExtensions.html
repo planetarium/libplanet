@@ -114,10 +114,243 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TransactionExtensions_Combine_Libplanet_Tx_ITxInvoice_Libplanet_Tx_ITxSigningMetadata_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TransactionExtensions.Combine(Libplanet.Tx.ITxInvoice%2CLibplanet.Tx.ITxSigningMetadata)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L70">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TransactionExtensions_Combine_" data-uid="Libplanet.Tx.TransactionExtensions.Combine*"></a>
+  <h4 id="Libplanet_Tx_TransactionExtensions_Combine_Libplanet_Tx_ITxInvoice_Libplanet_Tx_ITxSigningMetadata_" data-uid="Libplanet.Tx.TransactionExtensions.Combine(Libplanet.Tx.ITxInvoice,Libplanet.Tx.ITxSigningMetadata)">Combine(ITxInvoice, ITxSigningMetadata)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.UnsignedTx.html">UnsignedTx</a> instance by combining an <a class="xref" href="Libplanet.Tx.ITxInvoice.html">ITxInvoice</a>
+and an <a class="xref" href="Libplanet.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>.  Note that when the arguments are not instances
+of <a class="xref" href="Libplanet.Tx.TxInvoice.html">TxInvoice</a> or <a class="xref" href="Libplanet.Tx.TxSigningMetadata.html">TxSigningMetadata</a>, this constructor creates
+new instances of <a class="xref" href="Libplanet.Tx.TxInvoice.html">TxInvoice</a> and <a class="xref" href="Libplanet.Tx.TxSigningMetadata.html">TxSigningMetadata</a> by copying.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static UnsignedTx Combine(this ITxInvoice invoice, ITxSigningMetadata signingMetadata)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.ITxInvoice.html">ITxInvoice</a></td>
+        <td><span class="parametername">invoice</span></td>
+        <td><p>The invoice to combine with <code data-dev-comment-type="paramref" class="paramref">signingMetadata</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a></td>
+        <td><span class="parametername">signingMetadata</span></td>
+        <td><p>The signing metadata to combine with
+<code data-dev-comment-type="paramref" class="paramref">invoice</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.UnsignedTx.html">UnsignedTx</a></td>
+        <td><p>An <a class="xref" href="Libplanet.Tx.UnsignedTx.html">UnsignedTx</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TransactionExtensions_Sign__1_Libplanet_Tx_ITxInvoice_Libplanet_Crypto_PrivateKey_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TransactionExtensions.Sign%60%601(Libplanet.Tx.ITxInvoice%2CLibplanet.Crypto.PrivateKey%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L86">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TransactionExtensions_Sign_" data-uid="Libplanet.Tx.TransactionExtensions.Sign*"></a>
+  <h4 id="Libplanet_Tx_TransactionExtensions_Sign__1_Libplanet_Tx_ITxInvoice_Libplanet_Crypto_PrivateKey_System_Int64_" data-uid="Libplanet.Tx.TransactionExtensions.Sign``1(Libplanet.Tx.ITxInvoice,Libplanet.Crypto.PrivateKey,System.Int64)">Sign&lt;T&gt;(ITxInvoice, PrivateKey, Int64)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance by signing the given
+<code data-dev-comment-type="paramref" class="paramref">invoice</code> with the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Sign&lt;T&gt;(this ITxInvoice invoice, PrivateKey privateKey, long nonce)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.ITxInvoice.html">ITxInvoice</a></td>
+        <td><span class="parametername">invoice</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.ITxInvoice.html">ITxInvoice</a> to sign.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> to sign the transaction.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">nonce</span></td>
+        <td><p>The nonce to use for the transaction.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It determines the type of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> to create.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TransactionExtensions_Sign__1_Libplanet_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TransactionExtensions.Sign%60%601(Libplanet.Tx.IUnsignedTx%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L98">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TransactionExtensions_Sign_" data-uid="Libplanet.Tx.TransactionExtensions.Sign*"></a>
+  <h4 id="Libplanet_Tx_TransactionExtensions_Sign__1_Libplanet_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Tx.TransactionExtensions.Sign``1(Libplanet.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)">Sign&lt;T&gt;(IUnsignedTx, PrivateKey)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance by signing an
+<code data-dev-comment-type="paramref" class="paramref">unsignedTx</code> with a <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Sign&lt;T&gt;(this IUnsignedTx unsignedTx, PrivateKey privateKey)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
+        <td><span class="parametername">unsignedTx</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.IUnsignedTx.html">IUnsignedTx</a> instance to sign.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The private key to sign <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It determines the type of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> to create.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
+does not match the public key of <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TransactionExtensions_ValidateTxNonces_System_Collections_Generic_IEnumerable_Libplanet_Tx_ITransaction__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable%7BLibplanet.Tx.ITransaction%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L30">View Source</a>
   </span>
   <a id="Libplanet_Tx_TransactionExtensions_ValidateTxNonces_" data-uid="Libplanet.Tx.TransactionExtensions.ValidateTxNonces*"></a>
   <h4 id="Libplanet_Tx_TransactionExtensions_ValidateTxNonces_System_Collections_Generic_IEnumerable_Libplanet_Tx_ITransaction__System_Int64_" data-uid="Libplanet.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable{Libplanet.Tx.ITransaction},System.Int64)">ValidateTxNonces(IEnumerable&lt;ITransaction&gt;, Int64)</h4>
@@ -180,6 +413,99 @@ inconsistent genesis hashes.</p>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TransactionExtensions_Verify__1_Libplanet_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TransactionExtensions.Verify%60%601(Libplanet.Tx.IUnsignedTx%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L107">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TransactionExtensions_Verify_" data-uid="Libplanet.Tx.TransactionExtensions.Verify*"></a>
+  <h4 id="Libplanet_Tx_TransactionExtensions_Verify__1_Libplanet_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Tx.TransactionExtensions.Verify``1(Libplanet.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})">Verify&lt;T&gt;(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance by verifying a
+<code data-dev-comment-type="paramref" class="paramref">signature</code> of an <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Verify&lt;T&gt;(this IUnsignedTx unsignedTx, ImmutableArray&lt;byte&gt; signature)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
+        <td><span class="parametername">unsignedTx</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.IUnsignedTx.html">IUnsignedTx</a> instance to combine with
+<code data-dev-comment-type="paramref" class="paramref">signature</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="parametername">signature</span></td>
+        <td><p>The signature to combine with <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It determines the type of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> to create.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">signature</code> is not valid for <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
 
@@ -191,7 +517,7 @@ inconsistent genesis hashes.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TransactionExtensions.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TransactionExtensions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TransactionExtensions.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
