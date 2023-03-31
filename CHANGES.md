@@ -76,6 +76,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Address` now can be converted from and to `string` through `TypeConverter`.
+    [[#2711]]
+
  -  `Transaction<T>` no more supports deserialization from JSON when it contains
     custom actions.  However, it still can be deserialized from JSON when it
     contains a system action.  [[#2986]]
@@ -117,6 +120,7 @@ To be released.
 
 ### CLI tools
 
+[#2711]: https://github.com/planetarium/libplanet/issues/2711
 [#2986]: https://github.com/planetarium/libplanet/pull/2986
 [#2973]: https://github.com/planetarium/libplanet/issues/2973
 [#2996]: https://github.com/planetarium/libplanet/pull/2995
