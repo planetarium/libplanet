@@ -116,7 +116,7 @@ namespace Libplanet.Action
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
-                "pre-evaluation hash: {PreEvaluationHash}...",
+                "pre-evaluation hash {PreEvaluationHash}...",
                 block.Index,
                 ByteUtil.Hex(block.PreEvaluationHash.ByteArray)
             );
@@ -161,7 +161,7 @@ namespace Libplanet.Action
                     .ForContext("Subtag", "BlockEvaluationDuration")
                     .Information(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs} ms",
+                        "pre-evaluation hash {PreEvaluationHash} evaluated in {DurationMs} ms",
                         block.Transactions.Count,
                         block.Index,
                         ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
