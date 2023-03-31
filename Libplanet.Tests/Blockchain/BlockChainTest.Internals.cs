@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
+        [SkippableFact]
         public void ListStagedTransactions()
         {
             Skip.IfNot(
@@ -101,7 +101,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void ExecuteActions()
         {
             (var addresses, Transaction<DumbAction>[] txs) =
@@ -147,7 +147,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void UpdateTxExecutions(bool getTxExecutionViaStore)

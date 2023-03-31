@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlock()
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockProtocolVersion()
         {
             var protocolVersion = _blockChain.Tip.ProtocolVersion;
@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Blockchain
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockInvalidIndex()
         {
             _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
@@ -112,7 +112,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockInvalidPreviousHash()
         {
             _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
@@ -134,7 +134,7 @@ namespace Libplanet.Tests.Blockchain
                         TestUtils.CreateBlockCommit(invalidPreviousHashBlock)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockInvalidTimestamp()
         {
             _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Blockchain
                         TestUtils.CreateBlockCommit(invalidPreviousTimestamp)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockInvalidStateRootHash()
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Blockchain
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockLastCommitNullAtIndexOne()
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
@@ -222,7 +222,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockLastCommitUpperIndexOne()
         {
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
@@ -248,7 +248,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(_blockChain.Tip, block2);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockLastCommitFailsUnexpectedValidator()
         {
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
@@ -284,7 +284,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateNextBlockLastCommitFailsDropExpectedValidator()
         {
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
@@ -319,7 +319,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateBlockCommitGenesis()
         {
             InvalidBlockCommitException ibcm =
@@ -344,7 +344,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.NotNull(ibcm);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateBlockCommitFailsDifferentBlockHash()
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
@@ -365,7 +365,7 @@ namespace Libplanet.Tests.Blockchain
                         0)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateBlockCommitFailsDifferentHeight()
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
@@ -386,7 +386,7 @@ namespace Libplanet.Tests.Blockchain
                         0)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateBlockCommitFailsDifferentValidatorSet()
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
@@ -416,7 +416,7 @@ namespace Libplanet.Tests.Blockchain
                             VoteFlag.PreCommit).Sign(x)).ToImmutableArray())));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateBlockCommitFailsNullBlockCommit()
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
@@ -432,7 +432,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(validNextBlock, null));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateBlockCommitFailsInsufficientPower()
         {
             var privateKey1 = new PrivateKey();

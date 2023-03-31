@@ -42,13 +42,6 @@ namespace Libplanet.Tests.Blockchain
         private IStagePolicy<DumbAction> _stagePolicy;
 
         public BlockChainTest(ITestOutputHelper output)
-            : this(output, action => new MemoryStoreFixture(blockAction: action))
-        {
-        }
-
-        protected BlockChainTest(
-            ITestOutputHelper output,
-            Func<IAction, StoreFixture> getStoreFixture)
         {
             Log.Logger = _logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
@@ -61,7 +54,7 @@ namespace Libplanet.Tests.Blockchain
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
-            _fx = getStoreFixture(_policy.BlockAction);
+            _fx = GetStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
             _blockChain = BlockChain<DumbAction>.Create(
                 _policy,
@@ -91,7 +84,7 @@ namespace Libplanet.Tests.Blockchain
             _fx.Dispose();
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidatorSet()
         {
             var validatorSet = _blockChain.GetValidatorSet();
@@ -103,7 +96,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(TestUtils.ValidatorSet.TotalCount, validatorSet.TotalCount);
         }
 
-        [Fact]
+        [SkippableFact]
         public void CanFindBlockByIndex()
         {
             var genesis = _blockChain.Genesis;
@@ -114,7 +107,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(block, _blockChain[1]);
         }
 
-        [Fact]
+        [SkippableFact]
         public void CanonicalId()
         {
             var chain1 = _blockChain;
@@ -142,7 +135,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(chain1.Id, z.Id);
         }
 
-        [Fact]
+        [SkippableFact]
         public void BlockHashes()
         {
             var key = new PrivateKey();
@@ -171,7 +164,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProcessActions()
         {
             var store = new MemoryStore();
@@ -271,7 +264,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.NotNull(state);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ActionRenderersHaveDistinctContexts()
         {
             var policy = new NullBlockPolicy<DumbAction>();
@@ -309,7 +302,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(generatedRandomValueLogs[0], generatedRandomValueLogs[1]);
         }
 
-        [Fact]
+        [SkippableFact]
         public void RenderActionsAfterBlockIsRendered()
         {
             var policy = new NullBlockPolicy<DumbAction>();
@@ -347,7 +340,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, blockLogs[1].Index);
         }
 
-        [Fact]
+        [SkippableFact]
         public void RenderActionsAfterAppendComplete()
         {
             var policy = new NullBlockPolicy<DumbAction>();
@@ -380,7 +373,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, blockChain.Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public void FindNextHashes()
         {
             var key = new PrivateKey();
@@ -423,7 +416,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(new[] { block0.Hash, block1.Hash }, hashes);
         }
 
-        [Fact]
+        [SkippableFact]
         public void FindNextHashesAfterFork()
         {
             var key = new PrivateKey();
@@ -449,7 +442,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
         }
 
-        [Fact]
+        [SkippableFact]
         public void Fork()
         {
             var key = new PrivateKey();
@@ -478,7 +471,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(3, forked.Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkAndSwapCanonicity()
         {
             // Fork is not canonical.
@@ -492,7 +485,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(workspace.IsCanonical);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkWithBlockNotExistInChain()
         {
             var key = new PrivateKey();
@@ -518,7 +511,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Fork(newBlock.Hash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkChainWithIncompleteBlockStates()
         {
             var fx = new MemoryStoreFixture(_policy.BlockAction);
@@ -529,7 +522,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(6, forked.Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public void StateAfterForkingAndAddingExistingBlock()
         {
             var miner = new PrivateKey();
@@ -559,7 +552,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"foo,bar", state);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkShouldSkipExecuteAndRenderGenesis()
         {
             var miner = new PrivateKey();
@@ -626,7 +619,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void DetectInvalidTxNonce()
         {
             var privateKey = new PrivateKey();
@@ -674,7 +667,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b2, CreateBlockCommit(b2));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkTxNonce()
         {
             // An active account, so that its some recent transactions became "stale" due to a fork.
@@ -731,7 +724,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, forked.GetNextTxNonce(lessActiveAddress));
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetBlockLocator()
         {
             var key = new PrivateKey();
@@ -760,7 +753,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void Swap(bool render)
@@ -955,7 +948,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetBlockCommit()
         {
             // Note: Getting BlockCommit from PoW block test is not present.
@@ -983,7 +976,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Hash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetBlockCommitAfterFork()
         {
             Block<DumbAction> block1 = _blockChain.ProposeBlock(new PrivateKey());
@@ -1004,7 +997,7 @@ namespace Libplanet.Tests.Blockchain
                 block3.LastCommit);
         }
 
-        [Fact]
+        [SkippableFact]
         public void CleanupBlockCommitStore()
         {
             BlockCommit blockCommit1 = CreateBlockCommit(
@@ -1024,7 +1017,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void SwapForSameTip(bool render)
@@ -1037,7 +1030,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(prevRecords, _renderer.Records);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void SwapWithoutReorg(bool render)
@@ -1054,7 +1047,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(prevRecords, _renderer.ReorgRecords);
         }
 
-        [Fact]
+        [SkippableFact]
         public void TreatGoingBackwardAsReorg()
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
@@ -1074,7 +1067,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(end.End);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void ReorgIsUnableToHeterogenousChain(bool render)
@@ -1123,7 +1116,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetStatesOnCreatingBlockChain()
         {
             bool invoked = false;
@@ -1166,7 +1159,7 @@ namespace Libplanet.Tests.Blockchain
 
         // This is a regression test for:
         // https://github.com/planetarium/libplanet/issues/189#issuecomment-482443607.
-        [Fact]
+        [SkippableFact]
         public void GetStateOnlyDrillsDownUntilRequestedAddressesAreFound()
         {
             var policy = new NullBlockPolicy<DumbAction>();
@@ -1219,7 +1212,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(testingDepth >= callCount);
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
             var blockPolicy = new NullBlockPolicy<DumbAction>();
@@ -1257,7 +1250,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetStateReturnsValidStateAfterFork()
         {
             var privateKey = new PrivateKey();
@@ -1339,7 +1332,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void FindBranchPoint()
         {
             var key = new PrivateKey();
@@ -1401,7 +1394,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetNextTxNonce()
         {
             var privateKey = new PrivateKey();
@@ -1474,7 +1467,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(6, _blockChain.GetNextTxNonce(address));
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetNextTxNonceWithStaleTx()
         {
             var privateKey = new PrivateKey();
@@ -1507,7 +1500,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ValidateTxNonces()
         {
             var privateKey = new PrivateKey();
@@ -1561,7 +1554,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(b3b, CreateBlockCommit(b3b)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void MakeTransactionWithSystemAction()
         {
             var foo = Currency.Uncapped("FOO", 2, minters: null);
@@ -1590,7 +1583,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(action, transaction.SystemAction);
         }
 
-        [Fact]
+        [SkippableFact]
         public void MakeTransactionWithCustomActions()
         {
             var privateKey = new PrivateKey();
@@ -1618,7 +1611,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(actions, transaction.CustomActions);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task MakeTransactionConcurrency()
         {
             var privateKey = new PrivateKey();
@@ -1645,7 +1638,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void BlockActionWithMultipleAddress()
         {
             var miner0 = _blockChain.Genesis.Miner;
@@ -1844,6 +1837,15 @@ namespace Libplanet.Tests.Blockchain
             return (signer, addresses, chain);
         }
 
+        /// <summary>
+        /// Configures the store fixture that every test in this class depends on.
+        /// Subclasses should override this.
+        /// </summary>
+        /// <param name="blockAction">The block action to use.</param>
+        /// <returns>The store fixture that every test in this class depends on.</returns>
+        protected virtual StoreFixture GetStoreFixture(IAction blockAction) =>
+            new MemoryStoreFixture(blockAction: blockAction);
+
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default,
@@ -1899,7 +1901,7 @@ namespace Libplanet.Tests.Blockchain
             return (addresses, txs);
         }
 
-        [Fact]
+        [SkippableFact]
         private void TipChanged()
         {
             var genesis = _blockChain.Genesis;
@@ -1924,7 +1926,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.BlockRecords);
         }
 
-        [Fact]
+        [SkippableFact]
         private void CreateWithGenesisBlock()
         {
             var storeFixture = new MemoryStoreFixture();
@@ -1975,7 +1977,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         private void ConstructWithUnexpectedGenesisBlock()
         {
             var policy = new NullBlockPolicy<DumbAction>();
@@ -2003,7 +2005,7 @@ namespace Libplanet.Tests.Blockchain
             });
         }
 
-        [Fact]
+        [SkippableFact]
         private void FilterLowerNonceTxAfterStaging()
         {
             var privateKey = new PrivateKey();
@@ -2035,7 +2037,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
         }
 
-        [Fact]
+        [SkippableFact]
         private void CheckIfTxPolicyExceptionHasInnerException()
         {
             var policy = new NullPolicyButTxPolicyAlwaysThrows<DumbAction>(
@@ -2081,7 +2083,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.NotNull(e.InnerException);
         }
 
-        [Fact]
+        [SkippableFact]
         private void ValidateNextBlockCommitOnValidatorSetChange()
         {
             var storeFixture = new MemoryStoreFixture();
