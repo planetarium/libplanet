@@ -4,12 +4,14 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Tests.Store
 {
@@ -101,17 +103,17 @@ namespace Libplanet.Tests.Store
                     ? rh
                     : (HashDigest<SHA256>?)null;
             Proposer = TestUtils.GenesisProposer;
-            GenesisBlock = TestUtils.ProposeGenesis<DumbAction>(
+            var preEval = TestUtils.ProposeGenesis<DumbAction>(
                 proposer: Proposer.PublicKey,
-                validatorSet: TestUtils.ValidatorSet
-            ).Evaluate(
-                privateKey: Proposer,
-                blockAction: blockAction,
-                nativeTokenPredicate: nativeTokens is null
-                    ? _ => true
-                    : (Predicate<Currency>)nativeTokens.Contains,
-                stateStore: stateStore
-            );
+                validatorSet: TestUtils.ValidatorSet);
+            var evals = BlockChain<DumbAction>.EvaluateGenesis(
+                preEval,
+                blockAction,
+                nativeTokens is null ? _ => true : (Predicate<Currency>)nativeTokens.Contains);
+            var stateRootHash = BlockChain<DumbAction>.DetermineGenesisStateRootHash(evals);
+            GenesisBlock = preEval.Sign(Proposer, stateRootHash);
+            stateStore.Commit(null, evals.GetTotalDelta(
+                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,

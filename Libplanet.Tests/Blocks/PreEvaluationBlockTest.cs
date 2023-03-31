@@ -37,12 +37,13 @@ namespace Libplanet.Tests.Blocks
 
             using (var fx = new MemoryStoreFixture())
             {
-                Block<Arithmetic> genesis = preEvalGenesis.Evaluate(
-                    privateKey: _contents.GenesisKey,
-                    blockAction: blockAction,
-                    nativeTokenPredicate: _ => true,
-                    stateStore: fx.StateStore
-                );
+                Block<Arithmetic> genesis = preEvalGenesis.Sign(
+                    _contents.GenesisKey,
+                    BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
+                        BlockChain<Arithmetic>.EvaluateGenesis(
+                            preEvalGenesis,
+                            blockAction,
+                            _ => true)));
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -99,11 +100,10 @@ namespace Libplanet.Tests.Blocks
 
             using (var fx = new MemoryStoreFixture())
             {
-                HashDigest<SHA256> genesisStateRootHash = preEvalGenesis.DetermineStateRootHash(
-                    blockAction: blockAction,
-                    nativeTokenPredicate: _ => true,
-                    stateStore: fx.StateStore
-                );
+                HashDigest<SHA256> genesisStateRootHash =
+                    BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
+                        BlockChain<Arithmetic>.EvaluateGenesis(
+                            preEvalGenesis, blockAction, _ => true));
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block<Arithmetic> genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
@@ -114,8 +114,7 @@ namespace Libplanet.Tests.Blocks
                     stagePolicy,
                     fx.Store,
                     fx.StateStore,
-                    genesis
-                );
+                    genesis);
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =

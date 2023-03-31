@@ -561,25 +561,22 @@ namespace Libplanet.Tests.Blockchain
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
-                var genesis = ProposeGenesis(
-                    GenesisProposer.PublicKey,
-                    transactions: new[]
-                    {
-                        Transaction<DumbAction>.Create(
-                            0,
-                            new PrivateKey(),
-                            null,
-                            new[] { action },
-                            null,
-                            DateTimeOffset.UtcNow
-                        ),
-                    }
-                ).Evaluate(
+                var genesis = ProposeGenesisBlock(
+                    ProposeGenesis(
+                        GenesisProposer.PublicKey,
+                        transactions: new[]
+                        {
+                            Transaction<DumbAction>.Create(
+                                0,
+                                new PrivateKey(),
+                                null,
+                                new[] { action },
+                                null,
+                                DateTimeOffset.UtcNow),
+                        }),
                     privateKey: GenesisProposer,
                     blockAction: _policy.BlockAction,
-                    nativeTokenPredicate: _policy.NativeTokens.Contains,
-                    stateStore: new TrieStateStore(new MemoryKeyValueStore())
-                );
+                    nativeTokenPredicate: _policy.NativeTokens.Contains);
                 Assert.Equal(1, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
                 Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
@@ -598,7 +595,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(0, renderer.ActionRecords.Count);
                 Assert.Equal(0, renderer.BlockRecords.Count);
                 // NOTE: Validaton and write to state store
-                Assert.Equal(3, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
                 Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
                 Block<DumbAction> block1 = blockChain.ProposeBlock(miner);
@@ -614,7 +611,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(0, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
                 // NOTE: AttachStateRootHash, Append
-                Assert.Equal(3, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
+                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
                 Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
             }
         }
@@ -1074,15 +1071,13 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
-                Block<DumbAction> genesis2 = ProposeGenesis<DumbAction>(
-                    timestamp: DateTimeOffset.UtcNow,
-                    proposer: GenesisProposer.PublicKey
-                ).Evaluate(
-                    GenesisProposer,
-                    _policy.BlockAction,
-                    _policy.NativeTokens.Contains,
-                    fx2.StateStore
-                );
+                Block<DumbAction> genesis2 = ProposeGenesisBlock(
+                    ProposeGenesis<DumbAction>(
+                        timestamp: DateTimeOffset.UtcNow,
+                        proposer: GenesisProposer.PublicKey),
+                    privateKey: GenesisProposer,
+                    blockAction: _policy.BlockAction,
+                    nativeTokenPredicate: _policy.NativeTokens.Contains);
                 var chain2 = BlockChain<DumbAction>.Create(
                     _policy,
                     _stagePolicy,
@@ -1130,23 +1125,21 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = ProposeGenesis(
-                GenesisProposer.PublicKey,
-                new[]
-                {
-                    Transaction<DumbAction>.Create(
-                        0,
-                        new PrivateKey(),
-                        null,
-                        Array.Empty<DumbAction>()
-                    ),
-                }
-            ).Evaluate(
-                privateKey: GenesisProposer,
-                blockAction: policy.BlockAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: stateStore
-            );
+            Block<DumbAction> genesisWithTx = ProposeGenesisBlock(
+                ProposeGenesis(
+                    GenesisProposer.PublicKey,
+                    new[]
+                    {
+                        Transaction<DumbAction>.Create(
+                            0,
+                            new PrivateKey(),
+                            null,
+                            Array.Empty<DumbAction>()
+                        ),
+                    }),
+                GenesisProposer,
+                policy.BlockAction,
+                policy.NativeTokens.Contains);
             var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1717,15 +1710,11 @@ namespace Libplanet.Tests.Blockchain
             IBlockPolicy<DumbAction> blockPolicy = new NullBlockPolicy<DumbAction>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            Block<DumbAction> genesisBlock = ProposeGenesis<DumbAction>(
-                GenesisProposer.PublicKey
-            ).Evaluate(
-                privateKey: GenesisProposer,
-                blockAction: blockPolicy.BlockAction,
-                nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
-                stateStore: new TrieStateStore(new MemoryKeyValueStore())
-            );
-
+            Block<DumbAction> genesisBlock = ProposeGenesisBlock(
+                ProposeGenesis<DumbAction>(GenesisProposer.PublicKey),
+                GenesisProposer,
+                blockPolicy.BlockAction,
+                blockPolicy.NativeTokens.Contains);
             var chainStates = new BlockChainStates(store, stateStore);
             var chain = BlockChain<DumbAction>.Create(
                 blockPolicy,
@@ -2056,13 +2045,11 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(),
                 null,
                 Array.Empty<DumbAction>());
-            var genesisWithTx = ProposeGenesis(
-                GenesisProposer.PublicKey,
-                new[] { genesisTx }).Evaluate(
+            var genesisWithTx = ProposeGenesisBlock(
+                ProposeGenesis(GenesisProposer.PublicKey, new[] { genesisTx }),
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: new TrieStateStore(new MemoryKeyValueStore()));
+                nativeTokenPredicate: policy.NativeTokens.Contains);
 
             var chain = BlockChain<DumbAction>.Create(
                 policy,

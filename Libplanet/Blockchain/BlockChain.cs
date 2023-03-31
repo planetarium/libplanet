@@ -18,7 +18,6 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
@@ -559,12 +558,9 @@ namespace Libplanet.Blockchain
                 transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Propose();
-            return preEval.Evaluate(
-                privateKey,
-                blockAction,
-                nativeTokenPredicate,
-                new TrieStateStore(new DefaultKeyValueStore(null))
-            );
+            IReadOnlyList<ActionEvaluation> evals = EvaluateGenesis(
+                preEval, blockAction, nativeTokenPredicate);
+            return preEval.Sign(privateKey, DetermineGenesisStateRootHash(evals));
         }
 
         /// <summary>

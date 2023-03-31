@@ -18,6 +18,7 @@ using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -504,6 +505,21 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval.Sign(miner, stateRootHash);
         }
 
+        public static Block<T> ProposeGenesisBlock<T>(
+            PreEvaluationBlock<T> preEval,
+            PrivateKey privateKey,
+            IAction blockAction = null,
+            Predicate<Currency> nativeTokenPredicate = null)
+                where T : IAction, new()
+        {
+            var evals = BlockChain<T>.EvaluateGenesis(
+                preEval,
+                blockAction,
+                nativeTokenPredicate ?? (Predicate<Currency>)(_ => true));
+            var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(evals);
+            return preEval.Sign(privateKey, stateRootHash);
+        }
+
         public static PreEvaluationBlock<T> ProposeNext<T>(
             Block<T> previousBlock,
             IReadOnlyList<Transaction<T>> transactions = null,
@@ -617,10 +633,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     validatorSet,
                     timestamp,
                     protocolVersion);
-                var stateRootHash = preEval.DetermineStateRootHash(
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
-                    stateStore: new TrieStateStore(new MemoryKeyValueStore()));
+                var evals = BlockChain<T>.EvaluateGenesis(
+                    preEval,
+                    policy.BlockAction,
+                    policy.NativeTokens.Contains);
+                var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(evals);
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
                         preEval,
@@ -629,11 +646,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             null,
                             preEval.Header.DeriveBlockHash(stateRootHash, null)
                         ))
-                    : preEval.Evaluate(
-                        privateKey: GenesisProposer,
-                        blockAction: policy.BlockAction,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
-                        stateStore: new TrieStateStore(new MemoryKeyValueStore()));
+                    : preEval.Sign(GenesisProposer, stateRootHash);
             }
 
             ValidatingActionRenderer<T> validator = null;
