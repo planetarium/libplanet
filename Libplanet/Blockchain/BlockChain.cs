@@ -431,10 +431,8 @@ namespace Libplanet.Blockchain
             // to check the state root hash validity
             var preEval = new PreEvaluationBlock<T>(
                 genesisBlock.Header, genesisBlock.Transactions);
-            var computedStateRootHash = preEval.DetermineStateRootHash(
-                policy.BlockAction,
-                policy.NativeTokens.Contains,
-                new TrieStateStore(new DefaultKeyValueStore(null)));
+            var evals = EvaluateGenesis(preEval, policy.BlockAction, policy.NativeTokens.Contains);
+            var computedStateRootHash = DetermineGenesisStateRootHash(evals);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
@@ -468,11 +466,9 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            // Evaluate once more to write to state store
-            _ = preEval.DetermineStateRootHash(
-            policy.BlockAction,
-            policy.NativeTokens.Contains,
-            stateStore);
+            var delta = evals.GetTotalDelta(
+                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
             actionEvaluator ??= new ActionEvaluator(
