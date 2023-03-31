@@ -217,6 +217,7 @@ namespace Libplanet.Action
         internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction<T> tx)
             where T : IAction, new()
         {
+            // TODO: This method should take IUnsignedTx instead of Transaction<T>
             // FIXME this static method(and related APIs) should be removed since it doesn't
             // compatible with action type loader.
             // see also:
@@ -504,10 +505,11 @@ namespace Libplanet.Action
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ITransaction"/>s in evaluation
         /// order with the following properties:
         /// <list type="bullet">
-        /// <item><see cref="ITransaction"/>s with the same <see cref="ITransaction.Signer"/>
+        /// <item><see cref="ITransaction"/>s with the same <see cref="ITxSigningMetadata.Signer"/>
         /// value appear consecutive in the list.</item>
-        /// <item><see cref="ITransaction"/>s with the same <see cref="ITransaction.Signer"/>
-        /// value are ordered by <see cref="ITransaction.Nonce"/> value in ascending order.</item>
+        /// <item><see cref="ITransaction"/>s with the same <see cref="ITxSigningMetadata.Signer"/>
+        /// value are ordered by <see cref="ITxSigningMetadata.Nonce"/> value in ascending order.
+        /// </item>
         /// </list>
         /// </returns>
         /// <remarks>

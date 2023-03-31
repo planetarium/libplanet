@@ -3,8 +3,7 @@ using System;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// Serves as the base class for exceptions thrown by
-    /// <see cref="Transaction{T}.Validate()"/>.
+    /// Serves as the base class for exceptions thrown when a transaction is invalid.
     /// </summary>
     public abstract class InvalidTxException : Exception
     {

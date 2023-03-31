@@ -107,9 +107,6 @@ namespace Libplanet.Blocks
             TxId? prevId = null;
             foreach (Transaction<T> tx in transactions)
             {
-                // FIXME: Transaction<T> should disallow illegal states to be represented
-                // as its instances.  https://github.com/planetarium/libplanet/issues/1164
-                tx.Validate();
                 if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
                 {
                     throw new ArgumentException(
@@ -185,7 +182,7 @@ namespace Libplanet.Blocks
                     );
                 }
 
-                byte[] payload = tx.Serialize(true);
+                byte[] payload = tx.Serialize();
                 hasher.TransformBlock(payload, 0, payload.Length, null, 0);
                 prevId = tx.Id;
             }

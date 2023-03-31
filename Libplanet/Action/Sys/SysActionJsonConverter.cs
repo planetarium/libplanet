@@ -6,9 +6,10 @@ using Bencodex.Types;
 
 namespace Libplanet.Action.Sys
 {
-    internal class SysActionJsonConverter : JsonConverter<IAction>
+    internal sealed class SysActionJsonConverter : JsonConverter<IAction>
     {
-        private BencodexJsonConverter _bencodexJsonConverter = new BencodexJsonConverter();
+        private static readonly BencodexJsonConverter BencodexJsonConverter
+            = new BencodexJsonConverter();
 
         public override bool CanConvert(Type typeToConvert) =>
             typeof(IAction).IsAssignableFrom(typeToConvert);
@@ -19,7 +20,7 @@ namespace Libplanet.Action.Sys
             JsonSerializerOptions options
         )
         {
-            IValue? serialized = _bencodexJsonConverter.Read(ref reader, typeToConvert, options);
+            IValue? serialized = BencodexJsonConverter.Read(ref reader, typeToConvert, options);
             if (serialized is Bencodex.Types.Dictionary actionValues)
             {
                 return Registry.Deserialize(actionValues);
@@ -35,7 +36,7 @@ namespace Libplanet.Action.Sys
         )
         {
             Bencodex.Types.Dictionary serialized = Registry.Serialize(value);
-            _bencodexJsonConverter.Write(writer, serialized, options);
+            BencodexJsonConverter.Write(writer, serialized, options);
         }
     }
 }

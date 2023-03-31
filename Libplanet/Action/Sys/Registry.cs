@@ -38,10 +38,20 @@ namespace Libplanet.Action.Sys
             return action;
         }
 
-        public static Bencodex.Types.Dictionary Serialize(IAction action) =>
-            Bencodex.Types.Dictionary.Empty
-                .Add("type_id", (int)GetTypeId(action))
+        public static Bencodex.Types.Dictionary Serialize(IAction action)
+        {
+            var typeId = GetTypeId(action);
+            if (typeId is null)
+            {
+                throw new ArgumentException("Unknown system action type.", nameof(action));
+            }
+
+            return Bencodex.Types.Dictionary.Empty
+                .Add("type_id", (int)typeId)
                 .Add("values", action.PlainValue);
+        }
+
+        public static bool IsSystemAction(IAction action) => GetTypeId(action) is { };
 
         private static IAction Instantiate(TypeId typeId) =>
             typeId switch
@@ -56,13 +66,13 @@ namespace Libplanet.Action.Sys
                 ),
             };
 
-        private static TypeId GetTypeId(IAction action) =>
+        private static TypeId? GetTypeId(IAction action) =>
             action switch
             {
                 Mint _ => TypeId.Mint,
                 Transfer _ => TypeId.Transfer,
                 Initialize _ => TypeId.Initialize,
-                _ => throw new ArgumentException("Unknown system action type.", nameof(action)),
+                _ => null,
             };
     }
 }

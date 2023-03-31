@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections.Immutable;
 using Bencodex;
 using Bencodex.Types;
 using GraphQL;
@@ -153,14 +154,12 @@ namespace Libplanet.Explorer.Queries
                     Address signer = publicKey.ToAddress();
                     long nonce = context.GetArgument<long?>("nonce") ??
                         chain.GetNextTxNonce(signer);
-                    Transaction<T> unsignedTransaction =
-                        Transaction<T>.CreateUnsigned(
-                            nonce,
-                            publicKey,
-                            chain.Genesis.Hash,
-                            new[] { action }
-                        );
-                    return unsignedTransaction.Serialize(false);
+                    var sigMeta = new TxSigningMetadata(publicKey, nonce);
+                    var invoice = new TxInvoice(
+                        chain.Genesis.Hash,
+                        actions: new TxCustomActionList(new IAction[] { action }));
+                    var unsignedTx = new UnsignedTx(invoice, sigMeta);
+                    return unsignedTx.SerializeUnsignedTx();
                 }
             );
 
@@ -200,28 +199,14 @@ namespace Libplanet.Explorer.Queries
                 ),
                 resolve: context =>
                 {
-                    byte[] signature = ByteUtil.ParseHex(
+                    ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
                         context.GetArgument<string>("signature")
                     );
-                    Transaction<T> unsignedTransaction =
-                        Transaction<T>.Deserialize(
-                            ByteUtil.ParseHex(
-                                context.GetArgument<string>("unsignedTransaction")
-                            ),
-                            false
-                        );
-                    var signedTransaction = unsignedTransaction.SystemAction is { } sysAction
-                        ? new Transaction<T>(
-                            metadata: new TxMetadata(unsignedTransaction),
-                            systemAction: sysAction,
-                            signature: signature
-                        )
-                        : new Transaction<T>(
-                            metadata: new TxMetadata(unsignedTransaction),
-                            customActions: unsignedTransaction.CustomActions,
-                            signature: signature
-                        );
-                    return ByteUtil.Hex(signedTransaction.Serialize(true));
+                    IUnsignedTx unsignedTx = TxMarshaler.DeserializeUnsignedTx<T>(
+                        ByteUtil.ParseHex(context.GetArgument<string>("unsignedTransaction"))
+                    );
+                    var signedTransaction = new Transaction<T>(unsignedTx, signature);
+                    return ByteUtil.Hex(signedTransaction.Serialize());
                 }
             );
 

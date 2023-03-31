@@ -72,7 +72,7 @@ namespace Libplanet.Tests
                 .Add(SignatureKey, _fx.Genesis.Signature ?? default)
                 .Add(HashKey, _fx.Genesis.Hash.ByteArray);
             IValue expectedGenesisTx = new List(
-                _fx.Genesis.Transactions.Select(tx => tx.Serialize(true)));
+                _fx.Genesis.Transactions.Select(tx => tx.Serialize()));
             _marshaledGenesis = Dictionary.Empty
                 .Add(HeaderKey, expectedGenesisHeader)
                 .Add(TransactionsKey, expectedGenesisTx);
@@ -110,7 +110,7 @@ namespace Libplanet.Tests
                 .Add(SignatureKey, _fx.HasTx.Signature ?? default)
                 .Add(HashKey, _fx.HasTx.Hash.ByteArray);
             IValue expectedHasTxTxs = new List(
-                _fx.HasTx.Transactions.Select(tx => tx.Serialize(true)));
+                _fx.HasTx.Transactions.Select(tx => tx.Serialize()));
             _marshaledHasTx = Dictionary.Empty
                 .Add(HeaderKey, expectedHasTxHeader)
                 .Add(TransactionsKey, expectedHasTxTxs);
@@ -179,14 +179,26 @@ namespace Libplanet.Tests
         [Fact]
         public void UnmarshalBlock()
         {
+            _output.WriteLine(
+                "{0} = {1}",
+                nameof(_marshaledGenesis),
+                _marshaledGenesis.Inspect(true));
             Assert.Equal(
                 _fx.Genesis,
                 BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledGenesis)
             );
+            _output.WriteLine(
+                "{0} = {1}",
+                nameof(_marshaledNext),
+                _marshaledNext.Inspect(true));
             Assert.Equal(
                 _fx.Next,
                 BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledNext)
             );
+            _output.WriteLine(
+                "{0} = {1}",
+                nameof(_marshaledHasTx),
+                _marshaledHasTx.Inspect(true));
             Assert.Equal(
                 _fx.HasTx,
                 BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledHasTx)

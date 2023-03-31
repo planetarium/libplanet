@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -67,18 +68,19 @@ namespace Libplanet.Tests.Fixtures
             Block1Tx0Key = PrivateKey.FromString(
                 "2d5c20079bc4b2e6eab9ecbb405da8ba6590c436edfb07b7d4466563d7dac096");
             Block1Tx0 = new Transaction<Arithmetic>(
-                metadata: new TxMetadata(Block1Tx0Key.PublicKey)
-                {
-                    Nonce = 0L,
-                    GenesisHash = GenesisHash,
-                    UpdatedAddresses = ImmutableHashSet.Create(Block1Tx0Key.ToAddress()),
-                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
-                },
-                customActions: new[]
-                {
-                    Arithmetic.Add(10), Arithmetic.Add(50), Arithmetic.Sub(25),
-                },
-                signature: ByteUtil.ParseHex(
+                new UnsignedTx(
+                    new TxInvoice(
+                        genesisHash: GenesisHash,
+                        updatedAddresses: new[] { Block1Tx0Key.ToAddress() },
+                        timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
+                        actions: new TxCustomActionList(new IAction[]
+                        {
+                            Arithmetic.Add(10), Arithmetic.Add(50), Arithmetic.Sub(25),
+                        })
+                    ),
+                    new TxSigningMetadata(Block1Tx0Key.PublicKey, nonce: 0L)
+                ),
+                signature: ByteUtil.ParseHexToImmutable(
                     "30440220422c85ea44845a56253654d95595ad06d6f09f862ca71b97e986ecbb453eac" +
                     "ae0220606e76276e40fa8f0795b880f712531fd6bd9db253bd8ab9c86aa4ab7d791d37"
                 )
@@ -86,15 +88,16 @@ namespace Libplanet.Tests.Fixtures
             Block1Tx1Key = PrivateKey.FromString(
                 "105341c78dfb0dd313b961081630444c2586a1f01fb0c625368ffdc9136cfa30");
             Block1Tx1 = new Transaction<Arithmetic>(
-                metadata: new TxMetadata(Block1Tx1Key.PublicKey)
-                {
-                    Nonce = 1L,
-                    GenesisHash = GenesisHash,
-                    UpdatedAddresses = ImmutableHashSet.Create(Block1Tx1Key.ToAddress()),
-                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
-                },
-                customActions: new[] { Arithmetic.Add(30) },
-                signature: ByteUtil.ParseHex(
+                new UnsignedTx(
+                    new TxInvoice(
+                        genesisHash: GenesisHash,
+                        updatedAddresses: new[] { Block1Tx1Key.ToAddress() },
+                        timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
+                        actions: new TxCustomActionList(new IAction[] { Arithmetic.Add(30) })
+                    ),
+                    new TxSigningMetadata(Block1Tx1Key.PublicKey, nonce: 1L)
+                ),
+                signature: ByteUtil.ParseHexToImmutable(
                     "3045022100abe3caabf2a46a297f2e4496f2c46d7e2f723e75fc42025d19f3ed7fce382" +
                     "d4e02200ffd36f7bef759b6c7ab43bc0f8959a0c463f88fd0f1faeaa209a8661506c4f0"
                 )
@@ -144,8 +147,6 @@ namespace Libplanet.Tests.Fixtures
         [Fact]
         public void ValidateBlockContentFixture()
         {
-            Block1Tx0.Validate(Block1Tx0Key);
-            Block1Tx1.Validate(Block1Tx1Key);
             Assert.Equal(Block1TxHash, Block1Content.TxHash);
             Assert.Equal(Block1TxHash, Block1ContentPv1.TxHash);
         }

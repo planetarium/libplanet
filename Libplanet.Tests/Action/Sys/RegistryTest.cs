@@ -88,5 +88,14 @@ namespace Libplanet.Tests.Action.Sys
                 e.Message,
                 StringComparison.InvariantCultureIgnoreCase);
         }
+
+        [Fact]
+        public void IsSystemAction()
+        {
+            var random = new Random();
+            Address addr = random.NextAddress();
+            Assert.True(Registry.IsSystemAction(new Transfer(addr, FooCurrency * 123)));
+            Assert.False(Registry.IsSystemAction(new DumbAction(addr, "foo")));
+        }
     }
 }

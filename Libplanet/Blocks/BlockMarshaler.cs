@@ -130,7 +130,7 @@ namespace Libplanet.Blocks
             new List(txs.Select(tx => MarshalTransaction<T>(tx)).Cast<IValue>());
 
         public static Binary MarshalTransaction<T>(this Transaction<T> tx)
-            where T : IAction, new() => new Binary(tx.Serialize(true));
+            where T : IAction, new() => new Binary(tx.Serialize());
 
         public static Dictionary MarshalBlock(
             Dictionary marshaledBlockHeader,
@@ -243,7 +243,7 @@ namespace Libplanet.Blocks
             where T : IAction, new()
         =>
             marshaled
-                .Select(tx => Transaction<T>.Deserialize(((Binary)tx).ToByteArray(), true))
+                .Select(tx => Transaction<T>.Deserialize(((Binary)tx).ToByteArray()))
                 .ToImmutableArray();
 
         public static IReadOnlyList<Transaction<T>> UnmarshalBlockTransactions<T>(

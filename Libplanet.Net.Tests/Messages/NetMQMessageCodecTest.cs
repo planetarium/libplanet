@@ -98,7 +98,7 @@ namespace Libplanet.Net.Tests.Messages
                         new byte[0],
                     });
                 case MessageContent.MessageType.Tx:
-                    return new Libplanet.Net.Messages.TxMsg(transaction.Serialize(true));
+                    return new Libplanet.Net.Messages.TxMsg(transaction.Serialize());
                 case MessageContent.MessageType.FindNeighbors:
                     return new FindNeighborsMsg(privateKey.ToAddress());
                 case MessageContent.MessageType.Neighbors:
