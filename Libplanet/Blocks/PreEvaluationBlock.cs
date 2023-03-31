@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
-using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
-using Serilog;
-using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blocks
 {
@@ -118,7 +113,7 @@ namespace Libplanet.Blocks
         /// <see langword="null"/> signatures.</remarks>
         // FIXME: Take narrower input instead of a whole BlockChain<T>.
         public Block<T> Evaluate(PrivateKey privateKey, BlockChain<T> blockChain) =>
-            EvaluateActions(privateKey, blockChain).Block;
+            Sign(privateKey, blockChain.DetermineBlockStateRootHash(this, out _));
 
         /// <summary>
         /// Signs the block content with the given <paramref name="stateRootHash"/>.
@@ -144,94 +139,6 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> sig = Header.MakeSignature(privateKey, stateRootHash);
             return new Block<T>(
                 this, (stateRootHash, sig, Header.DeriveBlockHash(stateRootHash, sig)));
-        }
-
-        /// <summary>
-        /// Evaluates all actions in the <see cref="Transactions"/> and an optional
-        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and determines
-        /// the <see cref="Block{T}.StateRootHash"/>.
-        /// </summary>
-        /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
-        /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
-        public HashDigest<SHA256> DetermineStateRootHash(BlockChain<T> blockChain) =>
-            DetermineStateRootHash(blockChain, out _);
-
-        /// <summary>
-        /// Evaluates all actions in the <see cref="Transactions"/> and an optional
-        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and determines
-        /// the <see cref="Block{T}.StateRootHash"/>.
-        /// </summary>
-        /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
-        /// <param name="statesDelta">Returns made changes on states.</param>
-        /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
-        public HashDigest<SHA256> DetermineStateRootHash(
-            BlockChain<T> blockChain,
-            out IImmutableDictionary<string, IValue> statesDelta
-        ) =>
-            CalculateStateRootHash(blockChain, out statesDelta).StateRootHash;
-
-        internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
-            EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
-        {
-            // FIXME: Take narrower input instead of a whole BlockChain<T>.
-            (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =
-                CalculateStateRootHash(blockChain, out _);
-            return (Sign(privateKey, stateRootHash), evals);
-        }
-
-        internal (
-            HashDigest<SHA256> StateRootHash,
-            IReadOnlyList<ActionEvaluation> ActionEvaluations
-        ) CalculateStateRootHash(
-            BlockChain<T> blockChain,
-            out IImmutableDictionary<string, IValue> statesDelta
-        )
-        {
-            // FIXME: Take narrower input instead of a whole BlockChain<T>.
-            // FIXME: Add a dedicate unit test for this method.
-            ILogger logger = Log.ForContext<PreEvaluationBlock<T>>();
-            blockChain._rwlock.EnterUpgradeableReadLock();
-            try
-            {
-                IReadOnlyList<ActionEvaluation> actionEvaluations =
-                    blockChain.ActionEvaluator.Evaluate(this);
-                logger.Verbose(
-                    "Start to calculate the total delta of states made in block #{BlockIndex}...",
-                    Index
-                );
-                statesDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
-                logger.Verbose(
-                    "Calculated the total delta of states made in block #{BlockIndex}",
-                    Index
-                );
-                blockChain._rwlock.EnterWriteLock();
-                try
-                {
-                    logger.Verbose(
-                        "Start to commit state changes made in block #{BlockIndex}...",
-                        Index
-                    );
-                    ITrie trie = blockChain.StateStore.Commit(
-                        blockChain.Store.GetStateRootHash(PreviousHash),
-                        statesDelta
-                    );
-                    logger.Verbose(
-                        "Committed the state changes made in block #{BlockIndex}: {StateRootHash}",
-                        Index,
-                        trie.Hash
-                    );
-                    return (trie.Hash, actionEvaluations);
-                }
-                finally
-                {
-                    blockChain._rwlock.ExitWriteLock();
-                }
-            }
-            finally
-            {
-                blockChain._rwlock.ExitUpgradeableReadLock();
-            }
         }
     }
 }

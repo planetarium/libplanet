@@ -253,7 +253,7 @@ namespace Libplanet.Tests.Action
                 new[] { tx },
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion);
-            var stateRootHash = preEvalBlock.DetermineStateRootHash(chain);
+            var stateRootHash = chain.DetermineBlockStateRootHash(preEvalBlock, out _);
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
             Block<DumbAction> block = ProtocolVersion < 2
                 ? new Block<DumbAction>(preEvalBlock, (stateRootHash, null, hash))
