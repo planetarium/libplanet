@@ -568,7 +568,8 @@ namespace Libplanet.Net
                             deltaBlock.Hash);
 
                         DateTimeOffset executionStarted = DateTimeOffset.Now;
-                        workspace.ExecuteActions(deltaBlock);
+                        var evaluations = workspace.ExecuteActions(deltaBlock);
+                        workspace.CommitEvaluations(deltaBlock, evaluations);
                         spent += DateTimeOffset.Now - executionStarted;
 
                         _logger.Debug(

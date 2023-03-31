@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -919,19 +920,36 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Evaluates actions in the given <paramref name="block"/> and fills states with the
-        /// results.
+        /// Evaluates the <see cref="IAction"/>s in given <paramref name="block"/>.
         /// </summary>
-        /// <param name="block">A block to execute.</param>
-        /// <returns>The result of action evaluations of the given <paramref name="block"/>.
-        /// </returns>
-        /// <remarks>This method is idempotent (except for rendering).  If the given
-        /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
-        /// Exposed as public for benchmarking.
+        /// <param name="block">The <see cref="Block{T}"/> to execute.</param>
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="ActionEvaluation"/>s for
+        /// given <paramref name="block"/>.</returns>
+        /// <seealso cref="CommitEvaluations"/>
+        [Pure]
+        public IReadOnlyList<ActionEvaluation> ExecuteActions(Block<T> block) =>
+            ActionEvaluator.Evaluate(block);
+
+        /// <summary>
+        /// Attempts to commit a result obtained from <see cref="ExecuteActions"/>
+        /// to the <see cref="IStateStore"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="Block{T}"/> to validate against.</param>
+        /// <param name="evaluations">The list of <see cref="ActionEvaluation"/>s
+        /// from which to extract the states to commit.</param>
+        /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
+        /// calculated by commiting to the <see cref="IStateStore"/> does not match
+        /// the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/>.</exception>
+        /// <remarks>
+        /// Since the state root hash for can only be calculated from making a commit
+        /// to an <see cref="IStateStore"/>, this always has a side-effect to the
+        /// <see cref="IStateStore"/> regardless of whether the state root hash
+        /// obdatined through commiting to the <see cref="IStateStore"/>
+        /// matches the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/> or not.
         /// </remarks>
-        public IReadOnlyList<ActionEvaluation> ExecuteActions(Block<T> block)
+        /// <seealso cref="ExecuteActions"/>
+        public void CommitEvaluations(Block<T> block, IReadOnlyList<ActionEvaluation> evaluations)
         {
-            IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(block);
             _rwlock.EnterWriteLock();
             try
             {
@@ -988,8 +1006,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitWriteLock();
             }
-
-            return evaluations;
         }
 
         /// <summary>
@@ -1315,6 +1331,8 @@ namespace Libplanet.Blockchain
                             block.Index,
                             block.Hash);
                         actionEvaluations = ExecuteActions(block);
+                        CommitEvaluations(block, actionEvaluations);
+
                         _logger.Information(
                             "Executed actions in block #{BlockIndex} {BlockHash}",
                             block.Index,

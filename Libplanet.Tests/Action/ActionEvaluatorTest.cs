@@ -951,7 +951,6 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            chain.ExecuteActions(block);
             chain.Append(
                 block,
                 CreateBlockCommit(block),
