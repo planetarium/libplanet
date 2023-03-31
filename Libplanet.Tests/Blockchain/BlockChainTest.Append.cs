@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void Append(bool getTxExecutionViaStore)
@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendFailDueToInvalidBytesLength()
         {
             DumbAction[] manyActions =
@@ -331,7 +331,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendFailDueToInvalidTxCount()
         {
             int nonce = 0;
@@ -361,7 +361,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendWithoutEvaluateActions()
         {
             var miner = new PrivateKey();
@@ -395,7 +395,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.ActionRecords);
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendWhenActionEvaluationFailed()
         {
             var policy = new NullBlockPolicy<ThrowException>();
@@ -423,7 +423,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.IsType<ThrowException.SomeException>(errorRecord.Exception.InnerException);
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
@@ -475,7 +475,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void UnstageAfterAppendComplete()
         {
             PrivateKey privateKey = new PrivateKey();
@@ -530,7 +530,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
-        [Fact]
+        [SkippableFact]
         public void DoesNotUnstageOnAppendForForkedChain()
         {
             PrivateKey privateKey = new PrivateKey();
@@ -582,7 +582,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(workspace.StagePolicy.Iterate(workspace, filtered: false));
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendValidatesBlock()
         {
             var blockChain = new BlockChain<DumbAction>(
@@ -596,7 +596,7 @@ namespace Libplanet.Tests.Blockchain
                 () => blockChain.Append(_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)));
         }
 
-        [Fact]
+        [SkippableFact]
         public void AppendWithdrawTxsWithExpiredNoncesFromStage()
         {
             void AssertTxIdSetEqual(

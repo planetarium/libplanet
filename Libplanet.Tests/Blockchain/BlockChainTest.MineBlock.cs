@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
+        [SkippableFact]
         public void ProposeBlock()
         {
             Func<long, long> getMaxTransactionsBytes = _blockChain.Policy.GetMaxTransactionsBytes;
@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
@@ -222,7 +222,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
@@ -263,7 +263,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithReverseNonces()
         {
             var key = new PrivateKey();
@@ -294,7 +294,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(txs.Length, block.Transactions.Count());
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithLowerNonces()
         {
             var key = new PrivateKey();
@@ -335,7 +335,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
@@ -381,7 +381,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"baz", state2);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithTxPriority()
         {
             var keyA = new PrivateKey();
@@ -419,7 +419,7 @@ namespace Libplanet.Tests.Blockchain
                 block.Transactions.Select(tx => tx.Id).ToHashSet());
         }
 
-        [Fact]
+        [SkippableFact]
         public void ProposeBlockWithLastCommit()
         {
             var keys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
@@ -440,7 +440,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(block.LastCommit, blockCommit);
         }
 
-        [Fact]
+        [SkippableFact]
         public void IgnoreLowerNonceTxsAndPropose()
         {
             var privateKey = new PrivateKey();
@@ -475,7 +475,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains(txsB[3], b2.Transactions);
         }
 
-        [Fact]
+        [SkippableFact]
         public void IgnoreDuplicatedNonceTxs()
         {
             var privateKey = new PrivateKey();
@@ -493,7 +493,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains(b.Transactions.Single(), txs);
         }
 
-        [Fact]
+        [SkippableFact]
         public void GatherTransactionsToPropose()
         {
             // TODO: We test more properties of GatherTransactionsToMine() method:

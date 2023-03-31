@@ -11,7 +11,7 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
+        [SkippableFact]
         public void StageTransaction()
         {
             var txs = new HashSet<Transaction<DumbAction>>()
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(txs, _blockChain.StagePolicy.Iterate(_blockChain).ToHashSet());
         }
 
-        [Fact]
+        [SkippableFact]
         public void StageTransactionWithDifferentGenesis()
         {
             Transaction<DumbAction> tx1 = Transaction<DumbAction>.Create(
@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public void TransactionsWithDuplicatedNonce()
         {
             var key = new PrivateKey();
@@ -114,7 +114,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
         }
 
-        [Fact]
+        [SkippableFact]
         public void UnstageTransaction()
         {
             Transaction<DumbAction>[] txs = { _fx.Transaction1, _fx.Transaction2 };
