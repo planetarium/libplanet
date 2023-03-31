@@ -102,7 +102,7 @@ export async function download(options = {}) {
 
   if (log != null) log(`
 -------------------------------------------------------------------------------
-Downloaing Libplanet CLI Tools ${ver} from GitHub...
+Downloading Libplanet CLI Tools ${ver} from GitHub...
 
 NOTE: You can avoid npm entirely by downloading directly from:
 
