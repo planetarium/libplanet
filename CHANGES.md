@@ -43,6 +43,15 @@ To be released.
      -  Removed `Transaction<T>.SystemAction` property.
  -  `Transaction<T>(Bencodex.Types.Dictionary)` constructor is removed.
     Use `TxMarshaler.UnmarshalTransaction<T>()` method instead.  [[#2986]]
+ -  Removed `PreEvaluationBlock<T>.Evaluate(PrivateKey, IAction?,
+    Predicate<Currency>, IStateStore)`,
+    `PreEvaluationBlock<T>.DetermineStateRootHash(IAction?, Predicate<Currency>,
+    IStateStore)`, `PreEvaluationBlock<T>.DetermineStateRootHash(IAction?,
+    Predicate<Currency>, IStateStore,
+    out IImmutableDictionary<string, IValue>)`,
+    `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>)`,
+    and `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>,
+    out IImmutableDictionary<string, IValue>)`.  [[#3037]]
 
 ### Backward-incompatible network protocol changes
 
@@ -58,6 +67,10 @@ To be released.
  -  Added `UnsignedTx` class.  [[#1164], [#2986]]
  -  Added `Transaction<T>(IUnsignedTx, ImmutableArray<byte>)`.
     [[#1164], [#2986]]
+ -  Added `BlockChain<T>.DetermineGenesisStateRootHash()`,
+    `BlockChain<T>.EvaluateGenesis()`,
+    `BlockChain<T>.DetermineBlockStateRootHash()`,
+    and `BlockChain<T>.EvaluateBlock()`.  [[#3037]]
 
 ### Behavioral changes
 
