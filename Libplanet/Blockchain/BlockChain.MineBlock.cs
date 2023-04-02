@@ -82,7 +82,7 @@ namespace Libplanet.Blockchain
         {
             long index = Count;
             long difficulty = 1L;
-            BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
+            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 
             int sessionId = new System.Random().Next();
             int processId = Process.GetCurrentProcess().Id;
