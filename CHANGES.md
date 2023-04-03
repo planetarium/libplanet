@@ -76,8 +76,12 @@ To be released.
 
 ### Behavioral changes
 
- -  `Address` now can be converted from and to `string` through `TypeConverter`.
-    [[#2711]]
+ -  Added `TypeConverter` to commonly-used types.  [[#2711]]
+
+     -  `Address` now can be converted from and to `string` through
+        `TypeConverter`.
+     -  `HashDigest<T>` now can be converted from and to `string` through
+        `TypeConverter`.
 
  -  `Transaction<T>` no more supports deserialization from JSON when it contains
     custom actions.  However, it still can be deserialized from JSON when it

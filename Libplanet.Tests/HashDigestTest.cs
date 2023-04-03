@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
@@ -173,6 +174,26 @@ namespace Libplanet.Tests
             }
 
             Assert.Equal(deserializedHashDigest, expectedHashDigest);
+        }
+
+        [Fact]
+        public void TypeConverter()
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(HashDigest<SHA1>));
+            var sha1 = HashDigest<SHA1>.FromString("62cdb7020ff920e5aa642c3d4066950dd1f01f4d");
+            Assert.True(converter.CanConvertFrom(typeof(string)));
+            Assert.Equal(
+                sha1,
+                converter.ConvertFrom("62cdb7020ff920e5aa642c3d4066950dd1f01f4d"));
+            Assert.Equal(
+                sha1,
+                converter.ConvertFrom("62CDB7020FF920E5AA642C3D4066950DD1F01F4D"));
+            Assert.Throws<ArgumentException>(() => converter.ConvertFrom("INVALID"));
+
+            Assert.True(converter.CanConvertTo(typeof(string)));
+            Assert.Equal(
+                "62cdb7020ff920e5aa642c3d4066950dd1f01f4d",
+                converter.ConvertTo(sha1, typeof(string)));
         }
 
         [SkippableFact]
