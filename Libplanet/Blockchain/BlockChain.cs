@@ -450,7 +450,7 @@ namespace Libplanet.Blockchain
                 throw ibe;
             }
 
-            var nonceDeltas = ValidateNonces(new Dictionary<Address, long>(), genesisBlock);
+            var nonceDeltas = ValidateGenesisNonces(genesisBlock);
 
             store.PutBlock(genesisBlock);
             store.AppendIndex(id, genesisBlock.Hash);

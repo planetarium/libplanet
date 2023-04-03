@@ -155,6 +155,12 @@ namespace Libplanet.Net.Consensus
             int cacheSize = 128,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
+            if (height < 1)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(height)} must be positive: {height}", nameof(height));
+            }
+
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "Context")

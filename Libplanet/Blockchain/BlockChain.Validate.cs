@@ -41,6 +41,31 @@ namespace Libplanet.Blockchain
             return nonceDeltas;
         }
 
+        internal static Dictionary<Address, long> ValidateGenesisNonces(
+            Block<T> block)
+        {
+            var nonceDeltas = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            {
+                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
+                long expectedNonce = nonceDelta;
+
+                if (!expectedNonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
+                        $"from expected nonce {expectedNonce}.",
+                        tx.Id,
+                        expectedNonce,
+                        tx.Nonce);
+                }
+
+                nonceDeltas[tx.Signer] = nonceDelta + 1;
+            }
+
+            return nonceDeltas;
+        }
+
         internal InvalidBlockCommitException ValidateBlockCommit(
             Block<T> block,
             BlockCommit blockCommit)
@@ -127,7 +152,9 @@ namespace Libplanet.Blockchain
         {
             if (block.Index == 0)
             {
-                return ValidateGenesisBlock(block);
+                throw new ArgumentException(
+                    $"Given {nameof(block)} must have a positive index but has index {block.Index}",
+                    nameof(block));
             }
 
             long index = Count;
