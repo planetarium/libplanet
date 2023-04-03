@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.53.3
 --------------
 
-To be released.
+Released on April 3, 2023.
 
  -  Adjusted level of the consensus related logs.  [[#3046]]
 
