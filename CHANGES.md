@@ -104,26 +104,15 @@ To be released.
 Version 0.53.2
 --------------
 
-To be released.
-
--  Ported changes from [Libplanet 0.50.7] release.  [[#3022]]
-
-[Libplanet 0.50.7]: https://www.nuget.org/packages/Libplanet/0.50.7
-[#3022]: https://github.com/planetarium/libplanet/pull/3022
-
-
-Version 0.53.2
---------------
-
 Released on March 31, 2023.
 
--  Ported changes from [Libplanet 0.50.7] release.  [[#3022]]
--  `BlockChain<T>.Create()` is now get `IBlockChainState` and
-   `ActionEvaluator` as parameters.  [[#3028]]
+ -  Ported changes from [Libplanet 0.50.7] release.  [[#3022]]
+ -  `BlockChain<T>.Create()` is now get `IBlockChainState` and
+    `ActionEvaluator` as parameters.  [[#3029]]
 
 [Libplanet 0.50.7]: https://www.nuget.org/packages/Libplanet/0.50.7
 [#3022]: https://github.com/planetarium/libplanet/pull/3022
-[#3028]: https://github.com/planetarium/libplanet/pull/3028
+[#3029]: https://github.com/planetarium/libplanet/pull/3029
 
 
 Version 0.53.1
@@ -291,8 +280,8 @@ Version 0.52.2
 
 Released on March 28, 2023.
 
--  Ported changes from [Libplanet 0.50.6] release.  [[#2976]]
--  Introduced a new `Initialize` system action.  [[#2976]]
+ -  Ported changes from [Libplanet 0.50.6] release.  [[#2976]]
+ -  Introduced a new `Initialize` system action.  [[#2976]]
 
 [Libplanet 0.50.6]: https://www.nuget.org/packages/Libplanet/0.50.6
 [#2976]: https://github.com/planetarium/libplanet/pull/2976
