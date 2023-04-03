@@ -92,8 +92,6 @@ To be released.
  -  Added `UnsignedTx` class.  [[#1164], [#2986]]
  -  Added `Transaction<T>(IUnsignedTx, ImmutableArray<byte>)`.
     [[#1164], [#2986]]
- -  (Libplanet.Net) Added `Context<T>.IsCurrentRoundProposer()` method.
-    [[#2996]]
  -  Added `BlockChain<T>.DetermineGenesisStateRootHash()`,
     `BlockChain<T>.EvaluateGenesis()`,
     `BlockChain<T>.DetermineBlockStateRootHash()`,
