@@ -346,8 +346,8 @@ Version 0.51.4
 
 Released on March 28, 2023.
 
--  Ported changes from [Libplanet 0.50.6] release.  [[#2975]]
--  Introduced a new `Initialize` system action.  [[#2975]]
+ -  Ported changes from [Libplanet 0.50.6] release.  [[#2975]]
+ -  Introduced a new `Initialize` system action.  [[#2975]]
 
 [Libplanet 0.50.6]: https://www.nuget.org/packages/Libplanet/0.50.6
 [#2975]: https://github.com/planetarium/libplanet/pull/2975
@@ -533,10 +533,10 @@ Version 0.50.7
 
 Released on March 29, 2023.
 
--  Optimized internal byte array to hex string conversion in several places.
-   [[#2989], [#3007]]
--  `IValidatorSupportStateDelta` is now public [[#3017]]
--  Optimized `BlockChainState.GetStates()` by caching results.  [[#3018]]
+ -  Optimized internal byte array to hex string conversion in several places.
+    [[#2989], [#3007]]
+ -  `IValidatorSupportStateDelta` is now public [[#3017]]
+ -  Optimized `BlockChainState.GetStates()` by caching results.  [[#3018]]
 
 [#2989]: https://github.com/planetarium/libplanet/issues/2989
 [#3007]: https://github.com/planetarium/libplanet/pull/3007
@@ -549,8 +549,8 @@ Version 0.50.6
 
 Released on March 22, 2023.
 
--  Remove `SetValidator` system action.  [[#2972]]
--  `ValidatorStateExtensions` is now public.  [[#2972]]
+ -  Remove `SetValidator` system action.  [[#2972]]
+ -  `ValidatorStateExtensions` is now public.  [[#2972]]
 
 [#2972]: https://github.com/planetarium/libplanet/pull/2972
 
@@ -562,8 +562,8 @@ Released on March 17, 2023.
 
 ### Bug fixes
 
--  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
-   because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
+ -  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
+    because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
 
 [#2956]: https://github.com/planetarium/libplanet/pull/2956
 
@@ -2235,8 +2235,8 @@ Released on May 23rd, 2022.
 
 ### Bug fixes
 
--  (Libplanet.Net) Wrongly assigned default value to
-   `TimeoutOptions.PreloadDialTimeout` fixed.  [[#1983]]
+ -  (Libplanet.Net) Wrongly assigned default value to
+    `TimeoutOptions.PreloadDialTimeout` fixed.  [[#1983]]
 
 [#1983]: https://github.com/planetarium/libplanet/pull/1983
 
@@ -3427,8 +3427,8 @@ Version 0.21.2
 
 Released on November 25, 2021.
 
--  `planet apv query` command became to communicate with `NetMQTransport`
-   instead of `TcpTransport`.   [[#1618]]
+ -  `planet apv query` command became to communicate with `NetMQTransport`
+    instead of `TcpTransport`.   [[#1618]]
 
 [#1618]: https://github.com/planetarium/libplanet/pull/1618
 
