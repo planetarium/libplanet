@@ -23,6 +23,7 @@ using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.Blockchain.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
@@ -81,8 +82,15 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent<RandomAction>.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
-            Block<RandomAction> stateRootBlock =
-                noStateRootBlock.Evaluate(GenesisProposer, null, _ => true, stateStore);
+            Block<RandomAction> stateRootBlock = noStateRootBlock.Sign(
+                GenesisProposer,
+                BlockChain<RandomAction>.DetermineGenesisStateRootHash(
+                    noStateRootBlock,
+                    null,
+                    _ => true,
+                    out IReadOnlyList<ActionEvaluation> evals));
+            stateStore.Commit(null, evals.GetTotalDelta(
+                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             var actionEvaluator =
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
@@ -951,7 +959,6 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            chain.ExecuteActions(block);
             chain.Append(
                 block,
                 CreateBlockCommit(block),

@@ -1046,18 +1046,17 @@ namespace Libplanet.Tests.Store
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var policy = new NullBlockPolicy<NullAction>();
+                var preEval = ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey);
+                var genesis = preEval.Sign(
+                    GenesisProposer,
+                    BlockChain<NullAction>.DetermineGenesisStateRootHash(
+                        preEval, policy.BlockAction, policy.NativeTokens.Contains, out _));
                 var blocks = BlockChain<NullAction>.Create(
                     policy,
                     new VolatileStagePolicy<NullAction>(),
                     s1,
                     fx.StateStore,
-                    ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey)
-                        .Evaluate(
-                            privateKey: GenesisProposer,
-                            blockAction: policy.BlockAction,
-                            nativeTokenPredicate: policy.NativeTokens.Contains,
-                            stateStore: fx.StateStore)
-                );
+                    genesis);
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();

@@ -18,7 +18,6 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
@@ -431,10 +430,11 @@ namespace Libplanet.Blockchain
             // to check the state root hash validity
             var preEval = new PreEvaluationBlock<T>(
                 genesisBlock.Header, genesisBlock.Transactions);
-            var computedStateRootHash = preEval.DetermineStateRootHash(
+            var computedStateRootHash = DetermineGenesisStateRootHash(
+                preEval,
                 policy.BlockAction,
                 policy.NativeTokens.Contains,
-                new TrieStateStore(new DefaultKeyValueStore(null)));
+                out IReadOnlyList<ActionEvaluation> evals);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
@@ -468,11 +468,9 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            // Evaluate once more to write to state store
-            _ = preEval.DetermineStateRootHash(
-            policy.BlockAction,
-            policy.NativeTokens.Contains,
-            stateStore);
+            var delta = evals.GetTotalDelta(
+                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
             actionEvaluator ??= new ActionEvaluator(
@@ -563,12 +561,12 @@ namespace Libplanet.Blockchain
                 transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Propose();
-            return preEval.Evaluate(
+            IReadOnlyList<ActionEvaluation> evals = EvaluateGenesis(
+                preEval, blockAction, nativeTokenPredicate);
+            return preEval.Sign(
                 privateKey,
-                blockAction,
-                nativeTokenPredicate,
-                new TrieStateStore(new DefaultKeyValueStore(null))
-            );
+                DetermineGenesisStateRootHash(
+                    preEval, blockAction, nativeTokenPredicate, out _));
         }
 
         /// <summary>
@@ -919,80 +917,6 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Evaluates actions in the given <paramref name="block"/> and fills states with the
-        /// results.
-        /// </summary>
-        /// <param name="block">A block to execute.</param>
-        /// <returns>The result of action evaluations of the given <paramref name="block"/>.
-        /// </returns>
-        /// <remarks>This method is idempotent (except for rendering).  If the given
-        /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
-        /// Exposed as public for benchmarking.
-        /// </remarks>
-        public IReadOnlyList<ActionEvaluation> ExecuteActions(Block<T> block)
-        {
-            IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(block);
-            _rwlock.EnterWriteLock();
-            try
-            {
-                // Update states
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                var totalDelta =
-                    evaluations.GetTotalDelta(
-                        ToStateKey,
-                        ToFungibleAssetKey,
-                        ToTotalSupplyKey,
-                        ValidatorSetKey);
-                _logger.Debug(
-                    "Summarized the states delta with {Count} key changes " +
-                    "made by block #{BlockIndex} {BlockHash} in {DurationMs} ms",
-                    totalDelta.Count,
-                    block.Index,
-                    block.Hash,
-                    stopwatch.ElapsedMilliseconds);
-
-                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
-                ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
-                HashDigest<SHA256> rootHash = stateRoot.Hash;
-                const string rootHashMsg =
-                    "Calculated the root hash of the states made by block #{BlockIndex} " +
-                    "{BlockHash} for " + nameof(TrieStateStore) + ": {StateRootHash}";
-                _logger.Debug(rootHashMsg, block.Index, block.Hash, rootHash);
-
-                if (!rootHash.Equals(block.StateRootHash))
-                {
-                    var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
-                        $"is {block.StateRootHash}, but the execution result is {rootHash}.";
-                    throw new InvalidBlockStateRootHashException(
-                        message,
-                        block.StateRootHash,
-                        rootHash);
-                }
-
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "StateUpdateDuration")
-                    .Information(
-                        "Finished updating the states with {KeyCount} key changes affected by " +
-                        "block #{BlockIndex} {BlockHash} in {DurationMs} ms",
-                        totalDelta.Count,
-                        block.Index,
-                        block.Hash,
-                        stopwatch.ElapsedMilliseconds);
-
-                IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
-                UpdateTxExecutions(txExecutions);
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
-
-            return evaluations;
-        }
-
-        /// <summary>
         /// Finds the branch point <see cref="BlockHash"/> between this <see cref="BlockChain{T}"/>
         /// and <paramref name="locator"/> and returns the list of <see cref="BlockHash"/>es of
         /// successive <see cref="Block{T}"/>s starting from the branch point
@@ -1314,7 +1238,11 @@ namespace Libplanet.Blockchain
                             "Executing actions in block #{BlockIndex} {BlockHash}...",
                             block.Index,
                             block.Hash);
-                        actionEvaluations = ExecuteActions(block);
+                        ValidateBlockStateRootHash(block, out actionEvaluations);
+                        IEnumerable<TxExecution> txExecutions =
+                            MakeTxExecutions(block, actionEvaluations);
+                        UpdateTxExecutions(txExecutions);
+
                         _logger.Information(
                             "Executed actions in block #{BlockIndex} {BlockHash}",
                             block.Index,
@@ -1598,11 +1526,9 @@ namespace Libplanet.Blockchain
             }
         }
 
-#pragma warning disable SA1202
         internal InvalidBlockCommitException ValidateBlockCommit(
             Block<T> block,
             BlockCommit blockCommit)
-#pragma warning restore SA1202
         {
             if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
             {
@@ -1794,6 +1720,41 @@ namespace Libplanet.Blockchain
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Validates a result obtained from <see cref="EvaluateBlock"/> by
+        /// comparing the state root hash calculated using <see cref="DetermineBlockStateRootHash"/>
+        /// to the one in <paramref name="block"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="Block{T}"/> to validate against.</param>
+        /// <param name="evaluations">The list of <see cref="ActionEvaluation"/>s
+        /// from which to extract the states to commit.</param>
+        /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
+        /// calculated by commiting to the <see cref="IStateStore"/> does not match
+        /// the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/>.</exception>
+        /// <remarks>
+        /// Since the state root hash for can only be calculated from making a commit
+        /// to an <see cref="IStateStore"/>, this always has a side-effect to the
+        /// <see cref="IStateStore"/> regardless of whether the state root hash
+        /// obdatined through commiting to the <see cref="IStateStore"/>
+        /// matches the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/> or not.
+        /// </remarks>
+        /// <seealso cref="EvaluateBlock"/>
+        /// <seealso cref="DetermineBlockStateRootHash"/>
+        internal void ValidateBlockStateRootHash(
+            Block<T> block, out IReadOnlyList<ActionEvaluation> evaluations)
+        {
+            var rootHash = DetermineBlockStateRootHash(block, out evaluations);
+            if (!rootHash.Equals(block.StateRootHash))
+            {
+                var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
+                    $"is {block.StateRootHash}, but the execution result is {rootHash}.";
+                throw new InvalidBlockStateRootHashException(
+                    message,
+                    block.StateRootHash,
+                    rootHash);
+            }
         }
 
         /// <summary>

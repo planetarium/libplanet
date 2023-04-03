@@ -163,14 +163,11 @@ namespace Libplanet.Tests.Blockchain
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
-            var genesisBlock = TestUtils.ProposeGenesis<DumbAction>(
-                TestUtils.GenesisProposer.PublicKey
-            ).Evaluate(
+            var genesisBlock = TestUtils.ProposeGenesisBlock<DumbAction>(
+                TestUtils.ProposeGenesis<DumbAction>(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer,
                 policy.BlockAction,
-                policy.NativeTokens.Contains,
-                new TrieStateStore(new MemoryKeyValueStore())
-            );
+                policy.NativeTokens.Contains);
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 

@@ -134,7 +134,6 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{minerAddress},{minerAddress}" },
             };
 
-            _blockChain.ExecuteActions(block1);
             foreach (KeyValuePair<Address, IValue> pair in expectedStates)
             {
                 AssertBencodexEqual(

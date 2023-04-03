@@ -70,17 +70,17 @@ namespace Libplanet.Tests.Fixtures
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            var preEval = TestUtils.ProposeGenesis(
-                Miner.PublicKey,
-                Txs,
-                null,
-                DateTimeOffset.UtcNow,
-                Block<Arithmetic>.CurrentProtocolVersion);
-            Genesis = preEval.Evaluate(
-                privateKey: Miner,
-                blockAction: policy.BlockAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: StateStore);
+            var preEval =
+            Genesis = TestUtils.ProposeGenesisBlock(
+                TestUtils.ProposeGenesis(
+                    Miner.PublicKey,
+                    Txs,
+                    null,
+                    DateTimeOffset.UtcNow,
+                    Block<Arithmetic>.CurrentProtocolVersion),
+                Miner,
+                policy.BlockAction,
+                policy.NativeTokens.Contains);
             Chain = BlockChain<Arithmetic>.Create(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),

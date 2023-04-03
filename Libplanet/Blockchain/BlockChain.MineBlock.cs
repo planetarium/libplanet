@@ -133,13 +133,13 @@ namespace Libplanet.Blockchain
                     txHash: BlockContent<T>.DeriveTxHash(transactions),
                     lastCommit: lastCommit),
                 transactions: transactions);
-            PreEvaluationBlock<T> preEval;
-
-            preEval = blockContent.Propose();
-
-            (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
-                preEval.EvaluateActions(proposer, this);
-            IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, actionEvaluations);
+            PreEvaluationBlock<T> preEval = blockContent.Propose();
+            Block<T> block = preEval.Sign(
+                proposer,
+                DetermineBlockStateRootHash(
+                    preEval,
+                    out IReadOnlyList<ActionEvaluation> evaluations));
+            IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
             UpdateTxExecutions(txExecutions);
 
             _logger.Debug(
