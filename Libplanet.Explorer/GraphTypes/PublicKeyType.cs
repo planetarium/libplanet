@@ -17,7 +17,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             if (value is PublicKey pubKey)
             {
-                return pubKey.ToString();
+                return pubKey.ToHex(true);
             }
 
             return value;
@@ -30,7 +30,7 @@ namespace Libplanet.Explorer.GraphTypes
                 case null:
                     return null;
                 case string hex:
-                    return new PublicKey(ByteUtil.ParseHex(hex));
+                    return PublicKey.FromHex(hex);
                 default:
                     throw new ArgumentException(
                         $"Expected a hexadecimal string but {value}", nameof(value));

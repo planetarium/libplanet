@@ -73,6 +73,8 @@ To be released.
     `BlockChain<T>.EvaluateGenesis()`,
     `BlockChain<T>.DetermineBlockStateRootHash()`,
     and `BlockChain<T>.EvaluateBlock()`.  [[#3037]]
+ -  Added `PublicKey.FromHex()` static method.  [[#2709], [#3044]]
+ -  Added `PublicKey.ToHex()` method.  [[#2709], [#3044]]
 
 ### Behavioral changes
 
@@ -124,10 +126,12 @@ To be released.
 
 ### CLI tools
 
+[#2709]: https://github.com/planetarium/libplanet/issues/2709
 [#2711]: https://github.com/planetarium/libplanet/issues/2711
 [#2986]: https://github.com/planetarium/libplanet/pull/2986
 [#2973]: https://github.com/planetarium/libplanet/issues/2973
 [#2996]: https://github.com/planetarium/libplanet/pull/2995
+[#3044]: https://github.com/planetarium/libplanet/pull/3044
 
 
 Version 0.53.2

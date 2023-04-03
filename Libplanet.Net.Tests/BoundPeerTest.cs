@@ -32,7 +32,7 @@ namespace Libplanet.Net.Tests
 #pragma warning disable MEN002 // Line is too long
             var peerInfo = "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,3333";
             var expected = new BoundPeer(
-                new PublicKey(ByteUtil.ParseHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
+                PublicKey.FromHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
                 new DnsEndPoint("192.168.0.1", 3333)
             );
 #pragma warning restore MEN002 // Line is too long
@@ -45,7 +45,7 @@ namespace Libplanet.Net.Tests
 #pragma warning disable MEN002 // Line is too long
             var expected = "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,3333";
             var boundPeer = new BoundPeer(
-                new PublicKey(ByteUtil.ParseHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
+                PublicKey.FromHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
                 new DnsEndPoint("192.168.0.1", 3333)
             );
 #pragma warning restore MEN002 // Line is too long

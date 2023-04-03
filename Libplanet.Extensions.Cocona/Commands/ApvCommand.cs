@@ -140,7 +140,7 @@ public class ApvCommand
                 PublicKey pubKey;
                 try
                 {
-                    pubKey = new PublicKey(ByteUtil.ParseHex(pubKeyHex));
+                    pubKey = PublicKey.FromHex(pubKeyHex);
                 }
                 catch (Exception e)
                 {

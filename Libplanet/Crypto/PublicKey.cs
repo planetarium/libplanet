@@ -62,6 +62,20 @@ namespace Libplanet.Crypto
 
         public static bool operator !=(PublicKey left, PublicKey right) => !left.Equals(right);
 
+        /// <summary>
+        /// Creates a <see cref="PublicKey"/> instance from its hexadecimal representation.
+        /// </summary>
+        /// <param name="hex">The hexadecimal representation of the public key to load.
+        /// Case insensitive, and accepts either compressed or uncompressed.</param>
+        /// <returns>The parsed <see cref="PublicKey"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
+        /// <paramref name="hex"/> string is an odd number.</exception>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string
+        /// is not a valid hexadecimal string.</exception>
+        /// <seealso cref="ToHex(bool)"/>
+        public static PublicKey FromHex(string hex) =>
+            new PublicKey(ByteUtil.ParseHex(hex));
+
         public bool Equals(PublicKey? other) => KeyParam.Equals(other?.KeyParam);
 
         public override bool Equals(object? obj) => obj is PublicKey other && Equals(other);
@@ -196,8 +210,14 @@ namespace Libplanet.Crypto
         /// <summary>
         /// Gets the public key's hexadecimal representation in compressed form.
         /// </summary>
+        /// <param name="compress">Returns a short length representation if it is
+        /// <see langword="true"/>.  This option does not lose any information.</param>
         /// <returns>The hexadecimal string of the public key's compressed bytes.</returns>
-        public override string ToString() => ByteUtil.Hex(Format(true));
+        /// <seealso cref="FromHex(string)"/>
+        public string ToHex(bool compress) => ByteUtil.Hex(Format(compress));
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString() => ToHex(true);
 
         private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
         {
@@ -226,9 +246,9 @@ namespace Libplanet.Crypto
             string? hex = reader.GetString();
             try
             {
-                return new PublicKey(ByteUtil.ParseHex(hex!));
+                return PublicKey.FromHex(hex!);
             }
-            catch (ArgumentException e)
+            catch (Exception e) when (e is ArgumentException || e is FormatException)
             {
                 throw new JsonException(e.Message);
             }
@@ -239,6 +259,6 @@ namespace Libplanet.Crypto
             PublicKey value,
             JsonSerializerOptions options
         ) =>
-            writer.WriteStringValue(ByteUtil.Hex(value.Format(true)));
+            writer.WriteStringValue(value.ToHex(true));
     }
 }
