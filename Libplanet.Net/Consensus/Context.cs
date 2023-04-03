@@ -359,17 +359,16 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                var exception = _blockChain.ValidateNextBlock(block);
+                Exception exception = _blockChain.ValidateNextBlockHeader(block);
                 bool isValid = exception is null;
 
                 if (!isValid)
                 {
                     _logger.Debug(
                         exception,
-                        "BlockHeader #{Index} {Block} is invalid. {@E}",
+                        "BlockHeader #{Index} {BlockHash} is invalid",
                         block.Index,
-                        block,
-                        exception);
+                        block.Hash);
 
                     _blockHashCache.AddReplace(block.Hash, false);
                     return false;
@@ -378,7 +377,41 @@ namespace Libplanet.Net.Consensus
                 try
                 {
                     // Skipping the action evaluations if itself is a proposer.
-                    _blockChain.ValidateNextBlockContent(block, !IsCurrentRoundProposer());
+                    if (!IsCurrentRoundProposer())
+                    {
+                        // Neeed to get txs from store, lock?
+                        // TODO: Remove ChainId, enhancing lock management.
+                        // changing exception be returning to thrown.
+                        _blockChain._rwlock.EnterUpgradeableReadLock();
+
+                        try
+                        {
+                            BlockChain<T>.ValidateNonces(
+                                block.Transactions
+                                    .Select(tx => tx.Signer)
+                                    .Distinct()
+                                    .ToDictionary(
+                                        signer => signer,
+                                        signer => _blockChain.Store.GetTxNonce(
+                                            _blockChain.Id, signer)),
+                                block);
+
+                            foreach (var tx in block.Transactions)
+                            {
+                                if (_blockChain.Policy.ValidateNextBlockTx(
+                                    _blockChain, tx) is { } txve)
+                                {
+                                    throw txve;
+                                }
+                            }
+
+                            _blockChain.ValidateBlockStateRootHash(block, out _);
+                        }
+                        finally
+                        {
+                            _blockChain._rwlock.ExitUpgradeableReadLock();
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -388,11 +421,10 @@ namespace Libplanet.Net.Consensus
                 isValid = exception is null;
                 _logger.Debug(
                     exception,
-                    "Block #{Index} {Block} is valid? {Bool}. {@E}",
+                    "Block #{Index} {Hash} is valid? {Bool}",
                     block.Index,
-                    block,
-                    isValid,
-                    exception);
+                    block.Hash,
+                    isValid);
 
                 _blockHashCache.AddReplace(block.Hash, isValid);
                 return isValid;
