@@ -6,6 +6,10 @@ Version 0.53.3
 
 To be released.
 
+ -  Adjusted level of the consensus related logs.  [[#3046]]
+
+[#3046]: https://github.com/planetarium/libplanet/pull/3046
+
 
 Version 0.53.2
 --------------

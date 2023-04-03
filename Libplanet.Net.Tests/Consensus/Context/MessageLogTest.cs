@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.PrivateKeys[0].PublicKey,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]));
 
-            Assert.False(_messageLog.Add(preVote));
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(preVote));
         }
 
         [Fact]
@@ -76,8 +76,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 _codec.Encode(block.MarshalBlock()),
                 -1).Sign(TestUtils.PrivateKeys[2]));
 
-            Assert.False(_messageLog.Add(proposal0));
-            Assert.True(_messageLog.Add(proposal2));
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(proposal0));
+            _messageLog.Add(proposal2);
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var preVote = new ConsensusPreVoteMsg(new VoteMetadata(
                 2, 0, null, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreVote).Sign(key));
 
-            Assert.False(_messageLog.Add(preVote));
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(preVote));
         }
 
         [Fact]
@@ -115,8 +115,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 _codec.Encode(block.MarshalBlock()),
                 -1).Sign(TestUtils.PrivateKeys[2]));
 
-            Assert.True(_messageLog.Add(proposal0));
-            Assert.False(_messageLog.Add(proposal1));
+            _messageLog.Add(proposal0);
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(proposal1));
         }
 
         [Fact]
@@ -152,10 +152,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.PrivateKeys[0].PublicKey,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0]));
 
-            Assert.True(_messageLog.Add(preVote0));
-            Assert.False(_messageLog.Add(preVote1));
-            Assert.True(_messageLog.Add(preCommit0));
-            Assert.False(_messageLog.Add(preCommit1));
+            _messageLog.Add(preVote0);
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(preVote1));
+            _messageLog.Add(preCommit0);
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(preCommit1));
         }
 
         [Fact]
@@ -231,7 +231,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var randomHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
 
             // Insufficient pre-commits.
-            _messageLog.Add(proposal);
+            Assert.Throws<InvalidConsensusMessageException>(() => _messageLog.Add(proposal));
             foreach (var preCommit in preCommits.Take(2))
             {
                 _messageLog.Add(preCommit);
