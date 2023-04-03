@@ -2959,24 +2959,77 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Create
   nameWithType: BlockChain<T>.Create
   nameWithType.vb: BlockChain(Of T).Create
-- uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0})
-  name: ExecuteActions(Block<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.ExecuteActions(Libplanet.Blocks.Block{`0})
-  name.vb: ExecuteActions(Block(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.ExecuteActions(Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ExecuteActions(Libplanet.Blocks.Block(Of T))
-  nameWithType: BlockChain<T>.ExecuteActions(Block<T>)
-  nameWithType.vb: BlockChain(Of T).ExecuteActions(Block(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.ExecuteActions*
-  name: ExecuteActions
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ExecuteActions_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.ExecuteActions
+- uid: Libplanet.Blockchain.BlockChain`1.DetermineBlockStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.ActionEvaluation}@)
+  name: DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList<ActionEvaluation>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineBlockStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_ActionEvaluation___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.DetermineBlockStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.ActionEvaluation}@)
+  name.vb: DetermineBlockStateRootHash(IPreEvaluationBlock, ByRef IReadOnlyList(Of ActionEvaluation))
+  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineBlockStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.ActionEvaluation>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineBlockStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.ActionEvaluation))
+  nameWithType: BlockChain<T>.DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList<ActionEvaluation>)
+  nameWithType.vb: BlockChain(Of T).DetermineBlockStateRootHash(IPreEvaluationBlock, ByRef IReadOnlyList(Of ActionEvaluation))
+- uid: Libplanet.Blockchain.BlockChain`1.DetermineBlockStateRootHash*
+  name: DetermineBlockStateRootHash
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineBlockStateRootHash_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.DetermineBlockStateRootHash
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.ExecuteActions
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ExecuteActions
-  nameWithType: BlockChain<T>.ExecuteActions
-  nameWithType.vb: BlockChain(Of T).ExecuteActions
+  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineBlockStateRootHash
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineBlockStateRootHash
+  nameWithType: BlockChain<T>.DetermineBlockStateRootHash
+  nameWithType.vb: BlockChain(Of T).DetermineBlockStateRootHash
+- uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},System.Collections.Generic.IReadOnlyList{Libplanet.Action.ActionEvaluation}@)
+  name: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate<Currency>, out IReadOnlyList<ActionEvaluation>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__System_Collections_Generic_IReadOnlyList_Libplanet_Action_ActionEvaluation___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},System.Collections.Generic.IReadOnlyList{Libplanet.Action.ActionEvaluation}@)
+  name.vb: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate(Of Currency), ByRef IReadOnlyList(Of ActionEvaluation))
+  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.ActionEvaluation>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency), ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.ActionEvaluation))
+  nameWithType: BlockChain<T>.DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate<Currency>, out IReadOnlyList<ActionEvaluation>)
+  nameWithType.vb: BlockChain(Of T).DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate(Of Currency), ByRef IReadOnlyList(Of ActionEvaluation))
+- uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash*
+  name: DetermineGenesisStateRootHash
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineGenesisStateRootHash
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineGenesisStateRootHash
+  nameWithType: BlockChain<T>.DetermineGenesisStateRootHash
+  nameWithType.vb: BlockChain(Of T).DetermineGenesisStateRootHash
+- uid: Libplanet.Blockchain.BlockChain`1.EvaluateBlock(Libplanet.Blocks.IPreEvaluationBlock)
+  name: EvaluateBlock(IPreEvaluationBlock)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateBlock_Libplanet_Blocks_IPreEvaluationBlock_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.EvaluateBlock(Libplanet.Blocks.IPreEvaluationBlock)
+  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateBlock(Libplanet.Blocks.IPreEvaluationBlock)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateBlock(Libplanet.Blocks.IPreEvaluationBlock)
+  nameWithType: BlockChain<T>.EvaluateBlock(IPreEvaluationBlock)
+  nameWithType.vb: BlockChain(Of T).EvaluateBlock(IPreEvaluationBlock)
+- uid: Libplanet.Blockchain.BlockChain`1.EvaluateBlock*
+  name: EvaluateBlock
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateBlock_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.EvaluateBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateBlock
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateBlock
+  nameWithType: BlockChain<T>.EvaluateBlock
+  nameWithType.vb: BlockChain(Of T).EvaluateBlock
+- uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})
+  name: EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate<Currency>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})
+  name.vb: EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate(Of Currency))
+  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency))
+  nameWithType: BlockChain<T>.EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate<Currency>)
+  nameWithType.vb: BlockChain(Of T).EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate(Of Currency))
+- uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis*
+  name: EvaluateGenesis
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.EvaluateGenesis
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateGenesis
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateGenesis
+  nameWithType: BlockChain<T>.EvaluateGenesis
+  nameWithType.vb: BlockChain(Of T).EvaluateGenesis
 - uid: Libplanet.Blockchain.BlockChain`1.Finalize
   name: Finalize()
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Finalize
@@ -10224,60 +10277,6 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationBlock
   nameWithType: PreEvaluationBlock<T>.PreEvaluationBlock
   nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationBlock
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore,System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
-  name: DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore, out IImmutableDictionary<String, IValue>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_System_Collections_Immutable_IImmutableDictionary_System_String_Bencodex_Types_IValue___
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore,System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
-  name.vb: DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore, ByRef IImmutableDictionary(Of String, IValue))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Store.IStateStore, out System.Collections.Immutable.IImmutableDictionary<System.String, Bencodex.Types.IValue>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore, ByRef System.Collections.Immutable.IImmutableDictionary(Of System.String, Bencodex.Types.IValue))
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore, out IImmutableDictionary<String, IValue>)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore, ByRef IImmutableDictionary(Of String, IValue))
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
-  name: DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
-  name.vb: DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore)
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Store.IStateStore)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore)
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore)
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
-  name: DetermineStateRootHash(BlockChain<T>, out IImmutableDictionary<String, IValue>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__System_Collections_Immutable_IImmutableDictionary_System_String_Bencodex_Types_IValue___
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue}@)
-  name.vb: DetermineStateRootHash(BlockChain(Of T), ByRef IImmutableDictionary(Of String, IValue))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Blockchain.BlockChain<T>, out System.Collections.Immutable.IImmutableDictionary<System.String, Bencodex.Types.IValue>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Blockchain.BlockChain(Of T), ByRef System.Collections.Immutable.IImmutableDictionary(Of System.String, Bencodex.Types.IValue))
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>, out IImmutableDictionary<String, IValue>)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(BlockChain(Of T), ByRef IImmutableDictionary(Of String, IValue))
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})
-  name: DetermineStateRootHash(BlockChain<T>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})
-  name.vb: DetermineStateRootHash(BlockChain(Of T))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Blockchain.BlockChain<T>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Blockchain.BlockChain(Of T))
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(BlockChain(Of T))
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash*
-  name: DetermineStateRootHash
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_
-  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash
-  isSpec: "True"
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
-  name: Evaluate(PrivateKey, IAction, Predicate<Currency>, IStateStore)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
-  name.vb: Evaluate(PrivateKey, IAction, Predicate(Of Currency), IStateStore)
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Store.IStateStore)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore)
-  nameWithType: PreEvaluationBlock<T>.Evaluate(PrivateKey, IAction, Predicate<Currency>, IStateStore)
-  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(PrivateKey, IAction, Predicate(Of Currency), IStateStore)
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{`0})
   name: Evaluate(PrivateKey, BlockChain<T>)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain__0__

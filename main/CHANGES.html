@@ -111,6 +111,10 @@ in favour of <code>Transaction&lt;T&gt;.CustomActions</code> and
 </li>
 <li><code>Transaction&lt;T&gt;(Bencodex.Types.Dictionary)</code> constructor is removed.
 Use <code>TxMarshaler.UnmarshalTransaction&lt;T&gt;()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Removed <code>PreEvaluationBlock&lt;T&gt;.Evaluate(PrivateKey, IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>,
+<code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>, <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore, out IImmutableDictionary&lt;string, IValue&gt;)</code>,
+<code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;)</code>,
+and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;, out IImmutableDictionary&lt;string, IValue&gt;)</code>.  [[#3037]]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -124,6 +128,10 @@ Use <code>TxMarshaler.UnmarshalTransaction&lt;T&gt;()</code> method instead.  [<
 <li>Added <code>UnsignedTx</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
 <li>Added <code>Transaction&lt;T&gt;(IUnsignedTx, ImmutableArray&lt;byte&gt;)</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.DetermineGenesisStateRootHash()</code>,
+<code>BlockChain&lt;T&gt;.EvaluateGenesis()</code>,
+<code>BlockChain&lt;T&gt;.DetermineBlockStateRootHash()</code>,
+and <code>BlockChain&lt;T&gt;.EvaluateBlock()</code>.  [[#3037]]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
