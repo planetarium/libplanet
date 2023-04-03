@@ -124,7 +124,7 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Step = Step.PreVote;
 
-                if (IsValid(p1.Block) && (_lockedRound == -1 || _lockedValue == p1.Block))
+                if (IsValid(p1.Block, out _) && (_lockedRound == -1 || _lockedValue == p1.Block))
                 {
                     BroadcastMessage(
                         new ConsensusPreVoteMsg(MakeVote(Round, p1.Block.Hash, VoteFlag.PreVote)));
@@ -150,7 +150,7 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Step = Step.PreVote;
 
-                if (IsValid(p2.Block) &&
+                if (IsValid(p2.Block, out _) &&
                     (_lockedRound <= p2.ValidRound || _lockedValue == p2.Block))
                 {
                     BroadcastMessage(
@@ -179,7 +179,7 @@ namespace Libplanet.Net.Consensus
             if (propose is { } p3 &&
                 HasTwoThirdsPreVote(
                     Round, preVote => p3.Block.Hash.Equals(preVote.BlockHash)) &&
-                IsValid(p3.Block) &&
+                IsValid(p3.Block, out _) &&
                 (Step == Step.PreVote || Step == Step.PreCommit) &&
                 !_hasTwoThirdsPreVoteFlags.Contains(Round))
             {
@@ -253,7 +253,7 @@ namespace Libplanet.Net.Consensus
                 GetProposal(round) is (Block<T> block4, _) &&
                 HasTwoThirdsPreCommit(
                     round, preCommit => block4.Hash.Equals(preCommit.BlockHash)) &&
-                IsValid(block4))
+                IsValid(block4, out _))
             {
                 Step = Step.EndCommit;
                 _decision = block4;
@@ -266,7 +266,16 @@ namespace Libplanet.Net.Consensus
                         block4.Index,
                         block4.Hash,
                         ToString());
-                    _blockChain.Append(block4, GetBlockCommit());
+
+                    IsValid(block4, out var evaluatedActions);
+
+                    _blockChain.Append(
+                        block4,
+                        GetBlockCommit(),
+                        true,
+                        true,
+                        true,
+                        actionEvaluations: evaluatedActions);
                 }
                 catch (Exception e)
                 {
