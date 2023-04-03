@@ -78,33 +78,25 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                if (_messageLog.Add(message))
-                {
-                    _logger.Debug(
-                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
-                        "Validator Address: {VAddress}, " +
-                        "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
-                        nameof(AddMessage),
-                        message,
-                        message.Height,
-                        message.Round,
-                        message.ValidatorPublicKey.ToAddress(),
-                        message.BlockHash,
-                        _messageLog.GetTotalCount(),
-                        ToString());
-                }
-                else
-                {
-                    throw new InvalidConsensusMessageException(
-                        $"Given {nameof(message)} could not be added to {nameof(MessageLog)}.",
-                        message);
-                }
+                _messageLog.Add(message);
+                _logger.Debug(
+                    "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                    "Validator Address: {VAddress}, " +
+                    "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
+                    nameof(AddMessage),
+                    message,
+                    message.Height,
+                    message.Round,
+                    message.ValidatorPublicKey.ToAddress(),
+                    message.BlockHash,
+                    _messageLog.GetTotalCount(),
+                    ToString());
             }
             catch (InvalidConsensusMessageException icme)
             {
-                _logger.Debug(
+                _logger.Error(
                     icme,
-                    "Failed to add invalid message {Message}.",
+                    $"Failed to add invalid message {{Message}} to the {nameof(MessageLog)}",
                     message);
                 ExceptionOccurred?.Invoke(this, icme);
             }
