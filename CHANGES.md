@@ -52,6 +52,9 @@ To be released.
     `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>)`,
     and `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>,
     out IImmutableDictionary<string, IValue>)`.  [[#3037]]
+ -  (Libplanet.Extensions.Cocona) Changed signature of
+    `ApvCommand.Verify(string?, string[]?, bool)` method to
+    `ApvCommand.Verify(string?, PublicKey[]?, bool)`.  [[#3044]]
 
 ### Backward-incompatible network protocol changes
 
@@ -78,11 +81,13 @@ To be released.
 
 ### Behavioral changes
 
- -  Added `TypeConverter` to commonly-used types.  [[#2711]]
+ -  Added `TypeConverter` to commonly-used types.  [[#2711], [#3044]]
 
      -  `Address` now can be converted from and to `string` through
         `TypeConverter`.
      -  `HashDigest<T>` now can be converted from and to `string` through
+        `TypeConverter`.
+     -  `PublicKey` now can be converted from and to `string` through
         `TypeConverter`.
 
  -  `Transaction<T>` no more supports deserialization from JSON when it contains

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -29,6 +31,7 @@ namespace Libplanet.Crypto
     /// <remarks>Every <see cref="PublicKey"/> object is immutable.</remarks>
     /// <seealso cref="PrivateKey"/>
     /// <seealso cref="Address"/>
+    [TypeConverter(typeof(PublicKeyTypeConverter))]
     [JsonConverter(typeof(PublicKeyJsonConverter))]
     public class PublicKey : IEquatable<PublicKey>
     {
@@ -228,6 +231,60 @@ namespace Libplanet.Crypto
                 ecParams
             );
         }
+    }
+
+    /// <summary>
+    /// The <see cref="TypeConverter"/> implementation for <see cref="PublicKey"/>.
+    /// </summary>
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class PublicKeyTypeConverter : TypeConverter
+    {
+        /// <inheritdoc cref="TypeConverter.CanConvertFrom(ITypeDescriptorContext, Type)"/>
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+            sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+
+        /// <inheritdoc
+        /// cref="TypeConverter.ConvertFrom(ITypeDescriptorContext, CultureInfo, object)"/>
+        public override object ConvertFrom(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value
+        )
+        {
+            if (value is string v)
+            {
+                try
+                {
+                    return PublicKey.FromHex(v);
+                }
+                catch (Exception e) when (e is ArgumentException || e is FormatException)
+                {
+                    throw new ArgumentException(e.Message, e);
+                }
+            }
+
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        /// <inheritdoc cref="TypeConverter.CanConvertTo(ITypeDescriptorContext, Type)"/>
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+            destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+
+        /// <inheritdoc
+        /// cref="TypeConverter.ConvertTo(ITypeDescriptorContext, CultureInfo, object, Type)"/>
+        public override object ConvertTo(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value,
+            Type destinationType
+        ) =>
+            value is PublicKey key && destinationType == typeof(string)
+                ? key.ToHex(true)
+                : base.ConvertTo(context, culture, value, destinationType);
     }
 
     [SuppressMessage(

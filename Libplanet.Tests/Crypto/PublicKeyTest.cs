@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;
@@ -350,6 +351,34 @@ namespace Libplanet.Tests.Crypto
             Assert.Equal(
                 "0246115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f73280",
                 key.ToString());
+        }
+
+        [Fact]
+        public void TypeConverter()
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(PublicKey));
+            PublicKey key = PublicKey.FromHex(
+                "0246115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f73280");
+            Assert.True(converter.CanConvertFrom(typeof(string)));
+            Assert.Equal(
+                key,
+                converter.ConvertFrom(
+                    "0246115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f73280"));
+            Assert.Equal(
+                key,
+                converter.ConvertFrom(
+                    "0246115B0131BACCF94A5856EDE871295F6F3D352E6847CDA9C03E89FE09F73280"));
+            Assert.Equal(
+                key,
+                converter.ConvertFrom(
+                    "0446115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f7328" +
+                    "08711ec97af6e341f110a326da1bdb81f5ae3badf76a90b22c8c491aed3aaa296"));
+            Assert.Throws<ArgumentException>(() => converter.ConvertFrom("INVALID"));
+
+            Assert.True(converter.CanConvertTo(typeof(string)));
+            Assert.Equal(
+                "0246115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f73280",
+                converter.ConvertTo(key, typeof(string)));
         }
 
         [SkippableFact]
