@@ -157,6 +157,13 @@ a <code>&quot;type&quot;</code> field denoting one of <code>&quot;system&quot;</
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0532">Version 0.53.2</h2>
+<p>Released on March 31, 2023.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/0.50.7">Libplanet 0.50.7</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/3022">#3022</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Create()</code> is now get <code>IBlockChainState</code> and
+<code>ActionEvaluator</code> as parameters.  [<a href="https://github.com/planetarium/libplanet/pull/3029">#3029</a>]</li>
+</ul>
 <h2 id="version-0531">Version 0.53.1</h2>
 <p>Released on March 28, 2023.</p>
 <ul>
@@ -512,6 +519,14 @@ correctly in some situations.  [<a href="https://github.com/planetarium/libplane
 <h3 id="dependencies-1">Dependencies</h3>
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/account">@planetarium/account</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2848">#2848</a>]</li>
+</ul>
+<h2 id="version-0507">Version 0.50.7</h2>
+<p>Released on March 29, 2023.</p>
+<ul>
+<li>Optimized internal byte array to hex string conversion in several places.
+[<a href="https://github.com/planetarium/libplanet/issues/2989">#2989</a>, <a href="https://github.com/planetarium/libplanet/pull/3007">#3007</a>]</li>
+<li><code>IValidatorSupportStateDelta</code> is now public [<a href="https://github.com/planetarium/libplanet/pull/3017">#3017</a>]</li>
+<li>Optimized <code>BlockChainState.GetStates()</code> by caching results.  [<a href="https://github.com/planetarium/libplanet/pull/3018">#3018</a>]</li>
 </ul>
 <h2 id="version-0506">Version 0.50.6</h2>
 <p>Released on March 22, 2023.</p>

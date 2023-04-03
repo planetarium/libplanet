@@ -918,6 +918,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IRandom.Seed
   nameWithType: IRandom.Seed
+- uid: Libplanet.Action.IValidatorSupportStateDelta
+  name: IValidatorSupportStateDelta
+  href: api/Libplanet.Action.IValidatorSupportStateDelta.html
+  commentId: T:Libplanet.Action.IValidatorSupportStateDelta
+  fullName: Libplanet.Action.IValidatorSupportStateDelta
+  nameWithType: IValidatorSupportStateDelta
+- uid: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_GetValidatorSet
+  commentId: M:Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
+  fullName: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet()
+  nameWithType: IValidatorSupportStateDelta.GetValidatorSet()
+- uid: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
+  nameWithType: IValidatorSupportStateDelta.GetValidatorSet
+- uid: Libplanet.Action.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_SetValidator_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.Action.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  fullName: Libplanet.Action.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  nameWithType: IValidatorSupportStateDelta.SetValidator(Validator)
+- uid: Libplanet.Action.IValidatorSupportStateDelta.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_SetValidator_
+  commentId: Overload:Libplanet.Action.IValidatorSupportStateDelta.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.IValidatorSupportStateDelta.SetValidator
+  nameWithType: IValidatorSupportStateDelta.SetValidator
 - uid: Libplanet.Action.MissingActionTypeException
   name: MissingActionTypeException
   href: api/Libplanet.Action.MissingActionTypeException.html
@@ -2909,15 +2941,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Count
   nameWithType: BlockChain<T>.Count
   nameWithType.vb: BlockChain(Of T).Count
-- uid: Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}})
-  name: Create(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}})
-  name.vb: Create(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.Create(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Create(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)))
-  nameWithType: BlockChain<T>.Create(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>)
-  nameWithType.vb: BlockChain(Of T).Create(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.ActionEvaluator)
+  name: Create(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates, ActionEvaluator)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_ActionEvaluator_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.ActionEvaluator)
+  name.vb: Create(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates, ActionEvaluator)
+  fullName: Libplanet.Blockchain.BlockChain<T>.Create(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.ActionEvaluator)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Create(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.ActionEvaluator)
+  nameWithType: BlockChain<T>.Create(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates, ActionEvaluator)
+  nameWithType.vb: BlockChain(Of T).Create(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates, ActionEvaluator)
 - uid: Libplanet.Blockchain.BlockChain`1.Create*
   name: Create
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_
