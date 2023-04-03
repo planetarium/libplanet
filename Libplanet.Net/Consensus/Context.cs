@@ -306,8 +306,10 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="null"/>.</returns>
         private Block<T>? GetValue()
         {
+            // NOTE: Block body validation is bypassed due to ProposeBlock calculates the action
+            // Evaluations before the block is proposed.
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
-            if (_blockChain.ValidateNextBlock(block) is { } e)
+            if (_blockChain.ValidateNextBlockHeader(block) is { } e)
             {
                 _logger.Error(
                     e, "Could not propose a valid block");
@@ -357,20 +359,80 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                var exception = _blockChain.ValidateNextBlock(block);
+                Exception exception = _blockChain.ValidateNextBlockHeader(block);
                 bool isValid = exception is null;
+
+                if (!isValid)
+                {
+                    _logger.Debug(
+                        exception,
+                        "BlockHeader #{Index} {BlockHash} is invalid",
+                        block.Index,
+                        block.Hash);
+
+                    _blockHashCache.AddReplace(block.Hash, false);
+                    return false;
+                }
+
+                try
+                {
+                    // Skipping the action evaluations if itself is a proposer.
+                    if (!IsCurrentRoundProposer())
+                    {
+                        // Neeed to get txs from store, lock?
+                        // TODO: Remove ChainId, enhancing lock management.
+                        // changing exception be returning to thrown.
+                        _blockChain._rwlock.EnterUpgradeableReadLock();
+
+                        try
+                        {
+                            BlockChain<T>.ValidateNonces(
+                                block.Transactions
+                                    .Select(tx => tx.Signer)
+                                    .Distinct()
+                                    .ToDictionary(
+                                        signer => signer,
+                                        signer => _blockChain.Store.GetTxNonce(
+                                            _blockChain.Id, signer)),
+                                block);
+
+                            foreach (var tx in block.Transactions)
+                            {
+                                if (_blockChain.Policy.ValidateNextBlockTx(
+                                    _blockChain, tx) is { } txve)
+                                {
+                                    throw txve;
+                                }
+                            }
+
+                            _blockChain.ValidateBlockStateRootHash(block, out _);
+                        }
+                        finally
+                        {
+                            _blockChain._rwlock.ExitUpgradeableReadLock();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    exception = e;
+                }
+
+                isValid = exception is null;
                 _logger.Debug(
                     exception,
-                    "Block #{Index} {Block} is valid? {Bool}. {@E}",
+                    "Block #{Index} {Hash} is valid? {Bool}",
                     block.Index,
-                    block,
-                    isValid,
-                    exception);
+                    block.Hash,
+                    isValid);
 
                 _blockHashCache.AddReplace(block.Hash, isValid);
                 return isValid;
             }
         }
+
+        private bool IsCurrentRoundProposer() =>
+            _validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey;
 
         /// <summary>
         /// Creates a signed <see cref="Vote"/> for a <see cref="ConsensusPreVoteMsg"/> or

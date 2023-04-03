@@ -1159,6 +1159,34 @@ namespace Libplanet.Blockchain
         public BlockCommit GetBlockCommit(BlockHash blockHash) =>
             GetBlockCommit(this[blockHash].Index);
 
+        internal static Dictionary<Address, long> ValidateNonces(
+            Dictionary<Address, long> storedNonces,
+            Block<T> block)
+        {
+            var nonceDeltas = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            {
+                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
+                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
+
+                long expectedNonce = nonceDelta + storedNonce;
+
+                if (!expectedNonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
+                        $"from expected nonce {expectedNonce}.",
+                        tx.Id,
+                        expectedNonce,
+                        tx.Nonce);
+                }
+
+                nonceDeltas[tx.Signer] = nonceDelta + 1;
+            }
+
+            return nonceDeltas;
+        }
+
 #pragma warning disable MEN003
         internal void Append(
             Block<T> block,
@@ -1201,7 +1229,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                if (ValidateNextBlock(block) is { } ibe)
+                if (ValidateNextBlockHeader(block) is { } ibe)
                 {
                     throw ibe;
                 }
@@ -1608,7 +1636,7 @@ namespace Libplanet.Blockchain
             return null;
         }
 
-        internal InvalidBlockException ValidateNextBlock(Block<T> block)
+        internal InvalidBlockException ValidateNextBlockHeader(Block<T> block)
         {
             if (block.Index == 0)
             {
@@ -1800,34 +1828,6 @@ namespace Libplanet.Blockchain
             }
 
             return null;
-        }
-
-        private static Dictionary<Address, long> ValidateNonces(
-            Dictionary<Address, long> storedNonces,
-            Block<T> block)
-        {
-            var nonceDeltas = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
-            {
-                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
-                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
-
-                long expectedNonce = nonceDelta + storedNonce;
-
-                if (!expectedNonce.Equals(tx.Nonce))
-                {
-                    throw new InvalidTxNonceException(
-                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
-                        $"from expected nonce {expectedNonce}.",
-                        tx.Id,
-                        expectedNonce,
-                        tx.Nonce);
-                }
-
-                nonceDeltas[tx.Signer] = nonceDelta + 1;
-            }
-
-            return nonceDeltas;
         }
     }
 }
