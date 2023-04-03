@@ -167,7 +167,7 @@ namespace Libplanet.Net.Consensus
             {
                 _newHeightCts?.Cancel();
 
-                _logger.Debug(
+                _logger.Information(
                     "Invoked {FName}() for new height #{NewHeight} from old height #{OldHeight}",
                     nameof(NewHeight),
                     height,
@@ -209,7 +209,7 @@ namespace Libplanet.Net.Consensus
                 RemoveOldContexts(height);
                 Height = height;
 
-                _logger.Debug("Start consensus for height #{Height}.", Height);
+                _logger.Information("Start consensus for height #{Height}", Height);
 
                 lock (_contextLock)
                 {

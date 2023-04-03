@@ -18,7 +18,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">The round to start.</param>
         private void StartRound(int round)
         {
-            _logger.Debug(
+            _logger.Information(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
                 round,
                 Round,
@@ -27,7 +27,7 @@ namespace Libplanet.Net.Consensus
             Step = Step.Propose;
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
-                _logger.Debug(
+                _logger.Information(
                     "Starting round {NewRound} and is a proposer.",
                     round,
                     ToString());
@@ -45,7 +45,7 @@ namespace Libplanet.Net.Consensus
                 }
                 else
                 {
-                    _logger.Debug(
+                    _logger.Information(
                         "Failed to propose a block for round {Round}.",
                         round);
                     _ = OnTimeoutPropose(Round);
@@ -53,7 +53,7 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                _logger.Debug(
+                _logger.Information(
                     "Starting round {NewRound} and is not a proposer.",
                     round);
                 _ = OnTimeoutPropose(Round);
@@ -261,7 +261,7 @@ namespace Libplanet.Net.Consensus
 
                 try
                 {
-                    _logger.Debug(
+                    _logger.Information(
                         "Committing block #{Index} {Hash} (context: {Context})",
                         block4.Index,
                         block4.Hash,
@@ -270,7 +270,7 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (Exception e)
                 {
-                    _logger.Debug(
+                    _logger.Error(
                         e,
                         "Failed to commit block #{Index} {Hash}",
                         block4.Index,
@@ -279,7 +279,7 @@ namespace Libplanet.Net.Consensus
                     return;
                 }
 
-                _logger.Debug(
+                _logger.Information(
                     "Committed block #{Index} {Hash}",
                     block4.Index,
                     block4.Hash);
