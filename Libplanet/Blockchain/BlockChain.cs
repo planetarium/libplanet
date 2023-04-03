@@ -406,7 +406,9 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers = null)
+            IEnumerable<IRenderer<T>> renderers = null,
+            IBlockChainStates blockChainStates = null,
+            ActionEvaluator actionEvaluator = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)
@@ -472,8 +474,8 @@ namespace Libplanet.Blockchain
             policy.NativeTokens.Contains,
             stateStore);
 
-            var blockChainStates = new BlockChainStates(store, stateStore);
-            var actionEvaluator = new ActionEvaluator(
+            blockChainStates ??= new BlockChainStates(store, stateStore);
+            actionEvaluator ??= new ActionEvaluator(
                 _ => policy.BlockAction,
                 blockChainStates: blockChainStates,
                 trieGetter: hash => stateStore.GetStateRoot(
@@ -942,10 +944,13 @@ namespace Libplanet.Blockchain
                         ToFungibleAssetKey,
                         ToTotalSupplyKey,
                         ValidatorSetKey);
-                const string deltaMsg =
-                    "Summarized the states delta with {KeyCount} key changes " +
-                    "made by block #{BlockIndex} {BlockHash}";
-                _logger.Debug(deltaMsg, totalDelta.Count, block.Index, block.Hash);
+                _logger.Debug(
+                    "Summarized the states delta with {Count} key changes " +
+                    "made by block #{BlockIndex} {BlockHash} in {DurationMs} ms",
+                    totalDelta.Count,
+                    block.Index,
+                    block.Hash,
+                    stopwatch.ElapsedMilliseconds);
 
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);

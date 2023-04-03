@@ -59,11 +59,12 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         IImmutableDictionary<Address, IImmutableSet<Currency>>
-            IAccountStateDelta.UpdatedFungibleAssets =>
-            UpdatedFungibles.GroupBy(kv => kv.Key.Item1).ToImmutableDictionary(
-                g => g.Key,
-                g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2).ToImmutableHashSet()
-            );
+            IAccountStateDelta.UpdatedFungibleAssets => UpdatedFungibles
+                .GroupBy(kv => kv.Key.Item1)
+                .ToImmutableDictionary(
+                    g => g.Key,
+                    g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2)
+                .ToImmutableHashSet());
 
         [Pure]
         IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
@@ -93,40 +94,50 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        IValue? IAccountStateView.GetState(Address address) =>
-            UpdatedStates.TryGetValue(address, out IValue? value)
+        IValue? IAccountStateView.GetState(Address address)
+        {
+            ActionContext.GetStateTimer.Value?.Start();
+            ActionContext.GetStateCount.Value += 1;
+            var state = UpdatedStates.TryGetValue(address, out IValue? value)
                 ? value
                 : StateGetter(new[] { address })[0];
+            ActionContext.GetStateTimer.Value?.Stop();
+            return state;
+        }
 
         /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
         IReadOnlyList<IValue?> IAccountStateView.GetStates(IReadOnlyList<Address> addresses)
         {
+            ActionContext.GetStateTimer.Value?.Start();
             int length = addresses.Count;
+            ActionContext.GetStateCount.Value += length;
             IValue?[] values = new IValue?[length];
-            var notFound = new List<Address>(length);
+            var notFoundIndices = new List<int>(length);
             for (int i = 0; i < length; i++)
             {
                 Address address = addresses[i];
-                if (UpdatedStates.TryGetValue(address, out IValue? v))
+                if (UpdatedStates.TryGetValue(address, out IValue? updatedValue))
                 {
-                    values[i] = v;
-                    continue;
+                    values[i] = updatedValue;
                 }
-
-                notFound.Add(address);
+                else
+                {
+                    notFoundIndices.Add(i);
+                }
             }
 
-            IReadOnlyList<IValue?> restValues = StateGetter(notFound);
-            for (int i = 0, j = 0; i < length && j < notFound.Count; i++)
+            if (notFoundIndices.Count > 0)
             {
-                if (addresses[i].Equals(notFound[j]))
+                IReadOnlyList<IValue?> restValues = StateGetter(
+                    notFoundIndices.Select(index => addresses[index]).ToArray());
+                foreach ((var v, var i) in notFoundIndices.Select((v, i) => (v, i)))
                 {
-                    values[i] = restValues[j];
-                    j++;
+                    values[v] = restValues[i];
                 }
             }
 
+            ActionContext.GetStateTimer.Value?.Stop();
             return values;
         }
 
