@@ -68,6 +68,23 @@ namespace Libplanet.Tests.Tx
             Assert.NotEqual(diffNonce.GetHashCode(), mock.GetHashCode());
         }
 
+        [Fact]
+        public void JsonSerialization()
+        {
+#pragma warning disable MEN002  // Long lines are OK for test JSON data.
+            TestUtils.AssertJsonSerializable(
+                new TxSigningMetadata(PublicKey, 123L),
+                @"
+                    {
+                      ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
+                      ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
+                      ""nonce"": 123
+                    }
+                ",
+                false);
+#pragma warning restore MEN002
+        }
+
         private class MockingTxSigningMetadata : ITxSigningMetadata
         {
             long ITxSigningMetadata.Nonce => 123L;

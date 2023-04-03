@@ -137,6 +137,56 @@ namespace Libplanet.Tests.Tx
             }
         }
 
+        [Fact]
+        public void JsonSerialization()
+        {
+            var genesisHash = BlockHash.FromString(
+                "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
+            var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
+            var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
+            var actions = new TxCustomActionList(new IAction[]
+            {
+                new DumbAction(AddressA, "foo"),
+                new DumbAction(AddressB, "bar"),
+            });
+            var invoice = new TxInvoice(
+                genesisHash,
+                updatedAddresses,
+                timestamp,
+                actions
+            );
+#pragma warning disable MEN002  // Long lines are OK for test JSON data.
+            TestUtils.AssertJsonSerializable(
+                invoice,
+                @"
+                    {
+                      ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265"",
+                      ""updatedAddresses"": [
+                        ""B61CE2Ce6d28237C1BC6E114616616762f1a12Ab"",
+                        ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
+                      ],
+                      ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
+                      ""actions"": {
+                        ""type"": ""custom"",
+                        ""customActions"": [
+                          {
+                            ""\uFEFFitem"": ""\uFEFFfoo"",
+                            ""\uFEFFrecord_rehearsal"": false,
+                            ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                          },
+                          {
+                            ""\uFEFFitem"": ""\uFEFFbar"",
+                            ""\uFEFFrecord_rehearsal"": false,
+                            ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                          }
+                        ]
+                      }
+                    }
+                ",
+                false);
+#pragma warning restore MEN002
+        }
+
         private class MockTxInvoice : ITxInvoice
         {
             public IImmutableSet<Address> UpdatedAddresses =>

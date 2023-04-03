@@ -736,7 +736,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
         }
 
-        public static void AssertJsonSerializable<T>(T obj, string expectedJson)
+        public static void AssertJsonSerializable<T>(
+            T obj,
+            string expectedJson,
+            bool testDeserializable = true)
             where T : IEquatable<T>
         {
             Skip.IfNot(
@@ -760,8 +763,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 CommentHandling = JsonCommentHandling.Skip,
             });
             JsonAssert.Equal(expected, actual, true);
-            var deserialized = JsonSerializer.Deserialize<T>(expectedJson, options);
-            Assert.Equal(obj, deserialized);
+            if (testDeserializable)
+            {
+                var deserialized = JsonSerializer.Deserialize<T>(expectedJson, options);
+                Assert.Equal(obj, deserialized);
+            }
         }
     }
 }
