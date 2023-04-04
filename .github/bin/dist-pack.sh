@@ -92,6 +92,14 @@ for npmpkg in "${npm_packages[@]}"; do
     jq --arg v "$version" 'del(.private) | .version = $v' package.json \
       > .package.json.tmp
     mv .package.json.tmp package.json
+    popd
+  fi
+done
+
+# Loop twice to make sure that all packages are versioned
+for npmpkg in "${npm_packages[@]}"; do
+  if [[ -f "./$npmpkg/package.json" ]]; then
+    pushd "./$npmpkg/"
     yarn
     yarn pack --out "${npmpkg//\//-}-$version.tgz"
     popd
