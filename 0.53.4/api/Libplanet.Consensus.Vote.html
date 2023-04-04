@@ -1,0 +1,693 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Vote
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Vote
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Consensus.Vote">
+
+
+  <h1 id="Libplanet_Consensus_Vote" data-uid="Libplanet.Consensus.Vote" class="text-break">Class Vote
+</h1>
+  <div class="markdown level0 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">Vote</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Consensus.IVoteMetadata.html">IVoteMetadata</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>&gt;</div>
+    <div><span class="xref">Bencodex.IBencodable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Consensus.html">Libplanet.Consensus</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Consensus_Vote_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Vote : IVoteMetadata, IEquatable&lt;Vote&gt;, IBencodable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L67">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote__ctor_" data-uid="Libplanet.Consensus.Vote.#ctor*"></a>
+  <h4 id="Libplanet_Consensus_Vote__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Consensus.Vote.#ctor(Bencodex.Types.IValue)">Vote(IValue)</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vote(IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote__ctor_Libplanet_Consensus_VoteMetadata_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.%23ctor(Libplanet.Consensus.VoteMetadata%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L26">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote__ctor_" data-uid="Libplanet.Consensus.Vote.#ctor*"></a>
+  <h4 id="Libplanet_Consensus_Vote__ctor_Libplanet_Consensus_VoteMetadata_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Consensus.Vote.#ctor(Libplanet.Consensus.VoteMetadata,System.Collections.Immutable.ImmutableArray{System.Byte})">Vote(VoteMetadata, ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vote(VoteMetadata metadata, ImmutableArray&lt;byte&gt; signature)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.VoteMetadata.html">VoteMetadata</a></td>
+        <td><span class="parametername">metadata</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="parametername">signature</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L113">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Bencoded_" data-uid="Libplanet.Consensus.Vote.Bencoded*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Bencoded" data-uid="Libplanet.Consensus.Vote.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L95">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_BlockHash_" data-uid="Libplanet.Consensus.Vote.BlockHash*"></a>
+  <h4 id="Libplanet_Consensus_Vote_BlockHash" data-uid="Libplanet.Consensus.Vote.BlockHash">BlockHash</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Consensus.IVoteMetadata.html#Libplanet_Consensus_IVoteMetadata_BlockHash">BlockHash</a> of the block in vote. If null, vote nil.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash? BlockHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Flag.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Flag%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L104">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Flag_" data-uid="Libplanet.Consensus.Vote.Flag*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Flag" data-uid="Libplanet.Consensus.Vote.Flag">Flag</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Consensus.VoteFlag.html">VoteFlag</a> indicating the type of a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VoteFlag Flag { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.VoteFlag.html">VoteFlag</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Height.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Height%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L89">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Height_" data-uid="Libplanet.Consensus.Vote.Height*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Height" data-uid="Libplanet.Consensus.Vote.Height">Height</h4>
+  <div class="markdown level1 summary"><p>Height of the vote target block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Height { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Round.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Round%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L92">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Round_" data-uid="Libplanet.Consensus.Vote.Round*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Round" data-uid="Libplanet.Consensus.Vote.Round">Round</h4>
+  <div class="markdown level1 summary"><p>Round of the vote in given height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Round { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L110">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Signature_" data-uid="Libplanet.Consensus.Vote.Signature*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Signature" data-uid="Libplanet.Consensus.Vote.Signature">Signature</h4>
+  <div class="markdown level1 summary"><p>The signature for the <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>.  Lack of signature for a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>
+is represented by an empty array <em>not</em> <span class="xref">langword_csharp_default</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; Signature { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L98">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Timestamp_" data-uid="Libplanet.Consensus.Vote.Timestamp*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Timestamp" data-uid="Libplanet.Consensus.Vote.Timestamp">Timestamp</h4>
+  <div class="markdown level1 summary"><p>The time at which the voting took place.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_ValidatorPublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.ValidatorPublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L101">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_ValidatorPublicKey_" data-uid="Libplanet.Consensus.Vote.ValidatorPublicKey*"></a>
+  <h4 id="Libplanet_Consensus_Vote_ValidatorPublicKey" data-uid="Libplanet.Consensus.Vote.ValidatorPublicKey">ValidatorPublicKey</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of the validator that voted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PublicKey ValidatorPublicKey { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Equals_Libplanet_Consensus_Vote_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Equals(Libplanet.Consensus.Vote)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L133">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Equals_" data-uid="Libplanet.Consensus.Vote.Equals*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Equals_Libplanet_Consensus_Vote_" data-uid="Libplanet.Consensus.Vote.Equals(Libplanet.Consensus.Vote)">Equals(Vote)</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool Equals(Vote other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L142">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Equals_" data-uid="Libplanet.Consensus.Vote.Equals*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Equals_System_Object_" data-uid="Libplanet.Consensus.Vote.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L149">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_GetHashCode_" data-uid="Libplanet.Consensus.Vote.GetHashCode*"></a>
+  <h4 id="Libplanet_Consensus_Vote_GetHashCode" data-uid="Libplanet.Consensus.Vote.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L158">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_ToString_" data-uid="Libplanet.Consensus.Vote.ToString*"></a>
+  <h4 id="Libplanet_Consensus_Vote_ToString" data-uid="Libplanet.Consensus.Vote.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Represents a <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> from a validator for consensus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote_Verify.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote.Verify%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Consensus_Vote_Verify_" data-uid="Libplanet.Consensus.Vote.Verify*"></a>
+  <h4 id="Libplanet_Consensus_Vote_Verify" data-uid="Libplanet.Consensus.Vote.Verify">Verify()</h4>
+  <div class="markdown level1 summary"><p>Verifies whether the <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a>'s payload is properly signed by
+<a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool Verify()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Signature">Signature</a> is not empty
+and is a valid signature signed by <a class="xref" href="Libplanet.Consensus.Validator.html">Validator</a>,
+<span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Consensus.IVoteMetadata.html">IVoteMetadata</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">Bencodex.IBencodable</span>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Consensus_Vote.md&amp;value=---%0Auid%3A%20Libplanet.Consensus.Vote%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Consensus/Vote.cs/#L19" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

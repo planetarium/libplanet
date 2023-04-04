@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IAccountStateView
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IAccountStateView
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.IAccountStateView">
+
+
+  <h1 id="Libplanet_Action_IAccountStateView" data-uid="Libplanet.Action.IAccountStateView" class="text-break">Interface IAccountStateView
+</h1>
+  <div class="markdown level0 summary"><p>An interface to fetch account states.</p>
+<p>It is like a readonly map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
+<span class="xref">null</span> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
+any state.</li></ul>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_IAccountStateView_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IAccountStateView</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Action_IAccountStateView_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address%2CLibplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Action/IAccountStateView.cs/#L64">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAccountStateView_GetBalance_" data-uid="Libplanet.Action.IAccountStateView.GetBalance*"></a>
+  <h4 id="Libplanet_Action_IAccountStateView_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_" data-uid="Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)">GetBalance(Address, Currency)</h4>
+  <div class="markdown level1 summary"><p>Queries <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The owner address to query.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Action_IAccountStateView_GetState_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Action/IAccountStateView.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAccountStateView_GetState_" data-uid="Libplanet.Action.IAccountStateView.GetState*"></a>
+  <h4 id="Libplanet_Action_IAccountStateView_GetState_Libplanet_Address_" data-uid="Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)">GetState(Address)</h4>
+  <div class="markdown level1 summary"><p>Gets the account state of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+IValue GetState(Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> referring
+the account to get its state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><p>The account state of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.
+If it has never been set to any state it returns <span class="xref">null</span>
+instead.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Action_IAccountStateView_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList%7BLibplanet.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Action/IAccountStateView.cs/#L53">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAccountStateView_GetStates_" data-uid="Libplanet.Action.IAccountStateView.GetStates*"></a>
+  <h4 id="Libplanet_Action_IAccountStateView_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__" data-uid="Libplanet.Action.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})">GetStates(IReadOnlyList&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets multiple account states associated with the specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>
+at once.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+IReadOnlyList&lt;IValue&gt; GetStates(IReadOnlyList&lt;Address&gt; addresses)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a>es associated with states to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><p>The states associated to the specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>.
+Associated values are ordered in the same way to the corresponding
+<code data-dev-comment-type="paramref" class="paramref">addresses</code>.  Absent states are represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Action/IAccountStateView.cs/#L76">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAccountStateView_GetTotalSupply_" data-uid="Libplanet.Action.IAccountStateView.GetTotalSupply*"></a>
+  <h4 id="Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_" data-uid="Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)">GetTotalSupply(Currency)</h4>
+  <div class="markdown level1 summary"><p>Returns the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+FungibleAssetValue GetTotalSupply(Currency currency)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The total supply of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></td>
+        <td><p>Thrown when the total supply of the
+given <code data-dev-comment-type="paramref" class="paramref">currency</code> is not trackable.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_MaximumSupply">MaximumSupply</a></div>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/0.53.4/apiSpec/new?filename=Libplanet_Action_IAccountStateView.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateView%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/0.53.4/Libplanet/Action/IAccountStateView.cs/#L30" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
