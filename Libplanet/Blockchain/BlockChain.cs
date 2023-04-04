@@ -445,7 +445,7 @@ namespace Libplanet.Blockchain
 
             var id = Guid.NewGuid();
 
-            if (ValidateGenesisBlock(genesisBlock) is { } ibe)
+            if (ValidateGenesis(genesisBlock) is { } ibe)
             {
                 throw ibe;
             }
@@ -1200,7 +1200,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                if (ValidateNextBlockHeader(block) is { } ibe)
+                if (ValidateBlock(block) is { } ibe)
                 {
                     throw ibe;
                 }
@@ -1210,7 +1210,7 @@ namespace Libplanet.Blockchain
                     throw ibce;
                 }
 
-                var nonceDeltas = ValidateNonces(
+                var nonceDeltas = ValidateBlockNonces(
                     block.Transactions
                         .Select(tx => tx.Signer)
                         .Distinct()

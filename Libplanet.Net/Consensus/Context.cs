@@ -315,7 +315,7 @@ namespace Libplanet.Net.Consensus
             // NOTE: Block body validation is bypassed due to ProposeBlock calculates the action
             // Evaluations before the block is proposed.
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
-            if (_blockChain.ValidateNextBlockHeader(block) is { } e)
+            if (_blockChain.ValidateBlock(block) is { } e)
             {
                 _logger.Error(
                     e, "Could not propose a valid block");
@@ -365,7 +365,7 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                Exception exception = _blockChain.ValidateNextBlockHeader(block);
+                Exception exception = _blockChain.ValidateBlock(block);
                 bool isValid = exception is null;
 
                 if (!isValid)
@@ -392,7 +392,7 @@ namespace Libplanet.Net.Consensus
 
                         try
                         {
-                            BlockChain<T>.ValidateNonces(
+                            _blockChain.ValidateBlockNonces(
                                 block.Transactions
                                     .Select(tx => tx.Signer)
                                     .Distinct()
