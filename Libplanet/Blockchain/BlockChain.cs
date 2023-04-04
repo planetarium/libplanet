@@ -445,12 +445,12 @@ namespace Libplanet.Blockchain
 
             var id = Guid.NewGuid();
 
-            if (ValidateGenesisBlock(genesisBlock) is { } ibe)
+            if (ValidateGenesis(genesisBlock) is { } ibe)
             {
                 throw ibe;
             }
 
-            var nonceDeltas = ValidateNonces(new Dictionary<Address, long>(), genesisBlock);
+            var nonceDeltas = ValidateGenesisNonces(genesisBlock);
 
             store.PutBlock(genesisBlock);
             store.AppendIndex(id, genesisBlock.Hash);
@@ -1200,7 +1200,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                if (ValidateNextBlockHeader(block) is { } ibe)
+                if (ValidateBlock(block) is { } ibe)
                 {
                     throw ibe;
                 }
@@ -1210,12 +1210,17 @@ namespace Libplanet.Blockchain
                     throw ibce;
                 }
 
-                var nonceDeltas = ValidateNonces(
+                var nonceDeltas = ValidateBlockNonces(
                     block.Transactions
                         .Select(tx => tx.Signer)
                         .Distinct()
                         .ToDictionary(signer => signer, signer => Store.GetTxNonce(Id, signer)),
                     block);
+
+                if (Policy.ValidateNextBlock(this, block) is { } bpve)
+                {
+                    throw bpve;
+                }
 
                 foreach (Transaction<T> tx in block.Transactions)
                 {

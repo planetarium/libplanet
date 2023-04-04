@@ -13,17 +13,14 @@ namespace Libplanet.Blockchain
 {
     public partial class BlockChain<T>
     {
-        internal static Dictionary<Address, long> ValidateNonces(
-            Dictionary<Address, long> storedNonces,
+        internal static Dictionary<Address, long> ValidateGenesisNonces(
             Block<T> block)
         {
             var nonceDeltas = new Dictionary<Address, long>();
             foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
             {
                 nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
-                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
-
-                long expectedNonce = nonceDelta + storedNonce;
+                long expectedNonce = nonceDelta;
 
                 if (!expectedNonce.Equals(tx.Nonce))
                 {
@@ -39,6 +36,51 @@ namespace Libplanet.Blockchain
             }
 
             return nonceDeltas;
+        }
+
+        /// <summary>
+        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
+        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
+        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="block"/> has
+        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
+        internal static InvalidBlockException ValidateGenesis(Block<T> block)
+        {
+            if (block.Index != 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(block)} must have index 0 but has index {block.Index}",
+                    nameof(block));
+            }
+
+            int actualProtocolVersion = block.ProtocolVersion;
+            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
+            {
+                return new InvalidBlockProtocolVersionException(
+                    $"The protocol version ({actualProtocolVersion}) of the block " +
+                    $"#{block.Index} {block.Hash} is not supported by this node." +
+                    $"The highest supported protocol version is {currentProtocolVersion}.",
+                    actualProtocolVersion);
+            }
+
+            if (block.PreviousHash is { } previousHash)
+            {
+                return new InvalidBlockPreviousHashException(
+                    "A genesis block should not have previous hash, " +
+                    $"but its value is {previousHash}.");
+            }
+
+            if (block.LastCommit is { } lastCommit)
+            {
+                return new InvalidBlockLastCommitException(
+                    "A genesis block should not have lastCommit, " +
+                    $"but its value is {lastCommit}.");
+            }
+
+            return null;
         }
 
         internal InvalidBlockCommitException ValidateBlockCommit(
@@ -123,11 +165,41 @@ namespace Libplanet.Blockchain
             return null;
         }
 
-        internal InvalidBlockException ValidateNextBlockHeader(Block<T> block)
+        internal Dictionary<Address, long> ValidateBlockNonces(
+            Dictionary<Address, long> storedNonces,
+            Block<T> block)
         {
-            if (block.Index == 0)
+            var nonceDeltas = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
             {
-                return ValidateGenesisBlock(block);
+                nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
+                storedNonces.TryGetValue(tx.Signer, out var storedNonce);
+
+                long expectedNonce = nonceDelta + storedNonce;
+
+                if (!expectedNonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        $"Transaction {tx.Id} has an invalid nonce {tx.Nonce} that is different " +
+                        $"from expected nonce {expectedNonce}.",
+                        tx.Id,
+                        expectedNonce,
+                        tx.Nonce);
+                }
+
+                nonceDeltas[tx.Signer] = nonceDelta + 1;
+            }
+
+            return nonceDeltas;
+        }
+
+        internal InvalidBlockException ValidateBlock(Block<T> block)
+        {
+            if (block.Index <= 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(block)} must have a positive index but has index {block.Index}",
+                    nameof(block));
             }
 
             long index = Count;
@@ -162,21 +234,9 @@ namespace Libplanet.Blockchain
                 return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
-            if (Policy.ValidateNextBlock(this, block) is { } bpve)
-            {
-                return bpve;
-            }
-
             Block<T> lastBlock = this[index - 1];
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
-
-            if (block.Index != index)
-            {
-                return new InvalidBlockIndexException(
-                    $"The expected index of block {block.Hash} is #{index}, " +
-                    $"but its index is #{block.Index}.");
-            }
 
             if (!block.PreviousHash.Equals(prevHash))
             {
@@ -270,51 +330,6 @@ namespace Libplanet.Blockchain
                     block.StateRootHash,
                     rootHash);
             }
-        }
-
-        /// <summary>
-        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
-        /// </summary>
-        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
-        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
-        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
-        /// <exception cref="ArgumentException">If <paramref name="block"/> has
-        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
-        private static InvalidBlockException ValidateGenesisBlock(Block<T> block)
-        {
-            if (block.Index != 0)
-            {
-                throw new ArgumentException(
-                    $"Given {nameof(block)} must have index 0 but has index {block.Index}",
-                    nameof(block));
-            }
-
-            int actualProtocolVersion = block.ProtocolVersion;
-            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
-            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
-            {
-                return new InvalidBlockProtocolVersionException(
-                    $"The protocol version ({actualProtocolVersion}) of the block " +
-                    $"#{block.Index} {block.Hash} is not supported by this node." +
-                    $"The highest supported protocol version is {currentProtocolVersion}.",
-                    actualProtocolVersion);
-            }
-
-            if (block.PreviousHash is { } previousHash)
-            {
-                return new InvalidBlockPreviousHashException(
-                    "A genesis block should not have previous hash, " +
-                    $"but its value is {previousHash}.");
-            }
-
-            if (block.LastCommit is { } lastCommit)
-            {
-                return new InvalidBlockLastCommitException(
-                    "A genesis block should not have lastCommit, " +
-                    $"but its value is {lastCommit}.");
-            }
-
-            return null;
         }
     }
 }
