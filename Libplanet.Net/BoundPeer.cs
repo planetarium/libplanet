@@ -152,7 +152,7 @@ namespace Libplanet.Net
 
             try
             {
-                var pubKey = new PublicKey(ByteUtil.ParseHex(tokens[0]));
+                var pubKey = PublicKey.FromHex(tokens[0]);
                 var host = tokens[1];
                 var port = int.Parse(tokens[2], CultureInfo.InvariantCulture);
 

@@ -277,7 +277,7 @@ public class KeyCommand
     )
     {
         PublicKey pubKey = publicKey
-            ? new PublicKey(ByteUtil.ParseHex(key))
+            ? PublicKey.FromHex(key)
             : ValidateRawHex(key).PublicKey;
         string addr = pubKey.ToAddress().ToString();
         string pub = ByteUtil.Hex(pubKey.Format(compress: true));

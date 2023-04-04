@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -42,6 +43,7 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     [Serializable]
+    [TypeConverter(typeof(AddressTypeConverter))]
     [JsonConverter(typeof(AddressJsonConverter))]
     public readonly struct Address
         : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
@@ -345,6 +347,46 @@ namespace Libplanet
                     "Address hex must only consist of ASCII characters", fe);
             }
         }
+    }
+
+    /// <summary>
+    /// The <see cref="TypeConverter"/> implementation for <see cref="Address"/>.
+    /// </summary>
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class AddressTypeConverter : TypeConverter
+    {
+        /// <inheritdoc cref="TypeConverter.CanConvertFrom(ITypeDescriptorContext, Type)"/>
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+            sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+
+        /// <inheritdoc
+        /// cref="TypeConverter.ConvertFrom(ITypeDescriptorContext, CultureInfo, object)"/>
+        public override object ConvertFrom(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value
+        ) =>
+            value is string v ? new Address(v) : base.ConvertFrom(context, culture, value);
+
+        /// <inheritdoc cref="TypeConverter.CanConvertTo(ITypeDescriptorContext, Type)"/>
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+            destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+
+        /// <inheritdoc
+        /// cref="TypeConverter.ConvertTo(ITypeDescriptorContext, CultureInfo, object, Type)"/>
+        public override object ConvertTo(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value,
+            Type destinationType
+        ) =>
+            value is Address address && destinationType == typeof(string)
+                ? address.ToHex()
+                : base.ConvertTo(context, culture, value, destinationType);
     }
 
     [SuppressMessage(

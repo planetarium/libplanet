@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -309,6 +310,26 @@ namespace Libplanet.Tests
             expected = default(Address);
             deserialized = TestUtils.BinarySerializeDeserialize<Address>(expected);
             Assert.Equal(expected, deserialized);
+        }
+
+        [Fact]
+        public void TypeConverter()
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(Address));
+            var address = new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF");
+            Assert.True(converter.CanConvertFrom(typeof(string)));
+            Assert.Equal(
+                address,
+                converter.ConvertFrom("0x0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"));
+            Assert.Equal(
+                address,
+                converter.ConvertFrom("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"));
+            Assert.Throws<ArgumentException>(() => converter.ConvertFrom("INVALID"));
+
+            Assert.True(converter.CanConvertTo(typeof(string)));
+            Assert.Equal(
+                "0123456789ABcdefABcdEfABcdEFabcDEFabCDEF",
+                converter.ConvertTo(address, typeof(string)));
         }
 
         [SkippableFact]

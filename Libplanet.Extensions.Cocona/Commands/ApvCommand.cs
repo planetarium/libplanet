@@ -121,7 +121,7 @@ public class ApvCommand
             Description = "Public key(s) to be used for verification.  " +
                 "Can be applied multiple times."
         )]
-        string[]? publicKey = null,
+        PublicKey[]? publicKeys = null,
         [Option(
             'K',
             Description = "Do not use any keys in the key store, " +
@@ -132,33 +132,22 @@ public class ApvCommand
     {
         AppProtocolVersion v = ParseAppProtocolVersionToken(token);
 
-        if (publicKey is string[] pubKeyHexes)
+        if (publicKeys is { } pubKeys)
         {
-            foreach (string pubKeyHex in pubKeyHexes)
+            foreach (PublicKey pubKey in pubKeys)
             {
-                string opt = $"-p/--public-key=\"{pubKeyHex}\"";
-                PublicKey pubKey;
-                try
-                {
-                    pubKey = new PublicKey(ByteUtil.ParseHex(pubKeyHex));
-                }
-                catch (Exception e)
-                {
-                    throw Utils.Error($"The {opt} is not a valid public key.  {e.Message}");
-                }
-
                 if (v.Verify(pubKey))
                 {
                     Console.Error.WriteLine(
                         "The signature successfully was verified using the {0}.",
-                        opt
+                        pubKey
                     );
                     return;
                 }
 
                 Console.Error.WriteLine(
                     "The signature was failed to verify using the {0}.",
-                    opt
+                    pubKey
                 );
             }
         }

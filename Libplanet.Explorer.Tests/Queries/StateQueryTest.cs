@@ -206,8 +206,8 @@ public class StateQueryTest
             => new ValidatorSet(new List<Validator>
             {
                 new(
-                    new PublicKey(ByteUtil.ParseHex(
-                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
+                    PublicKey.FromHex(
+                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
                     new BigInteger(1)),
             });
     }

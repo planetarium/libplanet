@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -29,6 +31,7 @@ namespace Libplanet.Crypto
     /// <remarks>Every <see cref="PublicKey"/> object is immutable.</remarks>
     /// <seealso cref="PrivateKey"/>
     /// <seealso cref="Address"/>
+    [TypeConverter(typeof(PublicKeyTypeConverter))]
     [JsonConverter(typeof(PublicKeyJsonConverter))]
     public class PublicKey : IEquatable<PublicKey>
     {
@@ -61,6 +64,20 @@ namespace Libplanet.Crypto
         public static bool operator ==(PublicKey left, PublicKey right) => left.Equals(right);
 
         public static bool operator !=(PublicKey left, PublicKey right) => !left.Equals(right);
+
+        /// <summary>
+        /// Creates a <see cref="PublicKey"/> instance from its hexadecimal representation.
+        /// </summary>
+        /// <param name="hex">The hexadecimal representation of the public key to load.
+        /// Case insensitive, and accepts either compressed or uncompressed.</param>
+        /// <returns>The parsed <see cref="PublicKey"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
+        /// <paramref name="hex"/> string is an odd number.</exception>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string
+        /// is not a valid hexadecimal string.</exception>
+        /// <seealso cref="ToHex(bool)"/>
+        public static PublicKey FromHex(string hex) =>
+            new PublicKey(ByteUtil.ParseHex(hex));
 
         public bool Equals(PublicKey? other) => KeyParam.Equals(other?.KeyParam);
 
@@ -196,8 +213,14 @@ namespace Libplanet.Crypto
         /// <summary>
         /// Gets the public key's hexadecimal representation in compressed form.
         /// </summary>
+        /// <param name="compress">Returns a short length representation if it is
+        /// <see langword="true"/>.  This option does not lose any information.</param>
         /// <returns>The hexadecimal string of the public key's compressed bytes.</returns>
-        public override string ToString() => ByteUtil.Hex(Format(true));
+        /// <seealso cref="FromHex(string)"/>
+        public string ToHex(bool compress) => ByteUtil.Hex(Format(compress));
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString() => ToHex(true);
 
         private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
         {
@@ -208,6 +231,60 @@ namespace Libplanet.Crypto
                 ecParams
             );
         }
+    }
+
+    /// <summary>
+    /// The <see cref="TypeConverter"/> implementation for <see cref="PublicKey"/>.
+    /// </summary>
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class PublicKeyTypeConverter : TypeConverter
+    {
+        /// <inheritdoc cref="TypeConverter.CanConvertFrom(ITypeDescriptorContext, Type)"/>
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+            sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+
+        /// <inheritdoc
+        /// cref="TypeConverter.ConvertFrom(ITypeDescriptorContext, CultureInfo, object)"/>
+        public override object ConvertFrom(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value
+        )
+        {
+            if (value is string v)
+            {
+                try
+                {
+                    return PublicKey.FromHex(v);
+                }
+                catch (Exception e) when (e is ArgumentException || e is FormatException)
+                {
+                    throw new ArgumentException(e.Message, e);
+                }
+            }
+
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        /// <inheritdoc cref="TypeConverter.CanConvertTo(ITypeDescriptorContext, Type)"/>
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+            destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+
+        /// <inheritdoc
+        /// cref="TypeConverter.ConvertTo(ITypeDescriptorContext, CultureInfo, object, Type)"/>
+        public override object ConvertTo(
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value,
+            Type destinationType
+        ) =>
+            value is PublicKey key && destinationType == typeof(string)
+                ? key.ToHex(true)
+                : base.ConvertTo(context, culture, value, destinationType);
     }
 
     [SuppressMessage(
@@ -226,9 +303,9 @@ namespace Libplanet.Crypto
             string? hex = reader.GetString();
             try
             {
-                return new PublicKey(ByteUtil.ParseHex(hex!));
+                return PublicKey.FromHex(hex!);
             }
-            catch (ArgumentException e)
+            catch (Exception e) when (e is ArgumentException || e is FormatException)
             {
                 throw new JsonException(e.Message);
             }
@@ -239,6 +316,6 @@ namespace Libplanet.Crypto
             PublicKey value,
             JsonSerializerOptions options
         ) =>
-            writer.WriteStringValue(ByteUtil.Hex(value.Format(true)));
+            writer.WriteStringValue(value.ToHex(true));
     }
 }
