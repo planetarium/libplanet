@@ -93,11 +93,9 @@ namespace Libplanet.Net.Consensus
         /// </para>
         /// </summary>
         /// <param name="message">The <see cref="ConsensusMsg"/> to add.</param>
-        /// <returns>
-        /// <see langword="true"/> if <paramref name="message"/> was successfully added,
-        /// <see langword="false"/> otherwise.
-        /// </returns>
-        internal bool Add(ConsensusMsg message)
+        /// <exception cref="InvalidConsensusMessageException">Thrown when the given
+        /// <paramref name="message"/> is invalid.</exception>
+        internal void Add(ConsensusMsg message)
         {
             lock (_lock)
             {
@@ -105,49 +103,39 @@ namespace Libplanet.Net.Consensus
 
                 if (message.Height != _height)
                 {
-                    _logger.Debug(
-                        "Given message's height {MessageHeight} does not match the expected " +
-                        "height {ExpectedHeight}",
-                        message.Height,
-                        _height);
-                    return false;
+                    var msg =
+                        $"Given message's height {message.Height} does not match the expected " +
+                        $"height {_height}";
+                    throw new InvalidConsensusMessageException(msg, message);
                 }
                 else if (!_validators.PublicKeys.Contains(message.ValidatorPublicKey))
                 {
-                    _logger.Debug(
-                        "Given message's validator {MessageValidator} is not one of " +
-                        "the validators for height {Height}",
-                        message.ValidatorPublicKey,
-                        message.Height);
-                    return false;
+                    var msg =
+                        $"Given message's validator {message.ValidatorPublicKey} is not one of " +
+                        $"the validators for height {message.Height}";
+                    throw new InvalidConsensusMessageException(msg, message);
                 }
                 else if (message is ConsensusProposalMsg proposal1 &&
                     !proposal1.ValidatorPublicKey.Equals(expectedProposer.PublicKey))
                 {
-                    _logger.Debug(
-                        "Given proposal message's validator {MessageValidator} does not match " +
-                        "the expected proposer {ExpectedValidator} for height {Height} " +
-                        "and round {Round}",
-                        proposal1.ValidatorPublicKey,
-                        expectedProposer,
-                        proposal1.Height,
-                        proposal1.Round);
-                    return false;
+                    var msg =
+                        $"Given proposal message's validator {proposal1.ValidatorPublicKey} " +
+                        $"does not match the expected proposer {expectedProposer} for height " +
+                        $"{proposal1.Height} and round {proposal1.Round}";
+                    throw new InvalidConsensusMessageException(msg, message);
                 }
                 else if (message is ConsensusProposalMsg proposal2)
                 {
                     if (_proposals.ContainsKey(proposal2.Round))
                     {
-                        _logger.Debug(
-                            "There is already a proposal for given proposal message's " +
-                            "round {Round}",
-                            proposal2.Round);
-                        return false;
+                        var msg =
+                            "There is already a proposal for given proposal message's round " +
+                            proposal2.Round;
+                        throw new InvalidConsensusMessageException(msg, message);
                     }
                     else
                     {
                         _proposals[proposal2.Round] = proposal2;
-                        return true;
                     }
                 }
                 else if (message is ConsensusPreVoteMsg preVote)
@@ -160,17 +148,14 @@ namespace Libplanet.Net.Consensus
 
                     if (_preVotes[preVote.Round].ContainsKey(preVote.ValidatorPublicKey))
                     {
-                        _logger.Debug(
+                        var msg =
                             "There is already a prevote message for given prevote message's " +
-                            "round {Round} and validator {Validator}",
-                            preVote.Round,
-                            preVote.ValidatorPublicKey);
-                        return false;
+                            $"round {preVote.Round} and validator {preVote.ValidatorPublicKey}";
+                        throw new InvalidConsensusMessageException(msg, message);
                     }
                     else
                     {
                         _preVotes[preVote.Round][preVote.ValidatorPublicKey] = preVote;
-                        return true;
                     }
                 }
                 else if (message is ConsensusPreCommitMsg preCommit)
@@ -183,25 +168,20 @@ namespace Libplanet.Net.Consensus
 
                     if (_preCommits[preCommit.Round].ContainsKey(preCommit.ValidatorPublicKey))
                     {
-                        _logger.Debug(
+                        var msg =
                             "There is already a precommit message for given precommit message's " +
-                            "round {Round} and validator {Validator}",
-                            preCommit.Round,
-                            preCommit.ValidatorPublicKey);
-                        return false;
+                            $"round {preCommit.Round} and validator {preCommit.ValidatorPublicKey}";
+                        throw new InvalidConsensusMessageException(msg, message);
                     }
                     else
                     {
                         _preCommits[preCommit.Round][preCommit.ValidatorPublicKey] = preCommit;
-                        return true;
                     }
                 }
                 else
                 {
-                    _logger.Debug(
-                        "Unknown message type {MessageType} received",
-                        message.GetType());
-                    return false;
+                    var msg = $"Unknown message type {message.GetType()} received";
+                    throw new InvalidConsensusMessageException(msg, message);
                 }
             }
         }

@@ -122,6 +122,29 @@ To be released.
 [#2996]: https://github.com/planetarium/libplanet/pull/2995
 
 
+Version 0.53.4
+--------------
+
+Released on April 4, 2023.
+
+ -  Fixed version resolution of typescript libraries for dependencies located
+    in the monorepo.  [[#3050], [#3052]]
+ -  Exported the omitted `signTx()` and `encodeSignedTx()` functions in
+    *@planetarium/tx*.  [[#3052]]
+
+[#3050]: https://github.com/planetarium/libplanet/issues/3050
+[#3052]: https://github.com/planetarium/libplanet/pull/3052
+
+
+Version 0.53.3
+--------------
+
+Released on April 3, 2023.
+
+ -  Adjusted level of the consensus related logs.  [[#3046]]
+
+[#3046]: https://github.com/planetarium/libplanet/pull/3046
+
 Version 0.53.2
 --------------
 

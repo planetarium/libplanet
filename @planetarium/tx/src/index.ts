@@ -27,3 +27,7 @@ export {
   encodeUnsignedTxWithSystemAction,
   encodeUnsignedTxWithCustomActions,
 } from "./tx/index.js";
+export {
+  signTx,
+  encodeSignedTx,
+} from "./tx/signed.js";
