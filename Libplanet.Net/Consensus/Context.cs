@@ -319,6 +319,18 @@ namespace Libplanet.Net.Consensus
             // NOTE: Block body validation is bypassed due to ProposeBlock calculates the action
             // Evaluations before the block is proposed.
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            try
+            {
+                _blockChain.ValidateBlock(block);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e, "Could not propose a valid block");
+                ExceptionOccurred?.Invoke(this, e);
+                return null;
+            }
+
             if (block.Index != Height)
             {
                 InvalidBlockIndexException ibie = new InvalidBlockIndexException(
