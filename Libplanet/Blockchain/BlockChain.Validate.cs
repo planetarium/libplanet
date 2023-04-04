@@ -234,21 +234,9 @@ namespace Libplanet.Blockchain
                 return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
-            if (Policy.ValidateNextBlock(this, block) is { } bpve)
-            {
-                return bpve;
-            }
-
             Block<T> lastBlock = this[index - 1];
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
-
-            if (block.Index != index)
-            {
-                return new InvalidBlockIndexException(
-                    $"The expected index of block {block.Hash} is #{index}, " +
-                    $"but its index is #{block.Index}.");
-            }
 
             if (!block.PreviousHash.Equals(prevHash))
             {

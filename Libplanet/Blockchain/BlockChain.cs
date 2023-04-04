@@ -1217,6 +1217,11 @@ namespace Libplanet.Blockchain
                         .ToDictionary(signer => signer, signer => Store.GetTxNonce(Id, signer)),
                     block);
 
+                if (Policy.ValidateNextBlock(this, block) is { } bpve)
+                {
+                    throw bpve;
+                }
+
                 foreach (Transaction<T> tx in block.Transactions)
                 {
                     if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)

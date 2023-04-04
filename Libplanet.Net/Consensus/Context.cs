@@ -402,6 +402,12 @@ namespace Libplanet.Net.Consensus
                                             _blockChain.Id, signer)),
                                 block);
 
+                            if (_blockChain.Policy.ValidateNextBlock(
+                                _blockChain, block) is { } bpve)
+                            {
+                                throw bpve;
+                            }
+
                             foreach (var tx in block.Transactions)
                             {
                                 if (_blockChain.Policy.ValidateNextBlockTx(
