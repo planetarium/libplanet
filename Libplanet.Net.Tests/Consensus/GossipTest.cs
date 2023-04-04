@@ -50,9 +50,9 @@ namespace Libplanet.Net.Tests.Consensus
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
             var gossip1 = CreateGossip(
-                message =>
+                content =>
                 {
-                    if (message.Content is ConsensusProposalMsg)
+                    if (content is ConsensusProposalMsg)
                     {
                         received1 = true;
                     }
@@ -61,9 +61,9 @@ namespace Libplanet.Net.Tests.Consensus
                 6001,
                 new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
             var gossip2 = CreateGossip(
-                message =>
+                content =>
                 {
-                    if (message.Content is ConsensusProposalMsg)
+                    if (content is ConsensusProposalMsg)
                     {
                         received2 = true;
                         receivedEvent.Set();
@@ -103,9 +103,9 @@ namespace Libplanet.Net.Tests.Consensus
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
             var gossip1 = CreateGossip(
-                message =>
+                content =>
                 {
-                    if (message.Content is ConsensusProposalMsg)
+                    if (content is ConsensusProposalMsg)
                     {
                         received1++;
                     }
@@ -114,9 +114,9 @@ namespace Libplanet.Net.Tests.Consensus
                 6001,
                 new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
             var gossip2 = CreateGossip(
-                message =>
+                content =>
                 {
-                    if (message.Content is ConsensusProposalMsg)
+                    if (content is ConsensusProposalMsg)
                     {
                         received2++;
                     }
@@ -209,7 +209,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         private Gossip CreateGossip(
-            Action<Message> processMessage,
+            Action<MessageContent> processMessage,
             PrivateKey? privateKey = null,
             int? port = null,
             IEnumerable<BoundPeer>? peers = null)
