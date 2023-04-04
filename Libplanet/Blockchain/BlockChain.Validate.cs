@@ -42,11 +42,11 @@ namespace Libplanet.Blockchain
         /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
-        /// <returns><see langword="null"/> if given <paramref name="block"/> is valid,
-        /// otherwise an <see cref="InvalidBlockException"/>.</returns>
         /// <exception cref="ArgumentException">If <paramref name="block"/> has
         /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
-        internal static InvalidBlockException ValidateGenesis(Block<T> block)
+        /// <exception cref="InvalidBlockException">Thrown when given <paramref name="block"/>
+        /// is invalid.</exception>
+        internal static void ValidateGenesis(Block<T> block)
         {
             if (block.Index != 0)
             {
@@ -59,7 +59,7 @@ namespace Libplanet.Blockchain
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
             if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
             {
-                return new InvalidBlockProtocolVersionException(
+                throw new InvalidBlockProtocolVersionException(
                     $"The protocol version ({actualProtocolVersion}) of the block " +
                     $"#{block.Index} {block.Hash} is not supported by this node." +
                     $"The highest supported protocol version is {currentProtocolVersion}.",
@@ -68,59 +68,59 @@ namespace Libplanet.Blockchain
 
             if (block.PreviousHash is { } previousHash)
             {
-                return new InvalidBlockPreviousHashException(
+                throw new InvalidBlockPreviousHashException(
                     "A genesis block should not have previous hash, " +
                     $"but its value is {previousHash}.");
             }
 
             if (block.LastCommit is { } lastCommit)
             {
-                return new InvalidBlockLastCommitException(
+                throw new InvalidBlockLastCommitException(
                     "A genesis block should not have lastCommit, " +
                     $"but its value is {lastCommit}.");
             }
-
-            return null;
         }
 
-        internal InvalidBlockCommitException ValidateBlockCommit(
+        internal void ValidateBlockCommit(
             Block<T> block,
             BlockCommit blockCommit)
         {
             if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
             {
-                if (blockCommit != null)
+                if (blockCommit is { })
                 {
-                    return new InvalidBlockCommitException(
+                    throw new InvalidBlockCommitException(
                         "PoW Block doesn't have blockCommit.");
                 }
                 else
                 {
                     // To allow the PoW block to be appended, we skips the validation.
-                    return null;
+                    return;
                 }
             }
 
             if (block.Index == 0)
             {
-                if (blockCommit == null)
+                if (blockCommit is { })
                 {
-                    return null;
+                    throw new InvalidBlockCommitException(
+                        "Genesis block does not have blockCommit.");
                 }
-
-                return new InvalidBlockCommitException(
-                    "Genesis block does not have blockCommit.");
+                else
+                {
+                    return;
+                }
             }
 
             if (block.Index != 0 && blockCommit == null)
             {
-                return new InvalidBlockCommitException(
+                throw new InvalidBlockCommitException(
                     $"Block #{block.Hash} BlockCommit is required except for the genesis block.");
             }
 
             if (block.Index != blockCommit.Height)
             {
-                return new InvalidBlockCommitException(
+                throw new InvalidBlockCommitException(
                     "BlockCommit has height value that is not same with block index. " +
                     $"Block index is {block.Index}, however, BlockCommit height is " +
                     $"{blockCommit.Height}.");
@@ -128,7 +128,7 @@ namespace Libplanet.Blockchain
 
             if (!block.Hash.Equals(blockCommit.BlockHash))
             {
-                return new InvalidBlockCommitException(
+                throw new InvalidBlockCommitException(
                     $"BlockCommit has different block. Block hash is {block.Hash}, " +
                     $"however, BlockCommit block hash is {blockCommit.BlockHash}.");
             }
@@ -138,7 +138,7 @@ namespace Libplanet.Blockchain
             var validators = GetValidatorSet(block.PreviousHash ?? Genesis.Hash);
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
-                return new InvalidBlockCommitException(
+                throw new InvalidBlockCommitException(
                     $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
                     $"has different validator set with chain state's validator set: \n" +
                     $"in states | \n " +
@@ -156,13 +156,11 @@ namespace Libplanet.Blockchain
                     : BigInteger.Zero));
             if (validators.TwoThirdsPower >= commitPower)
             {
-                return new InvalidBlockCommitException(
+                throw new InvalidBlockCommitException(
                     $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
                     $"has insufficient vote power {commitPower} compared to 2/3 of " +
                     $"the total power {validators.TotalPower}");
             }
-
-            return null;
         }
 
         internal Dictionary<Address, long> ValidateBlockNonces(
@@ -287,10 +285,13 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                if (ValidateBlockCommit(
-                    this[block.PreviousHash ?? Genesis.Hash], block.LastCommit) is { } e)
+                try
                 {
-                    return new InvalidBlockLastCommitException(e.Message);
+                    ValidateBlockCommit(this[block.PreviousHash ?? Genesis.Hash], block.LastCommit);
+                }
+                catch (InvalidBlockCommitException ibce)
+                {
+                    return new InvalidBlockLastCommitException(ibce.Message);
                 }
             }
 

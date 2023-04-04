@@ -445,11 +445,7 @@ namespace Libplanet.Blockchain
 
             var id = Guid.NewGuid();
 
-            if (ValidateGenesis(genesisBlock) is { } ibe)
-            {
-                throw ibe;
-            }
-
+            ValidateGenesis(genesisBlock);
             var nonceDeltas = ValidateGenesisNonces(genesisBlock);
 
             store.PutBlock(genesisBlock);
@@ -1205,10 +1201,7 @@ namespace Libplanet.Blockchain
                     throw ibe;
                 }
 
-                if (ValidateBlockCommit(block, blockCommit) is { } ibce)
-                {
-                    throw ibce;
-                }
+                ValidateBlockCommit(block, blockCommit);
 
                 var nonceDeltas = ValidateBlockNonces(
                     block.Transactions
