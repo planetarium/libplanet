@@ -13,6 +13,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Tx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -318,14 +319,7 @@ namespace Libplanet.Net.Consensus
             // NOTE: Block body validation is bypassed due to ProposeBlock calculates the action
             // Evaluations before the block is proposed.
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
-            if (_blockChain.ValidateBlock(block) is { } e)
-            {
-                _logger.Error(
-                    e, "Could not propose a valid block");
-                ExceptionOccurred?.Invoke(this, e);
-                return null;
-            }
-            else if (block.Index != Height)
+            if (block.Index != Height)
             {
                 InvalidBlockIndexException ibie = new InvalidBlockIndexException(
                     $"Proposed block's index {block.Index} must be the same " +
@@ -368,17 +362,17 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                Exception exception = _blockChain.ValidateBlock(block);
-                bool isValid = exception is null;
-
-                if (!isValid)
+                try
+                {
+                    _blockChain.ValidateBlock(block);
+                }
+                catch (InvalidBlockException ibe)
                 {
                     _logger.Debug(
-                        exception,
+                        ibe,
                         "BlockHeader #{Index} {BlockHash} is invalid",
                         block.Index,
                         block.Hash);
-
                     _blockHashCache.AddReplace(block.Hash, false);
                     return false;
                 }
@@ -428,21 +422,21 @@ namespace Libplanet.Net.Consensus
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception e) when (
+                    e is InvalidBlockException ||
+                    e is InvalidTxException)
                 {
-                    exception = e;
+                    _logger.Debug(
+                        e,
+                        "Block #{Index} {Hash} is invalid",
+                        block.Index,
+                        block.Hash);
+                    _blockHashCache.AddReplace(block.Hash, false);
+                    return false;
                 }
 
-                isValid = exception is null;
-                _logger.Information(
-                    exception,
-                    "Block #{Index} {Hash} is valid? {Bool}",
-                    block.Index,
-                    block.Hash,
-                    isValid);
-
-                _blockHashCache.AddReplace(block.Hash, isValid);
-                return isValid;
+                _blockHashCache.AddReplace(block.Hash, true);
+                return true;
             }
         }
 

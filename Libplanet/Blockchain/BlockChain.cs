@@ -1196,11 +1196,7 @@ namespace Libplanet.Blockchain
             Block<T> prevTip = Tip;
             try
             {
-                if (ValidateBlock(block) is { } ibe)
-                {
-                    throw ibe;
-                }
-
+                ValidateBlock(block);
                 ValidateBlockCommit(block, blockCommit);
 
                 var nonceDeltas = ValidateBlockNonces(

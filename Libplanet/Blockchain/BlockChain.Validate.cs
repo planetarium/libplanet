@@ -191,7 +191,7 @@ namespace Libplanet.Blockchain
             return nonceDeltas;
         }
 
-        internal InvalidBlockException ValidateBlock(Block<T> block)
+        internal void ValidateBlock(Block<T> block)
         {
             if (block.Index <= 0)
             {
@@ -203,7 +203,7 @@ namespace Libplanet.Blockchain
             long index = Count;
             if (block.Index != index)
             {
-                return new InvalidBlockIndexException(
+                throw new InvalidBlockIndexException(
                     $"The expected index of block {block.Hash} is #{index}, " +
                     $"but its index is #{block.Index}.");
             }
@@ -219,7 +219,7 @@ namespace Libplanet.Blockchain
                     $"The protocol version ({actualProtocolVersion}) of the block " +
                     $"#{block.Index} {block.Hash} is not supported by this node." +
                     $"The highest supported protocol version is {currentProtocolVersion}.";
-                return new InvalidBlockProtocolVersionException(
+                throw new InvalidBlockProtocolVersionException(
                     message,
                     actualProtocolVersion
                 );
@@ -229,7 +229,7 @@ namespace Libplanet.Blockchain
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
                     $"in the chain ({actualProtocolVersion} < {Tip.ProtocolVersion}).";
-                return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
+                throw new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
             Block<T> lastBlock = this[index - 1];
@@ -238,7 +238,7 @@ namespace Libplanet.Blockchain
 
             if (!block.PreviousHash.Equals(prevHash))
             {
-                return new InvalidBlockPreviousHashException(
+                throw new InvalidBlockPreviousHashException(
                     $"The block #{index} {block.Hash} is not continuous from the " +
                     $"block #{index - 1}; while previous block's hash is " +
                     $"{prevHash}, the block #{index} {block.Hash}'s pointer to " +
@@ -248,7 +248,7 @@ namespace Libplanet.Blockchain
 
             if (block.Timestamp < prevTimestamp)
             {
-                return new InvalidBlockTimestampException(
+                throw new InvalidBlockTimestampException(
                     $"The block #{index} {block.Hash}'s timestamp " +
                     $"({block.Timestamp}) is earlier than " +
                     $"the block #{index - 1}'s ({prevTimestamp}).");
@@ -258,7 +258,7 @@ namespace Libplanet.Blockchain
             {
                 if (block.LastCommit is { })
                 {
-                    return new InvalidBlockLastCommitException(
+                    throw new InvalidBlockLastCommitException(
                         "The genesis block and the next block should not have lastCommit.");
                 }
             }
@@ -271,7 +271,7 @@ namespace Libplanet.Blockchain
                 {
                     if (block.LastCommit is { })
                     {
-                        return new InvalidBlockLastCommitException(
+                        throw new InvalidBlockLastCommitException(
                             "A block after a PoW block should not have lastCommit.");
                     }
                 }
@@ -279,7 +279,7 @@ namespace Libplanet.Blockchain
                 {
                     if (block.LastCommit is null)
                     {
-                        return new InvalidBlockLastCommitException(
+                        throw new InvalidBlockLastCommitException(
                             "A PBFT block that does not have zero or one index or " +
                             "is not a block after a PoW block should have lastCommit.");
                     }
@@ -291,11 +291,9 @@ namespace Libplanet.Blockchain
                 }
                 catch (InvalidBlockCommitException ibce)
                 {
-                    return new InvalidBlockLastCommitException(ibce.Message);
+                    throw new InvalidBlockLastCommitException(ibce.Message);
                 }
             }
-
-            return null;
         }
 
         /// <summary>
