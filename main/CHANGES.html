@@ -115,6 +115,9 @@ Use <code>TxMarshaler.UnmarshalTransaction&lt;T&gt;()</code> method instead.  [<
 <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>, <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore, out IImmutableDictionary&lt;string, IValue&gt;)</code>,
 <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;)</code>,
 and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;, out IImmutableDictionary&lt;string, IValue&gt;)</code>.  [[#3037]]</li>
+<li>(Libplanet.Extensions.Cocona) Changed signature of
+<code>ApvCommand.Verify(string?, string[]?, bool)</code> method to
+<code>ApvCommand.Verify(string?, PublicKey[]?, bool)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -134,9 +137,21 @@ and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;
 <code>BlockChain&lt;T&gt;.EvaluateGenesis()</code>,
 <code>BlockChain&lt;T&gt;.DetermineBlockStateRootHash()</code>,
 and <code>BlockChain&lt;T&gt;.EvaluateBlock()</code>.  [[#3037]]</li>
+<li>Added <code>PublicKey.FromHex()</code> static method.  [<a href="https://github.com/planetarium/libplanet/issues/2709">#2709</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
+<li>Added <code>PublicKey.ToHex()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/2709">#2709</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><p>Added <code>TypeConverter</code> to commonly-used types.  [<a href="https://github.com/planetarium/libplanet/issues/2711">#2711</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</p>
+<ul>
+<li><code>Address</code> now can be converted from and to <code>string</code> through
+<code>TypeConverter</code>.</li>
+<li><code>HashDigest&lt;T&gt;</code> now can be converted from and to <code>string</code> through
+<code>TypeConverter</code>.</li>
+<li><code>PublicKey</code> now can be converted from and to <code>string</code> through
+<code>TypeConverter</code>.</li>
+</ul>
+</li>
 <li><p><code>Transaction&lt;T&gt;</code> no more supports deserialization from JSON when it contains
 custom actions.  However, it still can be deserialized from JSON when it
 contains a system action.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</p>

@@ -12695,6 +12695,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.Format
   nameWithType: PublicKey.Format
+- uid: Libplanet.Crypto.PublicKey.FromHex(System.String)
+  name: FromHex(String)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_FromHex_System_String_
+  commentId: M:Libplanet.Crypto.PublicKey.FromHex(System.String)
+  fullName: Libplanet.Crypto.PublicKey.FromHex(System.String)
+  nameWithType: PublicKey.FromHex(String)
+- uid: Libplanet.Crypto.PublicKey.FromHex*
+  name: FromHex
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_FromHex_
+  commentId: Overload:Libplanet.Crypto.PublicKey.FromHex
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.FromHex
+  nameWithType: PublicKey.FromHex
 - uid: Libplanet.Crypto.PublicKey.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_GetHashCode
@@ -12734,6 +12747,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.Inequality
   nameWithType: PublicKey.Inequality
+- uid: Libplanet.Crypto.PublicKey.ToHex(System.Boolean)
+  name: ToHex(Boolean)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToHex_System_Boolean_
+  commentId: M:Libplanet.Crypto.PublicKey.ToHex(System.Boolean)
+  fullName: Libplanet.Crypto.PublicKey.ToHex(System.Boolean)
+  nameWithType: PublicKey.ToHex(Boolean)
+- uid: Libplanet.Crypto.PublicKey.ToHex*
+  name: ToHex
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToHex_
+  commentId: Overload:Libplanet.Crypto.PublicKey.ToHex
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.ToHex
+  nameWithType: PublicKey.ToHex
 - uid: Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)
   name: ToImmutableArray(Boolean)
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_
@@ -13147,15 +13173,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign
   nameWithType: ApvCommand.Sign
-- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,System.String[],System.Boolean)
-  name: Verify(String, String[], Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_String_System_String___System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,System.String[],System.Boolean)
-  name.vb: Verify(String, String(), Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String, System.String[], System.Boolean)
-  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String, System.String(), System.Boolean)
-  nameWithType: ApvCommand.Verify(String, String[], Boolean)
-  nameWithType.vb: ApvCommand.Verify(String, String(), Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,Libplanet.Crypto.PublicKey[],System.Boolean)
+  name: Verify(String, PublicKey[], Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_String_Libplanet_Crypto_PublicKey___System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,Libplanet.Crypto.PublicKey[],System.Boolean)
+  name.vb: Verify(String, PublicKey(), Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String, Libplanet.Crypto.PublicKey[], System.Boolean)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String, Libplanet.Crypto.PublicKey(), System.Boolean)
+  nameWithType: ApvCommand.Verify(String, PublicKey[], Boolean)
+  nameWithType.vb: ApvCommand.Verify(String, PublicKey(), Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify*
   name: Verify
   href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_
