@@ -316,35 +316,21 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="null"/>.</returns>
         private Block<T>? GetValue()
         {
-            // NOTE: Block body validation is bypassed due to ProposeBlock calculates the action
-            // Evaluations before the block is proposed.
-            Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
             try
             {
-                _blockChain.ValidateBlock(block);
+                Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+                _blockChain.Store.PutBlock(block);
+                return block;
             }
             catch (Exception e)
             {
                 _logger.Error(
-                    e, "Could not propose a valid block");
+                    e,
+                    "Could not propose a block for height {Height} and round {Round}",
+                    Height,
+                    Round);
                 ExceptionOccurred?.Invoke(this, e);
                 return null;
-            }
-
-            if (block.Index != Height)
-            {
-                InvalidBlockIndexException ibie = new InvalidBlockIndexException(
-                    $"Proposed block's index {block.Index} must be the same " +
-                    $"as context's height {Height}.");
-                _logger.Error(
-                    ibie, "Could not propose a valid block");
-                ExceptionOccurred?.Invoke(this, ibie);
-                return null;
-            }
-            else
-            {
-                _blockChain.Store.PutBlock(block);
-                return block;
             }
         }
 
