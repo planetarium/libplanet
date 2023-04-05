@@ -5,6 +5,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -298,30 +299,52 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void CannotProposeWithoutLastCommitWhenRequired()
+        public async void VoteNilOnSelfProposedInvalidBlock()
         {
             var privateKey = new PrivateKey();
-            var exceptionOccurred = new AsyncAutoResetEvent();
-            Exception? exception = null;
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
+            ConsensusPreVoteMsg? preVote = null;
+            var preVoteSent = new AsyncAutoResetEvent();
+
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[2],
                 height: 2,
                 validatorSet: TestUtils.ValidatorSet);
-            context.ExceptionOccurred += (sender, e) =>
+            context.MessageBroadcasted += (_, message) =>
             {
-                exception = e;
-                exceptionOccurred.Set();
+                if (message is ConsensusProposalMsg proposalMsg)
+                {
+                    proposal = proposalMsg;
+                    proposalSent.Set();
+                }
+                else if (message is ConsensusPreVoteMsg preVoteMsg)
+                {
+                    preVote = preVoteMsg;
+                    preVoteSent.Set();
+                }
             };
 
-            var block = blockChain.ProposeBlock(new PrivateKey(), DateTimeOffset.UtcNow);
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            var block1 = blockChain.ProposeBlock(new PrivateKey());
+            var block1Commit = TestUtils.CreateBlockCommit(block1);
+            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            var block2 = blockChain.ProposeBlock(new PrivateKey(), lastCommit: block1Commit);
+            var block2Commit = TestUtils.CreateBlockCommit(block2);
+            blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
+
             Assert.Equal(
                 TestUtils.PrivateKeys[2].PublicKey,
                 TestUtils.ValidatorSet.GetProposer(2, 0).PublicKey);
 
-            context.Start();
-            await exceptionOccurred.WaitAsync();
-            Assert.IsType<InvalidBlockLastCommitException>(exception);
+            context.Start(lastCommit: block2Commit);
+            await proposalSent.WaitAsync();
+            Bencodex.Codec codec = new Bencodex.Codec();
+            var proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                (Bencodex.Types.Dictionary)codec.Decode(proposal?.Proposal.MarshaledBlock!));
+            Assert.Equal(context.Height + 1, proposedBlock.Index);
+            await preVoteSent.WaitAsync();
+            Assert.Null(preVote?.BlockHash);
+            Assert.Null(preVote?.PreVote.BlockHash);
         }
     }
 }
