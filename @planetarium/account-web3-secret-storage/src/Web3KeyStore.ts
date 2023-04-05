@@ -196,7 +196,7 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
     const passphrase = await this.#passphraseEntry.configurePassphrase();
     const json = await encryptKeystoreJson(
       {
-        address: Address.deriveFrom(privateKey).toString(),
+        address: (await Address.deriveFrom(privateKey)).toString(),
         privateKey: "0x" + Buffer.from(privateKey.toBytes()).toString("hex"),
       },
       passphrase,

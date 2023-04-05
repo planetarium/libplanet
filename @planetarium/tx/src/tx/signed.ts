@@ -19,11 +19,17 @@ export async function signTx(
   signAccount: Account,
 ): Promise<SignedTx<typeof tx>> {
   if (
-    !bytesEqual(tx.publicKey, signAccount.publicKey.toBytes("uncompressed"))
+    !bytesEqual(
+      tx.publicKey,
+      (await signAccount.getPublicKey()).toBytes("uncompressed"),
+    )
   ) {
     throw new Error("Public keys in the tx and the signAccount are mismatched");
   } else if (
-    !bytesEqual(tx.signer, Address.deriveFrom(signAccount.publicKey).toBytes())
+    !bytesEqual(
+      tx.signer,
+      Address.deriveFrom(await signAccount.getPublicKey()).toBytes(),
+    )
   ) {
     throw new Error("The transaction signer does not match to the signAccount");
   }

@@ -176,7 +176,7 @@ describe.runIf(envsConfigured)("AwsKmsKeyStore", async () => {
       },
       createdAt: metadata.CreationDate,
     });
-    expect(account.publicKey.toHex("compressed")).toStrictEqual(
+    expect((await account.getPublicKey()).toHex("compressed")).toStrictEqual(
       publicKey.toHex("compressed"),
     );
 

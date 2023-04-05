@@ -47,7 +47,12 @@ export class RawPrivateKey {
     return this.fromBytes(secp256k1.utils.randomPrivateKey());
   }
 
+  /**
+   * @deprecated Use {@link getPublicKey()} instead.
+   */
   get publicKey(): PublicKey {
+    // TODO: This attribute is deprecated.  We should remove it and make
+    // getPublicKey() method the only choice in the future.
     if (typeof this.#publicPart === "undefined") {
       this.#publicPart = PublicKey.fromBytes(
         secp256k1.getPublicKey(this.#privatePart),
@@ -56,6 +61,10 @@ export class RawPrivateKey {
     }
 
     return this.#publicPart;
+  }
+
+  getPublicKey(): Promise<PublicKey> {
+    return Promise.resolve(this.publicKey);
   }
 
   async sign(message: Message): Promise<Signature> {
