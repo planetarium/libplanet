@@ -26,6 +26,7 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
+        private readonly TimeSpan _contextMinInterval;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context<T>> _contexts;
 
@@ -58,8 +59,8 @@ namespace Libplanet.Net.Consensus
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
+            _contextMinInterval = contextMinInterval;
             Height = -1;
-            ContextMinInterval = contextMinInterval;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -135,11 +136,6 @@ namespace Libplanet.Net.Consensus
         /// height of value, and value is the <see cref="Context{T}"/>.
         /// </summary>
         internal Dictionary<long, Context<T>> Contexts => _contexts;
-
-        /// <summary>
-        /// A minimum time interval between each <see cref="Context{T}"/> starts.
-        /// </summary>
-        internal TimeSpan ContextMinInterval { get; private set; }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -314,7 +310,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls
         /// <see cref="NewHeight"/>.  Starting a new height will be delayed until reached
-        /// <see cref="ContextMinInterval"/> in order to collect remaining delayed votes
+        /// <see cref="_contextMinInterval"/> in order to collect remaining delayed votes
         /// and stabilize the consensus process by waiting for Global Stabilization Time.
         /// </summary>
         /// <param name="sender">The source object instance for <see cref="EventHandler"/>.
@@ -334,7 +330,7 @@ namespace Libplanet.Net.Consensus
                     var startTime = _contexts.ContainsKey(e.NewTip.Index)
                         ? _contexts[Height].StartTime
                         : DateTimeOffset.MinValue;
-                    var contextIntervalLacked = ContextMinInterval
+                    var contextIntervalLacked = _contextMinInterval
                         - (DateTime.UtcNow - startTime);
                     if (contextIntervalLacked.Ticks > 0)
                     {
