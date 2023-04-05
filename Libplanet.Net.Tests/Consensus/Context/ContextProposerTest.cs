@@ -297,7 +297,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, context.Step);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async void CannotProposeWithoutLastCommitWhenRequired()
         {
             var privateKey = new PrivateKey();
