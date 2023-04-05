@@ -1337,6 +1337,7 @@ __metadata:
     "@vitest/coverage-c8": ^0.29.2
     "@vitest/ui": ^0.29.2
     ethers: ^6.1.0
+    fast-check: ^3.8.0
     nanobundle: ^1.5.0
     stream-buffers: ^3.0.2
     vite: ^4.1.4
@@ -2586,6 +2587,15 @@ __metadata:
   dependencies:
     pure-rand: ^6.0.0
   checksum: c3732011ceef2c3a999678a932cf051946a484d564a73bac695066a255510b2e6a1102bd5cacc189919326ea5c7a515e0247b376416f348c3bc323ee4f4ec7c8
+  languageName: node
+  linkType: hard
+
+"fast-check@npm:^3.8.0":
+  version: 3.8.0
+  resolution: "fast-check@npm:3.8.0"
+  dependencies:
+    pure-rand: ^6.0.0
+  checksum: 49b4f7bfb1514a2087fa5b42b77af89866f3e55170683597a45f5619b22fb007287316982ae9e2c4962cf28fa3ec4cf3947fb3c38fc780f9448a2a858667d024
   languageName: node
   linkType: hard
 

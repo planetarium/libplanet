@@ -1,5 +1,6 @@
 import { KeyId } from "./KeyId.js";
 import { PassphraseEntry } from "./PassphraseEntry.js";
+import { Web3Account, Web3KeyObject } from "./Web3Account.js";
 import {
   type AccountDeletion,
   type AccountGeneration,
@@ -10,12 +11,7 @@ import {
   type ImportableKeyStore,
   RawPrivateKey,
 } from "@planetarium/account";
-import {
-  type KeystoreAccount,
-  decryptKeystoreJson,
-  encryptKeystoreJson,
-  isKeystoreJson,
-} from "ethers";
+import { encryptKeystoreJson, isKeystoreJson } from "ethers";
 import { Dirent } from "node:fs";
 import * as fs from "node:fs/promises";
 import { homedir } from "node:os";
@@ -62,7 +58,7 @@ export function parseKeyFilename(
   };
 }
 
-export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
+export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
   readonly #passphraseEntry: PassphraseEntry;
 
   readonly path: string;
@@ -118,7 +114,7 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
 
   async get(
     keyId: Readonly<KeyId>,
-  ): Promise<AccountRetrieval<KeyId, RawPrivateKey>> {
+  ): Promise<AccountRetrieval<KeyId, Web3Account>> {
     const keyPath = await this.#getKeyPath(keyId);
     if (keyPath == null) return { result: "keyNotFound", keyId };
     let json;
@@ -138,31 +134,9 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
     if (!isKeystoreJson(json)) {
       return { result: "error", keyId, message: "Invalid key file" };
     }
-    let firstAttempt = true;
-    let account: KeystoreAccount;
-    while (true) {
-      const passphrase = await this.#passphraseEntry.authenticate(
-        keyId,
-        firstAttempt,
-      );
-      let currentProgress = 0;
-      try {
-        account = await decryptKeystoreJson(json, passphrase, (progress) => {
-          currentProgress = progress;
-        });
-      } catch (e) {
-        if (currentProgress <= 0) {
-          return { result: "error", keyId, message: `${e}` };
-        }
-        firstAttempt = false;
-        continue;
-      }
-      break;
-    }
     return {
       result: "success",
-      // TODO: Declare Web3Account
-      account: RawPrivateKey.fromHex(account.privateKey.replace(/^0x/i, "")),
+      account: new Web3Account(JSON.parse(json), this.#passphraseEntry),
       keyId,
       metadata: undefined,
       createdAt: keyPath.createdAt,
@@ -171,10 +145,16 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
 
   async generate(
     metadata?: Partial<undefined>,
-  ): Promise<AccountGeneration<KeyId, RawPrivateKey>> {
-    const account = await RawPrivateKey.generate();
-    const result = await this.import(account, metadata);
-    if (result.result === "success") return { ...result, account };
+  ): Promise<AccountGeneration<KeyId, Web3Account>> {
+    const privateKey = await RawPrivateKey.generate();
+    const result = await this.#import(privateKey, metadata);
+    if (result.result === "success") {
+      return {
+        result: "success",
+        keyId: result.keyId,
+        account: new Web3Account(result.keyObject, this.#passphraseEntry),
+      };
+    }
     return result;
   }
 
@@ -189,19 +169,30 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
     return { result: "success", keyId };
   }
 
-  async import(
+  async #import(
     privateKey: RawPrivateKey,
     metadata?: Partial<undefined>,
-  ): Promise<AccountImportation<KeyId>> {
+  ): Promise<
+    | {
+        readonly result: "success";
+        readonly keyId: KeyId;
+        readonly keyObject: Web3KeyObject;
+      }
+    | {
+        readonly result: "error";
+        readonly message?: string;
+      }
+  > {
     const passphrase = await this.#passphraseEntry.configurePassphrase();
     const json = await encryptKeystoreJson(
       {
         address: (await Address.deriveFrom(privateKey)).toString(),
-        privateKey: "0x" + Buffer.from(privateKey.toBytes()).toString("hex"),
+        privateKey: `0x${Buffer.from(privateKey.toBytes()).toString("hex")}`,
       },
       passphrase,
     );
-    const { id: keyId } = JSON.parse(json);
+    const keyObject: Web3KeyObject = JSON.parse(json);
+    const { id: keyId } = keyObject;
     try {
       await fs.mkdir(this.path, { recursive: true });
     } catch (e) {
@@ -220,7 +211,18 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, RawPrivateKey> {
     } catch (e) {
       return { result: "error", message: `${e}` };
     }
-    return { result: "success", keyId };
+    return { result: "success", keyId, keyObject };
+  }
+
+  async import(
+    privateKey: RawPrivateKey,
+    metadata?: Partial<undefined>,
+  ): Promise<AccountImportation<KeyId>> {
+    const result = await this.#import(privateKey, metadata);
+    if (result.result === "success") {
+      return { result: "success", keyId: result.keyId };
+    }
+    return result;
   }
 }
 

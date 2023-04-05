@@ -1,5 +1,3 @@
-import { KeyId } from "../src/KeyId";
-import { type Passphrase, type PassphraseEntry } from "../src/PassphraseEntry";
 import {
   Web3KeyStore,
   getDefaultWeb3KeyStorePath,
@@ -10,6 +8,8 @@ import { copyFile, mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import * as path from "node:path";
 import { describe, expect, test, vi } from "vitest";
+import { Web3Account } from "../src/Web3Account";
+import { MockPassphraseEntry } from "./MockPassphraseEntry";
 
 vi.mock("node:os", async (importOriginal) => ({
   ...((await importOriginal()) as object),
@@ -119,33 +119,6 @@ function testInTempDir(label: string, fn: (dirPath: string) => Promise<void>) {
   });
 }
 
-class MockPassphraseEntry implements PassphraseEntry {
-  authenticateCalls: { keyId: KeyId; firstAttempt: boolean }[] = [];
-  configurePassphraseCalls: number = 0;
-  temporaryAuthenticateResult: { passphrase: Passphrase; times: number } = {
-    passphrase: "passphrase",
-    times: 0,
-  };
-
-  setTemporaryAuthenticateResult(passphrase: Passphrase, times: number) {
-    this.temporaryAuthenticateResult = { passphrase, times };
-  }
-
-  async authenticate(keyId: KeyId, firstAttempt: boolean): Promise<Passphrase> {
-    this.authenticateCalls.push({ keyId, firstAttempt });
-    if (this.temporaryAuthenticateResult.times > 0) {
-      this.temporaryAuthenticateResult.times--;
-      return this.temporaryAuthenticateResult.passphrase;
-    }
-    return "passphrase";
-  }
-
-  async configurePassphrase(): Promise<string> {
-    this.configurePassphraseCalls++;
-    return "passphrase";
-  }
-}
-
 describe("Web3KeyStore", () => {
   testInTempDir("list", async (tmpDir) => {
     const store = new Web3KeyStore({
@@ -229,41 +202,47 @@ describe("Web3KeyStore", () => {
     expect(passphraseEntry.authenticateCalls).toStrictEqual([]);
     expect(passphraseEntry.configurePassphraseCalls).toBe(0);
     const result = await store.get("babfe5e0-f0f1-4f51-8b8e-97f1a461c690");
-    expect(passphraseEntry.authenticateCalls).toStrictEqual([
-      { keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690", firstAttempt: true },
-    ]);
+    expect(passphraseEntry.authenticateCalls).toStrictEqual([]);
     expect(passphraseEntry.configurePassphraseCalls).toBe(0);
     const account = RawPrivateKey.fromHex(
       "e8b612d1126989e1b85b0b94e511bfca5eff4866bb646fc7a42275759bc2d529",
     );
-    expect(result).toStrictEqual({
+    expect({ ...result, account: undefined }).toStrictEqual({
       result: "success",
       keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690",
       createdAt: new Date("2023-03-14T07:05:42Z"),
       metadata: undefined,
-      account,
+      account: undefined,
     });
+
     // The above assertion is not enough to convince if the appropriate account
     // is returned.  The following assertions are for that purpose:
     if (result.result !== "success") throw new Error(); // type guard
-    expect(result.account.toBytes()).toStrictEqual(account.toBytes());
+    expect(result.account).toBeInstanceOf(Web3Account);
+
+    const exportedKey = await result.account.exportPrivateKey();
+    expect(passphraseEntry.authenticateCalls).toStrictEqual([
+      { keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690", firstAttempt: true },
+    ]);
+    expect(passphraseEntry.configurePassphraseCalls).toBe(0);
+
+    expect(exportedKey.toBytes()).toStrictEqual(account.toBytes());
 
     passphraseEntry.authenticateCalls = [];
     passphraseEntry.setTemporaryAuthenticateResult("wrong pass", 2);
-    const result2 = await store.get("babfe5e0-f0f1-4f51-8b8e-97f1a461c690");
+    await result.account.exportPrivateKey();
     expect(passphraseEntry.authenticateCalls).toStrictEqual([
       { keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690", firstAttempt: true },
       { keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690", firstAttempt: false },
       { keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690", firstAttempt: false },
     ]);
     expect(passphraseEntry.configurePassphraseCalls).toBe(0);
-    expect(result2).toStrictEqual(result);
 
     passphraseEntry.authenticateCalls = [];
-    const result3 = await store.get("00000000-0000-0000-0000-000000000000");
+    const notFound = await store.get("00000000-0000-0000-0000-000000000000");
     expect(passphraseEntry.authenticateCalls).toStrictEqual([]);
     expect(passphraseEntry.configurePassphraseCalls).toBe(0);
-    expect(result3).toStrictEqual({
+    expect(notFound).toStrictEqual({
       result: "keyNotFound",
       keyId: "00000000-0000-0000-0000-000000000000",
     });
@@ -368,6 +347,7 @@ describe("Web3KeyStore", () => {
 
     const loaded = await store.get(parsed.keyId);
     if (loaded.result !== "success") throw Error(); // type guard
-    expect(loaded.account.toBytes()).toStrictEqual(privateKey.toBytes());
+    const exportedKey = await loaded.account.exportPrivateKey();
+    expect(exportedKey.toBytes()).toStrictEqual(privateKey.toBytes());
   });
 });

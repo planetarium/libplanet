@@ -70,6 +70,9 @@ To be released.
  -  (@planetarium/account) `Address.deriveFrom()` method now returns
     `Promise<Address>` when an `Account` is given.  However, it still returns
     `Address` when a `PublicKey` is given.  [[#3061]]
+ -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` no more implements
+    `ImportableKeyStore<KeyId, RawPrivateKey>`.  Instead, it now implements
+    `ImportableKeyStore<KeyId, Web3Account>`.  [[#3061]]
 
 ### Backward-incompatible network protocol changes
 
@@ -100,6 +103,10 @@ To be released.
     [[#3061]]
  -  (@planetarium/account-aws-kms) Added `AwsKmsAccount.getPublicKey()` async
     method.  [[#3061]]
+ -  (@planetarium/account-web3-secret-storage) Added `Web3Account` class.
+    [[#3061]]
+ -  (@planetarium/account-web3-secret-storage) Added `Web3KeyObject` interface.
+    [[#3061]]
 
 ### Behavioral changes
 
@@ -144,6 +151,13 @@ To be released.
       }
     }
     ~~~~
+
+ -  (@planetarium/account-web3-secret-storage) `Web3KeyStore.get()` method now
+    defers `PassphraseEntry.authenticate()` call and account unlocking so that
+    `AccountRetrieval` instance can be gathered without unlocking the account.
+    Instead, `PassphraseEntry.authenticate()` is called when operations that
+    require unlocking `Web3Account` are called, such as `sign()` or
+    `getPublicKey()`.  [[#3061]]
 
 ### Bug fixes
 
