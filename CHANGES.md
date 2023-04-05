@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.53.5
 --------------
 
-To be released.
+Released on April 6, 2023.
 
 ### Backward-incompatible API changes
 
@@ -17,7 +17,7 @@ To be released.
  -  (Libplanet.Net) `ConsensusContext.NewHeight()` will be suspended till
     `contextMinInterval` arrives.  [[#3063]]
 
-[#3026]: https://github.com/planetarium/libplanet/issues/3063
+[#3063]: https://github.com/planetarium/libplanet/pull/3063
 
 
 Version 0.53.4
