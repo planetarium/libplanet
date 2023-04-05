@@ -319,12 +319,11 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateBlockCommitGenesis()
         {
-            InvalidBlockCommitException ibcm =
-                _blockChain.ValidateBlockCommit(_fx.GenesisBlock, null);
+            // Works fine.
+            _blockChain.ValidateBlockCommit(_fx.GenesisBlock, null);
 
-            Assert.Null(ibcm);
-
-            ibcm = _blockChain.ValidateBlockCommit(
+            // Should be null for genesis.
+            Assert.Throws<InvalidBlockCommitException>(() => _blockChain.ValidateBlockCommit(
                 _fx.GenesisBlock,
                 new BlockCommit(
                     0,
@@ -336,9 +335,7 @@ namespace Libplanet.Tests.Blockchain
                         _fx.GenesisBlock.Hash,
                         DateTimeOffset.UtcNow,
                         x.PublicKey,
-                        VoteFlag.PreCommit).Sign(x)).ToImmutableArray()));
-
-            Assert.NotNull(ibcm);
+                        VoteFlag.PreCommit).Sign(x)).ToImmutableArray())));
         }
 
         [SkippableFact]
@@ -493,7 +490,7 @@ namespace Libplanet.Tests.Blockchain
                     VoteFlag.PreCommit,
                     VoteFlag.PreCommit)
             );
-            Assert.Null(blockChain.ValidateBlockCommit(validNextBlock, fullBlockCommit));
+            blockChain.ValidateBlockCommit(validNextBlock, fullBlockCommit);
 
             // Can propose if power is big enough even count condition is not met.
             var validBlockCommit = new BlockCommit(
@@ -506,7 +503,7 @@ namespace Libplanet.Tests.Blockchain
                     VoteFlag.Null,
                     VoteFlag.Null)
             );
-            Assert.Null(blockChain.ValidateBlockCommit(validNextBlock, validBlockCommit));
+            blockChain.ValidateBlockCommit(validNextBlock, validBlockCommit);
 
             // Can not propose if power isn't big enough even count condition is met.
             var invalidBlockCommit = new BlockCommit(
@@ -519,7 +516,7 @@ namespace Libplanet.Tests.Blockchain
                     VoteFlag.PreCommit,
                     VoteFlag.PreCommit)
             );
-            Assert.IsType<InvalidBlockCommitException>(
+            Assert.Throws<InvalidBlockCommitException>(() =>
                 blockChain.ValidateBlockCommit(validNextBlock, invalidBlockCommit));
         }
     }
