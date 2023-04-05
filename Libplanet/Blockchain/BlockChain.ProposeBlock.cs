@@ -139,8 +139,6 @@ namespace Libplanet.Blockchain
                 DetermineBlockStateRootHash(
                     preEval,
                     out IReadOnlyList<ActionEvaluation> evaluations));
-            IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, evaluations);
-            UpdateTxExecutions(txExecutions);
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
