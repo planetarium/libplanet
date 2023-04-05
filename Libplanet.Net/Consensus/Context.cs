@@ -360,65 +360,45 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                try
+                // Neeed to get txs from store, lock?
+                // TODO: Remove ChainId, enhancing lock management.
+                // changing exception be returning to thrown.
+                _blockChain._rwlock.EnterUpgradeableReadLock();
+                if (block.Index != Height)
                 {
-                    _blockChain.ValidateBlock(block);
-                }
-                catch (InvalidBlockException ibe)
-                {
-                    _logger.Debug(
-                        ibe,
-                        "BlockHeader #{Index} {BlockHash} is invalid",
-                        block.Index,
-                        block.Hash);
                     _blockHashCache.AddReplace(block.Hash, false);
                     return false;
                 }
 
                 try
                 {
-                    // Skipping the action evaluations if itself is a proposer.
-                    if (!IsCurrentRoundProposer())
+                    _blockChain.ValidateBlock(block);
+                    _blockChain.ValidateBlockNonces(
+                        block.Transactions
+                            .Select(tx => tx.Signer)
+                            .Distinct()
+                            .ToDictionary(
+                                signer => signer,
+                                signer => _blockChain.Store.GetTxNonce(
+                                    _blockChain.Id, signer)),
+                        block);
+
+                    if (_blockChain.Policy.ValidateNextBlock(
+                        _blockChain, block) is { } bpve)
                     {
-                        // Neeed to get txs from store, lock?
-                        // TODO: Remove ChainId, enhancing lock management.
-                        // changing exception be returning to thrown.
-                        _blockChain._rwlock.EnterUpgradeableReadLock();
+                        throw bpve;
+                    }
 
-                        try
+                    foreach (var tx in block.Transactions)
+                    {
+                        if (_blockChain.Policy.ValidateNextBlockTx(
+                            _blockChain, tx) is { } txve)
                         {
-                            _blockChain.ValidateBlockNonces(
-                                block.Transactions
-                                    .Select(tx => tx.Signer)
-                                    .Distinct()
-                                    .ToDictionary(
-                                        signer => signer,
-                                        signer => _blockChain.Store.GetTxNonce(
-                                            _blockChain.Id, signer)),
-                                block);
-
-                            if (_blockChain.Policy.ValidateNextBlock(
-                                _blockChain, block) is { } bpve)
-                            {
-                                throw bpve;
-                            }
-
-                            foreach (var tx in block.Transactions)
-                            {
-                                if (_blockChain.Policy.ValidateNextBlockTx(
-                                    _blockChain, tx) is { } txve)
-                                {
-                                    throw txve;
-                                }
-                            }
-
-                            _blockChain.ValidateBlockStateRootHash(block, out _);
-                        }
-                        finally
-                        {
-                            _blockChain._rwlock.ExitUpgradeableReadLock();
+                            throw txve;
                         }
                     }
+
+                    _blockChain.ValidateBlockStateRootHash(block, out _);
                 }
                 catch (Exception e) when (
                     e is InvalidBlockException ||
@@ -431,6 +411,10 @@ namespace Libplanet.Net.Consensus
                         block.Hash);
                     _blockHashCache.AddReplace(block.Hash, false);
                     return false;
+                }
+                finally
+                {
+                    _blockChain._rwlock.ExitUpgradeableReadLock();
                 }
 
                 _blockHashCache.AddReplace(block.Hash, true);
