@@ -16,7 +16,7 @@ export class RawPrivateKey {
       throw new Error(`Expected Uint8Array, but got ${typeof bytes}`);
     } else if (bytes.length !== 32) {
       throw new Error(
-        `Incorrect private key length; expected 32 bytes, but got ${bytes.length} bytes`
+        `Incorrect private key length; expected 32 bytes, but got ${bytes.length} bytes`,
       );
     } else if (!secp256k1.utils.isValidPrivateKey(bytes)) {
       throw new Error("Invalid private key");
@@ -32,7 +32,7 @@ export class RawPrivateKey {
       throw new Error(`Expected string, but got ${typeof hex}`);
     } else if (hex.length !== 64) {
       throw new Error(
-        `Incorrect private key length; expected 64 hexadigits, but got ${hex.length} hexadigits`
+        `Incorrect private key length; expected 64 hexadigits, but got ${hex.length} hexadigits`,
       );
     }
     const bytes = new Uint8Array(Buffer.from(hex, "hex"));
@@ -51,7 +51,7 @@ export class RawPrivateKey {
     if (typeof this.#publicPart === "undefined") {
       this.#publicPart = PublicKey.fromBytes(
         secp256k1.getPublicKey(this.#privatePart),
-        "uncompressed"
+        "uncompressed",
       );
     }
 
@@ -62,7 +62,7 @@ export class RawPrivateKey {
     const sig = await secp256k1.sign(
       await hashMessage(message),
       this.#privatePart,
-      { der: true }
+      { der: true },
     );
     return Signature.fromBytes(sig);
   }
