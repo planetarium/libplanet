@@ -72,7 +72,7 @@ namespace Libplanet.Action.Sys
                 Mint _ => TypeId.Mint,
                 Transfer _ => TypeId.Transfer,
                 Initialize _ => TypeId.Initialize,
-                _ => null,
+                _ => throw new ArgumentException("Unknown system action type.", nameof(action)),
             };
     }
 }

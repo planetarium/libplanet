@@ -192,7 +192,10 @@ namespace Libplanet.Net.Consensus
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
 
-            _logger.Debug("Created Context for height #{Height}, round #{Round}", Height, Round);
+            _logger.Information(
+                "Created Context for height #{Height}, round #{Round}",
+                Height,
+                Round);
         }
 
         /// <summary>
@@ -431,7 +434,7 @@ namespace Libplanet.Net.Consensus
                 }
 
                 isValid = exception is null;
-                _logger.Debug(
+                _logger.Information(
                     exception,
                     "Block #{Index} {Hash} is valid? {Bool}",
                     block.Index,
