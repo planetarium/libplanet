@@ -181,6 +181,18 @@ namespace Libplanet.Net.Consensus
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
         /// <summary>
+        /// Publish given <see cref="MessageContent"/> to peers.
+        /// </summary>
+        /// <param name="content">A <see cref="MessageContent"/> instance to publish.</param>
+        public void PublishMessage(MessageContent content)
+        {
+            AddMessage(content);
+            _transport.BroadcastMessage(
+                PeersToBroadcast(_table.Peers, DLazy),
+                content);
+        }
+
+        /// <summary>
         /// Process a <see cref="MessageContent"/> and add it to the gossip.
         /// </summary>
         /// <param name="content">A <see cref="MessageContent"/> instance to

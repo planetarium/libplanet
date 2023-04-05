@@ -69,7 +69,7 @@ namespace Libplanet.Net.Consensus
             _blockChain = blockChain;
 
             _consensusContext = new ConsensusContext<T>(
-                AddMessage,
+                PublishMessage,
                 blockChain,
                 privateKey,
                 newHeightDelay,
@@ -151,7 +151,7 @@ namespace Libplanet.Net.Consensus
         /// Adds <see cref="ConsensusMsg"/> to gossip.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to add.</param>
-        private void AddMessage(ConsensusMsg message) => _gossip.AddMessage(message);
+        private void PublishMessage(ConsensusMsg message) => _gossip.PublishMessage(message);
 
         /// <summary>
         /// A handler for received <see cref="Message"/>s.
