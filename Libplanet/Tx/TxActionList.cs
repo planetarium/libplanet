@@ -19,6 +19,7 @@ namespace Libplanet.Tx
     /// </summary>
     /// <remarks>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
     /// it cannot be inherited from outside of this assembly.</remarks>
+    [JsonConverter(typeof(TxActionListJsonConverter))]
     public abstract class TxActionList : IReadOnlyList<IAction>, IEquatable<TxActionList>
     {
         private protected TxActionList()

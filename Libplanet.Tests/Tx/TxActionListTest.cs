@@ -119,123 +119,51 @@ namespace Libplanet.Tests.Tx
                     new DumbAction(AddressA, "bar"),
                 });
             var emptyCustomActionList = new TxCustomActionList(Array.Empty<IAction>());
-#pragma warning disable MEN002  // Long lines are OK for test JSON data.
             var systemActonListJson = @"
-                [
-                  {
-                    ""plainValue"": {
-                      ""kind"": 6,
-                      ""fingerprint"": {
-                        ""kind"": 6,
-                        ""encodingLength"": 131,
-                        ""digest"": [
-                          233,
-                          238,
-                          22,
-                          202,
-                          35,
-                          133,
-                          244,
-                          161,
-                          82,
-                          50,
-                          123,
-                          59,
-                          64,
-                          133,
-                          111,
-                          140,
-                          117,
-                          217,
-                          106,
-                          32
-                        ]
+                {
+                  ""type"": ""system"",
+                  ""systemAction"": {
+                    ""\uFEFFtype_id"": ""0"",
+                    ""\uFEFFvalues"": {
+                      ""\uFEFFamount"": ""10000"",
+                      ""\uFEFFcurrency"": {
+                        ""\uFEFFdecimals"": ""2"",
+                        ""\uFEFFminters"": null,
+                        ""\uFEFFticker"": ""\uFEFFFOO"",
+                        ""\uFEFFtotalSupplyTrackable"": true
                       },
-                      ""encodingLength"": 131,
-                      ""inspection"": ""{\n  \u0022amount\u0022: 10000,\n  \u0022currency\u0022: {\n    \u0022decimals\u0022: 2,\n    \u0022minters\u0022: null,\n    \u0022ticker\u0022: \u0022FOO\u0022,\n    \u0022totalSupplyTrackable\u0022: true,\n  },\n  \u0022recipient\u0022: b\u0022\\xd6\\xd6\\x39\\xda\\x5a\\x58\\xa7\\x8a\\x56\\x4c\\x2c\\xd3\\xdb\\x55\\xfa\\x7c\\xeb\\xe2\\x44\\xa9\u0022,\n}""
+                      ""\uFEFFrecipient"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
                     }
                   }
-                ]
-            ";
+                }";
             TestUtils.AssertJsonSerializable<TxActionList>(
                 systemActionList,
                 systemActonListJson,
                 false);
+            const string customActionListJson = @"
+                {
+                  ""type"": ""custom"",
+                  ""customActions"": [
+                    {
+                      ""\uFEFFitem"": ""\uFEFFfoo"",
+                      ""\uFEFFrecord_rehearsal"": false,
+                      ""\uFEFFtarget_address"": ""0x0000000000000000000000000000000000000000""
+                    },
+                    {
+                      ""\uFEFFitem"": ""\uFEFFbar"",
+                      ""\uFEFFrecord_rehearsal"": false,
+                      ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                    }
+                  ]
+                }";
             TestUtils.AssertJsonSerializable<TxActionList>(
                 customActionList,
-                @"
-                    [
-                      {
-                        ""plainValue"": {
-                          ""kind"": 6,
-                          ""fingerprint"": {
-                            ""kind"": 6,
-                            ""encodingLength"": 77,
-                            ""digest"": [
-                              140,
-                              91,
-                              77,
-                              65,
-                              16,
-                              32,
-                              100,
-                              50,
-                              163,
-                              84,
-                              34,
-                              47,
-                              95,
-                              156,
-                              249,
-                              124,
-                              116,
-                              160,
-                              56,
-                              216
-                            ]
-                          },
-                          ""encodingLength"": 77,
-                          ""inspection"": ""{\n  \u0022item\u0022: \u0022foo\u0022,\n  \u0022record_rehearsal\u0022: false,\n  \u0022target_address\u0022: b\u0022\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\u0022,\n}""
-                        }
-                      },
-                      {
-                        ""plainValue"": {
-                          ""kind"": 6,
-                          ""fingerprint"": {
-                            ""kind"": 6,
-                            ""encodingLength"": 77,
-                            ""digest"": [
-                              212,
-                              177,
-                              215,
-                              156,
-                              108,
-                              104,
-                              218,
-                              104,
-                              254,
-                              181,
-                              29,
-                              35,
-                              51,
-                              128,
-                              228,
-                              195,
-                              148,
-                              154,
-                              79,
-                              180
-                            ]
-                          },
-                          ""encodingLength"": 77,
-                          ""inspection"": ""{\n  \u0022item\u0022: \u0022bar\u0022,\n  \u0022record_rehearsal\u0022: false,\n  \u0022target_address\u0022: b\u0022\\xd6\\xd6\\x39\\xda\\x5a\\x58\\xa7\\x8a\\x56\\x4c\\x2c\\xd3\\xdb\\x55\\xfa\\x7c\\xeb\\xe2\\x44\\xa9\u0022,\n}""
-                        }
-                      }
-                    ]
-                ",
+                customActionListJson,
                 false);
-            TestUtils.AssertJsonSerializable<TxActionList>(emptyCustomActionList, "[]", false);
-#pragma warning restore MEN002
+            TestUtils.AssertJsonSerializable<TxActionList>(
+                emptyCustomActionList,
+                "{ \"type\": \"custom\", \"customActions\": [] }",
+                false);
         }
 
         private static void AssertEquality(TxActionList a, TxActionList b, bool equal)
