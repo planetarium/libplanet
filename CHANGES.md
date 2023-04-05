@@ -156,11 +156,11 @@ Released on March 31, 2023.
 
  -  Ported changes from [Libplanet 0.50.7] release.  [[#3022]]
  -  `BlockChain<T>.Create()` is now get `IBlockChainState` and
-    `ActionEvaluator` as parameters.  [[#3028]]
+    `ActionEvaluator` as parameters.  [[#3029]]
 
 [Libplanet 0.50.7]: https://www.nuget.org/packages/Libplanet/0.50.7
 [#3022]: https://github.com/planetarium/libplanet/pull/3022
-[#3028]: https://github.com/planetarium/libplanet/pull/3028
+[#3029]: https://github.com/planetarium/libplanet/pull/3029
 
 
 Version 0.53.1
@@ -579,17 +579,10 @@ Version 0.50.7
 
 Released on March 29, 2023.
 
-<<<<<<< HEAD
  -  Optimized internal byte array to hex string conversion in several places.
     [[#2989], [#3007]]
  -  `IValidatorSupportStateDelta` is now public [[#3017]]
  -  Optimized `BlockChainState.GetStates()` by caching results.  [[#3018]]
-=======
--  Optimized internal byte array to hex string conversion in several places.
-   [[#2989], [#3007]]
--  `IValidatorSupportStateDelta` is now public [[#3017]]
--  Optimized `BlockChainState.GetStates()` by caching results.  [[#3018]]
->>>>>>> 0.53.3
 
 [#2989]: https://github.com/planetarium/libplanet/issues/2989
 [#3007]: https://github.com/planetarium/libplanet/pull/3007
@@ -602,13 +595,8 @@ Version 0.50.6
 
 Released on March 22, 2023.
 
-<<<<<<< HEAD
  -  Remove `SetValidator` system action.  [[#2972]]
  -  `ValidatorStateExtensions` is now public.  [[#2972]]
-=======
--  Remove `SetValidator` system action.  [[#2972]]
--  `ValidatorStateExtensions` is now public.  [[#2972]]
->>>>>>> 0.53.3
 
 [#2972]: https://github.com/planetarium/libplanet/pull/2972
 
@@ -620,13 +608,8 @@ Released on March 17, 2023.
 
 ### Bug fixes
 
-<<<<<<< HEAD
  -  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
     because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
-=======
--  (Libplanet.Net) Fixed a bug where `DealerSocket` cannot connect to peers
-   because of IPv4 return of `ResolveNetMQAddressAsync()`.  [[#2956]]
->>>>>>> 0.53.3
 
 [#2956]: https://github.com/planetarium/libplanet/pull/2956
 
