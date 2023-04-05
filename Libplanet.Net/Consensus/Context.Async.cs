@@ -18,7 +18,7 @@ namespace Libplanet.Net.Consensus
         /// or not.</param>
         public void Start(BlockCommit? lastCommit = null, bool bootstrapping = false)
         {
-            _logger.Debug(
+            _logger.Information(
                 "Starting context for height #{Height}, LastCommit: {LastCommit}",
                 Height,
                 lastCommit);
@@ -57,7 +57,7 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (Exception e)
                 {
-                    _logger.Debug(
+                    _logger.Error(
                         e,
                         "Unexpected exception occurred during {FName}",
                         nameof(ConsumeMessage));
@@ -89,7 +89,7 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (Exception e)
                 {
-                    _logger.Debug(
+                    _logger.Error(
                         e,
                         "Unexpected exception occurred during {FName}",
                         nameof(ConsumeMutation));
@@ -166,7 +166,7 @@ namespace Libplanet.Net.Consensus
                 (_messageLog.GetTotalCount(), Round, Step);
             if (prevState != nextState)
             {
-                _logger.Debug(
+                _logger.Information(
                     "State (MessageLogSize, Round, Step) changed from " +
                     "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
                     "({NextMessageLogSize}, {NextRound}, {NextStep})",
@@ -194,7 +194,7 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPropose(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            _logger.Debug(
+            _logger.Information(
                 "TimeoutPropose has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
@@ -210,7 +210,7 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPreVote(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            _logger.Debug(
+            _logger.Information(
                 "TimeoutPreVote has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
@@ -226,7 +226,7 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPreCommit(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            _logger.Debug(
+            _logger.Information(
                 "TimeoutPreCommit has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());

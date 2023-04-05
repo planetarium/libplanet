@@ -139,6 +139,16 @@ To be released.
 [#3044]: https://github.com/planetarium/libplanet/pull/3044
 
 
+Version 0.53.3
+--------------
+
+Released on April 3, 2023.
+
+ -  Adjusted level of the consensus related logs.  [[#3046]]
+
+[#3046]: https://github.com/planetarium/libplanet/pull/3046
+
+
 Version 0.53.2
 --------------
 

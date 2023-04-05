@@ -378,10 +378,10 @@ namespace Libplanet.Net.Consensus
             MessageId[] ids = contents.Select(c => c.Id).ToArray();
 
             _logger.Debug(
-                "WantMessage: Requests are: {Idr}, Ids are: {Id}, Messages are: {@Messages}",
+                "WantMessage: Requests are: {Idr}, Ids are: {Id}, Messages are: {Messages}",
                 wantMessage.Ids,
                 ids,
-                contents);
+                contents.Select(content => (content.Type, content.Id)));
 
             await contents.ParallelForEachAsync(
                 async c =>
