@@ -26,7 +26,7 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly TimeSpan _newHeightDelay;
+        private readonly TimeSpan _contextMinInterval;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context<T>> _contexts;
 
@@ -44,8 +44,8 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
         /// </param>
-        /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block. <seealso cref="OnTipChanged"/>
+        /// <param name="contextMinInterval">A time interval in starting the consensus
+        /// for the next height block. <seealso cref="OnTipChanged"/>
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
@@ -53,14 +53,14 @@ namespace Libplanet.Net.Consensus
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            TimeSpan newHeightDelay,
+            TimeSpan contextMinInterval,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
+            _contextMinInterval = contextMinInterval;
             Height = -1;
-            _newHeightDelay = newHeightDelay;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -309,8 +309,8 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls
-        /// <see cref="NewHeight"/>.  Starting a new height will be delayed for
-        /// <see cref="_newHeightDelay"/> in order to collect remaining delayed votes
+        /// <see cref="NewHeight"/>.  Starting a new height will be delayed until reached
+        /// <see cref="_contextMinInterval"/> in order to collect remaining delayed votes
         /// and stabilize the consensus process by waiting for Global Stabilization Time.
         /// </summary>
         /// <param name="sender">The source object instance for <see cref="EventHandler"/>.
@@ -327,7 +327,24 @@ namespace Libplanet.Net.Consensus
             Task.Run(
                 async () =>
                 {
-                    await Task.Delay(_newHeightDelay, _newHeightCts.Token);
+                    var startTime = _contexts.ContainsKey(e.NewTip.Index)
+                        ? _contexts[Height].StartTime
+                        : DateTimeOffset.MinValue;
+                    var contextIntervalLacked = _contextMinInterval
+                        - (DateTime.UtcNow - startTime);
+                    if (contextIntervalLacked.Ticks > 0)
+                    {
+                        _logger.Debug(
+                            "Waiting lacked context interval {Delay}ms for " +
+                            "block #{Index} {Hash} (context: {Context})",
+                            contextIntervalLacked.TotalMilliseconds,
+                            e.NewTip.Index,
+                            e.NewTip.Hash,
+                            ToString());
+                        await Task.Delay(
+                            contextIntervalLacked, _newHeightCts.Token);
+                    }
+
                     if (!_newHeightCts.IsCancellationRequested)
                     {
                         try
