@@ -327,12 +327,14 @@ namespace Libplanet.Net.Consensus
             Task.Run(
                 async () =>
                 {
-                    var startTime = _contexts.ContainsKey(e.NewTip.Index)
-                        ? _contexts[Height].StartTime
+                    Context<T>? newTipContext;
+                    DateTimeOffset startTime
+                        = _contexts.TryGetValue(e.NewTip.Index, out newTipContext)
+                        ? newTipContext.StartTime
                         : DateTimeOffset.MinValue;
-                    var contextIntervalLacked = _contextMinInterval
+                    TimeSpan contextIntervalLacked = _contextMinInterval
                         - (DateTime.UtcNow - startTime);
-                    if (contextIntervalLacked.Ticks > 0)
+                    if (contextIntervalLacked > TimeSpan.Zero)
                     {
                         _logger.Debug(
                             "Waiting lacked context interval {Delay}ms for " +
