@@ -41,8 +41,63 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
+        public async void PublishMessage()
+        {
+            MemoryStoreFixture fx = new MemoryStoreFixture();
+            bool received1 = false;
+            bool received2 = false;
+            var key1 = new PrivateKey();
+            var key2 = new PrivateKey();
+            var receivedEvent = new AsyncAutoResetEvent();
+            var gossip1 = CreateGossip(
+                content =>
+                {
+                    if (content is ConsensusProposalMsg)
+                    {
+                        received1 = true;
+                    }
+                },
+                key1,
+                6001,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+            var gossip2 = CreateGossip(
+                content =>
+                {
+                    if (content is ConsensusProposalMsg)
+                    {
+                        received2 = true;
+                        receivedEvent.Set();
+                    }
+                },
+                key2,
+                6002,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+            try
+            {
+                _ = gossip1.StartAsync(default);
+                _ = gossip2.StartAsync(default);
+                await gossip1.WaitForRunningAsync();
+                await gossip2.WaitForRunningAsync();
+                gossip1.PublishMessage(
+                    TestUtils.CreateConsensusPropose(fx.Block1, new PrivateKey(), 0));
+                await receivedEvent.WaitAsync();
+                Assert.True(received1);
+                Assert.True(received2);
+            }
+            finally
+            {
+                await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                gossip1.Dispose();
+                gossip2.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async void AddMessage()
         {
+            // It has no difference with PublishMessage() test,
+            // since two methods only has timing difference.
             MemoryStoreFixture fx = new MemoryStoreFixture();
             bool received1 = false;
             bool received2 = false;
