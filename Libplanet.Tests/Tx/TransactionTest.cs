@@ -418,5 +418,72 @@ namespace Libplanet.Tests.Tx
                 Assert.NotEqual(tx.GetHashCode(), diffTx.GetHashCode());
             }
         }
+
+        [Fact]
+        public void JsonSerialization()
+        {
+            var genesisHash = BlockHash.FromString(
+                "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
+            Address addressA = new Address("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
+            Address addressB = new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");
+            var updatedAddresses = ImmutableHashSet.Create(addressA, addressB);
+            var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
+            var actions = new TxCustomActionList(new IAction[]
+            {
+                new DumbAction(addressA, "foo"),
+                new DumbAction(addressB, "bar"),
+            });
+            var invoice = new TxInvoice(
+                genesisHash,
+                updatedAddresses,
+                timestamp,
+                actions
+            );
+            var privateKey =
+                new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
+            PublicKey publicKey = privateKey.PublicKey;
+            var signingMetadata = new TxSigningMetadata(publicKey, 123L);
+            var unsignedTx = new UnsignedTx(invoice, signingMetadata);
+            ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
+                "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
+                "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
+            var tx = new Transaction<DumbAction>(unsignedTx, signature);
+
+#pragma warning disable MEN002  // Long lines are OK for test JSON data.
+            AssertJsonSerializable(
+                tx,
+                @"
+                    {
+                      ""id"": ""d1475d7f4c84444a0522989876aa0a1aa5d9ba8fdbf84ea5a33c60bd83cbbe7f"",
+                      ""nonce"": 123,
+                      ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
+                      ""updatedAddresses"": [
+                        ""B61CE2Ce6d28237C1BC6E114616616762f1a12Ab"",
+                        ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
+                      ],
+                      ""signature"": ""MEMCIGNU6C0suI1jof0vrA9FjOhptyvcMwzcWdDr676olsgPAh9aC6Olt6kMVBwp7lLPER0GHhMMQUHB4qZzVr2BtMDo"",
+                      ""actions"": {
+                        ""type"": ""custom"",
+                        ""customActions"": [
+                          {
+                            ""\uFEFFitem"": ""\uFEFFfoo"",
+                            ""\uFEFFrecord_rehearsal"": false,
+                            ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                          },
+                          {
+                            ""\uFEFFitem"": ""\uFEFFbar"",
+                            ""\uFEFFrecord_rehearsal"": false,
+                            ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                          }
+                        ]
+                      },
+                      ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
+                      ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
+                      ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265""
+                    }
+                ",
+                false);
+#pragma warning restore MEN002
+        }
     }
 }

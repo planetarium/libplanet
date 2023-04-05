@@ -1,3 +1,4 @@
+using System;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -104,6 +105,64 @@ namespace Libplanet.Tests.Tx
             AssertEquality(
                 new TxCustomActionList(customActions),
                 new TxCustomActionList(customActions3),
+                false);
+        }
+
+        [Fact]
+        public void JsonSerialize()
+        {
+            var systemActionList = new TxSystemActionList(new Mint(AddressA, FOO * 100));
+            var customActionList = new TxCustomActionList(
+                new IAction[]
+                {
+                    new DumbAction(default, "foo"),
+                    new DumbAction(AddressA, "bar"),
+                });
+            var emptyCustomActionList = new TxCustomActionList(Array.Empty<IAction>());
+            var systemActonListJson = @"
+                {
+                  ""type"": ""system"",
+                  ""systemAction"": {
+                    ""\uFEFFtype_id"": ""0"",
+                    ""\uFEFFvalues"": {
+                      ""\uFEFFamount"": ""10000"",
+                      ""\uFEFFcurrency"": {
+                        ""\uFEFFdecimals"": ""2"",
+                        ""\uFEFFminters"": null,
+                        ""\uFEFFticker"": ""\uFEFFFOO"",
+                        ""\uFEFFtotalSupplyTrackable"": true
+                      },
+                      ""\uFEFFrecipient"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                    }
+                  }
+                }";
+            TestUtils.AssertJsonSerializable<TxActionList>(
+                systemActionList,
+                systemActonListJson,
+                false);
+            const string customActionListJson = @"
+                {
+                  ""type"": ""custom"",
+                  ""customActions"": [
+                    {
+                      ""\uFEFFitem"": ""\uFEFFfoo"",
+                      ""\uFEFFrecord_rehearsal"": false,
+                      ""\uFEFFtarget_address"": ""0x0000000000000000000000000000000000000000""
+                    },
+                    {
+                      ""\uFEFFitem"": ""\uFEFFbar"",
+                      ""\uFEFFrecord_rehearsal"": false,
+                      ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                    }
+                  ]
+                }";
+            TestUtils.AssertJsonSerializable<TxActionList>(
+                customActionList,
+                customActionListJson,
+                false);
+            TestUtils.AssertJsonSerializable<TxActionList>(
+                emptyCustomActionList,
+                "{ \"type\": \"custom\", \"customActions\": [] }",
                 false);
         }
 
