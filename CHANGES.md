@@ -6,6 +6,19 @@ Version 0.53.5
 
 To be released.
 
+### Backward-incompatible API changes
+
+ -  (Libplanet.Net) Replaced parameter `newHeightDelay` with
+    `contextMinInterval` from `ConsensusContext` and `ConsensusReactor`.
+    [[#3063]]
+
+### Behavioral changes
+
+ -  (Libplanet.Net) `ConsensusContext.NewHeight()` will be suspended till
+    `contextMinInterval` arrives.  [[#3063]]
+
+[#3026]: https://github.com/planetarium/libplanet/issues/3063
+
 
 Version 0.53.4
 --------------
