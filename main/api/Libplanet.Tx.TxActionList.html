@@ -113,7 +113,8 @@
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_TxActionList_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class TxActionList : IReadOnlyList&lt;IAction&gt;, IReadOnlyCollection&lt;IAction&gt;, IEnumerable&lt;IAction&gt;, IEnumerable, IEquatable&lt;TxActionList&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonConverter(typeof(TxActionListJsonConverter))]
+public abstract class TxActionList : IReadOnlyList&lt;IAction&gt;, IReadOnlyCollection&lt;IAction&gt;, IEnumerable&lt;IAction&gt;, IEnumerable, IEquatable&lt;TxActionList&gt;</code></pre>
   </div>
   <h5 id="Libplanet_Tx_TxActionList_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
@@ -126,7 +127,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Count.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L30">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Count_" data-uid="Libplanet.Tx.TxActionList.Count*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Count" data-uid="Libplanet.Tx.TxActionList.Count">Count</h4>
@@ -163,7 +164,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Item_" data-uid="Libplanet.Tx.TxActionList.Item*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Item_System_Int32_" data-uid="Libplanet.Tx.TxActionList.Item(System.Int32)">Item[Int32]</h4>
@@ -219,7 +220,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L90">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L91">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Equals_" data-uid="Libplanet.Tx.TxActionList.Equals*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_" data-uid="Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)">Equals(TxActionList)</h4>
@@ -273,7 +274,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L98">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Equals_" data-uid="Libplanet.Tx.TxActionList.Equals*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Equals_System_Object_" data-uid="Libplanet.Tx.TxActionList.Equals(System.Object)">Equals(Object)</h4>
@@ -329,7 +330,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_FromBencodex__1_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.FromBencodex%60%601(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L48">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L49">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_FromBencodex_" data-uid="Libplanet.Tx.TxActionList.FromBencodex*"></a>
   <h4 id="Libplanet_Tx_TxActionList_FromBencodex__1_Bencodex_Types_Dictionary_" data-uid="Libplanet.Tx.TxActionList.FromBencodex``1(Bencodex.Types.Dictionary)">FromBencodex&lt;T&gt;(Dictionary)</h4>
@@ -424,7 +425,7 @@ does not contain either <a class="xref" href="Libplanet.Tx.TxSystemActionList.ht
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L74">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L75">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_GetEnumerator_" data-uid="Libplanet.Tx.TxActionList.GetEnumerator*"></a>
   <h4 id="Libplanet_Tx_TxActionList_GetEnumerator" data-uid="Libplanet.Tx.TxActionList.GetEnumerator">GetEnumerator()</h4>
@@ -461,7 +462,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L102">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_GetHashCode_" data-uid="Libplanet.Tx.TxActionList.GetHashCode*"></a>
   <h4 id="Libplanet_Tx_TxActionList_GetHashCode" data-uid="Libplanet.Tx.TxActionList.GetHashCode">GetHashCode()</h4>
@@ -500,7 +501,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L86">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L87">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_ToBencodex_" data-uid="Libplanet.Tx.TxActionList.ToBencodex*"></a>
   <h4 id="Libplanet_Tx_TxActionList_ToBencodex" data-uid="Libplanet.Tx.TxActionList.ToBencodex">ToBencodex()</h4>
@@ -543,7 +544,7 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L78">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator*"></a>
   <h4 id="Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
