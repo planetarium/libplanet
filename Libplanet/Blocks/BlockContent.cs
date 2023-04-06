@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Threading;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -195,26 +194,6 @@ namespace Libplanet.Blocks
             hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
             return new HashDigest<SHA256>(hasher.Hash);
         }
-
-        /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying <paramref name="difficulty"/>
-        /// for <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>
-        /// and returns a valid <see cref="PreEvaluationBlock{T}"/> instance.
-        /// </summary>
-        /// <param name="difficulty">The difficulty to target when mining
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
-        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
-        /// that this operation should be cancelled.</param>
-        /// <returns>A <see cref="PreEvaluationBlock{T}"/> instance with a valid proof-of-work.
-        /// </returns>
-        /// <exception cref="OperationCanceledException">Thrown when the specified
-        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public PreEvaluationBlock<T> Mine(
-            long difficulty,
-            CancellationToken cancellationToken = default) =>
-                new PreEvaluationBlock<T>(
-                    this,
-                    _blockMetadata.MineNonce(difficulty, cancellationToken).PreEvaluationHash);
 
         public PreEvaluationBlock<T> Propose()
         {

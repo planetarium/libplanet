@@ -402,30 +402,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
-        public static PreEvaluationBlock<T> MineGenesis<T>(
-            PublicKey miner = null,
-            IReadOnlyList<Transaction<T>> transactions = null,
-            DateTimeOffset? timestamp = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion
-        )
-            where T : IAction, new()
-        {
-            var txs = transactions?.OrderBy(tx => tx.Id).ToList() ?? new List<Transaction<T>>();
-            var content = new BlockContent<T>(
-                new BlockMetadata(
-                    protocolVersion: protocolVersion,
-                    index: 0,
-                    timestamp: timestamp ??
-                        new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                    miner: (miner ?? GenesisProposer.PublicKey).ToAddress(),
-                    publicKey: protocolVersion >= 2 ? miner ?? GenesisProposer.PublicKey : null,
-                    previousHash: null,
-                    txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
-                    lastCommit: null),
-                transactions: txs);
-            return content.Mine(0L, default);
-        }
-
         public static PreEvaluationBlock<T> ProposeGenesis<T>(
             PublicKey proposer = null,
             IReadOnlyList<Transaction<T>> transactions = null,
@@ -464,26 +440,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     lastCommit: null),
                 transactions: txs);
             return content.Propose();
-        }
-
-        public static Block<T> MineGenesisBlock<T>(
-            PrivateKey miner,
-            IReadOnlyList<Transaction<T>> transactions = null,
-            DateTimeOffset? timestamp = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion,
-            HashDigest<SHA256> stateRootHash = default
-        )
-            where T : IAction, new()
-        {
-            PreEvaluationBlock<T> preEval = MineGenesis(
-                miner?.PublicKey,
-                transactions,
-                timestamp,
-                protocolVersion);
-            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
-            return protocolVersion < 2
-                ? new Block<T>(preEval, (stateRootHash, null, hash))
-                : preEval.Sign(miner, stateRootHash);
         }
 
         public static Block<T> ProposeGenesisBlock<T>(

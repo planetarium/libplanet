@@ -1,11 +1,7 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
 using Bencodex;
-using Bencodex.Types;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -311,62 +307,5 @@ namespace Libplanet.Blocks
         /// <returns>A pre-evaluation block hash.</returns>
         public HashDigest<SHA256> DerivePreEvaluationHash(Nonce nonce) =>
             HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
-
-        /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying <paramref name="difficulty"/>.
-        /// </summary>
-        /// <param name="difficulty">The difficulty to target when mining
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
-        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
-        /// that this operation should be cancelled.</param>
-        /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
-        /// block <paramref name="difficulty"/>.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when the specified
-        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public (Nonce Nonce, HashDigest<SHA256> PreEvaluationHash) MineNonce(
-            long difficulty,
-            CancellationToken cancellationToken = default)
-        {
-            Hashcash.Stamp stamp = GetStampFunction();
-            var random = new Random();
-            int seed = random.Next();
-            return Hashcash.Answer(
-                stamp, difficulty, seed, cancellationToken);
-        }
-
-        private Hashcash.Stamp GetStampFunction()
-        {
-            // Poor man' way to optimize stamp...
-            // FIXME: We need to rather reorganize the serialization layout.
-            byte[] emptyNonce = Codec.Encode(MakeCandidateData(default));
-            byte[] oneByteNonce = Codec.Encode(MakeCandidateData(new Nonce(new byte[1])));
-            int offset = 0;
-            while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
-            {
-                offset++;
-            }
-
-            // Prepares fixed parts (stampPrefix, stampSuffix, colon) ahead of time
-            // so that they can be reused:
-            const int nonceLength = 2;  // In Bencodex, empty bytes are represented as "0:".
-            byte[] stampPrefix = new byte[offset];
-            Array.Copy(emptyNonce, stampPrefix, stampPrefix.Length);
-            byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
-            Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
-            byte[] colon = { 0x3a }; // ':'
-
-            byte[] Stamp(Nonce nonce)
-            {
-                int nLen = nonce.ByteArray.Length;
-                return stampPrefix
-                    .Concat(Encoding.ASCII.GetBytes(nLen.ToString(CultureInfo.InvariantCulture)))
-                    .Concat(colon)
-                    .Concat(nonce.ToByteArray())
-                    .Concat(stampSuffix)
-                    .ToArray();
-            }
-
-            return Stamp;
-        }
     }
 }

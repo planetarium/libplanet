@@ -55,6 +55,9 @@ To be released.
  -  (Libplanet.Extensions.Cocona) Changed signature of
     `ApvCommand.Verify(string?, string[]?, bool)` method to
     `ApvCommand.Verify(string?, PublicKey[]?, bool)`.  [[#3044]]
+ -  Removed `PreEvaluationBlock<T>.Mine()` and `BlockMetadata.MineNonce()`
+    methods.  [[#3067]]
+ -  Removed `HashCash` class.  [[#3067]]
 
 ### Backward-incompatible network protocol changes
 
@@ -140,6 +143,7 @@ To be released.
 [#3044]: https://github.com/planetarium/libplanet/pull/3044
 [#3054]: https://github.com/planetarium/libplanet/issues/3054
 [#3060]: https://github.com/planetarium/libplanet/pull/3060
+[#3067]: https://github.com/planetarium/libplanet/pull/3067
 
 
 Version 0.53.4
