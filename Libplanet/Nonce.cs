@@ -5,12 +5,13 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Libplanet.Blocks;
 
 namespace Libplanet
 {
     /// <summary>
-    /// An arbitrary <see cref="byte"/>s that determines a
-    /// <see cref="Hashcash.Stamp"/>.
+    /// An arbitrary <see cref="byte"/>s that is used as salt for
+    /// deriving <see cref="PreEvaluationBlock{T}.PreEvaluationHash"/> from its content.
     /// </summary>
     [JsonConverter(typeof(NonceJsonConverter))]
     public struct Nonce : IEquatable<Nonce>

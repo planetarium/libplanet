@@ -1,8 +1,6 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using Bencodex;
 using Libplanet.Crypto;
 
@@ -309,40 +307,5 @@ namespace Libplanet.Blocks
         /// <returns>A pre-evaluation block hash.</returns>
         public HashDigest<SHA256> DerivePreEvaluationHash(Nonce nonce) =>
             HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
-
-        private Hashcash.Stamp GetStampFunction()
-        {
-            // Poor man' way to optimize stamp...
-            // FIXME: We need to rather reorganize the serialization layout.
-            byte[] emptyNonce = Codec.Encode(MakeCandidateData(default));
-            byte[] oneByteNonce = Codec.Encode(MakeCandidateData(new Nonce(new byte[1])));
-            int offset = 0;
-            while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
-            {
-                offset++;
-            }
-
-            // Prepares fixed parts (stampPrefix, stampSuffix, colon) ahead of time
-            // so that they can be reused:
-            const int nonceLength = 2;  // In Bencodex, empty bytes are represented as "0:".
-            byte[] stampPrefix = new byte[offset];
-            Array.Copy(emptyNonce, stampPrefix, stampPrefix.Length);
-            byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
-            Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
-            byte[] colon = { 0x3a }; // ':'
-
-            byte[] Stamp(Nonce nonce)
-            {
-                int nLen = nonce.ByteArray.Length;
-                return stampPrefix
-                    .Concat(Encoding.ASCII.GetBytes(nLen.ToString(CultureInfo.InvariantCulture)))
-                    .Concat(colon)
-                    .Concat(nonce.ToByteArray())
-                    .Concat(stampSuffix)
-                    .ToArray();
-            }
-
-            return Stamp;
-        }
     }
 }
