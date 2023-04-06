@@ -63,6 +63,13 @@
 
 <h2 id="version-0540">Version 0.54.0</h2>
 <p>To be released.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(@planerarium/account)  Deprecated <code>RawPrivateKey.publicKey</code> property in
+favour of <code>RawPrivateKey.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-aws-kms)  Deprecated <code>AwsKmsAccount.publicKey</code> in
+favour of <code>AwsKmsAccount.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>TxMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
@@ -121,6 +128,14 @@ and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;
 <li>Removed <code>PreEvaluationBlock&lt;T&gt;.Mine()</code> and <code>BlockMetadata.MineNonce()</code>
 methods.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a>]</li>
 <li>Removed <code>HashCash</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a>]</li>
+<li>(@planetarium/account) Replaced <code>Account.publicKey</code> property with
+<code>Account.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) <code>Address.deriveFrom()</code> method now returns
+<code>Promise&lt;Address&gt;</code> when an <code>Account</code> is given.  However, it still returns
+<code>Address</code> when a <code>PublicKey</code> is given.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore</code> no more implements
+<code>ImportableKeyStore&lt;KeyId, RawPrivateKey&gt;</code>.  Instead, it now implements
+<code>ImportableKeyStore&lt;KeyId, Web3Account&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -143,6 +158,16 @@ and <code>BlockChain&lt;T&gt;.EvaluateBlock()</code>.  [[#3037]]</li>
 <li>Added <code>PublicKey.FromHex()</code> static method.  [<a href="https://github.com/planetarium/libplanet/issues/2709">#2709</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
 <li>Added <code>PublicKey.ToHex()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/2709">#2709</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
 <li>(Libplanet.Net) Added <code>Gossip.PublishMessage()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/3054">#3054</a>, <a href="https://github.com/planetarium/libplanet/pull/3060">#3060</a>]</li>
+<li>(@planetarium/account) Added <code>Account.getPublicKey()</code> async method.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>RawPrivateKey.getPublicKey()</code> async method.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-aws-kms) Added <code>AwsKmsAccount.getPublicKey()</code> async
+method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>Web3Account</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>Web3KeyObject</code> interface.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -182,6 +207,13 @@ a <code>&quot;type&quot;</code> field denoting one of <code>&quot;system&quot;</
   }
 }
 </code></pre>
+</li>
+<li><p>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore.get()</code> method now
+defers <code>PassphraseEntry.authenticate()</code> call and account unlocking so that
+<code>AccountRetrieval</code> instance can be gathered without unlocking the account.
+Instead, <code>PassphraseEntry.authenticate()</code> is called when operations that
+require unlocking <code>Web3Account</code> are called, such as <code>sign()</code> or
+<code>getPublicKey()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</p>
 </li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
@@ -441,7 +473,7 @@ correctly because of wrong <code>TotalBlockCount</code>.  [<a href="https://gith
 providing measures to represent accounts for apps developed with Libplanet in
 JavaScript/TypeScript.  Note that the feature set is being actively developed,
 and the specification might change in the near future.</p>
-<h3 id="deprecated-apis">Deprecated APIs</h3>
+<h3 id="deprecated-apis-1">Deprecated APIs</h3>
 <ul>
 <li>Removed <code>TotalDifficultyComparer</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2872">#2872</a>]</li>
 <li>Removed <code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> interface method
@@ -989,7 +1021,7 @@ hadn't been canceled properly.  [<a href="https://github.com/planetarium/libplan
 </ul>
 <h2 id="version-0450">Version 0.45.0</h2>
 <p>Released on December 3, 2022.</p>
-<h3 id="deprecated-apis-1">Deprecated APIs</h3>
+<h3 id="deprecated-apis-2">Deprecated APIs</h3>
 <ul>
 <li>Removed <code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset, bool, long, int, int, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> by making
 it <code>internal</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2529">#2529</a>]</li>
@@ -1362,7 +1394,7 @@ serialized <code>SystemAction</code>.  [<a href="https://github.com/planetarium/
 </ul>
 <h2 id="version-0410">Version 0.41.0</h2>
 <p>Released on August 26, 2022.</p>
-<h3 id="deprecated-apis-2">Deprecated APIs</h3>
+<h3 id="deprecated-apis-3">Deprecated APIs</h3>
 <ul>
 <li>(Libplanet.Net) Removed <code>NetMQTransport()</code> constructor.  Use
 <code>NetMQTransport.Create()</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2215">#2215</a>]</li>
@@ -1541,7 +1573,7 @@ serialized <code>SystemAction</code>.  [<a href="https://github.com/planetarium/
 </ul>
 <h2 id="version-0400">Version 0.40.0</h2>
 <p>Released on August 12, 2022.</p>
-<h3 id="deprecated-apis-3">Deprecated APIs</h3>
+<h3 id="deprecated-apis-4">Deprecated APIs</h3>
 <ul>
 <li><code>Transaction&lt;T&gt;(long, Address, PublicKey, BlockHash?, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, byte[])</code> constructor
 is now deprecated.  Use <code>Transaction&lt;T&gt;(ITxMetadata, IEnumerable&lt;T&gt;, byte[])</code> constructor or <code>Transaction&lt;T&gt;.Create()</code> static method instead.
@@ -1688,7 +1720,7 @@ empty chains.  [<a href="https://github.com/planetarium/libplanet/issues/2047">#
 </ul>
 <h2 id="version-0390">Version 0.39.0</h2>
 <p>Released on July 18th, 2022.</p>
-<h3 id="deprecated-apis-4">Deprecated APIs</h3>
+<h3 id="deprecated-apis-5">Deprecated APIs</h3>
 <ul>
 <li>(Libplanet.Net) Removed <code>TcpTransport</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2139">#2139</a>]</li>
 <li>(Libplanet.Net) Removed <code>InvalidMagicCookieException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2139">#2139</a>]</li>
@@ -1847,7 +1879,7 @@ present.  Instead, it silently returns an empty string now.  [<a href="https://g
 </ul>
 <h2 id="version-0350">Version 0.35.0</h2>
 <p>Released on May 20th, 2022.</p>
-<h3 id="deprecated-apis-5">Deprecated APIs</h3>
+<h3 id="deprecated-apis-6">Deprecated APIs</h3>
 <ul>
 <li>(Libplanet.Net) Unused property <code>SwarmOptions.PollInterval</code> removed.
 [<a href="https://github.com/planetarium/libplanet/pull/1962">#1962</a>]</li>
@@ -2125,7 +2157,7 @@ as a hex formatted string.  [<a href="https://github.com/planetarium/libplanet/i
 </ul>
 <h2 id="version-0280">Version 0.28.0</h2>
 <p>Released on February 23, 2022.</p>
-<h3 id="deprecated-apis-6">Deprecated APIs</h3>
+<h3 id="deprecated-apis-7">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes-23">Backward-incompatible API changes</h3>
 <ul>
 <li>The return type of <code>MerkleTrieExtensions.DifferentNodes()</code> became
@@ -2256,7 +2288,7 @@ blocks until the local tip is close enough to the topmost tip among peers.
 </ul>
 <h2 id="version-0270">Version 0.27.0</h2>
 <p>Released on January 26, 2022.</p>
-<h3 id="deprecated-apis-7">Deprecated APIs</h3>
+<h3 id="deprecated-apis-8">Deprecated APIs</h3>
 <ul>
 <li>Added <code>EnumerableMeasurement</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1764">#1764</a>, <a href="https://github.com/planetarium/libplanet/pull/1766">#1766</a>]</li>
 </ul>
@@ -2819,7 +2851,7 @@ related tests.  [<a href="https://github.com/planetarium/libplanet/pull/1594">#1
 </ul>
 <h2 id="version-0200">Version 0.20.0</h2>
 <p>Released on November 3, 2021.</p>
-<h3 id="deprecated-apis-8">Deprecated APIs</h3>
+<h3 id="deprecated-apis-9">Deprecated APIs</h3>
 <ul>
 <li>(Libplanet.RocksDBStore) <code>MonoRocksDBStore</code> will be gone in the next minor
 release: 0.21.0.  [<a href="https://github.com/planetarium/libplanet/issues/1513">#1513</a>, <a href="https://github.com/planetarium/libplanet/pull/1574">#1574</a>]</li>
