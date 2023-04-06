@@ -17476,15 +17476,15 @@ references:
   commentId: T:Libplanet.Net.Consensus.Gossip
   fullName: Libplanet.Net.Consensus.Gossip
   nameWithType: Gossip
-- uid: Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.Message},System.TimeSpan,System.Nullable{System.Int64})
-  name: Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<Message>, TimeSpan, Nullable<Int64>)
-  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_Message__System_TimeSpan_System_Nullable_System_Int64__
-  commentId: M:Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.Message},System.TimeSpan,System.Nullable{System.Int64})
-  name.vb: Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of Message), TimeSpan, Nullable(Of Int64))
-  fullName: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Action<Libplanet.Net.Messages.Message>, System.TimeSpan, System.Nullable<System.Int64>)
-  fullName.vb: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Action(Of Libplanet.Net.Messages.Message), System.TimeSpan, System.Nullable(Of System.Int64))
-  nameWithType: Gossip.Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<Message>, TimeSpan, Nullable<Int64>)
-  nameWithType.vb: Gossip.Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of Message), TimeSpan, Nullable(Of Int64))
+- uid: Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.MessageContent},System.TimeSpan,System.Nullable{System.Int64})
+  name: Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<MessageContent>, TimeSpan, Nullable<Int64>)
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_MessageContent__System_TimeSpan_System_Nullable_System_Int64__
+  commentId: M:Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.MessageContent},System.TimeSpan,System.Nullable{System.Int64})
+  name.vb: Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of MessageContent), TimeSpan, Nullable(Of Int64))
+  fullName: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Action<Libplanet.Net.Messages.MessageContent>, System.TimeSpan, System.Nullable<System.Int64>)
+  fullName.vb: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Action(Of Libplanet.Net.Messages.MessageContent), System.TimeSpan, System.Nullable(Of System.Int64))
+  nameWithType: Gossip.Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<MessageContent>, TimeSpan, Nullable<Int64>)
+  nameWithType.vb: Gossip.Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of MessageContent), TimeSpan, Nullable(Of Int64))
 - uid: Libplanet.Net.Consensus.Gossip.#ctor*
   name: Gossip
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip__ctor_
@@ -17492,12 +17492,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.Gossip
   nameWithType: Gossip.Gossip
-- uid: Libplanet.Net.Consensus.Gossip.AddMessage(Libplanet.Net.Messages.Message)
-  name: AddMessage(Message)
-  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AddMessage_Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Consensus.Gossip.AddMessage(Libplanet.Net.Messages.Message)
-  fullName: Libplanet.Net.Consensus.Gossip.AddMessage(Libplanet.Net.Messages.Message)
-  nameWithType: Gossip.AddMessage(Message)
 - uid: Libplanet.Net.Consensus.Gossip.AddMessage(Libplanet.Net.Messages.MessageContent)
   name: AddMessage(MessageContent)
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AddMessage_Libplanet_Net_Messages_MessageContent_
@@ -17511,15 +17505,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.AddMessage
   nameWithType: Gossip.AddMessage
-- uid: Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.Message})
-  name: AddMessages(IEnumerable<Message>)
-  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AddMessages_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_Message__
-  commentId: M:Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.Message})
-  name.vb: AddMessages(IEnumerable(Of Message))
-  fullName: Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable<Libplanet.Net.Messages.Message>)
-  fullName.vb: Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Messages.Message))
-  nameWithType: Gossip.AddMessages(IEnumerable<Message>)
-  nameWithType.vb: Gossip.AddMessages(IEnumerable(Of Message))
 - uid: Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.MessageContent})
   name: AddMessages(IEnumerable<MessageContent>)
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AddMessages_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_MessageContent__
@@ -17575,6 +17560,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.Peers
   nameWithType: Gossip.Peers
+- uid: Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent)
+  name: PublishMessage(MessageContent)
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_PublishMessage_Libplanet_Net_Messages_MessageContent_
+  commentId: M:Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent)
+  fullName: Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent)
+  nameWithType: Gossip.PublishMessage(MessageContent)
+- uid: Libplanet.Net.Consensus.Gossip.PublishMessage*
+  name: PublishMessage
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_PublishMessage_
+  commentId: Overload:Libplanet.Net.Consensus.Gossip.PublishMessage
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Gossip.PublishMessage
+  nameWithType: Gossip.PublishMessage
 - uid: Libplanet.Net.Consensus.Gossip.Running
   name: Running
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_Running
