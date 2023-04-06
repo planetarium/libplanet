@@ -6,6 +6,13 @@ Version 0.54.0
 
 To be released.
 
+### Deprecated APIs
+
+ -  (@planerarium/account)  Deprecated `RawPrivateKey.publicKey` property in
+    favour of `RawPrivateKey.getPublicKey()` async method.  [[#3061]]
+ -  (@planetarium/account-aws-kms)  Deprecated `AwsKmsAccount.publicKey` in
+    favour of `AwsKmsAccount.getPublicKey()` async method.  [[#3061]]
+
 ### Backward-incompatible API changes
 
  -  Removed `TxMetadata` class.  [[#1164], [#2986]]
@@ -58,6 +65,14 @@ To be released.
  -  Removed `PreEvaluationBlock<T>.Mine()` and `BlockMetadata.MineNonce()`
     methods.  [[#3067]]
  -  Removed `HashCash` class.  [[#3067]]
+ -  (@planetarium/account) Replaced `Account.publicKey` property with
+    `Account.getPublicKey()` async method.  [[#3061]]
+ -  (@planetarium/account) `Address.deriveFrom()` method now returns
+    `Promise<Address>` when an `Account` is given.  However, it still returns
+    `Address` when a `PublicKey` is given.  [[#3061]]
+ -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` no more implements
+    `ImportableKeyStore<KeyId, RawPrivateKey>`.  Instead, it now implements
+    `ImportableKeyStore<KeyId, Web3Account>`.  [[#3061]]
 
 ### Backward-incompatible network protocol changes
 
@@ -82,6 +97,16 @@ To be released.
  -  Added `PublicKey.FromHex()` static method.  [[#2709], [#3044]]
  -  Added `PublicKey.ToHex()` method.  [[#2709], [#3044]]
  -  (Libplanet.Net) Added `Gossip.PublishMessage()` method.  [[#3054], [#3060]]
+ -  (@planetarium/account) Added `Account.getPublicKey()` async method.
+    [[#3061]]
+ -  (@planetarium/account) Added `RawPrivateKey.getPublicKey()` async method.
+    [[#3061]]
+ -  (@planetarium/account-aws-kms) Added `AwsKmsAccount.getPublicKey()` async
+    method.  [[#3061]]
+ -  (@planetarium/account-web3-secret-storage) Added `Web3Account` class.
+    [[#3061]]
+ -  (@planetarium/account-web3-secret-storage) Added `Web3KeyObject` interface.
+    [[#3061]]
 
 ### Behavioral changes
 
@@ -127,6 +152,13 @@ To be released.
     }
     ~~~~
 
+ -  (@planetarium/account-web3-secret-storage) `Web3KeyStore.get()` method now
+    defers `PassphraseEntry.authenticate()` call and account unlocking so that
+    `AccountRetrieval` instance can be gathered without unlocking the account.
+    Instead, `PassphraseEntry.authenticate()` is called when operations that
+    require unlocking `Web3Account` are called, such as `sign()` or
+    `getPublicKey()`.  [[#3061]]
+
 ### Bug fixes
 
  -  In `PreVote` block validation, `Context<T>.IsValid()`, validate the block
@@ -143,6 +175,7 @@ To be released.
 [#3044]: https://github.com/planetarium/libplanet/pull/3044
 [#3054]: https://github.com/planetarium/libplanet/issues/3054
 [#3060]: https://github.com/planetarium/libplanet/pull/3060
+[#3061]: https://github.com/planetarium/libplanet/pull/3061
 [#3067]: https://github.com/planetarium/libplanet/pull/3067
 
 

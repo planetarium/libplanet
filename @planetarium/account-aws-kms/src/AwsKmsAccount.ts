@@ -12,12 +12,22 @@ export class AwsKmsAccount implements Account {
   readonly #client: KMSClient;
 
   readonly keyId: AwsKmsKeyId;
+
+  // TODO: This attribute is deprecated.  We should remove it and make
+  // getPublicKey() method the only choice in the future.
+  /**
+   * @deprecated Use {@link getPublicKey()} instead.
+   */
   readonly publicKey: PublicKey;
 
   constructor(keyId: AwsKmsKeyId, publicKey: PublicKey, client: KMSClient) {
     this.keyId = keyId;
     this.publicKey = publicKey;
     this.#client = client;
+  }
+
+  getPublicKey(): Promise<PublicKey> {
+    return Promise.resolve(this.publicKey);
   }
 
   async sign(message: Message): Promise<Signature> {

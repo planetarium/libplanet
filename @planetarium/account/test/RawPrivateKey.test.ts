@@ -84,12 +84,23 @@ describe("RawPrivateKey", () => {
     expect(keyBytes).toSatisfy(secp256k1.utils.isValidPrivateKey);
   });
 
-  test("publicKey", () => {
+  test("publicKey [deprecated]", () => {
     const key = RawPrivateKey.fromHex(
       "5760ea321bdd7ac302469e192aa527b6458e3a1e0ddf6c76d9618aca6f653b4d",
     );
     expect(key.publicKey).toBeInstanceOf(PublicKey);
     expect(key.publicKey.toHex("compressed")).toStrictEqual(
+      "02472a659c7e655cbcf688997863fb9c7a7139635929429bdc9f75f10c60ed8070",
+    );
+  });
+
+  test("getPublicKey()", async () => {
+    const key = RawPrivateKey.fromHex(
+      "5760ea321bdd7ac302469e192aa527b6458e3a1e0ddf6c76d9618aca6f653b4d",
+    );
+    const publicKey = await key.getPublicKey();
+    expect(publicKey).toBeInstanceOf(PublicKey);
+    expect(publicKey.toHex("compressed")).toStrictEqual(
       "02472a659c7e655cbcf688997863fb9c7a7139635929429bdc9f75f10c60ed8070",
     );
   });

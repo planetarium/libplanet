@@ -6,8 +6,8 @@ import { describe, expect, test } from "vitest";
 import { bytesEquals, toHex } from "./utils";
 
 describe("Address", () => {
-  test("deriveFrom()", () => {
-    var pubKey = PublicKey.fromBytes(
+  test("deriveFrom()", async () => {
+    const pubKey = PublicKey.fromBytes(
       new Uint8Array([
         0x03, 0x43, 0x8b, 0x93, 0x53, 0x89, 0xa7, 0xeb, 0xf8, 0x38, 0xb3, 0xae,
         0x41, 0x25, 0xbd, 0x28, 0x50, 0x6a, 0xa2, 0xdd, 0x45, 0x7f, 0x20, 0xaf,
@@ -15,7 +15,7 @@ describe("Address", () => {
       ]),
       "compressed",
     );
-    var expectedAddress = Address.fromBytes(
+    const expectedAddress = Address.fromBytes(
       new Uint8Array([
         0xd4, 0x1f, 0xad, 0xf6, 0x1b, 0xad, 0xf5, 0xbe, 0x2d, 0xe6, 0x0e, 0x9f,
         0xc3, 0x23, 0x0c, 0x0a, 0x8a, 0x43, 0x90, 0xf0,
@@ -23,7 +23,7 @@ describe("Address", () => {
     );
     expect(Address.deriveFrom(pubKey)).toHaveEqualBytes(expectedAddress);
     const account = RawPrivateKey.generate();
-    expect(Address.deriveFrom(account)).toHaveEqualBytes(
+    expect(await Address.deriveFrom(account)).toHaveEqualBytes(
       Address.deriveFrom(account.publicKey),
     );
     expect(() => Address.deriveFrom(123 as unknown as PublicKey)).toThrowError(

@@ -7,7 +7,7 @@ test("isAccount", async () => {
   const key = RawPrivateKey.generate();
   expect(
     isAccount({
-      publicKey: key.publicKey,
+      getPublicKey: key.getPublicKey,
       sign: key.sign.bind(key),
     }),
   ).toBeTruthy();

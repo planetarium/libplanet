@@ -42,14 +42,24 @@ export class Address {
     this.#bytes = bytes;
   }
 
-  static deriveFrom(publicKey: PublicKey | Account): Address {
+  static deriveFrom(publicKey: PublicKey): Address;
+  static deriveFrom(account: Account): Promise<Address>;
+
+  static deriveFrom(
+    publicKey: PublicKey | Account,
+  ): Address | Promise<Address> {
     if (isAccount(publicKey)) {
-      publicKey = publicKey.publicKey;
-    } else if (!(publicKey instanceof PublicKey)) {
-      throw new Error(
-        `Expected either PublicKey or Account, got ${typeof publicKey}`,
-      );
+      return publicKey.getPublicKey().then(this.#deriveFrom);
+    } else if (publicKey instanceof PublicKey) {
+      return this.#deriveFrom(publicKey);
     }
+
+    throw new Error(
+      `Expected either PublicKey or Account, got ${typeof publicKey}`,
+    );
+  }
+
+  static #deriveFrom(publicKey: PublicKey): Address {
     const pub = publicKey.toBytes("uncompressed").slice(1);
     const digest = keccak_256(pub);
     const addr = digest.slice(digest.length - 20);

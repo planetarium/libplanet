@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Web3Account > exportPrivateKey() 1`] = `
+Uint8Array [
+  42,
+  248,
+  218,
+  36,
+  177,
+  119,
+  246,
+  114,
+  61,
+  139,
+  153,
+  118,
+  43,
+  65,
+  111,
+  195,
+  5,
+  2,
+  137,
+  181,
+  114,
+  184,
+  129,
+  158,
+  187,
+  176,
+  166,
+  177,
+  67,
+  177,
+  213,
+  93,
+]
+`;
