@@ -27,7 +27,7 @@ namespace Libplanet.Net.Consensus
         private readonly ITransport _transport;
         private readonly MessageCache _cache;
         private readonly MemoryCache _seen;
-        private readonly Action<Message> _processMessage;
+        private readonly Action<MessageContent> _processMessage;
         private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
 
@@ -51,7 +51,7 @@ namespace Libplanet.Net.Consensus
             ITransport transport,
             ImmutableArray<BoundPeer> peers,
             ImmutableArray<BoundPeer> seeds,
-            Action<Message> processMessage,
+            Action<MessageContent> processMessage,
             TimeSpan seenTtl,
             long? seenCacheLimit = null)
         {
@@ -181,37 +181,35 @@ namespace Libplanet.Net.Consensus
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
         /// <summary>
+        /// Publish given <see cref="MessageContent"/> to peers.
+        /// </summary>
+        /// <param name="content">A <see cref="MessageContent"/> instance to publish.</param>
+        public void PublishMessage(MessageContent content)
+        {
+            AddMessage(content);
+            _transport.BroadcastMessage(
+                PeersToBroadcast(_table.Peers, DLazy),
+                content);
+        }
+
+        /// <summary>
         /// Process a <see cref="MessageContent"/> and add it to the gossip.
         /// </summary>
         /// <param name="content">A <see cref="MessageContent"/> instance to
         /// process and gossip.</param>
-        public void AddMessage(MessageContent content) =>
-            AddMessage(
-                new Message(
-                    content,
-                    _transport.AppProtocolVersion,
-                    AsPeer,
-                    DateTimeOffset.UtcNow,
-                    null));
-
-        /// <summary>
-        /// Process a <see cref="Message"/> and add it to the gossip.
-        /// </summary>
-        /// <param name="message">A <see cref="Message"/> instance to
-        /// process and gossip.</param>
-        public void AddMessage(Message message)
+        public void AddMessage(MessageContent content)
         {
-            if (_seen.TryGetValue(message.Content.Id, out _))
+            if (_seen.TryGetValue(content.Id, out _))
             {
                 _logger.Verbose(
                     "Message of content {Content} with id {Id} seen recently, ignored",
-                    message.Content,
-                    message.Content.Id);
+                    content,
+                    content.Id);
             }
 
             try
             {
-                _cache.Put(message.Content);
+                _cache.Put(content);
             }
             catch (Exception)
             {
@@ -219,10 +217,10 @@ namespace Libplanet.Net.Consensus
             }
 
             // Message instance does not have to be stored.
-            _seen.Set(message.Content.Id, message.Content.Id, _seenTtl);
+            _seen.Set(content.Id, content.Id, _seenTtl);
             try
             {
-                _processMessage(message);
+                _processMessage(content);
             }
             catch (Exception)
             {
@@ -239,17 +237,6 @@ namespace Libplanet.Net.Consensus
         public void AddMessages(IEnumerable<MessageContent> contents)
         {
             contents.AsParallel().ForAll(AddMessage);
-        }
-
-        /// <summary>
-        /// Adds multiple <see cref="Message"/>s in parallel.
-        /// <seealso cref="AddMessage(Message)"/>
-        /// </summary>
-        /// <param name="messages">
-        /// An enumerable <see cref="Message"/> instance to process and gossip.</param>
-        public void AddMessages(IEnumerable<Message> messages)
-        {
-            messages.AsParallel().ForAll(AddMessage);
         }
 
         /// <summary>
@@ -290,7 +277,7 @@ namespace Libplanet.Net.Consensus
                     await HandleWantAsync(msg, ctx);
                     break;
                 default:
-                    AddMessage(msg);
+                    AddMessage(msg.Content);
                     break;
             }
         };
@@ -359,7 +346,7 @@ namespace Libplanet.Net.Consensus
                 replies.Length,
                 replies,
                 replies.Select(m => m.Content.Id).ToArray());
-            AddMessages(replies);
+            AddMessages(replies.Select(m => m.Content));
         }
 
         /// <summary>

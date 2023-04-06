@@ -78,6 +78,7 @@ To be released.
     and `BlockChain<T>.EvaluateBlock()`.  [[#3037]]
  -  Added `PublicKey.FromHex()` static method.  [[#2709], [#3044]]
  -  Added `PublicKey.ToHex()` method.  [[#2709], [#3044]]
+ -  (Libplanet.Net) Added `Gossip.PublishMessage()` method.  [[#3054], [#3060]]
 
 ### Behavioral changes
 
@@ -137,6 +138,8 @@ To be released.
 [#2973]: https://github.com/planetarium/libplanet/issues/2973
 [#2996]: https://github.com/planetarium/libplanet/pull/2995
 [#3044]: https://github.com/planetarium/libplanet/pull/3044
+[#3054]: https://github.com/planetarium/libplanet/issues/3054
+[#3060]: https://github.com/planetarium/libplanet/pull/3060
 
 
 Version 0.53.4
