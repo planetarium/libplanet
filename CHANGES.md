@@ -165,6 +165,15 @@ To be released.
     header and also the block content (e.g., Tx nonces, Policy defined
     validation rules, or state root hash.)  [[#2973], [#2996]]
 
+### Dependencies
+
+ -  *@planetarium/account-aws-kms* now has *@planetarium/account* as a peer
+    dependency instead of a normal dependency.  [[#3069]]
+ -  *@planetarium/account-web3-secret-storage* now has *@planetarium/account*
+    as a peer dependency instead of a normal dependency.  [[#3069]]
+ -  *@planetarium/tx* now has *@planetarium/account* as a peer dependency
+    instead of a normal dependency.  [[#3069]]
+
 ### CLI tools
 
 [#2709]: https://github.com/planetarium/libplanet/issues/2709
@@ -177,6 +186,7 @@ To be released.
 [#3060]: https://github.com/planetarium/libplanet/pull/3060
 [#3061]: https://github.com/planetarium/libplanet/pull/3061
 [#3067]: https://github.com/planetarium/libplanet/pull/3067
+[#3069]: https://github.com/planetarium/libplanet/pull/3069
 
 
 Version 0.53.4

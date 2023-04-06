@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/planetarium/libplanet/tree/main/@planetarium/tx",
   "devDependencies": {
+    "@planetarium/account": "workspace:^",
     "@types/node": "^18.14.0",
     "@vitest/coverage-c8": "^0.29.2",
     "@vitest/ui": "^0.29.2",
@@ -44,7 +45,9 @@
     "vitest": "^0.29.2"
   },
   "dependencies": {
-    "@planetarium/account": "workspace:^",
     "@planetarium/bencodex": "^0.2.2"
+  },
+  "peerDependencies": {
+    "@planetarium/account": "workspace:^"
   }
 }
