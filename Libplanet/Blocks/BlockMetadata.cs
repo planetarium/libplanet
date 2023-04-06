@@ -3,9 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using Bencodex;
-using Bencodex.Types;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -311,28 +309,6 @@ namespace Libplanet.Blocks
         /// <returns>A pre-evaluation block hash.</returns>
         public HashDigest<SHA256> DerivePreEvaluationHash(Nonce nonce) =>
             HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
-
-        /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying <paramref name="difficulty"/>.
-        /// </summary>
-        /// <param name="difficulty">The difficulty to target when mining
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
-        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
-        /// that this operation should be cancelled.</param>
-        /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
-        /// block <paramref name="difficulty"/>.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when the specified
-        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public (Nonce Nonce, HashDigest<SHA256> PreEvaluationHash) MineNonce(
-            long difficulty,
-            CancellationToken cancellationToken = default)
-        {
-            Hashcash.Stamp stamp = GetStampFunction();
-            var random = new Random();
-            int seed = random.Next();
-            return Hashcash.Answer(
-                stamp, difficulty, seed, cancellationToken);
-        }
 
         private Hashcash.Stamp GetStampFunction()
         {

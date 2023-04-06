@@ -496,7 +496,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void GatherTransactionsToPropose()
         {
-            // TODO: We test more properties of GatherTransactionsToMine() method:
+            // TODO: We test more properties of GatherTransactionsToPropose() method:
             //       - if transactions are cut off if they exceed GetMaxTransactionsBytes()
             //       - if transactions with already consumed nonces are excluded
             //       - if transactions with greater nonces than unconsumed nonces are excluded

@@ -329,20 +329,6 @@ namespace Libplanet.Tests.Blocks
                 lastCommit: validLastCommit);
         }
 
-        [Fact]
-        public void MineNonce()
-        {
-            var codec = new Codec();
-            var difficulty = 5000L;
-
-            (Nonce nonce, HashDigest<SHA256> preEvalHash) =
-                GenesisMetadata.MineNonce(difficulty);
-            Assert.True(Satisfies(preEvalHash.ByteArray, difficulty));
-            HashDigest<SHA256> actual = HashDigest<SHA256>.DeriveFrom(
-                    codec.Encode(GenesisMetadata.MakeCandidateData(nonce)));
-            AssertBytesEqual(actual.ByteArray, preEvalHash.ByteArray);
-        }
-
         private static Vote GenerateVote(BlockHash? hash, long height, int round, VoteFlag flag)
         {
             var key = new PrivateKey();
