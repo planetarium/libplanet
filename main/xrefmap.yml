@@ -8071,23 +8071,6 @@ references:
   fullName.vb: Libplanet.Blocks.BlockContent(Of T).Metadata
   nameWithType: BlockContent<T>.Metadata
   nameWithType.vb: BlockContent(Of T).Metadata
-- uid: Libplanet.Blocks.BlockContent`1.Mine(System.Int64,System.Threading.CancellationToken)
-  name: Mine(Int64, CancellationToken)
-  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Mine_System_Int64_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blocks.BlockContent`1.Mine(System.Int64,System.Threading.CancellationToken)
-  fullName: Libplanet.Blocks.BlockContent<T>.Mine(System.Int64, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Mine(System.Int64, System.Threading.CancellationToken)
-  nameWithType: BlockContent<T>.Mine(Int64, CancellationToken)
-  nameWithType.vb: BlockContent(Of T).Mine(Int64, CancellationToken)
-- uid: Libplanet.Blocks.BlockContent`1.Mine*
-  name: Mine
-  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Mine_
-  commentId: Overload:Libplanet.Blocks.BlockContent`1.Mine
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockContent<T>.Mine
-  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Mine
-  nameWithType: BlockContent<T>.Mine
-  nameWithType.vb: BlockContent(Of T).Mine
 - uid: Libplanet.Blocks.BlockContent`1.Miner
   name: Miner
   href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Miner
@@ -9037,19 +9020,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMetadata.MakeCandidateData
   nameWithType: BlockMetadata.MakeCandidateData
-- uid: Libplanet.Blocks.BlockMetadata.MineNonce(System.Int64,System.Threading.CancellationToken)
-  name: MineNonce(Int64, CancellationToken)
-  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_System_Int64_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Blocks.BlockMetadata.MineNonce(System.Int64,System.Threading.CancellationToken)
-  fullName: Libplanet.Blocks.BlockMetadata.MineNonce(System.Int64, System.Threading.CancellationToken)
-  nameWithType: BlockMetadata.MineNonce(Int64, CancellationToken)
-- uid: Libplanet.Blocks.BlockMetadata.MineNonce*
-  name: MineNonce
-  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_
-  commentId: Overload:Libplanet.Blocks.BlockMetadata.MineNonce
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockMetadata.MineNonce
-  nameWithType: BlockMetadata.MineNonce
 - uid: Libplanet.Blocks.BlockMetadata.Miner
   name: Miner
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_Miner
@@ -14094,31 +14064,6 @@ references:
   fullName.vb: Libplanet.Extensions.Cocona.Utils.SerializeHumanReadable(Of T)(T)
   nameWithType: Utils.SerializeHumanReadable<T>(T)
   nameWithType.vb: Utils.SerializeHumanReadable(Of T)(T)
-- uid: Libplanet.Hashcash
-  name: Hashcash
-  href: api/Libplanet.Hashcash.html
-  commentId: T:Libplanet.Hashcash
-  fullName: Libplanet.Hashcash
-  nameWithType: Hashcash
-- uid: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.Int64,System.Int32,System.Threading.CancellationToken)
-  name: Answer(Hashcash.Stamp, Int64, Int32, CancellationToken)
-  href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_Int64_System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.Int64,System.Int32,System.Threading.CancellationToken)
-  fullName: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp, System.Int64, System.Int32, System.Threading.CancellationToken)
-  nameWithType: Hashcash.Answer(Hashcash.Stamp, Int64, Int32, CancellationToken)
-- uid: Libplanet.Hashcash.Answer*
-  name: Answer
-  href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_
-  commentId: Overload:Libplanet.Hashcash.Answer
-  isSpec: "True"
-  fullName: Libplanet.Hashcash.Answer
-  nameWithType: Hashcash.Answer
-- uid: Libplanet.Hashcash.Stamp
-  name: Hashcash.Stamp
-  href: api/Libplanet.Hashcash.Stamp.html
-  commentId: T:Libplanet.Hashcash.Stamp
-  fullName: Libplanet.Hashcash.Stamp
-  nameWithType: Hashcash.Stamp
 - uid: Libplanet.HashDigest`1
   name: HashDigest<T>
   href: api/Libplanet.HashDigest-1.html

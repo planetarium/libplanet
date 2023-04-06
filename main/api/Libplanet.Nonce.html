@@ -72,8 +72,8 @@
 
   <h1 id="Libplanet_Nonce" data-uid="Libplanet.Nonce" class="text-break">Struct Nonce
 </h1>
-  <div class="markdown level0 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
-<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+  <div class="markdown level0 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+deriving <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash">PreEvaluationHash</a> from its content.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
@@ -106,7 +106,7 @@ public struct Nonce : IEquatable&lt;Nonce&gt;</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L32">View Source</a>
   </span>
   <a id="Libplanet_Nonce__ctor_" data-uid="Libplanet.Nonce.#ctor*"></a>
   <h4 id="Libplanet_Nonce__ctor_System_Byte___" data-uid="Libplanet.Nonce.#ctor(System.Byte[])">Nonce(Byte[])</h4>
@@ -165,7 +165,7 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.%23ctor(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L43">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L44">View Source</a>
   </span>
   <a id="Libplanet_Nonce__ctor_" data-uid="Libplanet.Nonce.#ctor*"></a>
   <h4 id="Libplanet_Nonce__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Nonce.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">Nonce(in ImmutableArray&lt;Byte&gt;)</h4>
@@ -207,7 +207,7 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> instance.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L52">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Nonce_ByteArray_" data-uid="Libplanet.Nonce.ByteArray*"></a>
   <h4 id="Libplanet_Nonce_ByteArray" data-uid="Libplanet.Nonce.ByteArray">ByteArray</h4>
@@ -248,12 +248,12 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> instance.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_Equals_Libplanet_Nonce_.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.Equals(Libplanet.Nonce)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L69">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L70">View Source</a>
   </span>
   <a id="Libplanet_Nonce_Equals_" data-uid="Libplanet.Nonce.Equals*"></a>
   <h4 id="Libplanet_Nonce_Equals_Libplanet_Nonce_" data-uid="Libplanet.Nonce.Equals(Libplanet.Nonce)">Equals(Nonce)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
-<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+deriving <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash">PreEvaluationHash</a> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -297,12 +297,12 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> instance.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L71">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L72">View Source</a>
   </span>
   <a id="Libplanet_Nonce_Equals_" data-uid="Libplanet.Nonce.Equals*"></a>
   <h4 id="Libplanet_Nonce_Equals_System_Object_" data-uid="Libplanet.Nonce.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
-<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+deriving <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash">PreEvaluationHash</a> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -348,12 +348,12 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> instance.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L73">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L74">View Source</a>
   </span>
   <a id="Libplanet_Nonce_GetHashCode_" data-uid="Libplanet.Nonce.GetHashCode*"></a>
   <h4 id="Libplanet_Nonce_GetHashCode" data-uid="Libplanet.Nonce.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
-<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+deriving <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash">PreEvaluationHash</a> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -382,7 +382,7 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> instance.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L84">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L85">View Source</a>
   </span>
   <a id="Libplanet_Nonce_ToByteArray_" data-uid="Libplanet.Nonce.ToByteArray*"></a>
   <h4 id="Libplanet_Nonce_ToByteArray" data-uid="Libplanet.Nonce.ToByteArray">ToByteArray()</h4>
@@ -422,7 +422,7 @@ the <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Nonce_ToString_" data-uid="Libplanet.Nonce.ToString*"></a>
   <h4 id="Libplanet_Nonce_ToString" data-uid="Libplanet.Nonce.ToString">ToString()</h4>
@@ -459,12 +459,12 @@ public override string ToString()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_op_Equality_Libplanet_Nonce_Libplanet_Nonce_.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.op_Equality(Libplanet.Nonce%2CLibplanet.Nonce)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L65">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Nonce_op_Equality_" data-uid="Libplanet.Nonce.op_Equality*"></a>
   <h4 id="Libplanet_Nonce_op_Equality_Libplanet_Nonce_Libplanet_Nonce_" data-uid="Libplanet.Nonce.op_Equality(Libplanet.Nonce,Libplanet.Nonce)">Equality(Nonce, Nonce)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
-<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+deriving <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash">PreEvaluationHash</a> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -513,12 +513,12 @@ public override string ToString()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce_op_Inequality_Libplanet_Nonce_Libplanet_Nonce_.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.op_Inequality(Libplanet.Nonce%2CLibplanet.Nonce)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L67">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Nonce_op_Inequality_" data-uid="Libplanet.Nonce.op_Inequality*"></a>
   <h4 id="Libplanet_Nonce_op_Inequality_Libplanet_Nonce_Libplanet_Nonce_" data-uid="Libplanet.Nonce.op_Inequality(Libplanet.Nonce,Libplanet.Nonce)">Inequality(Nonce, Nonce)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
-<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+deriving <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash">PreEvaluationHash</a> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -577,7 +577,7 @@ public override string ToString()</code></pre>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Nonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Nonce.cs/#L16" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
