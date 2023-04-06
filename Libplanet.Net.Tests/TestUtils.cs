@@ -217,7 +217,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> BlockChain,
             ConsensusContext<DumbAction> ConsensusContext)
             CreateDummyConsensusContext(
-                TimeSpan contextMinInterval,
+                TimeSpan newHeightDelay,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
@@ -244,7 +244,7 @@ namespace Libplanet.Net.Tests
                 broadcastMessage,
                 blockChain,
                 privateKey,
-                contextMinInterval,
+                newHeightDelay,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, consensusContext);
@@ -293,7 +293,7 @@ namespace Libplanet.Net.Tests
             string host = "127.0.0.1",
             int consensusPort = 5101,
             List<BoundPeer>? validatorPeers = null,
-            int contextMinIntervalMilliseconds = 10_000,
+            int newHeightDelayMilliseconds = 10_000,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
             key ??= PrivateKeys[1];
@@ -313,7 +313,7 @@ namespace Libplanet.Net.Tests
                 key,
                 validatorPeers.ToImmutableList(),
                 new List<BoundPeer>().ToImmutableList(),
-                TimeSpan.FromMilliseconds(contextMinIntervalMilliseconds),
+                TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
                 contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
         }
 

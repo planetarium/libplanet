@@ -115,10 +115,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
             var proposalSent = new AsyncAutoResetEvent();
-            var contextMinInterval = TimeSpan.FromSeconds(1);
+            var newHeightDelay = TimeSpan.FromSeconds(1);
 
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                contextMinInterval,
+                newHeightDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
 
@@ -278,17 +278,24 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
         // Retry: This calculates delta time.
         [RetryFact]
-        public async void ContextMinInterval()
+        public async void NewHeightDelay()
         {
-            var contextMinInterval = TimeSpan.FromSeconds(1);
+            var newHeightDelay = TimeSpan.FromSeconds(1);
             // The maximum error margin. (macos-netcore-test)
             var timeError = 500;
-            var heightOneProposalSent = new AsyncAutoResetEvent();
+            var heightOneEndCommit = new AsyncAutoResetEvent();
             var heightTwoProposalSent = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                contextMinInterval,
+                newHeightDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
+            consensusContext.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
+                {
+                    heightOneEndCommit.Set();
+                }
+            };
             consensusContext.MessageBroadcasted += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 2 && eventArgs.Message is ConsensusProposalMsg)
@@ -306,16 +313,18 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             TestUtils.HandleFourPeersPreCommitMessages(
                  consensusContext, TestUtils.PrivateKeys[2], block.Hash);
 
-            var proposeFirstTime = DateTimeOffset.UtcNow;
+            await heightOneEndCommit.WaitAsync();
+            var endCommitTime = DateTimeOffset.UtcNow;
+
             await heightTwoProposalSent.WaitAsync();
-            var proposeSecondTime = DateTimeOffset.UtcNow;
-            var difference = proposeSecondTime - proposeFirstTime;
+            var proposeTime = DateTimeOffset.UtcNow;
+            var difference = proposeTime - endCommitTime;
 
             _logger.Debug("Difference: {Difference}", difference);
             // Check new height delay; slight margin of error is allowed as delay task
             // is run asynchronously from context events.
             Assert.True(
-                (difference - contextMinInterval).Duration() <
+                ((proposeTime - endCommitTime) - newHeightDelay).Duration() <
                     TimeSpan.FromMilliseconds(timeError));
         }
     }

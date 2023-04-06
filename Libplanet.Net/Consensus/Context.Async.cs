@@ -18,7 +18,6 @@ namespace Libplanet.Net.Consensus
         /// or not.</param>
         public void Start(BlockCommit? lastCommit = null, bool bootstrapping = false)
         {
-            StartTime = DateTimeOffset.UtcNow;
             _logger.Information(
                 "Starting context for height #{Height}, LastCommit: {LastCommit}",
                 Height,

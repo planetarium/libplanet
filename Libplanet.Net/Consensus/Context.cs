@@ -208,11 +208,6 @@ namespace Libplanet.Net.Consensus
         public Step Step { get; private set; }
 
         /// <summary>
-        /// The time when <see cref="Start(BlockCommit?, bool)"/> called.
-        /// </summary>
-        public DateTimeOffset StartTime { get; private set; }
-
-        /// <summary>
         /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
         /// validators.
         /// </summary>

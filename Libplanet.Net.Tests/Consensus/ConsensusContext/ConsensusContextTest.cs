@@ -121,18 +121,17 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightWhenTipChanged()
         {
-            var contextMinInterval = TimeSpan.FromSeconds(1);
+            var newHeightDelay = TimeSpan.FromSeconds(1);
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                contextMinInterval,
+                newHeightDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
-            consensusContext.NewHeight(1L);
             Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(1, consensusContext.Height);
-            await Task.Delay(contextMinInterval + TimeSpan.FromSeconds(1));
+            Assert.Equal(-1, consensusContext.Height);
+            await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
         }
 
@@ -181,7 +180,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 new PrivateKey(), lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
-            // Check if the context of 1 and 2 are removed correctly.
+            // Create context of index 4, check if the context of 1 and 2 are removed correctly.
+            consensusContext.NewHeight(4);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[1]);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[2]);
         }
