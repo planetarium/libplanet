@@ -56,7 +56,8 @@ To be released.
     `ApvCommand.Verify(string?, string[]?, bool)` method to
     `ApvCommand.Verify(string?, PublicKey[]?, bool)`.  [[#3044]]
  -  Removed `PreEvaluationBlock<T>.Mine()` and `BlockMetadata.MineNonce()`
-    methods. [[#3067]]
+    methods.  [[#3067]]
+ -  Removed `HashCash` class.  [[#3067]]
 
 ### Backward-incompatible network protocol changes
 
