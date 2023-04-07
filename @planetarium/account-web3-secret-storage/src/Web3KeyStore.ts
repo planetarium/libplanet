@@ -191,7 +191,14 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
       },
       passphrase,
     );
-    const keyObject: Web3KeyObject = JSON.parse(json);
+    const parsedKeyObject = JSON.parse(json);
+    // For interop with ethers.js which uses "Crypto" instead of "crypto" for some reason
+    if ("Crypto" in parsedKeyObject && !("crypto" in parsedKeyObject)) {
+      parsedKeyObject.crypto = parsedKeyObject.Crypto;
+      // rome-ignore lint/performance/noDelete: This operation is not expected to be performance critical
+      delete parsedKeyObject.Crypto;
+    }
+    const keyObject: Web3KeyObject = parsedKeyObject;
     const { id: keyId } = keyObject;
     try {
       await fs.mkdir(this.path, { recursive: true });
@@ -207,7 +214,7 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
         .replace(/:/g, "-")}--${keyId}`,
     );
     try {
-      await fs.writeFile(keyPath, json, "utf8");
+      await fs.writeFile(keyPath, JSON.stringify(keyObject), "utf8");
     } catch (e) {
       return { result: "error", message: `${e}` };
     }

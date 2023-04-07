@@ -201,11 +201,17 @@ To be released.
      -  `transactionResult` query in `TransactionQuery` now uses
         `IBlockChainIndex` if available.
 
+ -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` now supports
+    Scrypt as one of KDF functions besides PBKDF2.  [[#3071]]
+
 ### Bug fixes
 
  -  In `PreVote` block validation, `Context<T>.IsValid()`, validate the block
     header and also the block content (e.g., Tx nonces, Policy defined
     validation rules, or state root hash.)  [[#2973], [#2996]]
+ -  (@planetarium/account-web3-secret-storage) Fixed a bug where
+    `Web3KeyStore.import()` and `Web3KeyStore.generate()` methods had written
+    JSON field `"Crypto"` instead of `"crypto"` in the key file.  [[#3071]]
 
 ### Dependencies
 
@@ -238,6 +244,7 @@ To be released.
 [#3061]: https://github.com/planetarium/libplanet/pull/3061
 [#3067]: https://github.com/planetarium/libplanet/pull/3067
 [#3069]: https://github.com/planetarium/libplanet/pull/3069
+[#3071]: https://github.com/planetarium/libplanet/pull/3071
 [#3072]: https://github.com/planetarium/libplanet/pull/3072
 [#3074]: https://github.com/planetarium/libplanet/pull/3074
 [#3077]: https://github.com/planetarium/libplanet/pull/3077
