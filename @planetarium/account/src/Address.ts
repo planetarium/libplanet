@@ -119,6 +119,19 @@ export class Address {
     return casing === "checksum" ? checksum(hex) : hex;
   }
 
+  equals(other: Address): boolean {
+    if (!(other instanceof Address)) return false;
+    for (let i = 0; i < 20; i++) {
+      if (this.#bytes[i] !== other.#bytes[i]) return false;
+    }
+
+    return true;
+  }
+
+  isAddressOf(publicKey: PublicKey): boolean {
+    return Address.deriveFrom(publicKey).equals(this);
+  }
+
   toString(): string {
     return `0x${this.toHex()}`;
   }

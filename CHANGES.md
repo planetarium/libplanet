@@ -131,6 +131,9 @@ To be released.
     commands related to *Libplanet.Explorer* project.  [[#2613]]
      -  Added `IndexCommand` Cocona command class.
  -  (Libplanet.Explorer) Added `states` query in `StateQuery`.  [[#3080]]
+ -  (@planetarium/account) Added `Address.equals()` method.  [[#3071]]
+ -  (@planetarium/account) Added `Address.isAddressOf()` method.  [[#3071]]
+ -  (@planetarium/account) Added `PublicKey.equals()` method.  [[#3071]]
 
 ### Behavioral changes
 

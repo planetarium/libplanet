@@ -191,4 +191,18 @@ describe("PublicKey", () => {
     const invalidForm = "invalid" as unknown as "compressed" | "uncompressed";
     expect(() => pubKey.toHex(invalidForm)).toThrowError(/invalid .*? form/i);
   });
+
+  test("equals()", () => {
+    const pubKey = PublicKey.fromHex(compHex, "compressed");
+    const pubKey2 = PublicKey.fromHex(compHex, "compressed");
+    expect(pubKey.equals(pubKey2)).toBeTruthy();
+    expect(pubKey2.equals(pubKey)).toBeTruthy();
+
+    const pubKey3 = PublicKey.fromHex(
+      "02b4cc2941408698d07f059db306bd8e207c29b14a3540bb19891b102666a963db",
+      "compressed",
+    );
+    expect(pubKey3.equals(pubKey)).toBeFalsy();
+    expect(pubKey.equals(pubKey3)).toBeFalsy();
+  });
 });

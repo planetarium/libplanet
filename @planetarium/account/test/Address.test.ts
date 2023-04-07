@@ -178,6 +178,49 @@ describe("Address", () => {
     );
   });
 
+  test("equals()", () => {
+    const address = Address.fromBytes(
+      new Uint8Array([
+        0xdb, 0xf0, 0x3b, 0x40, 0x7c, 0x01, 0xe7, 0xcd, 0x3c, 0xbe, 0xa9, 0x95,
+        0x09, 0xd9, 0x3f, 0x8d, 0xdd, 0xc8, 0xc6, 0xfb,
+      ]),
+    );
+    const address2 = Address.fromBytes(
+      new Uint8Array([
+        0xdb, 0xf0, 0x3b, 0x40, 0x7c, 0x01, 0xe7, 0xcd, 0x3c, 0xbe, 0xa9, 0x95,
+        0x09, 0xd9, 0x3f, 0x8d, 0xdd, 0xc8, 0xc6, 0xfb,
+      ]),
+    );
+    const address3 = Address.fromBytes(
+      new Uint8Array([
+        0xdb, 0xf0, 0x3b, 0x40, 0x7c, 0x01, 0xe7, 0xcd, 0x3c, 0xbe, 0xa9, 0x95,
+        0x09, 0xd9, 0x3f, 0x8d, 0xdd, 0xc8, 0xc6, 0xfc,
+      ]),
+    );
+    expect(address.equals(address2)).toBe(true);
+    expect(address2.equals(address)).toBe(true);
+    expect(address.equals(address3)).toBe(false);
+    expect(address2.equals(address3)).toBe(false);
+    expect(address3.equals(address)).toBe(false);
+  });
+
+  test("isAddressOf()", () => {
+    const address = Address.fromHex("D9166B6361a077CAe2eCdEF0bb96AEe4542e231a");
+    const pubKey = PublicKey.fromHex(
+      "02b4cc2941408698d07f059db306bd8e207c29b14a3540bb19891b102666a963db",
+      "compressed",
+    );
+    expect(address.isAddressOf(pubKey)).toBe(true);
+
+    const address2 = Address.fromBytes(
+      new Uint8Array([
+        0xdb, 0xf0, 0x3b, 0x40, 0x7c, 0x01, 0xe7, 0xcd, 0x3c, 0xbe, 0xa9, 0x95,
+        0x09, 0xd9, 0x3f, 0x8d, 0xdd, 0xc8, 0xc6, 0xfb,
+      ]),
+    );
+    expect(address2.isAddressOf(pubKey)).toBe(false);
+  });
+
   test("toString()", () => {
     const address = Address.fromBytes(
       new Uint8Array([
