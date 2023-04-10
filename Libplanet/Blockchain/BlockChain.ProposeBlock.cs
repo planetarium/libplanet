@@ -117,38 +117,30 @@ namespace Libplanet.Blockchain
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            int sessionId = new System.Random().Next();
-            int processId = Process.GetCurrentProcess().Id;
             _logger.Debug(
-                "{SessionId}/{ProcessId}: Starting to propose block #{Index} with " +
-                "previous hash {PreviousHash}...",
-                sessionId,
-                processId,
+                "Starting to propose block #{Index} with previous hash {PreviousHash}...",
                 index,
                 prevHash);
 
-            ImmutableList<Transaction<T>> transactionsToPropose;
+            ImmutableList<Transaction<T>> transactions;
             try
             {
-                transactionsToPropose = GatherTransactionsToPropose(index, txPriority);
+                transactions = GatherTransactionsToPropose(index, txPriority);
             }
             catch (InvalidOperationException ioe)
             {
                 throw new OperationCanceledException(
-                    "Failed to gather transactions to propose.",
+                    $"Failed to gather transactions to propose for block #{index}.",
                     ioe);
             }
 
             var block = ProposeBlock(
                 proposer,
                 DateTimeOffset.UtcNow,
-                transactionsToPropose,
+                transactions,
                 lastCommit);
             _logger.Debug(
-                "{SessionId}/{ProcessId}: Proposed block #{Index} {Hash} " +
-                "with previous hash {PreviousHash}",
-                sessionId,
-                processId,
+                "Proposed block #{Index} {Hash} with previous hash {PreviousHash}",
                 block.Index,
                 block.Hash,
                 block.PreviousHash);
