@@ -114,44 +114,6 @@ namespace Libplanet.Blockchain
             PrivateKey proposer,
             DateTimeOffset? timestamp = null,
             IComparer<Transaction<T>> txPriority = null,
-            BlockCommit lastCommit = null) =>
-            ProposeBlock(
-                proposer: proposer,
-                timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                maxTransactionsBytes: Policy.GetMaxTransactionsBytes(Count),
-                maxTransactions: Policy.GetMaxTransactionsPerBlock(Count),
-                maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(Count),
-                txPriority: txPriority,
-                lastCommit: lastCommit);
-
-        /// <summary>
-        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
-        /// </summary>
-        /// <param name="proposer">
-        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
-        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
-        /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
-        /// </param>
-        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
-        /// that a block can accept per signer.  See also
-        /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
-        /// <param name="txPriority">An optional comparer for give certain transactions to
-        /// priority to belong to the block.  No certain priority by default.</param>
-        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
-        /// </param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
-        public Block<T> ProposeBlock(
-            PrivateKey proposer,
-            DateTimeOffset timestamp,
-            long maxTransactionsBytes,
-            int maxTransactions,
-            int maxTransactionsPerSigner,
-            IComparer<Transaction<T>> txPriority = null,
             BlockCommit lastCommit = null)
         {
             long index = Count;
@@ -171,9 +133,9 @@ namespace Libplanet.Blockchain
             try
             {
                 transactionsToPropose = GatherTransactionsToPropose(
-                    maxTransactionsBytes: maxTransactionsBytes,
-                    maxTransactions: maxTransactions,
-                    maxTransactionsPerSigner: maxTransactionsPerSigner,
+                    maxTransactionsBytes: Policy.GetMaxTransactionsBytes(index),
+                    maxTransactions: Policy.GetMaxTransactionsPerBlock(index),
+                    maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(index),
                     minTransactions: Policy.GetMinTransactionsPerBlock(index),
                     txPriority: txPriority);
             }
@@ -199,7 +161,7 @@ namespace Libplanet.Blockchain
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
-                    timestamp: timestamp,
+                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     miner: proposer.ToAddress(),
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
