@@ -208,6 +208,9 @@ To be released.
 
  -  (Libplanet.Explorer.Executable) Project is now deprecated. It is currently
     nonfunctional.  [[#2243], [#2588]]
+ -  (Libplanet.Tools) Now `planet` uses *libsecp256k1* (which is the same
+    library used in Bitcoin and written in C) instead of
+    *BouncyCastle.Cryptography* (which is written in C#).  [[#3074]]
 
 [#2243]: https://github.com/planetarium/libplanet/discussions/2243
 [#2588]: https://github.com/planetarium/libplanet/discussions/2588
@@ -224,6 +227,7 @@ To be released.
 [#3067]: https://github.com/planetarium/libplanet/pull/3067
 [#3069]: https://github.com/planetarium/libplanet/pull/3069
 [#3072]: https://github.com/planetarium/libplanet/pull/3072
+[#3074]: https://github.com/planetarium/libplanet/pull/3074
 [#3077]: https://github.com/planetarium/libplanet/pull/3077
 
 

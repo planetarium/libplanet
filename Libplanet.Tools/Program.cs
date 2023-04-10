@@ -1,3 +1,8 @@
+using System.Security.Cryptography;
+using Libplanet.Crypto;
+using Libplanet.Crypto.Secp256k1;
+using CryptoConfig = Libplanet.Crypto.CryptoConfig;
+
 namespace Libplanet.Tools;
 
 using System;
@@ -24,8 +29,10 @@ public class Program
     // Workaround for linking with Libplanet.RocksDBStore.
     private static readonly Type _rocksdb = typeof(Libplanet.RocksDBStore.RocksDBStore);
 
-    public static Task Main(string[] args) =>
-        CoconaLiteApp.CreateHostBuilder()
+    public static Task Main(string[] args)
+    {
+        CryptoConfig.CryptoBackend = new Secp256k1CryptoBackend<SHA256>();
+        return CoconaLiteApp.CreateHostBuilder()
             .ConfigureServices(services =>
             {
                 services.AddJsonConfigurationService(FileConfigurationServiceRoot);
@@ -35,6 +42,7 @@ public class Program
                 options.TreatPublicMethodsAsCommands = false;
                 options.EnableShellCompletionSupport = true;
             });
+    }
 
     [PrimaryCommand]
     public Task Help() =>
