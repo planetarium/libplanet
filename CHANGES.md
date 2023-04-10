@@ -75,6 +75,8 @@ To be released.
     `ImportableKeyStore<KeyId, Web3Account>`.  [[#3061]]
  -  (Libplanet.Explorer) Added `Index` field to `IBlockChainContext` interface.
     [[#2613]]
+ -  Removed `BlockChain<T>.ProposeBlock(PrivateKey, DateTimeOffset, long, int,
+    int, IComparer<Transaction<T>>, BlockCommit)` method.  [[#3072]]
 
 ### Backward-incompatible network protocol changes
 
@@ -219,6 +221,7 @@ To be released.
 [#3061]: https://github.com/planetarium/libplanet/pull/3061
 [#3067]: https://github.com/planetarium/libplanet/pull/3067
 [#3069]: https://github.com/planetarium/libplanet/pull/3069
+[#3072]: https://github.com/planetarium/libplanet/pull/3072
 
 
 Version 0.53.4
