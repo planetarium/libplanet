@@ -136,6 +136,8 @@ methods.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a
 <li>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore</code> no more implements
 <code>ImportableKeyStore&lt;KeyId, RawPrivateKey&gt;</code>.  Instead, it now implements
 <code>ImportableKeyStore&lt;KeyId, Web3Account&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(Libplanet.Explorer) Added <code>Index</code> field to <code>IBlockChainContext</code> interface.
+[<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -168,6 +170,24 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>
 [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
 <li>(@planetarium/account-web3-secret-storage) Added <code>Web3KeyObject</code> interface.
 [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(Libplanet.Explorer) Added several interfaces and classes that pertain to
+blockchain indexing.  [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]
+<ul>
+<li>Added <code>IBlockChainIndex</code> interface.</li>
+<li>Added <code>IIndexingContext</code> interface.</li>
+<li>Added <code>BlockChainIndexBase</code> abstract class.</li>
+<li>Added <code>RocksDbBlockChainIndex</code> class.</li>
+<li>Added <code>RocksDbIndexingContext</code> class.</li>
+<li>Added <code>IndexingService</code> class.</li>
+<li>Added <code>IndexMismatchException</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Explorer.Cocona) New project was added to provide Cocona
+commands related to <em>Libplanet.Explorer</em> project.  [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]
+<ul>
+<li>Added <code>IndexCommand</code> Cocona command class.</li>
+</ul>
+</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -215,6 +235,21 @@ Instead, <code>PassphraseEntry.authenticate()</code> is called when operations t
 require unlocking <code>Web3Account</code> are called, such as <code>sign()</code> or
 <code>getPublicKey()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</p>
 </li>
+<li><p>(Libplanet.Explorer) Now, when an <code>IBlockChainIndex</code> instance is available
+in the optional <code>Index</code> property of the injected <code>IBlockChainContext</code>
+instance, GraphQL queries can benefit from the improved lookup performace
+of the index.  Applications willing to take advantage of the index should
+provide an instance of <code>IBlockChainIndex</code> to the <code>IBlockChainContext</code>
+implementation and add the <code>IndexingService</code> hosted service to sync the
+index in the background.  Note that the synchronization may take a long
+time if you have a lot of blocks (over 24 hours for ~5M blocks).  [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]</p>
+<ul>
+<li><code>BlockRef</code> property of <code>TransactionType</code> now uses <code>IBlockChainIndex</code>
+if available.</li>
+<li><code>transactionResult</code> query in <code>TransactionQuery</code> now uses
+<code>IBlockChainIndex</code> if available.</li>
+</ul>
+</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -232,6 +267,10 @@ as a peer dependency instead of a normal dependency.  [<a href="https://github.c
 instead of a normal dependency.  [<a href="https://github.com/planetarium/libplanet/pull/3069">#3069</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li>(Libplanet.Explorer.Executable) Project is now deprecated. It is currently
+nonfunctional.  [<a href="https://github.com/planetarium/libplanet/discussions/2243">#2243</a>, <a href="https://github.com/planetarium/libplanet/discussions/2588">#2588</a>]</li>
+</ul>
 <h2 id="version-0534">Version 0.53.4</h2>
 <p>Released on April 4, 2023.</p>
 <ul>
