@@ -26,9 +26,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             _blockChain = TestUtils.CreateDummyBlockChain(
                 new MemoryStoreFixture(TestUtils.Policy.BlockAction));
-            var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[1],
-                DateTimeOffset.UtcNow);
+            var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             _lastCommit = TestUtils.CreateBlockCommit(block);
             _messageLog = new MessageLog(2, TestUtils.ValidatorSet);
             _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
@@ -52,9 +50,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void CannotAddInvalidProposer()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0],
-                DateTimeOffset.UtcNow,
-                lastCommit: _lastCommit);
+                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
             var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
@@ -88,9 +84,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void CannotAddMultipleProposalsPerRound()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0],
-                DateTimeOffset.UtcNow,
-                lastCommit: _lastCommit);
+                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
             var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
@@ -153,9 +147,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void GetValidatorsCount()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0],
-                DateTimeOffset.UtcNow,
-                lastCommit: _lastCommit);
+                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
             var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
@@ -183,9 +175,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void GetBlockCommit()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0],
-                DateTimeOffset.UtcNow,
-                lastCommit: _lastCommit);
+                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
             var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,

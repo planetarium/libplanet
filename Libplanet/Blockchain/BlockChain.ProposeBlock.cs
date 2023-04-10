@@ -102,7 +102,6 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="proposer">
         /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
@@ -112,7 +111,6 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
         public Block<T> ProposeBlock(
             PrivateKey proposer,
-            DateTimeOffset? timestamp = null,
             IComparer<Transaction<T>> txPriority = null,
             BlockCommit lastCommit = null)
         {
@@ -143,7 +141,7 @@ namespace Libplanet.Blockchain
 
             var block = ProposeBlock(
                 proposer,
-                timestamp ?? DateTimeOffset.UtcNow,
+                DateTimeOffset.UtcNow,
                 transactionsToPropose,
                 lastCommit);
             _logger.Debug(
