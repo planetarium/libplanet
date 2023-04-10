@@ -155,18 +155,16 @@ namespace Libplanet.Blockchain
             BlockCommit lastCommit = null)
         {
             long index = Count;
-            long difficulty = 1L;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 
             int sessionId = new System.Random().Next();
             int processId = Process.GetCurrentProcess().Id;
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Starting to propose block #{Index} with " +
-                "difficulty {Difficulty} and previous hash {PreviousHash}...",
+                "previous hash {PreviousHash}...",
                 sessionId,
                 processId,
                 index,
-                difficulty,
                 prevHash);
 
             var transactionsToPropose = GatherTransactionsToPropose(
@@ -246,8 +244,7 @@ namespace Libplanet.Blockchain
             long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
-            IComparer<Transaction<T>> txPriority = null
-        )
+            IComparer<Transaction<T>> txPriority = null)
         {
             long index = Count;
             ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions(txPriority);
