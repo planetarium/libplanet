@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <RootNamespace>Libplanet.Explorer.Cocona.Tests</RootNamespace>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
+        <TargetFramework>$(TestsTargetFramework)</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+        <Link>Menees.Analyzers.Settings.xml</Link>
+      </AdditionalFiles>
+      <AdditionalFiles Include="..\stylecop.json" />
+    </ItemGroup>
+
+    <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
+      <TargetFramework>$(TestsTargetFramework)</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JunitXml.TestLogger" Version="3.0.98" />
+      <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>
+          runtime; build; native; contentfiles; analyzers
+        </IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="xunit" Version="2.4.1" />
+      <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+      <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+      <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Libplanet.Explorer.Cocona\Libplanet.Explorer.Cocona.csproj" />
+        <ProjectReference Include="..\Libplanet.Explorer.Tests\Libplanet.Explorer.Tests.csproj" />
+    </ItemGroup>
+
+</Project>
+

@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Store;
 using Libplanet.Explorer.GraphTypes;
-using Libplanet.Action;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Libplanet.Action;
+using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Tests.Queries;
 
 namespace Libplanet.Explorer.Tests
 {
@@ -38,8 +39,21 @@ namespace Libplanet.Explorer.Tests
             // FIXME these codes are temporarly fix and should be replaced with unified provider.
             // see also: https://github.com/planetarium/libplanet/discussions/2230
             var services = new ServiceCollection();
+            System.Action addContext = source switch
+            {
+                IBlockChainContext<NullAction> context => () => { services.AddSingleton(context); },
+                IBlockChainContext<PolymorphicAction<SimpleAction>> context => () => { services.AddSingleton(context); },
+                _ => () =>
+                {
+                    services.AddSingleton<IBlockChainContext<NullAction>>(
+                        new MockBlockChainContext<NullAction>());
+                }
+            };
+            addContext();
             services.AddSingleton<BlockType<NullAction>>();
-            services.AddSingleton<IStore>(_ => new MemoryStore());
+            services.AddSingleton<BlockType<PolymorphicAction<SimpleAction>>>();
+            services.AddSingleton<TransactionType<NullAction>>();
+            services.AddSingleton<TransactionType<PolymorphicAction<SimpleAction>>>();
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             var failSafeServiceProvider = new FuncServiceProvider(type =>
                 {

@@ -131,32 +131,38 @@ on GitHub consists of several projects.  There are two types of projects:
     an executable is done by a below project named
     *Libplanet.Explorer.Executable*.
 
- -  *Libplanet.Explorer.Executable*: Turns Libplanet Explorer into a single
-    executable binary so that it is easy to distribute.
+ -  *Libplanet.Explorer.Cocona*: Provides [Cocona] commands related to
+    *Libplanet.Explorer*.
+
+ -  *Libplanet.Explorer.Executable*: (**DEPRECATED**) Turns Libplanet Explorer
+    into a single executable binary so that it is easy to distribute.
 
  -  *Libplanet.Benchmarks*: Performance benchmarks.
     See the [*Benchmarks*](#benchmarks) section below.
 
- -  *Libplanet.Tests*: Unit tests of the *Libplanet* project.  See the *Tests*
+ -  *Libplanet.Tests*: Unit tests for the *Libplanet* project.  See the *Tests*
     section below.
 
- -  *Libplanet.Net.Tests*: Unit tests of the *Libplanet.Net* project.
+ -  *Libplanet.Net.Tests*: Unit tests for the *Libplanet.Net* project.
 
  -  *Libplanet.Stun.Tests*: Unit tests of the *Libplanet.Stun* project.
 
- -  *Libplanet.Crypto.Secp256k1.Tests*: Unit tests of
+ -  *Libplanet.Crypto.Secp256k1.Tests*: Unit tests for
     the *Libplanet.Crypto.Secp256k1* project.
 
- -  *Libplanet.RocksDBStore.Tests*: Unit tests of the *Libplanet.RocksDBStore*
+ -  *Libplanet.RocksDBStore.Tests*: Unit tests for the *Libplanet.RocksDBStore*
     project.
 
- -  *Libplanet.Analyzers.Tests*: Unit tests of the *Libplanet.Analyzers*
+ -  *Libplanet.Analyzers.Tests*: Unit tests for the *Libplanet.Analyzers*
     project.
 
- -  *Libplanet.Explorer.Tests*: Unit tests of the *Libplanet.Explorer*
+ -  *Libplanet.Explorer.Tests*: Unit tests for the *Libplanet.Explorer*
     project.
 
- -  *Libplanet.Extensions.Cocona.Tests*: Unit tests of the
+ -  *Libplanet.Explorer.Cocona.Tests*: Unit tests for the
+    *Libplanet.Explorer.Cocona* project.
+
+ -  *Libplanet.Extensions.Cocona.Tests*: Unit tests for the
     *Libplanet.Extensions.Cocona* project.
 
 

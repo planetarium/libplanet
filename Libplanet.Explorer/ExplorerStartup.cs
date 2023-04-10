@@ -1,10 +1,7 @@
-#nullable disable
-using GraphQL;
 using GraphQL.Server;
-using GraphQL.SystemTextJson;
-using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Queries;
 using Libplanet.Explorer.Schemas;
@@ -44,7 +41,9 @@ namespace Libplanet.Explorer
 
             services.AddSingleton<IBlockChainContext<T>, TU>();
             services.AddSingleton<IStore>(
-                services => services.GetService<IBlockChainContext<T>>().Store);
+                provider => provider.GetRequiredService<IBlockChainContext<T>>().Store);
+            services.AddSingleton<IBlockChainIndex>(
+                provider => provider.GetRequiredService<IBlockChainContext<T>>().Index);
 
             services.TryAddSingleton<ActionType<T>>();
             services.TryAddSingleton<BlockType<T>>();
