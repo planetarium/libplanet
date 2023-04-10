@@ -369,13 +369,13 @@ namespace Libplanet.Tests.Tx
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
                 "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
                 "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
-            var tx = new Transaction<DumbAction>(unsignedTx, signature);
+            var tx = new Transaction<DumbAction>(unsignedTx, signature: signature);
 
             Assert.Equal<ITxInvoice>(invoice, tx);
             Assert.Equal<ITxSigningMetadata>(signingMetadata, tx);
             Assert.Equal<IUnsignedTx>(unsignedTx, tx);
 
-            var copy = new Transaction<DumbAction>(unsignedTx, signature);
+            var copy = new Transaction<DumbAction>(unsignedTx, signature: signature);
             Assert.Equal<IUnsignedTx>(tx, copy);
             Assert.Equal<ITransaction>(tx, copy);
             Assert.Equal<Transaction<DumbAction>>(tx, copy);
@@ -447,7 +447,7 @@ namespace Libplanet.Tests.Tx
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
                 "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
                 "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
-            var tx = new Transaction<DumbAction>(unsignedTx, signature);
+            var tx = new Transaction<DumbAction>(unsignedTx, signature: signature);
 
 #pragma warning disable MEN002  // Long lines are OK for test JSON data.
             AssertJsonSerializable(

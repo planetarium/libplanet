@@ -85,7 +85,7 @@ namespace Libplanet.Tx
         /// <paramref name="alreadyVerifiedSignature"/>.</param>
         /// <param name="alreadyVerifiedSignature">The signature to combine with
         /// <paramref name="unsignedTx"/>.</param>
-        internal Transaction(UnsignedTx unsignedTx, ImmutableArray<byte> alreadyVerifiedSignature)
+        private Transaction(UnsignedTx unsignedTx, ImmutableArray<byte> alreadyVerifiedSignature)
         {
             _unsignedTx = unsignedTx;
             _signature = alreadyVerifiedSignature.IsDefaultOrEmpty
@@ -389,6 +389,14 @@ namespace Libplanet.Tx
 
         /// <inheritdoc />
         public override int GetHashCode() => Id.GetHashCode();
+
+        /// <inheritdoc cref="Transaction{T}(UnsignedTx, ImmutableArray{byte})"/>
+        /// <returns>A <see cref="Transaction{T}"/> instance.</returns>
+        internal static Transaction<T> CombineWithoutVerification(
+            UnsignedTx unsignedTx,
+            ImmutableArray<byte> alreadyVerifiedSignature
+        ) =>
+            new Transaction<T>(unsignedTx, alreadyVerifiedSignature: alreadyVerifiedSignature);
 
         private static T ToAction(IValue value)
         {

@@ -129,7 +129,7 @@ public class TxCommand
 
             try
             {
-                tx = new Transaction<NullAction>(unsignedTx, sig);
+                tx = unsignedTx.Verify<NullAction>(sig);
             }
             catch (Exception e)
             {
