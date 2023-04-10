@@ -167,20 +167,21 @@ namespace Libplanet.Blockchain
                 index,
                 prevHash);
 
-            var transactionsToPropose = GatherTransactionsToPropose(
-                maxTransactionsBytes: maxTransactionsBytes,
-                maxTransactions: maxTransactions,
-                maxTransactionsPerSigner: maxTransactionsPerSigner,
-                txPriority: txPriority
-            );
-
-            if (transactionsToPropose.Count < Policy.GetMinTransactionsPerBlock(index))
+            ImmutableList<Transaction<T>> transactionsToPropose;
+            try
+            {
+                transactionsToPropose = GatherTransactionsToPropose(
+                    maxTransactionsBytes: maxTransactionsBytes,
+                    maxTransactions: maxTransactions,
+                    maxTransactionsPerSigner: maxTransactionsPerSigner,
+                    minTransactions: Policy.GetMinTransactionsPerBlock(index),
+                    txPriority: txPriority);
+            }
+            catch (InvalidOperationException ioe)
             {
                 throw new OperationCanceledException(
-                    $"Proposal operation canceled due to insufficient number of " +
-                    $"gathered transactions to mine for the requirement of " +
-                    $"{Policy.GetMinTransactionsPerBlock(index)} " +
-                    $"given by the policy: {transactionsToPropose.Count}");
+                    "Failed to gather transactions to propose.",
+                    ioe);
             }
 
             _logger.Verbose(
@@ -226,6 +227,43 @@ namespace Libplanet.Blockchain
                 DetermineBlockStateRootHash(preEvaluationBlock, out _));
 
         /// <summary>
+        /// Gathers <see cref="Transaction{T}"/>s for proposing a <see cref="Block{T}"/> for
+        /// index <pararef name="index"/>.  Gathered <see cref="Transaction{T}"/>s are
+        /// guaranteed to satisified the following <see cref="Transaction{T}"/> related
+        /// policies:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         <see cref="BlockPolicy{T}.GetMaxTransactionsBytes"/>
+        ///     </description></item>
+        ///     <item><description>
+        ///         <see cref="BlockPolicy{T}.GetMaxTransactionsPerBlock"/>
+        ///     </description></item>
+        ///     <item><description>
+        ///         <see cref="BlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock"/>
+        ///     </description></item>
+        ///     <item><description>
+        ///         <see cref="BlockPolicy{T}.GetMinTransactionsPerBlock"/>
+        ///     </description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="index">The index of the <see cref="Block{T}"/> to propose.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
+        /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s
+        /// to propose.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when not all policies
+        /// can be satisfied.</exception>
+        internal ImmutableList<Transaction<T>> GatherTransactionsToPropose(
+            long index,
+            IComparer<Transaction<T>> txPriority = null) =>
+            GatherTransactionsToPropose(
+                Policy.GetMaxTransactionsBytes(index),
+                Policy.GetMaxTransactionsPerBlock(index),
+                Policy.GetMaxTransactionsPerSignerPerBlock(index),
+                Policy.GetMinTransactionsPerBlock(index),
+                txPriority);
+
+        /// <summary>
         /// Gathers <see cref="Transaction{T}"/>s for proposing a next block
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
@@ -234,16 +272,21 @@ namespace Libplanet.Blockchain
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
         /// <see cref="Transaction{T}"/>s with the same signer allowed.</param>
+        /// <param name="minTransactions">The minimum number of <see cref="Transaction{T}"/>s
+        /// allowed.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s with its
         /// count not exceeding <paramref name="maxTransactions"/> and the number of
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when not all policies
+        /// can be satisfied.</exception>
         internal ImmutableList<Transaction<T>> GatherTransactionsToPropose(
             long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
+            int minTransactions,
             IComparer<Transaction<T>> txPriority = null)
         {
             long index = Count;
@@ -254,7 +297,7 @@ namespace Libplanet.Blockchain
                 index,
                 stagedTransactions.Count);
 
-            var transactionsToMine = new List<Transaction<T>>();
+            var transactions = new List<Transaction<T>>();
 
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
@@ -284,7 +327,7 @@ namespace Libplanet.Blockchain
                     toMineCounts[tx.Signer] = 0;
                 }
 
-                if (transactionsToMine.Count >= maxTransactions)
+                if (transactions.Count >= maxTransactions)
                 {
                     _logger.Information(
                         "Ignoring tx {Iter}/{Total} {TxId} and the rest of the " +
@@ -343,7 +386,7 @@ namespace Libplanet.Blockchain
                         i,
                         stagedTransactions.Count,
                         tx.Id);
-                    transactionsToMine.Add(tx);
+                    transactions.Add(tx);
                     nextNonces[tx.Signer] += 1;
                     toMineCounts[tx.Signer] += 1;
                     estimatedEncoding = txAddedEncoding;
@@ -382,13 +425,20 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            if (transactions.Count < minTransactions)
+            {
+                throw new InvalidOperationException(
+                    $"Only gathered {transactions.Count} transactions where " +
+                    $"the minimal number of transactions to propose is {minTransactions}.");
+            }
+
             _logger.Information(
                 "Gathered total of {TransactionsToMineCount} transactions to mine for " +
                 "block #{Index} from {StagedTransactionsCount} staged transactions",
-                transactionsToMine.Count,
+                transactions.Count,
                 index,
                 stagedTransactions.Count);
-            return transactionsToMine.ToImmutableList();
+            return transactions.ToImmutableList();
         }
     }
 }
