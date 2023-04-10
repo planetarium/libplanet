@@ -28,10 +28,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 new MemoryStoreFixture(TestUtils.Policy.BlockAction));
             var block = _blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[1],
-                DateTimeOffset.UtcNow,
-                int.MaxValue,
-                0,
-                0);
+                DateTimeOffset.UtcNow);
             _lastCommit = TestUtils.CreateBlockCommit(block);
             _messageLog = new MessageLog(2, TestUtils.ValidatorSet);
             _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
@@ -57,9 +54,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = _blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
-                int.MaxValue,
-                0,
-                0,
                 lastCommit: _lastCommit);
             var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
@@ -96,9 +90,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = _blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
-                int.MaxValue,
-                0,
-                0,
                 lastCommit: _lastCommit);
             var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
@@ -164,9 +155,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = _blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
-                int.MaxValue,
-                0,
-                0,
                 lastCommit: _lastCommit);
             var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
@@ -197,9 +185,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = _blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
-                int.MaxValue,
-                0,
-                0,
                 lastCommit: _lastCommit);
             var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
