@@ -17,7 +17,7 @@ namespace Libplanet.Blockchain
     public partial class BlockChain<T>
     {
         /// <summary>
-        /// Mine the genesis block of the blockchain.
+        /// Propose the genesis block of the blockchain.
         /// </summary>
         /// <param name="customActions">List of custom actions
         /// will be included in the genesis block.
@@ -37,7 +37,7 @@ namespace Libplanet.Blockchain
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
-        /// <returns>The genesis block mined with parameters.</returns>
+        /// <returns>The genesis block proposed with given parameters.</returns>
         // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction and
         // nativeTokenPredicate.  (Or at least there should be such an overload.)
         public static Block<T> ProposeGenesisBlock(
@@ -171,7 +171,7 @@ namespace Libplanet.Blockchain
             PreEvaluationBlock<T> preEval = blockContent.Propose();
             Block<T> block = ProposeBlock(proposer, preEval);
             _logger.Debug(
-                "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
+                "{SessionId}/{ProcessId}: Proposed block #{Index} {Hash} " +
                 "with previous hash {PreviousHash}",
                 sessionId,
                 processId,
@@ -254,7 +254,7 @@ namespace Libplanet.Blockchain
             long index = Count;
             ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions(txPriority);
             _logger.Information(
-                "Gathering transactions to mine for block #{Index} from {TxCount} " +
+                "Gathering transactions to propose for block #{Index} from {TxCount} " +
                 "staged transactions...",
                 index,
                 stagedTransactions.Count);
@@ -268,7 +268,7 @@ namespace Libplanet.Blockchain
                 new List<Transaction<T>>());
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
-            var toMineCounts = new Dictionary<Address, int>();
+            var toProposeCounts = new Dictionary<Address, int>();
 
             foreach (
                 (Transaction<T> tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
@@ -286,7 +286,7 @@ namespace Libplanet.Blockchain
                 {
                     storedNonces[tx.Signer] = Store.GetTxNonce(Id, tx.Signer);
                     nextNonces[tx.Signer] = storedNonces[tx.Signer];
-                    toMineCounts[tx.Signer] = 0;
+                    toProposeCounts[tx.Signer] = 0;
                 }
 
                 if (transactions.Count >= maxTransactions)
@@ -329,7 +329,7 @@ namespace Libplanet.Blockchain
                             maxTransactionsBytes);
                         continue;
                     }
-                    else if (toMineCounts[tx.Signer] >= maxTransactionsPerSigner)
+                    else if (toProposeCounts[tx.Signer] >= maxTransactionsPerSigner)
                     {
                         _logger.Debug(
                             "Ignoring tx {Iter}/{Total} {TxId} due to the maximum number " +
@@ -344,13 +344,13 @@ namespace Libplanet.Blockchain
 
                     _logger.Verbose(
                         "Adding tx {Iter}/{Total} {TxId} to the list of transactions " +
-                        "to be mined",
+                        "to be proposed",
                         i,
                         stagedTransactions.Count,
                         tx.Id);
                     transactions.Add(tx);
                     nextNonces[tx.Signer] += 1;
-                    toMineCounts[tx.Signer] += 1;
+                    toProposeCounts[tx.Signer] += 1;
                     estimatedEncoding = txAddedEncoding;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])
@@ -382,7 +382,7 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug(
                         "Reached the time limit to collect staged transactions; other staged " +
-                        "transactions will be mined later");
+                        "transactions will be proposed later");
                     break;
                 }
             }
@@ -395,7 +395,7 @@ namespace Libplanet.Blockchain
             }
 
             _logger.Information(
-                "Gathered total of {TransactionsToMineCount} transactions to mine for " +
+                "Gathered total of {TransactionsCount} transactions to propose for " +
                 "block #{Index} from {StagedTransactionsCount} staged transactions",
                 transactions.Count,
                 index,
