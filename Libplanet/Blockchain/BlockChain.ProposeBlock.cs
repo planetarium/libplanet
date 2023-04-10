@@ -132,12 +132,7 @@ namespace Libplanet.Blockchain
             ImmutableList<Transaction<T>> transactionsToPropose;
             try
             {
-                transactionsToPropose = GatherTransactionsToPropose(
-                    maxTransactionsBytes: Policy.GetMaxTransactionsBytes(index),
-                    maxTransactions: Policy.GetMaxTransactionsPerBlock(index),
-                    maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(index),
-                    minTransactions: Policy.GetMinTransactionsPerBlock(index),
-                    txPriority: txPriority);
+                transactionsToPropose = GatherTransactionsToPropose(index, txPriority);
             }
             catch (InvalidOperationException ioe)
             {
@@ -146,30 +141,11 @@ namespace Libplanet.Blockchain
                     ioe);
             }
 
-            _logger.Verbose(
-                "{SessionId}/{ProcessId}: Propose block #{Index} will include " +
-                "{TxCount} transactions",
-                sessionId,
-                processId,
-                index,
-                transactionsToPropose.Count);
-
-            // FIXME: Should use automated public constructor.
-            // Manual internal constructor is used purely for testing custom timestamps.
-            var transactions = transactionsToPropose.OrderBy(tx => tx.Id).ToList();
-            var blockContent = new BlockContent<T>(
-                new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                    index: index,
-                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                    miner: proposer.ToAddress(),
-                    publicKey: proposer.PublicKey,
-                    previousHash: prevHash,
-                    txHash: BlockContent<T>.DeriveTxHash(transactions),
-                    lastCommit: lastCommit),
-                transactions: transactions);
-            PreEvaluationBlock<T> preEval = blockContent.Propose();
-            Block<T> block = ProposeBlock(proposer, preEval);
+            var block = ProposeBlock(
+                proposer,
+                timestamp ?? DateTimeOffset.UtcNow,
+                transactionsToPropose,
+                lastCommit);
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Proposed block #{Index} {Hash} " +
                 "with previous hash {PreviousHash}",
@@ -180,6 +156,33 @@ namespace Libplanet.Blockchain
                 block.PreviousHash);
 
             return block;
+        }
+
+        public Block<T> ProposeBlock(
+            PrivateKey proposer,
+            DateTimeOffset timestamp,
+            ImmutableList<Transaction<T>> transactions,
+            BlockCommit lastCommit)
+        {
+            long index = Count;
+            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
+
+            // FIXME: Should use automated public constructor.
+            // Manual internal constructor is used purely for testing custom timestamps.
+            var orderedTransactions = transactions.OrderBy(tx => tx.Id).ToList();
+            var blockContent = new BlockContent<T>(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: index,
+                    timestamp: timestamp,
+                    miner: proposer.ToAddress(),
+                    publicKey: proposer.PublicKey,
+                    previousHash: prevHash,
+                    txHash: BlockContent<T>.DeriveTxHash(orderedTransactions),
+                    lastCommit: lastCommit),
+                transactions: orderedTransactions);
+            var preEval = blockContent.Propose();
+            return ProposeBlock(proposer, preEval);
         }
 
         internal Block<T> ProposeBlock(
