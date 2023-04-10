@@ -110,6 +110,15 @@ namespace Libplanet.Tx
         )
             where T : IAction, new()
         =>
-            new Transaction<T>(unsignedTx, signature);
+            new Transaction<T>(unsignedTx, signature: signature);
+
+        /// <inheritdoc cref="Transaction{T}.CombineWithoutVerification"/>
+        internal static Transaction<T> CombineWithoutVerification<T>(
+            this UnsignedTx unsignedTx,
+            ImmutableArray<byte> alreadyVerifiedSignature
+        )
+            where T : IAction, new()
+        =>
+            Transaction<T>.CombineWithoutVerification(unsignedTx, alreadyVerifiedSignature);
     }
 }

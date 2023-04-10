@@ -131,7 +131,7 @@ namespace Libplanet.Tx
                 throw new DecodingException("Transaction signature is missing.");
             }
 
-            return new Transaction<T>(UnmarshalUnsignedTx<T>(dictionary), signature);
+            return UnmarshalUnsignedTx<T>(dictionary).Verify<T>(signature);
         }
 
         [Pure]
@@ -168,9 +168,7 @@ namespace Libplanet.Tx
                 = dictionary.TryGetValue(SignatureKey, out IValue s) && s is Binary bin
                 ? bin
                 : new Binary(new byte[0]);
-            return new Transaction<T>(
-                UnmarshalUnsignedTx<T>(dictionary),
-                alreadyVerifiedSignature: sig);
+            return UnmarshalUnsignedTx<T>(dictionary).CombineWithoutVerification<T>(sig);
         }
 
         [Pure]

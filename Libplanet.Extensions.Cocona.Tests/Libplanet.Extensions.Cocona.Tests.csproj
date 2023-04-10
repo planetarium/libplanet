@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -64,5 +63,11 @@
         <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="Fixtures\**"
+        CopyToOutputDirectory="PreserveNewest"
+        CopyToPublishDirectory="PreserveNewest"
+        LinkBase="Fixtures" />
+    </ItemGroup>
 </Project>
 

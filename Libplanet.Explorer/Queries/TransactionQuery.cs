@@ -204,7 +204,7 @@ namespace Libplanet.Explorer.Queries
                     IUnsignedTx unsignedTx = TxMarshaler.DeserializeUnsignedTx<T>(
                         ByteUtil.ParseHex(context.GetArgument<string>("unsignedTransaction"))
                     );
-                    var signedTransaction = new Transaction<T>(unsignedTx, signature);
+                    var signedTransaction = unsignedTx.Verify<T>(signature);
                     return ByteUtil.Hex(signedTransaction.Serialize());
                 }
             );
