@@ -29,21 +29,21 @@ namespace Libplanet.Tests.Blockchain
                 (Text)$"{GenesisProposer.ToAddress()}",
                 _blockChain.GetState(default));
 
-            var minerA = new PrivateKey();
-            Block<DumbAction> block = _blockChain.ProposeBlock(minerA);
+            var proposerA = new PrivateKey();
+            Block<DumbAction> block = _blockChain.ProposeBlock(proposerA);
             _blockChain.Append(block, CreateBlockCommit(block));
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
             Assert.True(
                 block.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block.Index));
             AssertBencodexEqual(
-                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()}",
+                (Text)$"{GenesisProposer.ToAddress()},{proposerA.ToAddress()}",
                 _blockChain.GetState(default)
             );
 
-            var minerB = new PrivateKey();
+            var proposerB = new PrivateKey();
             Block<DumbAction> anotherBlock = _blockChain.ProposeBlock(
-                minerB,
+                proposerB,
                 lastCommit: CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
             _blockChain.Append(anotherBlock, CreateBlockCommit(anotherBlock));
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
@@ -51,8 +51,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(
                 anotherBlock.MarshalBlock().EncodingLength <=
                     getMaxTransactionsBytes(anotherBlock.Index));
+            Text expected = new Text(
+                $"{GenesisProposer.ToAddress()},{proposerA.ToAddress()},{proposerB.ToAddress()}");
             AssertBencodexEqual(
-                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
+                expected,
                 _blockChain.GetState(default)
             );
 
@@ -63,8 +65,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(3, _blockChain.Count);
             Assert.True(
                 block3.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block3.Index));
+            expected = new Text(
+                $"{GenesisProposer.ToAddress()},{proposerA.ToAddress()},{proposerB.ToAddress()}");
             AssertBencodexEqual(
-                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
+                expected,
                 _blockChain.GetState(default)
             );
 
@@ -104,8 +108,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(
                 block4.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block4.Index));
             Assert.Equal(3, block4.Transactions.Count());
+            expected = new Text(
+                $"{GenesisProposer.ToAddress()},{proposerA.ToAddress()},{proposerB.ToAddress()}");
             AssertBencodexEqual(
-                (Text)$"{GenesisProposer.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
+                expected,
                 _blockChain.GetState(default)
             );
         }
@@ -250,8 +256,8 @@ namespace Libplanet.Tests.Blockchain
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
-                var miner = new PrivateKey();
-                var block = blockChain.ProposeBlock(miner);
+                var proposer = new PrivateKey();
+                var block = blockChain.ProposeBlock(proposer);
                 blockChain.Append(block, CreateBlockCommit(block));
 
                 var txs = block.Transactions.ToHashSet();
