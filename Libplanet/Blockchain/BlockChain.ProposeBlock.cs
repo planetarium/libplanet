@@ -208,12 +208,7 @@ namespace Libplanet.Blockchain
                     lastCommit: lastCommit),
                 transactions: transactions);
             PreEvaluationBlock<T> preEval = blockContent.Propose();
-            Block<T> block = preEval.Sign(
-                proposer,
-                DetermineBlockStateRootHash(
-                    preEval,
-                    out IReadOnlyList<ActionEvaluation> evaluations));
-
+            Block<T> block = ProposeBlock(proposer, preEval);
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
                 "with previous hash {PreviousHash}",
@@ -225,6 +220,12 @@ namespace Libplanet.Blockchain
 
             return block;
         }
+
+        internal Block<T> ProposeBlock(
+            PrivateKey proposer,
+            PreEvaluationBlock<T> preEvaluationBlock) => preEvaluationBlock.Sign(
+                proposer,
+                DetermineBlockStateRootHash(preEvaluationBlock, out _));
 
         /// <summary>
         /// Gathers <see cref="Transaction{T}"/>s for proposing a next block
