@@ -117,6 +117,32 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
+        public void CanProposeInvalidBlock()
+        {
+            using (var fx = new MemoryStoreFixture())
+            {
+                var blockChain = BlockChain<DumbAction>.Create(
+                    new BlockPolicy<DumbAction>(),
+                    new VolatileStagePolicy<DumbAction>(),
+                    fx.Store,
+                    fx.StateStore,
+                    fx.GenesisBlock);
+                var txs = new[]
+                {
+                    Transaction<DumbAction>.Create(
+                        5,  // Invalid nonce
+                        new PrivateKey(),
+                        _blockChain.Genesis.Hash,
+                        new[] { new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo") }),
+                }.ToImmutableList();
+
+                var block = blockChain.ProposeBlock(new PrivateKey(), txs, null);
+                Assert.Throws<InvalidTxNonceException>(
+                    () => blockChain.Append(block, CreateBlockCommit(block)));
+            }
+        }
+
+        [SkippableFact]
         public void ProposeBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
