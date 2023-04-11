@@ -75,6 +75,7 @@ public class GeneratedBlockChainFixture
                     pk.ToAddress(),
                     ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>.Empty));
 
+        var privateKey = new PrivateKey();
         Chain = BlockChain<PolymorphicAction<SimpleAction>>.Create(
             new BlockPolicy<PolymorphicAction<SimpleAction>>(
                 blockInterval: TimeSpan.FromMilliseconds(1),
@@ -86,14 +87,19 @@ public class GeneratedBlockChainFixture
             new MemoryStore(),
             stateStore,
             BlockChain<PolymorphicAction<SimpleAction>>.ProposeGenesisBlock(
-                systemActions: PrivateKeys
+                transactions: PrivateKeys
                     .OrderBy(pk => pk.ToAddress().ToHex())
                     .Select(
-                    pk => new Initialize(
-                        new ValidatorSet(
-                            ImmutableList<Validator>.Empty.Add(
-                                new Validator(pk.PublicKey, 1)).ToList()),
-                        ImmutableDictionary<Address, IValue>.Empty))));
+                        (pk, i) => Transaction<PolymorphicAction<SimpleAction>>.Create(
+                            nonce: i,
+                            privateKey: privateKey,
+                            genesisHash: null,
+                            systemAction: new Initialize(
+                                new ValidatorSet(
+                                    ImmutableList<Validator>.Empty.Add(
+                                        new Validator(pk.PublicKey, 1)).ToList()),
+                                ImmutableDictionary<Address, IValue>.Empty)))
+                    .ToImmutableList()));
 
         MinedBlocks = MinedBlocks.SetItem(
             Chain.Genesis.Miner,
