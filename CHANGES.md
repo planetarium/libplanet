@@ -77,6 +77,10 @@ To be released.
     [[#2613]]
  -  Removed `BlockChain<T>.ProposeBlock(PrivateKey, DateTimeOffset, long, int,
     int, IComparer<Transaction<T>>, BlockCommit)` method.  [[#3072]]
+ -  Changed `BlockChain<T>.ProposeBlock(PrivateKey, DateTimeOffset,
+    BlockCommit, IComparer<Transaction<T>>)` method to
+    `BlockChain<T>.ProposeBlock(PrivateKey, BlockCommit,
+    IComparer<Transaction<T>>)`.  [[#3077]]
 
 ### Backward-incompatible network protocol changes
 
@@ -220,6 +224,7 @@ To be released.
 [#3067]: https://github.com/planetarium/libplanet/pull/3067
 [#3069]: https://github.com/planetarium/libplanet/pull/3069
 [#3072]: https://github.com/planetarium/libplanet/pull/3072
+[#3077]: https://github.com/planetarium/libplanet/pull/3077
 
 
 Version 0.53.4

@@ -586,7 +586,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
             Block<DumbAction> block1 = chain.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(chain.Tip));
+                key, TestUtils.CreateBlockCommit(chain.Tip));
             chain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
@@ -597,7 +597,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var forked = chain.Fork(chain[0].Hash);
             chain.StagePolicy.Stage(chain, tx1);
             Block<DumbAction> block2 = forked.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(forked.Tip));
+                key, TestUtils.CreateBlockCommit(forked.Tip));
             forked.Append(
                     block2,
                     TestUtils.CreateBlockCommit(block2),
@@ -607,7 +607,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 );
             chain.StagePolicy.Stage(chain, tx2);
             block2 = forked.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(forked.Tip));
+                key, TestUtils.CreateBlockCommit(forked.Tip));
             forked.Append(
                     block2,
                     TestUtils.CreateBlockCommit(block2),
@@ -617,7 +617,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             forked.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#3") });
             block2 = forked.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(forked.Tip));
+                key, TestUtils.CreateBlockCommit(forked.Tip));
             forked.Append(
                     block2,
                     TestUtils.CreateBlockCommit(block2),
@@ -627,7 +627,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 );
             forked.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#4") });
             block2 = forked.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(forked.Tip));
+                key, TestUtils.CreateBlockCommit(forked.Tip));
             forked.Append(
                     block2,
                     TestUtils.CreateBlockCommit(block2),
@@ -714,7 +714,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
             Block<DumbAction> block2 = chain.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(chain.Tip));
+                key, TestUtils.CreateBlockCommit(chain.Tip));
             chain.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
@@ -724,8 +724,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var forked = chain.Fork(chain[1].Hash);
             chain.StagePolicy.Stage(chain, tx2);
-            var block = forked.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(forked.Tip));
+            var block = forked.ProposeBlock(key, TestUtils.CreateBlockCommit(forked.Tip));
             forked.Append(
                     block,
                     TestUtils.CreateBlockCommit(block),
@@ -733,8 +732,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderBlocks: false,
                     renderActions: false
                 );
-            block = forked.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(forked.Tip));
+            block = forked.ProposeBlock(key, TestUtils.CreateBlockCommit(forked.Tip));
             forked.Append(
                     block,
                     TestUtils.CreateBlockCommit(block),
@@ -751,7 +749,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(2, renderLogs.Count);
 
             Block<DumbAction> block3 = chain.ProposeBlock(
-                key, lastCommit: TestUtils.CreateBlockCommit(chain.Tip));
+                key, TestUtils.CreateBlockCommit(chain.Tip));
             chain.Append(block3, TestUtils.CreateBlockCommit(block3));
             Assert.Equal(chain[2], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);

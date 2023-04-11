@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -94,92 +93,98 @@ namespace Libplanet.Blockchain
         /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </para>
         /// <para>
-        /// All unprovided and/or <see langword="null"/> arguments are reassigned accordingly
-        /// and redirected to a overloaded method with non-nullable parameters.  By default,
-        /// a policy adhering block is produced with current timestamp and appended immediately
-        /// to the chain.
+        /// By default, if successful, a policy adhering <see cref="Block{T}"/> is produced with
+        /// current timestamp that can be appeneded to the current chain.
         /// </para>
         /// </summary>
-        /// <param name="proposer">
-        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
+        /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
+        /// </param>
+        /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
+        /// <see cref="Block{T}"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
-        /// </param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
+        /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
         public Block<T> ProposeBlock(
             PrivateKey proposer,
-            DateTimeOffset? timestamp = null,
-            IComparer<Transaction<T>> txPriority = null,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            IComparer<Transaction<T>> txPriority = null)
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
 
-            int sessionId = new System.Random().Next();
-            int processId = Process.GetCurrentProcess().Id;
             _logger.Debug(
-                "{SessionId}/{ProcessId}: Starting to propose block #{Index} with " +
-                "previous hash {PreviousHash}...",
-                sessionId,
-                processId,
+                "Starting to propose block #{Index} with previous hash {PreviousHash}...",
                 index,
                 prevHash);
 
-            ImmutableList<Transaction<T>> transactionsToPropose;
+            ImmutableList<Transaction<T>> transactions;
             try
             {
-                transactionsToPropose = GatherTransactionsToPropose(
-                    maxTransactionsBytes: Policy.GetMaxTransactionsBytes(index),
-                    maxTransactions: Policy.GetMaxTransactionsPerBlock(index),
-                    maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(index),
-                    minTransactions: Policy.GetMinTransactionsPerBlock(index),
-                    txPriority: txPriority);
+                transactions = GatherTransactionsToPropose(index, txPriority);
             }
             catch (InvalidOperationException ioe)
             {
                 throw new OperationCanceledException(
-                    "Failed to gather transactions to propose.",
+                    $"Failed to gather transactions to propose for block #{index}.",
                     ioe);
             }
 
-            _logger.Verbose(
-                "{SessionId}/{ProcessId}: Propose block #{Index} will include " +
-                "{TxCount} transactions",
-                sessionId,
-                processId,
-                index,
-                transactionsToPropose.Count);
-
-            // FIXME: Should use automated public constructor.
-            // Manual internal constructor is used purely for testing custom timestamps.
-            var transactions = transactionsToPropose.OrderBy(tx => tx.Id).ToList();
-            var blockContent = new BlockContent<T>(
-                new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                    index: index,
-                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                    miner: proposer.ToAddress(),
-                    publicKey: proposer.PublicKey,
-                    previousHash: prevHash,
-                    txHash: BlockContent<T>.DeriveTxHash(transactions),
-                    lastCommit: lastCommit),
-                transactions: transactions);
-            PreEvaluationBlock<T> preEval = blockContent.Propose();
-            Block<T> block = ProposeBlock(proposer, preEval);
+            var block = ProposeBlock(
+                proposer,
+                transactions,
+                lastCommit);
             _logger.Debug(
-                "{SessionId}/{ProcessId}: Proposed block #{Index} {Hash} " +
-                "with previous hash {PreviousHash}",
-                sessionId,
-                processId,
+                "Proposed block #{Index} {Hash} with previous hash {PreviousHash}",
                 block.Index,
                 block.Hash,
                 block.PreviousHash);
 
             return block;
+        }
+
+        /// <summary>
+        /// <para>
+        /// Proposes a next <see cref="Block{T}"/> using a specified
+        /// list of <see cref="Transaction{T}"/>s.
+        /// </para>
+        /// <para>
+        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction{T}})"/>,
+        /// this may result in a <see cref="Block{T}"/> that does not conform to the
+        /// <see cref="Policy"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
+        /// </param>
+        /// <param name="transactions">The list of <see cref="Transaction{T}"/>s to include.</param>
+        /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
+        /// <see cref="Block{T}"/>.</param>
+        /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
+        internal Block<T> ProposeBlock(
+            PrivateKey proposer,
+            ImmutableList<Transaction<T>> transactions,
+            BlockCommit lastCommit)
+        {
+            long index = Count;
+            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
+
+            // FIXME: Should use automated public constructor.
+            // Manual internal constructor is used purely for testing custom timestamps.
+            var orderedTransactions = transactions.OrderBy(tx => tx.Id).ToList();
+            var blockContent = new BlockContent<T>(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: index,
+                    timestamp: DateTimeOffset.UtcNow,
+                    miner: proposer.ToAddress(),
+                    publicKey: proposer.PublicKey,
+                    previousHash: prevHash,
+                    txHash: BlockContent<T>.DeriveTxHash(orderedTransactions),
+                    lastCommit: lastCommit),
+                transactions: orderedTransactions);
+            var preEval = blockContent.Propose();
+            return ProposeBlock(proposer, preEval);
         }
 
         internal Block<T> ProposeBlock(

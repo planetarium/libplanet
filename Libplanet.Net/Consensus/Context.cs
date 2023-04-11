@@ -323,7 +323,7 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+                Block<T> block = _blockChain.ProposeBlock(_privateKey, _lastCommit);
                 _blockChain.Store.PutBlock(block);
                 return block;
             }

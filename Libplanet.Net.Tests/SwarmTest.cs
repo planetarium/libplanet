@@ -517,8 +517,7 @@ namespace Libplanet.Net.Tests
 
             Block<DumbAction> block1 = chainA.ProposeBlock(keyA);
             chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
-            Block<DumbAction> block2 = chainA.ProposeBlock(
-                keyA, lastCommit: CreateBlockCommit(block1));
+            Block<DumbAction> block2 = chainA.ProposeBlock(keyA, CreateBlockCommit(block1));
             chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             try
@@ -586,10 +585,10 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
             Block<DumbAction> block1 = chainA.ProposeBlock(
-                keyA, lastCommit: CreateBlockCommit(chainA.Tip));
+                keyA, CreateBlockCommit(chainA.Tip));
             chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
             Block<DumbAction> block2 = chainA.ProposeBlock(
-                keyA, lastCommit: CreateBlockCommit(chainA.Tip));
+                keyA, CreateBlockCommit(chainA.Tip));
             chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             try
@@ -918,17 +917,17 @@ namespace Libplanet.Net.Tests
 
             miner1.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
             Block<DumbAction> block1 = miner1.BlockChain.ProposeBlock(
-                key1, lastCommit: CreateBlockCommit(miner1.BlockChain.Tip));
+                key1, CreateBlockCommit(miner1.BlockChain.Tip));
             miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
             Block<DumbAction> block2 = miner2.BlockChain.ProposeBlock(
-                key2, lastCommit: CreateBlockCommit(miner2.BlockChain.Tip));
+                key2, CreateBlockCommit(miner2.BlockChain.Tip));
             miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
             var latest = miner2.BlockChain.ProposeBlock(
-                key2, lastCommit: CreateBlockCommit(miner2.BlockChain.Tip));
+                key2, CreateBlockCommit(miner2.BlockChain.Tip));
             miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
 
             renderer.RenderEventHandler += (_, a) =>
@@ -983,7 +982,7 @@ namespace Libplanet.Net.Tests
                 );
                 var b = miner1.BlockChain.ProposeBlock(
                     key1,
-                    lastCommit: CreateBlockCommit(
+                    CreateBlockCommit(
                         miner1.BlockChain.Tip.Hash,
                         miner1.BlockChain.Tip.Index,
                         0));
@@ -1058,13 +1057,13 @@ namespace Libplanet.Net.Tests
 
                 Log.Debug("Make minerB's chain longer than minerA's chain");
                 Block<DumbAction> blockA = minerA.BlockChain.ProposeBlock(
-                    keyA, lastCommit: CreateBlockCommit(minerA.BlockChain.Tip));
+                    keyA, CreateBlockCommit(minerA.BlockChain.Tip));
                 minerA.BlockChain.Append(blockA, TestUtils.CreateBlockCommit(blockA));
                 Block<DumbAction> blockB = minerB.BlockChain.ProposeBlock(
-                    keyB, lastCommit: CreateBlockCommit(minerB.BlockChain.Tip));
+                    keyB, CreateBlockCommit(minerB.BlockChain.Tip));
                 minerB.BlockChain.Append(blockB, TestUtils.CreateBlockCommit(blockB));
                 Block<DumbAction> blockC = minerB.BlockChain.ProposeBlock(
-                    keyB, lastCommit: CreateBlockCommit(minerB.BlockChain.Tip));
+                    keyB, CreateBlockCommit(minerB.BlockChain.Tip));
                 minerB.BlockChain.Append(blockC, TestUtils.CreateBlockCommit(blockC));
 
                 Assert.Equal((Text)dumbItem, minerA.BlockChain.GetState(targetAddress1));
@@ -1092,7 +1091,7 @@ namespace Libplanet.Net.Tests
                     minerA.BlockChain.GetStagedTransactionIds().Contains(txA.Id));
 
                 Block<DumbAction> block = minerA.BlockChain.ProposeBlock(
-                    keyA, lastCommit: CreateBlockCommit(minerA.BlockChain.Tip));
+                    keyA, CreateBlockCommit(minerA.BlockChain.Tip));
                 minerA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
                 minerA.BroadcastBlock(minerA.BlockChain.Tip);
                 await minerB.BlockAppended.WaitAsync();
