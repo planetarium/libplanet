@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(TestUtils.PrivateKeys[2], lastCommit: blockCommit);
+            block = blockChain.ProposeBlock(TestUtils.PrivateKeys[2], blockCommit);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(2, blockChain.Tip.Index);
 
@@ -174,10 +174,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             block = blockChain.ProposeBlock(
-                new PrivateKey(), lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
+                new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             block = blockChain.ProposeBlock(
-                new PrivateKey(), lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
+                new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             // Create context of index 4, check if the context of 1 and 2 are removed correctly.

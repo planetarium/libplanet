@@ -114,13 +114,11 @@ namespace Libplanet.Tests.Blockchain
             var key = new PrivateKey();
             Block<DumbAction> block1 = chain1.ProposeBlock(key);
             chain1.Append(block1, CreateBlockCommit(block1));
-            Block<DumbAction> block2 = chain1.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(chain1.Tip));
+            Block<DumbAction> block2 = chain1.ProposeBlock(key, CreateBlockCommit(chain1.Tip));
             chain1.Append(block2, CreateBlockCommit(block2));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
             var chain2 = chain1.Fork(chain1.Tip.Hash);
-            Block<DumbAction> block3 = chain2.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(chain1.Tip));
+            Block<DumbAction> block3 = chain2.ProposeBlock(key, CreateBlockCommit(chain1.Tip));
             chain2.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
 
@@ -148,7 +146,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(new[] { genesis.Hash, b1.Hash }, _blockChain.BlockHashes);
 
             Block<DumbAction> b2 = _blockChain.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(_blockChain.Tip));
+                key, CreateBlockCommit(_blockChain.Tip));
             _blockChain.Append(b2, CreateBlockCommit(b2));
             Assert.Equal(
                 new[] { genesis.Hash, b1.Hash, b2.Hash },
@@ -156,7 +154,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Block<DumbAction> b3 = _blockChain.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(_blockChain.Tip));
+                key, CreateBlockCommit(_blockChain.Tip));
             _blockChain.Append(b3, CreateBlockCommit(b3));
             Assert.Equal(
                 new[] { genesis.Hash, b1.Hash, b2.Hash, b3.Hash },
@@ -234,7 +232,7 @@ namespace Libplanet.Tests.Blockchain
 
             chain.StageTransaction(tx2);
             Block<PolymorphicAction<BaseAction>> block2 = chain.ProposeBlock(
-                new PrivateKey(), lastCommit: CreateBlockCommit(chain.Tip));
+                new PrivateKey(), CreateBlockCommit(chain.Tip));
             chain.Append(block2, CreateBlockCommit(block2));
 
             state = chain.GetState(_fx.Address1);
@@ -256,7 +254,7 @@ namespace Libplanet.Tests.Blockchain
                 }
             );
             Block<PolymorphicAction<BaseAction>> block3 = chain.ProposeBlock(
-                new PrivateKey(), lastCommit: CreateBlockCommit(chain.Tip));
+                new PrivateKey(), CreateBlockCommit(chain.Tip));
             chain.StageTransaction(tx3);
             chain.Append(block3, CreateBlockCommit(block3));
             state = chain.GetState(_fx.Address1);

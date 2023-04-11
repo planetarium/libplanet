@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -102,17 +101,17 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="proposer">
         /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
-        /// <param name="txPriority">An optional comparer for give certain transactions to
-        /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
         public Block<T> ProposeBlock(
             PrivateKey proposer,
-            IComparer<Transaction<T>> txPriority = null,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            IComparer<Transaction<T>> txPriority = null)
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);

@@ -49,8 +49,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact]
         public void CannotAddInvalidProposer()
         {
-            var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
+            var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[0], _lastCommit);
             var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
@@ -83,8 +82,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact]
         public void CannotAddMultipleProposalsPerRound()
         {
-            var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
+            var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[0], _lastCommit);
             var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
@@ -146,8 +144,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact]
         public void GetValidatorsCount()
         {
-            var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
+            var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[0], _lastCommit);
             var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
@@ -174,8 +171,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact]
         public void GetBlockCommit()
         {
-            var block = _blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0], lastCommit: _lastCommit);
+            var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[0], _lastCommit);
             var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,

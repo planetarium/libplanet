@@ -224,7 +224,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[3],
-                lastCommit: TestUtils.CreateBlockCommit(blockHeightTwo));
+                TestUtils.CreateBlockCommit(blockHeightTwo));
 
             // Message from higher height
             consensusContext.HandleMessage(

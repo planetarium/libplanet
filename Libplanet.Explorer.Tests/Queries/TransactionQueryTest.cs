@@ -130,7 +130,7 @@ public class TransactionQueryTest
         Source.BlockChain.MakeTransaction(key2, ImmutableList<NullAction>.Empty.Add(new NullAction()));
         block = Source.BlockChain.ProposeBlock(
             new PrivateKey(),
-            lastCommit: Libplanet.Tests.TestUtils.CreateBlockCommit(block));
+            Libplanet.Tests.TestUtils.CreateBlockCommit(block));
         Source.BlockChain.Append(block, Libplanet.Tests.TestUtils.CreateBlockCommit(block));
         await AssertNextNonce(1, key2.ToAddress());
         await AssertNextNonce(2, key1.ToAddress());

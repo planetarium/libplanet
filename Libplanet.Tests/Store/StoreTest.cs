@@ -1062,11 +1062,9 @@ namespace Libplanet.Tests.Store
                 var key = new PrivateKey();
                 var block = blocks.ProposeBlock(key);
                 blocks.Append(block, CreateBlockCommit(block));
-                block = blocks.ProposeBlock(
-                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                block = blocks.ProposeBlock(key, CreateBlockCommit(blocks.Tip));
                 blocks.Append(block, CreateBlockCommit(block));
-                block = blocks.ProposeBlock(
-                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                block = blocks.ProposeBlock(key, CreateBlockCommit(blocks.Tip));
                 blocks.Append(block, CreateBlockCommit(block));
 
                 s1.Copy(to: Fx.Store);
