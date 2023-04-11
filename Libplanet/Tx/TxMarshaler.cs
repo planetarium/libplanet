@@ -84,9 +84,9 @@ namespace Libplanet.Tx
                 genesisHash: dictionary.TryGetValue(GenesisHashKey, out IValue v)
                     ? new BlockHash(v)
                     : (BlockHash?)null,
-                updatedAddresses: ((Bencodex.Types.List)dictionary[UpdatedAddressesKey])
-                    .Select(v => new Address(v))
-                    .ToImmutableHashSet(),
+                updatedAddresses: new AddressSet(
+                    ((Bencodex.Types.List)dictionary[UpdatedAddressesKey])
+                        .Select(v => new Address(v))),
                 timestamp: DateTimeOffset.ParseExact(
                     (Text)dictionary[TimestampKey],
                     TimestampFormat,
