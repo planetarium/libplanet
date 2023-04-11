@@ -307,10 +307,12 @@ namespace Libplanet.Blockchain
         public IEnumerable<BlockHash> BlockHashes => IterateBlockHashes();
 
         /// <summary>
-        /// Returns a <see cref="long"/> integer that represents the number of elements in the
-        /// <see cref="BlockChain{T}"/>.
+        /// Returns a <see cref="long"/> that represents the number of <see cref="Block{T}"/>s in a
+        /// <see cref="BlockChain{T}"/>.  This is guaranteed to be greater than or equal to 1,
+        /// as <see cref="BlockChain{T}"/> always contains at least
+        /// its genesis <see cref="Block{T}"/>.
         /// </summary>
-        /// <returns>A number that represents how many elements in the <see cref="BlockChain{T}"/>.
+        /// <returns>The number of <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>.
         /// </returns>
         public long Count => Store.CountIndex(Id);
 
