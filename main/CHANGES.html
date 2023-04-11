@@ -139,6 +139,8 @@ methods.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a
 <li>(Libplanet.Explorer) Added <code>Index</code> field to <code>IBlockChainContext</code> interface.
 [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, DateTimeOffset, long, int, int, IComparer&lt;Transaction&lt;T&gt;&gt;, BlockCommit)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3072">#3072</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, DateTimeOffset, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</code> method to
+<code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3077">#3077</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

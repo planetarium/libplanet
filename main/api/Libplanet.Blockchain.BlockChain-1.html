@@ -2854,27 +2854,25 @@ block when it's instantiated.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___Libplanet_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ProposeBlock(Libplanet.Crypto.PrivateKey%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Collections.Generic.IComparer%7BLibplanet.Tx.Transaction%7B%600%7D%7D%2CLibplanet.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blocks_BlockCommit_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ProposeBlock(Libplanet.Crypto.PrivateKey%2CLibplanet.Blocks.BlockCommit%2CSystem.Collections.Generic.IComparer%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L113">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L109">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeBlock*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___Libplanet_Blocks_BlockCommit_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,System.Nullable{System.DateTimeOffset},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},Libplanet.Blocks.BlockCommit)">ProposeBlock(PrivateKey, Nullable&lt;DateTimeOffset&gt;, IComparer&lt;Transaction&lt;T&gt;&gt;, BlockCommit)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blocks_BlockCommit_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blocks.BlockCommit,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}})">ProposeBlock(PrivateKey, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>
 Proposes a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> using staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.
 </p>
 <p>
-All unprovided and/or <span class="xref">null</span> arguments are reassigned accordingly
-and redirected to a overloaded method with non-nullable parameters.  By default,
-a policy adhering block is produced with current timestamp and appended immediately
-to the chain.
+By default, if successful, a policy adhering <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is produced with
+current timestamp that can be appeneded to the current chain.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; ProposeBlock(PrivateKey proposer, DateTimeOffset? timestamp = null, IComparer&lt;Transaction&lt;T&gt;&gt; txPriority = null, BlockCommit lastCommit = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; ProposeBlock(PrivateKey proposer, BlockCommit lastCommit = null, IComparer&lt;Transaction&lt;T&gt;&gt; txPriority = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2893,9 +2891,10 @@ to the chain.
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
-        <td><span class="parametername">timestamp</span></td>
-        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> when proposing started.</p>
+        <td><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a></td>
+        <td><span class="parametername">lastCommit</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> evidence of the previous
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
 </td>
       </tr>
       <tr>
@@ -2903,12 +2902,6 @@ to the chain.
         <td><span class="parametername">txPriority</span></td>
         <td><p>An optional comparer for give certain transactions to
 priority to belong to the block.  No certain priority by default.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a></td>
-        <td><span class="parametername">lastCommit</span></td>
-        <td><p><a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> of previous <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -2924,12 +2917,12 @@ priority to belong to the block.  No certain priority by default.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
-        <td><p>An awaitable task with a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that is proposed.</p>
+        <td><p>A <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that is proposed.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___Libplanet_Blocks_BlockCommit__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blocks_BlockCommit_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -2955,7 +2948,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_System_Collections_Generic_IEnumerable__0__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ProposeGenesisBlock(System.Collections.Generic.IEnumerable%7B%600%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Action.IAction%7D%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CLibplanet.Action.IAction%2CSystem.Predicate%7BLibplanet.Assets.Currency%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L43">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L42">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_System_Collections_Generic_IEnumerable__0__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},Libplanet.Crypto.PrivateKey,System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})">ProposeGenesisBlock(IEnumerable&lt;T&gt;, IEnumerable&lt;IAction&gt;, PrivateKey, Nullable&lt;DateTimeOffset&gt;, IAction, Predicate&lt;Currency&gt;)</h4>

@@ -3429,15 +3429,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Policy
   nameWithType: BlockChain<T>.Policy
   nameWithType.vb: BlockChain(Of T).Policy
-- uid: Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,System.Nullable{System.DateTimeOffset},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},Libplanet.Blocks.BlockCommit)
-  name: ProposeBlock(PrivateKey, Nullable<DateTimeOffset>, IComparer<Transaction<T>>, BlockCommit)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_System_Nullable_System_DateTimeOffset__System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___Libplanet_Blocks_BlockCommit_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,System.Nullable{System.DateTimeOffset},System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}},Libplanet.Blocks.BlockCommit)
-  name.vb: ProposeBlock(PrivateKey, Nullable(Of DateTimeOffset), IComparer(Of Transaction(Of T)), BlockCommit)
-  fullName: Libplanet.Blockchain.BlockChain<T>.ProposeBlock(Libplanet.Crypto.PrivateKey, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>, Libplanet.Blocks.BlockCommit)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeBlock(Libplanet.Crypto.PrivateKey, System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)), Libplanet.Blocks.BlockCommit)
-  nameWithType: BlockChain<T>.ProposeBlock(PrivateKey, Nullable<DateTimeOffset>, IComparer<Transaction<T>>, BlockCommit)
-  nameWithType.vb: BlockChain(Of T).ProposeBlock(PrivateKey, Nullable(Of DateTimeOffset), IComparer(Of Transaction(Of T)), BlockCommit)
+- uid: Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blocks.BlockCommit,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}})
+  name: ProposeBlock(PrivateKey, BlockCommit, IComparer<Transaction<T>>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blocks_BlockCommit_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blocks.BlockCommit,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction{`0}})
+  name.vb: ProposeBlock(PrivateKey, BlockCommit, IComparer(Of Transaction(Of T)))
+  fullName: Libplanet.Blockchain.BlockChain<T>.ProposeBlock(Libplanet.Crypto.PrivateKey, Libplanet.Blocks.BlockCommit, System.Collections.Generic.IComparer<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeBlock(Libplanet.Crypto.PrivateKey, Libplanet.Blocks.BlockCommit, System.Collections.Generic.IComparer(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: BlockChain<T>.ProposeBlock(PrivateKey, BlockCommit, IComparer<Transaction<T>>)
+  nameWithType.vb: BlockChain(Of T).ProposeBlock(PrivateKey, BlockCommit, IComparer(Of Transaction(Of T)))
 - uid: Libplanet.Blockchain.BlockChain`1.ProposeBlock*
   name: ProposeBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeBlock_
