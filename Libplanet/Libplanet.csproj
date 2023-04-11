@@ -68,7 +68,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
-    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="LiteDB" Version="5.0.13" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
