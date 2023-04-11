@@ -141,6 +141,9 @@ To be released.
     custom actions.  However, it still can be deserialized from JSON when it
     contains a system action.  [[#2986]]
 
+ -  `Transaction<T>.UpdatedAddresses` now preserves the order of `Address`es
+    so that it is no more reordered during deserialization.  [[#3074]]
+
  -  The JSON representation of `Transaction<T>` now includes the `"actions"`
     field, which includes a system action or a list of custom actions and
     a `"type"` field denoting one of `"system"` or `"custom"`.

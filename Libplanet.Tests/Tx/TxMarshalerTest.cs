@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex;
 using Bencodex.Types;
@@ -129,6 +130,34 @@ namespace Libplanet.Tests.Tx
                 TxMarshaler.UnmarshalTxInvoice<PolymorphicAction<BaseAction>>(
                     _marshaledTxInvoiceWithCustomActions),
                 _fx.TxWithActions);
+        }
+
+        [Fact]
+        public void UnmarshalTxInvoice_PreserveOrderOfUpdatedAddresses()
+        {
+            Bencodex.Types.Dictionary marshaledInvoiceA = _marshaledTxInvoice.SetItem(
+                new byte[] { 0x75 },
+                Bencodex.Types.List.Empty
+                    .Add(ByteUtil.ParseHex("0000000000000000000000000000000000000000"))
+                    .Add(ByteUtil.ParseHex("ffffffffffffffffffffffffffffffffffffffff")));
+            Bencodex.Types.Dictionary marshaledInvoiceB = _marshaledTxInvoice.SetItem(
+                new byte[] { 0x75 },
+                Bencodex.Types.List.Empty
+                    .Add(ByteUtil.ParseHex("ffffffffffffffffffffffffffffffffffffffff"))
+                    .Add(ByteUtil.ParseHex("0000000000000000000000000000000000000000")));
+            ITxInvoice invoiceA = TxMarshaler.UnmarshalTxInvoice<DumbAction>(marshaledInvoiceA);
+            ITxInvoice invoiceB = TxMarshaler.UnmarshalTxInvoice<DumbAction>(marshaledInvoiceB);
+            Assert.Equal<ITxInvoice>(invoiceA, invoiceB);
+            Assert.Equal<IEnumerable<Address>>(
+                new[] { default(Address), new Address("ffffffffffffffffffffffffffffffffffffffff") },
+                invoiceA.UpdatedAddresses
+            );
+            Assert.Equal<IEnumerable<Address>>(
+                new[] { new Address("ffffffffffffffffffffffffffffffffffffffff"), default(Address) },
+                invoiceB.UpdatedAddresses
+            );
+            AssertBencodexEqual(marshaledInvoiceA, invoiceA.MarshalTxInvoice());
+            AssertBencodexEqual(marshaledInvoiceB, invoiceB.MarshalTxInvoice());
         }
 
         [Fact]

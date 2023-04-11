@@ -32,9 +32,15 @@ namespace Libplanet.Tx
             DateTimeOffset timestamp,
             TxActionList actions)
         {
+            if (updatedAddresses is null)
+            {
+                throw new ArgumentNullException(nameof(updatedAddresses));
+            }
+
             GenesisHash = genesisHash;
-            UpdatedAddresses = updatedAddresses
-                ?? throw new ArgumentNullException(nameof(updatedAddresses));
+            UpdatedAddresses = updatedAddresses is AddressSet set
+                ? set
+                : new AddressSet(updatedAddresses);
             Timestamp = timestamp;
             Actions = actions ?? throw new ArgumentNullException(nameof(actions));
         }
