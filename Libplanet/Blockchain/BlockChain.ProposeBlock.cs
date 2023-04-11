@@ -93,19 +93,17 @@ namespace Libplanet.Blockchain
         /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </para>
         /// <para>
-        /// All unprovided and/or <see langword="null"/> arguments are reassigned accordingly
-        /// and redirected to a overloaded method with non-nullable parameters.  By default,
-        /// a policy adhering block is produced with current timestamp and appended immediately
-        /// to the chain.
+        /// By default, if successful, a policy adhering <see cref="Block{T}"/> is produced with
+        /// current timestamp that can be appeneded to the current chain.
         /// </para>
         /// </summary>
-        /// <param name="proposer">
-        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
-        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
         /// </param>
+        /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
+        /// <see cref="Block{T}"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
+        /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
         public Block<T> ProposeBlock(
@@ -147,6 +145,24 @@ namespace Libplanet.Blockchain
             return block;
         }
 
+        /// <summary>
+        /// <para>
+        /// Proposes a next <see cref="Block{T}"/> using a specified <see cref="DateTimeOffset"/>
+        /// and a specified list of <see cref="Transaction{T}"/>s.
+        /// </para>
+        /// <para>
+        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction{T}})"/>,
+        /// this may result in a <see cref="Block{T}"/> that does not conform to the
+        /// <see cref="Policy"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
+        /// </param>
+        /// <param name="timestamp">Goes to <see cref="Block{T}.Timestamp"/>.</param>
+        /// <param name="transactions">The list of <see cref="Transaction{T}"/>s to include.</param>
+        /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
+        /// <see cref="Block{T}"/>.</param>
+        /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
         public Block<T> ProposeBlock(
             PrivateKey proposer,
             DateTimeOffset timestamp,
