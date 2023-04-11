@@ -161,7 +161,7 @@ namespace Libplanet.Blockchain
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block{T}"/>.</param>
         /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
-        public Block<T> ProposeBlock(
+        internal Block<T> ProposeBlock(
             PrivateKey proposer,
             ImmutableList<Transaction<T>> transactions,
             BlockCommit lastCommit)

@@ -81,9 +81,6 @@ To be released.
     BlockCommit, IComparer<Transaction<T>>)` method to
     `BlockChain<T>.ProposeBlock(PrivateKey, BlockCommit,
     IComparer<Transaction<T>>)`.  [[#3077]]
- -  Added `BlockChain<T>.ProposeBlock(PrivateKey, ImmutableList<Transaction<T>>,
-    BlockCommit)` method.  [[#3077]]
-
 
 ### Backward-incompatible network protocol changes
 
