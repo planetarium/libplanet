@@ -133,7 +133,6 @@ namespace Libplanet.Blockchain
 
             var block = ProposeBlock(
                 proposer,
-                DateTimeOffset.UtcNow,
                 transactions,
                 lastCommit);
             _logger.Debug(
@@ -147,8 +146,8 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// <para>
-        /// Proposes a next <see cref="Block{T}"/> using a specified <see cref="DateTimeOffset"/>
-        /// and a specified list of <see cref="Transaction{T}"/>s.
+        /// Proposes a next <see cref="Block{T}"/> using a specified
+        /// list of <see cref="Transaction{T}"/>s.
         /// </para>
         /// <para>
         /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction{T}})"/>,
@@ -158,14 +157,12 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
         /// </param>
-        /// <param name="timestamp">Goes to <see cref="Block{T}.Timestamp"/>.</param>
         /// <param name="transactions">The list of <see cref="Transaction{T}"/>s to include.</param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block{T}"/>.</param>
         /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
         public Block<T> ProposeBlock(
             PrivateKey proposer,
-            DateTimeOffset timestamp,
             ImmutableList<Transaction<T>> transactions,
             BlockCommit lastCommit)
         {
@@ -179,7 +176,7 @@ namespace Libplanet.Blockchain
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
-                    timestamp: timestamp,
+                    timestamp: DateTimeOffset.UtcNow,
                     miner: proposer.ToAddress(),
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
