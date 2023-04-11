@@ -206,6 +206,9 @@ commands related to <em>Libplanet.Explorer</em> project.  [<a href="https://gith
 custom actions.  However, it still can be deserialized from JSON when it
 contains a system action.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</p>
 </li>
+<li><p><code>Transaction&lt;T&gt;.UpdatedAddresses</code> now preserves the order of <code>Address</code>es
+so that it is no more reordered during deserialization.  [<a href="https://github.com/planetarium/libplanet/pull/3074">#3074</a>]</p>
+</li>
 <li><p>The JSON representation of <code>Transaction&lt;T&gt;</code> now includes the <code>&quot;actions&quot;</code>
 field, which includes a system action or a list of custom actions and
 a <code>&quot;type&quot;</code> field denoting one of <code>&quot;system&quot;</code> or <code>&quot;custom&quot;</code>.</p>
@@ -271,6 +274,9 @@ instead of a normal dependency.  [<a href="https://github.com/planetarium/libpla
 <ul>
 <li>(Libplanet.Explorer.Executable) Project is now deprecated. It is currently
 nonfunctional.  [<a href="https://github.com/planetarium/libplanet/discussions/2243">#2243</a>, <a href="https://github.com/planetarium/libplanet/discussions/2588">#2588</a>]</li>
+<li>(Libplanet.Tools) Now <code>planet</code> uses <em>libsecp256k1</em> (which is the same
+library used in Bitcoin and written in C) instead of
+<em>BouncyCastle.Cryptography</em> (which is written in C#).  [<a href="https://github.com/planetarium/libplanet/pull/3074">#3074</a>]</li>
 </ul>
 <h2 id="version-0534">Version 0.53.4</h2>
 <p>Released on April 4, 2023.</p>
