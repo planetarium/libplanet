@@ -130,6 +130,7 @@ To be released.
  -  (Libplanet.Explorer.Cocona) New project was added to provide Cocona
     commands related to *Libplanet.Explorer* project.  [[#2613]]
      -  Added `IndexCommand` Cocona command class.
+ -  (Libplanet.Explorer) Added `states` query in `StateQuery`.  [[#3080]]
 
 ### Behavioral changes
 
@@ -238,6 +239,7 @@ To be released.
 [#3074]: https://github.com/planetarium/libplanet/pull/3074
 [#3077]: https://github.com/planetarium/libplanet/pull/3077
 [#3079]: https://github.com/planetarium/libplanet/pull/3079
+[#3080]: https://github.com/planetarium/libplanet/pull/3080
 
 
 Version 0.53.4

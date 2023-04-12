@@ -20,6 +20,15 @@ public class StateQuery<T>
     public StateQuery()
     {
         Name = "StateQuery";
+        Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
+            "states",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
+                    { Name = "addresses" },
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+            ),
+            resolve: ResolveStates
+        );
         Field<NonNullGraphType<FungibleAssetValueType>>(
             "balance",
             arguments: new QueryArguments(
@@ -75,6 +84,31 @@ public class StateQuery<T>
                 e
             );
         }
+    }
+
+    private static object ResolveStates(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
+    {
+        Address[] addresses = context.GetArgument<Address[]>("addresses");
+        string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
+
+        BlockHash offset;
+        try
+        {
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
+        }
+
+        return context.Source.ChainStates.GetStates(
+            addresses,
+            offset
+        );
     }
 
     private static object ResolveBalance(
