@@ -1925,6 +1925,8 @@ namespace Libplanet.Tests.Blockchain
                 .Add(storeFixture.Address3);
 
             var validatorPrivKey = new PrivateKey();
+
+            var privateKey = new PrivateKey();
             var systemActions = new IAction[]
             {
                 new Initialize(
@@ -1938,17 +1940,34 @@ namespace Libplanet.Tests.Blockchain
                 ),
             };
 
-            var actions =
+            var customActions =
                 addresses
                     .Select((address, index) => new DumbAction(address, index.ToString()))
                     .ToArray();
+
+            var systemTxs = systemActions
+                .Select((systemAction, i) => Transaction<DumbAction>.Create(
+                    nonce: i,
+                    privateKey: privateKey,
+                    genesisHash: null,
+                    systemAction: systemAction))
+                .ToArray();
+            var customTxs = new[]
+            {
+                Transaction<DumbAction>.Create(
+                    nonce: systemTxs.Length,
+                    privateKey: privateKey,
+                    genesisHash: null,
+                    customActions: customActions),
+            };
+            var txs = systemTxs.Concat(customTxs).ToImmutableList();
             BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
                     storeFixture.Store,
                     storeFixture.StateStore,
                     BlockChain<DumbAction>.ProposeGenesisBlock(
-                        customActions: actions, systemActions: systemActions));
+                        privateKey: privateKey, transactions: txs));
 
             var validator = blockChain.GetValidatorSet()[0];
             Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
@@ -2093,6 +2112,14 @@ namespace Libplanet.Tests.Blockchain
                     states: ImmutableDictionary.Create<Address, IValue>()
                 ),
             };
+            var privateKey = new PrivateKey();
+            var txs = systemActions
+                .Select((systemAction, i) => Transaction<SetValidator>.Create(
+                    nonce: i,
+                    privateKey: privateKey,
+                    genesisHash: null,
+                    systemAction: systemAction))
+                .ToImmutableList();
 
             BlockChain<SetValidator> blockChain =
                 BlockChain<SetValidator>.Create(
@@ -2100,7 +2127,8 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<SetValidator>(),
                     storeFixture.Store,
                     storeFixture.StateStore,
-                    BlockChain<SetValidator>.ProposeGenesisBlock(systemActions: systemActions));
+                    BlockChain<SetValidator>.ProposeGenesisBlock(
+                        privateKey: privateKey, transactions: txs));
 
             blockChain.MakeTransaction(
                 new PrivateKey(),

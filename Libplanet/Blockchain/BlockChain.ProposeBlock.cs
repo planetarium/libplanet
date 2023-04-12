@@ -16,18 +16,24 @@ namespace Libplanet.Blockchain
     public partial class BlockChain<T>
     {
         /// <summary>
-        /// Propose the genesis block of the blockchain.
+        /// <para>
+        /// Propose a genesis block for creating a <see cref="BlockChain{T}"/>.
+        /// </para>
+        /// <para>
+        /// Note that a genesis <see cref="Block{T}"/> produced may not be suitable as
+        /// a genesis for <see cref="BlockChain{T}.Create"/> if given
+        /// <paramref name="transactions"/> is invalid.
+        /// </para>
+        /// <para>
+        /// Make sure that the nonces for <paramref name="transactions"/> are correct and
+        /// each <see cref="Transaction{T}.GenesisHash"/> is set to <see langword="null"/>.
+        /// </para>
         /// </summary>
-        /// <param name="customActions">List of custom actions
-        /// will be included in the genesis block.
-        /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
-        /// as default.</param>
-        /// <param name="systemActions">System action that will be included in the genesis block.
-        /// If it's null, no system action will be added.
-        /// as default.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
-        /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
+        /// <param name="transactions">A list of <see cref="Transaction{T}"/>s to include
+        /// in the genesis <see cref="Block{T}"/>.</param>
+        /// <param name="timestamp">The timestamp of the genesis block.  If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
         /// <param name="blockAction">A block action to execute and be rendered for every block.
         /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
@@ -36,38 +42,21 @@ namespace Libplanet.Blockchain
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
-        /// <returns>The genesis block proposed with given parameters.</returns>
+        /// <returns>A genesis <see cref="Block{T}"/> proposed with given parameters.</returns>
+        /// <seealso cref="BlockChain{T}.Create"/>
         // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction and
         // nativeTokenPredicate.  (Or at least there should be such an overload.)
         public static Block<T> ProposeGenesisBlock(
-            IEnumerable<T> customActions = null,
-            IEnumerable<IAction> systemActions = null,
             PrivateKey privateKey = null,
+            ImmutableList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
             privateKey ??= new PrivateKey();
-            customActions ??= ImmutableArray<T>.Empty;
-            systemActions ??= ImmutableArray<IAction>.Empty;
-            int nonce = 0;
-            Transaction<T>[] transactions =
-            {
-                Transaction<T>.Create(
-                    nonce, privateKey, null, customActions, timestamp: timestamp),
-            };
-            foreach (var systemAction in systemActions)
-            {
-                nonce += 1;
-                transactions = transactions.Concat(
-                    new Transaction<T>[]
-                    {
-                        Transaction<T>.Create(
-                            nonce, privateKey, null, systemAction, timestamp: timestamp),
-                    }).ToArray();
-            }
-
-            transactions = transactions.OrderBy(tx => tx.Id).ToArray();
+            transactions = transactions is { } txs
+                ? txs.OrderBy(tx => tx.Id).ToImmutableList()
+                : ImmutableList<Transaction<T>>.Empty;
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(

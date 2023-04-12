@@ -81,6 +81,11 @@ To be released.
     BlockCommit, IComparer<Transaction<T>>)` method to
     `BlockChain<T>.ProposeBlock(PrivateKey, BlockCommit,
     IComparer<Transaction<T>>)`.  [[#3077]]
+ -  Changed `BlockChain<T>.ProposeGenesisBlock(IEnumerable<T>,
+    IEnumerable<IAction>, PrivateKey, DateTimeOffset?, IAction,
+    Predicate<Currency>)` to `BlockChain<T>.ProposeGenesisBlock(
+    PrivateKey, ImmutableList<Transaction<T>>, DateTimeOffset?, IAction,
+    Predicate<Currency>)`.  [[#3079]]
 
 ### Backward-incompatible network protocol changes
 
@@ -232,6 +237,7 @@ To be released.
 [#3072]: https://github.com/planetarium/libplanet/pull/3072
 [#3074]: https://github.com/planetarium/libplanet/pull/3074
 [#3077]: https://github.com/planetarium/libplanet/pull/3077
+[#3079]: https://github.com/planetarium/libplanet/pull/3079
 
 
 Version 0.53.4

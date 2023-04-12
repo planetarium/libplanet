@@ -400,6 +400,10 @@ namespace Libplanet.Blockchain
         /// or <paramref name="stateStore"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> already has a
         /// canonical chain id.</exception>
+        /// <exception cref="InvalidBlockException">Thrown when <paramref name="genesisBlock"/>
+        /// is invalid.</exception>
+        /// <exception cref="InvalidTxException">Thrown when <paramref name="genesisBlock"/>
+        /// contains an invalid <see cref="Transaction{T}"/>.</exception>
         public static BlockChain<T> Create(
             IBlockPolicy<T> policy,
             IStagePolicy<T> stagePolicy,
