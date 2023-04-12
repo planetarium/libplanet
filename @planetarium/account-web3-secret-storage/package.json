@@ -41,7 +41,6 @@
   "dependencies": {
     "@noble/hashes": "^1.3.0",
     "@peculiar/webcrypto": "^1.4.3",
-    "ethers": "^6.1.0",
     "scrypt-js": "^3.0.1"
   },
   "peerDependencies": {

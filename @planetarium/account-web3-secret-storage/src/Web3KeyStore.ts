@@ -1,17 +1,20 @@
-import { KeyId } from "./KeyId.js";
+import { generateKeyId, KeyId } from "./KeyId.js";
 import { PassphraseEntry } from "./PassphraseEntry.js";
-import { Web3Account, Web3KeyObject } from "./Web3Account.js";
+import {
+  encryptKeyObject,
+  isKeyObject,
+  Web3Account,
+  Web3KeyObject,
+} from "./Web3Account.js";
 import {
   type AccountDeletion,
   type AccountGeneration,
   type AccountImportation,
   type AccountMetadata,
   type AccountRetrieval,
-  Address,
   type ImportableKeyStore,
   RawPrivateKey,
 } from "@planetarium/account";
-import { encryptKeystoreJson, isKeystoreJson } from "ethers";
 import { Dirent } from "node:fs";
 import * as fs from "node:fs/promises";
 import { homedir } from "node:os";
@@ -131,12 +134,13 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
       }
       return { result: "error", keyId, message: `${e}` };
     }
-    if (!isKeystoreJson(json)) {
+    const keyObject: unknown = JSON.parse(json);
+    if (!isKeyObject(keyObject)) {
       return { result: "error", keyId, message: "Invalid key file" };
     }
     return {
       result: "success",
-      account: new Web3Account(JSON.parse(json), this.#passphraseEntry),
+      account: new Web3Account(keyObject, this.#passphraseEntry),
       keyId,
       metadata: undefined,
       createdAt: keyPath.createdAt,
@@ -184,22 +188,8 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
       }
   > {
     const passphrase = await this.#passphraseEntry.configurePassphrase();
-    const json = await encryptKeystoreJson(
-      {
-        address: (await Address.deriveFrom(privateKey)).toString(),
-        privateKey: `0x${Buffer.from(privateKey.toBytes()).toString("hex")}`,
-      },
-      passphrase,
-    );
-    const parsedKeyObject = JSON.parse(json);
-    // For interop with ethers.js which uses "Crypto" instead of "crypto" for some reason
-    if ("Crypto" in parsedKeyObject && !("crypto" in parsedKeyObject)) {
-      parsedKeyObject.crypto = parsedKeyObject.Crypto;
-      // rome-ignore lint/performance/noDelete: This operation is not expected to be performance critical
-      delete parsedKeyObject.Crypto;
-    }
-    const keyObject: Web3KeyObject = parsedKeyObject;
-    const { id: keyId } = keyObject;
+    const keyId = generateKeyId();
+    const keyObject = await encryptKeyObject(keyId, privateKey, passphrase);
     try {
       await fs.mkdir(this.path, { recursive: true });
     } catch (e) {

@@ -1,3 +1,7 @@
+import { Crypto } from "@peculiar/webcrypto";
+
+const crypto = new Crypto();
+
 export type KeyId = string;
 
 const UUID_PATTERN =
@@ -5,6 +9,10 @@ const UUID_PATTERN =
 
 export function isKeyId(keyId: string): keyId is KeyId {
   return !!keyId.match(UUID_PATTERN);
+}
+
+export function generateKeyId(): KeyId {
+  return crypto.randomUUID();
 }
 
 export default KeyId;
