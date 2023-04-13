@@ -8,7 +8,7 @@ import { copyFile, mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import * as path from "node:path";
 import { describe, expect, test, vi } from "vitest";
-import { Web3Account } from "../src/Web3Account";
+import { WeakPrivateKeyError, Web3Account } from "../src/Web3Account";
 import { MockPassphraseEntry } from "./MockPassphraseEntry";
 
 vi.mock("node:os", async (importOriginal) => ({
@@ -246,6 +246,43 @@ describe("Web3KeyStore", () => {
       result: "keyNotFound",
       keyId: "00000000-0000-0000-0000-000000000000",
     });
+  });
+
+  testInTempDir("get insufficient lengthed key", async (tmpDir) => {
+    const passphraseEntry = new MockPassphraseEntry("1");
+    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
+    await copyFile(
+      path.join(
+        __dirname,
+        "fixtures",
+        "insufficient-lengthed-keys",
+        "UTC--2023-01-30T11-33-11Z--b35a2647-8581-43ff-a98e-6083dc952632",
+      ),
+      path.join(
+        tmpDir,
+        "UTC--2023-01-30T11-33-11Z--b35a2647-8581-43ff-a98e-6083dc952632",
+      ),
+    );
+
+    const result = await store.get("b35a2647-8581-43ff-a98e-6083dc952632");
+    if (result.result !== "success") throw new Error(); // type guard
+
+    const msg = new Uint8Array([1, 2, 3]);
+    expect(result.account.sign(msg)).rejects.toThrowError(WeakPrivateKeyError);
+
+    const nonStrictStore = new Web3KeyStore({
+      path: tmpDir,
+      passphraseEntry,
+      allowWeakPrivateKey: true,
+    });
+    const result2 = await nonStrictStore.get(
+      "b35a2647-8581-43ff-a98e-6083dc952632",
+    );
+    if (result2.result !== "success") throw new Error(); // type guard
+    const sig = await result2.account.sign(msg);
+    await expect(
+      (await result2.account.getPublicKey()).verify(msg, sig),
+    ).resolves.toBeTruthy();
   });
 
   testInTempDir("generate", async (tmpDir) => {

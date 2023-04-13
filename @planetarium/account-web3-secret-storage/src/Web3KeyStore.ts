@@ -143,7 +143,11 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
     }
     return {
       result: "success",
-      account: new Web3Account(keyObject, this.#passphraseEntry),
+      account: new Web3Account(
+        keyObject,
+        this.#passphraseEntry,
+        this.#accountOptions,
+      ),
       keyId,
       metadata: undefined,
       createdAt: keyPath.createdAt,
