@@ -5,13 +5,17 @@ import { RawPrivateKey } from "../src/RawPrivateKey";
 test("isAccount", async () => {
   expect(isAccount(RawPrivateKey.generate())).toBeTruthy();
   const key = RawPrivateKey.generate();
-  expect(
-    isAccount({
-      getPublicKey: key.getPublicKey,
-      sign: key.sign.bind(key),
-    }),
-  ).toBeTruthy();
-  expect(isAccount({ publicKey: key.publicKey, sign: 1 })).toBeFalsy();
-  expect(isAccount({ publicKey: key.publicKey })).toBeFalsy();
-  expect(isAccount({ sign: key.sign.bind(key) })).toBeFalsy();
+  const validAccount = {
+    getAddress: key.getAddress,
+    getPublicKey: key.getPublicKey,
+    sign: key.sign.bind(key),
+  };
+  expect(isAccount(validAccount)).toBeTruthy();
+  for (const key of Object.keys(validAccount)) {
+    const invalidAccount = { ...validAccount, [key]: 1 };
+    expect(isAccount(invalidAccount)).toBeFalsy();
+    // rome-ignore lint/performance/noDelete: delete is needed
+    delete invalidAccount[key];
+    expect(isAccount(invalidAccount)).toBeFalsy();
+  }
 });

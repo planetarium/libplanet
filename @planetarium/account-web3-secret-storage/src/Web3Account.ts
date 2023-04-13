@@ -99,6 +99,10 @@ export class Web3Account implements ExportableAccount {
     return this.#exportPrivateKey({ allowWeakPrivateKey: true });
   }
 
+  getAddress(): Promise<Address> {
+    return Promise.resolve(Address.fromHex(this.#keyObject.address, true));
+  }
+
   async getPublicKey(): Promise<PublicKey> {
     const key = await this.#exportPrivateKey({ allowWeakPrivateKey: true });
     return await key.getPublicKey();

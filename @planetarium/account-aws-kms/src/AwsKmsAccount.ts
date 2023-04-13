@@ -2,6 +2,7 @@ import { AwsKmsKeyId } from "./AwsKmsKeyId.js";
 import { KMSClient, SignCommand } from "@aws-sdk/client-kms";
 import { Signature as NobleSignature } from "@noble/secp256k1";
 import {
+  Address,
   type Account,
   type Message,
   PublicKey,
@@ -24,6 +25,10 @@ export class AwsKmsAccount implements Account {
     this.keyId = keyId;
     this.publicKey = publicKey;
     this.#client = client;
+  }
+
+  getAddress(): Promise<Address> {
+    return Promise.resolve(Address.deriveFrom(this.publicKey));
   }
 
   getPublicKey(): Promise<PublicKey> {
