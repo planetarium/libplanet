@@ -134,6 +134,11 @@ To be released.
  -  (@planetarium/account) Added `Address.equals()` method.  [[#3071]]
  -  (@planetarium/account) Added `Address.isAddressOf()` method.  [[#3071]]
  -  (@planetarium/account) Added `PublicKey.equals()` method.  [[#3071]]
+ -  (@planetarium/account-web3-secret-storage) Added `DecryptionOptions`
+    interface.  [[#3071]]
+     -  Added `Web3KeyStoreOptions.decryptionOptions` attribute.
+ -  (@planetarium/account-web3-secret-storage) Added `WeakPrivateKeyError`
+    class.  [[#3071]]
 
 ### Behavioral changes
 

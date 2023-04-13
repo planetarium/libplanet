@@ -3,6 +3,7 @@ import { PassphraseEntry } from "./PassphraseEntry.js";
 import {
   encryptKeyObject,
   isKeyObject,
+  type DecryptionOptions,
   Web3Account,
   Web3KeyObject,
 } from "./Web3Account.js";

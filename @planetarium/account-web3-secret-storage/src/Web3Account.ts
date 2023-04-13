@@ -55,13 +55,21 @@ export interface Web3KeyObject {
 export class Web3Account implements ExportableAccount {
   #keyObject: Web3KeyObject;
   #passphraseEntry: PassphraseEntry;
+  #options: Partial<DecryptionOptions>;
 
-  constructor(keyObject: Web3KeyObject, passphraseEntry: PassphraseEntry) {
+  constructor(
+    keyObject: Web3KeyObject,
+    passphraseEntry: PassphraseEntry,
+    options: Partial<DecryptionOptions> = {},
+  ) {
     this.#keyObject = keyObject;
     this.#passphraseEntry = passphraseEntry;
+    this.#options = options;
   }
 
-  async exportPrivateKey(): Promise<RawPrivateKey> {
+  async #exportPrivateKey(
+    options: Partial<DecryptionOptions> = {},
+  ): Promise<RawPrivateKey> {
     let firstAttempt = true;
     let privateKey: RawPrivateKey;
     while (true) {
@@ -70,7 +78,10 @@ export class Web3Account implements ExportableAccount {
         firstAttempt,
       );
       try {
-        const result = await decryptKeyObject(this.#keyObject, passphrase);
+        const result = await decryptKeyObject(this.#keyObject, passphrase, {
+          ...this.#options,
+          ...options,
+        });
         privateKey = result.privateKey;
       } catch (e) {
         if (e instanceof IncorrectPassphraseError) {
@@ -84,13 +95,17 @@ export class Web3Account implements ExportableAccount {
     return privateKey;
   }
 
+  exportPrivateKey(): Promise<RawPrivateKey> {
+    return this.#exportPrivateKey({ allowWeakPrivateKey: true });
+  }
+
   async getPublicKey(): Promise<PublicKey> {
-    const key = await this.exportPrivateKey();
+    const key = await this.#exportPrivateKey({ allowWeakPrivateKey: true });
     return await key.getPublicKey();
   }
 
   async sign(message: Uint8Array): Promise<Signature> {
-    const key = await this.exportPrivateKey();
+    const key = await this.#exportPrivateKey();
     return await key.sign(message);
   }
 }
@@ -229,9 +244,21 @@ function isKeyObjectKdf(json: unknown): json is Web3KeyObjectKdf {
   }
 }
 
+export interface DecryptionOptions {
+  /**
+   * Whether to allow weak private keys (i.e. private keys with leading zeros).
+   */
+  readonly allowWeakPrivateKey: boolean;
+}
+
+export class WeakPrivateKeyError extends Error {
+  readonly name = "WeakPrivateKeyError";
+}
+
 export async function decryptKeyObject(
   keyObject: Web3KeyObject,
   passphrase: Passphrase,
+  options: Partial<DecryptionOptions> = {},
 ): Promise<{ keyId: KeyId; privateKey: RawPrivateKey }> {
   if (keyObject == null) {
     throw new Error("Key object is null.");
@@ -243,7 +270,19 @@ export async function decryptKeyObject(
 
   const keyObjectAddress = Address.fromHex(keyObject.address, true);
   const derivedKey = await deriveKey(keyObject.crypto, passphrase);
-  const privateKeyBytes = await decipher(keyObject.crypto, derivedKey);
+  let privateKeyBytes = await decipher(keyObject.crypto, derivedKey);
+  if (privateKeyBytes.length < 32) {
+    const zeroPadded = new Uint8Array(32);
+    zeroPadded.set(privateKeyBytes, 32 - privateKeyBytes.length);
+    privateKeyBytes = zeroPadded;
+  }
+  if (privateKeyBytes.at(0) === 0x00 && !options.allowWeakPrivateKey) {
+    throw new WeakPrivateKeyError(
+      "The private key given is too weak; keys of length less than 32 bytes " +
+        "are disallowed by default.  See also " +
+        "the DecryptionOptions.allowWeakPrivateKey option.",
+    );
+  }
   const privateKey = RawPrivateKey.fromBytes(privateKeyBytes);
   const address = await Address.deriveFrom(privateKey);
   if (!keyObjectAddress.equals(address)) {
@@ -288,6 +327,8 @@ async function deriveKey(
 }
 
 export class IncorrectPassphraseError extends Error {
+  readonly name = "IncorrectPassphraseError";
+
   constructor(
     readonly expectedMac: Uint8Array,
     readonly actualMac: Uint8Array,
