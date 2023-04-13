@@ -10,6 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed the encoding scheme and related methods for `TxActionList`.
+    [[#3083]]
+     -  Removed `TxActionList.FromBencodex<T>()` method.
+     -  Changed the return type for `TxActionList.ToBencodex()` from
+        `Dictionary` to `IValue`.
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -29,6 +35,7 @@ To be released.
 
 ### CLI tools
 
+[#3083]: https://github.com/planetarium/libplanet/pull/3083
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
 
 
