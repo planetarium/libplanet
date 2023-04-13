@@ -84,7 +84,7 @@ namespace Libplanet.Tx
         /// <summary>
         /// Decodes a <see cref="TxCustomActionList"/> from a Bencodex dictionary.
         /// </summary>
-        /// <param name="value">A Bencodex dictionary to decode.</param>
+        /// <param name="value">A Bencodex list to decode.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type to decode.  It must be a concrete
         /// type, not an interface or an abstract class.</typeparam>
         /// <returns>A decoded <see cref="TxCustomActionList"/>.</returns>

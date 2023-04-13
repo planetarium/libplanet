@@ -58,41 +58,35 @@ namespace Libplanet.Tests.Tx
             var list = new TxSystemActionList(sysAction);
 
             // TODO: We should introduce snapshot testing.
-            var expected = Bencodex.Types.Dictionary.Empty.Add(
-                new byte[] { 0x41 },
-                Bencodex.Types.Dictionary.Empty
-                    .Add("type_id", 0)
-                    .Add("values", Bencodex.Types.Dictionary.Empty
-                        .Add(
-                            "recipient",
-                            Binary.FromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"))
-                        .Add("currency", FOO.Serialize())
-                        .Add("amount", (FOO * 100).RawValue)));
+            var expected = Bencodex.Types.Dictionary.Empty
+                .Add("type_id", 0)
+                .Add("values", Bencodex.Types.Dictionary.Empty
+                    .Add(
+                        "recipient",
+                        Binary.FromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"))
+                    .Add("currency", FOO.Serialize())
+                    .Add("amount", (FOO * 100).RawValue));
             AssertBencodexEqual(expected, list.ToBencodex());
         }
 
         [Fact]
         public void FromBencodex()
         {
-            var input = Bencodex.Types.Dictionary.Empty.Add(
-                new byte[] { 0x41 },
-                Bencodex.Types.Dictionary.Empty
-                    .Add("type_id", 0)
-                    .Add("values", Bencodex.Types.Dictionary.Empty
-                        .Add(
-                            "recipient",
-                            Binary.FromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"))
-                        .Add("currency", FOO.Serialize())
-                        .Add("amount", (FOO * 100).RawValue)));
+            var input = Bencodex.Types.Dictionary.Empty
+                .Add("type_id", 0)
+                .Add("values", Bencodex.Types.Dictionary.Empty
+                    .Add(
+                        "recipient",
+                        Binary.FromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"))
+                    .Add("currency", FOO.Serialize())
+                    .Add("amount", (FOO * 100).RawValue));
 
             var list = TxSystemActionList.FromBencodex(input);
             var sysAction = Assert.IsType<Mint>(list.SystemAction);
             var expected = new Mint(AddressA, FOO * 100);
             Assert.Equal(expected, sysAction);
 
-            var invalidInput = Bencodex.Types.Dictionary.Empty.Add(
-                new byte[] { 0x61 },
-                Bencodex.Types.List.Empty);
+            var invalidInput = Bencodex.Types.List.Empty;
             Assert.Throws<DecodingException>(
                 () => TxSystemActionList.FromBencodex(invalidInput));
         }

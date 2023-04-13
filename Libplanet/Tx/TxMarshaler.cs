@@ -105,9 +105,10 @@ namespace Libplanet.Tx
                     (Text)dictionary[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
-                actions: dictionary.TryGetValue(SystemActionKey, out IValue av)
-                    ? (TxActionList)TxSystemActionList.FromBencodex(av)
-                    : (TxActionList)TxCustomActionList.FromBencodex<T>(av));
+                actions: dictionary.TryGetValue(SystemActionKey, out IValue sav)
+                    ? (TxActionList)TxSystemActionList.FromBencodex(sav)
+                    : (TxActionList)TxCustomActionList.FromBencodex<T>(
+                        dictionary[CustomActionsKey]));
 #pragma warning restore SA1118
 
         [Pure]
