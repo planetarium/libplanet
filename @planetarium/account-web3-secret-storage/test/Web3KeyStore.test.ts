@@ -3,7 +3,7 @@ import {
   getDefaultWeb3KeyStorePath,
   parseKeyFilename,
 } from "../src/Web3KeyStore";
-import { RawPrivateKey } from "@planetarium/account";
+import { Address, RawPrivateKey } from "@planetarium/account";
 import { copyFile, mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import * as path from "node:path";
@@ -148,7 +148,9 @@ describe("Web3KeyStore", () => {
       expect(key).toStrictEqual({
         keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690",
         createdAt: new Date("2023-03-14T07:05:42Z"),
-        metadata: undefined,
+        metadata: {
+          address: Address.fromHex("6A58a1222E562174943c98ECf6e2290adA79b1B8"),
+        },
       });
     }
     expect(i).toBe(1);
@@ -171,13 +173,21 @@ describe("Web3KeyStore", () => {
         expect(key).toStrictEqual({
           keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690",
           createdAt: new Date("2023-03-14T07:05:42Z"),
-          metadata: undefined,
+          metadata: {
+            address: Address.fromHex(
+              "6A58a1222E562174943c98ECf6e2290adA79b1B8",
+            ),
+          },
         });
       } else {
         expect(key).toStrictEqual({
           keyId: "3b948485-9bd0-4149-9a36-59999b36abf3",
           createdAt: new Date("2023-03-14T07:05:52Z"),
-          metadata: undefined,
+          metadata: {
+            address: Address.fromHex(
+              "596f54a9f0c0c3da7b8BE6A577dCCb66dd36ed1E",
+            ),
+          },
         });
       }
     }
@@ -211,7 +221,9 @@ describe("Web3KeyStore", () => {
       result: "success",
       keyId: "babfe5e0-f0f1-4f51-8b8e-97f1a461c690",
       createdAt: new Date("2023-03-14T07:05:42Z"),
-      metadata: undefined,
+      metadata: {
+        address: Address.fromHex("6A58a1222E562174943c98ECf6e2290adA79b1B8"),
+      },
       account: undefined,
     });
 
@@ -290,10 +302,12 @@ describe("Web3KeyStore", () => {
     const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
 
     const before = new Date().setMilliseconds(0);
-    await store.generate();
+    const result = await store.generate();
     const after = new Date();
     expect(passphraseEntry.authenticateCalls).toStrictEqual([]);
     expect(passphraseEntry.configurePassphraseCalls).toBe(1);
+    expect(result.result).toBe("success");
+    if (result.result !== "success") throw new Error(); // type guard
 
     const files = await readdir(tmpDir);
     expect(files.length).toBe(1);
@@ -303,6 +317,14 @@ describe("Web3KeyStore", () => {
     if (parsed.createdAt == null) throw new Error(); // type guard
     expect(+parsed.createdAt).toBeGreaterThanOrEqual(+before);
     expect(+parsed.createdAt).toBeLessThanOrEqual(+after);
+    expect(parsed.keyId).toBe(result.keyId);
+
+    const error = await store.generate({
+      address: Address.fromHex("0000000000000000000000000000000000000000"),
+    });
+    expect(error.result).toBe("error");
+    if (error.result !== "error") throw new Error(); // type guard
+    expect(error.message).toMatch(/\baddress\s+cannot\s+be\s+predetermined\b/i);
   });
 
   testInTempDir("delete", async (tmpDir) => {
@@ -410,5 +432,12 @@ describe("Web3KeyStore", () => {
     expect((await loaded2.account.exportPrivateKey()).toBytes()).toStrictEqual(
       insufficientLenghtedKey.toBytes(),
     );
+
+    const error2 = await store.import(privateKey, {
+      address: Address.fromHex("0000000000000000000000000000000000000000"),
+    });
+    expect(error2.result).toBe("error");
+    if (error2.result !== "error") throw new Error(); // type guard
+    expect(error2.message).toMatch(/\baddress\s+does\s+not\s+match\b/i);
   });
 });

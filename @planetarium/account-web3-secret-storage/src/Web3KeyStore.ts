@@ -13,6 +13,7 @@ import {
   type AccountImportation,
   type AccountMetadata,
   type AccountRetrieval,
+  Address,
   type ImportableKeyStore,
   RawPrivateKey,
 } from "@planetarium/account";
@@ -62,7 +63,13 @@ export function parseKeyFilename(
   };
 }
 
-export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
+export interface Web3KeyMetadata {
+  address?: Address;
+}
+
+export class Web3KeyStore
+  implements ImportableKeyStore<KeyId, Web3Account, Web3KeyMetadata>
+{
   readonly #passphraseEntry: PassphraseEntry;
   readonly #accountOptions: Partial<Web3AccountOptions>;
 
@@ -110,17 +117,32 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
     return undefined;
   }
 
-  async *list(): AsyncIterable<AccountMetadata<KeyId>> {
+  async *list(): AsyncIterable<AccountMetadata<KeyId, Web3KeyMetadata>> {
     for await (const dirEntry of this.#listKeyFiles()) {
       const parsed = parseKeyFilename(dirEntry.name);
       if (parsed == null) continue;
-      yield { ...parsed, metadata: undefined };
+      const keyPath = path.join(this.path, dirEntry.name);
+      let json: unknown;
+      try {
+        json = JSON.parse(await fs.readFile(keyPath, { encoding: "utf8" }));
+      } catch (_) {
+        continue;
+      }
+      if (!isKeyObject(json)) continue;
+      let address: Address;
+      try {
+        address = Address.fromHex(json.address, true);
+      } catch (_) {
+        continue;
+      }
+      const metadata: Web3KeyMetadata = { address };
+      yield { ...parsed, metadata };
     }
   }
 
   async get(
     keyId: Readonly<KeyId>,
-  ): Promise<AccountRetrieval<KeyId, Web3Account>> {
+  ): Promise<AccountRetrieval<KeyId, Web3Account, Web3KeyMetadata>> {
     const keyPath = await this.#getKeyPath(keyId);
     if (keyPath == null) return { result: "keyNotFound", keyId };
     let json;
@@ -141,22 +163,29 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
     if (!isKeyObject(keyObject)) {
       return { result: "error", keyId, message: "Invalid key file" };
     }
+    const account = new Web3Account(
+      keyObject,
+      this.#passphraseEntry,
+      this.#accountOptions,
+    );
     return {
       result: "success",
-      account: new Web3Account(
-        keyObject,
-        this.#passphraseEntry,
-        this.#accountOptions,
-      ),
+      account,
       keyId,
-      metadata: undefined,
+      metadata: { address: await account.getAddress() },
       createdAt: keyPath.createdAt,
     };
   }
 
   async generate(
-    metadata?: Partial<undefined>,
+    metadata?: Partial<Web3KeyMetadata>,
   ): Promise<AccountGeneration<KeyId, Web3Account>> {
+    if (metadata?.address != null) {
+      return {
+        result: "error",
+        message: "Address cannot be predetermined before generating key",
+      };
+    }
     const privateKey = await RawPrivateKey.generate();
     const result = await this.#import(privateKey, metadata);
     if (result.result === "success") {
@@ -182,7 +211,7 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
 
   async #import(
     privateKey: RawPrivateKey,
-    metadata?: Partial<undefined>,
+    metadata?: Partial<Web3KeyMetadata>,
   ): Promise<
     | {
         readonly result: "success";
@@ -194,6 +223,17 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
         readonly message?: string;
       }
   > {
+    if (
+      metadata?.address != null &&
+      !metadata.address.equals(await Address.deriveFrom(privateKey))
+    ) {
+      return {
+        result: "error",
+        message:
+          "Address does not match the private key " +
+          "(hint: you do not have to specify it manually)",
+      };
+    }
     const passphrase = await this.#passphraseEntry.configurePassphrase();
     const keyId = generateKeyId();
     const keyObject = await encryptKeyObject(keyId, privateKey, passphrase);
@@ -220,7 +260,7 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
 
   async import(
     privateKey: RawPrivateKey,
-    metadata?: Partial<undefined>,
+    metadata?: Partial<Web3KeyMetadata>,
   ): Promise<AccountImportation<KeyId>> {
     const bytes = await privateKey.toBytes();
     if (bytes.at(0) === 0x00 && !this.#accountOptions.allowWeakPrivateKey) {

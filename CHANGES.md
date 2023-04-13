@@ -73,7 +73,8 @@ To be released.
     `Address` when a `PublicKey` is given.  [[#3061]]
  -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` no more implements
     `ImportableKeyStore<KeyId, RawPrivateKey>`.  Instead, it now implements
-    `ImportableKeyStore<KeyId, Web3Account>`.  [[#3061]]
+    `ImportableKeyStore<KeyId, Web3Account, Web3KeyMetadata>`.
+    [[#3061], [#3084]]
  -  (Libplanet.Explorer) Added `Index` field to `IBlockChainContext` interface.
     [[#2613]]
  -  Removed `BlockChain<T>.ProposeBlock(PrivateKey, DateTimeOffset, long, int,
@@ -145,6 +146,8 @@ To be released.
      -  Added `Web3KeyStoreOptions.decryptionOptions` attribute.
  -  (@planetarium/account-web3-secret-storage) Added `WeakPrivateKeyError`
     class.  [[#3071]]
+ -  (@planetarium/account-web3-secret-storage) Added `Web3KeyMetadata`
+    interface.  [[#3084]]
 
 ### Behavioral changes
 
