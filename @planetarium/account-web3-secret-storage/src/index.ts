@@ -2,7 +2,7 @@ export { KeyId } from "./KeyId.js";
 export { PassphraseEntry } from "./PassphraseEntry.js";
 export { TtyPassphraseEntry } from "./TtyPassphraseEntry.js";
 export {
-  type DecryptionOptions,
+  type Web3AccountOptions as DecryptionOptions,
   WeakPrivateKeyError,
   Web3Account,
   type Web3KeyObject,

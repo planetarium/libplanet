@@ -344,10 +344,34 @@ describe("Web3KeyStore", () => {
     if (parsed.createdAt == null) throw new Error(); // type guard
     expect(+parsed.createdAt).toBeGreaterThanOrEqual(+before);
     expect(+parsed.createdAt).toBeLessThanOrEqual(+after);
+    expect(result).toStrictEqual({ result: "success", keyId: parsed.keyId });
 
     const loaded = await store.get(parsed.keyId);
     if (loaded.result !== "success") throw Error(); // type guard
     const exportedKey = await loaded.account.exportPrivateKey();
     expect(exportedKey.toBytes()).toStrictEqual(privateKey.toBytes());
+
+    const insufficientLenghtedKey = RawPrivateKey.fromHex(
+      "00000000000000000000000000000000000000000000000000000000000000aa",
+    );
+
+    const error = await store.import(insufficientLenghtedKey);
+    expect(error.result).toBe("error");
+    if (error.result !== "error") throw new Error(); // type guard
+    expect(error.message).toMatch(/\btoo\s+weak\b/i);
+
+    const nonStrictStore = new Web3KeyStore({
+      path: tmpDir,
+      passphraseEntry,
+      allowWeakPrivateKey: true,
+    });
+    const result2 = await nonStrictStore.import(insufficientLenghtedKey);
+    expect(result2.result).toBe("success");
+    if (result2.result !== "success") throw new Error(); // type guard
+    const loaded2 = await nonStrictStore.get(result2.keyId);
+    if (loaded2.result !== "success") throw Error(); // type guard
+    expect((await loaded2.account.exportPrivateKey()).toBytes()).toStrictEqual(
+      insufficientLenghtedKey.toBytes(),
+    );
   });
 });

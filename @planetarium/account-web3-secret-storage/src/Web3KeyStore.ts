@@ -3,7 +3,7 @@ import { PassphraseEntry } from "./PassphraseEntry.js";
 import {
   encryptKeyObject,
   isKeyObject,
-  type DecryptionOptions,
+  type Web3AccountOptions,
   Web3Account,
   Web3KeyObject,
 } from "./Web3Account.js";
@@ -64,12 +64,14 @@ export function parseKeyFilename(
 
 export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
   readonly #passphraseEntry: PassphraseEntry;
+  readonly #accountOptions: Partial<Web3AccountOptions>;
 
   readonly path: string;
 
-  constructor(options: Web3KeyStoreOptions) {
+  constructor(options: Web3KeyStoreOptions & Partial<Web3AccountOptions>) {
     this.path = options.path ?? getDefaultWeb3KeyStorePath();
     this.#passphraseEntry = options.passphraseEntry;
+    this.#accountOptions = options;
   }
 
   async *#listKeyFiles(): AsyncIterable<Dirent> {
@@ -216,6 +218,17 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
     privateKey: RawPrivateKey,
     metadata?: Partial<undefined>,
   ): Promise<AccountImportation<KeyId>> {
+    const bytes = await privateKey.toBytes();
+    if (bytes.at(0) === 0x00 && !this.#accountOptions.allowWeakPrivateKey) {
+      return {
+        result: "error",
+        message:
+          "The private key given is too weak; keys of length less than 32 bytes " +
+          "are disallowed by default.  See also " +
+          "the Web3AccountOptions.allowWeakPrivateKey option.",
+      };
+    }
+
     const result = await this.#import(privateKey, metadata);
     if (result.result === "success") {
       return { result: "success", keyId: result.keyId };

@@ -55,12 +55,12 @@ export interface Web3KeyObject {
 export class Web3Account implements ExportableAccount {
   #keyObject: Web3KeyObject;
   #passphraseEntry: PassphraseEntry;
-  #options: Partial<DecryptionOptions>;
+  #options: Partial<Web3AccountOptions>;
 
   constructor(
     keyObject: Web3KeyObject,
     passphraseEntry: PassphraseEntry,
-    options: Partial<DecryptionOptions> = {},
+    options: Partial<Web3AccountOptions> = {},
   ) {
     this.#keyObject = keyObject;
     this.#passphraseEntry = passphraseEntry;
@@ -68,7 +68,7 @@ export class Web3Account implements ExportableAccount {
   }
 
   async #exportPrivateKey(
-    options: Partial<DecryptionOptions> = {},
+    options: Partial<Web3AccountOptions> = {},
   ): Promise<RawPrivateKey> {
     let firstAttempt = true;
     let privateKey: RawPrivateKey;
@@ -244,7 +244,7 @@ function isKeyObjectKdf(json: unknown): json is Web3KeyObjectKdf {
   }
 }
 
-export interface DecryptionOptions {
+export interface Web3AccountOptions {
   /**
    * Whether to allow weak private keys (i.e. private keys with leading zeros).
    */
@@ -258,7 +258,7 @@ export class WeakPrivateKeyError extends Error {
 export async function decryptKeyObject(
   keyObject: Web3KeyObject,
   passphrase: Passphrase,
-  options: Partial<DecryptionOptions> = {},
+  options: Partial<Web3AccountOptions> = {},
 ): Promise<{ keyId: KeyId; privateKey: RawPrivateKey }> {
   if (keyObject == null) {
     throw new Error("Key object is null.");
@@ -280,7 +280,7 @@ export async function decryptKeyObject(
     throw new WeakPrivateKeyError(
       "The private key given is too weak; keys of length less than 32 bytes " +
         "are disallowed by default.  See also " +
-        "the DecryptionOptions.allowWeakPrivateKey option.",
+        "the Web3AccountOptions.allowWeakPrivateKey option.",
     );
   }
   const privateKey = RawPrivateKey.fromBytes(privateKeyBytes);

@@ -5,7 +5,7 @@ import { describe, expect, test } from "vitest";
 import { KeyId } from "../src/KeyId";
 import { Passphrase } from "../src/PassphraseEntry";
 import {
-  DecryptionOptions,
+  Web3AccountOptions,
   decryptKeyObject,
   encryptKeyObject,
   IncorrectPassphraseError,
@@ -85,7 +85,7 @@ interface TestVector {
   keyObject: Web3KeyObject;
   passphrase: Passphrase;
   privateKey: RawPrivateKey;
-  options?: Partial<DecryptionOptions>;
+  options?: Partial<Web3AccountOptions>;
 }
 
 const testVectors: Record<string, TestVector> = {
