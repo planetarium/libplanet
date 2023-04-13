@@ -25,6 +25,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `IActonEvaluator` interface.  [[#3082]]
+
 ### Behavioral changes
 
  -  Changed `BlockChain<T>` to ignore `IRenderer<T>.RenderReorg()`,
@@ -38,6 +40,7 @@ To be released.
 
 ### CLI tools
 
+[#3082]: https://github.com/planetarium/libplanet/pull/3082
 [#3083]: https://github.com/planetarium/libplanet/pull/3083
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
 [#3092]: https://github.com/planetarium/libplanet/pull/3092

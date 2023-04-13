@@ -161,7 +161,7 @@ namespace Libplanet.Blockchain
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
             IBlockChainStates blockChainStates,
-            ActionEvaluator actionEvaluator
+            IActionEvaluator actionEvaluator
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
@@ -192,7 +192,7 @@ namespace Libplanet.Blockchain
             Block<T> genesisBlock,
             IEnumerable<IRenderer<T>> renderers,
             IBlockChainStates blockChainStates,
-            ActionEvaluator actionEvaluator)
+            IActionEvaluator actionEvaluator)
         {
             if (store is null)
             {
@@ -320,7 +320,7 @@ namespace Libplanet.Blockchain
 
         internal IStateStore StateStore { get; }
 
-        internal ActionEvaluator ActionEvaluator { get; }
+        internal IActionEvaluator ActionEvaluator { get; }
 
         /// <summary>
         /// Whether the instance is canonical or not.

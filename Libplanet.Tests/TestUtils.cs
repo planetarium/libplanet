@@ -569,6 +569,35 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
+            return MakeBlockChainAndActionEvaluator(
+                policy,
+                store,
+                stateStore,
+                actions,
+                validatorSet,
+                privateKey,
+                timestamp,
+                renderers,
+                genesisBlock,
+                protocolVersion
+            ).BlockChain;
+        }
+
+        public static (BlockChain<T> BlockChain, ActionEvaluator ActionEvaluator)
+            MakeBlockChainAndActionEvaluator<T>(
+            IBlockPolicy<T> policy,
+            IStore store,
+            IStateStore stateStore,
+            IEnumerable<T> actions = null,
+            ValidatorSet validatorSet = null,
+            PrivateKey privateKey = null,
+            DateTimeOffset? timestamp = null,
+            IEnumerable<IRenderer<T>> renderers = null,
+            Block<T> genesisBlock = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
+        )
+            where T : IAction, new()
+        {
             actions = actions ?? ImmutableArray<T>.Empty;
             privateKey = privateKey ?? ChainPrivateKey;
 
@@ -607,6 +636,17 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             ValidatingActionRenderer<T> validator = null;
+            var blockChainStates = new BlockChainStates(store, stateStore);
+            var actionEvaluator = new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: blockChainStates,
+                    trieGetter: hash =>
+                        stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
+                    genesisHash: genesisBlock.Hash,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionTypeLoader.Create<T>(),
+                    feeCalculator: null
+            );
 #pragma warning disable S1121
             var chain = BlockChain<T>.Create(
                 policy,
@@ -614,7 +654,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 store,
                 stateStore,
                 genesisBlock,
-                renderers: renderers ?? new[] { validator = new ValidatingActionRenderer<T>() }
+                renderers: renderers ?? new[] { validator = new ValidatingActionRenderer<T>() },
+                blockChainStates: blockChainStates,
+                actionEvaluator: actionEvaluator
             );
 #pragma warning restore S1121
 
@@ -623,7 +665,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 validator.BlockChain = chain;
             }
 
-            return chain;
+            return (chain, actionEvaluator);
         }
 
         public static async Task AssertThatEventually(
