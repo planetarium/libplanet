@@ -15,8 +15,6 @@ namespace Libplanet.Tx
     /// <seealso cref="Libplanet.Action.Sys"/>
     public sealed class TxSystemActionList : TxActionList
     {
-        internal static readonly Binary SystemActionKey = new byte[] { 0x41 }; // 'A'
-
         /// <summary>
         /// Creates a new <see cref="TxSystemActionList"/> instance with the given
         /// <paramref name="systemAction"/>.
@@ -81,29 +79,20 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="TxActionList.ToBencodex()"/>
         [Pure]
-        public override Dictionary ToBencodex() =>
-            Bencodex.Types.Dictionary.Empty.Add(SystemActionKey, Registry.Serialize(SystemAction));
+        public override IValue ToBencodex() => Registry.Serialize(SystemAction);
 
         [Pure]
-        internal static TxSystemActionList FromBencodex(Bencodex.Types.Dictionary dictionary)
+        internal static TxSystemActionList FromBencodex(IValue value)
         {
-            if (dictionary.TryGetValue(SystemActionKey, out IValue v))
+            if (value is Dictionary dict)
             {
-                if (v is Bencodex.Types.Dictionary sysAction)
-                {
-                    return new TxSystemActionList(Registry.Deserialize(sysAction));
-                }
-
-                throw new DecodingException(
-                    $"Expected {SystemActionKey} key to have a " +
-                    $"{typeof(Bencodex.Types.Dictionary).FullName}, " +
-                    $"but it is a {v.GetType().FullName}.");
+                return new TxSystemActionList(Registry.Deserialize(dict));
             }
-
-            throw new DecodingException(
-                $"Expected {SystemActionKey} key to have a " +
-                $"{typeof(Bencodex.Types.Dictionary).FullName}, but it was missing."
-            );
+            else
+            {
+                throw new DecodingException(
+                    $"Given value must be a {nameof(Dictionary)}: {value.GetType()}");
+            }
         }
     }
 }

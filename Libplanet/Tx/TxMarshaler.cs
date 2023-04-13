@@ -22,6 +22,8 @@ namespace Libplanet.Tx
         private static readonly Binary SignerKey = new byte[] { 0x73 }; // 's'
         private static readonly Binary PublicKeyKey = new byte[] { 0x70 }; // 'p'
         private static readonly Binary SignatureKey = new byte[] { 0x53 }; // 'S'
+        private static readonly Binary SystemActionKey = new byte[] { 0x41 }; // 'A'
+        private static readonly Binary CustomActionsKey = new byte[] { 0x61 }; // 'a'
         private static readonly Codec Codec = new Codec();
 
         [Pure]
@@ -33,7 +35,18 @@ namespace Libplanet.Tx
             string timestamp = invoice.Timestamp
                 .ToUniversalTime()
                 .ToString(TimestampFormat, CultureInfo.InvariantCulture);
-            Bencodex.Types.Dictionary dict = invoice.Actions.ToBencodex()
+
+            Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty;
+            if (invoice.Actions is TxSystemActionList tsal)
+            {
+                dict = dict.Add(SystemActionKey, tsal.ToBencodex());
+            }
+            else if (invoice.Actions is TxCustomActionList tcal)
+            {
+                dict = dict.Add(CustomActionsKey, tcal.ToBencodex());
+            }
+
+            dict = dict
                 .Add(UpdatedAddressesKey, updatedAddresses)
                 .Add(TimestampKey, timestamp);
 
@@ -80,9 +93,10 @@ namespace Libplanet.Tx
         public static ITxInvoice UnmarshalTxInvoice<T>(Bencodex.Types.Dictionary dictionary)
             where T : IAction, new()
         =>
+#pragma warning disable SA1118  // The parameter spans multiple lines
             new TxInvoice(
-                genesisHash: dictionary.TryGetValue(GenesisHashKey, out IValue v)
-                    ? new BlockHash(v)
+                genesisHash: dictionary.TryGetValue(GenesisHashKey, out IValue gv)
+                    ? new BlockHash(gv)
                     : (BlockHash?)null,
                 updatedAddresses: new AddressSet(
                     ((Bencodex.Types.List)dictionary[UpdatedAddressesKey])
@@ -90,10 +104,11 @@ namespace Libplanet.Tx
                 timestamp: DateTimeOffset.ParseExact(
                     (Text)dictionary[TimestampKey],
                     TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ).ToUniversalTime(),
-                actions: TxActionList.FromBencodex<T>(dictionary)
-            );
+                    CultureInfo.InvariantCulture).ToUniversalTime(),
+                actions: dictionary.TryGetValue(SystemActionKey, out IValue av)
+                    ? (TxActionList)TxSystemActionList.FromBencodex(av)
+                    : (TxActionList)TxCustomActionList.FromBencodex<T>(av));
+#pragma warning restore SA1118
 
         [Pure]
         public static ITxSigningMetadata UnmarshalTxSigningMetadata(
