@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -7,7 +8,7 @@ namespace Libplanet.Action
     /// A record type to represent an evaluation plan and result of
     /// a single action.
     /// </summary>
-    public class ActionEvaluation
+    public class ActionEvaluation : IActionEvaluation
     {
         /// <summary>
         /// Creates an <see cref="ActionEvaluation"/> instance
@@ -34,6 +35,8 @@ namespace Libplanet.Action
             Logs = logs ?? new List<string>();
             Exception = exception;
         }
+
+        IValue IActionEvaluation.Action => Action.PlainValue;
 
         /// <summary>
         /// An action to evaluate.

@@ -49,6 +49,7 @@ To be released.
 
  -  Added `IActonEvaluator` interface.  [[#3082]]
  -  Added `ActionTypeAttribute(int)` constructor.  [[#3111]]
+ -  Added `IActionEvaluation` interface.  [[#3089]]
 
 ### Behavioral changes
 
@@ -72,6 +73,7 @@ To be released.
 [#3082]: https://github.com/planetarium/libplanet/pull/3082
 [#3083]: https://github.com/planetarium/libplanet/pull/3083
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
+[#3089]: https://github.com/planetarium/libplanet/pull/3089
 [#3092]: https://github.com/planetarium/libplanet/pull/3092
 [#3098]: https://github.com/planetarium/libplanet/pull/3098
 [#3106]: https://github.com/planetarium/libplanet/pull/3106
