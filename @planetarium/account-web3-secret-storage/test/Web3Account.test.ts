@@ -116,6 +116,17 @@ const testVectors: Record<string, TestVector> = {
 };
 
 describe("Web3Account", () => {
+  describe("getAddress()", () => {
+    for (const [kdf, { keyObject, passphrase, options }] of Object.entries(
+      testVectors,
+    )) {
+      test(kdf, async () => {
+        const passphraseEntry = new MockPassphraseEntry(passphrase);
+        const key = new Web3Account(keyObject, passphraseEntry, options);
+        expect((await key.getAddress()).toHex("lower")).toBe(keyObject.address);
+      });
+    }
+  });
   describe("getPublicKey()", () => {
     test("fastcheck", async () => {
       const passphraseEntry = new MockPassphraseEntry();

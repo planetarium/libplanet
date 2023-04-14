@@ -1,5 +1,6 @@
 import * as fc from "fast-check";
 import * as secp256k1 from "@noble/secp256k1";
+import { Address } from "../src/Address";
 import { PublicKey } from "../src/PublicKey";
 import { RawPrivateKey } from "../src/RawPrivateKey";
 import { describe, expect, test } from "vitest";
@@ -82,6 +83,15 @@ describe("RawPrivateKey", () => {
     const keyBytes = rawKey.toBytes();
     expect(keyBytes.length).toBe(32);
     expect(keyBytes).toSatisfy(secp256k1.utils.isValidPrivateKey);
+  });
+
+  test("getAddress()", async () => {
+    const key = RawPrivateKey.fromHex(
+      "5760ea321bdd7ac302469e192aa527b6458e3a1e0ddf6c76d9618aca6f653b4d",
+    );
+    const address = await key.getAddress();
+    expect(address).toBeInstanceOf(Address);
+    expect(address.toHex()).toBe("8f64a97ACABB267B29854FdA9e6B1397A8991135");
   });
 
   test("publicKey [deprecated]", () => {

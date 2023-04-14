@@ -67,12 +67,14 @@ To be released.
  -  Removed `HashCash` class.  [[#3067]]
  -  (@planetarium/account) Replaced `Account.publicKey` property with
     `Account.getPublicKey()` async method.  [[#3061]]
+ -  (@planetarium/account) Added `Account.getAddress()` async method.  [[#3084]]
  -  (@planetarium/account) `Address.deriveFrom()` method now returns
     `Promise<Address>` when an `Account` is given.  However, it still returns
     `Address` when a `PublicKey` is given.  [[#3061]]
  -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` no more implements
     `ImportableKeyStore<KeyId, RawPrivateKey>`.  Instead, it now implements
-    `ImportableKeyStore<KeyId, Web3Account>`.  [[#3061]]
+    `ImportableKeyStore<KeyId, Web3Account, Web3KeyMetadata>`.
+    [[#3061], [#3084]]
  -  (Libplanet.Explorer) Added `Index` field to `IBlockChainContext` interface.
     [[#2613]]
  -  Removed `BlockChain<T>.ProposeBlock(PrivateKey, DateTimeOffset, long, int,
@@ -110,12 +112,17 @@ To be released.
  -  (Libplanet.Net) Added `Gossip.PublishMessage()` method.  [[#3054], [#3060]]
  -  (@planetarium/account) Added `Account.getPublicKey()` async method.
     [[#3061]]
+ -  (@planetarium/account) Added `Account.getAddress()` async method.  [[#3084]]
  -  (@planetarium/account) Added `RawPrivateKey.getPublicKey()` async method.
     [[#3061]]
+ -  (@planetarium/account) Added `RawPrivateKey.getAddress()` async method.
+    [[#3084]]
  -  (@planetarium/account-aws-kms) Added `AwsKmsAccount.getPublicKey()` async
     method.  [[#3061]]
+ -  (@planetarium/account-aws-kms) Added `AwsKmsAccount.getAddress()` async
+    method.  [[#3084]]
  -  (@planetarium/account-web3-secret-storage) Added `Web3Account` class.
-    [[#3061]]
+    [[#3061], [#3084]]
  -  (@planetarium/account-web3-secret-storage) Added `Web3KeyObject` interface.
     [[#3061]]
  -  (Libplanet.Explorer) Added several interfaces and classes that pertain to
@@ -139,6 +146,8 @@ To be released.
      -  Added `Web3KeyStoreOptions.decryptionOptions` attribute.
  -  (@planetarium/account-web3-secret-storage) Added `WeakPrivateKeyError`
     class.  [[#3071]]
+ -  (@planetarium/account-web3-secret-storage) Added `Web3KeyMetadata`
+    interface.  [[#3084]]
 
 ### Behavioral changes
 
@@ -255,6 +264,7 @@ To be released.
 [#3077]: https://github.com/planetarium/libplanet/pull/3077
 [#3079]: https://github.com/planetarium/libplanet/pull/3079
 [#3080]: https://github.com/planetarium/libplanet/pull/3080
+[#3084]: https://github.com/planetarium/libplanet/pull/3084
 
 
 Version 0.53.4

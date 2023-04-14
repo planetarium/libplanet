@@ -1,4 +1,5 @@
 import * as secp256k1 from "@noble/secp256k1";
+import Address from "./Address.js";
 import { Message, hashMessage } from "./Message.js";
 import PublicKey from "./PublicKey.js";
 import Signature from "./Signature.js";
@@ -45,6 +46,10 @@ export class RawPrivateKey {
 
   static generate(): RawPrivateKey {
     return this.fromBytes(secp256k1.utils.randomPrivateKey());
+  }
+
+  getAddress(): Promise<Address> {
+    return Promise.resolve(Address.deriveFrom(this.publicKey));
   }
 
   /**

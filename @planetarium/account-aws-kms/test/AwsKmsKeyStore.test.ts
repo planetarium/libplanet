@@ -12,7 +12,7 @@ import {
   OriginType,
   ScheduleKeyDeletionCommand,
 } from "@aws-sdk/client-kms";
-import { PublicKey } from "@planetarium/account";
+import { Address, PublicKey } from "@planetarium/account";
 import { AggregateError } from "es-aggregate-error";
 import { randomUUID } from "node:crypto";
 import { hostname, userInfo } from "node:os";
@@ -176,6 +176,9 @@ describe.runIf(envsConfigured)("AwsKmsKeyStore", async () => {
       },
       createdAt: metadata.CreationDate,
     });
+    expect((await account.getAddress()).toHex()).toStrictEqual(
+      Address.deriveFrom(publicKey).toHex(),
+    );
     expect((await account.getPublicKey()).toHex("compressed")).toStrictEqual(
       publicKey.toHex("compressed"),
     );
