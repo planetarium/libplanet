@@ -40,6 +40,15 @@ To be released.
     `string?` to `IValue?`.  [[#3111]]
  -  Changed the return type for `IActionTypeLoader.Load()` from
     `IDictionary<string, Type>` to `IDictionary<IValue, Type>`.  [[#3111]]
+ -  Changed return types and parameter types of serveral methods from
+    `IReadOnlyList<ActionEvaluation>` to `IReadOnlyList<IActionEvaluation>`.
+    [[#3089]]
+     -  `BlockChain<T>.DetermineGenesisStateRootHash()`
+        method's `evaluations` parameter type.
+     -  `BlockChain<T>.DetermineBlockStateRootHash()`
+        method's `evaluations` parameter type.
+     -  `BlockChain<T>.EvaluateBlock()` method's return type.
+     -  `BlockChain<T>.EvaluateGenesis()` method's return type.
 
 ### Backward-incompatible network protocol changes
 

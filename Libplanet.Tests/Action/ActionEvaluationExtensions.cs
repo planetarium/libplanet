@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Action
     public static class ActionEvaluationExtensions
     {
         public static IImmutableDictionary<Address, IValue> GetDirtyStates(
-            this IEnumerable<ActionEvaluation> evaluations
+            this IEnumerable<IActionEvaluation> evaluations
         ) =>
             evaluations.Aggregate(
                 ImmutableDictionary<Address, IValue>.Empty,
@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Action
 
         public static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
         GetDirtyBalances(
-            this IEnumerable<ActionEvaluation> evaluations
+            this IEnumerable<IActionEvaluation> evaluations
         ) =>
             evaluations.Aggregate(
                 ImmutableDictionary<(Address, Currency), FungibleAssetValue>.Empty,
@@ -27,7 +27,7 @@ namespace Libplanet.Tests.Action
             );
 
         public static IImmutableDictionary<Currency, FungibleAssetValue>
-        GetDirtyTotalSupplies(this IEnumerable<ActionEvaluation> evaluations) =>
+        GetDirtyTotalSupplies(this IEnumerable<IActionEvaluation> evaluations) =>
             evaluations.Aggregate(
                 ImmutableDictionary<Currency, FungibleAssetValue>.Empty,
                 (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedTotalSupplies())

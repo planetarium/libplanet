@@ -98,7 +98,7 @@ namespace Libplanet.Net.Consensus
 
         private readonly ILogger _logger;
         private readonly
-            LRUCache<BlockHash, (bool IsValid, IReadOnlyList<ActionEvaluation> EvaluatedActions)>
+            LRUCache<BlockHash, (bool IsValid, IReadOnlyList<IActionEvaluation> EvaluatedActions)>
             _blockValidationCache;
 
         private Block<T>? _lockedValue;
@@ -193,7 +193,7 @@ namespace Libplanet.Net.Consensus
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
             _blockValidationCache =
-                new LRUCache<BlockHash, (bool, IReadOnlyList<ActionEvaluation>)>(
+                new LRUCache<BlockHash, (bool, IReadOnlyList<IActionEvaluation>)>(
                     cacheSize, Math.Max(cacheSize / 64, 8));
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
@@ -362,7 +362,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <returns><see langword="true"/> if block is valid, otherwise <see langword="false"/>.
         /// </returns>
-        private bool IsValid(Block<T> block, out IReadOnlyList<ActionEvaluation> evaluatedActions)
+        private bool IsValid(Block<T> block, out IReadOnlyList<IActionEvaluation> evaluatedActions)
         {
             if (_blockValidationCache.TryGet(block.Hash, out var cached))
             {
@@ -374,11 +374,11 @@ namespace Libplanet.Net.Consensus
                 // Neeed to get txs from store, lock?
                 // TODO: Remove ChainId, enhancing lock management.
                 _blockChain._rwlock.EnterUpgradeableReadLock();
-                IReadOnlyList<ActionEvaluation> actionEvaluations;
+                IReadOnlyList<IActionEvaluation> actionEvaluations;
 
                 if (block.Index != Height)
                 {
-                    evaluatedActions = ImmutableArray<ActionEvaluation>.Empty;
+                    evaluatedActions = ImmutableArray<IActionEvaluation>.Empty;
                     _blockValidationCache.AddReplace(block.Hash, (false, evaluatedActions));
                     return false;
                 }
@@ -422,7 +422,7 @@ namespace Libplanet.Net.Consensus
                         "Block #{Index} {Hash} is invalid",
                         block.Index,
                         block.Hash);
-                    evaluatedActions = ImmutableArray<ActionEvaluation>.Empty;
+                    evaluatedActions = ImmutableArray<IActionEvaluation>.Empty;
                     _blockValidationCache.AddReplace(block.Hash, (false, evaluatedActions));
                     return false;
                 }

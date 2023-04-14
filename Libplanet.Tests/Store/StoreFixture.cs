@@ -112,7 +112,7 @@ namespace Libplanet.Tests.Store
                     preEval,
                     blockAction,
                     nativeTokens is null ? _ => true : (Predicate<Currency>)nativeTokens.Contains,
-                    out IReadOnlyList<ActionEvaluation> evals));
+                    out IReadOnlyList<IActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;

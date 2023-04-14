@@ -20,18 +20,18 @@ namespace Libplanet.Blockchain
         /// <returns>The corresponding <see cref="TxExecution"/>s.</returns>
         internal IEnumerable<TxExecution> MakeTxExecutions(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation> evaluations
+            IReadOnlyList<IActionEvaluation> evaluations
         )
         {
-            IEnumerable<IGrouping<TxId, ActionEvaluation>> evaluationsPerTxs = evaluations
+            IEnumerable<IGrouping<TxId, IActionEvaluation>> evaluationsPerTxs = evaluations
                 .Where(e => e.InputContext.TxId is { })
                 .GroupBy(e => e.InputContext.TxId!.Value);
             int count = 0;
-            foreach (IGrouping<TxId, ActionEvaluation> txEvals in evaluationsPerTxs)
+            foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
             {
                 TxId txid = txEvals.Key;
                 IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousStates;
-                ActionEvaluation evalSum = txEvals.Last();
+                IActionEvaluation evalSum = txEvals.Last();
                 var actionsLogsList = txEvals.Select(ae => ae.Logs).ToList();
                 TxExecution txExecution;
                 if (evalSum.Exception is { } e)

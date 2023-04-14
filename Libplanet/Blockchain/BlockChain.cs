@@ -438,7 +438,7 @@ namespace Libplanet.Blockchain
                 preEval,
                 policy.BlockAction,
                 policy.NativeTokens.Contains,
-                out IReadOnlyList<ActionEvaluation> evals);
+                out IReadOnlyList<IActionEvaluation> evals);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
@@ -1085,7 +1085,7 @@ namespace Libplanet.Blockchain
             Block<T> block,
             BlockCommit blockCommit,
             bool render,
-            IReadOnlyList<ActionEvaluation> actionEvaluations = null
+            IReadOnlyList<IActionEvaluation> actionEvaluations = null
         )
         {
             if (Count == 0)

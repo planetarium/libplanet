@@ -11,7 +11,7 @@ namespace Libplanet.Action
     internal static class ActionEvaluationsExtensions
     {
         public static ImmutableDictionary<string, IValue> GetTotalDelta(
-            this IReadOnlyList<ActionEvaluation> actionEvaluations,
+            this IReadOnlyList<IActionEvaluation> actionEvaluations,
             Func<Address, string> toStateKey,
             Func<(Address, Currency), string> toFungibleAssetKey,
             Func<Currency, string> toTotalSupplyKey,

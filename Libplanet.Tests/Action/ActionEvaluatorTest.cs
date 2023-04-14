@@ -88,7 +88,7 @@ namespace Libplanet.Tests.Action
                     noStateRootBlock,
                     null,
                     _ => true,
-                    out IReadOnlyList<ActionEvaluation> evals));
+                    out IReadOnlyList<IActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             var actionEvaluator =
@@ -646,8 +646,8 @@ namespace Libplanet.Tests.Action
                 BigInteger[] initBalances = new BigInteger[3];
                 for (int i = 0; i < evaluations.Length; i++)
                 {
-                    ActionEvaluation eval = evaluations[i];
-                    Assert.Equal(actions[i], eval.Action);
+                    IActionEvaluation eval = evaluations[i];
+                    Assert.Equal(actions[i], ToAction<DumbAction>(eval.Action));
                     Assert.Equal(_txFx.Address1, eval.InputContext.Signer);
                     Assert.Equal(tx.Id, eval.InputContext.TxId);
                     Assert.Equal(addresses[0], eval.InputContext.Miner);
@@ -657,7 +657,7 @@ namespace Libplanet.Tests.Action
                         (Integer)eval.OutputStates.GetState(
                             DumbAction.RandomRecordsAddress),
                         (Integer)eval.InputContext.Random.Next());
-                    ActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
+                    IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
                     Assert.Equal(
                         prevEval is null
                             ? initStates
@@ -806,14 +806,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             for (int i = 0; i < evalsA.Length; i++)
             {
-                ActionEvaluation eval = evalsA[i];
+                IActionEvaluation eval = evalsA[i];
                 IActionContext context = eval.InputContext;
                 IAccountStateDelta prevStates = context.PreviousStates;
                 IAccountStateDelta outputStates = eval.OutputStates;
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
                 _logger.Debug("txA.CustomActions[{0}] = {1}", i, txA.CustomActions[i]);
 
-                Assert.Equal(txA.CustomActions[i], eval.Action);
+                Assert.Equal(txA.CustomActions[i], ToAction<Arithmetic>(eval.Action));
                 Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
@@ -860,7 +860,7 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < evalsB.Length; i++)
             {
-                ActionEvaluation eval = evalsB[i];
+                IActionEvaluation eval = evalsB[i];
                 IActionContext context = eval.InputContext;
                 IAccountStateDelta prevStates = context.PreviousStates;
                 IAccountStateDelta outputStates = eval.OutputStates;
@@ -868,7 +868,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
                 _logger.Debug("txB.CustomActions[{0}] = {@1}", i, txB.CustomActions[i]);
 
-                Assert.Equal(txB.CustomActions[i], eval.Action);
+                Assert.Equal(txB.CustomActions[i], ToAction<Arithmetic>(eval.Action));
                 Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
@@ -1065,6 +1065,14 @@ namespace Libplanet.Tests.Action
                     .Select(tx => tx.Signer.ToString())));
         }
 
+        private static T ToAction<T>(IValue plainValue)
+            where T : IAction, new()
+        {
+            var action = new T();
+            action.LoadPlainValue(plainValue);
+            return action;
+        }
+
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
@@ -1212,7 +1220,7 @@ namespace Libplanet.Tests.Action
                     0);
             for (int i = 0; i < evalsA.Length; i++)
             {
-                ActionEvaluation eval = evalsA[i];
+                IActionEvaluation eval = evalsA[i];
                 IActionContext context = eval.InputContext;
                 Assert.Equal(initialRandomSeed + i, context.Random.Seed);
             }
