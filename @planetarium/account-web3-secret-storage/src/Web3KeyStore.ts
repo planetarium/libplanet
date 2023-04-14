@@ -1,17 +1,21 @@
-import { KeyId } from "./KeyId.js";
+import { generateKeyId, KeyId } from "./KeyId.js";
 import { PassphraseEntry } from "./PassphraseEntry.js";
-import { Web3Account, Web3KeyObject } from "./Web3Account.js";
+import {
+  encryptKeyObject,
+  isKeyObject,
+  type Web3AccountOptions,
+  Web3Account,
+  Web3KeyObject,
+} from "./Web3Account.js";
 import {
   type AccountDeletion,
   type AccountGeneration,
   type AccountImportation,
   type AccountMetadata,
   type AccountRetrieval,
-  Address,
   type ImportableKeyStore,
   RawPrivateKey,
 } from "@planetarium/account";
-import { encryptKeystoreJson, isKeystoreJson } from "ethers";
 import { Dirent } from "node:fs";
 import * as fs from "node:fs/promises";
 import { homedir } from "node:os";
@@ -60,12 +64,14 @@ export function parseKeyFilename(
 
 export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
   readonly #passphraseEntry: PassphraseEntry;
+  readonly #accountOptions: Partial<Web3AccountOptions>;
 
   readonly path: string;
 
-  constructor(options: Web3KeyStoreOptions) {
+  constructor(options: Web3KeyStoreOptions & Partial<Web3AccountOptions>) {
     this.path = options.path ?? getDefaultWeb3KeyStorePath();
     this.#passphraseEntry = options.passphraseEntry;
+    this.#accountOptions = options;
   }
 
   async *#listKeyFiles(): AsyncIterable<Dirent> {
@@ -131,12 +137,17 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
       }
       return { result: "error", keyId, message: `${e}` };
     }
-    if (!isKeystoreJson(json)) {
+    const keyObject: unknown = JSON.parse(json);
+    if (!isKeyObject(keyObject)) {
       return { result: "error", keyId, message: "Invalid key file" };
     }
     return {
       result: "success",
-      account: new Web3Account(JSON.parse(json), this.#passphraseEntry),
+      account: new Web3Account(
+        keyObject,
+        this.#passphraseEntry,
+        this.#accountOptions,
+      ),
       keyId,
       metadata: undefined,
       createdAt: keyPath.createdAt,
@@ -184,15 +195,8 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
       }
   > {
     const passphrase = await this.#passphraseEntry.configurePassphrase();
-    const json = await encryptKeystoreJson(
-      {
-        address: (await Address.deriveFrom(privateKey)).toString(),
-        privateKey: `0x${Buffer.from(privateKey.toBytes()).toString("hex")}`,
-      },
-      passphrase,
-    );
-    const keyObject: Web3KeyObject = JSON.parse(json);
-    const { id: keyId } = keyObject;
+    const keyId = generateKeyId();
+    const keyObject = await encryptKeyObject(keyId, privateKey, passphrase);
     try {
       await fs.mkdir(this.path, { recursive: true });
     } catch (e) {
@@ -207,7 +211,7 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
         .replace(/:/g, "-")}--${keyId}`,
     );
     try {
-      await fs.writeFile(keyPath, json, "utf8");
+      await fs.writeFile(keyPath, JSON.stringify(keyObject), "utf8");
     } catch (e) {
       return { result: "error", message: `${e}` };
     }
@@ -218,6 +222,17 @@ export class Web3KeyStore implements ImportableKeyStore<KeyId, Web3Account> {
     privateKey: RawPrivateKey,
     metadata?: Partial<undefined>,
   ): Promise<AccountImportation<KeyId>> {
+    const bytes = await privateKey.toBytes();
+    if (bytes.at(0) === 0x00 && !this.#accountOptions.allowWeakPrivateKey) {
+      return {
+        result: "error",
+        message:
+          "The private key given is too weak; keys of length less than 32 bytes " +
+          "are disallowed by default.  See also " +
+          "the Web3AccountOptions.allowWeakPrivateKey option.",
+      };
+    }
+
     const result = await this.#import(privateKey, metadata);
     if (result.result === "success") {
       return { result: "success", keyId: result.keyId };

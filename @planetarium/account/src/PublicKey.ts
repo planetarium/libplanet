@@ -92,6 +92,10 @@ export class PublicKey {
     }
     return this.#point.toHex(form === "compressed");
   }
+
+  equals(other: PublicKey): boolean {
+    return other instanceof PublicKey && this.#point.equals(other.#point);
+  }
 }
 
 export default PublicKey;
