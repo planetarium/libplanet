@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -1341,20 +1340,6 @@ namespace Libplanet.Blockchain
                 seat.RemoveFirst();
                 return first;
             }).ToImmutableList();
-        }
-
-        internal void SetStates(
-            Block<T> block,
-            IReadOnlyList<ActionEvaluation> actionEvaluations
-        )
-        {
-            if (!StateStore.ContainsStateRoot(block.StateRootHash))
-            {
-                var totalDelta = actionEvaluations.GetTotalDelta(
-                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
-                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
-                StateStore.Commit(prevStateRootHash, totalDelta);
-            }
         }
 
         internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
