@@ -141,13 +141,6 @@ namespace Libplanet.Blockchain
             IReadOnlyList<BlockHash> rewindPath,
             IReadOnlyList<BlockHash> fastForwardPath)
         {
-            RenderRewind(
-                render: render,
-                oldTip: oldTip,
-                newTip: newTip,
-                branchpoint: branchpoint,
-                rewindPath: rewindPath);
-
             if (render)
             {
                 foreach (IRenderer<T> renderer in Renderers)
@@ -164,38 +157,6 @@ namespace Libplanet.Blockchain
                 newTip: newTip,
                 branchpoint: branchpoint,
                 fastForwardPath: fastForwardPath);
-        }
-
-        internal void RenderRewind(
-            bool render,
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint,
-            IReadOnlyList<BlockHash> rewindPath)
-        {
-            if (render && ActionRenderers.Any())
-            {
-                // Unrender stale actions.
-                _logger.Debug("Unrendering abandoned actions...");
-
-                long count = 0;
-
-                foreach (BlockHash hash in rewindPath)
-                {
-                    Block<T> block = Store.GetBlock<T>(hash);
-                    ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).ToImmutableList().Reverse();
-
-                    count += UnrenderActions(
-                        evaluations: evaluations,
-                        block: block);
-                }
-
-                _logger.Debug(
-                    "{MethodName}() completed unrendering {Actions} actions",
-                    nameof(Swap),
-                    count);
-            }
         }
 
         internal void RenderFastForward(
@@ -291,46 +252,6 @@ namespace Libplanet.Blockchain
                     block.Index,
                     block.Hash,
                     stopwatch.ElapsedMilliseconds);
-            return count;
-        }
-
-        internal long UnrenderActions(
-            IReadOnlyList<ActionEvaluation> evaluations,
-            Block<T> block)
-        {
-            _logger.Debug(
-                "Unrender actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
-
-            if (evaluations is null)
-            {
-                evaluations =
-                    ActionEvaluator.Evaluate(block).Reverse().ToImmutableList();
-            }
-
-            long count = 0;
-            foreach (ActionEvaluation evaluation in evaluations)
-            {
-                foreach (IActionRenderer<T> renderer in ActionRenderers)
-                {
-                    if (evaluation.Exception is null)
-                    {
-                        renderer.UnrenderAction(
-                            evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputStates);
-                    }
-                    else
-                    {
-                        renderer.UnrenderActionError(
-                            evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.Exception);
-                    }
-                }
-
-                count++;
-            }
-
             return count;
         }
 
