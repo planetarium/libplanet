@@ -141,20 +141,6 @@ namespace Libplanet.Blockchain
             IReadOnlyList<BlockHash> rewindPath,
             IReadOnlyList<BlockHash> fastForwardPath)
         {
-            // If there is no rewind, it is not considered as a reorg.
-            bool reorg = rewindPath.Count > 0;
-
-            if (render && reorg)
-            {
-                foreach (IRenderer<T> renderer in Renderers)
-                {
-                    renderer.RenderReorg(
-                        oldTip: oldTip,
-                        newTip: newTip,
-                        branchpoint: branchpoint);
-                }
-            }
-
             RenderRewind(
                 render: render,
                 oldTip: oldTip,
@@ -178,17 +164,6 @@ namespace Libplanet.Blockchain
                 newTip: newTip,
                 branchpoint: branchpoint,
                 fastForwardPath: fastForwardPath);
-
-            if (render && reorg)
-            {
-                foreach (IRenderer<T> renderer in Renderers)
-                {
-                    renderer.RenderReorgEnd(
-                        oldTip: oldTip,
-                        newTip: newTip,
-                        branchpoint: branchpoint);
-                }
-            }
         }
 
         internal void RenderRewind(
