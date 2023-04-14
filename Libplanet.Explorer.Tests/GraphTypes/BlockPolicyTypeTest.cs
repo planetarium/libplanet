@@ -44,7 +44,7 @@ public class BlockPolicyTypeTest
         IDictionary<string, object>[] tokenDicts =
             nativeTokens.Cast<IDictionary<string, object>>().ToArray();
         Assert.Equal("BAR", tokenDicts[0]["ticker"]);
-        Assert.Equal(0U, tokenDicts[0]["decimalPlaces"]);
+        Assert.Equal((byte)0, tokenDicts[0]["decimalPlaces"]);
         object[] minters = Assert.IsAssignableFrom<object[]>(tokenDicts[0]["minters"]);
         Assert.All(minters, m => Assert.IsType<string>(m));
         Assert.Equal(minters.Cast<string>().ToArray(), new[]
@@ -53,7 +53,7 @@ public class BlockPolicyTypeTest
             "0xD6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9",
         });
         Assert.Equal("FOO", tokenDicts[1]["ticker"]);
-        Assert.Equal(2U, tokenDicts[1]["decimalPlaces"]);
+        Assert.Equal((byte)2, tokenDicts[1]["decimalPlaces"]);
         Assert.Null(tokenDicts[1]["minters"]);
     }
 }

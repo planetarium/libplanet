@@ -14,7 +14,7 @@ public class CurrencyType : ObjectGraphType<Currency>
             "The ticker symbol, e.g., USD.",
             resolve: context => context.Source.Ticker
         );
-        Field<NonNullGraphType<UIntGraphType>>(
+        Field<NonNullGraphType<ByteGraphType>>(
             "decimalPlaces",
             "The number of digits to treat as minor units (i.e., exponents).",
             resolve: context => (uint)context.Source.DecimalPlaces

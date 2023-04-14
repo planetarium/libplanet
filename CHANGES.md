@@ -88,6 +88,8 @@ To be released.
     Predicate<Currency>)` to `BlockChain<T>.ProposeGenesisBlock(
     PrivateKey, ImmutableList<Transaction<T>>, DateTimeOffset?, IAction,
     Predicate<Currency>)`.  [[#3079]]
+ -  (Libplanet.Explorer) `Currency.decimalPlaces`' type became `Byte`
+    from `UInt`.  [[#3085]]
 
 ### Backward-incompatible network protocol changes
 
@@ -267,6 +269,7 @@ To be released.
 [#3079]: https://github.com/planetarium/libplanet/pull/3079
 [#3080]: https://github.com/planetarium/libplanet/pull/3080
 [#3084]: https://github.com/planetarium/libplanet/pull/3084
+[#3085]: https://github.com/planetarium/libplanet/pull/3085
 [#3088]: https://github.com/planetarium/libplanet/pull/3088
 
 
