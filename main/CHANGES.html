@@ -191,6 +191,17 @@ commands related to <em>Libplanet.Explorer</em> project.  [<a href="https://gith
 </ul>
 </li>
 <li>(Libplanet.Explorer) Added <code>states</code> query in <code>StateQuery</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3080">#3080</a>]</li>
+<li>(@planetarium/account) Added <code>Address.equals()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account) Added <code>Address.isAddressOf()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account) Added <code>PublicKey.equals()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>DecryptionOptions</code>
+interface.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]
+<ul>
+<li>Added <code>Web3KeyStoreOptions.decryptionOptions</code> attribute.</li>
+</ul>
+</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>WeakPrivateKeyError</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -256,12 +267,18 @@ if available.</li>
 <code>IBlockChainIndex</code> if available.</li>
 </ul>
 </li>
+<li><p>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore</code> now supports
+Scrypt as one of KDF functions besides PBKDF2.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</p>
+</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>In <code>PreVote</code> block validation, <code>Context&lt;T&gt;.IsValid()</code>, validate the block
 header and also the block content (e.g., Tx nonces, Policy defined
 validation rules, or state root hash.)  [<a href="https://github.com/planetarium/libplanet/issues/2973">#2973</a>, <a href="https://github.com/planetarium/libplanet/pull/2995">#2996</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Fixed a bug where
+<code>Web3KeyStore.import()</code> and <code>Web3KeyStore.generate()</code> methods had written
+JSON field <code>&quot;Crypto&quot;</code> instead of <code>&quot;crypto&quot;</code> in the key file.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
