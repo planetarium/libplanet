@@ -44,50 +44,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     record = (action, context, nextStates),
             };
 
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
             renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
-            Assert.Null(record);
 
             renderer.RenderAction(_action, _actionContext, _stateDelta);
-            Assert.NotNull(record);
-            Assert.Same(_action, record?.Item1);
-            Assert.Same(_actionContext, record?.Item2);
-            Assert.Same(_stateDelta, record?.Item3);
-        }
-
-        [Fact]
-        public void ActionUnrenderer()
-        {
-            (IAction, IActionContext, IAccountStateDelta)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
-            {
-                ActionUnrenderer = (action, context, nextStates) =>
-                    record = (action, context, nextStates),
-            };
-
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.RenderBlock(_genesis, _blockA);
-            Assert.Null(record);
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
@@ -106,48 +68,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             renderer.RenderAction(_action, _actionContext, _stateDelta);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
-            Assert.Null(record);
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
             renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.NotNull(record);
-            Assert.Same(_action, record?.Item1);
-            Assert.Same(_actionContext, record?.Item2);
-            Assert.Same(_exception, record?.Item3);
-        }
-
-        [Fact]
-        public void ActionErrorUnrenderer()
-        {
-            (IAction, IActionContext, Exception)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
-            {
-                ActionErrorUnrenderer = (action, context, exception) =>
-                    record = (action, context, exception),
-            };
-
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.RenderBlock(_genesis, _blockA);
-            Assert.Null(record);
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
@@ -165,79 +89,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             renderer.RenderAction(_action, _actionContext, _stateDelta);
             Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
             renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
             Assert.Null(record);
 
             renderer.RenderBlock(_genesis, _blockA);
             Assert.NotNull(record);
             Assert.Same(_genesis, record?.Old);
             Assert.Same(_blockA, record?.New);
-        }
-
-        [Fact]
-        public void BlockReorg()
-        {
-            (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
-            {
-                ReorgRenderer = (oldTip, newTip, bp) => record = (oldTip, newTip, bp),
-            };
-
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.RenderBlock(_genesis, _blockA);
-            Assert.Null(record);
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.NotNull(record);
-            Assert.Same(_blockA, record?.Old);
-            Assert.Same(_blockB, record?.New);
-            Assert.Same(_genesis, record?.Bp);
-        }
-
-        [Fact]
-        public void BlockReorgEnd()
-        {
-            (Block<DumbAction> Old, Block<DumbAction> New, Block<DumbAction> Bp)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
-            {
-                ReorgEndRenderer = (oldTip, newTip, bp) => record = (oldTip, newTip, bp),
-            };
-
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.UnrenderAction(_action, _actionContext, _stateDelta);
-            Assert.Null(record);
-            renderer.RenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.UnrenderActionError(_action, _actionContext, _exception);
-            Assert.Null(record);
-            renderer.RenderBlock(_genesis, _blockA);
-            Assert.Null(record);
-            renderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.Null(record);
-
-            renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
-            Assert.NotNull(record);
-            Assert.Same(_blockA, record?.Old);
-            Assert.Same(_blockB, record?.New);
-            Assert.Same(_genesis, record?.Bp);
         }
     }
 }
