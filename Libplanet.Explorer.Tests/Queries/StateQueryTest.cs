@@ -59,7 +59,7 @@ public class StateQueryTest
         {
             balance(
                  owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                 currencyHash: ""84ba810ca5ac342c122eb7ef455939a8a05d1d40"",
+                 currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -87,21 +87,6 @@ public class StateQueryTest
         Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
         Assert.Equal("123", balanceDict["quantity"]);
         Assert.Equal("123 ABC", balanceDict["string"]);
-
-        result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
-        {
-            balance(
-                 owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                 currencyHash: ""0000000000000000000000000000000000000000"",
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
-                quantity
-            }
-        }
-        ", source: source);
-        Assert.Single(result.Errors);
-        Assert.Contains("native token", result.Errors[0].Message);
     }
 
     [Fact]
@@ -120,7 +105,7 @@ public class StateQueryTest
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
             totalSupply(
-                 currencyHash: ""84ba810ca5ac342c122eb7ef455939a8a05d1d40"",
+                 currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -152,21 +137,7 @@ public class StateQueryTest
         result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
             totalSupply(
-                 currencyHash: ""0000000000000000000000000000000000000000"",
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
-                quantity
-            }
-        }
-        ", source: source);
-        Assert.Single(result.Errors);
-        Assert.Contains("native token", result.Errors[0].Message);
-
-        result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
-        {
-            totalSupply(
-                 currencyHash: ""d9d45abf192b6c337027063cda2d4a61e76e66d8"",
+                 currency: { ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false },
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {

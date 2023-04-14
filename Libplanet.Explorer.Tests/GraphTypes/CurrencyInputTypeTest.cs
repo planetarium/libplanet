@@ -13,7 +13,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes;
 public class CurrencyInputTypeTest
 {
     [Fact]
-    public async Task Accept()
+    public async Task Input()
     {
         var result = await ExecuteQueryAsync<TestQuery>(
             @"query

@@ -90,6 +90,8 @@ To be released.
     Predicate<Currency>)`.  [[#3079]]
  -  (Libplanet.Explorer) `Currency.decimalPlaces`' type became `Byte`
     from `UInt`.  [[#3085]]
+ -  (Libplanet.Explorer) `currencyHash` parameter was removed from
+    `balance` and `totalSupply` in `StateQuery` type.  [[#3085]]
 
 ### Backward-incompatible network protocol changes
 
@@ -150,12 +152,11 @@ To be released.
     class.  [[#3071]]
  -  (@planetarium/account-web3-secret-storage) Added `Web3KeyMetadata`
     interface.  [[#3084]]
-<<<<<<< HEAD
  -  (Libplanet.Tools) Added `-v`/`--validator-key` option to
     `planet block generate-genesis` command.  [[#3088]]
-=======
  -  (Libplanet.Explorer) Added `CurrencyInput` type.  [[#3085]]
->>>>>>> fbb931d6 (Implement \`Currency\`'s input type)
+ -  (Libplanet.Explorer) Added `CurrencyInput`-typed `currency` parameter to
+    `balance` and `totalSupply` in `StateQuery` type.  [[#3085]]
 
 ### Behavioral changes
 
