@@ -150,8 +150,12 @@ To be released.
     class.  [[#3071]]
  -  (@planetarium/account-web3-secret-storage) Added `Web3KeyMetadata`
     interface.  [[#3084]]
+<<<<<<< HEAD
  -  (Libplanet.Tools) Added `-v`/`--validator-key` option to
     `planet block generate-genesis` command.  [[#3088]]
+=======
+ -  (Libplanet.Explorer) Added `CurrencyInput` type.  [[#3085]]
+>>>>>>> fbb931d6 (Implement \`Currency\`'s input type)
 
 ### Behavioral changes
 
