@@ -130,12 +130,14 @@ methods.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a
 <li>Removed <code>HashCash</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a>]</li>
 <li>(@planetarium/account) Replaced <code>Account.publicKey</code> property with
 <code>Account.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>Account.getAddress()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(@planetarium/account) <code>Address.deriveFrom()</code> method now returns
 <code>Promise&lt;Address&gt;</code> when an <code>Account</code> is given.  However, it still returns
 <code>Address</code> when a <code>PublicKey</code> is given.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
 <li>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore</code> no more implements
 <code>ImportableKeyStore&lt;KeyId, RawPrivateKey&gt;</code>.  Instead, it now implements
-<code>ImportableKeyStore&lt;KeyId, Web3Account&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<code>ImportableKeyStore&lt;KeyId, Web3Account, Web3KeyMetadata&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>, <a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(Libplanet.Explorer) Added <code>Index</code> field to <code>IBlockChainContext</code> interface.
 [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, DateTimeOffset, long, int, int, IComparer&lt;Transaction&lt;T&gt;&gt;, BlockCommit)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3072">#3072</a>]</li>
@@ -164,12 +166,17 @@ and <code>BlockChain&lt;T&gt;.EvaluateBlock()</code>.  [[#3037]]</li>
 <li>(Libplanet.Net) Added <code>Gossip.PublishMessage()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/3054">#3054</a>, <a href="https://github.com/planetarium/libplanet/pull/3060">#3060</a>]</li>
 <li>(@planetarium/account) Added <code>Account.getPublicKey()</code> async method.
 [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>Account.getAddress()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(@planetarium/account) Added <code>RawPrivateKey.getPublicKey()</code> async method.
 [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>RawPrivateKey.getAddress()</code> async method.
+[<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(@planetarium/account-aws-kms) Added <code>AwsKmsAccount.getPublicKey()</code> async
 method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-aws-kms) Added <code>AwsKmsAccount.getAddress()</code> async
+method.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(@planetarium/account-web3-secret-storage) Added <code>Web3Account</code> class.
-[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>, <a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(@planetarium/account-web3-secret-storage) Added <code>Web3KeyObject</code> interface.
 [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
 <li>(Libplanet.Explorer) Added several interfaces and classes that pertain to
@@ -202,6 +209,8 @@ interface.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071<
 </li>
 <li>(@planetarium/account-web3-secret-storage) Added <code>WeakPrivateKeyError</code>
 class.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>Web3KeyMetadata</code>
+interface.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
