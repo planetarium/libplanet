@@ -18,12 +18,18 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed `BlockChain<T>` to ignore `IRenderer<T>.RenderReorg()`,
+    `IRenderer<T>.RenderReorgEnd()`, `IActionRenderer<T>.UnrenderAction()`,
+    and `IActionRenderer<T>.UnrenderActionError()`, i.e., these interface
+    methods are no longer invoked by a `BlockChain<T>`.  [[#3087]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+[#3087]: https://github.com/planetarium/libplanet/pull/3087
 
 
 Version 1.0.0
