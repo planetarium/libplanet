@@ -46,13 +46,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// </summary>
         public BlockChain<T>? BlockChain { get; set; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public override void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            base.RenderReorg(oldTip, newTip, branchpoint);
-            Validate();
-        }
-
         /// <inheritdoc
         /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
         public override void UnrenderAction(
@@ -113,19 +106,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         {
             base.RenderBlockEnd(oldTip, newTip);
             Validate();
-        }
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public override void RenderReorgEnd(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        )
-        {
-            base.RenderReorgEnd(oldTip, newTip, branchpoint);
-            Validate();
-
-            ValidateReorgEnd(oldTip, newTip, branchpoint);
         }
 
         private void ValidateReorgEnd(
@@ -341,10 +321,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             }
                         }
 
-                        throw BadRenderExc(
-                            $"Expected {nameof(IRenderer<T>.RenderReorg)} or " +
-                            $"{nameof(IRenderer<T>.RenderBlock)}."
-                        );
+                        throw BadRenderExc($"Expected {nameof(IRenderer<T>.RenderBlock)}.");
                     }
 
                     case RenderState.Reorg:
@@ -363,9 +340,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
                                 block.NewTip != reorgState.NewTip)
                             {
                                 throw BadRenderExc(
-                                    $"{nameof(IRenderer<T>.RenderReorg)} and " +
-                                    $"{nameof(IRenderer<T>.RenderBlock)} which follows it should " +
-                                    "have the same oldTip and newTip."
+                                    $"RenderReorg and {nameof(IRenderer<T>.RenderBlock)} " +
+                                    "should have the same oldTip and newTip."
                                 );
                             }
 
@@ -478,10 +454,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
                                 reorg.Branchpoint != reorgState.Branchpoint)
                             {
                                 throw BadRenderExc(
-                                    $"{nameof(IRenderer<T>.RenderReorgEnd)} should match to " +
-                                    $"{nameof(IActionRenderer<T>.RenderReorg)}; they should have " +
-                                    "the same oldTip, newTip, and branchpoint."
-                                );
+                                    "RenderReorgEnd should match to RenderReorg; " +
+                                    "they should have the same oldTip, newTip, and branchpoint.");
                             }
 
                             state = RenderState.Ready;
@@ -489,9 +463,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             break;
                         }
 
-                        throw BadRenderExc(
-                            $"Expected {nameof(IActionRenderer<T>.RenderReorgEnd)}."
-                        );
+                        throw BadRenderExc("Expected RenderReorgEnd");
                     }
                 }
             }

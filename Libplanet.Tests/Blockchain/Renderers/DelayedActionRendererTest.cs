@@ -64,11 +64,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     actionEvaluations.Add(
                         new ActionEvaluation(action, context, context.PreviousStates, e)
                     ),
-                ReorgRenderer = (oldTip, newTip, bp) =>
-                {
-                    // Note that this callback should not be invoked in this test case.
-                    unintendedCalls++;
-                },
                 ActionUnrenderer = (action, context, nextStates) =>
                 {
                     // Note that this callback should not be invoked in this test case.
@@ -167,7 +162,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = null,
                 ActionRenderer = (action, context, nextStates) =>
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
@@ -392,7 +386,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
                 ActionRenderer = (action, context, nextStates) =>
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
@@ -469,7 +462,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
                 ActionRenderer = (action, context, nextStates) =>
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
@@ -597,7 +589,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
                 ActionRenderer = (action, context, nextStates) =>
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>

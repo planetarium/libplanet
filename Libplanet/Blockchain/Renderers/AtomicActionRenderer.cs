@@ -61,18 +61,6 @@ namespace Libplanet.Blockchain.Renderers
             ActionRenderer.RenderBlockEnd(oldTip, newTip);
         }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            ActionRenderer.RenderReorg(oldTip, newTip, branchpoint);
-        }
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            ActionRenderer.RenderReorgEnd(oldTip, newTip, branchpoint);
-        }
-
         /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(

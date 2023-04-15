@@ -38,24 +38,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"Block({oldTip.Index}, {newTip.Index})");
                 },
-                ReorgRenderer = (
-                    Block<DumbAction> oldTip,
-                    Block<DumbAction> newTip,
-                    Block<DumbAction> branchpoint
-                ) =>
-                {
-                    Thread.Sleep(sleepSeconds * 1000);
-                    log.Add($"Reorg({oldTip.Index}, {newTip.Index}, {branchpoint.Index})");
-                },
-                ReorgEndRenderer = (
-                    Block<DumbAction> oldTip,
-                    Block<DumbAction> newTip,
-                    Block<DumbAction> branchpoint
-                ) =>
-                {
-                    Thread.Sleep(sleepSeconds * 1000);
-                    log.Add($"ReorgEnd({oldTip.Index}, {newTip.Index}, {branchpoint.Index})");
-                },
             };
             var renderer = new NonblockRenderer<DumbAction>(
                     innerRenderer, 3, NonblockRenderer<DumbAction>.FullMode.DropNewest);

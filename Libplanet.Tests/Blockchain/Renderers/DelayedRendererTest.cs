@@ -103,11 +103,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = (oldTip, newTip, bp) =>
-                {
-                    // Note that this callback should not be invoked in this test case.
-                    reorgs++;
-                },
             };
             var renderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
@@ -159,7 +154,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var innerRenderer = new AnonymousRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = null,
             };
             var delayedRenderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,

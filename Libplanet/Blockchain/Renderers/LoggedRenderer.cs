@@ -87,34 +87,6 @@ namespace Libplanet.Blockchain.Renderers
                 Renderer.RenderBlock
             );
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        ) =>
-            LogReorgRendering(
-                nameof(RenderReorg),
-                oldTip,
-                newTip,
-                branchpoint,
-                Renderer.RenderReorg
-            );
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorgEnd(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        ) =>
-            LogReorgRendering(
-                nameof(RenderReorgEnd),
-                oldTip,
-                newTip,
-                branchpoint,
-                Renderer.RenderReorgEnd
-            );
-
         protected void LogBlockRendering(
             string methodName,
             Block<T> oldTip,

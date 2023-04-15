@@ -153,35 +153,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public virtual void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
-            _records.Add(
-                new RenderRecord<T>.Reorg(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint
-                )
-            );
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public virtual void RenderReorgEnd(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        ) =>
-            _records.Add(
-                new RenderRecord<T>.Reorg(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint,
-                    end: true
-                )
-            );
-
         private static string RemoveFirstLine(string stackTrace)
         {
             int pos = stackTrace.IndexOf('\n');

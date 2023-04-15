@@ -92,21 +92,6 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public override void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            base.RenderReorg(oldTip, newTip, branchpoint);
-            _eventReceivingBlock = null;
-            _eventReceivingReorg = new Reorg(
-                LocateBlockPath(branchpoint, oldTip),
-                LocateBlockPath(branchpoint, newTip),
-                oldTip,
-                newTip,
-                branchpoint
-            );
-            _localUnrenderBuffer.Value = new Dictionary<BlockHash, List<ActionEvaluation>>();
-        }
-
         /// <inheritdoc cref="DelayedRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public override void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
@@ -270,13 +255,6 @@ namespace Libplanet.Blockchain.Renderers
                 _bufferedActionUnrenders);
         }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            base.RenderReorgEnd(oldTip, newTip, branchpoint);
-            _eventReceivingReorg = null;
-        }
-
         /// <summary>
         /// Lists all descendants from <paramref name="lower"/> (exclusive) to
         /// <paramref name="upper"/> (inclusive).
@@ -332,11 +310,6 @@ namespace Libplanet.Blockchain.Renderers
             Block<T>? branchpoint
         )
         {
-            if (branchpoint is Block<T>)
-            {
-                Renderer.RenderReorg(oldTip, newTip, branchpoint);
-            }
-
             if (branchpoint is null)
             {
                 Renderer.RenderBlock(oldTip, newTip);
@@ -360,11 +333,6 @@ namespace Libplanet.Blockchain.Renderers
             }
 
             ActionRenderer.RenderBlockEnd(oldTip, newTip);
-
-            if (branchpoint is Block<T>)
-            {
-                Renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
-            }
         }
 
         private void DelayRenderingAction(ActionEvaluation eval)
