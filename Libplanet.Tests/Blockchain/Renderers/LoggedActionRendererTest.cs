@@ -60,23 +60,15 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Theory]
-        [InlineData(false, false, false, false)]
-        [InlineData(true, false, false, false)]
-        [InlineData(false, true, false, false)]
-        [InlineData(true, true, false, false)]
-        [InlineData(false, false, true, false)]
-        [InlineData(true, false, true, false)]
-        [InlineData(false, true, true, false)]
-        [InlineData(true, true, true, false)]
-        [InlineData(false, false, false, true)]
-        [InlineData(true, false, false, true)]
-        [InlineData(false, true, false, true)]
-        [InlineData(true, true, false, true)]
-        [InlineData(false, false, true, true)]
-        [InlineData(true, false, true, true)]
-        [InlineData(false, true, true, true)]
-        [InlineData(true, true, true, true)]
-        public void ActionRenderings(bool unrender, bool error, bool rehearsal, bool exception)
+        [InlineData(false, false, false)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, false)]
+        [InlineData(true, true, false)]
+        [InlineData(false, false, true)]
+        [InlineData(true, false, true)]
+        [InlineData(false, true, true)]
+        [InlineData(true, true, true)]
+        public void ActionRenderings(bool error, bool rehearsal, bool exception)
         {
             bool called = false;
             LogEvent firstLog = null;
@@ -104,8 +96,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 };
                 actionRenderer = new AnonymousActionRenderer<DumbAction>
                 {
-                    ActionErrorRenderer = unrender ? null : render,
-                    ActionErrorUnrenderer = unrender ? render : null,
+                    ActionErrorRenderer = render,
+                    ActionErrorUnrenderer = null,
                 };
             }
             else
@@ -126,8 +118,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 };
                 actionRenderer = new AnonymousActionRenderer<DumbAction>
                 {
-                    ActionRenderer = unrender ? null : render,
-                    ActionUnrenderer = unrender ? render : null,
+                    ActionRenderer = render,
+                    ActionUnrenderer = null,
                 };
             }
 
@@ -149,25 +141,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 if (error)
                 {
-                    if (unrender)
-                    {
-                        actionRenderer.UnrenderActionError(_action, actionContext, actionError);
-                    }
-                    else
-                    {
-                        actionRenderer.RenderActionError(_action, actionContext, actionError);
-                    }
+                    actionRenderer.RenderActionError(_action, actionContext, actionError);
                 }
                 else
                 {
-                    if (unrender)
-                    {
-                        actionRenderer.UnrenderAction(_action, actionContext, _stateDelta);
-                    }
-                    else
-                    {
-                        actionRenderer.RenderAction(_action, actionContext, _stateDelta);
-                    }
+                    actionRenderer.RenderAction(_action, actionContext, _stateDelta);
                 }
             }
             catch (ThrowException.SomeException e)
@@ -197,8 +175,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 firstLog.MessageTemplate.Text
             );
             string methodName =
-                (unrender ? "Unrender" : "Render") +
-                "Action" + (error ? "Error" : string.Empty);
+                "Render" + "Action" + (error ? "Error" : string.Empty);
             Assert.Equal($"\"{methodName}\"", firstLog.Properties["MethodName"].ToString());
             Assert.Equal(
                 $"\"{typeof(DumbAction).FullName}\"",
@@ -313,11 +290,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.False(called);
             Assert.Empty(LogEvents);
 
-            actionRenderer.RenderReorg(_blockA, _blockB, _genesis);
-            Assert.False(called);
-            Assert.Equal(2, LogEvents.Count());
-            ResetContext();
-
             invokeOpposite(_genesis, _blockA);
             Assert.False(called);
             Assert.Equal(2, LogEvents.Count());
@@ -378,146 +350,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(firstLog.Properties["NewHash"], secondLog.Properties["NewHash"]);
             Assert.Equal(firstLog.Properties["OldIndex"], secondLog.Properties["OldIndex"]);
             Assert.Equal(firstLog.Properties["OldHash"], secondLog.Properties["OldHash"]);
-            Assert.Equal(
-                firstLog.Properties[Constants.SourceContextPropertyName],
-                secondLog.Properties[Constants.SourceContextPropertyName]
-            );
-            if (exception)
-            {
-                Assert.IsType<ThrowException.SomeException>(secondLog.Exception);
-            }
-            else
-            {
-                Assert.Null(secondLog.Exception);
-            }
-        }
-
-        [Theory]
-        [InlineData(false, false)]
-        [InlineData(false, true)]
-        [InlineData(true, false)]
-        [InlineData(true, true)]
-        public void RenderReorg(bool end, bool exception)
-        {
-            bool called = false;
-            LogEvent firstLog = null;
-
-            void Callback(DumbBlock oldTip, DumbBlock newTip, DumbBlock branchpoint)
-            {
-                LogEvent[] logs = LogEvents.ToArray();
-                Assert.Single(logs);
-                firstLog = logs[0];
-                Assert.Equal(_blockA, oldTip);
-                Assert.Equal(_blockB, newTip);
-                Assert.Equal(_genesis, branchpoint);
-                called = true;
-                if (exception)
-                {
-                    throw new ThrowException.SomeException(string.Empty);
-                }
-            }
-
-            IActionRenderer<DumbAction> actionRenderer = new AnonymousActionRenderer<DumbAction>
-            {
-                ReorgRenderer = end ? (Action<DumbBlock, DumbBlock, DumbBlock>)null : Callback,
-                ReorgEndRenderer = end ? Callback : (Action<DumbBlock, DumbBlock, DumbBlock>)null,
-            };
-            actionRenderer = new LoggedActionRenderer<DumbAction>(
-                actionRenderer,
-                _logger,
-                LogEventLevel.Verbose
-            );
-            var invoke = end
-                ? (Action<DumbBlock, DumbBlock, DumbBlock>)actionRenderer.RenderReorgEnd
-                : actionRenderer.RenderReorg;
-            var invokeOpposite = end
-                ? (Action<DumbBlock, DumbBlock, DumbBlock>)actionRenderer.RenderReorg
-                : actionRenderer.RenderReorgEnd;
-            var methodName = end ? "RenderReorgEnd" : "RenderReorg";
-
-            Assert.False(called);
-            Assert.Empty(LogEvents);
-
-            actionRenderer.RenderBlock(_genesis, _blockA);
-            Assert.False(called);
-            Assert.Equal(2, LogEvents.Count());
-            ResetContext();
-
-            invokeOpposite(_blockA, _blockB, _genesis);
-            Assert.False(called);
-            Assert.Equal(2, LogEvents.Count());
-            ResetContext();
-
-            if (exception)
-            {
-                Assert.Throws<ThrowException.SomeException>(
-                    () => invoke(_blockA, _blockB, _genesis)
-                );
-            }
-            else
-            {
-                invoke(_blockA, _blockB, _genesis);
-            }
-
-            Assert.True(called);
-            LogEvent[] logEvents = LogEvents.ToArray();
-            Assert.Equal(2, logEvents.Length);
-            Assert.Equal(firstLog, logEvents[0]);
-            Assert.Equal(LogEventLevel.Verbose, firstLog.Level);
-            Assert.Equal(
-                "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash} " +
-                "through #{BranchpointIndex} {BranchpointHash})...",
-                firstLog.MessageTemplate.Text
-            );
-            Assert.Equal($"\"{methodName}\"", firstLog.Properties["MethodName"].ToString());
-            Assert.Equal(
-                _blockB.Index.ToString(CultureInfo.InvariantCulture),
-                firstLog.Properties["NewIndex"].ToString()
-            );
-            Assert.Equal($"\"{_blockB.Hash}\"", firstLog.Properties["NewHash"].ToString());
-            Assert.Equal(
-                _blockA.Index.ToString(CultureInfo.InvariantCulture),
-                firstLog.Properties["OldIndex"].ToString()
-            );
-            Assert.Equal($"\"{_blockA.Hash}\"", firstLog.Properties["OldHash"].ToString());
-            Assert.Equal(
-                _genesis.Index.ToString(CultureInfo.InvariantCulture),
-                firstLog.Properties["BranchpointIndex"].ToString()
-            );
-            Assert.Equal($"\"{_genesis.Hash}\"", firstLog.Properties["BranchpointHash"].ToString());
-            Assert.Equal(
-                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
-                firstLog.Properties[Constants.SourceContextPropertyName].ToString()
-            );
-            Assert.Null(firstLog.Exception);
-
-            LogEvent secondLog = logEvents[1];
-            Assert.Equal(
-                exception ? LogEventLevel.Error : LogEventLevel.Verbose,
-                secondLog.Level
-            );
-            Assert.Equal(
-                exception
-                    ? "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
-                        "(was #{OldIndex} {OldHash} through #{BranchpointIndex} " +
-                        "{BranchpointHash})"
-                    : "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} " +
-                        "{OldHash} through #{BranchpointIndex} {BranchpointHash})",
-                secondLog.MessageTemplate.Text
-            );
-            Assert.Equal(firstLog.Properties["MethodName"], secondLog.Properties["MethodName"]);
-            Assert.Equal(firstLog.Properties["NewIndex"], secondLog.Properties["NewIndex"]);
-            Assert.Equal(firstLog.Properties["NewHash"], secondLog.Properties["NewHash"]);
-            Assert.Equal(firstLog.Properties["OldIndex"], secondLog.Properties["OldIndex"]);
-            Assert.Equal(firstLog.Properties["OldHash"], secondLog.Properties["OldHash"]);
-            Assert.Equal(
-                firstLog.Properties["BranchpointIndex"],
-                secondLog.Properties["BranchpointIndex"]
-            );
-            Assert.Equal(
-                firstLog.Properties["BranchpointHash"],
-                secondLog.Properties["BranchpointHash"]
-            );
             Assert.Equal(
                 firstLog.Properties[Constants.SourceContextPropertyName],
                 secondLog.Properties[Constants.SourceContextPropertyName]

@@ -156,15 +156,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public virtual void BlocksBeingAppendedInParallel()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
-            var reorgLogs = new List<(
-                Block<DumbAction> OldTip,
-                Block<DumbAction> NewTip,
-                Block<DumbAction> Branchpoint
-            )>();
             var innerRenderer = new AnonymousRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
-                ReorgRenderer = (oldTip, newTip, bp) => reorgLogs.Add((oldTip, newTip, bp)),
+                ReorgRenderer = null,
             };
             var delayedRenderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
@@ -178,7 +173,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Empty(reorgLogs);
 
             // Some explanation on the fixture: there are two chains that shares a certain block
             // as a branchpoint: _chainA and _chainB.  The topmost mutual block, i.e., branchpoint,
@@ -210,81 +204,59 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 (_chainA[1], _chainA[2]),
             };
             Assert.Equal(_chainA[2], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // #4  -> 1 confirms
             // #5  -> no confirms
             // #5' -> no confirms
-            renderer.RenderReorg(_chainA[5], _chainB[5], _branchpoint);
             renderer.RenderBlock(_chainA[5], _chainB[5]);
-            renderer.RenderReorgEnd(_chainA[5], _chainB[5], _branchpoint);
             Assert.Equal(_chainA[2], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // #4  -> 2 confirms; tip changed -> #3
             // #5  -> 1 confirm;  #6 -> no confirm
             // #5' -> no confirms
-            renderer.RenderReorg(_chainB[5], _chainA[6], _branchpoint);
             renderer.RenderBlock(_chainB[5], _chainA[6]);
-            renderer.RenderReorgEnd(_chainB[5], _chainA[6], _branchpoint);
             expectedBlockLogs.Add((_chainA[2], _chainA[3]));
             Assert.Equal(_chainA[3], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // #4  -> 2 confirms
             // #5  -> 1 confirm; #6  -> no confirm
             // #5' -> 1 confirm; #6' -> no confirm
-            renderer.RenderReorg(_chainA[6], _chainB[6], _branchpoint);
             renderer.RenderBlock(_chainA[6], _chainB[6]);
-            renderer.RenderReorgEnd(_chainA[6], _chainB[6], _branchpoint);
             Assert.Equal(_chainA[3], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // #4  -> 3 confirms; tip changed -> #4
             // #5  -> 2 confirms; #6  -> 1 confirm; #7 -> no confirm
             // #5' -> 1 confirm;  #6' -> no confirm
-            renderer.RenderReorg(_chainB[6], _chainA[7], _branchpoint);
             renderer.RenderBlock(_chainB[6], _chainA[7]);
-            renderer.RenderReorgEnd(_chainB[6], _chainA[7], _branchpoint);
             expectedBlockLogs.Add((_chainA[3], _chainA[4]));
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // #4  -> gone but still is tip
             // #5  -> 2 confirms; #6  -> 1 confirm; #7  -> no confirm
             // #5' -> 2 confirms; #6' -> 1 confirm; #7' -> no confirm
-            renderer.RenderReorg(_chainA[7], _chainB[7], _branchpoint);
             renderer.RenderBlock(_chainA[7], _chainB[7]);
-            renderer.RenderReorgEnd(_chainA[7], _chainB[7], _branchpoint);
             Assert.Equal(_chainA[4], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // #4  -> gone; tip changed -> #5; render(#4, #5)
             // #5  -> 3 confirms; #6  -> 2 confirms; #7  -> 1 confirm; #8 -> no confirm
             // #5' -> 2 confirms; #6' -> 1 confirm;  #7' -> no confirm
-            renderer.RenderReorg(_chainB[7], _chainA[8], _branchpoint);
             renderer.RenderBlock(_chainB[7], _chainA[8]);
-            renderer.RenderReorgEnd(_chainB[7], _chainA[8], _branchpoint);
             expectedBlockLogs.Add((_chainA[4], _chainA[5]));
             Assert.Equal(_chainA[5], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // tip changed -> #5'; render(#5, #5'); reorg(#5, #5', #4)
             // #5  -> 3 confirms; #6  -> 2 confirms; #7  -> 1 confirm; #8  -> no confirm
             // #5' -> 3 confirms; #6' -> 2 confirms; #7' -> 1 confirm; #8' -> no confirm
-            renderer.RenderReorg(_chainA[8], _chainB[8], _branchpoint);
             renderer.RenderBlock(_chainA[8], _chainB[8]);
-            renderer.RenderReorgEnd(_chainA[8], _chainB[8], _branchpoint);
             expectedBlockLogs.Add((_chainA[5], _chainB[5]));
             Assert.Equal(_chainB[5], delayedRenderer.Tip);
-            Assert.Equal(new[] { (_chainA[5], _chainB[5], _branchpoint) }, reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
 
             // tip changed -> #6'; render(#5', #6')
@@ -292,7 +264,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderBlock(_chainB[8], _chainB[9]);
             expectedBlockLogs.Add((_chainB[5], _chainB[6]));
             Assert.Equal(_chainB[6], delayedRenderer.Tip);
-            Assert.Single(reorgLogs);
             Assert.Equal(expectedBlockLogs, blockLogs);
         }
     }
