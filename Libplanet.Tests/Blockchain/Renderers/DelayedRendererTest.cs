@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
-                _branchpoint = chainA[i] = chainB[i] = TestUtils.ProposeNextBlock(
+                _branchpoint = chainA[i] = chainB[i] = TestUtils.MockupBlockFromPreviousBlock(
                     chainA[i - 1],
                     TestUtils.GenesisProposer,
                     lastCommit: TestUtils.CreateBlockCommit(
@@ -41,11 +41,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.ProposeNextBlock(
+                chainA[i] = TestUtils.MockupBlockFromPreviousBlock(
                     chainA[i - 1],
                     TestUtils.GenesisProposer,
                     lastCommit: TestUtils.CreateBlockCommit(chainA[i - 1]));
-                chainB[i] = TestUtils.ProposeNextBlock(
+                chainB[i] = TestUtils.MockupBlockFromPreviousBlock(
                     chainB[i - 1],
                     TestUtils.GenesisProposer,
                     lastCommit: TestUtils.CreateBlockCommit(chainB[i - 1]));

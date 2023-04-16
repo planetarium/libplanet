@@ -248,10 +248,10 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            var preEvalBlock = TestUtils.ProposeNext(
-                chain.Tip,
+            var preEvalBlock = TestUtils.ProposePreEvalFromBlockChain(
+                chain,
+                privateKey,
                 new[] { tx },
-                miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion);
             var stateRootHash = chain.DetermineBlockStateRootHash(preEvalBlock, out _);
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);

@@ -19,10 +19,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
         private static DumbBlock _blockA =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
+            TestUtils.MockupBlockFromPreviousBlock(_genesis, TestUtils.GenesisProposer);
 
         private static DumbBlock _blockB =
-            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
+            TestUtils.MockupBlockFromPreviousBlock(_genesis, TestUtils.GenesisProposer);
 
         private ILogger _logger;
 

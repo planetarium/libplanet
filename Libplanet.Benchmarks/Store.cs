@@ -40,7 +40,7 @@ namespace Libplanet.Benchmarks
                     blockTxs.Add(Transaction<DumbAction>.Create(
                         nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
-                block = TestUtils.ProposeNextBlock(
+                block = TestUtils.MockupBlockFromPreviousBlock(
                     block, TestUtils.GenesisProposer, blockTxs);
                 blocks.Add(block);
                 txs.AddRange(blockTxs);

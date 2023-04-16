@@ -226,14 +226,17 @@ public class GeneratedBlockChainFixture
     {
         var random = new System.Random(seed);
         var pk = PrivateKeys[random.Next(PrivateKeys.Length)];
+        var lastCommit = Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value);
+        var bftTime = lastCommit?.MedianTime(Chain.GetValidatorSet(lastCommit.BlockHash))
+            ?? DateTimeOffset.UtcNow;
         var block = new BlockContent<PolymorphicAction<SimpleAction>>(
                 new BlockMetadata(
                     Chain.Tip.Index + 1,
-                    DateTimeOffset.UtcNow,
+                    bftTime,
                     pk.PublicKey,
                     Chain.Tip.Hash,
                     BlockContent<PolymorphicAction<SimpleAction>>.DeriveTxHash(transactions),
-                    Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value)),
+                    lastCommit),
                 transactions)
             .Propose()
             .Evaluate(pk, Chain);

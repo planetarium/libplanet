@@ -291,11 +291,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var invalidTx = diffPolicyBlockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
-            Block<DumbAction> invalidBlock = Libplanet.Tests.TestUtils.ProposeNext(
+            Block<DumbAction> invalidBlock = Libplanet.Tests.TestUtils.MockupFromPreviousBlock(
                     blockChain.Genesis,
                     new[] { invalidTx },
                     miner: TestUtils.PrivateKeys[1].PublicKey,
-                    blockInterval: TimeSpan.FromSeconds(10)
+                    timestamp: blockChain[blockChain.Tip.Index]
+                        .Timestamp.Add(TimeSpan.FromSeconds(10))
                 )
                 .Evaluate(TestUtils.PrivateKeys[1], diffPolicyBlockChain);
 

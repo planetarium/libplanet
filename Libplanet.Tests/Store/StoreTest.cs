@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = ProposeNextBlock(
+            Block<DumbAction> block1 = MockupBlockFromPreviousBlock(
                 ProposeGenesisBlock<DumbAction>(GenesisProposer),
                 GenesisProposer,
                 new[] { Fx.Transaction1 });
@@ -986,7 +986,7 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 = ProposeNextBlock(
+            Block<DumbAction> anotherBlock3 = MockupBlockFromPreviousBlock(
                 Fx.Block2,
                 Fx.Proposer,
                 lastCommit: CreateBlockCommit(Fx.Block2.Hash, 2, 0));
@@ -1095,7 +1095,7 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx = FxConstructor())
             {
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
-                Block<DumbAction> block = ProposeNextBlock(
+                Block<DumbAction> block = MockupBlockFromPreviousBlock(
                     genesisBlock,
                     miner: fx.Proposer);
 

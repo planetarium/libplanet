@@ -348,10 +348,13 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block1 = ProposeNextBlock(
+            Block<DumbAction> block1 = MockupBlockFromPreviousBlock(
                 genesis,
                 GenesisProposer,
-                block1Txs);
+                block1Txs,
+                timestamp: genesis.Timestamp.Add(TimeSpan.FromSeconds(5)));
+            BlockCommit commit1 = CreateBlockCommit(
+                block1, block1.Timestamp.Add(TimeSpan.FromSeconds(5)));
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block1.ProtocolVersion,
                 ActionEvaluator.NullAccountStateGetter,
@@ -359,9 +362,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
                 block1.Miner);
-            var evals = actionEvaluator.EvaluateBlock(
-                block1,
-                previousStates).ToImmutableArray();
+            var evals = actionEvaluator.EvaluateBlock(block1, previousStates).ToImmutableArray();
             int randomValue = 0;
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
@@ -470,11 +471,12 @@ namespace Libplanet.Tests.Action
 
             // Same as above, use the same timestamp of last commit for each to get a deterministic
             // test result.
-            Block<DumbAction> block2 = ProposeNextBlock(
+            Block<DumbAction> block2 = MockupBlockFromPreviousBlock(
                 block1,
                 GenesisProposer,
                 block2Txs,
-                lastCommit: CreateBlockCommit(block1, true));
+                lastCommit: commit1,
+                timestamp: commit1.Votes[0].Timestamp);
             AccountStateGetter accountStateGetter = addrs =>
                 addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)
@@ -497,14 +499,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (
-                    2,
-                    0,
-                    new[] { "A", "B", "C", null, "RecordRehearsal:False" },
-                    _txFx.Address3
-                ),
-                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (2, 0, new[] { "A", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -904,11 +901,7 @@ namespace Libplanet.Tests.Action
                 privateKey: ChainPrivateKey);
             (_, Transaction<DumbAction>[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
-            var block = ProposeNext(
-                genesis,
-                txs,
-                miner: GenesisProposer.PublicKey
-            ).Evaluate(GenesisProposer, chain);
+            var block = ProposeBlockFromBlockChain(chain, GenesisProposer, txs);
 
             AccountStateGetter accountStateGetter =
                 ActionEvaluator.NullAccountStateGetter;

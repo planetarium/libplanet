@@ -64,14 +64,11 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            Block<DumbAction> block = TestUtils.ProposeNext(
-                    chain.Tip,
-                    new[] { tx },
-                    miner: _keys[1].PublicKey,
-                    protocolVersion: ProtocolVersion,
-                    lastCommit: TestUtils.CreateBlockCommit(chain.Tip)
-                )
-                .Evaluate(_keys[1], chain);
+            Block<DumbAction> block = TestUtils.ProposeBlockFromBlockChain(
+                chain,
+                _keys[1],
+                new[] { tx },
+                lastCommit: TestUtils.CreateBlockCommit(chain.Tip));
             chain.Append(
                 block,
                 TestUtils.CreateBlockCommit(block)

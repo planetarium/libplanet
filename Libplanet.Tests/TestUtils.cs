@@ -369,18 +369,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static BlockCommit CreateBlockCommit<T>(
             Block<T> block,
-            bool deterministicTimestamp = false)
+            DateTimeOffset? timestamp = null)
             where T : IAction, new() =>
                 block.Index > 0 &&
                 block.ProtocolVersion > BlockMetadata.PoWProtocolVersion
-                    ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
+                    ? CreateBlockCommit(block.Hash, block.Index, 0, timestamp)
                     : null;
 
         public static BlockCommit CreateBlockCommit(
             BlockHash blockHash,
             long height,
             int round,
-            bool deterministicTimestamp = false)
+            DateTimeOffset? timestamp = null)
         {
             // Index #1 block cannot have lastCommit: There was no consensus of genesis block.
             if (height == 0)
@@ -394,7 +394,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height,
                 round,
                 blockHash,
-                deterministicTimestamp ? DateTimeOffset.UnixEpoch : DateTimeOffset.UtcNow,
+                timestamp ?? DateTimeOffset.UtcNow,
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 
@@ -477,13 +477,13 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     out _));
         }
 
-        public static PreEvaluationBlock<T> ProposeNext<T>(
+        public static PreEvaluationBlock<T> MockupFromPreviousBlock<T>(
             Block<T> previousBlock,
             IReadOnlyList<Transaction<T>> transactions = null,
             PublicKey miner = null,
-            TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
-            BlockCommit lastCommit = null
+            BlockCommit lastCommit = null,
+            DateTimeOffset? timestamp = null
         )
             where T : IAction, new()
         {
@@ -495,8 +495,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
                     index: previousBlock.Index + 1,
-                    timestamp: previousBlock.Timestamp.Add(
-                        blockInterval ?? TimeSpan.FromSeconds(15)),
+                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     miner: miner?.ToAddress() ?? previousBlock.Miner,
                     publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                     previousHash: previousBlock.Hash,
@@ -508,14 +507,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval;
         }
 
-        public static Block<T> ProposeNextBlock<T>(
+        public static Block<T> MockupBlockFromPreviousBlock<T>(
             Block<T> previousBlock,
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> txs = null,
-            TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null
+            BlockCommit lastCommit = null,
+            DateTimeOffset? timestamp = null
         )
             where T : IAction, new()
         {
@@ -524,14 +523,66 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
             );
 
-            PreEvaluationBlock<T> preEval = ProposeNext(
+            PreEvaluationBlock<T> preEval = MockupFromPreviousBlock(
                 previousBlock,
                 txs,
                 miner?.PublicKey,
-                blockInterval,
                 protocolVersion,
-                lastCommit);
+                lastCommit,
+                timestamp);
             return preEval.Sign(miner, stateRootHash);
+        }
+
+        public static PreEvaluationBlock<T> ProposePreEvalFromBlockChain<T>(
+            BlockChain<T> blockChain,
+            PrivateKey proposer,
+            IReadOnlyList<Transaction<T>> transactions = null,
+            BlockCommit lastCommit = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
+        )
+            where T : IAction, new()
+        {
+            long index = blockChain.Count;
+            BlockHash? prevHash = blockChain.Store.IndexBlockHash(blockChain.Id, index - 1);
+            DateTimeOffset? bftTime = null;
+            if (lastCommit != null)
+            {
+                bftTime = blockChain.GetBftTime(lastCommit);
+            }
+
+            var orderedTransactions = transactions is null
+                ? new List<Transaction<T>>()
+                : transactions.OrderBy(tx => tx.Id).ToList();
+            var blockContent = new BlockContent<T>(
+                new BlockMetadata(
+                    protocolVersion: protocolVersion,
+                    index: index,
+                    timestamp: bftTime ?? DateTimeOffset.UtcNow,
+                    miner: proposer.ToAddress(),
+                    publicKey: protocolVersion >= 2 ? proposer.PublicKey : null,
+                    previousHash: prevHash,
+                    txHash: BlockContent<T>.DeriveTxHash(orderedTransactions),
+                    lastCommit: lastCommit),
+                transactions: orderedTransactions);
+            return blockContent.Propose();
+        }
+
+        public static Block<T> ProposeBlockFromBlockChain<T>(
+            BlockChain<T> blockChain,
+            PrivateKey proposer,
+            IReadOnlyList<Transaction<T>> transactions = null,
+            BlockCommit lastCommit = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
+        )
+            where T : IAction, new()
+        {
+            var preEval = ProposePreEvalFromBlockChain(
+                blockChain,
+                proposer,
+                transactions,
+                lastCommit,
+                protocolVersion);
+            return blockChain.ProposeBlock(proposer, preEval);
         }
 
         /// <summary>

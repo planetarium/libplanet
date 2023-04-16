@@ -17,6 +17,10 @@ To be released.
         `Dictionary` to `IValue`.
 
 ### Backward-incompatible network protocol changes
+ -  The `Block<T>.CurrentProtocolVersion` is bumped from 4 to 5.
+    [[#3093]]
+ -  From block protocol version 5, `BlockMetadata<T>.Timestamp` is restricted
+    to be generated via `BlockChain<T>.GetBftTime(BlockCommit)`.  [[#3093]]
 
 ### Backward-incompatible storage format changes
 
@@ -37,6 +41,7 @@ To be released.
 
 [#3083]: https://github.com/planetarium/libplanet/pull/3083
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
+[#3093]: https://github.com/planetarium/libplanet/pull/3093
 
 
 Version 1.0.0

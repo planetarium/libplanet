@@ -1123,8 +1123,6 @@ namespace Libplanet.Blockchain
             _logger.Information(
                 "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
 
-            block.ValidateTimestamp();
-
             _rwlock.EnterUpgradeableReadLock();
             Block<T> prevTip = Tip;
             try
@@ -1450,6 +1448,41 @@ namespace Libplanet.Blockchain
                     Store.DeleteBlockCommit(hash);
                 }
             }
+        }
+
+        /// <summary>
+        /// Calculate BFT Time of <see cref="BlockCommit"/> with
+        /// corresponding <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="blockCommit">The <see cref="BlockCommit"/> to calculate BFT Time.</param>
+        /// <returns>BFT Time of given <paramref name="blockCommit"/>
+        /// and corresponding <see cref="ValidatorSet"/>. BFT Time is calculated as a
+        /// median of <see cref="Vote.Timestamp"/> from <see cref="VoteFlag.PreCommit"/>
+        /// <see cref="Vote"/>s, weighted by <see cref="Validator.Power"/>.
+        /// </returns>
+        internal DateTimeOffset GetBftTime(BlockCommit blockCommit)
+        {
+            if (blockCommit is null)
+            {
+                throw new ArgumentNullException(
+                    "Cannot calculate BFT Time from null block commit.");
+            }
+
+            var validatorSet = GetValidatorSet(this[blockCommit.BlockHash].PreviousHash);
+            if (!validatorSet.ValidateBlockCommitValidators(blockCommit))
+            {
+                throw new InvalidBlockCommitException(
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                $"in states | \n " +
+                    validatorSet.Validators.Aggregate(
+                        string.Empty, (s, key) => s + key + ", \n") +
+                    $"in blockCommit | \n " +
+                    blockCommit.Votes.Aggregate(
+                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
+            }
+
+            return blockCommit.MedianTime(validatorSet);
         }
     }
 }

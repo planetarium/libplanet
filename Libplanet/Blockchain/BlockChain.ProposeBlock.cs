@@ -157,6 +157,11 @@ namespace Libplanet.Blockchain
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
+            DateTimeOffset? bftTime = null;
+            if (lastCommit is { } commit)
+            {
+                bftTime = GetBftTime(commit);
+            }
 
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
@@ -165,7 +170,7 @@ namespace Libplanet.Blockchain
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
-                    timestamp: DateTimeOffset.UtcNow,
+                    timestamp: bftTime ?? DateTimeOffset.UtcNow,
                     miner: proposer.ToAddress(),
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,

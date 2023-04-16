@@ -127,11 +127,10 @@ namespace Libplanet.Net.Tests
             var blocks = new List<Block<DumbAction>>();
             foreach (int i in Enumerable.Range(0, 12))
             {
-                Block<DumbAction> block = ProposeNext(
-                    previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                    miner: ChainPrivateKey.PublicKey,
-                    lastCommit: CreateBlockCommit(minerChain.Tip)
-                ).Evaluate(ChainPrivateKey, minerChain);
+                Block<DumbAction> block = ProposeBlockFromBlockChain(
+                    minerChain,
+                    ChainPrivateKey,
+                    lastCommit: CreateBlockCommit(minerChain.Tip));
                 blocks.Add(block);
                 if (i != 11)
                 {
@@ -482,13 +481,11 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow
                 );
 
-                Block<ThrowException> block = ProposeNext(
-                    minerChain.Tip,
+                Block<ThrowException> block = ProposeBlockFromBlockChain(
+                    minerChain,
+                    ChainPrivateKey,
                     new[] { tx },
-                    miner: ChainPrivateKey.PublicKey,
-                    blockInterval: TimeSpan.FromSeconds(1),
-                    lastCommit: CreateBlockCommit(minerChain.Tip)
-                ).Evaluate(ChainPrivateKey, minerChain);
+                    lastCommit: CreateBlockCommit(minerChain.Tip));
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), false, true, false);
 
                 await receiverSwarm.PreloadAsync();
@@ -969,7 +966,7 @@ namespace Libplanet.Net.Tests
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block2, CreateBlockCommit(block2));
 
-            Block<DumbAction> block = ProposeNext(
+            Block<DumbAction> block = MockupFromPreviousBlock(
                 minerChain2.Tip,
                 miner: ChainPrivateKey.PublicKey,
                 lastCommit: CreateBlockCommit(minerChain2.Tip)

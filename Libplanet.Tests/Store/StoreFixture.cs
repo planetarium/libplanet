@@ -116,26 +116,26 @@ namespace Libplanet.Tests.Store
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
-            Block1 = TestUtils.ProposeNextBlock(
+            Block1 = TestUtils.MockupBlockFromPreviousBlock(
                 GenesisBlock,
                 miner: Proposer,
                 lastCommit: null);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
-            Block2 = TestUtils.ProposeNextBlock(
+            Block2 = TestUtils.MockupBlockFromPreviousBlock(
                 Block1,
                 miner: Proposer,
                 lastCommit: TestUtils.CreateBlockCommit(Block1));
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
-            Block3 = TestUtils.ProposeNextBlock(
+            Block3 = TestUtils.MockupBlockFromPreviousBlock(
                 Block2,
                 miner: Proposer,
                 lastCommit: TestUtils.CreateBlockCommit(Block2));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
-            Block3Alt = TestUtils.ProposeNextBlock(Block2, miner: Proposer);
+            Block3Alt = TestUtils.MockupBlockFromPreviousBlock(Block2, miner: Proposer);
             stateRootHashes[Block3Alt.Hash] = Block3Alt.StateRootHash;
-            Block4 = TestUtils.ProposeNextBlock(Block3, miner: Proposer);
+            Block4 = TestUtils.MockupBlockFromPreviousBlock(Block3, miner: Proposer);
             stateRootHashes[Block4.Hash] = Block4.StateRootHash;
-            Block5 = TestUtils.ProposeNextBlock(Block4, miner: Proposer);
+            Block5 = TestUtils.MockupBlockFromPreviousBlock(Block4, miner: Proposer);
             stateRootHashes[Block5.Hash] = Block5.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);

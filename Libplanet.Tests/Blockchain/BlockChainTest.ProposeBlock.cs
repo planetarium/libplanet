@@ -481,7 +481,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ProposeBlockWithLastCommit()
         {
-            var keys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
+            var keys = ValidatorPrivateKeys;
             var votes = keys.Select(key => new VoteMetadata(
                 _blockChain.Tip.Index,
                 0,

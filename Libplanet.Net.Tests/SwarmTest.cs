@@ -1252,29 +1252,35 @@ namespace Libplanet.Net.Tests
             var policyB = new NullBlockPolicy<DumbAction>();
             var fx = new DefaultStoreFixture();
             var genesis = fx.GenesisBlock;
-            Block<DumbAction> aBlock1 = ProposeNextBlock(
+            Block<DumbAction> aBlock1 = MockupBlockFromPreviousBlock(
                 genesis,
                 keyA,
                 stateRootHash: genesis.StateRootHash);
-            Block<DumbAction> aBlock2 = ProposeNextBlock(
+            BlockCommit aCommit1 = CreateBlockCommit(aBlock1);
+            Block<DumbAction> aBlock2 = MockupBlockFromPreviousBlock(
                 aBlock1,
                 keyA,
                 stateRootHash: genesis.StateRootHash,
-                lastCommit: CreateBlockCommit(aBlock1));
-            Block<DumbAction> aBlock3 = ProposeNextBlock(
+                lastCommit: aCommit1,
+                timestamp: aCommit1.MedianTime(ValidatorSet));
+            BlockCommit aCommit2 = CreateBlockCommit(aBlock2);
+            Block<DumbAction> aBlock3 = MockupBlockFromPreviousBlock(
                 aBlock2,
                 keyA,
                 stateRootHash: genesis.StateRootHash,
-                lastCommit: CreateBlockCommit(aBlock2));
-            Block<DumbAction> bBlock1 = ProposeNextBlock(
+                lastCommit: aCommit2,
+                timestamp: aCommit2.MedianTime(ValidatorSet));
+            Block<DumbAction> bBlock1 = MockupBlockFromPreviousBlock(
                 genesis,
                 keyB,
                 stateRootHash: genesis.StateRootHash);
-            Block<DumbAction> bBlock2 = ProposeNextBlock(
+            BlockCommit bCommit1 = CreateBlockCommit(bBlock1);
+            Block<DumbAction> bBlock2 = MockupBlockFromPreviousBlock(
                 bBlock1,
                 keyB,
                 stateRootHash: genesis.StateRootHash,
-                lastCommit: CreateBlockCommit(bBlock1));
+                lastCommit: bCommit1,
+                timestamp: bCommit1.MedianTime(ValidatorSet));
 
             policyA.BlockedMiners.Add(keyB.ToAddress());
             policyB.BlockedMiners.Add(keyA.ToAddress());
@@ -1579,11 +1585,10 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = ProposeNext(
-                    chain.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    lastCommit: CreateBlockCommit(chain.Tip)
-                ).Evaluate(ChainPrivateKey, chain);
+                Block<DumbAction> block = ProposeBlockFromBlockChain(
+                    chain,
+                    ChainPrivateKey,
+                    lastCommit: CreateBlockCommit(chain.Tip));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1622,11 +1627,10 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = ProposeNext(
-                    chain.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    lastCommit: CreateBlockCommit(chain.Tip)
-                ).Evaluate(ChainPrivateKey, chain);
+                Block<DumbAction> block = ProposeBlockFromBlockChain(
+                    chain,
+                    ChainPrivateKey,
+                    lastCommit: CreateBlockCommit(chain.Tip));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1666,11 +1670,10 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = ProposeNext(
-                    chain.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    lastCommit: CreateBlockCommit(chain.Tip)
-                ).Evaluate(ChainPrivateKey, chain);
+                Block<DumbAction> block = ProposeBlockFromBlockChain(
+                    chain,
+                    ChainPrivateKey,
+                    lastCommit: CreateBlockCommit(chain.Tip));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 

@@ -300,9 +300,9 @@ namespace Libplanet.Net.Tests
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
-            Block<DumbAction> demand = ProposeNextBlock(genesis, new PrivateKey());
+            Block<DumbAction> demand = MockupBlockFromPreviousBlock(genesis, new PrivateKey());
             BlockCommit demandCommit = TestUtils.CreateBlockCommit(demand);
-            Block<DumbAction> wrong = ProposeNextBlock(genesis, new PrivateKey());
+            Block<DumbAction> wrong = MockupBlockFromPreviousBlock(genesis, new PrivateKey());
             BlockCommit wrongCommit = TestUtils.CreateBlockCommit(wrong);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
@@ -418,7 +418,7 @@ namespace Libplanet.Net.Tests
 
                 for (int i = 1; i < count; i++)
                 {
-                    block = ProposeNextBlock(
+                    block = MockupBlockFromPreviousBlock(
                         block,
                         GenesisProposer,
                         lastCommit: CreateBlockCommit(block));

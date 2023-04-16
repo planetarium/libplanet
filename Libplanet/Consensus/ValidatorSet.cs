@@ -131,7 +131,11 @@ namespace Libplanet.Consensus
         public Validator this[int index] => Validators[index];
 
         public Validator GetValidator(PublicKey publicKey)
-            => Validators.Find(validator => validator.PublicKey == publicKey);
+            => Validators.Find(validator => validator.PublicKey == publicKey)
+                ?? throw new ArgumentOutOfRangeException(
+                    nameof(publicKey),
+                    publicKey,
+                    "Given public key does not exist on validator set");
 
         public ImmutableList<Validator> GetValidators(IEnumerable<PublicKey> publicKeys)
             => (from publicKey in publicKeys select GetValidator(publicKey)).ToImmutableList();

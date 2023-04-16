@@ -112,8 +112,10 @@ namespace Libplanet.Net.Tests
                     validRound).Sign(privateKey));
         }
 
-        public static BlockCommit CreateBlockCommit<T>(Block<T> block)
-            where T : IAction, new() => Libplanet.Tests.TestUtils.CreateBlockCommit(block);
+        public static BlockCommit CreateBlockCommit<T>(
+            Block<T> block, DateTimeOffset? timestamp = null)
+            where T : IAction, new() => Libplanet.Tests.TestUtils.CreateBlockCommit(
+                block, timestamp);
 
         public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round) =>
             Libplanet.Tests.TestUtils.CreateBlockCommit(blockHash, height, round);

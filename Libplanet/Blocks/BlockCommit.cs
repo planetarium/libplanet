@@ -163,6 +163,29 @@ namespace Libplanet.Blocks
             }
         }
 
+        public DateTimeOffset MedianTime(ValidatorSet validatorSet)
+        {
+            var preCommits = Votes
+                .Where(vote => vote.Flag.Equals(VoteFlag.PreCommit))
+                .OrderBy(vote => vote.Timestamp);
+
+            var median = validatorSet.GetValidatorsPower(
+                preCommits.Select(preCommit => preCommit.ValidatorPublicKey).ToList()) / 2;
+            System.Numerics.BigInteger powerSum = System.Numerics.BigInteger.Zero;
+            foreach (Vote vote in preCommits)
+            {
+                powerSum += validatorSet.GetValidator(vote.ValidatorPublicKey).Power;
+                if (powerSum >= median)
+                {
+                    return vote.Timestamp;
+                }
+            }
+
+            throw new InvalidOperationException(
+                $"Failed to calculate median time of block commit on " +
+                $"height {Height}, block hash {BlockHash}, with validator set {validatorSet}");
+        }
+
         public bool Equals(BlockCommit? other)
         {
             return other is BlockCommit commit &&

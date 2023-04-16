@@ -236,7 +236,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
-                    timestamp: DateTimeOffset.UtcNow,
+                    timestamp: _blockChain.GetBftTime(blockCommit),
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,

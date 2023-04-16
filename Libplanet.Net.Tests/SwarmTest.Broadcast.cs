@@ -754,18 +754,16 @@ namespace Libplanet.Net.Tests
                     privateKey: privateKey),
             };
 
-            Block<DumbAction> block1 = ProposeNext(
-                blockChain.Genesis,
-                new[] { transactions[0] },
-                miner: GenesisProposer.PublicKey
-            ).Evaluate(GenesisProposer, blockChain);
+            Block<DumbAction> block1 = ProposeBlockFromBlockChain(
+                blockChain,
+                GenesisProposer,
+                new[] { transactions[0] });
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true, true, false);
-            Block<DumbAction> block2 = ProposeNext(
-                block1,
+            Block<DumbAction> block2 = ProposeBlockFromBlockChain(
+                blockChain,
+                GenesisProposer,
                 new[] { transactions[1] },
-                miner: GenesisProposer.PublicKey,
-                lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)
-            ).Evaluate(GenesisProposer, blockChain);
+                lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0));
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true, true, false);
 
             try
@@ -1048,11 +1046,11 @@ namespace Libplanet.Net.Tests
 
             mockTransport.ProcessMessageHandler.Register(MessageHandler);
 
-            Block<DumbAction> block1 = ProposeNextBlock(
+            Block<DumbAction> block1 = MockupBlockFromPreviousBlock(
                 receiver.BlockChain.Genesis,
                 key,
                 new Transaction<DumbAction>[] { });
-            Block<DumbAction> block2 = ProposeNextBlock(
+            Block<DumbAction> block2 = MockupBlockFromPreviousBlock(
                 block1,
                 key,
                 new Transaction<DumbAction>[] { });

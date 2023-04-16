@@ -62,12 +62,8 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            PreEvaluationBlock<DumbAction> preEval = TestUtils.ProposeNext(
-                chain.Tip,
-                new[] { tx },
-                miner: _keys[1].PublicKey,
-                protocolVersion: ProtocolVersion
-            );
+            var preEval = TestUtils.ProposePreEvalFromBlockChain(
+                chain, _keys[0], new[] { tx }, protocolVersion: ProtocolVersion);
             var stateRootHash = chain.DetermineBlockStateRootHash(preEval, out _);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             Block<DumbAction> block = new Block<DumbAction>(preEval, (stateRootHash, null, hash));

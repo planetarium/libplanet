@@ -191,6 +191,19 @@ namespace Libplanet.Blockchain
             return nonceDeltas;
         }
 
+        internal void ValidateBlockTimestamp(Block<T> block)
+        {
+            block.ValidateTimestamp();
+            var bftTime = GetBftTime(block.LastCommit);
+            if (block.Timestamp != bftTime)
+            {
+                throw new InvalidBlockTimestampException(
+                    $"The block #{block.Index} {block.Hash}'s timestamp " +
+                    $"({block.Timestamp}) have to be same as " +
+                    $"its last commit's BFT time ({bftTime}).");
+            }
+        }
+
         internal void ValidateBlock(Block<T> block)
         {
             if (block.Index <= 0)
@@ -283,15 +296,25 @@ namespace Libplanet.Blockchain
                             "A PBFT block that does not have zero or one index or " +
                             "is not a block after a PoW block should have lastCommit.");
                     }
-                }
 
-                try
-                {
-                    ValidateBlockCommit(this[block.PreviousHash ?? Genesis.Hash], block.LastCommit);
-                }
-                catch (InvalidBlockCommitException ibce)
-                {
-                    throw new InvalidBlockLastCommitException(ibce.Message);
+                    try
+                    {
+                        ValidateBlockCommit(
+                            this[block.PreviousHash ?? Genesis.Hash], block.LastCommit);
+                    }
+                    catch (InvalidBlockCommitException ibce)
+                    {
+                        throw new InvalidBlockLastCommitException(ibce.Message);
+                    }
+
+                    if (block.ProtocolVersion <= BlockMetadata.FreeTimestampProtocolVersion)
+                    {
+                        block.ValidateTimestamp();
+                    }
+                    else
+                    {
+                        ValidateBlockTimestamp(block);
+                    }
                 }
             }
         }
