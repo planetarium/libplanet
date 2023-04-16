@@ -321,7 +321,6 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(block, CreateBlockCommit(block));
 
             Assert.Equal(2, blockChain.Count);
-            Assert.Empty(recordingRenderer.ReorgRecords);
             IReadOnlyList<RenderRecord<DumbAction>.Block> blockLogs =
                 recordingRenderer.BlockRecords;
             Assert.Equal(2, blockLogs.Count);
@@ -1012,38 +1011,6 @@ namespace Libplanet.Tests.Blockchain
 
             // Render methods should be invoked if and only if the tip changes
             Assert.Equal(prevRecords, _renderer.Records);
-        }
-
-        [SkippableTheory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void SwapWithoutReorg(bool render)
-        {
-            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
-
-            // The lower  chain goes to the higher chain  [#N -> #N+1]
-            Block<DumbAction> block = fork.ProposeBlock(new PrivateKey());
-            fork.Append(block, CreateBlockCommit(block));
-            IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
-            _blockChain.Swap(fork, render: render)();
-
-            // RenderReorg() should be invoked if and only if the actual reorg happens
-            Assert.Equal(prevRecords, _renderer.ReorgRecords);
-        }
-
-        [SkippableFact]
-        public void TreatGoingBackwardAsReorg()
-        {
-            BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
-
-            // The higher chain goes to the lower  chain  [#N -> #N-1]
-            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
-            _blockChain.Append(block, CreateBlockCommit(block));
-            IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
-            _blockChain.Swap(fork, render: true)();
-
-            // RenderReorg() is being deprecated and is not called.
-            Assert.Empty(_renderer.ReorgRecords);
         }
 
         [SkippableTheory]

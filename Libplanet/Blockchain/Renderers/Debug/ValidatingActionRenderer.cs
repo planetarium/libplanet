@@ -30,7 +30,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         private enum RenderState
         {
             Ready,
-            Reorg,
             Block,
             BlockEnd,
         }
@@ -106,7 +105,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         private void Validate()
         {
             var state = RenderState.Ready;
-            RenderRecord<T>.Reorg? reorgState = null;
             RenderRecord<T>.Block? blockState = null;
             long previousActionBlockIndex = -1L;
             var records = new List<RenderRecord<T>>(Records.Count);
@@ -121,20 +119,16 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     case RenderState.Ready:
                     {
 #pragma warning disable S2589
-                        if (!(reorgState is null && blockState is null))
+                        if (!(blockState is null))
 #pragma warning restore S2589
                         {
-                            throw BadRenderExc(
-                                $"Unexpected reorg/block states: {reorgState}/{blockState}."
-                            );
+                            throw BadRenderExc($"Unexpected block state: {blockState}.");
                         }
                         else if (record is RenderRecord<T>.BlockBase blockBase && blockBase.Begin)
                         {
-                            if (blockBase is RenderRecord<T>.Reorg reorg)
-                            {
-                                throw BadRenderExc("Reorg is deprecated");
-                            }
-                            else if (blockBase is RenderRecord<T>.Block block)
+#pragma warning disable S1066
+                            if (blockBase is RenderRecord<T>.Block block)
+#pragma warning restore S1066
                             {
                                 blockState = block;
                                 state = RenderState.Block;
@@ -143,11 +137,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
                         }
 
                         throw BadRenderExc($"Expected {nameof(IRenderer<T>.RenderBlock)}.");
-                    }
-
-                    case RenderState.Reorg:
-                    {
-                        throw BadRenderExc("Reorg is deprecated");
                     }
 
                     case RenderState.Block:
@@ -169,7 +158,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             }
 
 #pragma warning disable S2583
-                            state = reorgState is null ? RenderState.Ready : RenderState.BlockEnd;
+                            state = RenderState.Ready;
 #pragma warning restore S2583
                             blockState = null;
                             break;
@@ -178,21 +167,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                                  actionBase.Render)
                         {
                             long idx = actionBase.Context.BlockIndex;
-                            if (reorgState is RenderRecord<T>.Reorg reorg)
-                            {
-                                long minIdx = previousActionBlockIndex >= 0
-                                    ? previousActionBlockIndex
-                                    : reorg.Branchpoint.Index + 1;
-                                long maxIdx = reorg.NewTip.Index;
-                                if (idx < minIdx || idx > maxIdx)
-                                {
-                                    throw BadRenderExc(
-                                        "An action is from a block which has an unexpected index " +
-                                        $"#{idx} (expected min: #{minIdx}; max: #{maxIdx})."
-                                    );
-                                }
-                            }
-                            else if (idx > blockState.NewTip.Index)
+                            if (idx > blockState.NewTip.Index)
                             {
                                 throw BadRenderExc(
                                     "An action is from a block which has an unexpected index " +
@@ -213,19 +188,14 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
                     case RenderState.BlockEnd:
                     {
-#pragma warning disable S2583, S2589
-                        if (reorgState is null || !(blockState is null))
-#pragma warning restore S2583, S2589
+                        if (!(blockState is null))
                         {
-                            throw BadRenderExc(
-                                $"Unexpected reorg/block states: {reorgState}/{blockState}.");
-                        }
-                        else if (record is RenderRecord<T>.Reorg reorg && reorg.End)
-                        {
-                            throw BadRenderExc("Reorg is deprecated");
+                            throw BadRenderExc($"Unexpected block states: {blockState}");
                         }
 
-                        throw BadRenderExc($"Unexpected record encountered: {record}");
+                        throw BadRenderExc(
+                            $"Unexpected block state/record encountered: " +
+                            $"{blockState}/{record}");
                     }
                 }
             }

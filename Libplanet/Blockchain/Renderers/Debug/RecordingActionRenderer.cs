@@ -45,9 +45,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         internal IReadOnlyList<RenderRecord<T>.Block> BlockRecords =>
             Records.OfType<RenderRecord<T>.Block>().ToImmutableArray();
 
-        internal IReadOnlyList<RenderRecord<T>.Reorg> ReorgRecords =>
-            Records.OfType<RenderRecord<T>.Reorg>().ToImmutableArray();
-
         internal EventHandler<IAction>? RenderEventHandler { get; set; }
 
         /// <summary>
