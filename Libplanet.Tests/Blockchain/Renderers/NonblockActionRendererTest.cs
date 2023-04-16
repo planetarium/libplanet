@@ -64,16 +64,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"ActionError({act.GetType().Name}, {ctx.BlockIndex}, {e.Message})");
                 },
-                ActionUnrenderer = (IAction act, IActionContext ctx, IAccountStateDelta delta) =>
-                {
-                    Thread.Sleep(sleepSeconds * 1000);
-                    log.Add($"~Action({act.GetType().Name}, {ctx.BlockIndex})");
-                },
-                ActionErrorUnrenderer = (IAction act, IActionContext ctx, Exception e) =>
-                {
-                    Thread.Sleep(sleepSeconds * 1000);
-                    log.Add($"~ActionError({act.GetType().Name}, {ctx.BlockIndex}, {e.Message})");
-                },
             };
             using (var renderer = new NonblockActionRenderer<DumbAction>(
                 innerRenderer, 8, NonblockActionRenderer<DumbAction>.FullMode.DropNewest))

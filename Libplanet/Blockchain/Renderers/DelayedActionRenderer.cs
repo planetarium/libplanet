@@ -147,23 +147,6 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            DelayUnrenderingAction(new ActionEvaluation(action, context, nextStates));
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-        {
-            var eval = new ActionEvaluation(action, context, context.PreviousStates, exception);
-            DelayUnrenderingAction(eval);
-        }
-
-        /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(
             IAction action,
@@ -440,7 +423,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     if (unrender)
                     {
-                        ActionRenderer.UnrenderActionError(eval.Action, eval.InputContext, e);
+                        throw new InvalidOperationException("Unrender is deprecated.");
                     }
                     else
                     {
@@ -451,11 +434,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     if (unrender)
                     {
-                        ActionRenderer.UnrenderAction(
-                            eval.Action,
-                            eval.InputContext,
-                            eval.OutputStates
-                        );
+                        throw new InvalidOperationException("Unrender is deprecated.");
                     }
                     else
                     {

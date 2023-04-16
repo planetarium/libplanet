@@ -26,11 +26,11 @@ namespace Libplanet.Blockchain.Renderers
     /// <remarks>Although <see cref="Transaction{T}"/>s affect the states in
     /// the <see cref="IStateStore"/> all or nothing at all (i.e., atomically),
     /// <see cref="IActionRenderer{T}"/> receives all action-related events
-    /// (<see cref="RenderAction"/>/<see cref="RenderActionError"/>/<see cref="UnrenderAction"
-    /// />/<see cref="UnrenderActionError"/>) <em>immediately</em> without buffering,
-    /// which means actions are rendered <em>even before</em> whether there are any actions throwing
-    /// an exception in the same transaction is determined.  In other words, for <see
-    /// cref="IActionRenderer{T}"/>s, it is not guaranteed that actions in a transaction are atomic.
+    /// (<see cref="RenderAction"/>/<see cref="RenderActionError"/>) <em>immediately</em>
+    /// without buffering, which means actions are rendered <em>even before</em> whether there are
+    /// any actions throwing an exception in the same transaction is determined.  In other words,
+    /// for <see cref="IActionRenderer{T}"/>s, it is not guaranteed that actions in a transaction
+    /// are atomic.
     /// <para>If your action renderer expects to receive only render events about actions belonging
     /// successful transactions, wrap your action renderer with
     /// <see cref="AtomicActionRenderer{T}"/>.</para>
@@ -71,28 +71,6 @@ namespace Libplanet.Blockchain.Renderers
         void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
-        /// Does things that should be undone right after the given <paramref name="action"/> is
-        /// invalidated (mostly due to reorg, i.e., a block which the action has belonged to becomes
-        /// considered stale).
-        /// <para>This method takes the equivalent arguments to <see
-        /// cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/> method.</para>
-        /// </summary>
-        /// <param name="action">A stale action.</param>
-        /// <param name="context">The equivalent context object to an object passed to
-        /// the <paramref name="action"/>'s <see cref="IAction.Execute(IActionContext)"/> method.
-        /// That means <see cref="IActionContext.PreviousStates"/> are the states right
-        /// <em>before</em> this action executed.  For the states after this action executed,
-        /// use the <paramref name="nextStates"/> argument instead.</param>
-        /// <param name="nextStates">The states right <em>after</em> this action executed,
-        /// which means it is equivalent to the states <paramref name="action"/>'s
-        /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
-        /// <remarks>As a rule of thumb, this should be the inverse of
-        /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/> method
-        /// with redrawing the graphics on the display at the finish.</remarks>
-        /// <remarks>This is no longer invoked by a <see cref="BlockChain{T}"/>.</remarks>
-        void UnrenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
-
-        /// <summary>
         /// Does the similar things to <see cref=
         /// "RenderAction(IAction, IActionContext, IAccountStateDelta)"/>, except that this method
         /// is invoked when <paramref name="action"/> has terminated with an exception.
@@ -115,23 +93,6 @@ namespace Libplanet.Blockchain.Renderers
         /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</para>
         /// </remarks>
         void RenderActionError(IAction action, IActionContext context, Exception exception);
-
-        /// <summary>
-        /// Does the similar things to <see
-        /// cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>, except that
-        /// this method is invoked when <paramref name="action"/> has terminated with an exception.
-        /// <para>This method takes the equivalent arguments to <see
-        /// cref="RenderActionError(IAction, IActionContext, Exception)"/> method.</para>
-        /// </summary>
-        /// <param name="action">An action which threw an exception during execution.</param>
-        /// <param name="context">The equivalent context object to an object passed to
-        /// the <paramref name="action"/>'s <see cref="IAction.Execute(IActionContext)"/> method.
-        /// That means <see cref="IActionContext.PreviousStates"/> are the states right
-        /// <em>before</em> this action executed.</param>
-        /// <param name="exception">The exception thrown during executing the <paramref
-        /// name="action"/>.</param>
-        /// <remarks>This is no longer invoked by a <see cref="BlockChain{T}"/>.</remarks>
-        void UnrenderActionError(IAction action, IActionContext context, Exception exception);
 
         /// <summary>
         /// Does things that should be done right all actions in a new <see cref="Block{T}"/> are

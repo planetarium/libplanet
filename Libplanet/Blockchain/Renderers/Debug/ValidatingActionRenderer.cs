@@ -40,30 +40,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// </summary>
         public BlockChain<T>? BlockChain { get; set; }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public override void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        )
-        {
-            base.UnrenderAction(action, context, nextStates);
-            Validate();
-        }
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public override void UnrenderActionError(
-            IAction action,
-            IActionContext context,
-            Exception exception
-        )
-        {
-            base.UnrenderActionError(action, context, exception);
-            Validate();
-        }
-
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public override void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {

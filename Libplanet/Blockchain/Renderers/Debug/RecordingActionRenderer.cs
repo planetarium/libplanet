@@ -93,40 +93,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction"/>
-        public virtual void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            _records.Add(
-                new RenderRecord<T>.ActionSuccess(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    unrender: true,
-                    action: action,
-                    context: context,
-                    nextStates: nextStates
-                )
-            );
-
-        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError"/>
-        public virtual void UnrenderActionError(
-            IAction action,
-            IActionContext context,
-            Exception exception
-        ) =>
-            _records.Add(
-                new RenderRecord<T>.ActionError(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    unrender: true,
-                    action: action,
-                    context: context,
-                    exception: exception
-                )
-            );
-
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
             _records.Add(

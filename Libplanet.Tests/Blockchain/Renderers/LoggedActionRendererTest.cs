@@ -97,7 +97,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 actionRenderer = new AnonymousActionRenderer<DumbAction>
                 {
                     ActionErrorRenderer = render,
-                    ActionErrorUnrenderer = null,
                 };
             }
             else
@@ -119,7 +118,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 actionRenderer = new AnonymousActionRenderer<DumbAction>
                 {
                     ActionRenderer = render,
-                    ActionUnrenderer = null,
                 };
             }
 

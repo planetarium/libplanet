@@ -62,18 +62,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     actionEvaluations.Add(new ActionEvaluation(action, context, nextStates)),
                 ActionErrorRenderer = (action, context, e) =>
                     actionEvaluations.Add(
-                        new ActionEvaluation(action, context, context.PreviousStates, e)
-                    ),
-                ActionUnrenderer = (action, context, nextStates) =>
-                {
-                    // Note that this callback should not be invoked in this test case.
-                    unintendedCalls++;
-                },
-                ActionErrorUnrenderer = (action, context, nextStates) =>
-                {
-                    // Note that this callback should not be invoked in this test case.
-                    unintendedCalls++;
-                },
+                        new ActionEvaluation(action, context, context.PreviousStates, e)),
             };
 
             var renderer = new DelayedActionRenderer<DumbAction>(
@@ -166,8 +155,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
                     renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = null,
-                ActionErrorUnrenderer = null,
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -390,10 +377,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
                     renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -466,10 +449,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
                     renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
@@ -593,10 +572,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderLogs.Add((false, new ActionEvaluation(action, context, nextStates))),
                 ActionErrorRenderer = (act, ctx, e) =>
                     renderLogs.Add((false, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
-                ActionUnrenderer = (action, context, nextStates) =>
-                    renderLogs.Add((true, new ActionEvaluation(action, context, nextStates))),
-                ActionErrorUnrenderer = (act, ctx, e) =>
-                    renderLogs.Add((true, new ActionEvaluation(act, ctx, ctx.PreviousStates, e))),
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,

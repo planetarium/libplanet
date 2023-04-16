@@ -83,20 +83,6 @@ namespace Libplanet.Blockchain.Renderers
             );
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            LogActionRendering(
-                nameof(UnrenderAction),
-                action,
-                context,
-                () => ActionRenderer.UnrenderAction(action, context, nextStates)
-            );
-
-        /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
         public void RenderActionError(
             IAction action,
@@ -108,20 +94,6 @@ namespace Libplanet.Blockchain.Renderers
                 action,
                 context,
                 () => ActionRenderer.RenderActionError(action, context, exception)
-            );
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(
-            IAction action,
-            IActionContext context,
-            Exception exception
-        ) =>
-            LogActionRendering(
-                nameof(UnrenderActionError),
-                action,
-                context,
-                () => ActionRenderer.UnrenderActionError(action, context, exception)
             );
 
         private void LogActionRendering(
