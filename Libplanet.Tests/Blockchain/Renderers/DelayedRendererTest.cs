@@ -99,7 +99,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public virtual void BlocksBeingAppended()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
-            uint reorgs = 0;
             var innerRenderer = new AnonymousRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => blockLogs.Add((oldTip, newTip)),
@@ -111,32 +110,27 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Null(renderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Equal(0U, reorgs);
 
             // #0 -> 1 confirm; #1 -> no confirms; #2 -> no confirms
             renderer.RenderBlock(_chainA[0], _chainA[1]);
             Assert.Null(renderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Equal(0U, reorgs);
 
             // #0 -> 2 confirms; #1 -> 1 confirm; #2 -> no confirms
             renderer.RenderBlock(_chainA[1], _chainA[2]);
             Assert.Null(renderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Equal(0U, reorgs);
 
             // #0 -> 3 confirms; #1 -> 2 confirms; #2 -> 1 confirm; tip changed -> #0
             renderer.RenderBlock(_chainA[2], _chainA[3]);
             Assert.Equal(_chainA[0], renderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Equal(0U, reorgs);
 
             // #0 -> gone; #1 -> 3 confirms; #2 -> 2 confirms; tip changed -> #1; render(#0, #1)
             renderer.RenderBlock(_chainA[3], _chainA[4]);
             Assert.Equal(_chainA[1], renderer.Tip);
             Assert.Single(blockLogs);
             Assert.Equal((_chainA[0], _chainA[1]), blockLogs[0]);
-            Assert.Equal(0U, reorgs);
 
             // #0 -> gone; #1 -> gone; #2 -> 3 confirms; tip changed -> #2; render(#1, #2)
             renderer.RenderBlock(_chainA[4], _chainA[5]);
@@ -144,7 +138,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(2, blockLogs.Count);
             Assert.Equal((_chainA[0], _chainA[1]), blockLogs[0]);
             Assert.Equal((_chainA[1], _chainA[2]), blockLogs[1]);
-            Assert.Equal(0U, reorgs);
         }
 
         [Fact(Skip = "No fork in PBFT.")]

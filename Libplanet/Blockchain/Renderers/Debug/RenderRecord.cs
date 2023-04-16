@@ -149,7 +149,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <summary>
-        /// Represents a block/reorg event.
+        /// Represents a block event.
         /// </summary>
         public abstract class BlockBase : RenderRecord<T>
         {

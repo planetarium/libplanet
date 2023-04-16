@@ -364,11 +364,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
-            var reorgLogs = new List<(
-                Block<DumbAction> OldTip,
-                Block<DumbAction> NewTip,
-                Block<DumbAction> Branchpoint
-                )>();
             var renderLogs = new List<(bool Unrender, ActionEvaluation Evaluation)>();
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
@@ -436,11 +431,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
-            var reorgLogs = new List<(
-                Block<DumbAction> OldTip,
-                Block<DumbAction> NewTip,
-                Block<DumbAction> Branchpoint
-            )>();
             var renderLogs = new List<(bool Unrender, ActionEvaluation Evaluation)>();
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
@@ -479,7 +469,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Empty(reorgLogs);
             Assert.Empty(renderLogs);
 
             var key = new PrivateKey();
@@ -489,7 +478,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chain.Append(block, TestUtils.CreateBlockCommit(block));
 
             Assert.Null(delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
             Assert.Empty(renderLogs);
 
@@ -499,7 +487,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
             Assert.Empty(renderLogs);
 
@@ -548,7 +535,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chain.Swap(forked, true)();
 
             Assert.Equal(chain[2], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);
             Assert.Equal(4, renderLogs.Count);
         }
@@ -559,11 +545,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
-            var reorgLogs = new List<(
-                Block<DumbAction> OldTip,
-                Block<DumbAction> NewTip,
-                Block<DumbAction> Branchpoint
-            )>();
             var renderLogs = new List<(bool Unrender, ActionEvaluation Evaluation)>();
             var innerRenderer = new AnonymousActionRenderer<DumbAction>
             {
@@ -602,7 +583,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(blockLogs);
-            Assert.Empty(reorgLogs);
             Assert.Empty(renderLogs);
 
             var key = new PrivateKey();
@@ -612,7 +592,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             Assert.Null(delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
             Assert.Empty(renderLogs);
 
@@ -622,7 +601,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chain.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Empty(blockLogs);
             Assert.Empty(renderLogs);
 
@@ -648,7 +626,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chain.Swap(forked, true)();
 
             Assert.Equal(chain[1], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]) }, blockLogs);
             Assert.Equal(2, renderLogs.Count);
 
@@ -656,7 +633,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 key, TestUtils.CreateBlockCommit(chain.Tip));
             chain.Append(block3, TestUtils.CreateBlockCommit(block3));
             Assert.Equal(chain[2], delayedRenderer.Tip);
-            Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);
             Assert.Equal(4, renderLogs.Count);
         }
