@@ -71,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus
                     key: TestUtils.PrivateKeys[i],
                     consensusPort: 6000 + i,
                     validatorPeers: validatorPeers,
-                    newHeightDelayMilliseconds: PropagationDelay * 2);
+                    contextMinIntervalMilliseconds: PropagationDelay * 2);
             }
 
             try

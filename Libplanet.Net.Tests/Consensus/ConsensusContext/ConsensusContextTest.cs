@@ -121,17 +121,18 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightWhenTipChanged()
         {
-            var newHeightDelay = TimeSpan.FromSeconds(1);
+            var contextMinInterval = TimeSpan.FromSeconds(1);
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                newHeightDelay,
+                contextMinInterval,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
+            consensusContext.NewHeight(1L);
             Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(-1, consensusContext.Height);
-            await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
+            Assert.Equal(1, consensusContext.Height);
+            await Task.Delay(contextMinInterval + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
         }
 
@@ -153,7 +154,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         }
 
         [Fact(Timeout = Timeout)]
-        public void RemoveOldContexts()
+        public async void RemoveOldContexts()
         {
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
@@ -179,9 +180,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             block = blockChain.ProposeBlock(
                 new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            await Task.Delay(TimeSpan.FromSeconds(2));
 
-            // Create context of index 4, check if the context of 1 and 2 are removed correctly.
-            consensusContext.NewHeight(4);
+            // Check if the context of 1 and 2 are removed correctly.
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[1]);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[2]);
         }

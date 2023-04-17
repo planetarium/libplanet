@@ -88,6 +88,9 @@ To be released.
     Predicate<Currency>)` to `BlockChain<T>.ProposeGenesisBlock(
     PrivateKey, ImmutableList<Transaction<T>>, DateTimeOffset?, IAction,
     Predicate<Currency>)`.  [[#3079]]
+ -  (Libplanet.Net) Replaced parameter `newHeightDelay` with
+    `contextMinInterval` from `ConsensusContext` and `ConsensusReactor`.
+    [[#3094]]
 
 ### Backward-incompatible network protocol changes
 
@@ -220,6 +223,9 @@ To be released.
  -  (@planetarium/account-web3-secret-storage) `Web3KeyStore` now supports
     Scrypt as one of KDF functions besides PBKDF2.  [[#3071]]
 
+ -  (Libplanet.Net) `ConsensusContext.NewHeight()` will be suspended till
+    `contextMinInterval` arrives.  [[#3094]]
+
 ### Bug fixes
 
  -  In `PreVote` block validation, `Context<T>.IsValid()`, validate the block
@@ -268,6 +274,7 @@ To be released.
 [#3080]: https://github.com/planetarium/libplanet/pull/3080
 [#3084]: https://github.com/planetarium/libplanet/pull/3084
 [#3088]: https://github.com/planetarium/libplanet/pull/3088
+[#3094]: https://github.com/planetarium/libplanet/pull/3094
 
 
 Version 0.53.4
