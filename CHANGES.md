@@ -148,7 +148,7 @@ To be released.
     class.  [[#3071]]
  -  (@planetarium/account-web3-secret-storage) Added `Web3KeyMetadata`
     interface.  [[#3084]]
- -  (Libplanet.Tools) Added `VALIDATOR-KEYS` parameter to
+ -  (Libplanet.Tools) Added `-v`/`--validator-key` option to
     `planet block generate-genesis` command.  [[#3089]]
 
 ### Behavioral changes
