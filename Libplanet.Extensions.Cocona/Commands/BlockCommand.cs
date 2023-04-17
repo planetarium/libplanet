@@ -3,13 +3,21 @@ namespace Libplanet.Extensions.Cocona.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Numerics;
 using System.Text.Json;
 using Bencodex;
+using Bencodex.Types;
+using ImmutableTrie;
 using global::Cocona;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Action.Sys;
+using Libplanet.Consensus;
+using Libplanet.Tx;
 
 public class BlockCommand
 {
@@ -105,6 +113,8 @@ public class BlockCommand
         [Argument(Name = "FILE", Description = "File to write the genesis block to.  " +
             "Use `-` for stdout (you can still refer to a file named \"-\" by \"./-\").")]
         string file,
+        [Option('v', Description = "A public key to use for validating.")]
+        string[] validatorKey,
         BlockPolicyParams blockPolicyParams,
         [Option('f', Description = "Output format.")]
         OutputFormat format = OutputFormat.Bencodex
@@ -112,8 +122,30 @@ public class BlockCommand
     {
         // FIXME: Declare a ICommandParameterSet type taking key ID and keystore path instead:
         PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase, ignoreStdin: true);
+
+        var validatorSet = new ValidatorSet(
+            validatorKey
+                .Select(PublicKey.FromHex)
+                .Select(k => new Validator(k, BigInteger.One))
+                .ToList());
+        ImmutableList<Transaction<NullAction>> txs = Array.Empty<Transaction<NullAction>>()
+
+            // FIXME: Remove this pragma after fixing the following issue:
+            // https://github.com/dotnet/platform-compat/blob/master/docs/PC002.md
+ #pragma warning disable PC002
+            .Append(Transaction<NullAction>.Create(
+ #pragma warning restore PC002
+                0,
+                key,
+                null,
+                new Initialize(
+                    validatorSet,
+                    ImmutableTrieDictionary<Address, IValue>.Empty)))
+            .ToImmutableList();
+
         Block<NullAction> genesis = BlockChain<NullAction>.ProposeGenesisBlock(
             privateKey: key,
+            transactions: txs,
             blockAction: blockPolicyParams.GetBlockAction(),
             nativeTokenPredicate: blockPolicyParams is { } p && p.GetNativeTokens() is { } tokens
                 ? tokens.Contains
