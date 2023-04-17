@@ -15,6 +15,9 @@ To be released.
      -  Removed `TxActionList.FromBencodex<T>()` method.
      -  Changed the return type for `TxActionList.ToBencodex()` from
         `Dictionary` to `IValue`.
+ -  Removed `IRenderer<T>.RenderReorg()`, `IRenderer<T>.RenderReorgEnd()`,
+    `IActionRenderer<T>.UnrenderAction()`, and
+    `IActionRenderer<T>.UnrenderActionError()`.  [[#3092]]
 
 ### Backward-incompatible network protocol changes
 
@@ -37,6 +40,7 @@ To be released.
 
 [#3083]: https://github.com/planetarium/libplanet/pull/3083
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
+[#3092]: https://github.com/planetarium/libplanet/pull/3092
 
 
 Version 1.0.0
