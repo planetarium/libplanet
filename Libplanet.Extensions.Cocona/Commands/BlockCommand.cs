@@ -131,6 +131,7 @@ public class BlockCommand
         ImmutableList<Transaction<NullAction>> txs = Array.Empty<Transaction<NullAction>>()
 
             // FIXME: Remove this pragma after fixing the following issue:
+            // https://github.com/dotnet/platform-compat/blob/master/docs/PC002.md
  #pragma warning disable PC002
             .Append(Transaction<NullAction>.Create(
  #pragma warning restore PC002
