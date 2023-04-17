@@ -13235,12 +13235,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.Analyze
   nameWithType: BlockCommand.Analyze
-- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,Libplanet.Extensions.Cocona.BlockPolicyParams,Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
-  name: GenerateGenesis(Guid, PassphraseParameters, String, BlockPolicyParams, BlockCommand.OutputFormat)
-  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_GenerateGenesis_System_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_Libplanet_Extensions_Cocona_BlockPolicyParams_Libplanet_Extensions_Cocona_Commands_BlockCommand_OutputFormat_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,Libplanet.Extensions.Cocona.BlockPolicyParams,Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
-  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.String, Libplanet.Extensions.Cocona.BlockPolicyParams, Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
-  nameWithType: BlockCommand.GenerateGenesis(Guid, PassphraseParameters, String, BlockPolicyParams, BlockCommand.OutputFormat)
+- uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,System.String[],Libplanet.Extensions.Cocona.BlockPolicyParams,Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  name: GenerateGenesis(Guid, PassphraseParameters, String, String[], BlockPolicyParams, BlockCommand.OutputFormat)
+  href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_GenerateGenesis_System_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_System_String___Libplanet_Extensions_Cocona_BlockPolicyParams_Libplanet_Extensions_Cocona_Commands_BlockCommand_OutputFormat_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,System.String[],Libplanet.Extensions.Cocona.BlockPolicyParams,Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  name.vb: GenerateGenesis(Guid, PassphraseParameters, String, String(), BlockPolicyParams, BlockCommand.OutputFormat)
+  fullName: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.String, System.String[], Libplanet.Extensions.Cocona.BlockPolicyParams, Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis(System.Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.String, System.String(), Libplanet.Extensions.Cocona.BlockPolicyParams, Libplanet.Extensions.Cocona.Commands.BlockCommand.OutputFormat)
+  nameWithType: BlockCommand.GenerateGenesis(Guid, PassphraseParameters, String, String[], BlockPolicyParams, BlockCommand.OutputFormat)
+  nameWithType.vb: BlockCommand.GenerateGenesis(Guid, PassphraseParameters, String, String(), BlockPolicyParams, BlockCommand.OutputFormat)
 - uid: Libplanet.Extensions.Cocona.Commands.BlockCommand.GenerateGenesis*
   name: GenerateGenesis
   href: api/Libplanet.Extensions.Cocona.Commands.BlockCommand.html#Libplanet_Extensions_Cocona_Commands_BlockCommand_GenerateGenesis_
