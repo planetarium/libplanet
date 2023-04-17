@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.54.0
 -------------
 
-To be released.
+Released on April 17, 2023.
 
 ### Deprecated APIs
 
@@ -88,10 +88,6 @@ To be released.
     Predicate<Currency>)` to `BlockChain<T>.ProposeGenesisBlock(
     PrivateKey, ImmutableList<Transaction<T>>, DateTimeOffset?, IAction,
     Predicate<Currency>)`.  [[#3079]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -254,6 +250,7 @@ To be released.
 [#2986]: https://github.com/planetarium/libplanet/pull/2986
 [#2973]: https://github.com/planetarium/libplanet/issues/2973
 [#2996]: https://github.com/planetarium/libplanet/pull/2995
+[#3037]: https://github.com/planetarium/libplanet/pull/3037
 [#3044]: https://github.com/planetarium/libplanet/pull/3044
 [#3054]: https://github.com/planetarium/libplanet/issues/3054
 [#3060]: https://github.com/planetarium/libplanet/pull/3060
