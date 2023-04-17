@@ -113,8 +113,8 @@ public class BlockCommand
         [Argument(Name = "FILE", Description = "File to write the genesis block to.  " +
             "Use `-` for stdout (you can still refer to a file named \"-\" by \"./-\").")]
         string file,
-        [Argument(Name = "VALIDATOR-KEYS", Description = "A public key to use for validating.")]
-        string[] validatorKeys,
+        [Option('v', Description = "A public key to use for validating.")]
+        string[] validatorKey,
         BlockPolicyParams blockPolicyParams,
         [Option('f', Description = "Output format.")]
         OutputFormat format = OutputFormat.Bencodex
@@ -124,7 +124,7 @@ public class BlockCommand
         PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase, ignoreStdin: true);
 
         var validatorSet = new ValidatorSet(
-            validatorKeys
+            validatorKey
                 .Select(PublicKey.FromHex)
                 .Select(k => new Validator(k, BigInteger.One))
                 .ToList());
