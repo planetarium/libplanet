@@ -13,12 +13,6 @@ namespace Libplanet.Blockchain.Renderers
     /// implement this interface instead.
     /// <para>The invocation order of methods for each <see cref="Block{T}"/> are:</para>
     /// <list type="number">
-    /// <item><description><see cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-    /// (one time)</description></item>
-    /// <item><description><see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-    /// &amp; <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/> (zero or more
-    /// times)</description>
-    /// </item>
     /// <item><description><see cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> (one time)
     /// </description></item>
     /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
@@ -27,8 +21,6 @@ namespace Libplanet.Blockchain.Renderers
     /// </item>
     /// <item><description><see cref="RenderBlockEnd(Block{T}, Block{T})"/> (one time)</description>
     /// </item>
-    /// <item><description><see cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-    /// (one time)</description></item>
     /// </list>
     /// </summary>
     /// <remarks>Although <see cref="Transaction{T}"/>s affect the states in
@@ -97,10 +89,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <remarks>As a rule of thumb, this should be the inverse of
         /// <see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/> method
         /// with redrawing the graphics on the display at the finish.</remarks>
-        /// <remarks>The reason why the parameter <paramref name="action"/> takes
-        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
-        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
+        /// <remarks>This is no longer invoked by a <see cref="BlockChain{T}"/>.</remarks>
         void UnrenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
@@ -141,10 +130,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <em>before</em> this action executed.</param>
         /// <param name="exception">The exception thrown during executing the <paramref
         /// name="action"/>.</param>
-        /// <remarks>The reason why the parameter <paramref name="action"/> takes
-        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
-        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction{T}.Actions"/>).</remarks>
+        /// <remarks>This is no longer invoked by a <see cref="BlockChain{T}"/>.</remarks>
         void UnrenderActionError(IAction action, IActionContext context, Exception exception);
 
         /// <summary>

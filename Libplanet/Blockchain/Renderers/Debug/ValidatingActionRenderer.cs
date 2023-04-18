@@ -442,11 +442,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
                                     );
                                 }
                             }
-                            else if (idx != blockState.NewTip.Index)
+                            else if (idx > blockState.NewTip.Index)
                             {
                                 throw BadRenderExc(
                                     "An action is from a block which has an unexpected index " +
-                                    $"#{idx} (expected: #{blockState.NewTip.Index})."
+                                    $"#{idx} (expected max: #{blockState.NewTip.Index})."
                                 );
                             }
 

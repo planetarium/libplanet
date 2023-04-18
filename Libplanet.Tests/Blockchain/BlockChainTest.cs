@@ -836,6 +836,7 @@ namespace Libplanet.Tests.Blockchain
 
             Transaction<DumbAction>[] txsB =
             {
+                // block #2'
                 _fx.MakeTransaction(
                     new[]
                     {
@@ -872,7 +873,7 @@ namespace Libplanet.Tests.Blockchain
 
             Guid previousChainId = _blockChain.Id;
             _renderer.ResetRecords();
-            _blockChain.Swap(fork, render)();
+            _blockChain.Swap(fork, render)();   // #3 -> #2 -> #1 -> #2'
 
             Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
             Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
@@ -891,38 +892,27 @@ namespace Libplanet.Tests.Blockchain
             );
             int actionsCountB = txsB.Sum(tx => tx.CustomActions.Count);
 
-            int totalBlockCount = (int)_blockChain[-1].Index + 1;
-            int unRenderBlockCount = 2;
+            int totalBlockCount = (int)_blockChain.Tip.Index + 1;
 
             if (render)
             {
-                Assert.Equal(4, blockLevelRenders.Length);
-                Assert.IsType<RenderRecord<DumbAction>.Reorg>(blockLevelRenders[0]);
+                Assert.Equal(2, blockLevelRenders.Length);
+                Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[0]);
                 Assert.True(blockLevelRenders[0].Begin);
                 Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[1]);
-                Assert.True(blockLevelRenders[1].Begin);
-                Assert.IsType<RenderRecord<DumbAction>.Block>(blockLevelRenders[2]);
-                Assert.True(blockLevelRenders[2].End);
-
-                Assert.IsType<RenderRecord<DumbAction>.Reorg>(blockLevelRenders.Last());
-                Assert.True(blockLevelRenders.Last().End);
+                Assert.True(blockLevelRenders[1].End);
 
                 Assert.True(blockLevelRenders[0].Index < actionRenders[0].Index);
-                Assert.True(actionRenders.Last(r => r.Unrender).Index < blockLevelRenders[1].Index);
-                Assert.True(blockLevelRenders[1].Index < actionRenders.First(r => r.Render).Index);
-                Assert.True(actionRenders.Last().Index < blockLevelRenders[2].Index);
+                Assert.True(blockLevelRenders[0].Index < actionRenders.First(r => r.Render).Index);
+                Assert.True(actionRenders.Last().Index < blockLevelRenders[1].Index);
 
-                Assert.Equal(actionsCountB + actionsCountA, actionRenders.Length);
-                Assert.True(actionRenders.Take(actionsCountA).All(r => r.Unrender));
-                Assert.True(actionRenders.Skip(actionsCountA).All(r => r.Render));
+                Assert.Equal(actionsCountB, actionRenders.Length);
+                Assert.Equal(0, actionRenders.Count(r => r.Unrender));
+                Assert.True(actionRenders.All(r => r.Render));
 
-                Assert.Equal("qux", actions[0].Item);
-                Assert.Equal("baz", actions[1].Item);
-                Assert.Equal("bar", actions[2].Item);
-                Assert.Equal("foo", actions[3].Item);
-                Assert.Equal("fork-foo", actions[4].Item);
-                Assert.Equal("fork-bar", actions[5].Item);
-                Assert.Equal("fork-baz", actions[6].Item);
+                Assert.Equal("fork-foo", actions[0].Item);
+                Assert.Equal("fork-bar", actions[1].Item);
+                Assert.Equal("fork-baz", actions[2].Item);
 
                 RenderRecord<DumbAction>.ActionBase[] blockActionRenders = _renderer.ActionRecords
                     .Where(r => r.Action is MinerReward)
@@ -933,9 +923,8 @@ namespace Libplanet.Tests.Blockchain
                     (Integer)(totalBlockCount - 1),
                     (Integer)_blockChain.GetState(minerAddress)
                 );
-                Assert.Equal(totalBlockCount, blockActionRenders.Length);
-                Assert.True(blockActionRenders.Take(unRenderBlockCount).All(r => r.Unrender));
-                Assert.True(blockActionRenders.Skip(unRenderBlockCount).All(r => r.Render));
+                Assert.Single(blockActionRenders); // #1 -> #2'
+                Assert.True(blockActionRenders.All(r => r.Render));
             }
             else
             {
@@ -1053,13 +1042,8 @@ namespace Libplanet.Tests.Blockchain
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
             _blockChain.Swap(fork, render: true)();
 
-            // RenderReorg() should be invoked if and only if the actual reorg happens
-            Assert.Equal(prevRecords.Count + 2, _renderer.ReorgRecords.Count);
-            Assert.Equal(prevRecords, _renderer.ReorgRecords.Take(prevRecords.Count));
-            RenderRecord<DumbAction>.Reorg begin = _renderer.ReorgRecords[prevRecords.Count];
-            Assert.True(begin.Begin);
-            RenderRecord<DumbAction>.Reorg end = _renderer.ReorgRecords[prevRecords.Count + 1];
-            Assert.True(end.End);
+            // RenderReorg() is being deprecated and is not called.
+            Assert.Empty(_renderer.ReorgRecords);
         }
 
         [SkippableTheory]
