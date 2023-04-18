@@ -20,8 +20,6 @@ namespace Libplanet.Tx
         public static readonly TxCustomActionList Empty =
             new TxCustomActionList(ImmutableList<IAction>.Empty);
 
-        internal static readonly Binary CustomActionsKey = new byte[] { 0x61 }; // 'a'
-
         /// <summary>
         /// Creates a new <see cref="TxCustomActionList"/> instance with the given
         /// <paramref name="customActions"/>.
@@ -80,43 +78,33 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="TxActionList.ToBencodex()"/>
         [Pure]
-        public override Dictionary ToBencodex() =>
-            Bencodex.Types.Dictionary.Empty
-                .Add(CustomActionsKey, new List(CustomActions.Select(a => a.PlainValue)));
+        public override IValue ToBencodex() =>
+            new List(CustomActions.Select(a => a.PlainValue));
 
         /// <summary>
         /// Decodes a <see cref="TxCustomActionList"/> from a Bencodex dictionary.
         /// </summary>
-        /// <param name="dictionary">A Bencodex dictionary to decode.</param>
+        /// <param name="value">A Bencodex list to decode.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type to decode.  It must be a concrete
         /// type, not an interface or an abstract class.</typeparam>
         /// <returns>A decoded <see cref="TxCustomActionList"/>.</returns>
-        /// <exception cref="DecodingException">Thrown when the given <paramref name="dictionary"/>
-        /// does not contain <see cref="CustomActionsKey"/> key.</exception>
+        /// <exception cref="DecodingException">Thrown when the given <paramref name="value"/>
+        /// is not a <see cref="List"/>.</exception>
         /// <seealso cref="ToBencodex()"/>
         [Pure]
-        internal static new TxCustomActionList FromBencodex<T>(Bencodex.Types.Dictionary dictionary)
+        internal static TxCustomActionList FromBencodex<T>(IValue value)
             where T : IAction, new()
         {
-            if (dictionary.TryGetValue(CustomActionsKey, out IValue v))
+            if (value is List list)
             {
-                if (v is Bencodex.Types.List customActions)
-                {
-                    return new TxCustomActionList(
-                        customActions.Select(ToAction<T>).ToImmutableList());
-                }
-
-                throw new DecodingException(
-                    $"Expected {CustomActionsKey} key to have a " +
-                    $"{typeof(Bencodex.Types.Dictionary).FullName}, " +
-                    $"but a {v.GetType().Name} was found."
-                );
+                return new TxCustomActionList(
+                    list.Select(ToAction<T>).ToImmutableList());
             }
-
-            throw new DecodingException(
-                $"Expected {CustomActionsKey} key to have a " +
-                $"{typeof(Bencodex.Types.Dictionary).FullName}, but it was missing."
-            );
+            else
+            {
+                throw new DecodingException(
+                    $"Given value must be a {nameof(List)}: {value.GetType()}");
+            }
         }
 
         [Pure]

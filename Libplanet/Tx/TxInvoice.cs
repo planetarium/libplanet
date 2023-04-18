@@ -63,10 +63,10 @@ namespace Libplanet.Tx
             TxActionList? actions = null
         )
             : this(
-              genesisHash,
-              updatedAddresses?.ToImmutableHashSet() ?? ImmutableHashSet<Address>.Empty,
-              timestamp ?? DateTimeOffset.UtcNow,
-              actions ?? TxCustomActionList.Empty
+                genesisHash,
+                updatedAddresses?.ToImmutableHashSet() ?? ImmutableHashSet<Address>.Empty,
+                timestamp ?? DateTimeOffset.UtcNow,
+                actions ?? TxCustomActionList.Empty
             )
         {
         }

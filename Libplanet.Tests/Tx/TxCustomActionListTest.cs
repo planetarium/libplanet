@@ -19,12 +19,8 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(0, TxCustomActionList.Empty.Count);
             Assert.Throws<IndexOutOfRangeException>(() => TxCustomActionList.Empty[0]);
             AssertBencodexEqual(
-                Bencodex.Types.Dictionary.Empty.Add(
-                    new byte[] { 0x61 },
-                    Bencodex.Types.List.Empty
-                ),
-                TxCustomActionList.Empty.ToBencodex()
-            );
+                Bencodex.Types.List.Empty,
+                TxCustomActionList.Empty.ToBencodex());
         }
 
         [Fact]
@@ -82,11 +78,8 @@ namespace Libplanet.Tests.Tx
         {
             var emptyList = new TxCustomActionList(new IAction[0]);
             AssertBencodexEqual(
-                Bencodex.Types.Dictionary.Empty.Add(
-                    new byte[] { 0x61 },
-                    Bencodex.Types.List.Empty),
-                emptyList.ToBencodex()
-            );
+                Bencodex.Types.List.Empty,
+                emptyList.ToBencodex());
 
             // TODO: We should introduce snapshot testing.
             IAction[] actions =
@@ -96,21 +89,16 @@ namespace Libplanet.Tests.Tx
             };
             var list = new TxCustomActionList(actions);
             AssertBencodexEqual(
-                Bencodex.Types.Dictionary.Empty.Add(
-                    new byte[] { 0x61 },
-                    Bencodex.Types.List.Empty
-                        .Add(actions[0].PlainValue)
-                        .Add(actions[1].PlainValue)),
-                list.ToBencodex()
-            );
+                Bencodex.Types.List.Empty
+                    .Add(actions[0].PlainValue)
+                    .Add(actions[1].PlainValue),
+                list.ToBencodex());
         }
 
         [Fact]
         public void FromBencodex()
         {
-            var emptyInput = Bencodex.Types.Dictionary.Empty.Add(
-                new byte[] { 0x61 },
-                Bencodex.Types.List.Empty);
+            var emptyInput = Bencodex.Types.List.Empty;
             Assert.Equal(
                 TxCustomActionList.Empty,
                 TxCustomActionList.FromBencodex<DumbAction>(emptyInput));
@@ -120,19 +108,15 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(default, "foo"),
                 new DumbAction(default, "bar"),
             };
-            var input = Bencodex.Types.Dictionary.Empty.Add(
-                new byte[] { 0x61 },
-                Bencodex.Types.List.Empty
-                    .Add(actions[0].PlainValue)
-                    .Add(actions[1].PlainValue));
+            var input = Bencodex.Types.List.Empty
+                .Add(actions[0].PlainValue)
+                .Add(actions[1].PlainValue);
             var list = TxCustomActionList.FromBencodex<DumbAction>(input);
             Assert.Equal(2, list.Count);
             Assert.Equal(actions[0], list[0]);
             Assert.Equal(actions[1], list[1]);
 
-            var invalidInput = Bencodex.Types.Dictionary.Empty.Add(
-                new byte[] { 0x41 },
-                Bencodex.Types.Dictionary.Empty);
+            var invalidInput = Bencodex.Types.Dictionary.Empty;
             Assert.Throws<DecodingException>(
                 () => TxCustomActionList.FromBencodex<DumbAction>(invalidInput));
         }

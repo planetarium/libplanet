@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
 
@@ -35,42 +36,6 @@ namespace Libplanet.Tx
         [Pure]
         public abstract IAction this[int index] { get; }
 
-        /// <summary>
-        /// Decodes a <see cref="TxActionList"/> from a Bencodex dictionary.
-        /// </summary>
-        /// <param name="dictionary">A Bencodex dictionary to decode.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type to decode.  It must be a concrete
-        /// type, not an interface or an abstract class.</typeparam>
-        /// <returns>A decoded <see cref="TxActionList"/>.</returns>
-        /// <exception cref="DecodingException">Thrown when the given <paramref name="dictionary"/>
-        /// does not contain either <see cref="TxSystemActionList"/> or
-        /// <see cref="TxCustomActionList"/>.</exception>
-        /// <seealso cref="ToBencodex()"/>
-        [Pure]
-        public static TxActionList FromBencodex<T>(Bencodex.Types.Dictionary dictionary)
-            where T : IAction, new()
-        {
-            try
-            {
-                return TxSystemActionList.FromBencodex(dictionary);
-            }
-            catch (DecodingException sysActionError)
-            {
-                try
-                {
-                    return TxCustomActionList.FromBencodex<T>(dictionary);
-                }
-                catch (DecodingException customActionError)
-                {
-                    string msg =
-                        $"Expected either {nameof(TxSystemActionList)} or " +
-                        $"{nameof(TxCustomActionList)}, but both were missing.  " +
-                        $"Here are the errors:\n\n\t{sysActionError}\n\t{customActionError}";
-                    throw new DecodingException(msg, customActionError);
-                }
-            }
-        }
-
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>
         [Pure]
         public abstract IEnumerator<IAction> GetEnumerator();
@@ -83,9 +48,8 @@ namespace Libplanet.Tx
         /// Encodes the <see cref="TxActionList"/> into a Bencodex dictionary.
         /// </summary>
         /// <returns>A Bencodex dictionary that encodes the <see cref="TxActionList"/>.</returns>
-        /// <seealso cref="FromBencodex{T}(Bencodex.Types.Dictionary)"/>
         [Pure]
-        public abstract Bencodex.Types.Dictionary ToBencodex();
+        public abstract IValue ToBencodex();
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
