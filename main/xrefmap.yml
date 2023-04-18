@@ -30707,22 +30707,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxActionList.Equals
   nameWithType: TxActionList.Equals
-- uid: Libplanet.Tx.TxActionList.FromBencodex*
-  name: FromBencodex
-  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_FromBencodex_
-  commentId: Overload:Libplanet.Tx.TxActionList.FromBencodex
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxActionList.FromBencodex
-  nameWithType: TxActionList.FromBencodex
-- uid: Libplanet.Tx.TxActionList.FromBencodex``1(Bencodex.Types.Dictionary)
-  name: FromBencodex<T>(Dictionary)
-  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_FromBencodex__1_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Tx.TxActionList.FromBencodex``1(Bencodex.Types.Dictionary)
-  name.vb: FromBencodex(Of T)(Dictionary)
-  fullName: Libplanet.Tx.TxActionList.FromBencodex<T>(Bencodex.Types.Dictionary)
-  fullName.vb: Libplanet.Tx.TxActionList.FromBencodex(Of T)(Bencodex.Types.Dictionary)
-  nameWithType: TxActionList.FromBencodex<T>(Dictionary)
-  nameWithType.vb: TxActionList.FromBencodex(Of T)(Dictionary)
 - uid: Libplanet.Tx.TxActionList.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_GetEnumerator
