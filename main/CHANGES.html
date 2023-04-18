@@ -144,6 +144,10 @@ methods.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a
 <li>Changed <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, DateTimeOffset, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</code> method to
 <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3077">#3077</a>]</li>
 <li>Changed <code>BlockChain&lt;T&gt;.ProposeGenesisBlock(IEnumerable&lt;T&gt;, IEnumerable&lt;IAction&gt;, PrivateKey, DateTimeOffset?, IAction, Predicate&lt;Currency&gt;)</code> to <code>BlockChain&lt;T&gt;.ProposeGenesisBlock( PrivateKey, ImmutableList&lt;Transaction&lt;T&gt;&gt;, DateTimeOffset?, IAction, Predicate&lt;Currency&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3079">#3079</a>]</li>
+<li>(Libplanet.Explorer) <code>Currency.decimalPlaces</code>' type became <code>Byte</code>
+from <code>UInt</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
+<li>(Libplanet.Explorer) <code>currencyHash</code> parameter was removed from
+<code>balance</code> and <code>totalSupply</code> in <code>StateQuery</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -213,6 +217,9 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]
 interface.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
 <li>(Libplanet.Tools) Added <code>-v</code>/<code>--validator-key</code> option to
 <code>planet block generate-genesis</code> command.  [<a href="https://github.com/planetarium/libplanet/pull/3088">#3088</a>]</li>
+<li>(Libplanet.Explorer) Added <code>CurrencyInput</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
+<li>(Libplanet.Explorer) Added <code>CurrencyInput</code>-typed <code>currency</code> parameter to
+<code>balance</code> and <code>totalSupply</code> in <code>StateQuery</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
