@@ -33,7 +33,7 @@ public class StateQuery<T>
             "balance",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
-                new QueryArgument<NonNullGraphType<ByteStringType>> { Name = "currencyHash" },
+                new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
             ),
             resolve: ResolveBalance
@@ -41,7 +41,7 @@ public class StateQuery<T>
         Field<FungibleAssetValueType>(
             "totalSupply",
             arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<ByteStringType>> { Name = "currencyHash" },
+                new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
             ),
             resolve: ResolveTotalSupply
@@ -53,37 +53,6 @@ public class StateQuery<T>
             ),
             resolve: ResolveValidatorSet
         );
-    }
-
-    private static Currency GetNativeTokenFromHash(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context,
-        string paramName
-    )
-    {
-        byte[] currencyHashBytes = context.GetArgument<byte[]>(paramName);
-        HashDigest<SHA1> currencyHash;
-        try
-        {
-            currencyHash = new HashDigest<SHA1>(currencyHashBytes);
-        }
-        catch (Exception e)
-        {
-            throw new ExecutionError(paramName + " must consist of 20 bytes.\n" + e.Message, e);
-        }
-
-        IImmutableSet<Currency> nativeTokens = context.Source.Policy.NativeTokens;
-        try
-        {
-            return nativeTokens.First(token => token.Hash.Equals(currencyHash));
-        }
-        catch (InvalidOperationException e)
-        {
-            throw new ExecutionError(
-                paramName + " must be a native token.  Native tokens are:\n\n" +
-                    string.Join("\n", nativeTokens.Select(t => $"{t.Hash} (${t.Ticker})")),
-                e
-            );
-        }
     }
 
     private static object ResolveStates(
@@ -115,7 +84,7 @@ public class StateQuery<T>
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
     {
         Address owner = context.GetArgument<Address>("owner");
-        Currency currency = GetNativeTokenFromHash(context, "currencyHash");
+        Currency currency = context.GetArgument<Currency>("currency");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
 
         BlockHash offset;
@@ -141,7 +110,7 @@ public class StateQuery<T>
     private static object? ResolveTotalSupply(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
     {
-        Currency currency = GetNativeTokenFromHash(context, "currencyHash");
+        Currency currency = context.GetArgument<Currency>("currency");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
 
         if (!currency.TotalSupplyTrackable)

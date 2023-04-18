@@ -44,7 +44,7 @@ public class CurrencyTypeTest
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         Assert.Equal("ABC", resultDict["ticker"]);
-        Assert.Equal(2U, resultDict["decimalPlaces"]);
+        Assert.Equal((byte)2, resultDict["decimalPlaces"]);
         IDictionary<string, object> maxSupplyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["maximumSupply"]);
         IDictionary<string, object> currencyDict =

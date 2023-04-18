@@ -131,7 +131,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                                     new Dictionary<string, object> {
                                         ["currency"] = new Dictionary<string, object> {
                                             ["ticker"] = KRW.Ticker,
-                                            ["decimalPlaces"] = (uint)KRW.DecimalPlaces,
+                                            ["decimalPlaces"] = KRW.DecimalPlaces,
                                         },
                                         ["quantity"] = "20000",
                                     },
@@ -145,7 +145,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                                     new Dictionary<string, object> {
                                         ["currency"] = new Dictionary<string, object> {
                                             ["ticker"] = KRW.Ticker,
-                                            ["decimalPlaces"] = (uint)KRW.DecimalPlaces,
+                                            ["decimalPlaces"] = KRW.DecimalPlaces,
                                         },
                                         ["quantity"] = "10000",
                                     },
