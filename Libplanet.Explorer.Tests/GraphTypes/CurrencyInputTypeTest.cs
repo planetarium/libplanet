@@ -59,7 +59,7 @@ public class CurrencyInputTypeTest
             }");
         var error = Assert.Single(result.Errors);
         Assert.Contains(
-            "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must be omitted",
+            "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must be present or omitted",
             error.Message);
     }
 }

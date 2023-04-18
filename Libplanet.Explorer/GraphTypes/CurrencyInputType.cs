@@ -100,7 +100,8 @@ namespace Libplanet.Explorer.GraphTypes
                 (null, null) => null,
                 (BigInteger x, BigInteger y) => (x, y),
                 _ => throw new ExecutionError(
-                    "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must be omitted"
+                    "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must " +
+                    "be present or omitted"
                 ),
             };
         }
