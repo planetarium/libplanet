@@ -18,6 +18,8 @@ To be released.
  -  Removed `IRenderer<T>.RenderReorg()`, `IRenderer<T>.RenderReorgEnd()`,
     `IActionRenderer<T>.UnrenderAction()`, and
     `IActionRenderer<T>.UnrenderActionError()`.  [[#3092]]
+ -  Removed `NonblockRenderer`, `NonblockActionRenderer`, `DelayedRenderer`,
+    and `DelayedActionRenderer` classes.  [[#3098]]
 
 ### Backward-incompatible network protocol changes
 
@@ -44,6 +46,7 @@ To be released.
 [#3083]: https://github.com/planetarium/libplanet/pull/3083
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
 [#3092]: https://github.com/planetarium/libplanet/pull/3092
+[#3098]: https://github.com/planetarium/libplanet/pull/3098
 
 
 Version 1.0.0
