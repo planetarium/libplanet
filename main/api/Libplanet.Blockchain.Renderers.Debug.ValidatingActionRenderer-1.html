@@ -484,12 +484,7 @@ rendered.</p>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer&lt;T&gt;.RenderReorg(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
   <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>For every call to this method, calls to
-<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> and
-<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderReorgEnd(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</a> methods with the same
-<code data-dev-comment-type="paramref" class="paramref">newTip</code> is made too.  Note that this method is guaranteed to be called
-before <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> method for the same
-<code data-dev-comment-type="paramref" class="paramref">newTip</code>.</p>
+  <div class="markdown level1 remarks"><p>This is no longer invoked by a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -541,10 +536,7 @@ before <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Lib
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer&lt;T&gt;.RenderReorgEnd(Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
   <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Note that this method is guaranteed to be called after
-<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</a> and
-<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> methods for the same
-<code data-dev-comment-type="paramref" class="paramref">newTip</code>.</p>
+  <div class="markdown level1 remarks"><p>This is no longer invoked by a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -662,10 +654,7 @@ That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer&lt;T&gt;.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)</span></div>
   <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The reason why the parameter <code data-dev-comment-type="paramref" class="paramref">action</code> takes
-<a class="xref" href="Libplanet.Action.IAction.html">IAction</a> instead of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is because it can take
-block actions (<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>) besides transaction
-actions (<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>).</p>
+  <div class="markdown level1 remarks"><p>This is no longer invoked by a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </div>
   <h3 id="implements">Implements</h3>
   <div>
