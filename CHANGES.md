@@ -130,6 +130,12 @@ To be released.
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
 
+Version 1.0.1
+-------------
+
+To be released.
+
+
 Version 1.0.0
 -------------
 
