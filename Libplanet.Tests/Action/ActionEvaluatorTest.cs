@@ -213,10 +213,11 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<ThrowException>(
-                policy: new BlockPolicy<ThrowException>(),
-                store: store,
-                stateStore: stateStore);
+            var (chain, actionEvaluator) =
+                TestUtils.MakeBlockChainAndActionEvaluator<ThrowException>(
+                    policy: new BlockPolicy<ThrowException>(),
+                    store: store,
+                    stateStore: stateStore);
             var genesis = chain.Genesis;
             // Evaluation is run with rehearsal true to get updated addresses on tx creation.
             var tx = Transaction<ThrowException>.Create(
@@ -243,13 +244,13 @@ namespace Libplanet.Tests.Action
                 genesis.Miner);
 
             // ToList() is required for realization.
-            chain.ActionEvaluator.EvaluateTx(
+            actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
                 previousStates: previousStates,
                 rehearsal: true).ToList();
             Assert.Throws<OutOfMemoryException>(
-                () => chain.ActionEvaluator.EvaluateTx(
+                () => actionEvaluator.EvaluateTx(
                     blockHeader: block,
                     tx: tx,
                     previousStates: previousStates,
@@ -896,7 +897,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluatePolicyBlockAction()
         {
-            var chain = MakeBlockChain(
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,
@@ -923,7 +924,7 @@ namespace Libplanet.Tests.Action
                 totalSupplyGetter,
                 validatorSetGetter,
                 genesis.Miner);
-            var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
+            var evaluation = actionEvaluator.EvaluatePolicyBlockAction(
                 genesis,
                 previousStates,
                 null);
@@ -948,7 +949,7 @@ namespace Libplanet.Tests.Action
                 totalSupplyGetter,
                 validatorSetGetter,
                 block.Miner);
-            evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
+            evaluation = actionEvaluator.EvaluatePolicyBlockAction(
                 block,
                 previousStates,
                 null);
@@ -972,11 +973,11 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
                 block.Miner);
-            var txEvaluations = chain.ActionEvaluator.EvaluateBlock(
+            var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
                 previousStates).ToList();
             previousStates = txEvaluations.Last().OutputStates;
-            evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
+            evaluation = actionEvaluator.EvaluatePolicyBlockAction(
                 block,
                 previousStates,
                 null);

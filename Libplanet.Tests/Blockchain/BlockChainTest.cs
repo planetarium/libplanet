@@ -1665,13 +1665,25 @@ namespace Libplanet.Tests.Blockchain
                 blockPolicy.BlockAction,
                 blockPolicy.NativeTokens.Contains);
             var chainStates = new BlockChainStates(store, stateStore);
+            var actionEvaluator = new ActionEvaluator(
+                _ => blockPolicy.BlockAction,
+                blockChainStates: chainStates,
+                trieGetter: hash =>
+                    stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
+                genesisHash: genesisBlock.Hash,
+                nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
+                actionTypeLoader: StaticActionTypeLoader.Create<DumbAction>(),
+                feeCalculator: null
+            );
             var chain = BlockChain<DumbAction>.Create(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
                 genesisBlock,
-                renderers: renderer is null ? null : new[] { renderer });
+                renderers: renderer is null ? null : new[] { renderer },
+                blockChainStates: chainStates,
+                actionEvaluator: actionEvaluator);
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
 
@@ -1708,7 +1720,7 @@ namespace Libplanet.Tests.Blockchain
                 nullValidatorSetGetter,
                 b.Miner);
             ActionEvaluation[] evals =
-                chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
+                actionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();
@@ -1754,7 +1766,7 @@ namespace Libplanet.Tests.Blockchain
                         () => new ValidatorSet(),
                         b.Miner);
 
-                    dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
+                    dirty = actionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
                     BuildIndex(chain.Id, b);
