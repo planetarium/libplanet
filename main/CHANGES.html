@@ -162,7 +162,8 @@ Use <code>TxMarshaler.UnmarshalTransaction&lt;T&gt;()</code> method instead.  [<
 <li>Removed <code>PreEvaluationBlock&lt;T&gt;.Evaluate(PrivateKey, IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>,
 <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>, <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore, out IImmutableDictionary&lt;string, IValue&gt;)</code>,
 <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;)</code>,
-and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;, out IImmutableDictionary&lt;string, IValue&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3037">#3037</a>]</li>
+and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;, out IImmutableDictionary&lt;string, IValue&gt;)</code>,
+<code>BlockChain&lt;T&gt;.ExecuteActions(Block&lt;T&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3037">#3037</a>]</li>
 <li>(Libplanet.Extensions.Cocona) Changed signature of
 <code>ApvCommand.Verify(string?, string[]?, bool)</code> method to
 <code>ApvCommand.Verify(string?, PublicKey[]?, bool)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
