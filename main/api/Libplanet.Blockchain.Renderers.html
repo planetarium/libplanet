@@ -94,19 +94,6 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
 made by unsuccessful transactions (i.e., transactions with one or more exception-throwing
 actions).</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html">DelayedActionRenderer&lt;T&gt;</a></h4>
-      <section><p>An <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of <a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html">DelayedRenderer&lt;T&gt;</a>.</p>
-<p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance and delays the events until
-blocks are <em>confirmed</em> the certain number of blocks.  When blocks are recognized
-the delayed events relevant to these blocks are relayed to the decorated
-<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a>.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.DelayedRenderer-1.html">DelayedRenderer&lt;T&gt;</a></h4>
-      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> instance and delays the events until blocks
-are <em>confirmed</em> the certain number of blocks.  When blocks are recognized
-the delayed events relevant to these blocks are relayed to the decorated
-<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html">LoggedActionRenderer&lt;T&gt;</a></h4>
       <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> so that all event messages are logged.
 In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of
@@ -122,22 +109,6 @@ it is also logged with the log level <span class="xref">Serilog.Events.LogEventL
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
 it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
 <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level">Level</a> configuration).</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html">NonblockActionRenderer&lt;T&gt;</a></h4>
-      <section><p>Decorates a <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance and lets all rendering events be
-non-blocking.</p>
-<p>Every method call on the renderer will immediately return and the rendering
-will be performed in a background thread.  Note that the order of render events is
-still guaranteed.  In other words, a later event never arrives before events earlier
-than it.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.html">NonblockRenderer&lt;T&gt;</a></h4>
-      <section><p>Decorates a <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> instance and lets all rendering events be
-non-blocking.</p>
-<p>Every method call on the renderer will immediately return and the rendering
-will be performed in a background thread.  Note that the order of render events is
-still guaranteed.  In other words, a later event never arrives before events earlier
-than it.</p>
 </section>
     <h3 id="interfaces">Interfaces
 </h3>
@@ -159,18 +130,6 @@ times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRende
 on the display is redrawn.</p>
 <p>The invocation order of methods for each <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> are:</p>
 <ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> (one time)</li></ol>
-</section>
-    <h3 id="enums">Enums
-</h3>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullMode.html">NonblockRenderer&lt;T&gt;.FullMode</a></h4>
-      <section><p>Specifies the behavior when the internal event queue is full so that no more event
-can be added.</p>
-</section>
-    <h3 id="delegates">Delegates
-</h3>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullFallback.html">NonblockRenderer&lt;T&gt;.FullFallback</a></h4>
-      <section><p>Customizes behavior when the internal event queue is full so that no more event
-can be added.</p>
 </section>
 </article>
           </div>

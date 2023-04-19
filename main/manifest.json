@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "/Tl510sSlg03Cf4VeaOtKIgTq+Cfs8YE9vjRNpQbPvo="
+          "hash": "42/j3LdqxdFDo7E7tgaN6Gd3NRnpQNHzNwueg3G0SdU="
         }
       },
       "is_incremental": false,
@@ -941,30 +941,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html",
-          "hash": "LmVdy6Pm6ehCjfYeLaG9EBoXQ3HwScfPGdOYx5j2Nis="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html",
-          "hash": "cNcSVOG3H/J5Rcs3vsAt/m8HxZz1yfA0uNKAqZUsnnE="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blockchain.Renderers.IActionRenderer-1.yml",
       "output": {
         ".html": {
@@ -1013,59 +989,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html",
-          "hash": "aijmnFyo5cJXbhq+lPKlAUB0HM3rIvMpqZPd44ouVd8="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullFallback.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullFallback.html",
-          "hash": "pHHPFwZaS99YjIJODgrvM2SSf3P4RHiaOYEhrznRJTI="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullMode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullMode.html",
-          "hash": "X99MgXEPVQWLZo3sTaHB9a/RfDC708BORnRObqDpUjc="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html",
-          "hash": "/yx1ouM9XSPTpoY2CwFRO1kswADpLYjvHQ1vduBouzs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blockchain.Renderers.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.html",
-          "hash": "3Pek7F7hqAV4+y6lqZ11erDBWUFWVGZtpJhDbkWkM8E="
+          "hash": "BvAkT1Onhz4L1iu5lKxWwe7jz0xdYvnWHXuCvL9fopA="
         }
       },
       "is_incremental": false,
@@ -4641,7 +4569,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "BLvYQZZUcRit7Tn+GpgyeZtXVlFQTrQvZ4JmEXeHc5c="
+          "hash": "UqmLftMLkB+CtJ7RZic+y0bWNvqogIY6g+ykcUOZ7a0="
         }
       },
       "is_incremental": false,
@@ -4750,7 +4678,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 376,
+          "total_file_count": 370,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
