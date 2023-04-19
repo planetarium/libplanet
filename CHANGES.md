@@ -115,7 +115,8 @@ Released on April 18, 2023.
     out IImmutableDictionary<string, IValue>)`,
     `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>)`,
     and `PreEvaluationBlock<T>.DetermineStateRootHash(BlockChain<T>,
-    out IImmutableDictionary<string, IValue>)`.  [[#3037]]
+    out IImmutableDictionary<string, IValue>)`,
+    `BlockChain<T>.ExecuteActions(Block<T>)`.  [[#3037]]
  -  (Libplanet.Extensions.Cocona) Changed signature of
     `ApvCommand.Verify(string?, string[]?, bool)` method to
     `ApvCommand.Verify(string?, PublicKey[]?, bool)`.  [[#3044]]
