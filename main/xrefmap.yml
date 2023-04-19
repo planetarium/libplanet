@@ -4794,23 +4794,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).ActionErrorRenderer
   nameWithType: AnonymousActionRenderer<T>.ActionErrorRenderer
   nameWithType.vb: AnonymousActionRenderer(Of T).ActionErrorRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionErrorUnrenderer
-  name: ActionErrorUnrenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_ActionErrorUnrenderer
-  commentId: P:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionErrorUnrenderer
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.ActionErrorUnrenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).ActionErrorUnrenderer
-  nameWithType: AnonymousActionRenderer<T>.ActionErrorUnrenderer
-  nameWithType.vb: AnonymousActionRenderer(Of T).ActionErrorUnrenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionErrorUnrenderer*
-  name: ActionErrorUnrenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_ActionErrorUnrenderer_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionErrorUnrenderer
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.ActionErrorUnrenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).ActionErrorUnrenderer
-  nameWithType: AnonymousActionRenderer<T>.ActionErrorUnrenderer
-  nameWithType.vb: AnonymousActionRenderer(Of T).ActionErrorUnrenderer
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionRenderer
   name: ActionRenderer
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_ActionRenderer
@@ -4828,23 +4811,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).ActionRenderer
   nameWithType: AnonymousActionRenderer<T>.ActionRenderer
   nameWithType.vb: AnonymousActionRenderer(Of T).ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionUnrenderer
-  name: ActionUnrenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_ActionUnrenderer
-  commentId: P:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionUnrenderer
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.ActionUnrenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).ActionUnrenderer
-  nameWithType: AnonymousActionRenderer<T>.ActionUnrenderer
-  nameWithType.vb: AnonymousActionRenderer(Of T).ActionUnrenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionUnrenderer*
-  name: ActionUnrenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_ActionUnrenderer_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.ActionUnrenderer
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.ActionUnrenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).ActionUnrenderer
-  nameWithType: AnonymousActionRenderer<T>.ActionUnrenderer
-  nameWithType.vb: AnonymousActionRenderer(Of T).ActionUnrenderer
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.BlockEndRenderer
   name: BlockEndRenderer
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_BlockEndRenderer
@@ -4914,40 +4880,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).RenderBlockEnd
   nameWithType: AnonymousActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: AnonymousActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: AnonymousActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: AnonymousActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).UnrenderAction
-  nameWithType: AnonymousActionRenderer<T>.UnrenderAction
-  nameWithType.vb: AnonymousActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: AnonymousActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: AnonymousActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).UnrenderActionError
-  nameWithType: AnonymousActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: AnonymousActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1
   name: AnonymousRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html
@@ -4992,76 +4924,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).RenderBlock
   nameWithType: AnonymousRenderer<T>.RenderBlock
   nameWithType.vb: AnonymousRenderer(Of T).RenderBlock
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: AnonymousRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: AnonymousRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).RenderReorg
-  nameWithType: AnonymousRenderer<T>.RenderReorg
-  nameWithType.vb: AnonymousRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: AnonymousRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: AnonymousRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).RenderReorgEnd
-  nameWithType: AnonymousRenderer<T>.RenderReorgEnd
-  nameWithType.vb: AnonymousRenderer(Of T).RenderReorgEnd
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgEndRenderer
-  name: ReorgEndRenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgEndRenderer
-  commentId: P:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgEndRenderer
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.ReorgEndRenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).ReorgEndRenderer
-  nameWithType: AnonymousRenderer<T>.ReorgEndRenderer
-  nameWithType.vb: AnonymousRenderer(Of T).ReorgEndRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgEndRenderer*
-  name: ReorgEndRenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgEndRenderer_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgEndRenderer
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.ReorgEndRenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).ReorgEndRenderer
-  nameWithType: AnonymousRenderer<T>.ReorgEndRenderer
-  nameWithType.vb: AnonymousRenderer(Of T).ReorgEndRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgRenderer
-  name: ReorgRenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgRenderer
-  commentId: P:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgRenderer
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.ReorgRenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).ReorgRenderer
-  nameWithType: AnonymousRenderer<T>.ReorgRenderer
-  nameWithType.vb: AnonymousRenderer(Of T).ReorgRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgRenderer*
-  name: ReorgRenderer
-  href: api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousRenderer_1_ReorgRenderer_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AnonymousRenderer`1.ReorgRenderer
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AnonymousRenderer<T>.ReorgRenderer
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousRenderer(Of T).ReorgRenderer
-  nameWithType: AnonymousRenderer<T>.ReorgRenderer
-  nameWithType.vb: AnonymousRenderer(Of T).ReorgRenderer
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1
   name: AtomicActionRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html
@@ -5176,76 +5038,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderBlockEnd
   nameWithType: AtomicActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: AtomicActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: AtomicActionRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: AtomicActionRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderReorg
-  nameWithType: AtomicActionRenderer<T>.RenderReorg
-  nameWithType.vb: AtomicActionRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: AtomicActionRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: AtomicActionRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderReorgEnd
-  nameWithType: AtomicActionRenderer<T>.RenderReorgEnd
-  nameWithType.vb: AtomicActionRenderer(Of T).RenderReorgEnd
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: AtomicActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: AtomicActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).UnrenderAction
-  nameWithType: AtomicActionRenderer<T>.UnrenderAction
-  nameWithType.vb: AtomicActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: AtomicActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: AtomicActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).UnrenderActionError
-  nameWithType: AtomicActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: AtomicActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.Debug
   name: Libplanet.Blockchain.Renderers.Debug
   href: api/Libplanet.Blockchain.Renderers.Debug.html
@@ -5426,42 +5218,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderBlockEnd
   nameWithType: RecordingActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: RecordingActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: RecordingActionRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: RecordingActionRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderReorg
-  nameWithType: RecordingActionRenderer<T>.RenderReorg
-  nameWithType.vb: RecordingActionRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: RecordingActionRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: RecordingActionRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderReorgEnd
-  nameWithType: RecordingActionRenderer<T>.RenderReorgEnd
-  nameWithType.vb: RecordingActionRenderer(Of T).RenderReorgEnd
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.ResetRecords
   name: ResetRecords()
   href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_ResetRecords
@@ -5479,40 +5235,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).ResetRecords
   nameWithType: RecordingActionRenderer<T>.ResetRecords
   nameWithType.vb: RecordingActionRenderer(Of T).ResetRecords
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: RecordingActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: RecordingActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).UnrenderAction
-  nameWithType: RecordingActionRenderer<T>.UnrenderAction
-  nameWithType.vb: RecordingActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: RecordingActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: RecordingActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).UnrenderActionError
-  nameWithType: RecordingActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: RecordingActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1
   name: RenderRecord<T>
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.html
@@ -5943,67 +5665,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Index
   nameWithType: RenderRecord<T>.Index
   nameWithType.vb: RenderRecord(Of T).Index
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg
-  name: RenderRecord<T>.Reorg
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html
-  commentId: T:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg
-  name.vb: RenderRecord(Of T).Reorg
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg
-  nameWithType: RenderRecord<T>.Reorg
-  nameWithType.vb: RenderRecord(Of T).Reorg
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.#ctor(System.Int64,System.String,Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},System.Boolean)
-  name: Reorg(Int64, String, Block<T>, Block<T>, Block<T>, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_Reorg__ctor_System_Int64_System_String_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.#ctor(System.Int64,System.String,Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},System.Boolean)
-  name.vb: Reorg(Int64, String, Block(Of T), Block(Of T), Block(Of T), Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg.Reorg(System.Int64, System.String, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg.Reorg(System.Int64, System.String, Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), System.Boolean)
-  nameWithType: RenderRecord<T>.Reorg.Reorg(Int64, String, Block<T>, Block<T>, Block<T>, Boolean)
-  nameWithType.vb: RenderRecord(Of T).Reorg.Reorg(Int64, String, Block(Of T), Block(Of T), Block(Of T), Boolean)
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.#ctor*
-  name: Reorg
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_Reorg__ctor_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg.Reorg
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg.Reorg
-  nameWithType: RenderRecord<T>.Reorg.Reorg
-  nameWithType.vb: RenderRecord(Of T).Reorg.Reorg
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.Branchpoint
-  name: Branchpoint
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_Reorg_Branchpoint
-  commentId: P:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.Branchpoint
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg.Branchpoint
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg.Branchpoint
-  nameWithType: RenderRecord<T>.Reorg.Branchpoint
-  nameWithType.vb: RenderRecord(Of T).Reorg.Branchpoint
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.Branchpoint*
-  name: Branchpoint
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_Reorg_Branchpoint_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.Branchpoint
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg.Branchpoint
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg.Branchpoint
-  nameWithType: RenderRecord<T>.Reorg.Branchpoint
-  nameWithType.vb: RenderRecord(Of T).Reorg.Branchpoint
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.ToString
-  name: ToString()
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_Reorg_ToString
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.ToString
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg.ToString()
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg.ToString()
-  nameWithType: RenderRecord<T>.Reorg.ToString()
-  nameWithType.vb: RenderRecord(Of T).Reorg.ToString()
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.ToString*
-  name: ToString
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_Reorg_ToString_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.Reorg.ToString
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.Reorg.ToString
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).Reorg.ToString
-  nameWithType: RenderRecord<T>.Reorg.ToString
-  nameWithType.vb: RenderRecord(Of T).Reorg.ToString
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.StackTrace
   name: StackTrace
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_StackTrace
@@ -6152,76 +5813,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderBlockEnd
   nameWithType: ValidatingActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: ValidatingActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: ValidatingActionRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: ValidatingActionRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderReorg
-  nameWithType: ValidatingActionRenderer<T>.RenderReorg
-  nameWithType.vb: ValidatingActionRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: ValidatingActionRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: ValidatingActionRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderReorgEnd
-  nameWithType: ValidatingActionRenderer<T>.RenderReorgEnd
-  nameWithType.vb: ValidatingActionRenderer(Of T).RenderReorgEnd
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: ValidatingActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: ValidatingActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).UnrenderAction
-  nameWithType: ValidatingActionRenderer<T>.UnrenderAction
-  nameWithType.vb: ValidatingActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: ValidatingActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: ValidatingActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).UnrenderActionError
-  nameWithType: ValidatingActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: ValidatingActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1
   name: DelayedActionRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html
@@ -6354,76 +5945,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).RenderBlockEnd
   nameWithType: DelayedActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: DelayedActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: DelayedActionRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: DelayedActionRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).RenderReorg
-  nameWithType: DelayedActionRenderer<T>.RenderReorg
-  nameWithType.vb: DelayedActionRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: DelayedActionRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: DelayedActionRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).RenderReorgEnd
-  nameWithType: DelayedActionRenderer<T>.RenderReorgEnd
-  nameWithType.vb: DelayedActionRenderer(Of T).RenderReorgEnd
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: DelayedActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: DelayedActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).UnrenderAction
-  nameWithType: DelayedActionRenderer<T>.UnrenderAction
-  nameWithType.vb: DelayedActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: DelayedActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: DelayedActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.DelayedActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedActionRenderer(Of T).UnrenderActionError
-  nameWithType: DelayedActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: DelayedActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1
   name: DelayedRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html
@@ -6573,42 +6094,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).Renderer
   nameWithType: DelayedRenderer<T>.Renderer
   nameWithType.vb: DelayedRenderer(Of T).Renderer
-- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: DelayedRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: DelayedRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).RenderReorg
-  nameWithType: DelayedRenderer<T>.RenderReorg
-  nameWithType.vb: DelayedRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: DelayedRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: DelayedRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.DelayedRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.DelayedRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.DelayedRenderer(Of T).RenderReorgEnd
-  nameWithType: DelayedRenderer<T>.RenderReorgEnd
-  nameWithType.vb: DelayedRenderer(Of T).RenderReorgEnd
 - uid: Libplanet.Blockchain.Renderers.DelayedRenderer`1.Store
   name: Store
   href: api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html#Libplanet_Blockchain_Renderers_DelayedRenderer_1_Store
@@ -6704,40 +6189,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).RenderBlockEnd
   nameWithType: IActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: IActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: IActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: IActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).UnrenderAction
-  nameWithType: IActionRenderer<T>.UnrenderAction
-  nameWithType.vb: IActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: IActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: IActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.IActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).UnrenderActionError
-  nameWithType: IActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: IActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.IRenderer`1
   name: IRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.IRenderer-1.html
@@ -6765,42 +6216,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.IRenderer(Of T).RenderBlock
   nameWithType: IRenderer<T>.RenderBlock
   nameWithType.vb: IRenderer(Of T).RenderBlock
-- uid: Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.IRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.IRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: IRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: IRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.IRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.IRenderer(Of T).RenderReorg
-  nameWithType: IRenderer<T>.RenderReorg
-  nameWithType.vb: IRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.IRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.IRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: IRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: IRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.IRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.IRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.IRenderer(Of T).RenderReorgEnd
-  nameWithType: IRenderer<T>.RenderReorgEnd
-  nameWithType.vb: IRenderer(Of T).RenderReorgEnd
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1
   name: LoggedActionRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html
@@ -6897,40 +6312,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).RenderBlockEnd
   nameWithType: LoggedActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: LoggedActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: LoggedActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: LoggedActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).UnrenderAction
-  nameWithType: LoggedActionRenderer<T>.UnrenderAction
-  nameWithType.vb: LoggedActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: LoggedActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: LoggedActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).UnrenderActionError
-  nameWithType: LoggedActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: LoggedActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.LoggedRenderer`1
   name: LoggedRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html
@@ -7045,42 +6426,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.LoggedRenderer(Of T).Renderer
   nameWithType: LoggedRenderer<T>.Renderer
   nameWithType.vb: LoggedRenderer(Of T).Renderer
-- uid: Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.LoggedRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: LoggedRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: LoggedRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.LoggedRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedRenderer(Of T).RenderReorg
-  nameWithType: LoggedRenderer<T>.RenderReorg
-  nameWithType.vb: LoggedRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.LoggedRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: LoggedRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: LoggedRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.LoggedRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.LoggedRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedRenderer(Of T).RenderReorgEnd
-  nameWithType: LoggedRenderer<T>.RenderReorgEnd
-  nameWithType.vb: LoggedRenderer(Of T).RenderReorgEnd
 - uid: Libplanet.Blockchain.Renderers.NonblockActionRenderer`1
   name: NonblockActionRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html
@@ -7186,40 +6531,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.NonblockActionRenderer(Of T).RenderBlockEnd
   nameWithType: NonblockActionRenderer<T>.RenderBlockEnd
   nameWithType.vb: NonblockActionRenderer(Of T).RenderBlockEnd
-- uid: Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockActionRenderer_1_UnrenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.NonblockActionRenderer<T>.UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockActionRenderer(Of T).UnrenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: NonblockActionRenderer<T>.UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: NonblockActionRenderer(Of T).UnrenderAction(IAction, IActionContext, IAccountStateDelta)
-- uid: Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderAction*
-  name: UnrenderAction
-  href: api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockActionRenderer_1_UnrenderAction_
-  commentId: Overload:Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderAction
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.NonblockActionRenderer<T>.UnrenderAction
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockActionRenderer(Of T).UnrenderAction
-  nameWithType: NonblockActionRenderer<T>.UnrenderAction
-  nameWithType.vb: NonblockActionRenderer(Of T).UnrenderAction
-- uid: Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: UnrenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockActionRenderer_1_UnrenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.NonblockActionRenderer<T>.UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockActionRenderer(Of T).UnrenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: NonblockActionRenderer<T>.UnrenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: NonblockActionRenderer(Of T).UnrenderActionError(IAction, IActionContext, Exception)
-- uid: Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderActionError*
-  name: UnrenderActionError
-  href: api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockActionRenderer_1_UnrenderActionError_
-  commentId: Overload:Libplanet.Blockchain.Renderers.NonblockActionRenderer`1.UnrenderActionError
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.NonblockActionRenderer<T>.UnrenderActionError
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockActionRenderer(Of T).UnrenderActionError
-  nameWithType: NonblockActionRenderer<T>.UnrenderActionError
-  nameWithType.vb: NonblockActionRenderer(Of T).UnrenderActionError
 - uid: Libplanet.Blockchain.Renderers.NonblockRenderer`1
   name: NonblockRenderer<T>
   href: api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html
@@ -7359,42 +6670,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.NonblockRenderer(Of T).Renderer
   nameWithType: NonblockRenderer<T>.Renderer
   nameWithType.vb: NonblockRenderer(Of T).Renderer
-- uid: Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorg(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.NonblockRenderer<T>.RenderReorg(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockRenderer(Of T).RenderReorg(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: NonblockRenderer<T>.RenderReorg(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: NonblockRenderer(Of T).RenderReorg(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorg*
-  name: RenderReorg
-  href: api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorg_
-  commentId: Overload:Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorg
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.NonblockRenderer<T>.RenderReorg
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockRenderer(Of T).RenderReorg
-  nameWithType: NonblockRenderer<T>.RenderReorg
-  nameWithType.vb: NonblockRenderer(Of T).RenderReorg
-- uid: Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name: RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  href: api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
-  name.vb: RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-  fullName: Libplanet.Blockchain.Renderers.NonblockRenderer<T>.RenderReorgEnd(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockRenderer(Of T).RenderReorgEnd(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
-  nameWithType: NonblockRenderer<T>.RenderReorgEnd(Block<T>, Block<T>, Block<T>)
-  nameWithType.vb: NonblockRenderer(Of T).RenderReorgEnd(Block(Of T), Block(Of T), Block(Of T))
-- uid: Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorgEnd*
-  name: RenderReorgEnd
-  href: api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html#Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorgEnd_
-  commentId: Overload:Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorgEnd
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.NonblockRenderer<T>.RenderReorgEnd
-  fullName.vb: Libplanet.Blockchain.Renderers.NonblockRenderer(Of T).RenderReorgEnd
-  nameWithType: NonblockRenderer<T>.RenderReorgEnd
-  nameWithType.vb: NonblockRenderer(Of T).RenderReorgEnd
 - uid: Libplanet.Blocks
   name: Libplanet.Blocks
   href: api/Libplanet.Blocks.html

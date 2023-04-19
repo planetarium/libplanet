@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "N1aHwae9P+ZOCM4iUpC11EQyVNBBt/CvO3H3k5Is9ek="
+          "hash": "Ju1BQWmpVrfWYTQ4mdy3ELGbdL7Yx3scQuxMy3iUAwQ="
         }
       },
       "is_incremental": false,
@@ -777,7 +777,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html",
-          "hash": "ooMneNdESpNG+V/NMXErvacWQEiQfZzOkkvjHH5yUEk="
+          "hash": "rZwQLDB32PqD4sUFmV1zLN5ybpZkvIYke1rLrdksSG0="
         }
       },
       "is_incremental": false,
@@ -789,7 +789,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html",
-          "hash": "OJaIH2MReREDU7dBfTgu7/Uq5zIKLIl41SQb7Sm99Ks="
+          "hash": "CWGRBxoAHgY2nyrtqGvzr7IJp1FI3twd5KZH4NEAPf0="
         }
       },
       "is_incremental": false,
@@ -801,7 +801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html",
-          "hash": "GVb6XAjEBbn1FklXymJYE3ahHprudO1I115JP/a8lI0="
+          "hash": "dPnKI1NEO9TSgQC9z1mNahuzrDEBm26JCFvEjBeRUFU="
         }
       },
       "is_incremental": false,
@@ -825,7 +825,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html",
-          "hash": "GCckmElxsEPIvOsFCrN49OLjdLqszXFZbQyLOWUB28g="
+          "hash": "5qwgvD0W6JnKRbXEQAT0M5Ax9zPkmFAmeOVAK3lpQvg="
         }
       },
       "is_incremental": false,
@@ -885,19 +885,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.BlockBase.html",
-          "hash": "1ivij0Hb00k9/Kx1baDQ446uU91JbqQoC557s7VUAho="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Reorg.html",
-          "hash": "cacddb3xr/ewNDx8IQQk9ZSNaLgEYEL9MjRAf9LV2KE="
+          "hash": "4JDRBO4sU/UnMG6Kl6qL3zmGwDIAadrVtmGv9C5wxhM="
         }
       },
       "is_incremental": false,
@@ -921,7 +909,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html",
-          "hash": "pEDtLZkXY6dD1FMb/moCnnSFgRF4aTBeGtvDFYOofRA="
+          "hash": "rO2ZbanxB+r6etqZ021i7THfgHyew52TDYbCvYM8dtQ="
         }
       },
       "is_incremental": false,
@@ -933,7 +921,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.Debug.html",
-          "hash": "SGXZOSjuasNgRTzmQdvJkqaplafJUU8nrGkDy3B2+bc="
+          "hash": "u91TzKRMygc29VMlMDv0wyEkPtLV984E5jFwiQG2hXU="
         }
       },
       "is_incremental": false,
@@ -945,7 +933,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.DelayedActionRenderer-1.html",
-          "hash": "tTVll++tbVSb5Tg6nBVb+UpE/LfH0Jifk4OuLQWHvDw="
+          "hash": "LmVdy6Pm6ehCjfYeLaG9EBoXQ3HwScfPGdOYx5j2Nis="
         }
       },
       "is_incremental": false,
@@ -957,7 +945,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.DelayedRenderer-1.html",
-          "hash": "5t4/M3bN7lhjFaMpodtr9AyI2eQuKRb6KYp5qyh0nDs="
+          "hash": "cNcSVOG3H/J5Rcs3vsAt/m8HxZz1yfA0uNKAqZUsnnE="
         }
       },
       "is_incremental": false,
@@ -969,7 +957,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html",
-          "hash": "6yQ4pVn4P47imOnfGbYQFumxKduSbtsVrW+x4f15d8E="
+          "hash": "bXqnrZa9ei0Co/Zuh0uZKIbQ7FOF7B92tD2hlrFx1ew="
         }
       },
       "is_incremental": false,
@@ -981,7 +969,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.IRenderer-1.html",
-          "hash": "ZIQQerBCklGHHNrusre4vDN6FLsWezrKpZy+lilqeME="
+          "hash": "mZp52anfpWZfuCKNPb5RwSPivycso+C2epVPjMj9gnc="
         }
       },
       "is_incremental": false,
@@ -993,7 +981,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html",
-          "hash": "gWSk0eqS2G9N2EFILcrr/YUshO0snsxHyFcC3TZIMWk="
+          "hash": "dF/Nq5qt9Fsgjr1cLBmwZZkjwgHPUkDEkumQiDYevgs="
         }
       },
       "is_incremental": false,
@@ -1005,7 +993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.LoggedRenderer-1.html",
-          "hash": "N4QjXNavLtjNud7upVH4N1+42IFXWW529xoF5zFfPo4="
+          "hash": "oCoAwFvmWgKvBAOiUECsyJ8y24JklorVfgWmRie3n24="
         }
       },
       "is_incremental": false,
@@ -1017,7 +1005,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html",
-          "hash": "w4fS3Fn2EBBHmkDlDBvxwAM/rEu5W0t233JL3h6Rl4g="
+          "hash": "aijmnFyo5cJXbhq+lPKlAUB0HM3rIvMpqZPd44ouVd8="
         }
       },
       "is_incremental": false,
@@ -1053,7 +1041,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html",
-          "hash": "WR+FaVh+Sk+8PWzAAagtTYI65c5nyNnkAiL1gn+PVCA="
+          "hash": "/yx1ouM9XSPTpoY2CwFRO1kswADpLYjvHQ1vduBouzs="
         }
       },
       "is_incremental": false,
@@ -4641,7 +4629,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EhJ8pyKw8rW08ALWjFqSGy3guLcDE2ZTLWKk50MaUTk="
+          "hash": "JrT01jJ03T9jHGCnPAT5B6RLNugCR5JyDkMWP6zQcf0="
         }
       },
       "is_incremental": false,
@@ -4750,7 +4738,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 376,
+          "total_file_count": 375,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
