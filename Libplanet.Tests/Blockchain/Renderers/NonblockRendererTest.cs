@@ -38,35 +38,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     Thread.Sleep(sleepSeconds * 1000);
                     log.Add($"Block({oldTip.Index}, {newTip.Index})");
                 },
-                ReorgRenderer = (
-                    Block<DumbAction> oldTip,
-                    Block<DumbAction> newTip,
-                    Block<DumbAction> branchpoint
-                ) =>
-                {
-                    Thread.Sleep(sleepSeconds * 1000);
-                    log.Add($"Reorg({oldTip.Index}, {newTip.Index}, {branchpoint.Index})");
-                },
-                ReorgEndRenderer = (
-                    Block<DumbAction> oldTip,
-                    Block<DumbAction> newTip,
-                    Block<DumbAction> branchpoint
-                ) =>
-                {
-                    Thread.Sleep(sleepSeconds * 1000);
-                    log.Add($"ReorgEnd({oldTip.Index}, {newTip.Index}, {branchpoint.Index})");
-                },
             };
             var renderer = new NonblockRenderer<DumbAction>(
                     innerRenderer, 3, NonblockRenderer<DumbAction>.FullMode.DropNewest);
             using (renderer)
             {
                 DateTimeOffset start = DateTimeOffset.UtcNow;
-                renderer.RenderReorg(_blockA, _blockB, _genesis);
-                Assert.Empty(log);
                 renderer.RenderBlock(_blockA, _blockB);
-                Assert.Empty(log);
-                renderer.RenderReorgEnd(_blockA, _blockB, _genesis);
                 Assert.Empty(log);
                 DateTimeOffset end = DateTimeOffset.UtcNow;
                 TimeSpan elapsed = end - start;
@@ -77,19 +55,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
 
             Assert.Equal(
-                new[]
-                {
-                    "Reorg(1, 1, 0)",
-                    "Block(1, 1)",
-                    "ReorgEnd(1, 1, 0)",
-                },
-                log
-            );
+                new[] { "Block(1, 1)" },
+                log);
 
             // Any render events after disposed are dropped.
             log.Clear();
-            renderer.RenderReorg(_blockB, _blockA, _genesis);
-            Assert.Empty(log);
 
             // Double disposing does nothing.
             renderer.Dispose();

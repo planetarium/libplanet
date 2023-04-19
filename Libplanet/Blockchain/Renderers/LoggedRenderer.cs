@@ -87,34 +87,6 @@ namespace Libplanet.Blockchain.Renderers
                 Renderer.RenderBlock
             );
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        ) =>
-            LogReorgRendering(
-                nameof(RenderReorg),
-                oldTip,
-                newTip,
-                branchpoint,
-                Renderer.RenderReorg
-            );
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorgEnd(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        ) =>
-            LogReorgRendering(
-                nameof(RenderReorgEnd),
-                oldTip,
-                newTip,
-                branchpoint,
-                Renderer.RenderReorgEnd
-            );
-
         protected void LogBlockRendering(
             string methodName,
             Block<T> oldTip,
@@ -160,67 +132,6 @@ namespace Libplanet.Blockchain.Renderers
                 newTip.Hash,
                 oldTip.Index,
                 oldTip.Hash
-            );
-        }
-
-        private void LogReorgRendering(
-            string methodName,
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint,
-            System.Action<Block<T>, Block<T>, Block<T>> callback
-        )
-        {
-            const string startMessage =
-                "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash} " +
-                "through #{BranchpointIndex} {BranchpointHash})...";
-            Logger.Write(
-                Level,
-                startMessage,
-                methodName,
-                newTip.Index,
-                newTip.Hash,
-                oldTip.Index,
-                oldTip.Hash,
-                branchpoint.Index,
-                branchpoint.Hash
-            );
-
-            try
-            {
-                callback(oldTip, newTip, branchpoint);
-            }
-            catch (Exception e)
-            {
-                const string errorMessage =
-                    "An exception was thrown during {MethodName}() for #{NewIndex} {NewHash} " +
-                    "(was #{OldIndex} {OldHash} through #{BranchpointIndex} {BranchpointHash})";
-                Logger.Error(
-                    e,
-                    errorMessage,
-                    methodName,
-                    newTip.Index,
-                    newTip.Hash,
-                    oldTip.Index,
-                    oldTip.Hash,
-                    branchpoint.Index,
-                    branchpoint.Hash);
-                throw;
-            }
-
-            const string endMessage =
-                "Invoked {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash} " +
-                "through #{BranchpointIndex} {BranchpointHash})";
-            Logger.Write(
-                Level,
-                endMessage,
-                methodName,
-                newTip.Index,
-                newTip.Hash,
-                oldTip.Index,
-                oldTip.Hash,
-                branchpoint.Index,
-                branchpoint.Hash
             );
         }
     }

@@ -191,17 +191,6 @@ namespace Libplanet.Blockchain.Renderers
             DiscoverBlock(oldTip, newTip);
         }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public virtual void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            Confirmed.TryAdd(branchpoint.Hash, 0);
-        }
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public virtual void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-        }
-
         /// <summary>
         /// The callback method which is invoked when the new <see cref="Tip"/> is recognized and
         /// changed.
@@ -213,17 +202,7 @@ namespace Libplanet.Blockchain.Renderers
         /// Otherwise <see langword="null"/>.</param>
         protected virtual void OnTipChanged(Block<T> oldTip, Block<T> newTip, Block<T>? branchpoint)
         {
-            if (branchpoint is Block<T>)
-            {
-                Renderer.RenderReorg(oldTip, newTip, branchpoint);
-            }
-
             Renderer.RenderBlock(oldTip, newTip);
-
-            if (branchpoint is Block<T>)
-            {
-                Renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
-            }
         }
 
         protected void DiscoverBlock(Block<T> oldTip, Block<T> newTip)

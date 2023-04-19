@@ -45,9 +45,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
         internal IReadOnlyList<RenderRecord<T>.Block> BlockRecords =>
             Records.OfType<RenderRecord<T>.Block>().ToImmutableArray();
 
-        internal IReadOnlyList<RenderRecord<T>.Reorg> ReorgRecords =>
-            Records.OfType<RenderRecord<T>.Reorg>().ToImmutableArray();
-
         internal EventHandler<IAction>? RenderEventHandler { get; set; }
 
         /// <summary>
@@ -96,40 +93,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IActionRenderer{T}.UnrenderAction"/>
-        public virtual void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            _records.Add(
-                new RenderRecord<T>.ActionSuccess(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    unrender: true,
-                    action: action,
-                    context: context,
-                    nextStates: nextStates
-                )
-            );
-
-        /// <inheritdoc cref="IActionRenderer{T}.UnrenderActionError"/>
-        public virtual void UnrenderActionError(
-            IAction action,
-            IActionContext context,
-            Exception exception
-        ) =>
-            _records.Add(
-                new RenderRecord<T>.ActionError(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    unrender: true,
-                    action: action,
-                    context: context,
-                    exception: exception
-                )
-            );
-
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
             _records.Add(
@@ -150,35 +113,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     end: true,
                     oldTip: oldTip,
                     newTip: newTip
-                )
-            );
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public virtual void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
-            _records.Add(
-                new RenderRecord<T>.Reorg(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint
-                )
-            );
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public virtual void RenderReorgEnd(
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint
-        ) =>
-            _records.Add(
-                new RenderRecord<T>.Reorg(
-                    index: _nextIndex++,
-                    stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint,
-                    end: true
                 )
             );
 

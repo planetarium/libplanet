@@ -24,32 +24,9 @@ namespace Libplanet.Blockchain.Renderers
         /// a <see cref="BlockChain{T}"/> (so that its <see cref="BlockChain{T}.Tip"/> has changed).
         /// </summary>
         /// <remarks>It is guaranteed to be called only once for a block, and only after applied to
-        /// the blockchain, unless it has been stale due to reorg (for that case, <see
-        /// cref="RenderReorg(Block{T}, Block{T}, Block{T})"/> is called in advance).</remarks>
+        /// the blockchain, unless it has been stale due to reorg.</remarks>
         /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
         /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
         void RenderBlock(Block<T> oldTip, Block<T> newTip);
-
-        /// <summary>
-        /// Does things that should be done right before reorg happens to a <see
-        /// cref="BlockChain{T}"/>.
-        /// </summary>
-        /// <remarks>This is no longer invoked by a <see cref="BlockChain{T}"/>.</remarks>
-        /// <param name="oldTip">The <see cref="BlockChain{T}.Tip"/> right before reorg.</param>
-        /// <param name="newTip">The <see cref="BlockChain{T}.Tip"/> after reorg.</param>
-        /// <param name="branchpoint">The highest common <see cref="Block{T}"/> between
-        /// <paramref name="oldTip"/> and <paramref name="newTip"/>.</param>
-        void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint);
-
-        /// <summary>
-        /// Does things that should be done right after reorg happens to a <see
-        /// cref="BlockChain{T}"/>.
-        /// </summary>
-        /// <remarks>This is no longer invoked by a <see cref="BlockChain{T}"/>.</remarks>
-        /// <param name="oldTip">The <see cref="BlockChain{T}.Tip"/> right before reorg.</param>
-        /// <param name="newTip">The <see cref="BlockChain{T}.Tip"/> after reorg.</param>
-        /// <param name="branchpoint">The highest common <see cref="Block{T}"/> between
-        /// <paramref name="oldTip"/> and <paramref name="newTip"/>.</param>
-        void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint);
     }
 }

@@ -56,7 +56,6 @@ namespace Libplanet.Blockchain.Renderers
             _localUnrenderBuffer = new AsyncLocal<Dictionary<BlockHash, List<ActionEvaluation>>>();
 
         private BlockHash? _eventReceivingBlock;
-        private Reorg? _eventReceivingReorg;
         private long _reorgResistantHeight;
 
         /// <summary>
@@ -92,90 +91,12 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public override void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            base.RenderReorg(oldTip, newTip, branchpoint);
-            _eventReceivingBlock = null;
-            _eventReceivingReorg = new Reorg(
-                LocateBlockPath(branchpoint, oldTip),
-                LocateBlockPath(branchpoint, newTip),
-                oldTip,
-                newTip,
-                branchpoint
-            );
-            _localUnrenderBuffer.Value = new Dictionary<BlockHash, List<ActionEvaluation>>();
-        }
-
         /// <inheritdoc cref="DelayedRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public override void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
             Confirmed.TryAdd(oldTip.Hash, 0);
-            if (_eventReceivingReorg is Reorg reorg &&
-                reorg.OldTip.Equals(oldTip) &&
-                reorg.NewTip.Equals(newTip))
-            {
-                if (_localUnrenderBuffer.Value is { } buf)
-                {
-                    foreach (BlockHash block in reorg.Unrendered)
-                    {
-                        if (buf.TryGetValue(block, out List<ActionEvaluation>? b))
-                        {
-                            _bufferedActionUnrenders[block] = b;
-                        }
-                        else
-                        {
-                            _bufferedActionUnrenders.TryRemove(
-                                block,
-                                out List<ActionEvaluation>? removed
-                            );
-                            if (removed is List<ActionEvaluation> l)
-                            {
-                                Logger.Warning(
-                                    "The existing {Count} buffered action unrenders for " +
-                                    "the block {BlockHash} were overwritten",
-                                    l.Count,
-                                    block
-                                );
-                            }
-                        }
-
-                        Logger.Debug(
-                            "Committed {Count} buffered action unrenders from " +
-                            "the block {BlockHash}",
-                            b?.Count ?? 0,
-                            block
-                        );
-                    }
-
-                    _localUnrenderBuffer.Value =
-                        new Dictionary<BlockHash, List<ActionEvaluation>>();
-                }
-            }
-            else
-            {
-                _eventReceivingReorg = null;
-            }
-
             _eventReceivingBlock = newTip.Hash;
             _localRenderBuffer.Value = new Dictionary<BlockHash, List<ActionEvaluation>>();
-        }
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            DelayUnrenderingAction(new ActionEvaluation(action, context, nextStates));
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-        {
-            var eval = new ActionEvaluation(action, context, context.PreviousStates, exception);
-            DelayUnrenderingAction(eval);
         }
 
         /// <inheritdoc
@@ -205,11 +126,7 @@ namespace Libplanet.Blockchain.Renderers
             }
 
             IEnumerable<BlockHash> rendered;
-            if (_eventReceivingReorg is Reorg reorg)
-            {
-                rendered = reorg.Rendered;
-            }
-            else if (_eventReceivingBlock is { } h)
+            if (_eventReceivingBlock is { } h)
             {
                 rendered = new[] { h };
             }
@@ -270,13 +187,6 @@ namespace Libplanet.Blockchain.Renderers
                 _bufferedActionUnrenders);
         }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public override void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            base.RenderReorgEnd(oldTip, newTip, branchpoint);
-            _eventReceivingReorg = null;
-        }
-
         /// <summary>
         /// Lists all descendants from <paramref name="lower"/> (exclusive) to
         /// <paramref name="upper"/> (inclusive).
@@ -332,11 +242,6 @@ namespace Libplanet.Blockchain.Renderers
             Block<T>? branchpoint
         )
         {
-            if (branchpoint is Block<T>)
-            {
-                Renderer.RenderReorg(oldTip, newTip, branchpoint);
-            }
-
             if (branchpoint is null)
             {
                 Renderer.RenderBlock(oldTip, newTip);
@@ -360,31 +265,19 @@ namespace Libplanet.Blockchain.Renderers
             }
 
             ActionRenderer.RenderBlockEnd(oldTip, newTip);
-
-            if (branchpoint is Block<T>)
-            {
-                Renderer.RenderReorgEnd(oldTip, newTip, branchpoint);
-            }
         }
 
         private void DelayRenderingAction(ActionEvaluation eval)
         {
             long blockIndex = eval.InputContext.BlockIndex;
             BlockHash blockHash;
-            if (_eventReceivingReorg is Reorg reorg)
+            if (_eventReceivingBlock is { } h)
             {
-                blockHash = reorg.IndexHash(blockIndex, unrender: false);
+                blockHash = h;
             }
             else
             {
-                if (_eventReceivingBlock is { } h)
-                {
-                    blockHash = h;
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             Dictionary<BlockHash, List<ActionEvaluation>>? buffer = _localRenderBuffer.Value
@@ -401,36 +294,6 @@ namespace Libplanet.Blockchain.Renderers
                 blockHash,
                 list.Count
             );
-        }
-
-        private void DelayUnrenderingAction(ActionEvaluation eval)
-        {
-            if (_eventReceivingReorg is Reorg reorg)
-            {
-                var buffer = _localUnrenderBuffer.Value ?? (_localUnrenderBuffer.Value =
-                    new Dictionary<BlockHash, List<ActionEvaluation>>());
-                long blockIndex = eval.InputContext.BlockIndex;
-                BlockHash blockHash = reorg.IndexHash(blockIndex, unrender: true);
-                if (!buffer.TryGetValue(blockHash, out List<ActionEvaluation>? list))
-                {
-                    buffer[blockHash] = list = new List<ActionEvaluation>();
-                }
-
-                list.Add(eval);
-                Logger.Verbose(
-                    "Delayed an action unrender from #{BlockIndex} {BlockHash} (buffer: {Buffer})",
-                    blockIndex,
-                    blockHash,
-                    list.Count
-                );
-            }
-            else
-            {
-                const string msg =
-                    "An action unrender {@Action} from the block #{BlockIndex} was ignored due " +
-                    "unexpected internal state";
-                Logger.Warning(msg, eval.Action, eval.InputContext.BlockIndex);
-            }
         }
 
         private void RenderBufferedActionEvaluations(BlockHash blockHash, bool unrender)
@@ -472,7 +335,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     if (unrender)
                     {
-                        ActionRenderer.UnrenderActionError(eval.Action, eval.InputContext, e);
+                        throw new InvalidOperationException("Unrender is deprecated.");
                     }
                     else
                     {
@@ -483,11 +346,7 @@ namespace Libplanet.Blockchain.Renderers
                 {
                     if (unrender)
                     {
-                        ActionRenderer.UnrenderAction(
-                            eval.Action,
-                            eval.InputContext,
-                            eval.OutputStates
-                        );
+                        throw new InvalidOperationException("Unrender is deprecated.");
                     }
                     else
                     {
@@ -511,36 +370,6 @@ namespace Libplanet.Blockchain.Renderers
             foreach (BlockHash invalidityBlockHash in invalidityBlockHashes)
             {
                 buffer.TryRemove(invalidityBlockHash, out _);
-            }
-        }
-
-        private readonly struct Reorg
-        {
-            public readonly ImmutableArray<BlockHash> Unrendered;
-            public readonly ImmutableArray<BlockHash> Rendered;
-            public readonly Block<T> OldTip;
-            public readonly Block<T> NewTip;
-            public readonly Block<T> Branchpoint;
-
-            public Reorg(
-                ImmutableArray<BlockHash> unrendered,
-                ImmutableArray<BlockHash> rendered,
-                Block<T> oldTip,
-                Block<T> newTip,
-                Block<T> branchpoint
-            )
-            {
-                Unrendered = unrendered;
-                Rendered = rendered;
-                OldTip = oldTip;
-                NewTip = newTip;
-                Branchpoint = branchpoint;
-            }
-
-            public BlockHash IndexHash(long index, bool unrender)
-            {
-                int offset = (int)(index - Branchpoint.Index);
-                return (unrender ? Unrendered : Rendered)[offset - 1];
             }
         }
     }

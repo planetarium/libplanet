@@ -36,21 +36,9 @@ namespace Libplanet.Blockchain.Renderers
 
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>.
-        /// </summary>
-        public Action<IAction, IActionContext, IAccountStateDelta>? ActionUnrenderer { get; set; }
-
-        /// <summary>
-        /// A callback function to be invoked together with
         /// <see cref="RenderActionError(IAction, IActionContext, Exception)"/>.
         /// </summary>
         public Action<IAction, IActionContext, Exception>? ActionErrorRenderer { get; set; }
-
-        /// <summary>
-        /// A callback function to be invoked together with
-        /// <see cref="UnrenderActionError(IAction, IActionContext, Exception)"/>.
-        /// </summary>
-        public Action<IAction, IActionContext, Exception>? ActionErrorUnrenderer { get; set; }
 
         /// <summary>
         /// A callback function to be invoked together with
@@ -68,23 +56,9 @@ namespace Libplanet.Blockchain.Renderers
             ActionRenderer?.Invoke(action, context, nextStates);
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        ) =>
-            ActionUnrenderer?.Invoke(action, context, nextStates);
-
-        /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
         public void RenderActionError(IAction action, IActionContext context, Exception exception)
             => ActionErrorRenderer?.Invoke(action, context, exception);
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-            => ActionErrorUnrenderer?.Invoke(action, context, exception);
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
         public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>

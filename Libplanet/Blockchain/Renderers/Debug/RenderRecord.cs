@@ -149,7 +149,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <summary>
-        /// Represents a block/reorg event.
+        /// Represents a block event.
         /// </summary>
         public abstract class BlockBase : RenderRecord<T>
         {
@@ -221,46 +221,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
             public override string ToString() =>
                 base.ToString().Replace("Render...", "RenderBlock");
-        }
-
-        /// <summary>
-        /// Represents a reorg event.
-        /// </summary>
-        public class Reorg : BlockBase
-        {
-            /// <summary>
-            /// Creates a reorg event record.
-            /// </summary>
-            /// <param name="index">The ordinal number of the render event.</param>
-            /// <param name="stackTrace">The stack trace of the render event.</param>
-            /// <param name="oldTip">The tip before update.</param>
-            /// <param name="newTip">The tip after update.</param>
-            /// <param name="branchpoint">The topmost common ancestor between
-            /// <paramref name="oldTip"/> and <paramref name="newTip"/>.</param>
-            /// <param name="end">Whether it is an <c>End</c> event.</param>
-            public Reorg(
-                long index,
-                string stackTrace,
-                Block<T> oldTip,
-                Block<T> newTip,
-                Block<T> branchpoint,
-                bool end = false
-            )
-                : base(index, stackTrace, oldTip, newTip, end)
-            {
-                Branchpoint = branchpoint;
-            }
-
-            /// <summary>
-            /// The topmost common ancestor between <see cref="RenderRecord{T}.BlockBase.OldTip"/>
-            /// and <see cref="RenderRecord{T}.BlockBase.NewTip"/>.
-            /// </summary>
-            public Libplanet.Blocks.Block<T> Branchpoint { get; }
-
-            /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
-            public override string ToString() =>
-                base.ToString().Replace("Render...", "RenderReorg") +
-                $" [branchpoint: #{Branchpoint.Index} {Branchpoint.Hash}]";
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Libplanet.Blockchain.Renderers
     /// actions).</para>
     /// </summary>
     /// <remarks>The wrapped <see cref="ActionRenderer"/> will not receive any
-    /// <see cref="IActionRenderer{T}.RenderActionError"/> and
-    /// <see cref="IActionRenderer{T}.UnrenderActionError"/> events except for block actions,
+    /// <see cref="IActionRenderer{T}.RenderActionError"/> events except for block actions,
     /// which do not belong to any transactions.
     /// </remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
@@ -31,8 +30,8 @@ namespace Libplanet.Blockchain.Renderers
         /// <paramref name="actionRenderer"/>.
         /// </summary>
         /// <param name="actionRenderer">The inner action renderer which has the <em>actual</em>
-        /// implementations and expects to receive no <see cref="RenderActionError"/>/<see
-        /// cref="UnrenderActionError"/> events.</param>
+        /// implementations and expects to receive no <see cref="RenderActionError"/> events.
+        /// </param>
         public AtomicActionRenderer(IActionRenderer<T> actionRenderer)
         {
             ActionRenderer = actionRenderer;
@@ -43,14 +42,13 @@ namespace Libplanet.Blockchain.Renderers
 
         /// <summary>
         /// The inner action renderer which has the <em>actual</em> implementations and expects to
-        /// receive no <see cref="RenderActionError"/>/<see cref="UnrenderActionError"/> events.
+        /// receive no <see cref="RenderActionError"/> events.
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
         public void RenderBlock(Block<T> oldTip, Block<T> newTip)
         {
-            FlushBuffer(null, ActionRenderer.UnrenderAction);
             ActionRenderer.RenderBlock(oldTip, newTip);
         }
 
@@ -59,18 +57,6 @@ namespace Libplanet.Blockchain.Renderers
         {
             FlushBuffer(null, ActionRenderer.RenderAction);
             ActionRenderer.RenderBlockEnd(oldTip, newTip);
-        }
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            ActionRenderer.RenderReorg(oldTip, newTip, branchpoint);
-        }
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint)
-        {
-            ActionRenderer.RenderReorgEnd(oldTip, newTip, branchpoint);
         }
 
         /// <inheritdoc
@@ -97,54 +83,12 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-        public void UnrenderAction(
-            IAction action,
-            IActionContext context,
-            IAccountStateDelta nextStates
-        )
-        {
-            if (!context.TxId.Equals(_lastTxId))
-            {
-                FlushBuffer(context.TxId, ActionRenderer.UnrenderAction);
-            }
-
-            if (context.TxId is null)
-            {
-                ActionRenderer.UnrenderAction(action, context, nextStates);
-            }
-            else if (!_errored)
-            {
-                _eventBuffer.Add((action, context, nextStates));
-            }
-        }
-
-        /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
         public void RenderActionError(IAction action, IActionContext context, Exception exception)
         {
             if (!context.TxId.Equals(_lastTxId))
             {
                 FlushBuffer(context.TxId, ActionRenderer.RenderAction);
-            }
-
-            if (context.TxId is null)
-            {
-                ActionRenderer.RenderActionError(action, context, exception);
-            }
-            else
-            {
-                _errored = true;
-            }
-        }
-
-        /// <inheritdoc
-        /// cref="IActionRenderer{T}.UnrenderActionError(IAction, IActionContext, Exception)"/>
-        public void UnrenderActionError(IAction action, IActionContext context, Exception exception)
-        {
-            if (!context.TxId.Equals(_lastTxId))
-            {
-                FlushBuffer(context.TxId, ActionRenderer.UnrenderAction);
             }
 
             if (context.TxId is null)

@@ -193,14 +193,6 @@ namespace Libplanet.Blockchain.Renderers
         public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
             Queue(() => Renderer.RenderBlock(oldTip, newTip));
 
-        /// <inheritdoc cref="IRenderer{T}.RenderReorg(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorg(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
-            Queue(() => Renderer.RenderReorg(oldTip, newTip, branchpoint));
-
-        /// <inheritdoc cref="IRenderer{T}.RenderReorgEnd(Block{T}, Block{T}, Block{T})"/>
-        public void RenderReorgEnd(Block<T> oldTip, Block<T> newTip, Block<T> branchpoint) =>
-            Queue(() => Renderer.RenderReorgEnd(oldTip, newTip, branchpoint));
-
         /// <summary>
         /// Queues the callback to be executed in the worker thread.
         /// </summary>
