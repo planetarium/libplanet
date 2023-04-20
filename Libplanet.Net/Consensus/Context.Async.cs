@@ -232,5 +232,49 @@ namespace Libplanet.Net.Consensus
                 ToString());
             ProduceMutation(() => ProcessTimeoutPreCommit(round));
         }
+
+        /// <summary>
+        /// Schedules <see cref="Block{T}"/> to be
+        /// committed after the <see cref="_commitBlockDelay"/> is over.
+        /// </summary>
+        /// <param name="block">The block that tries to commit.</param>
+        private async Task ScheduleCommitBlock(Block<T> block)
+        {
+            _logger.Debug(
+                "Waiting block commit delay {Delay}ms for " +
+                "block #{Index} {Hash} (context: {Context})",
+                _commitBlockDelay.TotalMilliseconds,
+                block.Index,
+                block.Hash,
+                ToString());
+            await Task.Delay(
+                _commitBlockDelay, _cancellationTokenSource.Token);
+
+            IsValid(block, out var evaluatedActions);
+
+            try
+            {
+                _logger.Information(
+                    "Committing block #{Index} {Hash} (context: {Context})",
+                    block.Index,
+                    block.Hash,
+                    ToString());
+
+                _blockChain.Append(
+                    block,
+                    GetBlockCommit(),
+                    true,
+                    actionEvaluations: evaluatedActions);
+            }
+            catch (Exception e)
+            {
+                ExceptionOccurred?.Invoke(this, e);
+            }
+
+            _logger.Information(
+                "Committed block #{Index} {Hash}",
+                block.Index,
+                block.Hash);
+        }
     }
 }

@@ -258,38 +258,7 @@ namespace Libplanet.Net.Consensus
                 Step = Step.EndCommit;
                 _decision = block4;
                 _committedRound = round;
-
-                try
-                {
-                    _logger.Information(
-                        "Committing block #{Index} {Hash} (context: {Context})",
-                        block4.Index,
-                        block4.Hash,
-                        ToString());
-
-                    IsValid(block4, out var evaluatedActions);
-
-                    _blockChain.Append(
-                        block4,
-                        GetBlockCommit(),
-                        true,
-                        actionEvaluations: evaluatedActions);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        "Failed to commit block #{Index} {Hash}",
-                        block4.Index,
-                        block4.Hash);
-                    ExceptionOccurred?.Invoke(this, e);
-                    return;
-                }
-
-                _logger.Information(
-                    "Committed block #{Index} {Hash}",
-                    block4.Index,
-                    block4.Hash);
+                _ = ScheduleCommitBlock(block4);
                 return;
             }
 

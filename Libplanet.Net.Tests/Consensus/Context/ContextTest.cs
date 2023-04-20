@@ -120,11 +120,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
             var exceptionOccurred = new AsyncAutoResetEvent();
             Exception? exceptionThrown = null;
+            TimeSpan commitBlockDelay = TimeSpan.FromSeconds(1);
+            TimeSpan commitBlockDelayBuffered = commitBlockDelay.Add(TimeSpan.FromSeconds(1));
 
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
                 privateKey: TestUtils.PrivateKeys[2],
-                validatorSet: TestUtils.ValidatorSet);
+                validatorSet: TestUtils.ValidatorSet,
+                commitBlockDelay: commitBlockDelay);
 
             // Add block #1 so we can start with a last commit for height 2.
             Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
@@ -155,7 +158,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ExceptionOccurred += (_, exception) =>
             {
                 exceptionThrown = exception;
-                exceptionOccurred.Set();
+                if (exceptionThrown is InvalidBlockIndexException)
+                {
+                    exceptionOccurred.Set();
+                }
             };
 
             context.Start(lastCommit);
@@ -165,6 +171,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // Simulate bypass of context and block sync by swarm by
             // directly appending to the blockchain.
             Assert.NotNull(proposedBlock);
+
+            // Height 3 starts right after height 2 block has been appended.
             blockChain.Append(proposedBlock!, TestUtils.CreateBlockCommit(proposedBlock!));
             Assert.Equal(2, blockChain.Tip.Index);
 
@@ -192,7 +200,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            await Task.WhenAll(stepChangedToEndCommit.WaitAsync(), exceptionOccurred.WaitAsync());
+            await Task.WhenAll(stepChangedToEndCommit.WaitAsync());
+            await Task.Delay(commitBlockDelayBuffered);
             Assert.IsType<InvalidBlockIndexException>(exceptionThrown);
 
             // Check context has only three votes.

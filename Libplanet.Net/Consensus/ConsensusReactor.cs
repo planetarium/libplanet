@@ -43,8 +43,8 @@ namespace Libplanet.Net.Consensus
         /// itself.
         /// </param>
         /// <param name="seedPeers">A list of seed's <see cref="BoundPeer"/>.</param>
-        /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block.
+        /// <param name="commitBlockDelay">A time delay between <see cref="Step.EndCommit"/>
+        /// and <see cref="BlockChain{T}.Append(Blocks.Block{T}, Blocks.BlockCommit)"/>.
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
@@ -54,7 +54,7 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             ImmutableList<BoundPeer> validatorPeers,
             ImmutableList<BoundPeer> seedPeers,
-            TimeSpan newHeightDelay,
+            TimeSpan commitBlockDelay,
             ContextTimeoutOption contextTimeoutOption)
         {
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
@@ -72,7 +72,7 @@ namespace Libplanet.Net.Consensus
                 PublishMessage,
                 blockChain,
                 privateKey,
-                newHeightDelay,
+                commitBlockDelay,
                 contextTimeoutOption);
 
             _logger = Log

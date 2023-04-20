@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -115,10 +116,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
             var proposalSent = new AsyncAutoResetEvent();
-            var newHeightDelay = TimeSpan.FromSeconds(1);
+            var commitBlockDelay = TimeSpan.FromSeconds(1);
+            var commitBlockDelayBuffered = commitBlockDelay.Add(TimeSpan.FromSeconds(1));
 
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                newHeightDelay,
+                commitBlockDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
 
@@ -218,6 +220,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             }
 
             await heightTwoStepChangedToEndCommit.WaitAsync();
+            await Task.Delay(commitBlockDelayBuffered);
 
             var blockHeightTwo =
                 BlockMarshaler.UnmarshalBlock<DumbAction>(
@@ -278,15 +281,15 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
         // Retry: This calculates delta time.
         [RetryFact]
-        public async void NewHeightDelay()
+        public async void CommitBlockDelay()
         {
-            var newHeightDelay = TimeSpan.FromSeconds(1);
+            var commitBlockDelay = TimeSpan.FromSeconds(1);
             // The maximum error margin. (macos-netcore-test)
-            var timeError = 500;
+            var timeError = 100;
             var heightOneEndCommit = new AsyncAutoResetEvent();
             var heightTwoProposalSent = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                newHeightDelay,
+                commitBlockDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
             consensusContext.StateChanged += (_, eventArgs) =>
@@ -324,7 +327,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Check new height delay; slight margin of error is allowed as delay task
             // is run asynchronously from context events.
             Assert.True(
-                ((proposeTime - endCommitTime) - newHeightDelay).Duration() <
+                ((proposeTime - endCommitTime) - commitBlockDelay).Duration() <
                     TimeSpan.FromMilliseconds(timeError));
         }
     }

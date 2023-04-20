@@ -85,6 +85,7 @@ namespace Libplanet.Net.Consensus
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
         private readonly ValidatorSet _validatorSet;
+        private readonly TimeSpan _commitBlockDelay;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly MessageLog _messageLog;
@@ -126,6 +127,9 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="validators">The <see cref="ValidatorSet"/> for
         /// given <paramref name="height"/>.</param>
+        /// <param name="commitBlockDelay">A time delay between <see cref="Step.EndCommit"/>
+        /// and <see cref="BlockChain{T}.Append(Block{T}, BlockCommit)"/>.
+        /// <seealso cref="ScheduleCommitBlock(Block{T})"/></param>
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public Context(
@@ -134,6 +138,7 @@ namespace Libplanet.Net.Consensus
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,
+            TimeSpan commitBlockDelay,
             ContextTimeoutOption contextTimeoutOptions)
             : this(
                 consensusContext,
@@ -141,6 +146,7 @@ namespace Libplanet.Net.Consensus
                 height,
                 privateKey,
                 validators,
+                commitBlockDelay,
                 Step.Default,
                 -1,
                 128,
@@ -154,6 +160,7 @@ namespace Libplanet.Net.Consensus
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,
+            TimeSpan commitBlockDelay,
             Step step,
             int round = -1,
             int cacheSize = 128,
@@ -190,6 +197,7 @@ namespace Libplanet.Net.Consensus
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
             _validatorSet = validators;
+            _commitBlockDelay = commitBlockDelay;
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
             _blockValidationCache =

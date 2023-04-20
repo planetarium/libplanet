@@ -39,8 +39,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             ConsensusProposalMsg? proposal = null;
             var proposalMessageSent = new AsyncAutoResetEvent();
+            var commitBlockDelay = TimeSpan.FromSeconds(1);
+            var commitBlockDelayBuffered = commitBlockDelay.Add(TimeSpan.FromSeconds(1));
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
+                commitBlockDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[3]);
 
@@ -98,6 +100,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Waiting for commit.
             await heightThreeStepChangedToEndCommit.WaitAsync();
+            Assert.Equal(2, blockChain.Tip.Index);
+            await Task.Delay(commitBlockDelayBuffered);
             Assert.Equal(3, blockChain.Tip.Index);
 
             // Next height starts normally.
@@ -121,17 +125,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightWhenTipChanged()
         {
-            var newHeightDelay = TimeSpan.FromSeconds(1);
+            var commitBlockDelay = TimeSpan.FromSeconds(1);
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                newHeightDelay,
+                commitBlockDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
             Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(-1, consensusContext.Height);
-            await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
+            await Task.Delay(TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
         }
 
@@ -153,10 +156,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         }
 
         [Fact(Timeout = Timeout)]
-        public void RemoveOldContexts()
+        public async void RemoveOldContexts()
         {
+            TimeSpan commitBlockDelay = TimeSpan.FromSeconds(1);
+            TimeSpan commitblockDelayBuffered = commitBlockDelay.Add(TimeSpan.FromSeconds(1));
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
+                commitBlockDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
                 blockCommitClearThreshold: 1);
@@ -179,9 +184,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             block = blockChain.ProposeBlock(
                 new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-
-            // Create context of index 4, check if the context of 1 and 2 are removed correctly.
-            consensusContext.NewHeight(4);
+            await Task.Delay(commitblockDelayBuffered);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[1]);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[2]);
         }

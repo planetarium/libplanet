@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -26,11 +24,10 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly TimeSpan _newHeightDelay;
+        private readonly TimeSpan _commitBlockDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context<T>> _contexts;
 
-        private CancellationTokenSource? _newHeightCts;
         private bool _bootstrapping;
 
         /// <summary>
@@ -44,23 +41,22 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
         /// </param>
-        /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block. <seealso cref="OnTipChanged"/>
-        /// </param>
+        /// <param name="commitBlockDelay">A time delay between <see cref="Step.EndCommit"/>
+        /// and <see cref="BlockChain{T}.Append(Block{T}, BlockCommit)"/>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            TimeSpan newHeightDelay,
+            TimeSpan commitBlockDelay,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
             Height = -1;
-            _newHeightDelay = newHeightDelay;
+            _commitBlockDelay = commitBlockDelay;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -140,7 +136,6 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
-            _newHeightCts?.Cancel();
             lock (_contextLock)
             {
                 foreach (Context<T> context in _contexts.Values)
@@ -165,8 +160,6 @@ namespace Libplanet.Net.Consensus
         {
             lock (_newHeightLock)
             {
-                _newHeightCts?.Cancel();
-
                 _logger.Information(
                     "Invoked {FName}() for new height #{NewHeight} from old height #{OldHeight}",
                     nameof(NewHeight),
@@ -309,10 +302,7 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls
-        /// <see cref="NewHeight"/>.  Starting a new height will be delayed for
-        /// <see cref="_newHeightDelay"/> in order to collect remaining delayed votes
-        /// and stabilize the consensus process by waiting for Global Stabilization Time.
-        /// </summary>
+        /// <see cref="NewHeight"/>.</summary>
         /// <param name="sender">The source object instance for <see cref="EventHandler"/>.
         /// </param>
         /// <param name="e">The event arguments given by <see cref="BlockChain{T}.TipChanged"/>
@@ -320,38 +310,17 @@ namespace Libplanet.Net.Consensus
         /// </param>
         private void OnTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
-            // TODO: Should set delay by using GST.
-            _newHeightCts?.Cancel();
-            _newHeightCts?.Dispose();
-            _newHeightCts = new CancellationTokenSource();
-            Task.Run(
-                async () =>
-                {
-                    await Task.Delay(_newHeightDelay, _newHeightCts.Token);
-                    if (!_newHeightCts.IsCancellationRequested)
-                    {
-                        try
-                        {
-                            NewHeight(e.NewTip.Index + 1);
-                        }
-                        catch (Exception exc)
-                        {
-                            _logger.Error(
-                                exc,
-                                "Unexpected exception occurred during {FName}()",
-                                nameof(NewHeight));
-                        }
-                    }
-                    else
-                    {
-                        _logger.Error(
-                            "Did not invoke {FName}() for height " +
-                            "#{Height} because cancellation is requested",
-                            nameof(NewHeight),
-                            e.NewTip.Index + 1);
-                    }
-                },
-                _newHeightCts.Token);
+            try
+            {
+                NewHeight(e.NewTip.Index + 1);
+            }
+            catch (Exception exc)
+            {
+                _logger.Error(
+                    exc,
+                    "Unexpected exception occurred during {FName}()",
+                    nameof(NewHeight));
+            }
         }
 
         /// <summary>
@@ -368,6 +337,7 @@ namespace Libplanet.Net.Consensus
                 height,
                 _privateKey,
                 _blockChain.GetValidatorSet(_blockChain[Height - 1].Hash),
+                _commitBlockDelay,
                 contextTimeoutOptions: _contextTimeoutOption);
             AttachEventHandlers(context);
             return context;
