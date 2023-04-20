@@ -710,7 +710,6 @@ namespace Libplanet.Blockchain
             Append(
                 block,
                 blockCommit,
-                evaluateActions: true,
                 renderBlocks: true,
                 renderActions: true
             );
@@ -1091,7 +1090,6 @@ namespace Libplanet.Blockchain
         internal void Append(
             Block<T> block,
             BlockCommit blockCommit,
-            bool evaluateActions,
             bool renderBlocks,
             bool renderActions,
             IReadOnlyList<ActionEvaluation> actionEvaluations = null
@@ -1107,15 +1105,6 @@ namespace Libplanet.Blockchain
                 throw new ArgumentException(
                     $"Cannot append genesis block #{block.Index} {block.Hash} to a chain.",
                     nameof(block));
-            }
-
-            if (!evaluateActions && renderActions)
-            {
-                throw new ArgumentException(
-                    $"{nameof(renderActions)} option requires {nameof(evaluateActions)} " +
-                    "to be turned on.",
-                    nameof(renderActions)
-                );
             }
 
             renderActions = renderActions && renderBlocks && ActionRenderers.Any();
@@ -1158,7 +1147,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    if (evaluateActions && actionEvaluations is null)
+                    if (actionEvaluations is null)
                     {
                         _logger.Information(
                             "Executing actions in block #{BlockIndex} {BlockHash}...",

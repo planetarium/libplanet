@@ -554,11 +554,7 @@ namespace Libplanet.Net
                         Block<T> deltaBlock = workspace.Store.GetBlock<T>(deltaBlockHash);
                         BlockCommit deltaCommit = workspace.Store.GetBlockCommit(deltaBlockHash);
                         workspace.Append(
-                            deltaBlock,
-                            deltaCommit,
-                            evaluateActions: true,
-                            renderBlocks: false,
-                            renderActions: false);
+                            deltaBlock, deltaCommit, renderBlocks: false, renderActions: false);
 
                         actionExecutionState.ExecutedBlockCount += 1;
                         actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;

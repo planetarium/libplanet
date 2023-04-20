@@ -117,10 +117,8 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(
                 block1,
                 CreateBlockCommit(block1),
-                evaluateActions: false,
                 renderBlocks: true,
-                renderActions: false
-            );
+                renderActions: false);
 
             var minerAddress = genesis.Miner;
 

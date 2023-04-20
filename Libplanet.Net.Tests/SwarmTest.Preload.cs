@@ -473,7 +473,7 @@ namespace Libplanet.Net.Tests
                     blockInterval: TimeSpan.FromSeconds(1),
                     lastCommit: CreateBlockCommit(minerChain.Tip)
                 ).Evaluate(ChainPrivateKey, minerChain);
-                minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), false, true, false);
+                minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true, false);
 
                 await receiverSwarm.PreloadAsync();
 

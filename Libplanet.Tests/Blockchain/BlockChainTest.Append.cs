@@ -376,21 +376,16 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(
                     block,
                     TestUtils.CreateBlockCommit(block),
-                    evaluateActions: false,
                     renderBlocks: true,
-                    renderActions: true
-                )
-            );
+                    renderActions: true));
             Assert.False(_blockChain.ContainsBlock(block.Hash));
             Assert.Empty(_renderer.ActionRecords);
 
             _blockChain.Append(
                 block,
                 TestUtils.CreateBlockCommit(block),
-                evaluateActions: false,
                 renderBlocks: true,
-                renderActions: false
-            );
+                renderActions: false);
             Assert.Equal(block, _blockChain.Tip);
             Assert.Empty(_renderer.ActionRecords);
         }

@@ -865,10 +865,8 @@ namespace Libplanet.Tests.Blockchain
             fork.Append(
                 forkTip,
                 CreateBlockCommit(forkTip),
-                evaluateActions: true,
                 renderBlocks: true,
-                renderActions: false
-            );
+                renderActions: false);
 
             Guid previousChainId = _blockChain.Id;
             _renderer.ResetRecords();

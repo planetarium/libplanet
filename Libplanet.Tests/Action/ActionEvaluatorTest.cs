@@ -961,11 +961,7 @@ namespace Libplanet.Tests.Action
             Assert.True(evaluation.InputContext.BlockAction);
 
             chain.Append(
-                block,
-                CreateBlockCommit(block),
-                evaluateActions: false,
-                renderBlocks: true,
-                renderActions: false);
+                block, CreateBlockCommit(block), renderBlocks: true, renderActions: false);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 addresses => chain.GetStates(addresses, block.PreviousHash),

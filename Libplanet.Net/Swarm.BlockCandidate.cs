@@ -175,11 +175,7 @@ namespace Libplanet.Net
                 foreach (var (block, commit) in blocks)
                 {
                     workspace.Append(
-                        block,
-                        commit,
-                        evaluateActions: true,
-                        renderBlocks: renderBlocks,
-                        renderActions: renderActions);
+                        block, commit, renderBlocks: renderBlocks, renderActions: renderActions);
                 }
             }
             catch (Exception e)
