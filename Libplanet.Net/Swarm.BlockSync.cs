@@ -553,39 +553,21 @@ namespace Libplanet.Net
 
                         Block<T> deltaBlock = workspace.Store.GetBlock<T>(deltaBlockHash);
                         BlockCommit deltaCommit = workspace.Store.GetBlockCommit(deltaBlockHash);
-                        _logger.Debug(
-                            "Appending block #{Index} {Hash}",
-                            deltaBlock.Index,
-                            deltaBlock.Hash);
+                        workspace.Append(
+                            deltaBlock,
+                            deltaCommit,
+                            evaluateActions: true,
+                            renderBlocks: false,
+                            renderActions: false);
 
-                        DateTimeOffset executionStarted = DateTimeOffset.Now;
-                        workspace.ValidateBlockStateRootHash(deltaBlock, out var evaluations);
-                        IEnumerable<TxExecution> txExecutions =
-                            workspace.MakeTxExecutions(deltaBlock, evaluations);
-                        workspace.UpdateTxExecutions(txExecutions);
-
-                        spent += DateTimeOffset.Now - executionStarted;
-
-                        _logger.Debug(
-                            "Executed actions in block #{Index} {Hash}.",
-                            deltaBlock.Index,
-                            deltaBlock.Hash);
-
+                        actionExecutionState.ExecutedBlockCount += 1;
+                        actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
                         IEnumerable<Transaction<T>>
                             transactions = deltaBlock.Transactions.ToImmutableArray();
                         txsCount += transactions.Count();
                         actionsCount += transactions.Sum(
                             tx => tx.CustomActions is { } ca ? ca.Count : 1L);
-                        actionExecutionState.ExecutedBlockCount += 1;
-                        actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
                         progress?.Report(actionExecutionState);
-
-                        workspace.Append(
-                            deltaBlock,
-                            deltaCommit,
-                            evaluateActions: false,
-                            renderBlocks: false,
-                            renderActions: false);
                         progress?.Report(
                             new BlockVerificationState
                             {
