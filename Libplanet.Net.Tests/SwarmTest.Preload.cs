@@ -373,28 +373,19 @@ namespace Libplanet.Net.Tests
         }
 
         [RetryFact(Timeout = Timeout)]
-        public async Task RenderInPreload()
+        public async Task NoRenderInPreload()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var renderer1 = new RecordingActionRenderer<DumbAction>();
-            var renderer2 = new RecordingActionRenderer<DumbAction>();
-            var chain1 = MakeBlockChain(
+            var renderer = new RecordingActionRenderer<DumbAction>();
+            var chain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
-                renderers: new[] { renderer1 }
-            );
-            var chain2 = MakeBlockChain(
-                policy,
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()),
-                renderers: new[] { renderer2 }
-            );
+                renderers: new[] { renderer });
 
             var senderKey = new PrivateKey();
 
-            var receiver1 = await CreateSwarm(chain1).ConfigureAwait(false);
-            var receiver2 = await CreateSwarm(chain2).ConfigureAwait(false);
+            var receiver = await CreateSwarm(chain).ConfigureAwait(false);
             var sender = await CreateSwarm(
                 MakeBlockChain(
                     policy,
@@ -404,7 +395,7 @@ namespace Libplanet.Net.Tests
                 senderKey
             ).ConfigureAwait(false);
 
-            int renderCount1 = 0, renderCount2 = 0;
+            int renderCount = 0;
 
             var privKey = new PrivateKey();
             var addr = sender.Address;
@@ -419,25 +410,18 @@ namespace Libplanet.Net.Tests
                 sender.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
-            renderer1.RenderEventHandler += (_, a) =>
-                renderCount1 += a is DumbAction ? 1 : 0;
-            renderer2.RenderEventHandler += (_, a) =>
-                renderCount2 += a is DumbAction ? 1 : 0;
+            renderer.RenderEventHandler += (_, a) =>
+                renderCount += a is DumbAction ? 1 : 0;
 
-            await StartAsync(receiver1);
+            await StartAsync(receiver);
             await StartAsync(sender);
 
-            await BootstrapAsync(receiver1, sender.AsPeer);
-            await BootstrapAsync(receiver2, sender.AsPeer);
-            await receiver1.PreloadAsync(render: false);
-            await receiver2.PreloadAsync(render: true);
+            await BootstrapAsync(receiver, sender.AsPeer);
+            await receiver.PreloadAsync();
 
-            Assert.Equal(sender.BlockChain.Tip, receiver1.BlockChain.Tip);
-            Assert.Equal(sender.BlockChain.Count, receiver1.BlockChain.Count);
-            Assert.Equal(sender.BlockChain.Count, receiver2.BlockChain.Count);
-            Assert.Equal(sender.BlockChain.Count, receiver2.BlockChain.Count);
-            Assert.Equal(0, renderCount1);
-            Assert.Equal(1, renderCount2);
+            Assert.Equal(sender.BlockChain.Tip, receiver.BlockChain.Tip);
+            Assert.Equal(sender.BlockChain.Count, receiver.BlockChain.Count);
+            Assert.Equal(0, renderCount);
         }
 
         [Fact(Timeout = Timeout)]
@@ -489,7 +473,7 @@ namespace Libplanet.Net.Tests
                     blockInterval: TimeSpan.FromSeconds(1),
                     lastCommit: CreateBlockCommit(minerChain.Tip)
                 ).Evaluate(ChainPrivateKey, minerChain);
-                minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), false, true, false);
+                minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
 
                 await receiverSwarm.PreloadAsync();
 

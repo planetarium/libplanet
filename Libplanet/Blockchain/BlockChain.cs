@@ -707,13 +707,7 @@ namespace Libplanet.Blockchain
             Block<T> block,
             BlockCommit blockCommit
         ) =>
-            Append(
-                block,
-                blockCommit,
-                evaluateActions: true,
-                renderBlocks: true,
-                renderActions: true
-            );
+            Append(block, blockCommit, render: true);
 
         /// <summary>
         /// Adds <paramref name="transaction"/> to the pending list so that a next
@@ -1091,9 +1085,7 @@ namespace Libplanet.Blockchain
         internal void Append(
             Block<T> block,
             BlockCommit blockCommit,
-            bool evaluateActions,
-            bool renderBlocks,
-            bool renderActions,
+            bool render,
             IReadOnlyList<ActionEvaluation> actionEvaluations = null
         )
         {
@@ -1108,17 +1100,6 @@ namespace Libplanet.Blockchain
                     $"Cannot append genesis block #{block.Index} {block.Hash} to a chain.",
                     nameof(block));
             }
-
-            if (!evaluateActions && renderActions)
-            {
-                throw new ArgumentException(
-                    $"{nameof(renderActions)} option requires {nameof(evaluateActions)} " +
-                    "to be turned on.",
-                    nameof(renderActions)
-                );
-            }
-
-            renderActions = renderActions && renderBlocks && ActionRenderers.Any();
 
             _logger.Information(
                 "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
@@ -1158,7 +1139,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    if (evaluateActions && actionEvaluations is null)
+                    if (actionEvaluations is null)
                     {
                         _logger.Information(
                             "Executing actions in block #{BlockIndex} {BlockHash}...",
@@ -1247,7 +1228,7 @@ namespace Libplanet.Blockchain
                     block.Index,
                     block.Hash);
 
-                if (renderBlocks)
+                if (render)
                 {
                     _logger.Information(
                         "Invoking {RendererCount} renderers and " +
@@ -1263,14 +1244,7 @@ namespace Libplanet.Blockchain
 
                     if (ActionRenderers.Any())
                     {
-                        if (renderActions)
-                        {
-                            RenderActions(
-                                evaluations: actionEvaluations,
-                                block: block
-                            );
-                        }
-
+                        RenderActions(evaluations: actionEvaluations, block: block);
                         foreach (IActionRenderer<T> renderer in ActionRenderers)
                         {
                             renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);

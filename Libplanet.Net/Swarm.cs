@@ -256,7 +256,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{PreloadState}, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
@@ -292,7 +292,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{PreloadState}, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
@@ -491,8 +491,6 @@ namespace Libplanet.Net
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
-        /// <param name="render">
-        /// The value indicates whether to render blocks and actions while preloading.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -507,14 +505,12 @@ namespace Libplanet.Net
         /// failed.</exception>
         public async Task PreloadAsync(
             IProgress<PreloadState> progress = null,
-            bool render = false,
             CancellationToken cancellationToken = default)
         {
             await PreloadAsync(
                 Options.PreloadOptions.DialTimeout,
                 Options.PreloadOptions.TipDeltaThreshold,
                 progress,
-                render,
                 cancellationToken);
         }
 
@@ -533,8 +529,6 @@ namespace Libplanet.Net
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
-        /// <param name="render">
-        /// The value indicates whether to render blocks and actions while preloading.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -551,7 +545,6 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout,
             long tipDeltaThreshold,
             IProgress<PreloadState> progress = null,
-            bool render = false,
             CancellationToken cancellationToken = default)
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
@@ -624,13 +617,11 @@ namespace Libplanet.Net
 
                 _logger.Information("Preloading (trial #{Trial}) started...", i + 1);
                 BlockChain<T> workspace = BlockChain.Fork(localTip.Hash, inheritRenderers: false);
-                var renderSwap = await CompleteBlocksAsync(
+                await CompleteBlocksAsync(
                     peersWithExcerpts,
                     workspace,
                     progress,
-                    render: render,
                     cancellationToken: cancellationToken);
-                renderSwap();
             }
 
             cancellationToken.ThrowIfCancellationRequested();

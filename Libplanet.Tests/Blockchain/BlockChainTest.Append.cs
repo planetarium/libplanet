@@ -362,40 +362,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void AppendWithoutEvaluateActions()
-        {
-            var miner = new PrivateKey();
-            var genesis = _blockChain.Genesis;
-
-            Block<DumbAction> block = TestUtils.ProposeNext(
-                genesis,
-                miner: miner.PublicKey,
-                blockInterval: TimeSpan.FromSeconds(10)
-            ).Evaluate(miner, _blockChain);
-            Assert.Throws<ArgumentException>(() =>
-                _blockChain.Append(
-                    block,
-                    TestUtils.CreateBlockCommit(block),
-                    evaluateActions: false,
-                    renderBlocks: true,
-                    renderActions: true
-                )
-            );
-            Assert.False(_blockChain.ContainsBlock(block.Hash));
-            Assert.Empty(_renderer.ActionRecords);
-
-            _blockChain.Append(
-                block,
-                TestUtils.CreateBlockCommit(block),
-                evaluateActions: false,
-                renderBlocks: true,
-                renderActions: false
-            );
-            Assert.Equal(block, _blockChain.Tip);
-            Assert.Empty(_renderer.ActionRecords);
-        }
-
-        [SkippableFact]
         public void AppendWhenActionEvaluationFailed()
         {
             var policy = new NullBlockPolicy<ThrowException>();
