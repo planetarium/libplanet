@@ -759,14 +759,14 @@ namespace Libplanet.Net.Tests
                 new[] { transactions[0] },
                 miner: GenesisProposer.PublicKey
             ).Evaluate(GenesisProposer, blockChain);
-            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true, false);
+            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
             Block<DumbAction> block2 = ProposeNext(
                 block1,
                 new[] { transactions[1] },
                 miner: GenesisProposer.PublicKey,
                 lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)
             ).Evaluate(GenesisProposer, blockChain);
-            blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true, false);
+            blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
             try
             {

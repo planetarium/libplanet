@@ -114,8 +114,7 @@ namespace Libplanet.Net
         {
             BlockChain<T> workspace = blockChain;
             List<Guid> scope = new List<Guid>();
-            bool renderActions = true;
-            bool renderBlocks = true;
+            bool render = true;
 
             Block<T> oldTip = workspace.Tip;
             Block<T> newTip = candidate.Blocks.Last().Item1;
@@ -155,8 +154,7 @@ namespace Libplanet.Net
                     nameof(AppendPreviousBlocks)
                 );
                 workspace = workspace.Fork(branchpoint.Hash);
-                renderActions = false;
-                renderBlocks = false;
+                render = false;
                 scope.Add(workspace.Id);
                 _logger.Debug(
                     "Fork finished. at {MethodName}()",
@@ -174,8 +172,7 @@ namespace Libplanet.Net
             {
                 foreach (var (block, commit) in blocks)
                 {
-                    workspace.Append(
-                        block, commit, renderBlocks: renderBlocks, renderActions: renderActions);
+                    workspace.Append(block, commit, render: render);
                 }
             }
             catch (Exception e)

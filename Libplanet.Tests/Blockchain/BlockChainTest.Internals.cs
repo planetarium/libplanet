@@ -114,11 +114,7 @@ namespace Libplanet.Tests.Blockchain
                 miner: _fx.Proposer.PublicKey
             ).Evaluate(_fx.Proposer, _blockChain);
 
-            _blockChain.Append(
-                block1,
-                CreateBlockCommit(block1),
-                renderBlocks: true,
-                renderActions: false);
+            _blockChain.Append(block1, CreateBlockCommit(block1), render: true);
 
             var minerAddress = genesis.Miner;
 

@@ -273,7 +273,6 @@ namespace Libplanet.Net.Consensus
                         block4,
                         GetBlockCommit(),
                         true,
-                        true,
                         actionEvaluations: evaluatedActions);
                 }
                 catch (Exception e)

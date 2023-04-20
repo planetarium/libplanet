@@ -862,11 +862,7 @@ namespace Libplanet.Tests.Blockchain
                 miner: miner.PublicKey,
                 lastCommit: CreateBlockCommit(fork.Tip)
             ).Evaluate(miner, fork);
-            fork.Append(
-                forkTip,
-                CreateBlockCommit(forkTip),
-                renderBlocks: true,
-                renderActions: false);
+            fork.Append(forkTip, CreateBlockCommit(forkTip), render: true);
 
             Guid previousChainId = _blockChain.Id;
             _renderer.ResetRecords();

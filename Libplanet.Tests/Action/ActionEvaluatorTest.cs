@@ -960,8 +960,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            chain.Append(
-                block, CreateBlockCommit(block), renderBlocks: true, renderActions: false);
+            chain.Append(block, CreateBlockCommit(block), render: true);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 addresses => chain.GetStates(addresses, block.PreviousHash),
