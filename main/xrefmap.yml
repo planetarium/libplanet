@@ -19621,24 +19621,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Peers
   nameWithType: Swarm<T>.Peers
   nameWithType.vb: Swarm(Of T).Peers
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Threading.CancellationToken)
-  name: PreloadAsync(IProgress<PreloadState>, Boolean, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Threading.CancellationToken)
-  name.vb: PreloadAsync(IProgress(Of PreloadState), Boolean, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Threading.CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(IProgress<PreloadState>, Boolean, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of PreloadState), Boolean, CancellationToken)
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Threading.CancellationToken)
-  name: PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, Boolean, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_Int64_System_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Threading.CancellationToken)
-  name.vb: PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), Boolean, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<System.TimeSpan>, System.Int64, System.IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of System.TimeSpan), System.Int64, System.IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Threading.CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, Boolean, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), Boolean, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
+  name: PreloadAsync(IProgress<PreloadState>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_PreloadState__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
+  name.vb: PreloadAsync(IProgress(Of PreloadState), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.IProgress<Libplanet.Net.PreloadState>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.IProgress(Of Libplanet.Net.PreloadState), System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(IProgress<PreloadState>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of PreloadState), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
+  name: PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_Int64_System_IProgress_Libplanet_Net_PreloadState__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
+  name.vb: PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<System.TimeSpan>, System.Int64, System.IProgress<Libplanet.Net.PreloadState>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of System.TimeSpan), System.Int64, System.IProgress(Of Libplanet.Net.PreloadState), System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), CancellationToken)
 - uid: Libplanet.Net.Swarm`1.PreloadAsync*
   name: PreloadAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_
