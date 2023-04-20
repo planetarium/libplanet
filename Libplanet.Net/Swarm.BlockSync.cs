@@ -301,11 +301,10 @@ namespace Libplanet.Net
         }
 
 #pragma warning disable MEN003
-        private async Task<System.Action> CompleteBlocksAsync(
+        private async Task CompleteBlocksAsync(
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpt,
             BlockChain<T> workspace,
             IProgress<PreloadState> progress,
-            bool render,
             CancellationToken cancellationToken)
         {
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
@@ -316,13 +315,7 @@ namespace Libplanet.Net
             // Note that it does not pass any renderers here so that they render nothing
             // (because the workspace chain is for underlying).
             System.Action renderSwap = () => { };
-            var chainIds = new HashSet<Guid>
-            {
-                workspace.Id,
-            };
-            bool renderActions = render;
-            bool renderBlocks = true;
-
+            var chainIds = new HashSet<Guid> { workspace.Id };
             var complete = false;
 
             try
@@ -390,7 +383,7 @@ namespace Libplanet.Net
                 if (totalBlocksToDownload == 0)
                 {
                     _logger.Debug("No any blocks to fetch");
-                    return renderSwap;
+                    return;
                 }
 
                 IAsyncEnumerable<Tuple<Block<T>, BlockCommit, BoundPeer>> completedBlocks =
@@ -540,10 +533,8 @@ namespace Libplanet.Net
                     "Branchpoint block is #{Index} {Hash}",
                     branchpoint.Index,
                     branchpoint.Hash);
-                workspace = workspace.Fork(branchpoint.Hash, inheritRenderers: true);
+                workspace = workspace.Fork(branchpoint.Hash, inheritRenderers: false);
                 chainIds.Add(workspace.Id);
-                renderBlocks = false;
-                renderActions = false;
 
                 var actionExecutionState = new ActionExecutionState()
                 {
@@ -593,9 +584,8 @@ namespace Libplanet.Net
                             deltaBlock,
                             deltaCommit,
                             evaluateActions: false,
-                            renderBlocks: renderBlocks,
-                            renderActions: renderActions
-                        );
+                            renderBlocks: false,
+                            renderActions: false);
                         progress?.Report(
                             new BlockVerificationState
                             {
@@ -675,7 +665,7 @@ namespace Libplanet.Net
                         workspace.Tip
                     );
 
-                    renderSwap = BlockChain.Swap(workspace, render: render);
+                    renderSwap = BlockChain.Swap(workspace, render: false);
                     BlockChain.CleanupBlockCommitStore(BlockChain.Tip.Index);
                 }
 
@@ -690,8 +680,6 @@ namespace Libplanet.Net
 
                 _logger.Verbose("Remaining chains: {@ChainIds}", workspace.Store.ListChainIds());
             }
-
-            return renderSwap;
         }
 
         private void OnBlockChainTipChanged(object sender, (Block<T> OldTip, Block<T> NewTip) e)
