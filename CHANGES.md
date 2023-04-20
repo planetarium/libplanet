@@ -20,6 +20,9 @@ To be released.
     `IActionRenderer<T>.UnrenderActionError()`.  [[#3092]]
  -  Removed `NonblockRenderer`, `NonblockActionRenderer`, `DelayedRenderer`,
     and `DelayedActionRenderer` classes.  [[#3098]]
+ -  (Libplanet.Net) Removed optional `render` parameter from
+    all `Swarm<T>.PreloadAsync()` overload methods.  No rendering is done
+    during the preloading phase.  [[#3108]]
 
 ### Backward-incompatible network protocol changes
 
@@ -54,6 +57,7 @@ To be released.
 [#3092]: https://github.com/planetarium/libplanet/pull/3092
 [#3098]: https://github.com/planetarium/libplanet/pull/3098
 [#3106]: https://github.com/planetarium/libplanet/pull/3106
+[#3108]: https://github.com/planetarium/libplanet/pull/3108
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
