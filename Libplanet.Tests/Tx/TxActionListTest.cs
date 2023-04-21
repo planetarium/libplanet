@@ -71,7 +71,6 @@ namespace Libplanet.Tests.Tx
             var emptyCustomActionList = new TxCustomActionList(Array.Empty<IAction>());
             var systemActonListJson = @"
                 {
-                  ""type"": ""system"",
                   ""systemAction"": {
                     ""\uFEFFtype_id"": ""0"",
                     ""\uFEFFvalues"": {
@@ -92,7 +91,6 @@ namespace Libplanet.Tests.Tx
                 false);
             const string customActionListJson = @"
                 {
-                  ""type"": ""custom"",
                   ""customActions"": [
                     {
                       ""\uFEFFitem"": ""\uFEFFfoo"",
@@ -112,7 +110,7 @@ namespace Libplanet.Tests.Tx
                 false);
             TestUtils.AssertJsonSerializable<TxActionList>(
                 emptyCustomActionList,
-                "{ \"type\": \"custom\", \"customActions\": [] }",
+                "{ \"customActions\": [] }",
                 false);
         }
 

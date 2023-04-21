@@ -464,7 +464,6 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""signature"": ""MEMCIGNU6C0suI1jof0vrA9FjOhptyvcMwzcWdDr676olsgPAh9aC6Olt6kMVBwp7lLPER0GHhMMQUHB4qZzVr2BtMDo"",
                       ""actions"": {
-                        ""type"": ""custom"",
                         ""customActions"": [
                           {
                             ""\uFEFFitem"": ""\uFEFFfoo"",

@@ -1,15 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
+using Bencodex.Json;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.Sys;
 
 namespace Libplanet.Tx
 {
@@ -67,11 +66,8 @@ namespace Libplanet.Tx
     )]
     internal sealed class TxActionListJsonConverter : JsonConverter<TxActionList>
     {
-        private static readonly ActionListJsonConverter ActionListJsonConverter =
-            new ActionListJsonConverter();
-
-        private static readonly SysActionJsonConverter SysActionJsonConverter =
-            new SysActionJsonConverter();
+        private static readonly BencodexJsonConverter BencodexJsonConverter
+            = new BencodexJsonConverter();
 
         public override TxActionList? Read(
             ref Utf8JsonReader reader,
@@ -83,9 +79,6 @@ namespace Libplanet.Tx
                 throw new JsonException("Expected a JSON object.");
             }
 
-            bool? isSystemAction = null;
-            IAction? systemAction = null;
-            IImmutableList<IAction>? customActions = null;
             reader.Read();
             while (reader.TokenType != JsonTokenType.EndObject)
             {
@@ -93,52 +86,25 @@ namespace Libplanet.Tx
                 switch (key)
                 {
                     case "type":
-                        isSystemAction = reader.GetString() switch
-                        {
-                            "system" => true,
-                            "custom" => throw new JsonException(
-                                "Deserialization of custom actions is not supported yet."),
-                            _ => throw new JsonException("Unexpected value: " + reader.GetString()),
-                        };
-                        break;
+                        throw new JsonException(
+                            $"Unexpected key/value: {key}/{reader.GetString()}");
 
                     case "systemAction":
-                        systemAction =
-                            SysActionJsonConverter.Read(ref reader, typeof(IAction), options);
-                        break;
+                        return new TxSystemActionList(
+                            BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
+                                throw new JsonException("Expected a \"SystemAction\" value."));
 
                     case "customActions":
-                        throw new JsonException(
-                            "Deserialization of custom actions is not supported yet.");
+                        return new TxCustomActionList(
+                            BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
+                                throw new JsonException("Expected a \"CustomActions\" value."));
 
                     default:
                         throw new JsonException("Unexpected key: " + key);
                 }
             }
 
-            switch (isSystemAction)
-            {
-                case null:
-                    throw new JsonException("Expected a \"Type\" key.");
-
-                case true:
-                    if (customActions is { })
-                    {
-                        throw new JsonException("Unexpected \"CustomActions\" key.");
-                    }
-                    else if (!(systemAction is { } sysAction))
-                    {
-                        throw new JsonException("Expected a \"SystemAction\" key.");
-                    }
-                    else
-                    {
-                        return new TxSystemActionList(sysAction);
-                    }
-
-                case false:
-                    throw new JsonException(
-                        "Deserialization of custom actions is not supported yet.");
-            }
+            throw new JsonException($"Encountered an unexpected token: {reader.TokenType}");
         }
 
         public override void Write(
@@ -147,19 +113,15 @@ namespace Libplanet.Tx
             JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WriteString("type", value is TxSystemActionList ? "system" : "custom");
             if (value is TxSystemActionList sysActionList)
             {
                 writer.WritePropertyName("systemAction");
-                SysActionJsonConverter.Write(
-                    writer,
-                    Registry.Deserialize((Dictionary)sysActionList.SystemAction),
-                    options);
+                BencodexJsonConverter.Write(writer, sysActionList.Bencoded, options);
             }
             else if (value is TxCustomActionList customActionList)
             {
                 writer.WritePropertyName("customActions");
-                ActionListJsonConverter.Write(writer, customActionList.CustomActions, options);
+                BencodexJsonConverter.Write(writer, customActionList.Bencoded, options);
             }
             else
             {
