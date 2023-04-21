@@ -95,7 +95,7 @@ public class TxCommand
         UnsignedTx unsignedTx;
         try
         {
-            unsignedTx = TxMarshaler.UnmarshalUnsignedTx<NullAction>(txDict);
+            unsignedTx = TxMarshaler.UnmarshalUnsignedTx(txDict);
         }
         catch (Exception e)
         {

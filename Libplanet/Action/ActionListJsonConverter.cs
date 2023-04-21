@@ -73,15 +73,15 @@ namespace Libplanet.Action
             JsonSerializerOptions options
         )
         {
-            if (!(value is IEnumerable<IAction> actions))
+            if (!(value is IEnumerable<IValue> actions))
             {
                 throw new JsonException($"Expected an {nameof(IEnumerable<IAction>)}.");
             }
 
             writer.WriteStartArray();
-            foreach (IAction action in actions)
+            foreach (IValue action in actions)
             {
-                BencodexJsonConverter.Write(writer, action.PlainValue, options);
+                BencodexJsonConverter.Write(writer, action, options);
             }
 
             writer.WriteEndArray();

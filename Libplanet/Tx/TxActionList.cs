@@ -21,7 +21,7 @@ namespace Libplanet.Tx
     /// it cannot be inherited from outside of this assembly.</remarks>
     [JsonConverter(typeof(TxActionListJsonConverter))]
     public abstract class TxActionList
-        : IReadOnlyList<IAction>, IEquatable<TxActionList>, IBencodable
+        : IReadOnlyList<IValue>, IEquatable<TxActionList>, IBencodable
     {
         private protected TxActionList()
         {
@@ -37,11 +37,11 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="IReadOnlyList{T}.this"/>
         [Pure]
-        public abstract IAction this[int index] { get; }
+        public abstract IValue this[int index] { get; }
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>
         [Pure]
-        public abstract IEnumerator<IAction> GetEnumerator();
+        public abstract IEnumerator<IValue> GetEnumerator();
 
         /// <inheritdoc cref="IEnumerable.GetEnumerator()"/>
         [Pure]
@@ -151,7 +151,10 @@ namespace Libplanet.Tx
             if (value is TxSystemActionList sysActionList)
             {
                 writer.WritePropertyName("systemAction");
-                SysActionJsonConverter.Write(writer, sysActionList.SystemAction, options);
+                SysActionJsonConverter.Write(
+                    writer,
+                    Registry.Deserialize((Dictionary)sysActionList.SystemAction),
+                    options);
             }
             else if (value is TxCustomActionList customActionList)
             {

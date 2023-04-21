@@ -1,6 +1,4 @@
 using System;
-using Bencodex;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
@@ -16,41 +14,6 @@ namespace Libplanet.Tests.Tx
             new Address("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
 
         private static readonly Currency FOO = Currency.Uncapped("FOO", 2, null);
-
-        [Fact]
-        public void CustomActionListFromBencodex()
-        {
-            IAction[] customActions =
-            {
-                new DumbAction(default, "foo"),
-                new DumbAction(AddressA, "bar"),
-            };
-            var input = Bencodex.Types.List.Empty
-                .Add(customActions[0].PlainValue)
-                .Add(customActions[1].PlainValue);
-            var list = TxCustomActionList.FromBencodex<DumbAction>(input);
-            Assert.Equal(2, list.Count);
-            Assert.Equal(customActions[0], list[0]);
-            Assert.Equal(customActions[1], list[1]);
-        }
-
-        [Fact]
-        public void SystemActionListFromBencodex()
-        {
-            var input = Bencodex.Types.Dictionary.Empty
-                .Add("type_id", 0)
-                .Add("values", Bencodex.Types.Dictionary.Empty
-                    .Add(
-                        "recipient",
-                        Binary.FromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"))
-                    .Add("currency", FOO.Serialize())
-                    .Add("amount", (FOO * 100).RawValue));
-
-            var list = TxSystemActionList.FromBencodex(input);
-            var sysAction = Assert.IsType<Mint>(list.SystemAction);
-            var expected = new Mint(AddressA, FOO * 100);
-            Assert.Equal(expected, sysAction);
-        }
 
         [Fact]
         public void Equality()

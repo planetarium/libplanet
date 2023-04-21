@@ -188,6 +188,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 _fx.TxWithActions.CustomActions
             );
+            Assert.NotEmpty(tx.CustomActions);
             Assert.Equal(
                 new[] { _fx.Address1 }.ToImmutableHashSet(),
                 tx.UpdatedAddresses

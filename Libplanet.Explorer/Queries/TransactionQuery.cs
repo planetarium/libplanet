@@ -201,7 +201,7 @@ namespace Libplanet.Explorer.Queries
                     ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
                         context.GetArgument<string>("signature")
                     );
-                    IUnsignedTx unsignedTx = TxMarshaler.DeserializeUnsignedTx<T>(
+                    IUnsignedTx unsignedTx = TxMarshaler.DeserializeUnsignedTx(
                         ByteUtil.ParseHex(context.GetArgument<string>("unsignedTransaction"))
                     );
                     var signedTransaction = unsignedTx.Verify<T>(signature);

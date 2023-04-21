@@ -124,11 +124,10 @@ namespace Libplanet.Tests.Tx
         public void UnmarshalTxInvoice()
         {
             Assert.Equal<ITxInvoice>(
-                TxMarshaler.UnmarshalTxInvoice<DumbAction>(_marshaledTxInvoice),
+                TxMarshaler.UnmarshalTxInvoice(_marshaledTxInvoice),
                 _fx.Tx);
             Assert.Equal<ITxInvoice>(
-                TxMarshaler.UnmarshalTxInvoice<PolymorphicAction<BaseAction>>(
-                    _marshaledTxInvoiceWithCustomActions),
+                TxMarshaler.UnmarshalTxInvoice(_marshaledTxInvoiceWithCustomActions),
                 _fx.TxWithActions);
         }
 
@@ -145,8 +144,8 @@ namespace Libplanet.Tests.Tx
                 Bencodex.Types.List.Empty
                     .Add(ByteUtil.ParseHex("ffffffffffffffffffffffffffffffffffffffff"))
                     .Add(ByteUtil.ParseHex("0000000000000000000000000000000000000000")));
-            ITxInvoice invoiceA = TxMarshaler.UnmarshalTxInvoice<DumbAction>(marshaledInvoiceA);
-            ITxInvoice invoiceB = TxMarshaler.UnmarshalTxInvoice<DumbAction>(marshaledInvoiceB);
+            ITxInvoice invoiceA = TxMarshaler.UnmarshalTxInvoice(marshaledInvoiceA);
+            ITxInvoice invoiceB = TxMarshaler.UnmarshalTxInvoice(marshaledInvoiceB);
             Assert.Equal<ITxInvoice>(invoiceA, invoiceB);
             Assert.Equal<IEnumerable<Address>>(
                 new[] { default(Address), new Address("ffffffffffffffffffffffffffffffffffffffff") },
@@ -175,10 +174,10 @@ namespace Libplanet.Tests.Tx
         public void UnmarshalUnsignedTx()
         {
             Assert.Equal<IUnsignedTx>(
-                TxMarshaler.UnmarshalUnsignedTx<DumbAction>(_marshaledUnsignedTx),
+                TxMarshaler.UnmarshalUnsignedTx(_marshaledUnsignedTx),
                 _fx.Tx);
             Assert.Equal<IUnsignedTx>(
-                TxMarshaler.UnmarshalUnsignedTx<PolymorphicAction<BaseAction>>(
+                TxMarshaler.UnmarshalUnsignedTx(
                     _marshaledUnsignedTxWithCustomActions),
                 _fx.TxWithActions);
         }

@@ -165,7 +165,7 @@ namespace Libplanet.Tx
         /// <see langword="null"/>.</remarks>
         [JsonIgnore]
         public IAction? SystemAction => Actions is TxSystemActionList sysActions
-            ? sysActions.SystemAction
+            ? Registry.Deserialize((Dictionary)sysActions.SystemAction)
             : null;  // TODO: Remove this property.
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Libplanet.Tx
         /// <see langword="null"/>.</remarks>
         [JsonIgnore]
         public IImmutableList<T>? CustomActions => Actions is TxCustomActionList actions
-            ? actions.CustomActions.OfType<T>().ToImmutableList()
+            ? actions.Select(action => ToCustomAction(action)).ToImmutableList()
             : null;  // TODO: Remove this property.
 
         Dictionary? ITransaction.SystemAction => SystemAction is { } sysAction
@@ -358,6 +358,18 @@ namespace Libplanet.Tx
                 timestamp
             );
 
+        public static IAction ToSystemAction(IValue value)
+        {
+            return Registry.Deserialize((Dictionary)value);
+        }
+
+        public static T ToCustomAction(IValue value)
+        {
+            var action = new T();
+            action.LoadPlainValue(value);
+            return action;
+        }
+
         /// <summary>
         /// Encodes this <see cref="Transaction{T}"/> into a <see cref="byte"/> array.
         /// </summary>
@@ -397,13 +409,6 @@ namespace Libplanet.Tx
             ImmutableArray<byte> alreadyVerifiedSignature
         ) =>
             new Transaction<T>(unsignedTx, alreadyVerifiedSignature: alreadyVerifiedSignature);
-
-        private static T ToAction(IValue value)
-        {
-            var action = new T();
-            action.LoadPlainValue(value);
-            return action;
-        }
 
         private static Transaction<T> Create(
             long nonce,
