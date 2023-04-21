@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -21,7 +20,8 @@ namespace Libplanet.Tx
     /// <remarks>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
     /// it cannot be inherited from outside of this assembly.</remarks>
     [JsonConverter(typeof(TxActionListJsonConverter))]
-    public abstract class TxActionList : IReadOnlyList<IAction>, IEquatable<TxActionList>
+    public abstract class TxActionList
+        : IReadOnlyList<IAction>, IEquatable<TxActionList>, IBencodable
     {
         private protected TxActionList()
         {
@@ -31,6 +31,9 @@ namespace Libplanet.Tx
         /// <inheritdoc cref="IReadOnlyCollection{T}.Count"/>
         [Pure]
         public abstract int Count { get; }
+
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        public abstract IValue Bencoded { get; }
 
         /// <inheritdoc cref="IReadOnlyList{T}.this"/>
         [Pure]
@@ -44,20 +47,9 @@ namespace Libplanet.Tx
         [Pure]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        /// <summary>
-        /// Encodes the <see cref="TxActionList"/> into a Bencodex dictionary.
-        /// </summary>
-        /// <returns>A Bencodex dictionary that encodes the <see cref="TxActionList"/>.</returns>
-        [Pure]
-        public abstract IValue ToBencodex();
-
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        public bool Equals(TxActionList? other)
-        {
-            return other is { } && GetType() == other.GetType() && Count == other.Count &&
-                this.SequenceEqual(other, ActionEqualityComparer.Instance);
-        }
+        public abstract bool Equals(TxActionList? other);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         [Pure]
@@ -65,37 +57,7 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         [Pure]
-        public override int GetHashCode() => this.Aggregate(
-            GetType().GetHashCode(),
-            (a, b) => a ^ ActionEqualityComparer.Instance.GetHashCode(b)
-        );
-
-        private class ActionEqualityComparer : IEqualityComparer<IAction>
-        {
-            public static readonly ActionEqualityComparer Instance = new ActionEqualityComparer();
-
-            public bool Equals(IAction? x, IAction? y) =>
-                x is { } && y is { } &&
-                x.GetType() == y.GetType() && x.PlainValue.Equals(y.PlainValue);
-
-            public int GetHashCode(IAction obj) =>
-                obj is null ? 0 : obj.GetType().GetHashCode() ^ GetBencodexHashCode(obj.PlainValue);
-
-            // TODO: Bencodex should fix Dictionary.GetHashCode() and List.GetHashCode()
-            // https://github.com/planetarium/bencodex.net/issues/72
-            private int GetBencodexHashCode(Bencodex.Types.IValue value) =>
-                value switch {
-                    Bencodex.Types.List l => l.Aggregate(
-                        0,
-                        (a, b) => a ^ GetBencodexHashCode(b)
-                    ),
-                    Bencodex.Types.Dictionary d => d.Aggregate(
-                        0,
-                        (a, b) => a ^ GetBencodexHashCode(b.Key) ^ GetBencodexHashCode(b.Value)
-                    ),
-                    _ => value.GetHashCode(),
-                };
-        }
+        public override int GetHashCode() => Bencoded.GetHashCode();
     }
 
     [SuppressMessage(

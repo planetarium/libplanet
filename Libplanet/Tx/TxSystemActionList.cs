@@ -45,6 +45,10 @@ namespace Libplanet.Tx
         [Pure]
         public override int Count => 1;
 
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        [Pure]
+        public override IValue Bencoded => Registry.Serialize(SystemAction);
+
         /// <inheritdoc cref="TxActionList.this"/>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="index"/> is less than zero.</exception>
@@ -77,9 +81,12 @@ namespace Libplanet.Tx
             yield return SystemAction;
         }
 
-        /// <inheritdoc cref="TxActionList.ToBencodex()"/>
         [Pure]
-        public override IValue ToBencodex() => Registry.Serialize(SystemAction);
+        public override bool Equals(TxActionList? other)
+        {
+            return other is TxSystemActionList txSystemActionList &&
+                Bencoded.Equals(txSystemActionList.Bencoded);
+        }
 
         [Pure]
         internal static TxSystemActionList FromBencodex(IValue value)

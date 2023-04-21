@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Tx
                         Binary.FromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"))
                     .Add("currency", FOO.Serialize())
                     .Add("amount", (FOO * 100).RawValue));
-            AssertBencodexEqual(expected, list.ToBencodex());
+            AssertBencodexEqual(expected, list.Bencoded);
         }
 
         [Fact]

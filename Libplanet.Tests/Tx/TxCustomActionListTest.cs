@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<IndexOutOfRangeException>(() => TxCustomActionList.Empty[0]);
             AssertBencodexEqual(
                 Bencodex.Types.List.Empty,
-                TxCustomActionList.Empty.ToBencodex());
+                TxCustomActionList.Empty.Bencoded);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Tx
             var emptyList = new TxCustomActionList(new IAction[0]);
             AssertBencodexEqual(
                 Bencodex.Types.List.Empty,
-                emptyList.ToBencodex());
+                emptyList.Bencoded);
 
             // TODO: We should introduce snapshot testing.
             IAction[] actions =
@@ -92,7 +92,7 @@ namespace Libplanet.Tests.Tx
                 Bencodex.Types.List.Empty
                     .Add(actions[0].PlainValue)
                     .Add(actions[1].PlainValue),
-                list.ToBencodex());
+                list.Bencoded);
         }
 
         [Fact]

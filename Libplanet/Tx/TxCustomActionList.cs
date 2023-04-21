@@ -44,6 +44,11 @@ namespace Libplanet.Tx
         [Pure]
         public override int Count => CustomActions.Count;
 
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        [Pure]
+        public override IValue Bencoded =>
+            new List(CustomActions.Select(a => a.PlainValue));
+
         /// <inheritdoc cref="TxActionList.this"/>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="index"/> is less than zero.</exception>
@@ -76,10 +81,12 @@ namespace Libplanet.Tx
         public override IEnumerator<IAction> GetEnumerator() =>
             CustomActions.GetEnumerator();
 
-        /// <inheritdoc cref="TxActionList.ToBencodex()"/>
         [Pure]
-        public override IValue ToBencodex() =>
-            new List(CustomActions.Select(a => a.PlainValue));
+        public override bool Equals(TxActionList? other)
+        {
+            return other is TxCustomActionList txCustomActionList &&
+                Bencoded.Equals(txCustomActionList.Bencoded);
+        }
 
         /// <summary>
         /// Decodes a <see cref="TxCustomActionList"/> from a Bencodex dictionary.
@@ -90,7 +97,7 @@ namespace Libplanet.Tx
         /// <returns>A decoded <see cref="TxCustomActionList"/>.</returns>
         /// <exception cref="DecodingException">Thrown when the given <paramref name="value"/>
         /// is not a <see cref="List"/>.</exception>
-        /// <seealso cref="ToBencodex()"/>
+        /// <seealso cref="Bencoded()"/>
         [Pure]
         internal static TxCustomActionList FromBencodex<T>(IValue value)
             where T : IAction, new()

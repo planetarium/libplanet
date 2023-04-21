@@ -39,11 +39,11 @@ namespace Libplanet.Tx
             Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty;
             if (invoice.Actions is TxSystemActionList tsal)
             {
-                dict = dict.Add(SystemActionKey, tsal.ToBencodex());
+                dict = dict.Add(SystemActionKey, tsal.Bencoded);
             }
             else if (invoice.Actions is TxCustomActionList tcal)
             {
-                dict = dict.Add(CustomActionsKey, tcal.ToBencodex());
+                dict = dict.Add(CustomActionsKey, tcal.Bencoded);
             }
 
             dict = dict
