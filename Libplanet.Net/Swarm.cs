@@ -98,6 +98,18 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
+            // Regulate heavy tasks. Treat negative value as 0.
+            var resourceRegulationOptions = Options.ResourceRegulationOptions;
+            int limit = resourceRegulationOptions.MaxTransferBlocksTaskCount;
+            _transferBlocksSemaphore = limit > 0
+                ? new Semaphore(limit, limit)
+                : null;
+            limit = resourceRegulationOptions.MaxTransferTxsTaskCount;
+            _transferTxsSemaphore = limit > 0
+                ? new Semaphore(limit, limit)
+                : null;
+
+            // Initialize consensus reactor.
             if (consensusTransport is { } && consensusOption is { } consensusReactorOption)
             {
                 _consensusReactor = new ConsensusReactor<T>(

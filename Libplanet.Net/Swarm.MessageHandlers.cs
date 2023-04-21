@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
@@ -11,6 +12,9 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
+        private readonly Semaphore _transferBlocksSemaphore;
+        private readonly Semaphore _transferTxsSemaphore;
+
         private Task ProcessMessageHandlerAsync(Message message)
         {
             switch (message.Content)
@@ -186,25 +190,38 @@ namespace Libplanet.Net
 
         private async Task TransferTxsAsync(Message message)
         {
-            var getTxsMsg = (GetTxsMsg)message.Content;
-            foreach (TxId txid in getTxsMsg.TxIds)
+            if (!(_transferTxsSemaphore is null) &&
+                !_transferTxsSemaphore.WaitOne(TimeSpan.Zero))
             {
-                try
-                {
-                    Transaction tx = BlockChain.GetTransaction(txid);
+                return;
+            }
 
-                    if (tx is null)
+            try
+            {
+                var getTxsMsg = (GetTxsMsg)message.Content;
+                foreach (TxId txid in getTxsMsg.TxIds)
+                {
+                    try
                     {
-                        continue;
-                    }
+                        Transaction tx = BlockChain.GetTransaction(txid);
 
-                    MessageContent response = new TxMsg(tx.Serialize());
-                    await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        if (tx is null)
+                        {
+                            continue;
+                        }
+
+                        MessageContent response = new TxMsg(tx.Serialize());
+                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        _logger.Warning("Requested TxId {TxId} does not exist", txid);
+                    }
                 }
-                catch (KeyNotFoundException)
-                {
-                    _logger.Warning("Requested TxId {TxId} does not exist", txid);
-                }
+            }
+            finally
+            {
+                _transferTxsSemaphore?.Release();
             }
         }
 
@@ -222,73 +239,89 @@ namespace Libplanet.Net
 
         private async Task TransferBlocksAsync(Message message)
         {
-            var blocksMsg = (GetBlocksMsg)message.Content;
-            string reqId = !(message.Identity is null) && message.Identity.Length == 16
-                ? new Guid(message.Identity).ToString()
-                : "unknown";
-            _logger.Verbose(
-                "Preparing a {MessageType} message to reply to {Identity}...",
-                nameof(Messages.BlocksMsg),
-                reqId);
-
-            var payloads = new List<byte[]>();
-
-            List<BlockHash> hashes = blocksMsg.BlockHashes.ToList();
-            int count = 0;
-            int total = hashes.Count;
-            const string logMsg =
-                "Fetching block {Index}/{Total} {Hash} to include in " +
-                "a reply to {Identity}...";
-            foreach (BlockHash hash in hashes)
+            if (!(_transferBlocksSemaphore is null) &&
+                !_transferBlocksSemaphore.WaitOne(TimeSpan.Zero))
             {
-                _logger.Verbose(logMsg, count, total, hash, reqId);
-                if (_store.GetBlock(hash) is { } block)
+                _logger.Debug("TransferBlocksAsync is lack of resource.");
+                return;
+            }
+
+            _logger.Debug("TransferBlocksAsync executed.");
+
+            try
+            {
+                var blocksMsg = (GetBlocksMsg)message.Content;
+                string reqId = !(message.Identity is null) && message.Identity.Length == 16
+                    ? new Guid(message.Identity).ToString()
+                    : "unknown";
+                _logger.Verbose(
+                    "Preparing a {MessageType} message to reply to {Identity}...",
+                    nameof(Messages.BlocksMsg),
+                    reqId);
+
+                var payloads = new List<byte[]>();
+
+                List<BlockHash> hashes = blocksMsg.BlockHashes.ToList();
+                int count = 0;
+                int total = hashes.Count;
+                const string logMsg =
+                    "Fetching block {Index}/{Total} {Hash} to include in " +
+                    "a reply to {Identity}...";
+                foreach (BlockHash hash in hashes)
                 {
-                    byte[] blockPayload = Codec.Encode(block.MarshalBlock());
-                    payloads.Add(blockPayload);
-                    byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
-                        ? Codec.Encode(commit.Bencoded)
-                        : new byte[0];
-                    payloads.Add(commitPayload);
-                    count++;
+                    _logger.Verbose(logMsg, count, total, hash, reqId);
+                    if (_store.GetBlock(hash) is { } block)
+                    {
+                        byte[] blockPayload = Codec.Encode(block.MarshalBlock());
+                        payloads.Add(blockPayload);
+                        byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
+                            ? Codec.Encode(commit.Bencoded)
+                            : new byte[0];
+                        payloads.Add(commitPayload);
+                        count++;
+                    }
+
+                    if (payloads.Count / 2 == blocksMsg.ChunkSize)
+                    {
+                        var response = new BlocksMsg(payloads);
+                        _logger.Verbose(
+                            "Enqueuing a blocks reply (...{Count}/{Total})...",
+                            count,
+                            total
+                        );
+                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        payloads.Clear();
+                    }
                 }
 
-                if (payloads.Count / 2 == blocksMsg.ChunkSize)
+                if (payloads.Any())
                 {
                     var response = new BlocksMsg(payloads);
                     _logger.Verbose(
-                        "Enqueuing a blocks reply (...{Count}/{Total})...",
+                        "Enqueuing a blocks reply (...{Count}/{Total}) to {Identity}...",
                         count,
-                        total
-                    );
+                        total,
+                        reqId);
                     await Transport.ReplyMessageAsync(response, message.Identity, default);
-                    payloads.Clear();
                 }
-            }
 
-            if (payloads.Any())
+                if (count == 0)
+                {
+                    var response = new BlocksMsg(payloads);
+                    _logger.Verbose(
+                        "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
+                        count,
+                        total,
+                        reqId);
+                    await Transport.ReplyMessageAsync(response, message.Identity, default);
+                }
+
+                _logger.Debug("{Count} blocks were transferred to {Identity}", count, reqId);
+            }
+            finally
             {
-                var response = new BlocksMsg(payloads);
-                _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Count}/{Total}) to {Identity}...",
-                    count,
-                    total,
-                    reqId);
-                await Transport.ReplyMessageAsync(response, message.Identity, default);
+                _transferBlocksSemaphore?.Release();
             }
-
-            if (count == 0)
-            {
-                var response = new BlocksMsg(payloads);
-                _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
-                    count,
-                    total,
-                    reqId);
-                await Transport.ReplyMessageAsync(response, message.Identity, default);
-            }
-
-            _logger.Debug("{Count} blocks were transferred to {Identity}", count, reqId);
         }
     }
 }

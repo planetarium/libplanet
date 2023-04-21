@@ -120,5 +120,12 @@ namespace Libplanet.Net.Options
         /// an <see cref="ITransport"/>.
         /// </summary>
         public TimeoutOptions TimeoutOptions { get; set; } = new TimeoutOptions();
+
+        /// <summary>
+        /// Various resource regulations for handling received <see cref="Message"/>s through
+        /// an <see cref="ITransport"/>.
+        /// </summary>
+        public ResourceRegulationOptions ResourceRegulationOptions { get; set; } =
+            new ResourceRegulationOptions();
     }
 }
