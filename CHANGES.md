@@ -23,6 +23,19 @@ To be released.
  -  (Libplanet.Net) Removed optional `render` parameter from
     all `Swarm<T>.PreloadAsync()` overload methods.  No rendering is done
     during the preloading phase.  [[#3108]]
+ -  `TxActionList` now implements `IBencodable` interface.  [[#3110]]
+     -  Removed `FromBencodex()` static method; use `TxActionList(IValue)`
+        constructor instead.
+     -  Removed `ToBencodex()` method; use `TxActionList.Bencoded` instead.
+ -  `TxActionList` now implements `IEnumerable<IValue>` instead of
+    `IEnumerable<IAction>`.  [[#3110]]
+     -  Changed `TxSystemAction.SystemAction` to return an `IValue`.
+     -  Changed `TxCustomActions.CustomActions` to return an
+        `IImmutableList<IValue>`.
+     -  Added `Transaction<T>.ToSystemAction()` and
+        `Transaction<T>.ToCustomAction()` static methods.
+ -  `TxActionList`'s JSON representation has changed.  It no longer has
+    `"type"` field.  [[#3110]]
 
 ### Backward-incompatible network protocol changes
 
@@ -58,6 +71,7 @@ To be released.
 [#3098]: https://github.com/planetarium/libplanet/pull/3098
 [#3106]: https://github.com/planetarium/libplanet/pull/3106
 [#3108]: https://github.com/planetarium/libplanet/pull/3108
+[#3110]: https://github.com/planetarium/libplanet/pull/3110
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
