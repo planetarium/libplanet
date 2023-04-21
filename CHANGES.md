@@ -23,6 +23,10 @@ To be released.
  -  (Libplanet.Net) Removed optional `render` parameter from
     all `Swarm<T>.PreloadAsync()` overload methods.  No rendering is done
     during the preloading phase.  [[#3108]]
+ -  (Libplanet.Net) Removed `newHeightDelay` parameter from constructor of
+    `ConsensusReactor<T>`, `ConsensusContext<T>`.  [[#3104]]
+ -  (Libplanet.Net) Added `commitBlockDelay` parameter from constructor of
+    `ConsensusReactor<T>`, `ConsensusContext<T>`, `Context`.  [[#3104]]
 
 ### Backward-incompatible network protocol changes
 
@@ -38,6 +42,10 @@ To be released.
     `IRenderer<T>.RenderReorgEnd()`, `IActionRenderer<T>.UnrenderAction()`,
     and `IActionRenderer<T>.UnrenderActionError()`, i.e., these interface
     methods are no longer invoked by a `BlockChain<T>`.  [[#3087]]
+ -  `ConsensusContext<T>` no longer waits before `NewHeight()` calls.
+    [[#3104]]
+ -  `Context` now waits before `BlockChain<T>.Append()` after entering
+    `EndCommit` step.  [[#3104]]
 
 ### Bug fixes
 
@@ -56,6 +64,7 @@ To be released.
 [#3087]: https://github.com/planetarium/libplanet/pull/3087
 [#3092]: https://github.com/planetarium/libplanet/pull/3092
 [#3098]: https://github.com/planetarium/libplanet/pull/3098
+[#3104]: https://github.com/planetarium/libplanet/pull/3104
 [#3106]: https://github.com/planetarium/libplanet/pull/3106
 [#3108]: https://github.com/planetarium/libplanet/pull/3108
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
