@@ -6,7 +6,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Tx;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Options
 {
     public class SwarmOptions
     {

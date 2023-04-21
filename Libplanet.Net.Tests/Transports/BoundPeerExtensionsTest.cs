@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
+using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;

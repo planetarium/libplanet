@@ -4,7 +4,7 @@ using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Libplanet.Tx;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Options
 {
     /// <summary>
     /// Various timeout options for sending and receiving <see cref="Message"/>s through
