@@ -331,12 +331,13 @@ public class RocksDbBlockChainIndex : BlockChainIndexBase
             writeBatch.Put(txIdToContainedBlockHashKey, blockHash);
             if (tx.SystemAction is { } systemAction)
             {
+                // FIXME: This is dangerous since transactions may contain malformed actions.
                 PutOrPutDuplicateOrdinal(
                     ref writeBatch,
                     SystemActionTypeIdToTxIdPrefix
                         .Concat(
                             ShortToBigEndianByteArray(
-                                (short)systemAction.GetValue<Integer>("type_id")))
+                                (short)((Dictionary)systemAction).GetValue<Integer>("type_id")))
                         .Concat(LongToBigEndianByteArray(tx.Timestamp.UtcTicks))
                         .ToArray(),
                     txId,

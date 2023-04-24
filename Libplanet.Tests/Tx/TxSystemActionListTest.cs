@@ -22,9 +22,7 @@ namespace Libplanet.Tests.Tx
             var sysAction = new Mint(AddressA, FOO * 100);
             var list = new TxSystemActionList(sysAction);
 
-            // FIXME: DumbAction is used as a placeholder.
-            Mint mint = Assert.IsType<Mint>(
-                Transaction<DumbAction>.ToSystemAction(list.SystemAction));
+            Mint mint = Assert.IsType<Mint>(Registry.Deserialize(list.SystemAction));
             Assert.Equal(sysAction, mint);
             Assert.Equal(1, list.Count);
 
@@ -38,9 +36,7 @@ namespace Libplanet.Tests.Tx
             var sysAction = new Mint(AddressA, FOO * 100);
             var list = new TxSystemActionList(sysAction);
 
-            // FIXME: DumbAction is only used as a placeholder
-            Mint mint = Assert.IsType<Mint>(
-                Transaction<DumbAction>.ToSystemAction(list[0]));
+            Mint mint = Assert.IsType<Mint>(Registry.Deserialize(list[0]));
             Assert.Equal(sysAction, mint);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => list[-1]);
@@ -66,9 +62,7 @@ namespace Libplanet.Tests.Tx
             var expected = Registry.Serialize(systemAction);
             AssertBencodexEqual(expected, actionList.Bencoded);
 
-            // FIXME: DumbAction is used as a placeholder.
-            var concretized = Assert.IsType<Mint>(
-                Transaction<DumbAction>.ToSystemAction(actionList.SystemAction));
+            var concretized = Assert.IsType<Mint>(Registry.Deserialize(actionList.SystemAction));
             Assert.Equal(systemAction, concretized);
 
             var decoded = new TxSystemActionList(actionList.Bencoded);

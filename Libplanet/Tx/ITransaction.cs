@@ -29,7 +29,7 @@ namespace Libplanet.Tx
         /// <remarks>It is similar with <see cref="Transaction{T}.SystemAction"/> but
         /// it is non-generic.  (i.e., it doesn't require to deserialize the system action to
         /// <see cref="IAction"/> while serialization.</remarks>
-        public Dictionary? SystemAction { get; }
+        public IValue? SystemAction { get; }
 
         /// <summary>
         /// Zero or more user-defined custom actions that this <see cref="ITransaction"/>

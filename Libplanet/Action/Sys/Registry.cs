@@ -12,14 +12,22 @@ namespace Libplanet.Action.Sys
             Initialize = 2,
         }
 
-        public static IAction Deserialize(Bencodex.Types.Dictionary serialized)
+        public static IAction Deserialize(IValue serialized)
         {
-            if (!serialized.TryGetValue((Text)"type_id", out IValue typeIdValue))
+            if (!(serialized is Dictionary dict))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(serialized)} must be a {nameof(Dictionary)}: " +
+                    $"{serialized.GetType()}",
+                    nameof(serialized));
+            }
+
+            if (!dict.TryGetValue((Text)"type_id", out IValue typeIdValue))
             {
                 throw new ArgumentException("No type_id field found.", nameof(serialized));
             }
 
-            if (!serialized.TryGetValue((Text)"values", out IValue values))
+            if (!dict.TryGetValue((Text)"values", out IValue values))
             {
                 throw new ArgumentException("No values field found.", nameof(serialized));
             }
@@ -28,8 +36,7 @@ namespace Libplanet.Action.Sys
             {
                 throw new ArgumentException(
                     "type_id field is not an integer.",
-                    nameof(serialized)
-                );
+                    nameof(serialized));
             }
 
             var typeId = (TypeId)(short)typeIdInt;
@@ -38,7 +45,7 @@ namespace Libplanet.Action.Sys
             return action;
         }
 
-        public static Bencodex.Types.Dictionary Serialize(IAction action)
+        public static IValue Serialize(IAction action)
         {
             var typeId = GetTypeId(action);
             if (typeId is null)

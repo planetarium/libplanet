@@ -32,8 +32,6 @@ To be released.
      -  Changed `TxSystemAction.SystemAction` to return an `IValue`.
      -  Changed `TxCustomActions.CustomActions` to return an
         `IImmutableList<IValue>`.
-     -  Added `Transaction<T>.ToSystemAction()` and
-        `Transaction<T>.ToCustomAction()` static methods.
  -  `TxActionList`'s JSON representation has changed.  It no longer has
     `"type"` field.  [[#3110]]
 

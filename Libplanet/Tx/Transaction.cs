@@ -165,7 +165,7 @@ namespace Libplanet.Tx
         /// <see langword="null"/>.</remarks>
         [JsonIgnore]
         public IAction? SystemAction => Actions is TxSystemActionList sysActions
-            ? Registry.Deserialize((Dictionary)sysActions.SystemAction)
+            ? Registry.Deserialize(sysActions.SystemAction)
             : null;  // TODO: Remove this property.
 
         /// <summary>
@@ -176,11 +176,22 @@ namespace Libplanet.Tx
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
         [JsonIgnore]
-        public IImmutableList<T>? CustomActions => Actions is TxCustomActionList actions
-            ? actions.Select(action => ToCustomAction(action)).ToImmutableList()
-            : null;  // TODO: Remove this property.
+        public IImmutableList<T>? CustomActions
+        {
+            get
+            {
+                return Actions is TxCustomActionList actions
+                    ? actions.Select(action =>
+                        {
+                            var concrete = new T();
+                            concrete.LoadPlainValue(action);
+                            return concrete;
+                        }).ToImmutableList()
+                    : null;
+            }
+        }
 
-        Dictionary? ITransaction.SystemAction => SystemAction is { } sysAction
+        IValue? ITransaction.SystemAction => SystemAction is { } sysAction
             ? Registry.Serialize(sysAction)
             : null;
 
@@ -357,18 +368,6 @@ namespace Libplanet.Tx
                 updatedAddresses,
                 timestamp
             );
-
-        public static IAction ToSystemAction(IValue value)
-        {
-            return Registry.Deserialize((Dictionary)value);
-        }
-
-        public static T ToCustomAction(IValue value)
-        {
-            var action = new T();
-            action.LoadPlainValue(value);
-            return action;
-        }
 
         /// <summary>
         /// Encodes this <see cref="Transaction{T}"/> into a <see cref="byte"/> array.
