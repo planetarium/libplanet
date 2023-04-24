@@ -61,9 +61,9 @@ namespace Libplanet.Net.Tests.Consensus
 
             gossips = Enumerable.Range(0, 4)
                 .Select(x => TestUtils.CreateGossip(
-                    message =>
+                    content =>
                     {
-                        if (message is ConsensusMsg consensusMsg)
+                        if (content is ConsensusMsg consensusMsg)
                         {
                             // ReSharper disable once AccessToModifiedClosure
                             validators![x].Context.ProduceMessage(consensusMsg);
