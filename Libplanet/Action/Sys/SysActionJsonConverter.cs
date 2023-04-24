@@ -35,7 +35,7 @@ namespace Libplanet.Action.Sys
             JsonSerializerOptions options
         )
         {
-            Bencodex.Types.Dictionary serialized = Registry.Serialize(value);
+            IValue serialized = Registry.Serialize(value);
             BencodexJsonConverter.Write(writer, serialized, options);
         }
     }

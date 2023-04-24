@@ -188,6 +188,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 _fx.TxWithActions.CustomActions
             );
+            Assert.NotEmpty(tx.CustomActions);
             Assert.Equal(
                 new[] { _fx.Address1 }.ToImmutableHashSet(),
                 tx.UpdatedAddresses
@@ -463,7 +464,6 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""signature"": ""MEMCIGNU6C0suI1jof0vrA9FjOhptyvcMwzcWdDr676olsgPAh9aC6Olt6kMVBwp7lLPER0GHhMMQUHB4qZzVr2BtMDo"",
                       ""actions"": {
-                        ""type"": ""custom"",
                         ""customActions"": [
                           {
                             ""\uFEFFitem"": ""\uFEFFfoo"",

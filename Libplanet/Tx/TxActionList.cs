@@ -1,16 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
+using Bencodex.Json;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.Sys;
 
 namespace Libplanet.Tx
 {
@@ -21,7 +19,8 @@ namespace Libplanet.Tx
     /// <remarks>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
     /// it cannot be inherited from outside of this assembly.</remarks>
     [JsonConverter(typeof(TxActionListJsonConverter))]
-    public abstract class TxActionList : IReadOnlyList<IAction>, IEquatable<TxActionList>
+    public abstract class TxActionList
+        : IReadOnlyList<IValue>, IEquatable<TxActionList>, IBencodable
     {
         private protected TxActionList()
         {
@@ -32,32 +31,24 @@ namespace Libplanet.Tx
         [Pure]
         public abstract int Count { get; }
 
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        public abstract IValue Bencoded { get; }
+
         /// <inheritdoc cref="IReadOnlyList{T}.this"/>
         [Pure]
-        public abstract IAction this[int index] { get; }
+        public abstract IValue this[int index] { get; }
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>
         [Pure]
-        public abstract IEnumerator<IAction> GetEnumerator();
+        public abstract IEnumerator<IValue> GetEnumerator();
 
         /// <inheritdoc cref="IEnumerable.GetEnumerator()"/>
         [Pure]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        /// <summary>
-        /// Encodes the <see cref="TxActionList"/> into a Bencodex dictionary.
-        /// </summary>
-        /// <returns>A Bencodex dictionary that encodes the <see cref="TxActionList"/>.</returns>
-        [Pure]
-        public abstract IValue ToBencodex();
-
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        public bool Equals(TxActionList? other)
-        {
-            return other is { } && GetType() == other.GetType() && Count == other.Count &&
-                this.SequenceEqual(other, ActionEqualityComparer.Instance);
-        }
+        public abstract bool Equals(TxActionList? other);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         [Pure]
@@ -65,37 +56,7 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         [Pure]
-        public override int GetHashCode() => this.Aggregate(
-            GetType().GetHashCode(),
-            (a, b) => a ^ ActionEqualityComparer.Instance.GetHashCode(b)
-        );
-
-        private class ActionEqualityComparer : IEqualityComparer<IAction>
-        {
-            public static readonly ActionEqualityComparer Instance = new ActionEqualityComparer();
-
-            public bool Equals(IAction? x, IAction? y) =>
-                x is { } && y is { } &&
-                x.GetType() == y.GetType() && x.PlainValue.Equals(y.PlainValue);
-
-            public int GetHashCode(IAction obj) =>
-                obj is null ? 0 : obj.GetType().GetHashCode() ^ GetBencodexHashCode(obj.PlainValue);
-
-            // TODO: Bencodex should fix Dictionary.GetHashCode() and List.GetHashCode()
-            // https://github.com/planetarium/bencodex.net/issues/72
-            private int GetBencodexHashCode(Bencodex.Types.IValue value) =>
-                value switch {
-                    Bencodex.Types.List l => l.Aggregate(
-                        0,
-                        (a, b) => a ^ GetBencodexHashCode(b)
-                    ),
-                    Bencodex.Types.Dictionary d => d.Aggregate(
-                        0,
-                        (a, b) => a ^ GetBencodexHashCode(b.Key) ^ GetBencodexHashCode(b.Value)
-                    ),
-                    _ => value.GetHashCode(),
-                };
-        }
+        public override int GetHashCode() => Bencoded.GetHashCode();
     }
 
     [SuppressMessage(
@@ -105,11 +66,8 @@ namespace Libplanet.Tx
     )]
     internal sealed class TxActionListJsonConverter : JsonConverter<TxActionList>
     {
-        private static readonly ActionListJsonConverter ActionListJsonConverter =
-            new ActionListJsonConverter();
-
-        private static readonly SysActionJsonConverter SysActionJsonConverter =
-            new SysActionJsonConverter();
+        private static readonly BencodexJsonConverter BencodexJsonConverter
+            = new BencodexJsonConverter();
 
         public override TxActionList? Read(
             ref Utf8JsonReader reader,
@@ -121,9 +79,6 @@ namespace Libplanet.Tx
                 throw new JsonException("Expected a JSON object.");
             }
 
-            bool? isSystemAction = null;
-            IAction? systemAction = null;
-            IImmutableList<IAction>? customActions = null;
             reader.Read();
             while (reader.TokenType != JsonTokenType.EndObject)
             {
@@ -131,52 +86,25 @@ namespace Libplanet.Tx
                 switch (key)
                 {
                     case "type":
-                        isSystemAction = reader.GetString() switch
-                        {
-                            "system" => true,
-                            "custom" => throw new JsonException(
-                                "Deserialization of custom actions is not supported yet."),
-                            _ => throw new JsonException("Unexpected value: " + reader.GetString()),
-                        };
-                        break;
+                        throw new JsonException(
+                            $"Unexpected key/value: {key}/{reader.GetString()}");
 
                     case "systemAction":
-                        systemAction =
-                            SysActionJsonConverter.Read(ref reader, typeof(IAction), options);
-                        break;
+                        return new TxSystemActionList(
+                            BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
+                                throw new JsonException("Expected a \"SystemAction\" value."));
 
                     case "customActions":
-                        throw new JsonException(
-                            "Deserialization of custom actions is not supported yet.");
+                        return new TxCustomActionList(
+                            BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
+                                throw new JsonException("Expected a \"CustomActions\" value."));
 
                     default:
                         throw new JsonException("Unexpected key: " + key);
                 }
             }
 
-            switch (isSystemAction)
-            {
-                case null:
-                    throw new JsonException("Expected a \"Type\" key.");
-
-                case true:
-                    if (customActions is { })
-                    {
-                        throw new JsonException("Unexpected \"CustomActions\" key.");
-                    }
-                    else if (!(systemAction is { } sysAction))
-                    {
-                        throw new JsonException("Expected a \"SystemAction\" key.");
-                    }
-                    else
-                    {
-                        return new TxSystemActionList(sysAction);
-                    }
-
-                case false:
-                    throw new JsonException(
-                        "Deserialization of custom actions is not supported yet.");
-            }
+            throw new JsonException($"Encountered an unexpected token: {reader.TokenType}");
         }
 
         public override void Write(
@@ -185,16 +113,15 @@ namespace Libplanet.Tx
             JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WriteString("type", value is TxSystemActionList ? "system" : "custom");
             if (value is TxSystemActionList sysActionList)
             {
                 writer.WritePropertyName("systemAction");
-                SysActionJsonConverter.Write(writer, sysActionList.SystemAction, options);
+                BencodexJsonConverter.Write(writer, sysActionList.Bencoded, options);
             }
             else if (value is TxCustomActionList customActionList)
             {
                 writer.WritePropertyName("customActions");
-                ActionListJsonConverter.Write(writer, customActionList.CustomActions, options);
+                BencodexJsonConverter.Write(writer, customActionList.Bencoded, options);
             }
             else
             {

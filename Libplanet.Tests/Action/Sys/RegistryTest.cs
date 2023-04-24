@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address addr = random.NextAddress();
-            Bencodex.Types.Dictionary actual =
+            IValue actual =
                 Registry.Serialize(new Transfer(addr, FooCurrency * 123));
             Bencodex.Types.Dictionary expected = Dictionary.Empty
                 .Add("type_id", 1)

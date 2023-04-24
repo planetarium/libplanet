@@ -211,7 +211,7 @@ namespace Libplanet.Tests.Tx
 
             public byte[] Signature => Array.Empty<byte>();
 
-            public Dictionary SystemAction => null;
+            public IValue SystemAction => null;
 
             public IImmutableList<IValue> CustomActions => null;
 

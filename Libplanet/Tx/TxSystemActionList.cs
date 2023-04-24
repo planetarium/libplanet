@@ -15,6 +15,8 @@ namespace Libplanet.Tx
     /// <seealso cref="Libplanet.Action.Sys"/>
     public sealed class TxSystemActionList : TxActionList
     {
+        private IValue _bencoded;
+
         /// <summary>
         /// Creates a new <see cref="TxSystemActionList"/> instance with the given
         /// <paramref name="systemAction"/>.
@@ -23,27 +25,42 @@ namespace Libplanet.Tx
         /// <exception cref="ArgumentException">Thrown when the given
         /// <paramref name="systemAction"/> is not a system action.</exception>
         public TxSystemActionList(IAction systemAction)
+            : this(
+                Registry.IsSystemAction(systemAction)
+                    ? Registry.Serialize(systemAction)
+                    : throw new ArgumentException(
+                        $"The given action {systemAction} is not a system action.",
+                        nameof(systemAction)))
         {
-            if (!Registry.IsSystemAction(systemAction))
-            {
-                throw new ArgumentException(
-                    $"The given action {systemAction} is not a system action.",
-                    paramName: nameof(systemAction)
-                );
-            }
+        }
 
-            SystemAction = systemAction;
+        public TxSystemActionList(IValue bencoded)
+            : this(bencoded is Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given value must be a {nameof(Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private TxSystemActionList(Dictionary dict)
+        {
+            _bencoded = dict;
         }
 
         /// <summary>
         /// The system-provided <see cref="IAction"/> to be executed in a transaction.
         /// </summary>
         [Pure]
-        public IAction SystemAction { get; }
+        public IValue SystemAction => _bencoded;
 
         /// <inheritdoc cref="TxActionList.Count"/>
         [Pure]
         public override int Count => 1;
+
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        [Pure]
+        public override IValue Bencoded => _bencoded;
 
         /// <inheritdoc cref="TxActionList.this"/>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
@@ -51,7 +68,7 @@ namespace Libplanet.Tx
         /// <exception cref="IndexOutOfRangeException">Thrown when the given
         /// <paramref name="index"/> is greater than or equal to <see cref="Count"/>.</exception>
         [Pure]
-        public override IAction this[int index]
+        public override IValue this[int index]
         {
             get
             {
@@ -72,27 +89,16 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="TxActionList.GetEnumerator"/>
         [Pure]
-        public override IEnumerator<IAction> GetEnumerator()
+        public override IEnumerator<IValue> GetEnumerator()
         {
             yield return SystemAction;
         }
 
-        /// <inheritdoc cref="TxActionList.ToBencodex()"/>
         [Pure]
-        public override IValue ToBencodex() => Registry.Serialize(SystemAction);
-
-        [Pure]
-        internal static TxSystemActionList FromBencodex(IValue value)
+        public override bool Equals(TxActionList? other)
         {
-            if (value is Dictionary dict)
-            {
-                return new TxSystemActionList(Registry.Deserialize(dict));
-            }
-            else
-            {
-                throw new DecodingException(
-                    $"Given value must be a {nameof(Dictionary)}: {value.GetType()}");
-            }
+            return other is TxSystemActionList txSystemActionList &&
+                Bencoded.Equals(txSystemActionList.Bencoded);
         }
     }
 }

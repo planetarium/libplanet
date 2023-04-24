@@ -20,6 +20,8 @@ namespace Libplanet.Tx
         public static readonly TxCustomActionList Empty =
             new TxCustomActionList(ImmutableList<IAction>.Empty);
 
+        private IValue _bencoded;
+
         /// <summary>
         /// Creates a new <see cref="TxCustomActionList"/> instance with the given
         /// <paramref name="customActions"/>.
@@ -27,10 +29,22 @@ namespace Libplanet.Tx
         /// <param name="customActions">The list of <see cref="IAction"/>s to be executed in a
         /// transaction.</param>
         public TxCustomActionList(IEnumerable<IAction> customActions)
+            : this(new List(customActions.Select(customAction => customAction.PlainValue)))
         {
-            CustomActions = customActions is IImmutableList<IAction> actions
-                ? actions
-                : customActions.ToImmutableList();
+        }
+
+        public TxCustomActionList(IValue bencoded)
+            : this(bencoded is List list
+                ? list
+                : throw new ArgumentException(
+                    $"Given value must be a {nameof(List)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private TxCustomActionList(List list)
+        {
+            _bencoded = list;
         }
 
         /// <summary>
@@ -38,11 +52,15 @@ namespace Libplanet.Tx
         /// transaction.
         /// </summary>
         [Pure]
-        public IImmutableList<IAction> CustomActions { get; }
+        public IImmutableList<IValue> CustomActions => ((List)_bencoded).ToImmutableList();
 
         /// <inheritdoc cref="TxActionList.Count"/>
         [Pure]
         public override int Count => CustomActions.Count;
+
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        [Pure]
+        public override IValue Bencoded => _bencoded;
 
         /// <inheritdoc cref="TxActionList.this"/>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
@@ -50,7 +68,7 @@ namespace Libplanet.Tx
         /// <exception cref="IndexOutOfRangeException">Thrown when the given
         /// <paramref name="index"/> is greater than or equal to <see cref="Count"/>.</exception>
         [Pure]
-        public override IAction this[int index]
+        public override IValue this[int index]
         {
             get
             {
@@ -73,47 +91,14 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="TxActionList.GetEnumerator"/>
         [Pure]
-        public override IEnumerator<IAction> GetEnumerator() =>
+        public override IEnumerator<IValue> GetEnumerator() =>
             CustomActions.GetEnumerator();
 
-        /// <inheritdoc cref="TxActionList.ToBencodex()"/>
         [Pure]
-        public override IValue ToBencodex() =>
-            new List(CustomActions.Select(a => a.PlainValue));
-
-        /// <summary>
-        /// Decodes a <see cref="TxCustomActionList"/> from a Bencodex dictionary.
-        /// </summary>
-        /// <param name="value">A Bencodex list to decode.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type to decode.  It must be a concrete
-        /// type, not an interface or an abstract class.</typeparam>
-        /// <returns>A decoded <see cref="TxCustomActionList"/>.</returns>
-        /// <exception cref="DecodingException">Thrown when the given <paramref name="value"/>
-        /// is not a <see cref="List"/>.</exception>
-        /// <seealso cref="ToBencodex()"/>
-        [Pure]
-        internal static TxCustomActionList FromBencodex<T>(IValue value)
-            where T : IAction, new()
+        public override bool Equals(TxActionList? other)
         {
-            if (value is List list)
-            {
-                return new TxCustomActionList(
-                    list.Select(ToAction<T>).ToImmutableList());
-            }
-            else
-            {
-                throw new DecodingException(
-                    $"Given value must be a {nameof(List)}: {value.GetType()}");
-            }
-        }
-
-        [Pure]
-        private static IAction ToAction<T>(IValue value)
-            where T : IAction, new()
-        {
-            var action = new T();
-            action.LoadPlainValue(value);
-            return action;
+            return other is TxCustomActionList txCustomActionList &&
+                Bencoded.Equals(txCustomActionList.Bencoded);
         }
     }
 }

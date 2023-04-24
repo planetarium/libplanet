@@ -39,11 +39,11 @@ namespace Libplanet.Tx
             Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty;
             if (invoice.Actions is TxSystemActionList tsal)
             {
-                dict = dict.Add(SystemActionKey, tsal.ToBencodex());
+                dict = dict.Add(SystemActionKey, tsal.Bencoded);
             }
             else if (invoice.Actions is TxCustomActionList tcal)
             {
-                dict = dict.Add(CustomActionsKey, tcal.ToBencodex());
+                dict = dict.Add(CustomActionsKey, tcal.Bencoded);
             }
 
             dict = dict
@@ -90,8 +90,7 @@ namespace Libplanet.Tx
         }
 
         [Pure]
-        public static ITxInvoice UnmarshalTxInvoice<T>(Bencodex.Types.Dictionary dictionary)
-            where T : IAction, new()
+        public static ITxInvoice UnmarshalTxInvoice(Bencodex.Types.Dictionary dictionary)
         =>
 #pragma warning disable SA1118  // The parameter spans multiple lines
             new TxInvoice(
@@ -106,9 +105,8 @@ namespace Libplanet.Tx
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 actions: dictionary.TryGetValue(SystemActionKey, out IValue sav)
-                    ? (TxActionList)TxSystemActionList.FromBencodex(sav)
-                    : (TxActionList)TxCustomActionList.FromBencodex<T>(
-                        dictionary[CustomActionsKey]));
+                    ? (TxActionList)new TxSystemActionList(sav)
+                    : (TxActionList)new TxCustomActionList(dictionary[CustomActionsKey]));
 #pragma warning restore SA1118
 
         [Pure]
@@ -121,13 +119,10 @@ namespace Libplanet.Tx
             );
 
         [Pure]
-        public static UnsignedTx UnmarshalUnsignedTx<T>(Bencodex.Types.Dictionary dictionary)
-            where T : IAction, new()
-        =>
+        public static UnsignedTx UnmarshalUnsignedTx(Bencodex.Types.Dictionary dictionary) =>
             new UnsignedTx(
-                invoice: UnmarshalTxInvoice<T>(dictionary),
-                signingMetadata: UnmarshalTxSigningMetadata(dictionary)
-            );
+                invoice: UnmarshalTxInvoice(dictionary),
+                signingMetadata: UnmarshalTxSigningMetadata(dictionary));
 
         [Pure]
         public static ImmutableArray<byte>? UnmarshalTransactionSignature(
@@ -147,31 +142,28 @@ namespace Libplanet.Tx
                 throw new DecodingException("Transaction signature is missing.");
             }
 
-            return UnmarshalUnsignedTx<T>(dictionary).Verify<T>(signature);
+            return UnmarshalUnsignedTx(dictionary).Verify<T>(signature);
         }
 
         [Pure]
-        public static IUnsignedTx DeserializeUnsignedTx<T>(byte[] bytes)
-            where T : IAction, new()
+        public static IUnsignedTx DeserializeUnsignedTx(byte[] bytes)
         {
             IValue node = Codec.Decode(bytes);
             if (node is Bencodex.Types.Dictionary dict)
             {
-                return UnmarshalUnsignedTx<T>(dict);
+                return UnmarshalUnsignedTx(dict);
             }
 
             throw new DecodingException(
                 $"Expected a {typeof(Bencodex.Types.Dictionary).FullName}, " +
-                $"but {node.GetType().Name} given."
-            );
+                $"but {node.GetType().Name} given.");
         }
 
         [Pure]
-        public static IUnsignedTx DeserializeUnsignedTx<T>(ImmutableArray<byte> bytes)
-            where T : IAction, new()
+        public static IUnsignedTx DeserializeUnsignedTx(ImmutableArray<byte> bytes)
         {
             byte[] arrayView = Unsafe.As<ImmutableArray<byte>, byte[]>(ref bytes);
-            return DeserializeUnsignedTx<T>(arrayView);
+            return DeserializeUnsignedTx(arrayView);
         }
 
         [Pure]
@@ -184,7 +176,7 @@ namespace Libplanet.Tx
                 = dictionary.TryGetValue(SignatureKey, out IValue s) && s is Binary bin
                 ? bin
                 : new Binary(new byte[0]);
-            return UnmarshalUnsignedTx<T>(dictionary).CombineWithoutVerification<T>(sig);
+            return UnmarshalUnsignedTx(dictionary).CombineWithoutVerification<T>(sig);
         }
 
         [Pure]
