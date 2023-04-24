@@ -83,19 +83,17 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a>&gt;</div>
+    <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator">TxActionList.IEnumerable.GetEnumerator()</a>
-    </div>
-    <div>
-      <a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_">TxActionList.Equals(TxActionList)</a>
     </div>
     <div>
       <a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_System_Object_">TxActionList.Equals(Object)</a>
@@ -123,16 +121,49 @@
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_TxCustomActionList_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class TxCustomActionList : TxActionList, IReadOnlyList&lt;IAction&gt;, IReadOnlyCollection&lt;IAction&gt;, IEnumerable&lt;IAction&gt;, IEnumerable, IEquatable&lt;TxActionList&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class TxCustomActionList : TxActionList, IReadOnlyList&lt;IValue&gt;, IReadOnlyCollection&lt;IValue&gt;, IEnumerable&lt;IValue&gt;, IEnumerable, IEquatable&lt;TxActionList&gt;, IBencodable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L36">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxCustomActionList__ctor_" data-uid="Libplanet.Tx.TxCustomActionList.#ctor*"></a>
+  <h4 id="Libplanet_Tx_TxCustomActionList__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Tx.TxCustomActionList.#ctor(Bencodex.Types.IValue)">TxCustomActionList(IValue)</h4>
+  <div class="markdown level1 summary"><p>A list of application-defined custom <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxCustomActionList(IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.%23ctor(System.Collections.Generic.IEnumerable%7BLibplanet.Action.IAction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L29">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxCustomActionList__ctor_" data-uid="Libplanet.Tx.TxCustomActionList.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxCustomActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__" data-uid="Libplanet.Tx.TxCustomActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})">TxCustomActionList(IEnumerable&lt;IAction&gt;)</h4>
@@ -199,10 +230,44 @@ transaction.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L62">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxCustomActionList_Bencoded_" data-uid="Libplanet.Tx.TxCustomActionList.Bencoded*"></a>
+  <h4 id="Libplanet_Tx_TxCustomActionList_Bencoded" data-uid="Libplanet.Tx.TxCustomActionList.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p>A list of application-defined custom <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Bencoded">TxActionList.Bencoded</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_Count.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L58">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxCustomActionList_Count_" data-uid="Libplanet.Tx.TxCustomActionList.Count*"></a>
   <h4 id="Libplanet_Tx_TxCustomActionList_Count" data-uid="Libplanet.Tx.TxCustomActionList.Count">Count</h4>
@@ -236,7 +301,7 @@ public override int Count { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_CustomActions.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.CustomActions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L54">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxCustomActionList_CustomActions_" data-uid="Libplanet.Tx.TxCustomActionList.CustomActions*"></a>
   <h4 id="Libplanet_Tx_TxCustomActionList_CustomActions" data-uid="Libplanet.Tx.TxCustomActionList.CustomActions">CustomActions</h4>
@@ -247,7 +312,7 @@ transaction.</p>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public IImmutableList&lt;IAction&gt; CustomActions { get; }</code></pre>
+public IImmutableList&lt;IValue&gt; CustomActions { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -259,7 +324,7 @@ public IImmutableList&lt;IAction&gt; CustomActions { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -269,7 +334,7 @@ public IImmutableList&lt;IAction&gt; CustomActions { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L52">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L70">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxCustomActionList_Item_" data-uid="Libplanet.Tx.TxCustomActionList.Item*"></a>
   <h4 id="Libplanet_Tx_TxCustomActionList_Item_System_Int32_" data-uid="Libplanet.Tx.TxCustomActionList.Item(System.Int32)">Item[Int32]</h4>
@@ -279,7 +344,7 @@ public IImmutableList&lt;IAction&gt; CustomActions { get; }</code></pre>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override IAction this[int index] { get; }</code></pre>
+public override IValue this[int index] { get; }</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,7 +373,7 @@ public override IAction this[int index] { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -342,10 +407,61 @@ public override IAction this[int index] { get; }</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_Equals_Libplanet_Tx_TxActionList_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L97">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxCustomActionList_Equals_" data-uid="Libplanet.Tx.TxCustomActionList.Equals*"></a>
+  <h4 id="Libplanet_Tx_TxCustomActionList_Equals_Libplanet_Tx_TxActionList_" data-uid="Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)">Equals(TxActionList)</h4>
+  <div class="markdown level1 summary"><p>A list of application-defined custom <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override bool Equals(TxActionList other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_">TxActionList.Equals(TxActionList)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L75">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxCustomActionList_GetEnumerator_" data-uid="Libplanet.Tx.TxCustomActionList.GetEnumerator*"></a>
   <h4 id="Libplanet_Tx_TxCustomActionList_GetEnumerator" data-uid="Libplanet.Tx.TxCustomActionList.GetEnumerator">GetEnumerator()</h4>
@@ -355,7 +471,7 @@ public override IAction this[int index] { get; }</code></pre>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public override IEnumerator&lt;IAction&gt; GetEnumerator()</code></pre>
+public override IEnumerator&lt;IValue&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -367,48 +483,13 @@ public override IEnumerator&lt;IAction&gt; GetEnumerator()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_GetEnumerator">TxActionList.GetEnumerator()</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxCustomActionList_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxCustomActionList.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxCustomActionList.cs/#L80">View Source</a>
-  </span>
-  <a id="Libplanet_Tx_TxCustomActionList_ToBencodex_" data-uid="Libplanet.Tx.TxCustomActionList.ToBencodex*"></a>
-  <h4 id="Libplanet_Tx_TxCustomActionList_ToBencodex" data-uid="Libplanet.Tx.TxCustomActionList.ToBencodex">ToBencodex()</h4>
-  <div class="markdown level1 summary"><p>Encodes the <a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a> into a Bencodex dictionary.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override IValue ToBencodex()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
-        <td><p>A Bencodex dictionary that encodes the <a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_ToBencodex">TxActionList.ToBencodex()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">System.Collections.Generic.IReadOnlyList&lt;T&gt;</a>
@@ -424,6 +505,9 @@ public override IValue ToBencodex()</code></pre>
   </div>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">Bencodex.IBencodable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

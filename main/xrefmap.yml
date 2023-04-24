@@ -29410,6 +29410,19 @@ references:
   commentId: T:Libplanet.Tx.TxActionList
   fullName: Libplanet.Tx.TxActionList
   nameWithType: TxActionList
+- uid: Libplanet.Tx.TxActionList.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Bencoded
+  commentId: P:Libplanet.Tx.TxActionList.Bencoded
+  fullName: Libplanet.Tx.TxActionList.Bencoded
+  nameWithType: TxActionList.Bencoded
+- uid: Libplanet.Tx.TxActionList.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Bencoded_
+  commentId: Overload:Libplanet.Tx.TxActionList.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.Bencoded
+  nameWithType: TxActionList.Bencoded
 - uid: Libplanet.Tx.TxActionList.Count
   name: Count
   href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Count
@@ -29501,25 +29514,18 @@ references:
   fullName: Libplanet.Tx.TxActionList.System.Collections.IEnumerable.GetEnumerator
   nameWithType: TxActionList.IEnumerable.GetEnumerator
   nameWithType.vb: TxActionList.System.Collections.IEnumerable.GetEnumerator
-- uid: Libplanet.Tx.TxActionList.ToBencodex
-  name: ToBencodex()
-  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_ToBencodex
-  commentId: M:Libplanet.Tx.TxActionList.ToBencodex
-  fullName: Libplanet.Tx.TxActionList.ToBencodex()
-  nameWithType: TxActionList.ToBencodex()
-- uid: Libplanet.Tx.TxActionList.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_ToBencodex_
-  commentId: Overload:Libplanet.Tx.TxActionList.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxActionList.ToBencodex
-  nameWithType: TxActionList.ToBencodex
 - uid: Libplanet.Tx.TxCustomActionList
   name: TxCustomActionList
   href: api/Libplanet.Tx.TxCustomActionList.html
   commentId: T:Libplanet.Tx.TxCustomActionList
   fullName: Libplanet.Tx.TxCustomActionList
   nameWithType: TxCustomActionList
+- uid: Libplanet.Tx.TxCustomActionList.#ctor(Bencodex.Types.IValue)
+  name: TxCustomActionList(IValue)
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Tx.TxCustomActionList.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList(Bencodex.Types.IValue)
+  nameWithType: TxCustomActionList.TxCustomActionList(IValue)
 - uid: Libplanet.Tx.TxCustomActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
   name: TxCustomActionList(IEnumerable<IAction>)
   href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__
@@ -29536,6 +29542,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList
   nameWithType: TxCustomActionList.TxCustomActionList
+- uid: Libplanet.Tx.TxCustomActionList.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Bencoded
+  commentId: P:Libplanet.Tx.TxCustomActionList.Bencoded
+  fullName: Libplanet.Tx.TxCustomActionList.Bencoded
+  nameWithType: TxCustomActionList.Bencoded
+- uid: Libplanet.Tx.TxCustomActionList.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Bencoded_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.Bencoded
+  nameWithType: TxCustomActionList.Bencoded
 - uid: Libplanet.Tx.TxCustomActionList.Count
   name: Count
   href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Count
@@ -29568,6 +29587,19 @@ references:
   commentId: F:Libplanet.Tx.TxCustomActionList.Empty
   fullName: Libplanet.Tx.TxCustomActionList.Empty
   nameWithType: TxCustomActionList.Empty
+- uid: Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)
+  name: Equals(TxActionList)
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Equals_Libplanet_Tx_TxActionList_
+  commentId: M:Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)
+  fullName: Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)
+  nameWithType: TxCustomActionList.Equals(TxActionList)
+- uid: Libplanet.Tx.TxCustomActionList.Equals*
+  name: Equals
+  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Equals_
+  commentId: Overload:Libplanet.Tx.TxCustomActionList.Equals
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxCustomActionList.Equals
+  nameWithType: TxCustomActionList.Equals
 - uid: Libplanet.Tx.TxCustomActionList.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_GetEnumerator
@@ -29597,19 +29629,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxCustomActionList.Item
   nameWithType: TxCustomActionList.Item
-- uid: Libplanet.Tx.TxCustomActionList.ToBencodex
-  name: ToBencodex()
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_ToBencodex
-  commentId: M:Libplanet.Tx.TxCustomActionList.ToBencodex
-  fullName: Libplanet.Tx.TxCustomActionList.ToBencodex()
-  nameWithType: TxCustomActionList.ToBencodex()
-- uid: Libplanet.Tx.TxCustomActionList.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_ToBencodex_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.ToBencodex
-  nameWithType: TxCustomActionList.ToBencodex
 - uid: Libplanet.Tx.TxExecution
   name: TxExecution
   href: api/Libplanet.Tx.TxExecution.html
@@ -30131,6 +30150,24 @@ references:
   commentId: T:Libplanet.Tx.TxMarshaler
   fullName: Libplanet.Tx.TxMarshaler
   nameWithType: TxMarshaler
+- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Byte[])
+  name: DeserializeUnsignedTx(Byte[])
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx_System_Byte___
+  commentId: M:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Byte[])
+  name.vb: DeserializeUnsignedTx(Byte())
+  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Byte[])
+  fullName.vb: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Byte())
+  nameWithType: TxMarshaler.DeserializeUnsignedTx(Byte[])
+  nameWithType.vb: TxMarshaler.DeserializeUnsignedTx(Byte())
+- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Collections.Immutable.ImmutableArray{System.Byte})
+  name: DeserializeUnsignedTx(ImmutableArray<Byte>)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Collections.Immutable.ImmutableArray{System.Byte})
+  name.vb: DeserializeUnsignedTx(ImmutableArray(Of Byte))
+  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: TxMarshaler.DeserializeUnsignedTx(ImmutableArray<Byte>)
+  nameWithType.vb: TxMarshaler.DeserializeUnsignedTx(ImmutableArray(Of Byte))
 - uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx*
   name: DeserializeUnsignedTx
   href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx_
@@ -30138,24 +30175,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx
   nameWithType: TxMarshaler.DeserializeUnsignedTx
-- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Byte[])
-  name: DeserializeUnsignedTx<T>(Byte[])
-  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx__1_System_Byte___
-  commentId: M:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Byte[])
-  name.vb: DeserializeUnsignedTx(Of T)(Byte())
-  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx<T>(System.Byte[])
-  fullName.vb: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(Of T)(System.Byte())
-  nameWithType: TxMarshaler.DeserializeUnsignedTx<T>(Byte[])
-  nameWithType.vb: TxMarshaler.DeserializeUnsignedTx(Of T)(Byte())
-- uid: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Collections.Immutable.ImmutableArray{System.Byte})
-  name: DeserializeUnsignedTx<T>(ImmutableArray<Byte>)
-  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_DeserializeUnsignedTx__1_System_Collections_Immutable_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx``1(System.Collections.Immutable.ImmutableArray{System.Byte})
-  name.vb: DeserializeUnsignedTx(Of T)(ImmutableArray(Of Byte))
-  fullName: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx<T>(System.Collections.Immutable.ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Tx.TxMarshaler.DeserializeUnsignedTx(Of T)(System.Collections.Immutable.ImmutableArray(Of System.Byte))
-  nameWithType: TxMarshaler.DeserializeUnsignedTx<T>(ImmutableArray<Byte>)
-  nameWithType.vb: TxMarshaler.DeserializeUnsignedTx(Of T)(ImmutableArray(Of Byte))
 - uid: Libplanet.Tx.TxMarshaler.MarshalTransaction*
   name: MarshalTransaction
   href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_MarshalTransaction_
@@ -30253,6 +30272,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxMarshaler.UnmarshalTransactionSignature
   nameWithType: TxMarshaler.UnmarshalTransactionSignature
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice(Bencodex.Types.Dictionary)
+  name: UnmarshalTxInvoice(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxInvoice_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalTxInvoice(Dictionary)
 - uid: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice*
   name: UnmarshalTxInvoice
   href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxInvoice_
@@ -30260,15 +30285,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice
   nameWithType: TxMarshaler.UnmarshalTxInvoice
-- uid: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice``1(Bencodex.Types.Dictionary)
-  name: UnmarshalTxInvoice<T>(Dictionary)
-  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxInvoice__1_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice``1(Bencodex.Types.Dictionary)
-  name.vb: UnmarshalTxInvoice(Of T)(Dictionary)
-  fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice<T>(Bencodex.Types.Dictionary)
-  fullName.vb: Libplanet.Tx.TxMarshaler.UnmarshalTxInvoice(Of T)(Bencodex.Types.Dictionary)
-  nameWithType: TxMarshaler.UnmarshalTxInvoice<T>(Dictionary)
-  nameWithType.vb: TxMarshaler.UnmarshalTxInvoice(Of T)(Dictionary)
 - uid: Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)
   name: UnmarshalTxSigningMetadata(Dictionary)
   href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalTxSigningMetadata_Bencodex_Types_Dictionary_
@@ -30282,6 +30298,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxMarshaler.UnmarshalTxSigningMetadata
   nameWithType: TxMarshaler.UnmarshalTxSigningMetadata
+- uid: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx(Bencodex.Types.Dictionary)
+  name: UnmarshalUnsignedTx(Dictionary)
+  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalUnsignedTx_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx(Bencodex.Types.Dictionary)
+  nameWithType: TxMarshaler.UnmarshalUnsignedTx(Dictionary)
 - uid: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx*
   name: UnmarshalUnsignedTx
   href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalUnsignedTx_
@@ -30289,15 +30311,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx
   nameWithType: TxMarshaler.UnmarshalUnsignedTx
-- uid: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx``1(Bencodex.Types.Dictionary)
-  name: UnmarshalUnsignedTx<T>(Dictionary)
-  href: api/Libplanet.Tx.TxMarshaler.html#Libplanet_Tx_TxMarshaler_UnmarshalUnsignedTx__1_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx``1(Bencodex.Types.Dictionary)
-  name.vb: UnmarshalUnsignedTx(Of T)(Dictionary)
-  fullName: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx<T>(Bencodex.Types.Dictionary)
-  fullName.vb: Libplanet.Tx.TxMarshaler.UnmarshalUnsignedTx(Of T)(Bencodex.Types.Dictionary)
-  nameWithType: TxMarshaler.UnmarshalUnsignedTx<T>(Dictionary)
-  nameWithType.vb: TxMarshaler.UnmarshalUnsignedTx(Of T)(Dictionary)
 - uid: Libplanet.Tx.TxMetadata
   name: TxMetadata
   href: api/Libplanet.Tx.TxMetadata.html
@@ -30677,6 +30690,12 @@ references:
   commentId: T:Libplanet.Tx.TxSystemActionList
   fullName: Libplanet.Tx.TxSystemActionList
   nameWithType: TxSystemActionList
+- uid: Libplanet.Tx.TxSystemActionList.#ctor(Bencodex.Types.IValue)
+  name: TxSystemActionList(IValue)
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Tx.TxSystemActionList.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList(Bencodex.Types.IValue)
+  nameWithType: TxSystemActionList.TxSystemActionList(IValue)
 - uid: Libplanet.Tx.TxSystemActionList.#ctor(Libplanet.Action.IAction)
   name: TxSystemActionList(IAction)
   href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_Libplanet_Action_IAction_
@@ -30690,6 +30709,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList
   nameWithType: TxSystemActionList.TxSystemActionList
+- uid: Libplanet.Tx.TxSystemActionList.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Bencoded
+  commentId: P:Libplanet.Tx.TxSystemActionList.Bencoded
+  fullName: Libplanet.Tx.TxSystemActionList.Bencoded
+  nameWithType: TxSystemActionList.Bencoded
+- uid: Libplanet.Tx.TxSystemActionList.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Bencoded_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.Bencoded
+  nameWithType: TxSystemActionList.Bencoded
 - uid: Libplanet.Tx.TxSystemActionList.Count
   name: Count
   href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Count
@@ -30703,6 +30735,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxSystemActionList.Count
   nameWithType: TxSystemActionList.Count
+- uid: Libplanet.Tx.TxSystemActionList.Equals(Libplanet.Tx.TxActionList)
+  name: Equals(TxActionList)
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Equals_Libplanet_Tx_TxActionList_
+  commentId: M:Libplanet.Tx.TxSystemActionList.Equals(Libplanet.Tx.TxActionList)
+  fullName: Libplanet.Tx.TxSystemActionList.Equals(Libplanet.Tx.TxActionList)
+  nameWithType: TxSystemActionList.Equals(TxActionList)
+- uid: Libplanet.Tx.TxSystemActionList.Equals*
+  name: Equals
+  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Equals_
+  commentId: Overload:Libplanet.Tx.TxSystemActionList.Equals
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxSystemActionList.Equals
+  nameWithType: TxSystemActionList.Equals
 - uid: Libplanet.Tx.TxSystemActionList.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_GetEnumerator
@@ -30745,19 +30790,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxSystemActionList.SystemAction
   nameWithType: TxSystemActionList.SystemAction
-- uid: Libplanet.Tx.TxSystemActionList.ToBencodex
-  name: ToBencodex()
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_ToBencodex
-  commentId: M:Libplanet.Tx.TxSystemActionList.ToBencodex
-  fullName: Libplanet.Tx.TxSystemActionList.ToBencodex()
-  nameWithType: TxSystemActionList.ToBencodex()
-- uid: Libplanet.Tx.TxSystemActionList.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_ToBencodex_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.ToBencodex
-  nameWithType: TxSystemActionList.ToBencodex
 - uid: Libplanet.Tx.UnsignedTx
   name: UnsignedTx
   href: api/Libplanet.Tx.UnsignedTx.html
