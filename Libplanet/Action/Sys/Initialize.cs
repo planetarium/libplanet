@@ -10,6 +10,7 @@ namespace Libplanet.Action.Sys
     /// <summary>
     /// A system action that initializes the chain's beginning states.
     /// </summary>
+    [ActionType(2)]
     public sealed class Initialize : IAction
     {
         public Initialize(
@@ -21,7 +22,7 @@ namespace Libplanet.Action.Sys
             States = states;
         }
 
-        internal Initialize()
+        public Initialize()
         {
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }

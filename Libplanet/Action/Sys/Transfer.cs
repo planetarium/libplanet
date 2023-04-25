@@ -11,6 +11,7 @@ namespace Libplanet.Action.Sys
     /// </summary>
     /// <remarks>Only native tokens can be transferred.</remarks>
     [JsonConverter(typeof(SysActionJsonConverter))]
+    [ActionType(1)]
     public sealed class Transfer : IAction, IEquatable<Transfer>, IEquatable<IAction>
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace Libplanet.Action.Sys
             Amount = amount;
         }
 
-        internal Transfer()
+        public Transfer()
         {
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }

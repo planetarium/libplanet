@@ -11,6 +11,7 @@ namespace Libplanet.Action.Sys
     /// </summary>
     /// <remarks>Only native tokens can be minted.</remarks>
     [JsonConverter(typeof(SysActionJsonConverter))]
+    [ActionType(0)]
     public sealed class Mint : IAction, IEquatable<Mint>, IEquatable<IAction>
     {
         /// <summary>
@@ -25,7 +26,7 @@ namespace Libplanet.Action.Sys
             Amount = amount;
         }
 
-        internal Mint()
+        public Mint()
         {
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }

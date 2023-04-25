@@ -1,15 +1,25 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Bencodex.Types;
 
 namespace Libplanet.Action.Sys
 {
     internal static class Registry
     {
-        private enum TypeId : short
+        public static readonly Dictionary<IValue, Type> Types;
+
+        static Registry()
         {
-            Mint = 0,
-            Transfer = 1,
-            Initialize = 2,
+            var assembly = Assembly.GetExecutingAssembly();
+            Types = assembly
+                .GetTypes()
+                .Where(type => type.Namespace == typeof(Registry).Namespace)
+                .Where(type => type.GetCustomAttribute<ActionTypeAttribute>() is { })
+                .ToDictionary(
+                    type => type.GetCustomAttribute<ActionTypeAttribute>()!.TypeIdentifier,
+                    type => type);
         }
 
         public static IAction Deserialize(IValue serialized)
@@ -24,25 +34,29 @@ namespace Libplanet.Action.Sys
 
             if (!dict.TryGetValue((Text)"type_id", out IValue typeIdValue))
             {
-                throw new ArgumentException("No type_id field found.", nameof(serialized));
+                throw new ArgumentException(
+                    $"No type_id field found: {serialized}", nameof(serialized));
             }
 
             if (!dict.TryGetValue((Text)"values", out IValue values))
             {
-                throw new ArgumentException("No values field found.", nameof(serialized));
+                throw new ArgumentException(
+                    $"No values field found: {serialized}", nameof(serialized));
             }
 
-            if (!(typeIdValue is Bencodex.Types.Integer typeIdInt))
+            try
+            {
+                IAction action = Instantiate(typeIdValue);
+                action.LoadPlainValue(values);
+                return action;
+            }
+            catch (Exception e)
             {
                 throw new ArgumentException(
-                    "type_id field is not an integer.",
-                    nameof(serialized));
+                    $"Failed to deserialize to a system action: {serialized}",
+                    nameof(serialized),
+                    e);
             }
-
-            var typeId = (TypeId)(short)typeIdInt;
-            IAction action = Instantiate(typeId);
-            action.LoadPlainValue(values);
-            return action;
         }
 
         public static IValue Serialize(IAction action)
@@ -54,32 +68,18 @@ namespace Libplanet.Action.Sys
             }
 
             return Bencodex.Types.Dictionary.Empty
-                .Add("type_id", (int)typeId)
+                .Add("type_id", typeId)
                 .Add("values", action.PlainValue);
         }
 
-        public static bool IsSystemAction(IAction action) => GetTypeId(action) is { };
+        public static bool IsSystemAction(IAction action) => Types.ContainsValue(action.GetType());
 
-        private static IAction Instantiate(TypeId typeId) =>
-            typeId switch
-            {
-                TypeId.Mint => new Mint(),
-                TypeId.Transfer => new Transfer(),
-                TypeId.Initialize => new Initialize(),
-                _ => throw new ArgumentOutOfRangeException(
-                    nameof(typeId),
-                    typeId,
-                    "Unknown system type ID."
-                ),
-            };
+        private static IAction Instantiate(IValue typeId) =>
+            (IAction)(Activator.CreateInstance(Types[typeId]) ??
+                throw new ArgumentException(
+                    $"Failed to create an instance for given type id: {typeId}"));
 
-        private static TypeId? GetTypeId(IAction action) =>
-            action switch
-            {
-                Mint _ => TypeId.Mint,
-                Transfer _ => TypeId.Transfer,
-                Initialize _ => TypeId.Initialize,
-                _ => null,
-            };
+        private static IValue? GetTypeId(IAction action) =>
+            Types.FirstOrDefault(x => x.Value == action.GetType()).Key;
     }
 }

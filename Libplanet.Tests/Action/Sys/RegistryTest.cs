@@ -53,11 +53,11 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal("serialized", e.ParamName);
             Assert.Contains("type_id", e.Message);
 
-            e = Assert.Throws<ArgumentOutOfRangeException>(
+            e = Assert.Throws<ArgumentException>(
                 () => Registry.Deserialize(dict.SetItem("type_id", short.MaxValue))
             );
             Assert.Contains(
-                "unknown system type id",
+                "Failed to deserialize",
                 e.Message,
                 StringComparison.InvariantCultureIgnoreCase);
         }
