@@ -39,9 +39,11 @@ namespace Libplanet.Tests.Action.Sys
             var action = new Mint(recipient, amount);
             AssertBencodexEqual(
                 Bencodex.Types.Dictionary.Empty
-                    .Add("recipient", recipient.ByteArray)
-                    .Add("amount", 12500)
-                    .Add("currency", FOO.Serialize()),
+                    .Add("type_id", 0)
+                    .Add("values", Dictionary.Empty
+                        .Add("recipient", recipient.ByteArray)
+                        .Add("amount", 12500)
+                        .Add("currency", FOO.Serialize())),
                 action.PlainValue
             );
         }
@@ -52,9 +54,11 @@ namespace Libplanet.Tests.Action.Sys
             var random = new Random();
             Address recipient = random.NextAddress();
             IValue serialized = Bencodex.Types.Dictionary.Empty
-                .Add("recipient", recipient.ByteArray)
-                .Add("amount", 12500)
-                .Add("currency", FOO.Serialize());
+                .Add("type_id", 0)
+                .Add("values", Dictionary.Empty
+                    .Add("recipient", recipient.ByteArray)
+                    .Add("amount", 12500)
+                    .Add("currency", FOO.Serialize()));
             var action = new Mint();
             action.LoadPlainValue(serialized);
             AssertBytesEqual(recipient, action.Recipient);

@@ -47,7 +47,7 @@ namespace Libplanet.Action.Sys
             try
             {
                 IAction action = Instantiate(typeIdValue);
-                action.LoadPlainValue(values);
+                action.LoadPlainValue(dict);
                 return action;
             }
             catch (Exception e)
@@ -57,19 +57,6 @@ namespace Libplanet.Action.Sys
                     nameof(serialized),
                     e);
             }
-        }
-
-        public static IValue Serialize(IAction action)
-        {
-            var typeId = GetTypeId(action);
-            if (typeId is null)
-            {
-                throw new ArgumentException("Unknown system action type.", nameof(action));
-            }
-
-            return Bencodex.Types.Dictionary.Empty
-                .Add("type_id", typeId)
-                .Add("values", action.PlainValue);
         }
 
         public static bool IsSystemAction(IAction action) => Types.ContainsValue(action.GetType());

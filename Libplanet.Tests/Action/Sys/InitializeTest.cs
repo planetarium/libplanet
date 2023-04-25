@@ -119,21 +119,26 @@ namespace Libplanet.Tests.Action.Sys
         {
             var action = new Initialize(_validatorSet, _states);
             AssertBencodexEqual(
-                new List(
-                    _validatorSet.Bencoded,
-                    Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")
-                ),
-                action.PlainValue
-            );
+                Dictionary.Empty
+                    .Add("type_id", 2)
+                    .Add(
+                        "values",
+                        new List(
+                            _validatorSet.Bencoded,
+                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"))),
+                action.PlainValue);
         }
 
         [Fact]
         public void Deserialize()
         {
-            var encoded = new List(
-                _validatorSet.Bencoded,
-                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")
-            );
+            var encoded = Dictionary.Empty
+                .Add("type_id", 2)
+                .Add(
+                    "values",
+                    new List(
+                        _validatorSet.Bencoded,
+                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
             var action = new Initialize();
             action.LoadPlainValue(encoded);
 

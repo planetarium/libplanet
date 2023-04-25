@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Consensus;
 
@@ -31,6 +32,9 @@ namespace Libplanet.Action.Sys
 
         public ValidatorSet? ValidatorSet { get; private set; }
 
+        public IValue TypeId =>
+            this.GetType().GetCustomAttribute<ActionTypeAttribute>()!.TypeIdentifier;
+
         public IValue PlainValue
         {
             get
@@ -46,7 +50,10 @@ namespace Libplanet.Action.Sys
                         )
                     )
                     : (IValue)default(Null);
-                return new List(encodedValidatorSet, encodedStates);
+
+                return Dictionary.Empty
+                    .Add("type_id", TypeId)
+                    .Add("values", new List(encodedValidatorSet, encodedStates));
             }
         }
 
@@ -81,9 +88,44 @@ namespace Libplanet.Action.Sys
 
         public void LoadPlainValue(IValue plainValue)
         {
-            var asList = (List)plainValue;
-            ValidatorSet = new ValidatorSet((List)asList[0]);
-            States = ((Dictionary)asList[1])
+            if (!(plainValue is Dictionary dict))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} must be a {nameof(Dictionary)}: " +
+                    $"{plainValue.GetType()}",
+                    nameof(plainValue));
+            }
+
+            if (!dict.TryGetValue((Text)"type_id", out IValue typeId))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} is missing type id: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            if (!typeId.Equals(TypeId))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} has invalid type id: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            if (!dict.TryGetValue((Text)"values", out IValue values))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} is missing values: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            if (!(values is List valuesList))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} has invalid values: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            ValidatorSet = new ValidatorSet((List)valuesList[0]);
+            States = ((Dictionary)valuesList[1])
                 .Select(kv => new KeyValuePair<Address, IValue>(new Address(kv.Key), kv.Value))
                 .ToImmutableDictionary();
         }

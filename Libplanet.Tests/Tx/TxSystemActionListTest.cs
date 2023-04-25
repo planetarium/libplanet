@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Tx
             var actionList = new TxSystemActionList(systemAction);
 
             // TODO: We should introduce snapshot testing.
-            var expected = Registry.Serialize(systemAction);
+            var expected = systemAction.PlainValue;
             AssertBencodexEqual(expected, actionList.Bencoded);
 
             var concretized = Assert.IsType<Mint>(Registry.Deserialize(actionList.SystemAction));

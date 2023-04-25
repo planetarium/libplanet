@@ -67,8 +67,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address addr = random.NextAddress();
-            IValue actual =
-                Registry.Serialize(new Transfer(addr, FooCurrency * 123));
+            IValue actual = new Transfer(addr, FooCurrency * 123).PlainValue;
             Bencodex.Types.Dictionary expected = Dictionary.Empty
                 .Add("type_id", 1)
                 .Add(
@@ -79,14 +78,6 @@ namespace Libplanet.Tests.Action.Sys
                         .Add("amount", 12300)
                 );
             AssertBencodexEqual(expected, actual);
-
-            ArgumentException e = Assert.Throws<ArgumentException>(
-                () => Registry.Serialize(new DumbAction(addr, "foo"))
-            );
-            Assert.Contains(
-                "unknown system action type",
-                e.Message,
-                StringComparison.InvariantCultureIgnoreCase);
         }
 
         [Fact]
