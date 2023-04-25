@@ -105,6 +105,18 @@ from <code>string</code> to <code>IValue</code>.  [<a href="https://github.com/p
 <code>string?</code> to <code>IValue?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
 <li>Changed the return type for <code>IActionTypeLoader.Load()</code> from
 <code>IDictionary&lt;string, Type&gt;</code> to <code>IDictionary&lt;IValue, Type&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
+<li>Changed return types and parameter types of serveral methods from
+<code>IReadOnlyList&lt;ActionEvaluation&gt;</code> to <code>IReadOnlyList&lt;IActionEvaluation&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3089">#3089</a>]
+<ul>
+<li><code>BlockChain&lt;T&gt;.DetermineGenesisStateRootHash()</code>
+method's <code>evaluations</code> parameter type.</li>
+<li><code>BlockChain&lt;T&gt;.DetermineBlockStateRootHash()</code>
+method's <code>evaluations</code> parameter type.</li>
+<li><code>BlockChain&lt;T&gt;.EvaluateBlock()</code> method's return type.</li>
+<li><code>BlockChain&lt;T&gt;.EvaluateGenesis()</code> method's return type.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -112,6 +124,7 @@ from <code>string</code> to <code>IValue</code>.  [<a href="https://github.com/p
 <ul>
 <li>Added <code>IActonEvaluator</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3082">#3082</a>]</li>
 <li>Added <code>ActionTypeAttribute(int)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
+<li>Added <code>IActionEvaluation</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3089">#3089</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
