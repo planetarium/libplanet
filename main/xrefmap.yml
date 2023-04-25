@@ -169,6 +169,12 @@ references:
   commentId: T:Libplanet.Action.ActionTypeAttribute
   fullName: Libplanet.Action.ActionTypeAttribute
   nameWithType: ActionTypeAttribute
+- uid: Libplanet.Action.ActionTypeAttribute.#ctor(System.Int32)
+  name: ActionTypeAttribute(Int32)
+  href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute__ctor_System_Int32_
+  commentId: M:Libplanet.Action.ActionTypeAttribute.#ctor(System.Int32)
+  fullName: Libplanet.Action.ActionTypeAttribute.ActionTypeAttribute(System.Int32)
+  nameWithType: ActionTypeAttribute.ActionTypeAttribute(Int32)
 - uid: Libplanet.Action.ActionTypeAttribute.#ctor(System.String)
   name: ActionTypeAttribute(String)
   href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute__ctor_System_String_
