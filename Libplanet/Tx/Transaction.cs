@@ -175,23 +175,13 @@ namespace Libplanet.Tx
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
         [JsonIgnore]
-        public IImmutableList<T>? CustomActions
-        {
-            get
-            {
-                return Actions is TxCustomActionList actions
-                    ? actions.Select(action =>
-                        {
-                            var concrete = new T();
-                            concrete.LoadPlainValue(action);
-                            return concrete;
-                        }).ToImmutableList()
+        public IImmutableList<IValue>? CustomActions =>
+            Actions is TxCustomActionList actions
+                    ? actions.CustomActions
                     : null;
-            }
-        }
 
         IImmutableList<IValue>? ITransaction.CustomActions => CustomActions is { } actions
-            ? actions.Select(a => a.PlainValue).ToImmutableList()
+            ? actions
             : null;
 
         /// <inheritdoc cref="ITxInvoice.Timestamp"/>

@@ -1539,12 +1539,12 @@ namespace Libplanet.Tests.Blockchain
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(actions, transaction.CustomActions);
+            Assert.Equal(actions.Select(action => action.PlainValue), transaction.CustomActions);
 
             transaction = txs[1];
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(actions, transaction.CustomActions);
+            Assert.Equal(actions.Select(action => action.PlainValue), transaction.CustomActions);
         }
 
         [SkippableFact]

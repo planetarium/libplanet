@@ -69,7 +69,9 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            return (blocks[1].Transactions.First().CustomActions.First().TargetAddress, blocks);
+            var action = new DumbAction();
+            action.LoadPlainValue(blocks[1].Transactions.First().CustomActions.First());
+            return (action.TargetAddress, blocks);
         }
 
         private Task<Swarm<DumbAction>> CreateConsensusSwarm(

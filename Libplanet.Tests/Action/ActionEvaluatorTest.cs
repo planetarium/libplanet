@@ -376,7 +376,9 @@ namespace Libplanet.Tests.Action
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 Assert.Equal(block1Txs[expect.TxIdx].Id, eval.InputContext.TxId);
-                Assert.Equal(block1Txs[expect.TxIdx].CustomActions[expect.ActionIdx], eval.Action);
+                Assert.Equal(
+                    block1Txs[expect.TxIdx].CustomActions[expect.ActionIdx],
+                    eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
@@ -516,7 +518,9 @@ namespace Libplanet.Tests.Action
                         .Select(eval.OutputStates.GetState)
                         .Select(x => x is Text t ? t.Value : null));
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
-                Assert.Equal(block2Txs[expect.TxIdx].CustomActions[expect.Item2], eval.Action);
+                Assert.Equal(
+                    block2Txs[expect.TxIdx].CustomActions[expect.Item2],
+                    eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
