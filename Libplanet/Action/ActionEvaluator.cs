@@ -221,7 +221,7 @@ namespace Libplanet.Action
                 NullValidatorSetGetter,
                 tx.Signer);
             ImmutableList<IAction> actions = tx.SystemAction is { } sa
-                ? ImmutableList.Create(sa)
+                ? ImmutableList.Create(Registry.Deserialize(sa))
                 : ImmutableList.CreateRange<IAction>(tx.CustomActions!.Cast<IAction>());
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,

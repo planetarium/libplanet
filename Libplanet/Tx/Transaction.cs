@@ -8,7 +8,6 @@ using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.Sys;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -164,8 +163,8 @@ namespace Libplanet.Tx
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
         [JsonIgnore]
-        public IAction? SystemAction => Actions is TxSystemActionList sysActions
-            ? Registry.Deserialize(sysActions.SystemAction)
+        public IValue? SystemAction => Actions is TxSystemActionList sysActions
+            ? sysActions.SystemAction
             : null;  // TODO: Remove this property.
 
         /// <summary>
@@ -190,10 +189,6 @@ namespace Libplanet.Tx
                     : null;
             }
         }
-
-        IValue? ITransaction.SystemAction => SystemAction is { } sysAction
-            ? sysAction.PlainValue
-            : null;
 
         IImmutableList<IValue>? ITransaction.CustomActions => CustomActions is { } actions
             ? actions.Select(a => a.PlainValue).ToImmutableList()

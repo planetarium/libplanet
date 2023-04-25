@@ -1511,12 +1511,12 @@ namespace Libplanet.Tests.Blockchain
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(action, transaction.SystemAction);
+            Assert.Equal(Registry.Serialize(action), transaction.SystemAction);
 
             transaction = txs[1];
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(action, transaction.SystemAction);
+            Assert.Equal(Registry.Serialize(action), transaction.SystemAction);
         }
 
         [SkippableFact]
