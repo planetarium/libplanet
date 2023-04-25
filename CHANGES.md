@@ -59,6 +59,8 @@ To be released.
  -  Added `IActonEvaluator` interface.  [[#3082]]
  -  Added `ActionTypeAttribute(int)` constructor.  [[#3111]]
  -  Added `IActionEvaluation` interface.  [[#3089]]
+ -  Added parameterless constructor to `Mint`, `Transfer`, and `Initialize`.
+    [[#3112]]
 
 ### Behavioral changes
 
@@ -89,6 +91,7 @@ To be released.
 [#3108]: https://github.com/planetarium/libplanet/pull/3108
 [#3110]: https://github.com/planetarium/libplanet/pull/3110
 [#3111]: https://github.com/planetarium/libplanet/pull/3111
+[#3112]: https://github.com/planetarium/libplanet/pull/3112
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
