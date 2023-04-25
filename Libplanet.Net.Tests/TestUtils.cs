@@ -239,11 +239,13 @@ namespace Libplanet.Net.Tests
                 PrivateKey? privateKey = null,
                 ContextTimeoutOption? contextTimeoutOptions = null,
                 ValidatorSet? validatorSet = null,
-                ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null)
+                ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
+                TimeSpan? newHeightDelay = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= PrivateKeys[1];
             policy ??= Policy;
+            var contextNewHeightDelay = newHeightDelay ?? TimeSpan.FromSeconds(1);
 
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
@@ -252,7 +254,7 @@ namespace Libplanet.Net.Tests
                 });
 
             var (blockChain, consensusContext) = CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
+                contextNewHeightDelay,
                 policy,
                 PrivateKeys[1],
                 broadcastMessage: broadcastMessage ?? BroadcastMessage);

@@ -42,57 +42,63 @@ namespace Libplanet.Net.Tests.Consensus
             // Due to giving a BroadcastMessage delegation, here Context<T> is created in
             // first and defined null. The initialization will be done in later.
             const int validatorCount = 4;
-            Gossip[]? gossips = null;
+            var validatorKeys = TestUtils.PrivateKeys.Take(validatorCount).ToArray();
 
-            var peerList = Enumerable.Range(0, 4)
-                .Select(x =>
+            var peerList = validatorKeys
+                .Select((key, index) =>
                     new BoundPeer(
-                        TestUtils.PrivateKeys[x].PublicKey,
-                        new DnsEndPoint("127.0.0.1", 6000 + x)))
+                        key.PublicKey,
+                        new DnsEndPoint("localhost", 6000 + index)))
                 .ToArray();
 
-            (BlockChain<DumbAction> BlockChain, Context<DumbAction> Context)[]?
-                validators = null;
-            var newHeightStarted = new AsyncAutoResetEvent[validatorCount];
-            for (int i = 0; i < validatorCount; ++i)
-            {
-                newHeightStarted[i] = new AsyncAutoResetEvent();
-            }
-
-            gossips = Enumerable.Range(0, 4)
-                .Select(x => TestUtils.CreateGossip(
+            (BlockChain<DumbAction> BlockChain, Context<DumbAction> Context)[]? validators = null;
+            var gossips = validatorKeys
+                .Select((key, index) => TestUtils.CreateGossip(
                     content =>
                     {
                         if (content is ConsensusMsg consensusMsg)
                         {
                             // ReSharper disable once AccessToModifiedClosure
-                            validators![x].Context.ProduceMessage(consensusMsg);
+                            validators![index].Context.ProduceMessage(consensusMsg);
                         }
                     },
-                    TestUtils.PrivateKeys[x],
-                    6000 + x,
-                    peerList))
+                    privateKey: key,
+                    port: 6000 + index,
+                    peers: validatorKeys.Select((k, i) => new BoundPeer(
+                        k.PublicKey, new DnsEndPoint("localhost", 6000 + i))).ToArray()))
                 .ToArray();
 
-            validators = Enumerable.Range(0, validatorCount)
-                .Select(x =>
+            validators = validatorKeys
+                .Select((key, index) =>
                     TestUtils.CreateDummyContext(
                         1,
-                        privateKey: TestUtils.PrivateKeys[x],
-                        broadcastMessage: gossips[x].AddMessage))
+                        privateKey: key,
+                        broadcastMessage: gossips[index].AddMessage,
+                        newHeightDelay: TimeSpan.Zero))
                 .ToArray();
 
             try
             {
                 // Setup next height listener.
-                for (int i = 0; i < validatorCount; i++)
+                var newHeightStarted = new AsyncAutoResetEvent[validatorCount];
+                var messageExceptionOccured = new AsyncAutoResetEvent[validatorCount];
+                foreach (var item in validators.Select((validator, index) => (validator, index)))
                 {
-                    var nodeNo = i;
-                    validators[i].Context.StateChanged += (sender, mrs) =>
+                    newHeightStarted[item.index] = new AsyncAutoResetEvent();
+                    messageExceptionOccured[item.index] = new AsyncAutoResetEvent();
+                    item.validator.Context.StateChanged += (sender, mrs) =>
                     {
                         if (mrs.Step == Step.EndCommit)
                         {
-                            newHeightStarted[nodeNo].Set();
+                            newHeightStarted[item.index].Set();
+                        }
+                    };
+
+                    item.validator.Context.ExceptionOccurred += (sender, e) =>
+                    {
+                        if (e is InvalidConsensusMessageException)
+                        {
+                            messageExceptionOccured[item.index].Set();
                         }
                     };
                 }
@@ -135,9 +141,17 @@ namespace Libplanet.Net.Tests.Consensus
                 validators[3].Context.Start();
 
                 await Task.WhenAll(newHeightStarted.Select(x => x.WaitAsync()));
-                foreach (var validator in validators)
+
+                foreach (var item in messageExceptionOccured.Select((e, i) => (e, i)))
                 {
-                    Assert.Equal(1, validator.Context.Height);
+                    if (item.i == 0)
+                    {
+                        Assert.False(item.e.IsSet);
+                    }
+                    else
+                    {
+                        Assert.True(item.e.IsSet);
+                    }
                 }
 
                 // TODO: Check the evidence is collected properly after the double vote incident.
