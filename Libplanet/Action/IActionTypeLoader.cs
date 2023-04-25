@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -14,7 +15,7 @@ namespace Libplanet.Action
         /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine
         /// what action types to use.</param>
         /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IDictionary<string, Type> Load(IActionTypeLoaderContext context);
+        public IDictionary<IValue, Type> Load(IActionTypeLoaderContext context);
 
         /// <summary>
         /// Load action types branched by <paramref name="context"/>.

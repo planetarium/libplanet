@@ -152,7 +152,7 @@ namespace Libplanet.Action
     {
         private static StaticActionTypeLoader _actionTypeLoader;
 
-        private static IDictionary<string, Type> _types;
+        private static IDictionary<IValue, Type> _types;
 
         private T _innerAction;
 
@@ -243,8 +243,8 @@ namespace Libplanet.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            var typeStr = (Text)plainValue["type_id"];
-            var innerAction = (T)Activator.CreateInstance(GetType(typeStr));
+            var type = plainValue["type_id"];
+            var innerAction = (T)Activator.CreateInstance(GetType(type));
             innerAction.LoadPlainValue(plainValue["values"]);
             InnerAction = innerAction;
         }
@@ -266,7 +266,7 @@ namespace Libplanet.Action
             return $"{polymorphicActionFullName}<{_innerAction}>";
         }
 
-        private static Type GetType(string typeId)
+        private static Type GetType(IValue typeId)
         {
             _types ??= ActionTypeLoader.Load();
             return _types[typeId];

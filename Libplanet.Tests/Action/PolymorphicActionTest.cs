@@ -108,23 +108,66 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void IntegerActionTypeAction()
+        {
+            var a = new IntegerTypeIdAction("test string");
+            var pv = new PolymorphicAction<BaseAction>(a).PlainValue;
+            IValue plainValue = Null.Value;
+#pragma warning disable 612
+            var pa = new PolymorphicAction<BaseAction>();
+#pragma warning restore 612
+            pa.LoadPlainValue(pv);
+            Assert.IsType<IntegerTypeIdAction>(pa.InnerAction);
+            Assert.Equal(a.PlainValue, pa.InnerAction.PlainValue);
+            Assert.Equal("test string", (Text)pa.InnerAction.PlainValue);
+        }
+
+        [Fact]
         public void DuplicateTypeId()
         {
 #pragma warning disable CS0612
             var pa = new PolymorphicAction<DupActionBase>();
 #pragma warning restore CS0612
+            var dup = new Text("dup");
             Bencodex.Types.Dictionary plainValue = Bencodex.Types.Dictionary.Empty
-                .Add("type_id", "dup")
+                .Add("type_id", dup)
                 .Add("values", Null.Value);
             DuplicateActionTypeIdentifierException e =
                 Assert.Throws<DuplicateActionTypeIdentifierException>(
                     () => pa.LoadPlainValue(plainValue)
                 );
-            Assert.Equal("dup", e.TypeIdentifier);
+            Assert.Equal(dup.ToString(), e.TypeIdentifier);
             Assert.Equal(
                 ImmutableHashSet.Create(typeof(DupActionA), typeof(DupActionB)),
                 e.DuplicateActionTypes
             );
+        }
+
+        [ActionType(2739)]
+        private class IntegerTypeIdAction : BaseAction
+        {
+            private string _value;
+
+            public IntegerTypeIdAction()
+            {
+            }
+
+            public IntegerTypeIdAction(string value)
+            {
+                _value = value;
+            }
+
+            public override IValue PlainValue => new Text(_value);
+
+            public override IAccountStateDelta Execute(IActionContext context)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override void LoadPlainValue(IValue plainValue)
+            {
+                _value = (Text)plainValue;
+            }
         }
 
         [ActionType("TextPlainValueAction")]
