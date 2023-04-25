@@ -1,3 +1,4 @@
+using Bencodex.Types;
 using Libplanet.Action;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace Libplanet.Tests.Action
         public void CanExtractValue()
         {
             Assert.Equal(
-                "test_action",
+                new Text("test_action"),
                 ActionTypeAttribute.ValueOf(typeof(TestAction))
             );
         }

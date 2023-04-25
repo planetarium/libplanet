@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -10,6 +11,7 @@ namespace Libplanet.Action
     /// It also gives an action class a <see cref="TypeIdentifier"/> for
     /// serialization and deserialization.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class ActionTypeAttribute : Attribute
     {
         /// <summary>
@@ -20,14 +22,19 @@ namespace Libplanet.Action
         /// identifier for serialization and deserialization.</param>
         public ActionTypeAttribute(string typeIdentifier)
         {
-            TypeIdentifier = typeIdentifier;
+            TypeIdentifier = new Text(typeIdentifier);
+        }
+
+        public ActionTypeAttribute(int typeIdentifier)
+        {
+            TypeIdentifier = new Integer(typeIdentifier);
         }
 
         /// <summary>
         /// An action class's unique identifier for serialization and
         /// deserialization.
         /// </summary>
-        public string TypeIdentifier { get; }
+        public IValue TypeIdentifier { get; }
 
         /// <summary>
         /// Gets the <see cref="TypeIdentifier"/> for a given action class.
@@ -38,7 +45,7 @@ namespace Libplanet.Action
         /// <paramref name="actionType"/> if it's annotated with
         /// <see cref="ActionTypeAttribute"/>.  If it's not annotated returns
         /// <see langword="null"/>.</returns>
-        public static string? ValueOf(Type actionType) =>
+        public static IValue? ValueOf(Type actionType) =>
             actionType
                 .GetCustomAttributes()
                 .OfType<ActionTypeAttribute>()

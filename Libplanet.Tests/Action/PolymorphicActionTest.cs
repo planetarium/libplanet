@@ -113,14 +113,15 @@ namespace Libplanet.Tests.Action
 #pragma warning disable CS0612
             var pa = new PolymorphicAction<DupActionBase>();
 #pragma warning restore CS0612
+            var dup = new Text("dup");
             Bencodex.Types.Dictionary plainValue = Bencodex.Types.Dictionary.Empty
-                .Add("type_id", "dup")
+                .Add("type_id", dup)
                 .Add("values", Null.Value);
             DuplicateActionTypeIdentifierException e =
                 Assert.Throws<DuplicateActionTypeIdentifierException>(
                     () => pa.LoadPlainValue(plainValue)
                 );
-            Assert.Equal("dup", e.TypeIdentifier);
+            Assert.Equal(dup.ToString(), e.TypeIdentifier);
             Assert.Equal(
                 ImmutableHashSet.Create(typeof(DupActionA), typeof(DupActionB)),
                 e.DuplicateActionTypes

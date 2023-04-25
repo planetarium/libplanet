@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -14,7 +15,7 @@ namespace Libplanet.Action
         private readonly Type? _baseType;
         private readonly ImmutableHashSet<Assembly> _assembliesSet;
 
-        private IDictionary<string, Type>? _types;
+        private IDictionary<IValue, Type>? _types;
 
         /// <summary>
         /// Creates a new <see cref="StaticActionTypeLoader"/> instance.
@@ -36,7 +37,7 @@ namespace Libplanet.Action
         /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine
         /// what action types to use. But it isn't used in this implementation.</param>
         /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IDictionary<string, Type> Load(IActionTypeLoaderContext context) => Load();
+        public IDictionary<IValue, Type> Load(IActionTypeLoaderContext context) => Load();
 
         /// <summary>
         /// Load all action types from assemblies.
@@ -58,7 +59,7 @@ namespace Libplanet.Action
             );
         }
 
-        internal IDictionary<string, Type> Load() =>
+        internal IDictionary<IValue, Type> Load() =>
             _types ??= LoadImpl(_assembliesSet, _baseType);
 
         private static IEnumerable<Type> LoadAllActionTypesImpl(IEnumerable<Assembly> assembliesSet)
@@ -76,10 +77,10 @@ namespace Libplanet.Action
             }
         }
 
-        private static IDictionary<string, Type> LoadImpl(
+        private static IDictionary<IValue, Type> LoadImpl(
             IEnumerable<Assembly> assembliesSet, Type? baseType = null)
         {
-            var types = new Dictionary<string, Type>();
+            var types = new Dictionary<IValue, Type>();
             var actionType = typeof(IAction);
             foreach (Type t in LoadAllActionTypesImpl(assembliesSet))
             {
@@ -88,7 +89,7 @@ namespace Libplanet.Action
                     continue;
                 }
 
-                if (ActionTypeAttribute.ValueOf(t) is string actionId)
+                if (ActionTypeAttribute.ValueOf(t) is IValue actionId)
                 {
                     if (types.TryGetValue(actionId, out Type? existing))
                     {
@@ -96,7 +97,7 @@ namespace Libplanet.Action
                         {
                             throw new DuplicateActionTypeIdentifierException(
                                 "Multiple action types are associated with the same type ID.",
-                                actionId,
+                                actionId.ToString() ?? "null",
                                 ImmutableHashSet.Create(existing, t)
                             );
                         }

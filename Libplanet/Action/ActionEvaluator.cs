@@ -806,7 +806,7 @@ namespace Libplanet.Action
         {
             if (tx.CustomActions is { } customActions)
             {
-                IDictionary<string, Type> types = _actionTypeLoader.Load(actionTypeLoaderContext);
+                IDictionary<IValue, Type> types = _actionTypeLoader.Load(actionTypeLoaderContext);
 
                 foreach (IValue rawAction in customActions)
                 {
