@@ -42,7 +42,7 @@ namespace Libplanet.Blockchain
             IPreEvaluationBlock preEvaluationBlock,
             IAction blockAction,
             Predicate<Currency> nativeTokenPredicate,
-            out IReadOnlyList<ActionEvaluation> evaluations)
+            out IReadOnlyList<IActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(preEvaluationBlock, blockAction, nativeTokenPredicate);
             ImmutableDictionary<string, IValue> delta = evaluations.GetTotalDelta(
@@ -61,13 +61,13 @@ namespace Libplanet.Blockchain
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="ActionEvaluation"/>s
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="IActionEvaluation"/>s
         /// resulting from evaluating <paramref name="preEvaluationBlock"/> using
         /// <paramref name="blockAction"/> and <paramref name="nativeTokenPredicate"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="preEvaluationBlock"/>s
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         [Pure]
-        public static IReadOnlyList<ActionEvaluation> EvaluateGenesis(
+        public static IReadOnlyList<IActionEvaluation> EvaluateGenesis(
             IPreEvaluationBlock preEvaluationBlock,
             IAction blockAction,
             Predicate<Currency> nativeTokenPredicate)
@@ -96,7 +96,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute for
         /// <paramref name="evaluations"/>.</param>
-        /// <param name="evaluations">The list of <see cref="ActionEvaluation"/>s
+        /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
         /// from which to extract the states to commit.</param>
         /// <returns>The state root hash given <paramref name="block"/> and
         /// its <paramref name="evaluations"/>.
@@ -111,7 +111,7 @@ namespace Libplanet.Blockchain
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         public HashDigest<SHA256> DetermineBlockStateRootHash(
-            IPreEvaluationBlock block, out IReadOnlyList<ActionEvaluation> evaluations)
+            IPreEvaluationBlock block, out IReadOnlyList<IActionEvaluation> evaluations)
         {
             _rwlock.EnterWriteLock();
             try
@@ -161,11 +161,11 @@ namespace Libplanet.Blockchain
         /// Evaluates the <see cref="IAction"/>s in given <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="ActionEvaluation"/>s for
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="IActionEvaluation"/>s for
         /// given <paramref name="block"/>.</returns>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         [Pure]
-        public IReadOnlyList<ActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
+        public IReadOnlyList<IActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
             ActionEvaluator.Evaluate(block);
    }
 }

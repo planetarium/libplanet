@@ -302,7 +302,7 @@ namespace Libplanet.Blockchain
         /// to the one in <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block{T}"/> to validate against.</param>
-        /// <param name="evaluations">The list of <see cref="ActionEvaluation"/>s
+        /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
         /// from which to extract the states to commit.</param>
         /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
         /// calculated by commiting to the <see cref="IStateStore"/> does not match
@@ -317,7 +317,7 @@ namespace Libplanet.Blockchain
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="DetermineBlockStateRootHash"/>
         internal void ValidateBlockStateRootHash(
-            Block<T> block, out IReadOnlyList<ActionEvaluation> evaluations)
+            Block<T> block, out IReadOnlyList<IActionEvaluation> evaluations)
         {
             var rootHash = DetermineBlockStateRootHash(block, out evaluations);
             if (!rootHash.Equals(block.StateRootHash))

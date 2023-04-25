@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -174,8 +175,8 @@ namespace Libplanet.Blockchain
                 foreach (BlockHash hash in fastForwardPath)
                 {
                     Block<T> block = Store.GetBlock<T>(hash);
-                    ImmutableList<ActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).ToImmutableList();
+                    ImmutableList<IActionEvaluation> evaluations =
+                        ActionEvaluator.Evaluate(block).Cast<IActionEvaluation>().ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
@@ -198,12 +199,12 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Render actions of the given <paramref name="block"/>.
         /// </summary>
-        /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
+        /// <param name="evaluations"><see cref="IActionEvaluation"/>s of the block.  If it is
         /// <see langword="null"/>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
         /// <returns>The number of actions rendered.</returns>
         internal long RenderActions(
-            IReadOnlyList<ActionEvaluation> evaluations,
+            IReadOnlyList<IActionEvaluation> evaluations,
             Block<T> block)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -221,19 +222,29 @@ namespace Libplanet.Blockchain
             long count = 0;
             foreach (var evaluation in evaluations)
             {
+                if (evaluation.InputContext.BlockAction && Policy.BlockAction is null)
+                {
+                    continue;
+                }
+
+                // Assumes BlockAction is not null because it was checked in the above.
+                IAction action = evaluation.InputContext.BlockAction
+                    ? Policy.BlockAction!
+                    : ToAction(evaluation.Action);
+
                 foreach (IActionRenderer<T> renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
                     {
                         renderer.RenderAction(
-                            evaluation.Action,
+                            action,
                             evaluation.InputContext.GetUnconsumedContext(),
                             evaluation.OutputStates);
                     }
                     else
                     {
                         renderer.RenderActionError(
-                            evaluation.Action,
+                            action,
                             evaluation.InputContext.GetUnconsumedContext(),
                             evaluation.Exception);
                     }
@@ -358,6 +369,13 @@ namespace Libplanet.Blockchain
             }
 
             return null;
+        }
+
+        private static IAction ToAction(IValue plainValue)
+        {
+            var action = new T();
+            action.LoadPlainValue(plainValue);
+            return action;
         }
     }
 }

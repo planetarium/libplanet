@@ -69,7 +69,7 @@ namespace Libplanet.Blockchain
                 transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Propose();
-            IReadOnlyList<ActionEvaluation> evals = EvaluateGenesis(
+            IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(
                 preEval, blockAction, nativeTokenPredicate);
             return preEval.Sign(
                 privateKey,
