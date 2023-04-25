@@ -230,7 +230,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// Almost same as <see cref="Create(long, PrivateKey, BlockHash?, IEnumerable{T},
+        /// Almost same as <see cref="Create(long, PrivateKey, BlockHash?, IEnumerable{IAction},
         /// IImmutableSet{Address}?, DateTimeOffset?)"/> except that this factory method takes
         /// a <paramref name="systemAction"/> instead of user-defined custom actions.
         /// </summary>
@@ -351,7 +351,7 @@ namespace Libplanet.Tx
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
-            IEnumerable<T> customActions,
+            IEnumerable<IAction> customActions,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         ) =>
@@ -359,7 +359,7 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey,
                 genesisHash,
-                new TxCustomActionList(customActions.OfType<IAction>().ToImmutableList()),
+                new TxCustomActionList(customActions.ToImmutableList()),
                 updatedAddresses,
                 timestamp
             );

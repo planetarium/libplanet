@@ -647,7 +647,7 @@ namespace Libplanet.Tests.Action
                 for (int i = 0; i < evaluations.Length; i++)
                 {
                     IActionEvaluation eval = evaluations[i];
-                    Assert.Equal(actions[i], ToAction<DumbAction>(eval.Action));
+                    Assert.Equal(actions[i].PlainValue, eval.Action);
                     Assert.Equal(_txFx.Address1, eval.InputContext.Signer);
                     Assert.Equal(tx.Id, eval.InputContext.TxId);
                     Assert.Equal(addresses[0], eval.InputContext.Miner);
@@ -813,7 +813,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
                 _logger.Debug("txA.CustomActions[{0}] = {1}", i, txA.CustomActions[i]);
 
-                Assert.Equal(txA.CustomActions[i], ToAction<Arithmetic>(eval.Action));
+                Assert.Equal(txA.CustomActions[i].PlainValue, eval.Action);
                 Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
@@ -868,7 +868,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
                 _logger.Debug("txB.CustomActions[{0}] = {@1}", i, txB.CustomActions[i]);
 
-                Assert.Equal(txB.CustomActions[i], ToAction<Arithmetic>(eval.Action));
+                Assert.Equal(txB.CustomActions[i].PlainValue, eval.Action);
                 Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
@@ -1063,14 +1063,6 @@ namespace Libplanet.Tests.Action
                 orderedTxs
                     .Where((tx, i) => i % numTxsPerSigner == 0)
                     .Select(tx => tx.Signer.ToString())));
-        }
-
-        private static T ToAction<T>(IValue plainValue)
-            where T : IAction, new()
-        {
-            var action = new T();
-            action.LoadPlainValue(plainValue);
-            return action;
         }
 
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(

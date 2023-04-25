@@ -559,7 +559,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IBlockPolicy<T> policy,
             IStore store,
             IStateStore stateStore,
-            IEnumerable<T> actions = null,
+            IEnumerable<IAction> actions = null,
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -588,7 +588,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IBlockPolicy<T> policy,
             IStore store,
             IStateStore stateStore,
-            IEnumerable<T> actions = null,
+            IEnumerable<IAction> actions = null,
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -598,7 +598,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            actions = actions ?? ImmutableArray<T>.Empty;
+            actions = actions ?? ImmutableArray<IAction>.Empty;
             privateKey = privateKey ?? ChainPrivateKey;
 
             var txs = new[]

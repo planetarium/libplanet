@@ -807,7 +807,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="privateKey"/>.</returns>
         public Transaction<T> MakeTransaction(
             PrivateKey privateKey,
-            IEnumerable<T> customActions,
+            IEnumerable<IAction> customActions,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
