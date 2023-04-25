@@ -38,7 +38,7 @@ To be released.
     from `string` to `IValue`.  [[#3111]]
  -  Changed the return type for `ActionTypeAttribute.ValueOf()` from
     `string?` to `IValue?`.  [[#3111]]
- -  Changed the return type for `IActionTypeLoader()` from
+ -  Changed the return type for `IActionTypeLoader.Load()` from
     `IDictionary<string, Type>` to `IDictionary<IValue, Type>`.  [[#3111]]
 
 ### Backward-incompatible network protocol changes

@@ -243,8 +243,8 @@ namespace Libplanet.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            var typeStr = plainValue["type_id"];
-            var innerAction = (T)Activator.CreateInstance(GetType(typeStr));
+            var type = plainValue["type_id"];
+            var innerAction = (T)Activator.CreateInstance(GetType(type));
             innerAction.LoadPlainValue(plainValue["values"]);
             InnerAction = innerAction;
         }
