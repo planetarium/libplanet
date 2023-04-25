@@ -143,7 +143,7 @@ namespace Libplanet.Tests.Action
             );
         }
 
-        [ActionType(5)]
+        [ActionType(2739)]
         private class IntegerTypeIdAction : BaseAction
         {
             private string _value;
