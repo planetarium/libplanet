@@ -245,7 +245,7 @@ namespace Libplanet.Tests.Tx
                     nonce: 0,
                     privateKey: _fx.PrivateKey1,
                     genesisHash: null,
-                    customActions: null,
+                    customActions: new DumbAction[0],
                     updatedAddresses: ImmutableHashSet<Address>.Empty,
                     timestamp: DateTimeOffset.UtcNow
                 )

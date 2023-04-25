@@ -257,6 +257,23 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey,
                 genesisHash,
+                systemAction.PlainValue,
+                updatedAddresses,
+                timestamp
+            );
+
+        public static Transaction<T> Create(
+            long nonce,
+            PrivateKey privateKey,
+            BlockHash? genesisHash,
+            IValue systemAction,
+            IImmutableSet<Address>? updatedAddresses = null,
+            DateTimeOffset? timestamp = null
+        ) =>
+            Create(
+                nonce,
+                privateKey,
+                genesisHash,
                 new TxSystemActionList(systemAction),
                 updatedAddresses,
                 timestamp
@@ -359,7 +376,24 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey,
                 genesisHash,
-                new TxCustomActionList(customActions.ToImmutableList()),
+                customActions.Select(action => action.PlainValue),
+                updatedAddresses,
+                timestamp
+            );
+
+        public static Transaction<T> Create(
+            long nonce,
+            PrivateKey privateKey,
+            BlockHash? genesisHash,
+            IEnumerable<IValue> customActions,
+            IImmutableSet<Address>? updatedAddresses = null,
+            DateTimeOffset? timestamp = null
+        ) =>
+            Create(
+                nonce,
+                privateKey,
+                genesisHash,
+                new TxCustomActionList(new List(customActions)),
                 updatedAddresses,
                 timestamp
             );
