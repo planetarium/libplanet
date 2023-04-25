@@ -34,6 +34,12 @@ To be released.
         `IImmutableList<IValue>`.
  -  `TxActionList`'s JSON representation has changed.  It no longer has
     `"type"` field.  [[#3110]]
+ -  Changed the type for `ActionTypeAttribute.TypeIdentifier`
+    from `string` to `IValue`.  [[#3111]]
+ -  Changed the return type for `ActionTypeAttribute.ValueOf()` from
+    `string?` to `IValue?`.  [[#3111]]
+ -  Changed the return type for `IActionTypeLoader()` from
+    `IDictionary<string, Type>` to `IDictionary<IValue, Type>`.  [[#3111]]
 
 ### Backward-incompatible network protocol changes
 
@@ -42,6 +48,7 @@ To be released.
 ### Added APIs
 
  -  Added `IActonEvaluator` interface.  [[#3082]]
+ -  Added `ActionTypeAttribute(int)` constructor.  [[#3111]]
 
 ### Behavioral changes
 
@@ -70,6 +77,7 @@ To be released.
 [#3106]: https://github.com/planetarium/libplanet/pull/3106
 [#3108]: https://github.com/planetarium/libplanet/pull/3108
 [#3110]: https://github.com/planetarium/libplanet/pull/3110
+[#3111]: https://github.com/planetarium/libplanet/pull/3111
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
