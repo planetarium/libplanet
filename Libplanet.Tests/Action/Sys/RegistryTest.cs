@@ -96,6 +96,13 @@ namespace Libplanet.Tests.Action.Sys
             Address addr = random.NextAddress();
             Assert.True(Registry.IsSystemAction(new Transfer(addr, FooCurrency * 123)));
             Assert.False(Registry.IsSystemAction(new DumbAction(addr, "foo")));
+
+            Assert.True(Registry.IsSystemAction(Dictionary.Empty
+                .Add("type_id", new Integer(1))));
+            Assert.False(Registry.IsSystemAction(Dictionary.Empty
+                .Add("type_id", new Integer(2308))));
+            Assert.False(Registry.IsSystemAction(Dictionary.Empty
+                .Add("type_id", new Text("mint"))));
         }
     }
 }

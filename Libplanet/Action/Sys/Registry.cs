@@ -74,6 +74,11 @@ namespace Libplanet.Action.Sys
 
         public static bool IsSystemAction(IAction action) => Types.ContainsValue(action.GetType());
 
+        public static bool IsSystemAction(IValue value) =>
+            value is Dictionary dict &&
+            dict.TryGetValue(new Text("type_id"), out IValue typeId) &&
+            Types.ContainsKey(typeId);
+
         private static IAction Instantiate(IValue typeId) =>
             (IAction)(Activator.CreateInstance(Types[typeId]) ??
                 throw new ArgumentException(
