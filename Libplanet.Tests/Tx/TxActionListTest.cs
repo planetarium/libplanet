@@ -37,11 +37,20 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(AddressA, "baz"),
             };
 
-            AssertEquality(new TxSystemActionList(mint), new TxSystemActionList(mint), true);
-            AssertEquality(new TxSystemActionList(mint), new TxSystemActionList(mint2), true);
-            AssertEquality(new TxSystemActionList(mint), new TxSystemActionList(transfer), false);
             AssertEquality(
-                new TxSystemActionList(mint),
+                new TxCustomActionList(new IAction[] { mint }),
+                new TxCustomActionList(new IAction[] { mint }),
+                true);
+            AssertEquality(
+                new TxCustomActionList(new IAction[] { mint }),
+                new TxCustomActionList(new IAction[] { mint2 }),
+                true);
+            AssertEquality(
+                new TxCustomActionList(new IAction[] { mint }),
+                new TxCustomActionList(new IAction[] { transfer }),
+                false);
+            AssertEquality(
+                new TxCustomActionList(new IAction[] { mint }),
                 new TxCustomActionList(customActions),
                 false);
             AssertEquality(
@@ -61,7 +70,8 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void JsonSerialize()
         {
-            var systemActionList = new TxSystemActionList(new Mint(AddressA, FOO * 100));
+            var systemActionList = new TxCustomActionList(
+                new IAction[] { new Mint(AddressA, FOO * 100) });
             var customActionList = new TxCustomActionList(
                 new IAction[]
                 {
@@ -71,19 +81,21 @@ namespace Libplanet.Tests.Tx
             var emptyCustomActionList = new TxCustomActionList(Array.Empty<IAction>());
             var systemActonListJson = @"
                 {
-                  ""systemAction"": {
-                    ""\uFEFFtype_id"": ""0"",
-                    ""\uFEFFvalues"": {
-                      ""\uFEFFamount"": ""10000"",
-                      ""\uFEFFcurrency"": {
-                        ""\uFEFFdecimals"": ""2"",
-                        ""\uFEFFminters"": null,
-                        ""\uFEFFticker"": ""\uFEFFFOO"",
-                        ""\uFEFFtotalSupplyTrackable"": true
-                      },
-                      ""\uFEFFrecipient"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                  ""customActions"": [
+                    {
+                      ""\uFEFFtype_id"": ""0"",
+                      ""\uFEFFvalues"": {
+                        ""\uFEFFamount"": ""10000"",
+                        ""\uFEFFcurrency"": {
+                          ""\uFEFFdecimals"": ""2"",
+                          ""\uFEFFminters"": null,
+                          ""\uFEFFticker"": ""\uFEFFFOO"",
+                          ""\uFEFFtotalSupplyTrackable"": true
+                        },
+                        ""\uFEFFrecipient"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                      }
                     }
-                  }
+                  ]
                 }";
             TestUtils.AssertJsonSerializable<TxActionList>(
                 systemActionList,

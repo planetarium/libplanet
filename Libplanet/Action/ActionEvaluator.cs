@@ -220,10 +220,9 @@ namespace Libplanet.Action
                 NullTotalSupplyGetter,
                 NullValidatorSetGetter,
                 tx.Signer);
-            ImmutableList<IAction> actions = tx.SystemAction is { } sa
-                ? ImmutableList.Create(Registry.Deserialize(sa))
-                : ImmutableList.CreateRange<IAction>(
-                    tx.CustomActions.Select(action => ToAction<T>(action)));
+            ImmutableList<IAction> actions = tx.CustomActions is { } ca
+                ? ImmutableList.CreateRange<IAction>(ca.Select(action => ToAction<T>(action)))
+                : ImmutableList<IAction>.Empty;
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,
                 preEvaluationHash: new HashDigest<SHA256>(new byte[HashDigest<SHA256>.Size]),
@@ -611,12 +610,9 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            IAction? systemAction = CreateSystemAction(tx);
             IEnumerable<IAction> customActions = CreateCustomActions(
                 ActionTypeLoaderContext.From(blockHeader), tx);
-            ImmutableList<IAction> actions = systemAction is { }
-                ? ImmutableList.Create(systemAction)
-                : ImmutableList.CreateRange(customActions);
+            ImmutableList<IAction> actions = ImmutableList.CreateRange(customActions);
             return EvaluateActions(
                 genesisHash: _genesisHash,
                 preEvaluationHash: blockHeader.PreEvaluationHash,
@@ -864,16 +860,6 @@ namespace Libplanet.Action
                     }
                 }
             }
-        }
-
-        private IAction? CreateSystemAction(ITransaction tx)
-        {
-            if (tx.SystemAction is Dictionary sa)
-            {
-                return Registry.Deserialize(sa);
-            }
-
-            return null;
         }
     }
 }

@@ -37,11 +37,7 @@ namespace Libplanet.Tx
                 .ToString(TimestampFormat, CultureInfo.InvariantCulture);
 
             Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty;
-            if (invoice.Actions is TxSystemActionList tsal)
-            {
-                dict = dict.Add(SystemActionKey, tsal.Bencoded);
-            }
-            else if (invoice.Actions is TxCustomActionList tcal)
+            if (invoice.Actions is TxCustomActionList tcal)
             {
                 dict = dict.Add(CustomActionsKey, tcal.Bencoded);
             }
@@ -104,9 +100,9 @@ namespace Libplanet.Tx
                     (Text)dictionary[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
-                actions: dictionary.TryGetValue(SystemActionKey, out IValue sav)
-                    ? (TxActionList)new TxSystemActionList(sav)
-                    : (TxActionList)new TxCustomActionList(dictionary[CustomActionsKey]));
+                actions: dictionary.TryGetValue(CustomActionsKey, out IValue cav)
+                    ? new TxCustomActionList(dictionary[CustomActionsKey])
+                    : TxCustomActionList.Empty);
 #pragma warning restore SA1118
 
         [Pure]

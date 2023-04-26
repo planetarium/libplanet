@@ -13,8 +13,8 @@ using Libplanet.Action;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// An abstract class to represent a list of <see cref="IAction"/>s.  It can be either
-    /// <see cref="TxSystemActionList"/> or <see cref="TxCustomActionList"/>.
+    /// An abstract class to represent a list of <see cref="IAction"/>s.
+    /// It can be <see cref="TxCustomActionList"/>.
     /// </summary>
     /// <remarks>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
     /// it cannot be inherited from outside of this assembly.</remarks>
@@ -89,11 +89,6 @@ namespace Libplanet.Tx
                         throw new JsonException(
                             $"Unexpected key/value: {key}/{reader.GetString()}");
 
-                    case "systemAction":
-                        return new TxSystemActionList(
-                            BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
-                                throw new JsonException("Expected a \"SystemAction\" value."));
-
                     case "customActions":
                         return new TxCustomActionList(
                             BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
@@ -113,12 +108,7 @@ namespace Libplanet.Tx
             JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            if (value is TxSystemActionList sysActionList)
-            {
-                writer.WritePropertyName("systemAction");
-                BencodexJsonConverter.Write(writer, sysActionList.Bencoded, options);
-            }
-            else if (value is TxCustomActionList customActionList)
+            if (value is TxCustomActionList customActionList)
             {
                 writer.WritePropertyName("customActions");
                 BencodexJsonConverter.Write(writer, customActionList.Bencoded, options);

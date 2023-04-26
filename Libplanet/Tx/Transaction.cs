@@ -157,23 +157,9 @@ namespace Libplanet.Tx
         public TxActionList Actions => _unsignedTx.Actions;
 
         /// <summary>
-        /// A system action (if any) that this <see cref="Transaction{T}"/> contains.
-        /// </summary>
-        /// <remarks>This property is mutually exclusive with <see cref="CustomActions"/>;
-        /// either one of them must be <see langword="null"/> and the other must not be
-        /// <see langword="null"/>.</remarks>
-        [JsonIgnore]
-        public IValue? SystemAction => Actions is TxSystemActionList sysActions
-            ? sysActions.SystemAction
-            : null;  // TODO: Remove this property.
-
-        /// <summary>
         /// Zero or more user-defined custom actions that this <see cref="Transaction{T}"/>
         /// contains.  These are executed in the order.
         /// </summary>
-        /// <remarks>This property is mutually exclusive with <see cref="SystemAction"/>;
-        /// either one of them must be <see langword="null"/> and the other must not be
-        /// <see langword="null"/>.</remarks>
         [JsonIgnore]
         public IImmutableList<IValue>? CustomActions =>
             Actions is TxCustomActionList actions
