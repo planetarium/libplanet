@@ -1463,6 +1463,12 @@ references:
   commentId: T:Libplanet.Action.Sys.Initialize
   fullName: Libplanet.Action.Sys.Initialize
   nameWithType: Initialize
+- uid: Libplanet.Action.Sys.Initialize.#ctor
+  name: Initialize()
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize__ctor
+  commentId: M:Libplanet.Action.Sys.Initialize.#ctor
+  fullName: Libplanet.Action.Sys.Initialize.Initialize()
+  nameWithType: Initialize.Initialize()
 - uid: Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Consensus.ValidatorSet,System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue})
   name: Initialize(ValidatorSet, IImmutableDictionary<Address, IValue>)
   href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize__ctor_Libplanet_Consensus_ValidatorSet_System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_Bencodex_Types_IValue__
@@ -1531,6 +1537,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Initialize.States
   nameWithType: Initialize.States
+- uid: Libplanet.Action.Sys.Initialize.TypeId
+  name: TypeId
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_TypeId
+  commentId: P:Libplanet.Action.Sys.Initialize.TypeId
+  fullName: Libplanet.Action.Sys.Initialize.TypeId
+  nameWithType: Initialize.TypeId
+- uid: Libplanet.Action.Sys.Initialize.TypeId*
+  name: TypeId
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_TypeId_
+  commentId: Overload:Libplanet.Action.Sys.Initialize.TypeId
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Initialize.TypeId
+  nameWithType: Initialize.TypeId
 - uid: Libplanet.Action.Sys.Initialize.ValidatorSet
   name: ValidatorSet
   href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_ValidatorSet
@@ -1550,6 +1569,12 @@ references:
   commentId: T:Libplanet.Action.Sys.Mint
   fullName: Libplanet.Action.Sys.Mint
   nameWithType: Mint
+- uid: Libplanet.Action.Sys.Mint.#ctor
+  name: Mint()
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint__ctor
+  commentId: M:Libplanet.Action.Sys.Mint.#ctor
+  fullName: Libplanet.Action.Sys.Mint.Mint()
+  nameWithType: Mint.Mint()
 - uid: Libplanet.Action.Sys.Mint.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
   name: Mint(Address, FungibleAssetValue)
   href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
@@ -1666,12 +1691,31 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Mint.Recipient
   nameWithType: Mint.Recipient
+- uid: Libplanet.Action.Sys.Mint.TypeId
+  name: TypeId
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_TypeId
+  commentId: P:Libplanet.Action.Sys.Mint.TypeId
+  fullName: Libplanet.Action.Sys.Mint.TypeId
+  nameWithType: Mint.TypeId
+- uid: Libplanet.Action.Sys.Mint.TypeId*
+  name: TypeId
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_TypeId_
+  commentId: Overload:Libplanet.Action.Sys.Mint.TypeId
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.TypeId
+  nameWithType: Mint.TypeId
 - uid: Libplanet.Action.Sys.Transfer
   name: Transfer
   href: api/Libplanet.Action.Sys.Transfer.html
   commentId: T:Libplanet.Action.Sys.Transfer
   fullName: Libplanet.Action.Sys.Transfer
   nameWithType: Transfer
+- uid: Libplanet.Action.Sys.Transfer.#ctor
+  name: Transfer()
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer__ctor
+  commentId: M:Libplanet.Action.Sys.Transfer.#ctor
+  fullName: Libplanet.Action.Sys.Transfer.Transfer()
+  nameWithType: Transfer.Transfer()
 - uid: Libplanet.Action.Sys.Transfer.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
   name: Transfer(Address, FungibleAssetValue)
   href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
@@ -1788,6 +1832,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Transfer.Recipient
   nameWithType: Transfer.Recipient
+- uid: Libplanet.Action.Sys.Transfer.TypeId
+  name: TypeId
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_TypeId
+  commentId: P:Libplanet.Action.Sys.Transfer.TypeId
+  fullName: Libplanet.Action.Sys.Transfer.TypeId
+  nameWithType: Transfer.TypeId
+- uid: Libplanet.Action.Sys.Transfer.TypeId*
+  name: TypeId
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_TypeId_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.TypeId
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.TypeId
+  nameWithType: Transfer.TypeId
 - uid: Libplanet.Action.TotalSupplyGetter
   name: TotalSupplyGetter
   href: api/Libplanet.Action.TotalSupplyGetter.html
