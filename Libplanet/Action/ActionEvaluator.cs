@@ -98,6 +98,10 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
+        IReadOnlyList<IActionEvaluation> IActionEvaluator.Evaluate(IPreEvaluationBlock block) =>
+            Evaluate(block);
+
+        [Pure]
         public IReadOnlyList<ActionEvaluation> Evaluate(IPreEvaluationBlock block)
         {
             _logger.Information(

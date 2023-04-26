@@ -176,7 +176,7 @@ namespace Libplanet.Blockchain
                 {
                     Block<T> block = Store.GetBlock<T>(hash);
                     ImmutableList<IActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).Cast<IActionEvaluation>().ToImmutableList();
+                        ActionEvaluator.Evaluate(block).ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
