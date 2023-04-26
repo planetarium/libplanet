@@ -56,7 +56,7 @@ To be released.
 
 ### Added APIs
 
- -  Added `IActonEvaluator` interface.  [[#3082]]
+ -  Added `IActionEvaluator` interface.  [[#3082]]
  -  Added `ActionTypeAttribute(int)` constructor.  [[#3111]]
  -  Added `IActionEvaluation` interface.  [[#3089]]
  -  Added parameterless constructor to `Mint`, `Transfer`, and `Initialize`.
