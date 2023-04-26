@@ -53,11 +53,11 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal("serialized", e.ParamName);
             Assert.Contains("type_id", e.Message);
 
-            e = Assert.Throws<ArgumentOutOfRangeException>(
+            e = Assert.Throws<ArgumentException>(
                 () => Registry.Deserialize(dict.SetItem("type_id", short.MaxValue))
             );
             Assert.Contains(
-                "unknown system type id",
+                "Failed to deserialize",
                 e.Message,
                 StringComparison.InvariantCultureIgnoreCase);
         }
@@ -67,8 +67,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address addr = random.NextAddress();
-            IValue actual =
-                Registry.Serialize(new Transfer(addr, FooCurrency * 123));
+            IValue actual = new Transfer(addr, FooCurrency * 123).PlainValue;
             Bencodex.Types.Dictionary expected = Dictionary.Empty
                 .Add("type_id", 1)
                 .Add(
@@ -79,14 +78,6 @@ namespace Libplanet.Tests.Action.Sys
                         .Add("amount", 12300)
                 );
             AssertBencodexEqual(expected, actual);
-
-            ArgumentException e = Assert.Throws<ArgumentException>(
-                () => Registry.Serialize(new DumbAction(addr, "foo"))
-            );
-            Assert.Contains(
-                "unknown system action type",
-                e.Message,
-                StringComparison.InvariantCultureIgnoreCase);
         }
 
         [Fact]
@@ -96,6 +87,13 @@ namespace Libplanet.Tests.Action.Sys
             Address addr = random.NextAddress();
             Assert.True(Registry.IsSystemAction(new Transfer(addr, FooCurrency * 123)));
             Assert.False(Registry.IsSystemAction(new DumbAction(addr, "foo")));
+
+            Assert.True(Registry.IsSystemAction(Dictionary.Empty
+                .Add("type_id", new Integer(1))));
+            Assert.False(Registry.IsSystemAction(Dictionary.Empty
+                .Add("type_id", new Integer(2308))));
+            Assert.False(Registry.IsSystemAction(Dictionary.Empty
+                .Add("type_id", new Text("mint"))));
         }
     }
 }

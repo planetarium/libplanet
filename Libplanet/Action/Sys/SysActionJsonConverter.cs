@@ -21,9 +21,9 @@ namespace Libplanet.Action.Sys
         )
         {
             IValue? serialized = BencodexJsonConverter.Read(ref reader, typeToConvert, options);
-            if (serialized is Bencodex.Types.Dictionary actionValues)
+            if (serialized is Bencodex.Types.Dictionary dict)
             {
-                return Registry.Deserialize(actionValues);
+                return Registry.Deserialize(dict);
             }
 
             throw new JsonException("Serialized action must be a Bencodex dictionary.");
@@ -35,8 +35,7 @@ namespace Libplanet.Action.Sys
             JsonSerializerOptions options
         )
         {
-            IValue serialized = Registry.Serialize(value);
-            BencodexJsonConverter.Write(writer, serialized, options);
+            BencodexJsonConverter.Write(writer, value.PlainValue, options);
         }
     }
 }

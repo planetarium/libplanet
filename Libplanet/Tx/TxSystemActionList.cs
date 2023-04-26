@@ -27,7 +27,7 @@ namespace Libplanet.Tx
         public TxSystemActionList(IAction systemAction)
             : this(
                 Registry.IsSystemAction(systemAction)
-                    ? Registry.Serialize(systemAction)
+                    ? systemAction.PlainValue
                     : throw new ArgumentException(
                         $"The given action {systemAction} is not a system action.",
                         nameof(systemAction)))

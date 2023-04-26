@@ -192,7 +192,7 @@ namespace Libplanet.Tx
         }
 
         IValue? ITransaction.SystemAction => SystemAction is { } sysAction
-            ? Registry.Serialize(sysAction)
+            ? sysAction.PlainValue
             : null;
 
         IImmutableList<IValue>? ITransaction.CustomActions => CustomActions is { } actions

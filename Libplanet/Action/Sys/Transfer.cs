@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using Bencodex.Types;
 using Libplanet.Assets;
@@ -11,6 +12,7 @@ namespace Libplanet.Action.Sys
     /// </summary>
     /// <remarks>Only native tokens can be transferred.</remarks>
     [JsonConverter(typeof(SysActionJsonConverter))]
+    [ActionType(1)]
     public sealed class Transfer : IAction, IEquatable<Transfer>, IEquatable<IAction>
     {
         /// <summary>
@@ -24,7 +26,7 @@ namespace Libplanet.Action.Sys
             Amount = amount;
         }
 
-        internal Transfer()
+        public Transfer()
         {
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }
@@ -39,21 +41,60 @@ namespace Libplanet.Action.Sys
         /// </summary>
         public FungibleAssetValue Amount { get; private set; }
 
+        public IValue TypeId =>
+            this.GetType().GetCustomAttribute<ActionTypeAttribute>()!.TypeIdentifier;
+
         /// <inheritdoc cref="IAction.PlainValue"/>
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add("recipient", Recipient.ByteArray)
-            .Add("currency", Amount.Currency.Serialize())
-            .Add("amount", new Bencodex.Types.Integer(Amount.RawValue));
+            .Add("type_id", TypeId)
+            .Add("values", Bencodex.Types.Dictionary.Empty
+                .Add("recipient", Recipient.ByteArray)
+                .Add("currency", Amount.Currency.Serialize())
+                .Add("amount", new Bencodex.Types.Integer(Amount.RawValue)));
 
         /// <inheritdoc cref="IAction.LoadPlainValue(IValue)"/>
         public void LoadPlainValue(IValue plainValue)
         {
-            var dict = (Bencodex.Types.Dictionary)plainValue;
-            Recipient = new Address(dict.GetValue<IValue>("recipient"));
+            if (!(plainValue is Dictionary dict))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} must be a {nameof(Dictionary)}: " +
+                    $"{plainValue.GetType()}",
+                    nameof(plainValue));
+            }
+
+            if (!dict.TryGetValue((Text)"type_id", out IValue typeId))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} is missing type id: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            if (!typeId.Equals(TypeId))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} has invalid type id: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            if (!dict.TryGetValue((Text)"values", out IValue values))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} is missing values: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            if (!(values is Dictionary valuesDict))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} has invalid values: {plainValue}",
+                    nameof(plainValue));
+            }
+
+            Recipient = new Address(valuesDict.GetValue<IValue>("recipient"));
             Amount = new FungibleAssetValue(
-                new Currency(dict["currency"]),
-                dict.GetValue<Bencodex.Types.Integer>("amount")
-            );
+                new Currency(valuesDict["currency"]),
+                valuesDict.GetValue<Bencodex.Types.Integer>("amount"));
         }
 
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
