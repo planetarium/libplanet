@@ -151,7 +151,7 @@ namespace Libplanet.Tests.Blocks
                         genesisHash: differentGenesisHash,
                         timestamp: new DateTimeOffset(
                             2021, 9, 7, 12, 1, 12, 345, TimeSpan.FromHours(9)),
-                        actions: TxCustomActionList.Empty
+                        actions: TxActionList.Empty
                     ),
                     new TxSigningMetadata(key.PublicKey, nonce: 0L)
                 ),

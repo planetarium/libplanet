@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -13,34 +15,89 @@ using Libplanet.Action;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// An abstract class to represent a list of <see cref="IAction"/>s.
-    /// It can be <see cref="TxCustomActionList"/>.
+    /// A list of <see cref="IAction"/>s to be executed in a transaction.
     /// </summary>
-    /// <remarks>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-    /// it cannot be inherited from outside of this assembly.</remarks>
     [JsonConverter(typeof(TxActionListJsonConverter))]
-    public abstract class TxActionList
+    public sealed class TxActionList
         : IReadOnlyList<IValue>, IEquatable<TxActionList>, IBencodable
     {
-        private protected TxActionList()
+        /// <summary>
+        /// An empty <see cref="TxActionList"/>.
+        /// </summary>
+        public static readonly TxActionList Empty =
+            new TxActionList(ImmutableList<IAction>.Empty);
+
+        private IValue _bencoded;
+
+        /// <summary>
+        /// Creates a new <see cref="TxActionList"/> instance with given
+        /// <paramref name="customActions"/>.
+        /// </summary>
+        /// <param name="customActions">The list of <see cref="IAction"/>s to be executed in a
+        /// transaction.</param>
+        public TxActionList(IEnumerable<IAction> customActions)
+            : this(new List(customActions.Select(customAction => customAction.PlainValue)))
         {
-            // Avoid external inheritance.
         }
+
+        public TxActionList(IValue bencoded)
+            : this(bencoded is List list
+                ? list
+                : throw new ArgumentException(
+                    $"Given value must be a {nameof(List)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private TxActionList(List list)
+        {
+            _bencoded = list;
+        }
+
+        /// <summary>
+        /// The list of application-defined custom <see cref="IAction"/>s to be executed in a
+        /// transaction.
+        /// </summary>
+        [Pure]
+        public IImmutableList<IValue> CustomActions => ((List)_bencoded).ToImmutableList();
 
         /// <inheritdoc cref="IReadOnlyCollection{T}.Count"/>
         [Pure]
-        public abstract int Count { get; }
+        public int Count => CustomActions.Count;
 
         /// <inheritdoc cref="IBencodable.Bencoded"/>
-        public abstract IValue Bencoded { get; }
+        public IValue Bencoded => _bencoded;
 
         /// <inheritdoc cref="IReadOnlyList{T}.this"/>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="index"/> is less than zero.</exception>
+        /// <exception cref="IndexOutOfRangeException">Thrown when the given
+        /// <paramref name="index"/> is greater than or equal to <see cref="Count"/>.</exception>
         [Pure]
-        public abstract IValue this[int index] { get; }
+        public IValue this[int index]
+        {
+            get
+            {
+                if (index < 0)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        "Only non-negative index is valid for subscription of a " +
+                        $"{nameof(TxActionList)} instance.");
+                }
+                else if (index >= Count)
+                {
+                    throw new IndexOutOfRangeException(
+                        $"The given index {index} is greater than the number of actions " +
+                        $"in this {nameof(TxActionList)} instance ({Count}).");
+                }
+
+                return CustomActions[index];
+            }
+        }
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>
         [Pure]
-        public abstract IEnumerator<IValue> GetEnumerator();
+        public IEnumerator<IValue> GetEnumerator() => CustomActions.GetEnumerator();
 
         /// <inheritdoc cref="IEnumerable.GetEnumerator()"/>
         [Pure]
@@ -48,7 +105,8 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        public abstract bool Equals(TxActionList? other);
+        public bool Equals(TxActionList? other) =>
+            other is TxActionList txActionList && Bencoded.Equals(txActionList.Bencoded);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         [Pure]
@@ -90,7 +148,7 @@ namespace Libplanet.Tx
                             $"Unexpected key/value: {key}/{reader.GetString()}");
 
                     case "customActions":
-                        return new TxCustomActionList(
+                        return new TxActionList(
                             BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
                                 throw new JsonException("Expected a \"CustomActions\" value."));
 
@@ -108,10 +166,10 @@ namespace Libplanet.Tx
             JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            if (value is TxCustomActionList customActionList)
+            if (value is TxActionList txActionList)
             {
                 writer.WritePropertyName("customActions");
-                BencodexJsonConverter.Write(writer, customActionList.Bencoded, options);
+                BencodexJsonConverter.Write(writer, txActionList.Bencoded, options);
             }
             else
             {

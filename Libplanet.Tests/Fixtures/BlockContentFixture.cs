@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Fixtures
                         genesisHash: GenesisHash,
                         updatedAddresses: new[] { Block1Tx0Key.ToAddress() },
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
-                        actions: new TxCustomActionList(new IAction[]
+                        actions: new TxActionList(new IAction[]
                         {
                             Arithmetic.Add(10), Arithmetic.Add(50), Arithmetic.Sub(25),
                         })
@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Fixtures
                         genesisHash: GenesisHash,
                         updatedAddresses: new[] { Block1Tx1Key.ToAddress() },
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
-                        actions: new TxCustomActionList(new IAction[] { Arithmetic.Add(30) })
+                        actions: new TxActionList(new IAction[] { Arithmetic.Add(30) })
                     ),
                     new TxSigningMetadata(Block1Tx1Key.PublicKey, nonce: 1L)
                 ),

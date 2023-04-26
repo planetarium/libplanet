@@ -162,7 +162,7 @@ namespace Libplanet.Tx
         /// </summary>
         [JsonIgnore]
         public IImmutableList<IValue>? CustomActions =>
-            Actions is TxCustomActionList actions
+            Actions is TxActionList actions
                     ? actions.CustomActions
                     : null;
 
@@ -315,7 +315,7 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey,
                 genesisHash,
-                new TxCustomActionList(new List(customActions)),
+                new TxActionList(new List(customActions)),
                 updatedAddresses,
                 timestamp
             );

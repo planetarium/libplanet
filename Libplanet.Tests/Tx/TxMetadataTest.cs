@@ -215,7 +215,7 @@ namespace Libplanet.Tests.Tx
 
             public IImmutableList<IValue> CustomActions => null;
 
-            public TxActionList Actions => TxCustomActionList.Empty;
+            public TxActionList Actions => TxActionList.Empty;
 
             bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
 

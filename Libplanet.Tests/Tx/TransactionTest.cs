@@ -336,7 +336,7 @@ namespace Libplanet.Tests.Tx
             Address addressB = new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");
             var updatedAddresses = ImmutableHashSet.Create(addressA, addressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(addressA, "foo"),
                 new DumbAction(addressB, "bar"),
@@ -414,7 +414,7 @@ namespace Libplanet.Tests.Tx
             Address addressB = new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");
             var updatedAddresses = ImmutableHashSet.Create(addressA, addressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(addressA, "foo"),
                 new DumbAction(addressB, "bar"),

@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Tx
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
