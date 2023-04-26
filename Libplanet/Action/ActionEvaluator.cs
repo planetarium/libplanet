@@ -222,7 +222,8 @@ namespace Libplanet.Action
                 tx.Signer);
             ImmutableList<IAction> actions = tx.SystemAction is { } sa
                 ? ImmutableList.Create(Registry.Deserialize(sa))
-                : ImmutableList.CreateRange<IAction>(tx.CustomActions!.Cast<IAction>());
+                : ImmutableList.CreateRange<IAction>(
+                    tx.CustomActions.Select(action => ToAction<T>(action)));
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,
                 preEvaluationHash: new HashDigest<SHA256>(new byte[HashDigest<SHA256>.Size]),
@@ -680,6 +681,14 @@ namespace Libplanet.Action
                 blockAction: true,
                 nativeTokenPredicate: _nativeTokenPredicate
             ).Single();
+        }
+
+        private static IAction ToAction<T>(IValue plainValue)
+            where T : IAction, new()
+        {
+            var action = new T();
+            action.LoadPlainValue(plainValue);
+            return action;
         }
 
         [Pure]

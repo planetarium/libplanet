@@ -180,10 +180,6 @@ namespace Libplanet.Tx
                     ? actions.CustomActions
                     : null;
 
-        IImmutableList<IValue>? ITransaction.CustomActions => CustomActions is { } actions
-            ? actions
-            : null;
-
         /// <inheritdoc cref="ITxInvoice.Timestamp"/>
         public DateTimeOffset Timestamp => _unsignedTx.Timestamp;
 

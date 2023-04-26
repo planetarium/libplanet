@@ -276,8 +276,7 @@ namespace Libplanet.Tests.Action
 
             var totalSupplyGetterFromDict = new Func<
                 IReadOnlyDictionary<Currency, FungibleAssetValue>,
-                TotalSupplyGetter
-            >(
+                TotalSupplyGetter>(
                 totalSupplies =>
                     currency =>
                     {
@@ -308,8 +307,7 @@ namespace Libplanet.Tests.Action
                 genesisHash: null,
                 nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionTypeLoader.Create<DumbAction>(),
-                feeCalculator: null
-            );
+                feeCalculator: null);
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
                 ActionEvaluator.NullAccountStateGetter,
@@ -800,7 +798,9 @@ namespace Libplanet.Tests.Action
                 miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
-                actions: txA.CustomActions.ToImmutableArray<IAction>(),
+                actions: txA.CustomActions
+                    .Select(action => (IAction)ToAction<Arithmetic>(action))
+                    .ToImmutableArray(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false,
@@ -817,7 +817,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
                 _logger.Debug("txA.CustomActions[{0}] = {1}", i, txA.CustomActions[i]);
 
-                Assert.Equal(txA.CustomActions[i].PlainValue, eval.Action);
+                Assert.Equal(txA.CustomActions[i], eval.Action);
                 Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
@@ -853,7 +853,9 @@ namespace Libplanet.Tests.Action
                 miner: blockB.Miner,
                 signer: txB.Signer,
                 signature: txB.Signature,
-                actions: txB.CustomActions.ToImmutableArray<IAction>(),
+                actions: txB.CustomActions
+                    .Select(action => (IAction)ToAction<Arithmetic>(action))
+                    .ToImmutableArray(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
                 blockAction: false,
@@ -872,7 +874,7 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
                 _logger.Debug("txB.CustomActions[{0}] = {@1}", i, txB.CustomActions[i]);
 
-                Assert.Equal(txB.CustomActions[i].PlainValue, eval.Action);
+                Assert.Equal(txB.CustomActions[i], eval.Action);
                 Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
@@ -1195,7 +1197,9 @@ namespace Libplanet.Tests.Action
                 miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
-                actions: txA.CustomActions.ToImmutableArray<IAction>(),
+                actions: txA.CustomActions
+                    .Select(action => (IAction)ToAction<Arithmetic>(action))
+                    .ToImmutableArray(),
                 rehearsal: true,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false,

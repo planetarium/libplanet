@@ -367,6 +367,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
+        public static T ToAction<T>(IValue plainValue)
+            where T : IAction, new()
+        {
+            var action = new T();
+            action.LoadPlainValue(plainValue);
+            return action;
+        }
+
         public static BlockCommit CreateBlockCommit<T>(
             Block<T> block,
             bool deterministicTimestamp = false)
