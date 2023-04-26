@@ -686,9 +686,16 @@ namespace Libplanet.Action
         private static IAction ToAction<T>(IValue plainValue)
             where T : IAction, new()
         {
-            var action = new T();
-            action.LoadPlainValue(plainValue);
-            return action;
+            if (Registry.IsSystemAction(plainValue))
+            {
+                return Registry.Deserialize(plainValue);
+            }
+            else
+            {
+                var action = new T();
+                action.LoadPlainValue(plainValue);
+                return action;
+            }
         }
 
         [Pure]
@@ -823,31 +830,38 @@ namespace Libplanet.Action
 
                 foreach (IValue rawAction in customActions)
                 {
-                    IAction action;
-
-                    // it means that, we will bypass PolymorphicAction....
-                    if (rawAction is Dictionary pv &&
-                        pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
-                        rawTypeId is Text typeId &&
-                        types.TryGetValue(typeId, out Type? actionType))
+                    if (Registry.IsSystemAction(rawAction))
                     {
-                        action = (IAction)Activator.CreateInstance(actionType)!;
-                        action.LoadPlainValue(pv["values"]);
-                    }
-                    else if (_actionTypeLoader is StaticActionTypeLoader loader &&
-                             loader.BaseType is { } baseActionType)
-                    {
-                        action = (IAction)Activator.CreateInstance(baseActionType)!;
-                        action.LoadPlainValue(rawAction);
+                        yield return Registry.Deserialize(rawAction);
                     }
                     else
                     {
-                        throw new InvalidOperationException(
-                            $"Failed to instantiate given action: {rawAction}"
-                        );
-                    }
+                        IAction action;
 
-                    yield return action;
+                        // it means that, we will bypass PolymorphicAction....
+                        if (rawAction is Dictionary pv &&
+                            pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
+                            rawTypeId is Text typeId &&
+                            types.TryGetValue(typeId, out Type? actionType))
+                        {
+                            action = (IAction)Activator.CreateInstance(actionType)!;
+                            action.LoadPlainValue(pv["values"]);
+                        }
+                        else if (_actionTypeLoader is StaticActionTypeLoader loader &&
+                                loader.BaseType is { } baseActionType)
+                        {
+                            action = (IAction)Activator.CreateInstance(baseActionType)!;
+                            action.LoadPlainValue(rawAction);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException(
+                                $"Failed to instantiate given action: {rawAction}"
+                            );
+                        }
+
+                        yield return action;
+                    }
                 }
             }
         }

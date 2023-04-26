@@ -216,56 +216,6 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// Almost same as <see cref="Create(long, PrivateKey, BlockHash?, IEnumerable{IAction},
-        /// IImmutableSet{Address}?, DateTimeOffset?)"/> except that this factory method takes
-        /// a <paramref name="systemAction"/> instead of user-defined custom actions.
-        /// </summary>
-        /// <param name="nonce">Specifies <see cref="Transaction{T}.Nonce"/>.</param>
-        /// <param name="privateKey">Derives <see cref="Transaction{T}.PublicKey"/>,
-        /// <see cref="Transaction{T}.Signer"/>, and <see cref="Transaction{T}.Signature"/>
-        /// from this.</param>
-        /// <param name="genesisHash">Specifies <see cref="Transaction{T}.GenesisHash"/>.</param>
-        /// <param name="systemAction">Specifies <see cref="Transaction{T}.SystemAction"/>.</param>
-        /// <param name="updatedAddresses">Specifies <see cref="Transaction{T}.UpdatedAddresses"/>.
-        /// The resulting <see cref="Transaction{T}"/> may contain more
-        /// <see cref="Transaction{T}.UpdatedAddresses"/> than this argument.</param>
-        /// <param name="timestamp">Specifies <see cref="Transaction{T}.Timestamp"/>.</param>
-        /// <returns>A created signed <see cref="Transaction{T}"/>.</returns>
-        public static Transaction<T> Create(
-            long nonce,
-            PrivateKey privateKey,
-            BlockHash? genesisHash,
-            IAction systemAction,
-            IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null
-        ) =>
-            Create(
-                nonce,
-                privateKey,
-                genesisHash,
-                systemAction.PlainValue,
-                updatedAddresses,
-                timestamp
-            );
-
-        public static Transaction<T> Create(
-            long nonce,
-            PrivateKey privateKey,
-            BlockHash? genesisHash,
-            IValue systemAction,
-            IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null
-        ) =>
-            Create(
-                nonce,
-                privateKey,
-                genesisHash,
-                new TxSystemActionList(systemAction),
-                updatedAddresses,
-                timestamp
-            );
-
-        /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
         /// It automatically fills the following values from:
         /// <list type="table">

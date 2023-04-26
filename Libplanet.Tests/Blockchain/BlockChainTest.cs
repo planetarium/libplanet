@@ -1498,8 +1498,8 @@ namespace Libplanet.Tests.Blockchain
             Address address = privateKey.ToAddress();
             var action = new Transfer(address, foo * 10);
 
-            _blockChain.MakeTransaction(privateKey, systemAction: action);
-            _blockChain.MakeTransaction(privateKey, systemAction: action);
+            _blockChain.MakeTransaction(privateKey, customActions: new IAction[] { action });
+            _blockChain.MakeTransaction(privateKey, customActions: new IAction[] { action });
 
             List<Transaction<DumbAction>> txs = _stagePolicy
                 .Iterate(_blockChain)
@@ -1511,12 +1511,12 @@ namespace Libplanet.Tests.Blockchain
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(action.PlainValue, transaction.SystemAction);
+            Assert.Equal(action.PlainValue, transaction.CustomActions[0]);
 
             transaction = txs[1];
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(action.PlainValue, transaction.SystemAction);
+            Assert.Equal(action.PlainValue, transaction.CustomActions[0]);
         }
 
         [SkippableFact]
@@ -1907,7 +1907,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
-                    systemAction: systemAction))
+                    customActions: new IAction[] { systemAction }))
                 .ToArray();
             var customTxs = new[]
             {
@@ -1929,8 +1929,11 @@ namespace Libplanet.Tests.Blockchain
             var validator = blockChain.GetValidatorSet()[0];
             Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
             Assert.Equal(BigInteger.One, validator.Power);
-            Assert.Equal(addresses, blockChain.Genesis.Transactions.Single(
-                tx => !(tx.CustomActions is null)).UpdatedAddresses);
+            Assert.Equal(
+                addresses,
+                blockChain.Genesis.Transactions.Single(
+                    tx => !(tx.CustomActions is null) &&
+                        tx.CustomActions.All(a => !Registry.IsSystemAction(a))).UpdatedAddresses);
 
             var states = addresses.Select(address => blockChain.GetState(address))
                 .ToArray();
@@ -2075,7 +2078,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
-                    systemAction: systemAction))
+                    customActions: new IAction[] { systemAction }))
                 .ToImmutableList();
 
             BlockChain<SetValidator> blockChain =

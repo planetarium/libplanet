@@ -43,10 +43,12 @@ namespace Libplanet.Tests.Fixtures
                 0,
                 GenesisKey,
                 null,
-                systemAction: new Initialize(
-                    validatorSet: TestUtils.ValidatorSet,
-                    states: ImmutableDictionary.Create<Address, IValue>()
-                ),
+                customActions: new IAction[]
+                    {
+                        new Initialize(
+                            validatorSet: TestUtils.ValidatorSet,
+                            states: ImmutableDictionary.Create<Address, IValue>()),
+                    },
                 timestamp: DateTimeOffset.MinValue
             );
             Transaction<Arithmetic>[] genTxs = new[] { genTx };

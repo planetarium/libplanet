@@ -138,9 +138,10 @@ public class BlockCommand
                 0,
                 key,
                 null,
-                new Initialize(
-                    validatorSet,
-                    ImmutableTrieDictionary<Address, IValue>.Empty)))
+                new IAction[]
+                {
+                    new Initialize(validatorSet, ImmutableTrieDictionary<Address, IValue>.Empty),
+                }))
             .ToImmutableList();
 
         Block<NullAction> genesis = BlockChain<NullAction>.ProposeGenesisBlock(
