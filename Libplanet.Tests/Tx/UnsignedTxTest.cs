@@ -162,7 +162,7 @@ namespace Libplanet.Tests.Tx
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
                       ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265"",
                       ""actions"": {
-                        ""customActions"": [
+                        ""actions"": [
                           {
                             ""\uFEFFitem"": ""\uFEFFfoo"",
                             ""\uFEFFrecord_rehearsal"": false,

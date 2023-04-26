@@ -31,12 +31,12 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// Creates a new <see cref="TxActionList"/> instance with given
-        /// <paramref name="customActions"/>.
+        /// <paramref name="actions"/>.
         /// </summary>
-        /// <param name="customActions">The list of <see cref="IAction"/>s to be executed in a
+        /// <param name="actions">The list of <see cref="IAction"/>s to be executed in a
         /// transaction.</param>
-        public TxActionList(IEnumerable<IAction> customActions)
-            : this(new List(customActions.Select(customAction => customAction.PlainValue)))
+        public TxActionList(IEnumerable<IAction> actions)
+            : this(new List(actions.Select(customAction => customAction.PlainValue)))
         {
         }
 
@@ -55,15 +55,15 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// The list of application-defined custom <see cref="IAction"/>s to be executed in a
+        /// The list of <see cref="IAction"/>s to be executed in a
         /// transaction.
         /// </summary>
         [Pure]
-        public IImmutableList<IValue> CustomActions => ((List)_bencoded).ToImmutableList();
+        public IImmutableList<IValue> Actions => ((List)_bencoded).ToImmutableList();
 
         /// <inheritdoc cref="IReadOnlyCollection{T}.Count"/>
         [Pure]
-        public int Count => CustomActions.Count;
+        public int Count => Actions.Count;
 
         /// <inheritdoc cref="IBencodable.Bencoded"/>
         public IValue Bencoded => _bencoded;
@@ -91,13 +91,13 @@ namespace Libplanet.Tx
                         $"in this {nameof(TxActionList)} instance ({Count}).");
                 }
 
-                return CustomActions[index];
+                return Actions[index];
             }
         }
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>
         [Pure]
-        public IEnumerator<IValue> GetEnumerator() => CustomActions.GetEnumerator();
+        public IEnumerator<IValue> GetEnumerator() => Actions.GetEnumerator();
 
         /// <inheritdoc cref="IEnumerable.GetEnumerator()"/>
         [Pure]
@@ -147,10 +147,10 @@ namespace Libplanet.Tx
                         throw new JsonException(
                             $"Unexpected key/value: {key}/{reader.GetString()}");
 
-                    case "customActions":
+                    case "actions":
                         return new TxActionList(
                             BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
-                                throw new JsonException("Expected a \"CustomActions\" value."));
+                                throw new JsonException("Expected a \"Actions\" value."));
 
                     default:
                         throw new JsonException("Unexpected key: " + key);
@@ -168,7 +168,7 @@ namespace Libplanet.Tx
             writer.WriteStartObject();
             if (value is TxActionList txActionList)
             {
-                writer.WritePropertyName("customActions");
+                writer.WritePropertyName("actions");
                 BencodexJsonConverter.Write(writer, txActionList.Bencoded, options);
             }
             else

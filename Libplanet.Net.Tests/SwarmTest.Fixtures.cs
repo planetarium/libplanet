@@ -70,7 +70,7 @@ namespace Libplanet.Net.Tests
             }
 
             var action = new DumbAction();
-            action.LoadPlainValue(blocks[1].Transactions.First().CustomActions.First());
+            action.LoadPlainValue(blocks[1].Transactions.First().Actions.First());
             return (action.TargetAddress, blocks);
         }
 

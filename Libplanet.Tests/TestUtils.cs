@@ -428,7 +428,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         nonce++,
                         GenesisProposer,
                         null,
-                        customActions: new IAction[]
+                        actions: new IAction[]
                             {
                                 new Initialize(
                                     validatorSet: validatorSet,

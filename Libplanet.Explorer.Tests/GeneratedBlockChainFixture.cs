@@ -94,7 +94,7 @@ public class GeneratedBlockChainFixture
                             nonce: i,
                             privateKey: privateKey,
                             genesisHash: null,
-                            customActions: new IAction[]
+                            actions: new IAction[]
                                 {
                                     new Initialize(
                                         new ValidatorSet(

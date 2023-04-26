@@ -220,8 +220,8 @@ namespace Libplanet.Action
                 NullTotalSupplyGetter,
                 NullValidatorSetGetter,
                 tx.Signer);
-            ImmutableList<IAction> actions = tx.CustomActions is { } ca
-                ? ImmutableList.CreateRange<IAction>(ca.Select(action => ToAction<T>(action)))
+            ImmutableList<IAction> actions = tx.Actions is { } txActions
+                ? ImmutableList.CreateRange<IAction>(txActions.Select(a => ToAction<T>(a)))
                 : ImmutableList<IAction>.Empty;
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,
@@ -820,11 +820,11 @@ namespace Libplanet.Action
             ITransaction tx
         )
         {
-            if (tx.CustomActions is { } customActions)
+            if (tx.Actions is { } actions)
             {
                 IDictionary<IValue, Type> types = _actionTypeLoader.Load(actionTypeLoaderContext);
 
-                foreach (IValue rawAction in customActions)
+                foreach (IValue rawAction in actions)
                 {
                     if (Registry.IsSystemAction(rawAction))
                     {

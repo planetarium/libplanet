@@ -881,9 +881,9 @@ namespace Libplanet.Tests.Blockchain
             DumbAction[] actions = actionRenders.Select(r => (DumbAction)r.Action).ToArray();
 
             int actionsCountA = txsA.Sum(
-                a => a.Sum(tx => tx.CustomActions.Count)
+                a => a.Sum(tx => tx.Actions.Count)
             );
-            int actionsCountB = txsB.Sum(tx => tx.CustomActions.Count);
+            int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
 
             int totalBlockCount = (int)_blockChain.Tip.Index + 1;
 
@@ -1498,8 +1498,8 @@ namespace Libplanet.Tests.Blockchain
             Address address = privateKey.ToAddress();
             var action = new Transfer(address, foo * 10);
 
-            _blockChain.MakeTransaction(privateKey, customActions: new IAction[] { action });
-            _blockChain.MakeTransaction(privateKey, customActions: new IAction[] { action });
+            _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
+            _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
 
             List<Transaction<DumbAction>> txs = _stagePolicy
                 .Iterate(_blockChain)
@@ -1511,12 +1511,12 @@ namespace Libplanet.Tests.Blockchain
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(action.PlainValue, transaction.CustomActions[0]);
+            Assert.Equal(action.PlainValue, transaction.Actions[0]);
 
             transaction = txs[1];
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(action.PlainValue, transaction.CustomActions[0]);
+            Assert.Equal(action.PlainValue, transaction.Actions[0]);
         }
 
         [SkippableFact]
@@ -1539,12 +1539,12 @@ namespace Libplanet.Tests.Blockchain
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(actions.Select(action => action.PlainValue), transaction.CustomActions);
+            Assert.Equal(actions.Select(action => action.PlainValue), transaction.Actions);
 
             transaction = txs[1];
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(actions.Select(action => action.PlainValue), transaction.CustomActions);
+            Assert.Equal(actions.Select(action => action.PlainValue), transaction.Actions);
         }
 
         [SkippableFact]
@@ -1907,7 +1907,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
-                    customActions: new IAction[] { systemAction }))
+                    actions: new IAction[] { systemAction }))
                 .ToArray();
             var customTxs = new[]
             {
@@ -1915,7 +1915,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: systemTxs.Length,
                     privateKey: privateKey,
                     genesisHash: null,
-                    customActions: customActions),
+                    actions: customActions),
             };
             var txs = systemTxs.Concat(customTxs).ToImmutableList();
             BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(
@@ -1932,8 +1932,8 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 addresses,
                 blockChain.Genesis.Transactions.Single(
-                    tx => !(tx.CustomActions is null) &&
-                        tx.CustomActions.All(a => !Registry.IsSystemAction(a))).UpdatedAddresses);
+                    tx => !(tx.Actions is null) &&
+                        tx.Actions.All(a => !Registry.IsSystemAction(a))).UpdatedAddresses);
 
             var states = addresses.Select(address => blockChain.GetState(address))
                 .ToArray();
@@ -2078,7 +2078,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
-                    customActions: new IAction[] { systemAction }))
+                    actions: new IAction[] { systemAction }))
                 .ToImmutableList();
 
             BlockChain<SetValidator> blockChain =

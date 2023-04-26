@@ -25,9 +25,8 @@ public class RocksDbBlockChainIndex : BlockChainIndexBase
     private static readonly byte[] SignerToTxIdPrefix = { (byte)'s' };
     private static readonly byte[] InvolvedAddressToTxIdPrefix = { (byte)'I' };
     private static readonly byte[] TxIdToContainedBlockHashPrefix = { (byte)'t' };
-    private static readonly byte[] SystemActionTypeIdToTxIdPrefix = { (byte)'S' };
-    private static readonly byte[] CustomActionTypeIdToTxIdPrefix = { (byte)'C' };
-    private static readonly byte[] CustomActionTypeIdPrefix = { (byte)'c' };
+    private static readonly byte[] ActionTypeIdToTxIdPrefix = { (byte)'A' };
+    private static readonly byte[] ActionTypeIdPrefix = { (byte)'a' };
     private static readonly Codec Codec = new();
     private readonly RocksDb _db;
 
@@ -286,17 +285,13 @@ public class RocksDbBlockChainIndex : BlockChainIndexBase
             GetNextOrdinalKey(ProducerToBlockIndexPrefix.Concat(minerAddress).ToArray()),
             LongToBigEndianByteArray(blockDigest.Index).Concat(blockHash).ToArray());
 
-        IImmutableDictionary<byte[], long> duplicateSystemActionTypeIdTxTimestampOrdinalMemos =
-            ImmutableDictionary<byte[], long>.Empty.WithComparers(ByteArrayComparer.Instance);
-        IImmutableDictionary<byte[], long> duplicateCustomActionTypeIdToTxTimestampOrdinalMemos =
+        IImmutableDictionary<byte[], long> duplicateActionTypeIdToTxTimestampOrdinalMemos =
             ImmutableDictionary<byte[], long>.Empty.WithComparers(ByteArrayComparer.Instance);
         IImmutableDictionary<byte[], long> duplicateAccountNonceOrdinalMemos =
             ImmutableDictionary<byte[], long>.Empty.WithComparers(ByteArrayComparer.Instance);
         IImmutableDictionary<byte[], long> duplicateInvolvedTxTimestampOrdinalMemos =
             ImmutableDictionary<byte[], long>.Empty.WithComparers(ByteArrayComparer.Instance);
-        IImmutableSet<byte[]> encounteredSystemActionTypeIdToTxIdKeys =
-            ImmutableHashSet<byte[]>.Empty.WithComparer(ByteArrayComparer.Instance);
-        IImmutableSet<byte[]> encounteredCustomActionTypeIdToTxIdKeys =
+        IImmutableSet<byte[]> encounteredActionTypeIdToTxIdKeys =
             ImmutableHashSet<byte[]>.Empty.WithComparer(ByteArrayComparer.Instance);
         IImmutableSet<byte[]> encounteredSignerToTxIdKeys =
             ImmutableHashSet<byte[]>.Empty.WithComparer(ByteArrayComparer.Instance);
@@ -348,12 +343,12 @@ public class RocksDbBlockChainIndex : BlockChainIndexBase
                     ref duplicateInvolvedTxTimestampOrdinalMemos);
             }
 
-            if (tx.CustomActions is not { } customActions)
+            if (tx.Actions is not { } actions)
             {
                 continue;
             }
 
-            foreach (var customAction in customActions)
+            foreach (var action in actions)
             {
                 if (stoppingToken.IsCancellationRequested)
                 {
@@ -361,7 +356,7 @@ public class RocksDbBlockChainIndex : BlockChainIndexBase
                     throw new OperationCanceledException(stoppingToken);
                 }
 
-                if (customAction is not Dictionary actionDict
+                if (action is not Dictionary actionDict
                     || !actionDict.TryGetValue((Text)"type_id", out var typeId))
                 {
                     continue;
@@ -369,17 +364,17 @@ public class RocksDbBlockChainIndex : BlockChainIndexBase
 
                 // Use IValue for string, as "abc" and "abcd" as raw byte strings overlap.
                 writeBatch.Put(
-                    CustomActionTypeIdPrefix.Concat(Codec.Encode(typeId)).ToArray(),
+                    ActionTypeIdPrefix.Concat(Codec.Encode(typeId)).ToArray(),
                     Array.Empty<byte>());
                 PutOrPutDuplicateOrdinal(
                     ref writeBatch,
-                    CustomActionTypeIdToTxIdPrefix
+                    ActionTypeIdToTxIdPrefix
                         .Concat(Codec.Encode(typeId))
                         .Concat(LongToBigEndianByteArray(tx.Timestamp.UtcTicks))
                         .ToArray(),
                     txId,
-                    ref encounteredCustomActionTypeIdToTxIdKeys,
-                    ref duplicateCustomActionTypeIdToTxTimestampOrdinalMemos);
+                    ref encounteredActionTypeIdToTxIdKeys,
+                    ref duplicateActionTypeIdToTxTimestampOrdinalMemos);
             }
         }
 

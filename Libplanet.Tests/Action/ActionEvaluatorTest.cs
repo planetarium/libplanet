@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
-                    customActions: new[] { new RandomAction(txAddress), }),
+                    actions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var noStateRootBlock = new BlockContent<RandomAction>(
@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                customActions: new[] { action });
+                actions: new[] { action });
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -181,7 +181,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                customActions: new[] { action });
+                actions: new[] { action });
 
             chain.StageTransaction(tx);
             Block<ThrowException> block = chain.ProposeBlock(new PrivateKey());
@@ -224,7 +224,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
-                customActions: new[] { action });
+                actions: new[] { action });
             var txs = new Transaction<ThrowException>[] { tx };
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
                 new BlockMetadata(
@@ -322,7 +322,7 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: _txFx.PrivateKey1,
                     genesisHash: genesis.Hash,
-                    customActions: new[]
+                    actions: new[]
                     {
                         MakeAction(addresses[0], 'A', addresses[1]),
                         MakeAction(addresses[1], 'B', addresses[2]),
@@ -332,13 +332,13 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: _txFx.PrivateKey2,
                     genesisHash: genesis.Hash,
-                    customActions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
+                    actions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
                 Transaction<DumbAction>.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey3,
                     genesisHash: genesis.Hash,
-                    customActions: new DumbAction[0],
+                    actions: new DumbAction[0],
                     timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
             };
             foreach ((var tx, var i) in block1Txs.Zip(
@@ -375,7 +375,7 @@ namespace Libplanet.Tests.Action
             {
                 Assert.Equal(block1Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(
-                    block1Txs[expect.TxIdx].CustomActions[expect.ActionIdx],
+                    block1Txs[expect.TxIdx].Actions[expect.ActionIdx],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
@@ -512,7 +512,7 @@ namespace Libplanet.Tests.Action
                         .Select(x => x is Text t ? t.Value : null));
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(
-                    block2Txs[expect.TxIdx].CustomActions[expect.Item2],
+                    block2Txs[expect.TxIdx].Actions[expect.Item2],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
@@ -793,7 +793,7 @@ namespace Libplanet.Tests.Action
                 miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
-                actions: txA.CustomActions
+                actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 rehearsal: rehearsal,
@@ -810,9 +810,9 @@ namespace Libplanet.Tests.Action
                 IAccountStateDelta prevStates = context.PreviousStates;
                 IAccountStateDelta outputStates = eval.OutputStates;
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
-                _logger.Debug("txA.CustomActions[{0}] = {1}", i, txA.CustomActions[i]);
+                _logger.Debug("txA.Actions[{0}] = {1}", i, txA.Actions[i]);
 
-                Assert.Equal(txA.CustomActions[i], eval.Action);
+                Assert.Equal(txA.Actions[i], eval.Action);
                 Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
@@ -848,7 +848,7 @@ namespace Libplanet.Tests.Action
                 miner: blockB.Miner,
                 signer: txB.Signer,
                 signature: txB.Signature,
-                actions: txB.CustomActions
+                actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 rehearsal: rehearsal,
@@ -867,9 +867,9 @@ namespace Libplanet.Tests.Action
                 IAccountStateDelta outputStates = eval.OutputStates;
 
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
-                _logger.Debug("txB.CustomActions[{0}] = {@1}", i, txB.CustomActions[i]);
+                _logger.Debug("txB.Actions[{0}] = {@1}", i, txB.Actions[i]);
 
-                Assert.Equal(txB.CustomActions[i], eval.Action);
+                Assert.Equal(txB.Actions[i], eval.Action);
                 Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
@@ -1019,7 +1019,7 @@ namespace Libplanet.Tests.Action
                         nonce: signerNoncePair.nonce,
                         privateKey: signerNoncePair.signer,
                         genesisHash: null,
-                        customActions:
+                        actions:
                             new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
                         timestamp: epoch)).ToImmutableArray();
             // Rearrange transactions so that transactions are not grouped by signers
@@ -1131,7 +1131,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                customActions: new[] { action });
+                actions: new[] { action });
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
             Block<EvaluateTestAction> block = chain.ProposeBlock(miner);
@@ -1192,7 +1192,7 @@ namespace Libplanet.Tests.Action
                 miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
-                actions: txA.CustomActions
+                actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 rehearsal: true,

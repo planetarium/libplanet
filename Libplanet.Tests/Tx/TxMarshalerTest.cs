@@ -294,10 +294,10 @@ namespace Libplanet.Tests.Tx
                 tx.Id
             );
 
-            Assert.Equal(2, tx.CustomActions.Count);
+            Assert.Equal(2, tx.Actions.Count);
 
             var innerAction0 = ToAction<PolymorphicAction<BaseAction>>(
-                tx.CustomActions[0]).InnerAction;
+                tx.Actions[0]).InnerAction;
             Assert.IsType<Attack>(innerAction0);
             var targetAddress =
                 ((Bencodex.Types.Dictionary)innerAction0.PlainValue)
@@ -315,7 +315,7 @@ namespace Libplanet.Tests.Tx
             );
 
             var innerAction1 = ToAction<PolymorphicAction<BaseAction>>(
-                tx.CustomActions[1]).InnerAction;
+                tx.Actions[1]).InnerAction;
             Assert.IsType<Sleep>(innerAction1);
             Assert.Equal(
                 Bencodex.Types.Dictionary.Empty

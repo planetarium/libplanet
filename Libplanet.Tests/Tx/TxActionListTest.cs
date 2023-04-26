@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Tx
         public void Empty()
         {
             Assert.Empty(TxActionList.Empty);
-            Assert.Empty(TxActionList.Empty.CustomActions);
+            Assert.Empty(TxActionList.Empty.Actions);
             Assert.Throws<IndexOutOfRangeException>(() => TxActionList.Empty[0]);
             AssertBencodexEqual(
                 Bencodex.Types.List.Empty,
@@ -71,17 +71,17 @@ namespace Libplanet.Tests.Tx
             var mint = new Mint(AddressA, FOO * 100);
             var mint2 = new Mint(AddressA, FOO * 100);
             var transfer = new Transfer(AddressA, FOO * 100);
-            IAction[] customActions =
+            IAction[] actions1 =
             {
                 new DumbAction(default, "foo"),
                 new DumbAction(AddressA, "bar"),
             };
-            IAction[] customActions2 =
+            IAction[] actions2 =
             {
                 new DumbAction(default, "foo"),
                 new DumbAction(AddressA, "bar"),
             };
-            IAction[] customActions3 =
+            IAction[] actions3 =
             {
                 new DumbAction(default, "foo"),
                 new DumbAction(AddressA, "baz"),
@@ -101,19 +101,19 @@ namespace Libplanet.Tests.Tx
                 false);
             AssertEquality(
                 new TxActionList(new IAction[] { mint }),
-                new TxActionList(customActions),
+                new TxActionList(actions1),
                 false);
             AssertEquality(
-                new TxActionList(customActions),
-                new TxActionList(customActions),
+                new TxActionList(actions1),
+                new TxActionList(actions1),
                 true);
             AssertEquality(
-                new TxActionList(customActions),
-                new TxActionList(customActions2),
+                new TxActionList(actions1),
+                new TxActionList(actions2),
                 true);
             AssertEquality(
-                new TxActionList(customActions),
-                new TxActionList(customActions3),
+                new TxActionList(actions1),
+                new TxActionList(actions3),
                 false);
         }
 
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Tx
             var emptyCustomActionList = new TxActionList(Array.Empty<IAction>());
             var systemActonListJson = @"
                 {
-                  ""customActions"": [
+                  ""actions"": [
                     {
                       ""\uFEFFtype_id"": ""0"",
                       ""\uFEFFvalues"": {
@@ -193,7 +193,7 @@ namespace Libplanet.Tests.Tx
                 false);
             const string customActionListJson = @"
                 {
-                  ""customActions"": [
+                  ""actions"": [
                     {
                       ""\uFEFFitem"": ""\uFEFFfoo"",
                       ""\uFEFFrecord_rehearsal"": false,
@@ -212,7 +212,7 @@ namespace Libplanet.Tests.Tx
                 false);
             TestUtils.AssertJsonSerializable<TxActionList>(
                 emptyCustomActionList,
-                "{ \"customActions\": [] }",
+                "{ \"actions\": [] }",
                 false);
         }
 

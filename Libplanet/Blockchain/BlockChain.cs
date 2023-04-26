@@ -762,17 +762,17 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
         /// signs a new transaction.</param>
-        /// <param name="customActions">A list of custom actions to include to a new transaction.
+        /// <param name="actions">A list of custom actions to include to a new transaction.
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
-        /// <paramref name="customActions"/>.</param>
+        /// <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
         /// signed.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
         public Transaction<T> MakeTransaction(
             PrivateKey privateKey,
-            IEnumerable<IAction> customActions,
+            IEnumerable<IAction> actions,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
@@ -784,7 +784,7 @@ namespace Libplanet.Blockchain
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     Genesis.Hash,
-                    customActions,
+                    actions,
                     updatedAddresses,
                     timestamp);
                 StageTransaction(tx);

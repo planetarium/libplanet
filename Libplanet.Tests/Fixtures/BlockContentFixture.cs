@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Fixtures
                 0,
                 GenesisKey,
                 null,
-                customActions: new IAction[]
+                actions: new IAction[]
                     {
                         new Initialize(
                             validatorSet: TestUtils.ValidatorSet,

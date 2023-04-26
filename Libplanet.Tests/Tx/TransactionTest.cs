@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 privateKey,
                 null,
-                customActions: new IAction[] { new Transfer(privateKey.ToAddress(), foo * 10) },
+                actions: new IAction[] { new Transfer(privateKey.ToAddress(), foo * 10) },
                 timestamp: timestamp
             );
 
@@ -183,9 +183,9 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                _fx.TxWithActions.CustomActions
+                _fx.TxWithActions.Actions
             );
-            Assert.NotEmpty(tx.CustomActions);
+            Assert.NotEmpty(tx.Actions);
             Assert.Equal(
                 new[] { _fx.Address1 }.ToImmutableHashSet(),
                 tx.UpdatedAddresses
@@ -196,7 +196,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                _fx.TxWithActions.CustomActions,
+                _fx.TxWithActions.Actions,
                 new[] { additionalAddr }.ToImmutableHashSet()
             );
             Assert.Equal(
@@ -324,7 +324,7 @@ namespace Libplanet.Tests.Tx
                 actions
             );
             actions.Add(new DumbAction());
-            Assert.Empty(tx.CustomActions);
+            Assert.Empty(tx.Actions);
         }
 
         [Fact]
@@ -449,7 +449,7 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""signature"": ""MEMCIGNU6C0suI1jof0vrA9FjOhptyvcMwzcWdDr676olsgPAh9aC6Olt6kMVBwp7lLPER0GHhMMQUHB4qZzVr2BtMDo"",
                       ""actions"": {
-                        ""customActions"": [
+                        ""actions"": [
                           {
                             ""\uFEFFitem"": ""\uFEFFfoo"",
                             ""\uFEFFrecord_rehearsal"": false,

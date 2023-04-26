@@ -156,16 +156,6 @@ namespace Libplanet.Tx
         [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions => _unsignedTx.Actions;
 
-        /// <summary>
-        /// Zero or more user-defined custom actions that this <see cref="Transaction{T}"/>
-        /// contains.  These are executed in the order.
-        /// </summary>
-        [JsonIgnore]
-        public IImmutableList<IValue>? CustomActions =>
-            Actions is TxActionList actions
-                    ? actions.CustomActions
-                    : null;
-
         /// <inheritdoc cref="ITxInvoice.Timestamp"/>
         public DateTimeOffset Timestamp => _unsignedTx.Timestamp;
 
@@ -219,7 +209,7 @@ namespace Libplanet.Tx
         /// </item>
         /// <item>
         /// <term><see cref="UpdatedAddresses"/></term>
-        /// <description><paramref name="customActions"/> and
+        /// <description><paramref name="actions"/> and
         /// <paramref name="updatedAddresses"/></description>
         /// </item>
         /// </list>
@@ -229,17 +219,17 @@ namespace Libplanet.Tx
         /// <remarks>
         /// This factory method tries its best to fill the <see
         /// cref="UpdatedAddresses"/> property by actually evaluating
-        /// the given <paramref name="customActions"/> (we call it &#x201c;rehearsal
+        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
         /// mode&#x201d;), but remember that its result
         /// is approximated in some degree, because the result of
-        /// <paramref name="customActions"/> are not deterministic until
+        /// <paramref name="actions"/> are not deterministic until
         /// the <see cref="Transaction{T}"/> belongs to a <see
         /// cref="Libplanet.Blocks.Block{T}"/>.
         /// <para>If an <see cref="IAction"/> depends on previous states or
         /// some randomness to determine what <see cref="Address"/> to update,
         /// the automatically filled <see cref="UpdatedAddresses"/> became
         /// mismatched from the <see cref="Address"/>es
-        /// <paramref name="customActions"/> actually update after
+        /// <paramref name="actions"/> actually update after
         /// a <see cref="Libplanet.Blocks.Block{T}"/> is mined.
         /// Although such case would be rare, a programmer could manually give
         /// the <paramref name="updatedAddresses"/> parameter
@@ -266,17 +256,17 @@ namespace Libplanet.Tx
         /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
-        /// <param name="customActions">A list of user-defined custom actions to include.  This can
+        /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
-        /// the <see cref="CustomActions"/> property, and these actionss are evaluated before
+        /// the <see cref="Actions"/> property, and these actionss are evaluated before
         /// a <see cref="Transaction{T}"/> is created in order to fill
         /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="customActions"/>.
+        /// states affected by <paramref name="actions"/>.
         /// These <see cref="Address"/>es are also included in
         /// the <see cref="UpdatedAddresses"/> property, besides
         /// <see cref="Address"/>es projected by evaluating
-        /// <paramref name="customActions"/>.  See also <em>Remarks</em> section.</param>
+        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
@@ -284,13 +274,13 @@ namespace Libplanet.Tx
         /// <returns>A created new <see cref="Transaction{T}"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
-        /// is passed to <paramref name="privateKey"/> or <paramref name="customActions"/>.
+        /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
         public static Transaction<T> Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
-            IEnumerable<IAction> customActions,
+            IEnumerable<IAction> actions,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         ) =>
@@ -298,7 +288,7 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey,
                 genesisHash,
-                customActions.Select(action => action.PlainValue),
+                actions.Select(action => action.PlainValue),
                 updatedAddresses,
                 timestamp
             );
@@ -307,7 +297,7 @@ namespace Libplanet.Tx
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
-            IEnumerable<IValue> customActions,
+            IEnumerable<IValue> actions,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         ) =>
@@ -315,7 +305,7 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey,
                 genesisHash,
-                new TxActionList(new List(customActions)),
+                new TxActionList(new List(actions)),
                 updatedAddresses,
                 timestamp
             );

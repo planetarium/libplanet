@@ -561,7 +561,7 @@ namespace Libplanet.Net
                             transactions = deltaBlock.Transactions.ToImmutableArray();
                         txsCount += transactions.Count();
                         actionsCount += transactions.Sum(
-                            tx => tx.CustomActions is { } ca ? ca.Count : 1L);
+                            tx => tx.Actions is { } actions ? actions.Count : 1L);
                         progress?.Report(actionExecutionState);
                         progress?.Report(
                             new BlockVerificationState

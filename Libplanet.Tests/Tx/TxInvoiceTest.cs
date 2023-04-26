@@ -167,7 +167,7 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
                       ""actions"": {
-                        ""customActions"": [
+                        ""actions"": [
                           {
                             ""\uFEFFitem"": ""\uFEFFfoo"",
                             ""\uFEFFrecord_rehearsal"": false,
