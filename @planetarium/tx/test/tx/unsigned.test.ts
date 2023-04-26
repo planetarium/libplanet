@@ -59,7 +59,6 @@ test("encodeUnsignedTxWithSystemAction", async () => {
           "\ufeffrecipient": "0x8a29de186b85560d708451101c4bf02d63b25c50",
         },
       },
-      type: "system",
     },
     timestamp: "2022-05-23T01:02:00+00:00",
     publicKey:
@@ -151,7 +150,6 @@ test("encodeUnsignedTxWithCustomActions", async () => {
           },
         },
       ],
-      type: "custom",
     },
     timestamp: "2022-05-23T01:02:00+00:00",
     publicKey:
