@@ -166,20 +166,18 @@ namespace Libplanet.Tests.Tx
                         ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
-                      ""actions"": {
-                        ""actions"": [
-                          {
-                            ""\uFEFFitem"": ""\uFEFFfoo"",
-                            ""\uFEFFrecord_rehearsal"": false,
-                            ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
-                          },
-                          {
-                            ""\uFEFFitem"": ""\uFEFFbar"",
-                            ""\uFEFFrecord_rehearsal"": false,
-                            ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
-                          }
-                        ]
-                      }
+                      ""actions"": [
+                        {
+                          ""\uFEFFitem"": ""\uFEFFfoo"",
+                          ""\uFEFFrecord_rehearsal"": false,
+                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                        },
+                        {
+                          ""\uFEFFitem"": ""\uFEFFbar"",
+                          ""\uFEFFrecord_rehearsal"": false,
+                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                        }
+                      ]
                     }
                 ",
                 false);

@@ -132,32 +132,13 @@ namespace Libplanet.Tx
             Type typeToConvert,
             JsonSerializerOptions options)
         {
-            if (reader.TokenType != JsonTokenType.StartObject)
+            IValue? serialized = BencodexJsonConverter.Read(ref reader, typeToConvert, options);
+            if (serialized is Bencodex.Types.List list)
             {
-                throw new JsonException("Expected a JSON object.");
+                return new TxActionList(list);
             }
 
-            reader.Read();
-            while (reader.TokenType != JsonTokenType.EndObject)
-            {
-                string key = reader.GetString() ?? throw new JsonException("Expected a key.");
-                switch (key)
-                {
-                    case "type":
-                        throw new JsonException(
-                            $"Unexpected key/value: {key}/{reader.GetString()}");
-
-                    case "actions":
-                        return new TxActionList(
-                            BencodexJsonConverter.Read(ref reader, typeof(IValue), options) ??
-                                throw new JsonException("Expected a \"Actions\" value."));
-
-                    default:
-                        throw new JsonException("Unexpected key: " + key);
-                }
-            }
-
-            throw new JsonException($"Encountered an unexpected token: {reader.TokenType}");
+            throw new JsonException("Serialized actions must be a Bencodex list.");
         }
 
         public override void Write(
@@ -165,18 +146,7 @@ namespace Libplanet.Tx
             TxActionList value,
             JsonSerializerOptions options)
         {
-            writer.WriteStartObject();
-            if (value is TxActionList txActionList)
-            {
-                writer.WritePropertyName("actions");
-                BencodexJsonConverter.Write(writer, txActionList.Bencoded, options);
-            }
-            else
-            {
-                throw new JsonException("Unexpected action list type: " + value.GetType());
-            }
-
-            writer.WriteEndObject();
+            BencodexJsonConverter.Write(writer, value.Bencoded, options);
         }
     }
 }

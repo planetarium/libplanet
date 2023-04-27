@@ -22,8 +22,7 @@ namespace Libplanet.Tx
         private static readonly Binary SignerKey = new byte[] { 0x73 }; // 's'
         private static readonly Binary PublicKeyKey = new byte[] { 0x70 }; // 'p'
         private static readonly Binary SignatureKey = new byte[] { 0x53 }; // 'S'
-        private static readonly Binary SystemActionKey = new byte[] { 0x41 }; // 'A'
-        private static readonly Binary CustomActionsKey = new byte[] { 0x61 }; // 'a'
+        private static readonly Binary ActionsKey = new byte[] { 0x61 }; // 'a'
         private static readonly Codec Codec = new Codec();
 
         [Pure]
@@ -39,7 +38,7 @@ namespace Libplanet.Tx
             Bencodex.Types.Dictionary dict = Bencodex.Types.Dictionary.Empty;
             if (invoice.Actions is TxActionList tal)
             {
-                dict = dict.Add(CustomActionsKey, tal.Bencoded);
+                dict = dict.Add(ActionsKey, tal.Bencoded);
             }
 
             dict = dict
@@ -100,8 +99,8 @@ namespace Libplanet.Tx
                     (Text)dictionary[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
-                actions: dictionary.TryGetValue(CustomActionsKey, out IValue cav)
-                    ? new TxActionList(dictionary[CustomActionsKey])
+                actions: dictionary.TryGetValue(ActionsKey, out IValue cav)
+                    ? new TxActionList(dictionary[ActionsKey])
                     : TxActionList.Empty);
 #pragma warning restore SA1118
 

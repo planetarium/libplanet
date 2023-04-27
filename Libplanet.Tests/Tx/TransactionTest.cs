@@ -448,20 +448,18 @@ namespace Libplanet.Tests.Tx
                         ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
                       ],
                       ""signature"": ""MEMCIGNU6C0suI1jof0vrA9FjOhptyvcMwzcWdDr676olsgPAh9aC6Olt6kMVBwp7lLPER0GHhMMQUHB4qZzVr2BtMDo"",
-                      ""actions"": {
-                        ""actions"": [
-                          {
-                            ""\uFEFFitem"": ""\uFEFFfoo"",
-                            ""\uFEFFrecord_rehearsal"": false,
-                            ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
-                          },
-                          {
-                            ""\uFEFFitem"": ""\uFEFFbar"",
-                            ""\uFEFFrecord_rehearsal"": false,
-                            ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
-                          }
-                        ]
-                      },
+                      ""actions"": [
+                        {
+                          ""\uFEFFitem"": ""\uFEFFfoo"",
+                          ""\uFEFFrecord_rehearsal"": false,
+                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                        },
+                        {
+                          ""\uFEFFitem"": ""\uFEFFbar"",
+                          ""\uFEFFrecord_rehearsal"": false,
+                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                        }
+                      ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
                       ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
                       ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265""
