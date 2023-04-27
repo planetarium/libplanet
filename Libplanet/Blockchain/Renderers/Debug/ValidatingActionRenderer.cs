@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
@@ -48,9 +49,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer{T}.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
         public override void RenderAction(
-            IAction action,
+            IValue action,
             IActionContext context,
             IAccountStateDelta nextStates
         )
@@ -60,9 +61,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
+        /// cref="IActionRenderer{T}.RenderActionError(IValue, IActionContext, Exception)"/>
         public override void RenderActionError(
-            IAction action,
+            IValue action,
             IActionContext context,
             Exception exception
         )

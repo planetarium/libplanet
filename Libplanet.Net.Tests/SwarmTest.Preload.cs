@@ -412,7 +412,7 @@ namespace Libplanet.Net.Tests
             }
 
             renderer.RenderEventHandler += (_, a) =>
-                renderCount += a is DumbAction ? 1 : 0;
+                renderCount += IsDumbAction(a) ? 1 : 0;
 
             await StartAsync(receiver);
             await StartAsync(sender);

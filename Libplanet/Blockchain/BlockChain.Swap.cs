@@ -227,24 +227,19 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
-                // Assumes BlockAction is not null because it was checked in the above.
-                IAction action = evaluation.InputContext.BlockAction
-                    ? Policy.BlockAction!
-                    : ToAction(evaluation.Action);
-
                 foreach (IActionRenderer<T> renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
                     {
                         renderer.RenderAction(
-                            action,
+                            evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
                             evaluation.OutputStates);
                     }
                     else
                     {
                         renderer.RenderActionError(
-                            action,
+                            evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
                             evaluation.Exception);
                     }

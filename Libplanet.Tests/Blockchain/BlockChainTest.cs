@@ -333,7 +333,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(block, blockLogs[0].NewTip);
             Assert.Equal(0, blockLogs[0].Index);
             Assert.Equal(1, actionLogs[0].Index);
-            Assert.Equal(action, actionLogs[0].Action);
+            Assert.Equal(action.PlainValue, actionLogs[0].Action);
             Assert.Equal(prevBlock, blockLogs[1].OldTip);
             Assert.Equal(block, blockLogs[1].NewTip);
             Assert.Equal(2, blockLogs[1].Index);
@@ -350,7 +350,9 @@ namespace Libplanet.Tests.Blockchain
             {
                 ActionRenderer = (a, __, nextStates) =>
                 {
-                    if (!(a is Initialize))
+                    if (!(a is Dictionary dictionary &&
+                          dictionary.TryGetValue((Text)"type_id", out IValue typeId) &&
+                          typeId.Equals((Integer)2)))
                     {
                         throw new SomeException("thrown by renderer");
                     }
@@ -601,7 +603,7 @@ namespace Libplanet.Tests.Blockchain
 
                 blockChain.Fork(blockChain.Tip.Hash);
 
-                Assert.Equal(0, renderer.ActionRecords.Count(r => r.Action is DumbAction));
+                Assert.Equal(0, renderer.ActionRecords.Count(r => IsDumbAction(r.Action)));
                 Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
             }
         }
@@ -832,9 +834,9 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
 
             RenderRecord<DumbAction>.ActionBase[] actionRenders = _renderer.ActionRecords
-                .Where(r => r.Action is DumbAction)
+                .Where(r => IsDumbAction(r.Action))
                 .ToArray();
-            DumbAction[] actions = actionRenders.Select(r => (DumbAction)r.Action).ToArray();
+            DumbAction[] actions = actionRenders.Select(r => ToDumbAction(r.Action)).ToArray();
 
             int actionsCountA = txsA.Sum(
                 a => a.Sum(tx => tx.Actions.Count)
@@ -864,7 +866,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal("fork-baz", actions[2].Item);
 
                 RenderRecord<DumbAction>.ActionBase[] blockActionRenders = _renderer.ActionRecords
-                    .Where(r => r.Action is MinerReward)
+                    .Where(r => IsMinerReward(r.Action))
                     .ToArray();
 
                 // except genesis block.

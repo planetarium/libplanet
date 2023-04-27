@@ -1,4 +1,5 @@
 using System;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -15,8 +16,8 @@ namespace Libplanet.Blockchain.Renderers
     /// <list type="number">
     /// <item><description><see cref="IRenderer{T}.RenderBlock(Block, Block)"/> (one time)
     /// </description></item>
-    /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
-    /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/> (zero or more
+    /// <item><description><see cref="RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+    /// &amp; <see cref="RenderActionError(IValue, IActionContext, Exception)"/> (zero or more
     /// times)</description>
     /// </item>
     /// <item><description><see cref="RenderBlockEnd(Block, Block)"/> (one time)</description>
@@ -57,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers
         /// It is guaranteed to be called only once for an <paramref name="action"/>,
         /// and only after applied to the blockchain, unless an exception is thrown during executing
         /// the <paramref name="action"/> (in that case <see
-        /// cref="RenderActionError(IAction, IActionContext, Exception)"/> is called instead) or
+        /// cref="RenderActionError(IValue, IActionContext, Exception)"/> is called instead) or
         /// once the <paramref name="action"/> has been unrendered.
         /// <para>Also note that this method is invoked after <see
         /// cref="IRenderer{T}.RenderBlock(Block, Block)"/> method is called
@@ -68,11 +69,11 @@ namespace Libplanet.Blockchain.Renderers
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction.Actions"/>).</para>
         /// </remarks>
-        void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
+        void RenderAction(IValue action, IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
         /// Does the similar things to <see cref=
-        /// "RenderAction(IAction, IActionContext, IAccountStateDelta)"/>, except that this method
+        /// "RenderAction(IValue, IActionContext, IAccountStateDelta)"/>, except that this method
         /// is invoked when <paramref name="action"/> has terminated with an exception.
         /// </summary>
         /// <param name="action">An action which threw an exception during execution.</param>
@@ -92,7 +93,7 @@ namespace Libplanet.Blockchain.Renderers
         /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
         /// actions (<see cref="Tx.Transaction.Actions"/>).</para>
         /// </remarks>
-        void RenderActionError(IAction action, IActionContext context, Exception exception);
+        void RenderActionError(IValue action, IActionContext context, Exception exception);
 
         /// <summary>
         /// Does things that should be done right all actions in a new <see cref="Block"/> are

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -21,7 +22,7 @@ namespace Libplanet.Blockchain.Renderers
     public sealed class AtomicActionRenderer<T> : IActionRenderer<T>
         where T : IAction, new()
     {
-        private readonly List<(IAction, IActionContext, IAccountStateDelta)> _eventBuffer;
+        private readonly List<(IValue, IActionContext, IAccountStateDelta)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -36,7 +37,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IAction, IActionContext, IAccountStateDelta)>();
+            _eventBuffer = new List<(IValue, IActionContext, IAccountStateDelta)>();
             _errored = false;
         }
 
@@ -60,9 +61,9 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer{T}.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(
-            IAction action,
+            IValue action,
             IActionContext context,
             IAccountStateDelta nextStates
         )
@@ -83,8 +84,8 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
-        public void RenderActionError(IAction action, IActionContext context, Exception exception)
+        /// cref="IActionRenderer{T}.RenderActionError(IValue, IActionContext, Exception)"/>
+        public void RenderActionError(IValue action, IActionContext context, Exception exception)
         {
             if (!context.TxId.Equals(_lastTxId))
             {
@@ -103,7 +104,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IAction, IActionContext, IAccountStateDelta> render
+            Action<IValue, IActionContext, IAccountStateDelta> render
         )
         {
             if (!_errored)

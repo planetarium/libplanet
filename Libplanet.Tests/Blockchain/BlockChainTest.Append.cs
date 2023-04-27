@@ -69,9 +69,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(_blockChain.ContainsBlock(block2.Hash));
 
             RenderRecord<DumbAction>.ActionSuccess[] renders = _renderer.ActionSuccessRecords
-                .Where(r => r.Action is DumbAction)
+                .Where(r => TestUtils.IsDumbAction(r.Action))
                 .ToArray();
-            DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
+            DumbAction[] actions = renders.Select(r => TestUtils.ToDumbAction(r.Action)).ToArray();
             Assert.Equal(4, renders.Length);
             Assert.True(renders.All(r => r.Render));
             Assert.Equal("foo", actions[0].Item);
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Blockchain
 
             Address minerAddress = addresses[4];
             RenderRecord<DumbAction>.ActionSuccess[] blockRenders = _renderer.ActionSuccessRecords
-                .Where(r => r.Action is MinerReward)
+                .Where(r => TestUtils.IsMinerReward(r.Action))
                 .ToArray();
 
             Assert.Equal((Integer)2, (Integer)_blockChain.GetState(minerAddress));
@@ -362,7 +362,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(renderer.ActionSuccessRecords);
             Assert.Single(renderer.ActionErrorRecords);
             RenderRecord<ThrowException>.ActionError errorRecord = renderer.ActionErrorRecords[0];
-            Assert.Equal(action.PlainValue, errorRecord.Action.PlainValue);
+            Assert.Equal(action.PlainValue, errorRecord.Action);
             Assert.IsType<UnexpectedlyTerminatedActionException>(errorRecord.Exception);
             Assert.IsType<ThrowException.SomeException>(errorRecord.Exception.InnerException);
         }

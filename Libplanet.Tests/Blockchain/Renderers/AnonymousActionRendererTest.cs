@@ -1,4 +1,5 @@
 using System;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -10,7 +11,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class AnonymousActionRendererTest
     {
-        private static IAction _action = new DumbAction();
+        private static IValue _action = new DumbAction().PlainValue;
 
         private static IAccountStateDelta _stateDelta =
             new AccountStateDeltaImpl(
@@ -37,7 +38,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionRenderer()
         {
-            (IAction, IActionContext, IAccountStateDelta)? record = null;
+            (IValue, IActionContext, IAccountStateDelta)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
                 ActionRenderer = (action, context, nextStates) =>
@@ -59,7 +60,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionErrorRenderer()
         {
-            (IAction, IActionContext, Exception)? record = null;
+            (IValue, IActionContext, Exception)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
                 ActionErrorRenderer = (action, context, exception) =>
