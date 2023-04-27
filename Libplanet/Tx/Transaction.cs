@@ -293,6 +293,91 @@ namespace Libplanet.Tx
                 timestamp
             );
 
+        /// <summary>
+        /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
+        /// It automatically fills the following values from:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Property</term>
+        /// <description>Parameter the filled value derived from</description>
+        /// </listheader>
+        /// <item>
+        /// <term><see cref="Signer"/></term>
+        /// <description><paramref name="privateKey"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PublicKey"/></term>
+        /// <description><paramref name="privateKey"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="UpdatedAddresses"/></term>
+        /// <description><paramref name="actions"/> and
+        /// <paramref name="updatedAddresses"/></description>
+        /// </item>
+        /// </list>
+        /// <para>Note that the <paramref name="privateKey"/> in itself is not
+        /// included in the created <see cref="Transaction{T}"/>.</para>
+        /// </summary>
+        /// <remarks>
+        /// This factory method tries its best to fill the <see
+        /// cref="UpdatedAddresses"/> property by actually evaluating
+        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
+        /// mode&#x201d;), but remember that its result
+        /// is approximated in some degree, because the result of
+        /// <paramref name="actions"/> are not deterministic until
+        /// the <see cref="Transaction{T}"/> belongs to a <see
+        /// cref="Libplanet.Blocks.Block{T}"/>.
+        /// <para>If an <see cref="IAction"/> depends on previous states or
+        /// some randomness to determine what <see cref="Address"/> to update,
+        /// the automatically filled <see cref="UpdatedAddresses"/> became
+        /// mismatched from the <see cref="Address"/>es
+        /// <paramref name="actions"/> actually update after
+        /// a <see cref="Libplanet.Blocks.Block{T}"/> is mined.
+        /// Although such case would be rare, a programmer could manually give
+        /// the <paramref name="updatedAddresses"/> parameter
+        /// the <see cref="Address"/>es they predict to be updated.</para>
+        /// <para>If an <see cref="IAction"/> oversimplifies the assumption
+        /// about the <see cref="Libplanet.Blocks.Block{T}"/> it belongs to,
+        /// runtime exceptions could be thrown from this factory method.
+        /// The best solution to that is not to oversimplify things,
+        /// there is an option to check <see cref="IActionContext"/>'s
+        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
+        /// a conditional logic for the case.</para>
+        /// </remarks>
+        /// <param name="nonce">The number of previous
+        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// of this transaction.  This goes to the
+        /// <see cref="Transaction{T}.Nonce"/> property.</param>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
+        /// who creates and signs a new transaction.  This key is used to fill
+        /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
+        /// <see cref="Signature"/> properties, but this in itself is not
+        /// included in the transaction.</param>
+        /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
+        /// of the genesis which this <see cref="Transaction{T}"/> is made from.
+        /// This can be <see langword="null"/> iff the transaction is contained
+        /// in the genesis block.
+        /// </param>
+        /// <param name="actions">A list of user-defined custom actions to include.  This can
+        /// be empty, but cannot be <see langword="null"/>.  This goes to
+        /// the <see cref="Actions"/> property, and these actionss are evaluated before
+        /// a <see cref="Transaction{T}"/> is created in order to fill
+        /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose
+        /// states affected by <paramref name="actions"/>.
+        /// These <see cref="Address"/>es are also included in
+        /// the <see cref="UpdatedAddresses"/> property, besides
+        /// <see cref="Address"/>es projected by evaluating
+        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.</param>
+        /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
+        /// is created and signed.  This goes to the <see cref="Timestamp"/>
+        /// property.  If <see langword="null"/> (which is default) is passed this will
+        /// be the current time.</param>
+        /// <returns>A created new <see cref="Transaction{T}"/> signed by
+        /// the given <paramref name="privateKey"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
+        /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
+        /// </exception>
         public static Transaction<T> Create(
             long nonce,
             PrivateKey privateKey,

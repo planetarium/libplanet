@@ -679,6 +679,8 @@ namespace Libplanet.Action
             ).Single();
         }
 
+        // FIXME: Should be changed to use ActionTypeLoader and this should
+        // be removed at some point.
         private static IAction ToAction<T>(IValue plainValue)
             where T : IAction, new()
         {
