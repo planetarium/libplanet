@@ -146,7 +146,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     publicKey: key.PublicKey,
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(key, blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(key, blockChain);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -227,7 +227,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose<DumbAction>().Evaluate(TestUtils.PrivateKeys[1], blockChain);
+                .Propose().Evaluate<DumbAction>(TestUtils.PrivateKeys[1], blockChain);
 
             context.Start();
             context.ProduceMessage(

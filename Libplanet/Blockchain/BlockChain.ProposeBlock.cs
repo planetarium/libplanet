@@ -68,10 +68,10 @@ namespace Libplanet.Blockchain
                     lastCommit: null),
                 transactions: transactions);
 
-            PreEvaluationBlock<T> preEval = content.Propose<T>();
+            PreEvaluationBlock preEval = content.Propose();
             IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(
                 preEval, blockAction, nativeTokenPredicate);
-            return preEval.Sign(
+            return preEval.Sign<T>(
                 privateKey,
                 DetermineGenesisStateRootHash(
                     preEval, blockAction, nativeTokenPredicate, out _));
@@ -172,13 +172,13 @@ namespace Libplanet.Blockchain
                     txHash: BlockContent.DeriveTxHash(orderedTransactions),
                     lastCommit: lastCommit),
                 transactions: orderedTransactions);
-            var preEval = blockContent.Propose<T>();
+            var preEval = blockContent.Propose();
             return ProposeBlock(proposer, preEval);
         }
 
         internal Block<T> ProposeBlock(
             PrivateKey proposer,
-            PreEvaluationBlock<T> preEvaluationBlock) => preEvaluationBlock.Sign(
+            PreEvaluationBlock preEvaluationBlock) => preEvaluationBlock.Sign<T>(
                 proposer,
                 DetermineBlockStateRootHash(preEvaluationBlock, out _));
 

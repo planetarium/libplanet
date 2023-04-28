@@ -432,7 +432,7 @@ namespace Libplanet.Blockchain
             // Extract pre-evaluation block and re-evaluate through
             // determine-state-root-hash method with an ephemeral state store
             // to check the state root hash validity
-            var preEval = new PreEvaluationBlock<T>(
+            var preEval = new PreEvaluationBlock(
                 genesisBlock.Header, genesisBlock.Transactions);
             var computedStateRootHash = DetermineGenesisStateRootHash(
                 preEval,

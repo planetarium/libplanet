@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
         }
 
         public void Dispose()
@@ -558,7 +558,7 @@ namespace Libplanet.Tests.Blockchain
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
-                var genesis = ProposeGenesisBlock(
+                var genesis = ProposeGenesisBlock<DumbAction>(
                     ProposeGenesis<DumbAction>(
                         GenesisProposer.PublicKey,
                         transactions: new[]
@@ -1014,7 +1014,7 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
-                Block<DumbAction> genesis2 = ProposeGenesisBlock(
+                Block<DumbAction> genesis2 = ProposeGenesisBlock<DumbAction>(
                     ProposeGenesis<DumbAction>(
                         timestamp: DateTimeOffset.UtcNow,
                         proposer: GenesisProposer.PublicKey),
@@ -1068,7 +1068,7 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = ProposeGenesisBlock(
+            Block<DumbAction> genesisWithTx = ProposeGenesisBlock<DumbAction>(
                 ProposeGenesis<DumbAction>(
                     GenesisProposer.PublicKey,
                     new[]
@@ -1653,7 +1653,7 @@ namespace Libplanet.Tests.Blockchain
             IBlockPolicy<DumbAction> blockPolicy = new NullBlockPolicy<DumbAction>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            Block<DumbAction> genesisBlock = ProposeGenesisBlock(
+            Block<DumbAction> genesisBlock = ProposeGenesisBlock<DumbAction>(
                 ProposeGenesis<DumbAction>(GenesisProposer.PublicKey),
                 GenesisProposer,
                 blockPolicy.BlockAction,
@@ -2022,7 +2022,7 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(),
                 null,
                 List.Empty);
-            var genesisWithTx = ProposeGenesisBlock(
+            var genesisWithTx = ProposeGenesisBlock<DumbAction>(
                 ProposeGenesis<DumbAction>(GenesisProposer.PublicKey, new[] { genesisTx }),
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,

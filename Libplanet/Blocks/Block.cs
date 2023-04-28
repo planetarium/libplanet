@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.JsonConverters;
 using Libplanet.Tx;
@@ -14,7 +15,7 @@ namespace Libplanet.Blocks
     /// The complete block including all block contents and action evaluation.
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
+    /// parameter is aligned with <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     public sealed class Block<T> :
         IPreEvaluationBlock,
         IBlockHeader,
@@ -27,7 +28,7 @@ namespace Libplanet.Blocks
         public const int CurrentProtocolVersion = BlockMetadata.CurrentProtocolVersion;
 
         private readonly BlockHeader _header;
-        private readonly PreEvaluationBlock<T> _preEvaluationBlock;
+        private readonly PreEvaluationBlock _preEvaluationBlock;
 
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by combining a block <paramref name="header"/>
@@ -58,7 +59,7 @@ namespace Libplanet.Blocks
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>.</exception>
         public Block(IBlockHeader header, IEnumerable<Transaction> transactions)
             : this(
-                new PreEvaluationBlock<T>(header, transactions),
+                new PreEvaluationBlock(header, transactions),
                 (header.StateRootHash, header.Signature, header.Hash))
         {
         }
@@ -73,7 +74,7 @@ namespace Libplanet.Blocks
         /// <param name="proof">A triple of the state root hash, the block signature,
         /// and the block hash.</param>
         public Block(
-            PreEvaluationBlock<T> preEvaluationBlock,
+            PreEvaluationBlock preEvaluationBlock,
             (
                 HashDigest<SHA256> StateRootHash,
                 ImmutableArray<byte>? Signature,

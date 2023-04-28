@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            PreEvaluationBlock<DumbAction> preEval = TestUtils.ProposeNext(
+            PreEvaluationBlock preEval = TestUtils.ProposeNext(
                 chain.Tip,
                 new[] { tx },
                 miner: _keys[1].PublicKey,

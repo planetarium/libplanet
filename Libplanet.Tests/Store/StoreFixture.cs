@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Store
             var preEval = TestUtils.ProposeGenesis<DumbAction>(
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
-            GenesisBlock = preEval.Sign(
+            GenesisBlock = preEval.Sign<DumbAction>(
                 Proposer,
                 BlockChain<DumbAction>.DetermineGenesisStateRootHash(
                     preEval,

@@ -32,12 +32,12 @@ namespace Libplanet.Tests.Blocks
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
-            PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.GenesisContent.Propose<Arithmetic>();
+            PreEvaluationBlock preEvalGenesis =
+                _contents.GenesisContent.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
-                Block<Arithmetic> genesis = preEvalGenesis.Sign(
+                Block<Arithmetic> genesis = preEvalGenesis.Sign<Arithmetic>(
                     _contents.GenesisKey,
                     BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
                         preEvalGenesis,
@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Blocks
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs);
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose<Arithmetic>();
+                PreEvaluationBlock preEval1 = content1.Propose();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
@@ -95,8 +95,7 @@ namespace Libplanet.Tests.Blocks
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
-            PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.GenesisContent.Propose<Arithmetic>();
+            PreEvaluationBlock preEvalGenesis = _contents.GenesisContent.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -105,7 +104,7 @@ namespace Libplanet.Tests.Blocks
                         preEvalGenesis, blockAction, _ => true, out _);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block<Arithmetic> genesis =
-                    preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
+                    preEvalGenesis.Sign<Arithmetic>(_contents.GenesisKey, genesisStateRootHash);
                 _output.WriteLine("#1: {0}", genesis);
 
                 var blockChain = BlockChain<Arithmetic>.Create(
@@ -130,12 +129,13 @@ namespace Libplanet.Tests.Blocks
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs);
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose<Arithmetic>();
+                PreEvaluationBlock preEval1 = content1.Propose();
 
                 HashDigest<SHA256> b1StateRootHash =
                     blockChain.DetermineBlockStateRootHash(preEval1, out _);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);
-                Block<Arithmetic> block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
+                Block<Arithmetic> block1 =
+                    preEval1.Sign<Arithmetic>(_contents.Block1Key, b1StateRootHash);
                 _output.WriteLine("#1: {0}", block1);
 
                 blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));

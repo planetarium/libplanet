@@ -14,10 +14,7 @@ namespace Libplanet.Blocks
     /// a possible <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>) and state root
     /// hash.
     /// </summary>
-    /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
-    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock
-        where T : IAction, new()
+    public sealed class PreEvaluationBlock : IPreEvaluationBlock
     {
         private BlockContent _content;
         private PreEvaluationBlockHeader _header;
@@ -32,7 +29,7 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
+        /// Creates a <see cref="PreEvaluationBlock"/> instance with its
         /// <paramref name="content"/> data, a valid <paramref name="preEvaluationHash"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
@@ -99,6 +96,8 @@ namespace Libplanet.Blocks
         /// <param name="blockChain">The blockchain on which actions are evaluated based.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
         /// It is signed by the given <paramref name="privateKey"/>.</returns>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         /// <exception cref="InvalidOperationException">Thrown when the block's
         /// <see cref="PreEvaluationBlockHeader.ProtocolVersion"/> is less than 2.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
@@ -110,8 +109,9 @@ namespace Libplanet.Blocks
         /// less than 2, use <see cref="Block{T}"/>'s constructors with
         /// <see langword="null"/> signatures.</remarks>
         // FIXME: Take narrower input instead of a whole BlockChain<T>.
-        public Block<T> Evaluate(PrivateKey privateKey, BlockChain<T> blockChain) =>
-            Sign(privateKey, blockChain.DetermineBlockStateRootHash(this, out _));
+        public Block<T> Evaluate<T>(PrivateKey privateKey, BlockChain<T> blockChain)
+            where T : IAction, new() =>
+            Sign<T>(privateKey, blockChain.DetermineBlockStateRootHash(this, out _));
 
         /// <summary>
         /// Signs the block content with the given <paramref name="stateRootHash"/>.
@@ -122,6 +122,8 @@ namespace Libplanet.Blocks
         /// <param name="stateRootHash">The state root hash to include to the input message to
         /// sign.</param>
         /// <returns>The signed block with the <paramref name="stateRootHash"/>.</returns>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         /// <exception cref="InvalidOperationException">Thrown when the block's
         /// <see cref="PreEvaluationBlockHeader.ProtocolVersion"/> is less than 2.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
@@ -132,7 +134,8 @@ namespace Libplanet.Blocks
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
         /// less than 2, use <see cref="Block{T}"/>'s constructors with <see langword="null"/>
         /// signatures.</remarks>
-        public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
+        public Block<T> Sign<T>(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
+            where T : IAction, new()
         {
             ImmutableArray<byte> sig = Header.MakeSignature(privateKey, stateRootHash);
             return new Block<T>(

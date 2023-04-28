@@ -1047,7 +1047,7 @@ namespace Libplanet.Tests.Store
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var policy = new NullBlockPolicy<NullAction>();
                 var preEval = ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey);
-                var genesis = preEval.Sign(
+                var genesis = preEval.Sign<NullAction>(
                     GenesisProposer,
                     BlockChain<NullAction>.DetermineGenesisStateRootHash(
                         preEval, policy.BlockAction, policy.NativeTokens.Contains, out _));

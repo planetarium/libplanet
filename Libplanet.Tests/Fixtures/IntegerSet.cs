@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Fixtures
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             var preEval =
-            Genesis = TestUtils.ProposeGenesisBlock(
+            Genesis = TestUtils.ProposeGenesisBlock<Arithmetic>(
                 TestUtils.ProposeGenesis<Arithmetic>(
                     Miner.PublicKey,
                     Txs,

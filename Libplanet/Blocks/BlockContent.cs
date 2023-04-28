@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tx;
 
@@ -194,10 +193,9 @@ namespace Libplanet.Blocks
             return new HashDigest<SHA256>(hasher.Hash);
         }
 
-        public PreEvaluationBlock<T> Propose<T>()
-            where T : IAction, new()
+        public PreEvaluationBlock Propose()
         {
-            return new PreEvaluationBlock<T>(
+            return new PreEvaluationBlock(
                 this,
                 _blockMetadata.DerivePreEvaluationHash(default));
         }

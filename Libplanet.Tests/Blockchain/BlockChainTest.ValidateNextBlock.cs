@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: protocolVersion >= 2 ? _fx.Proposer.PublicKey : null,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             Block<DumbAction> block2 = new BlockContent(
@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: protocolVersion - 1 >= 2 ? _fx.Proposer.PublicKey : null,
                     previousHash: block1.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: null))
-                            .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                            .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
                 _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             });
         }
@@ -90,7 +90,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: prev.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
                     blockWithAlreadyUsedIndex,
@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Blockchain
                     previousHash: prev.Hash,
                     txHash: null,
                     lastCommit: TestUtils.CreateBlockCommit(prev.Hash, prev.Index + 1, 0)))
-                    .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
                     blockWithIndexAfterNonexistentIndex,
@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Blockchain
                     txHash: null,
                     // ReSharper disable once PossibleInvalidOperationException
                     lastCommit: TestUtils.CreateBlockCommit(_validNext.PreviousHash.Value, 1, 0)))
-                .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(
                         invalidPreviousHashBlock,
@@ -148,7 +148,7 @@ namespace Libplanet.Tests.Blockchain
                     previousHash: _validNext.Hash,
                     txHash: null,
                     lastCommit: TestUtils.CreateBlockCommit(_validNext)))
-                .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(
                         invalidPreviousTimestamp,
@@ -189,7 +189,7 @@ namespace Libplanet.Tests.Blockchain
                     previousHash: genesisBlock.Hash,
                     txHash: null,
                     lastCommit: null))
-                        .Propose<DumbAction>().Evaluate(TestUtils.GenesisProposer, chain1);
+                        .Propose().Evaluate<DumbAction>(TestUtils.GenesisProposer, chain1);
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
@@ -216,7 +216,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -231,7 +231,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var blockCommit = TestUtils.CreateBlockCommit(block1);
@@ -243,7 +243,7 @@ namespace Libplanet.Tests.Blockchain
                     previousHash: block1.Hash,
                     txHash: null,
                     lastCommit: blockCommit))
-                        .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                        .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(_blockChain.Tip, block2);
         }
@@ -258,7 +258,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var invalidValidator = new PrivateKey();
@@ -280,7 +280,7 @@ namespace Libplanet.Tests.Blockchain
                     previousHash: block1.Hash,
                     txHash: null,
                     lastCommit: blockCommit))
-                        .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                        .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
@@ -295,7 +295,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var keysExceptPeer0 = TestUtils.ValidatorPrivateKeys.Where(
@@ -316,7 +316,7 @@ namespace Libplanet.Tests.Blockchain
                     previousHash: block1.Hash,
                     txHash: null,
                     lastCommit: blockCommit))
-                        .Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                        .Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
@@ -353,7 +353,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(
@@ -374,7 +374,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(
@@ -395,7 +395,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(
@@ -425,7 +425,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
                 _blockChain.Append(validNextBlock, null));
@@ -456,7 +456,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: blockChain.Genesis.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, blockChain);
+                    lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, blockChain);
 
             Vote GenerateVote(PrivateKey key, VoteFlag flag)
             {

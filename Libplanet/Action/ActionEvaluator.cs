@@ -197,7 +197,7 @@ namespace Libplanet.Action
         /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </returns>
         /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// the <see cref="Transaction"/>'s type parameter.</typeparam>
+        /// the <see cref="Block{T}"/>'s type parameter.</typeparam>
         /// <remarks>
         /// A mock evaluation is performed on <paramref name="tx"/> using a mock
         /// <see cref="Block{T}"/> for its evaluation context and a mock

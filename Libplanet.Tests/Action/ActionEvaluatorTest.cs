@@ -81,8 +81,8 @@ namespace Libplanet.Tests.Action
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: txs).Propose<RandomAction>();
-            Block<RandomAction> stateRootBlock = noStateRootBlock.Sign(
+                transactions: txs).Propose();
+            Block<RandomAction> stateRootBlock = noStateRootBlock.Sign<RandomAction>(
                 GenesisProposer,
                 BlockChain<RandomAction>.DetermineGenesisStateRootHash(
                     noStateRootBlock,
@@ -226,7 +226,7 @@ namespace Libplanet.Tests.Action
                 genesisHash: genesis.Hash,
                 actions: new[] { action });
             var txs = new Transaction[] { tx };
-            PreEvaluationBlock<ThrowException> block = new BlockContent(
+            PreEvaluationBlock block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -234,7 +234,7 @@ namespace Libplanet.Tests.Action
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: txs).Propose<ThrowException>();
+                transactions: txs).Propose();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
                 ActionEvaluator.NullAccountStateGetter,
@@ -596,7 +596,7 @@ namespace Libplanet.Tests.Action
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: txs).Propose<DumbAction>();
+                transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
@@ -752,7 +752,7 @@ namespace Libplanet.Tests.Action
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0)),
-                transactions: txs).Propose<ThrowException>();
+                transactions: txs).Propose();
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,

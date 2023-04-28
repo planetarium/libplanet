@@ -237,8 +237,8 @@ public class GeneratedBlockChainFixture
                     BlockContent.DeriveTxHash(transactions),
                     Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value)),
                 transactions)
-            .Propose<PolymorphicAction<SimpleAction>>()
-            .Evaluate(pk, Chain);
+            .Propose()
+            .Evaluate<PolymorphicAction<SimpleAction>>(pk, Chain);
         Chain.Append(
             block,
             new BlockCommit(

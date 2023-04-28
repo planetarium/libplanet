@@ -170,7 +170,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose<DumbAction>().Evaluate(key, blockChain);
+                .Propose().Evaluate<DumbAction>(key, blockChain);
 
             context.Start();
             await proposalSent.WaitAsync();

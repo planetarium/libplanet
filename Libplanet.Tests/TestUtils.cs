@@ -405,7 +405,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
-        public static PreEvaluationBlock<T> ProposeGenesis<T>(
+        public static PreEvaluationBlock ProposeGenesis<T>(
             PublicKey proposer = null,
             IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
@@ -444,7 +444,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs);
-            return content.Propose<T>();
+            return content.Propose();
         }
 
         public static Block<T> ProposeGenesisBlock<T>(
@@ -456,24 +456,24 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            PreEvaluationBlock<T> preEval = ProposeGenesis<T>(
+            PreEvaluationBlock preEval = ProposeGenesis<T>(
                 miner?.PublicKey,
                 transactions,
                 null,
                 timestamp,
                 protocolVersion
             );
-            return preEval.Sign(miner, stateRootHash);
+            return preEval.Sign<T>(miner, stateRootHash);
         }
 
         public static Block<T> ProposeGenesisBlock<T>(
-            PreEvaluationBlock<T> preEval,
+            PreEvaluationBlock preEval,
             PrivateKey privateKey,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
                 where T : IAction, new()
         {
-            return preEval.Sign(
+            return preEval.Sign<T>(
                 privateKey,
                 BlockChain<T>.DetermineGenesisStateRootHash(
                     preEval,
@@ -482,7 +482,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     out _));
         }
 
-        public static PreEvaluationBlock<T> ProposeNext<T>(
+        public static PreEvaluationBlock ProposeNext<T>(
             Block<T> previousBlock,
             IReadOnlyList<Transaction> transactions = null,
             PublicKey miner = null,
@@ -508,7 +508,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: lastCommit),
                 transactions: txs);
-            var preEval = content.Propose<T>();
+            var preEval = content.Propose();
             preEval.ValidateTimestamp();
             return preEval;
         }
@@ -529,14 +529,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
             );
 
-            PreEvaluationBlock<T> preEval = ProposeNext(
+            PreEvaluationBlock preEval = ProposeNext(
                 previousBlock,
                 txs,
                 miner?.PublicKey,
                 blockInterval,
                 protocolVersion,
                 lastCommit);
-            return preEval.Sign(miner, stateRootHash);
+            return preEval.Sign<T>(miner, stateRootHash);
         }
 
         /// <summary>
@@ -637,7 +637,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             null,
                             preEval.Header.DeriveBlockHash(stateRootHash, null)
                         ))
-                    : preEval.Sign(GenesisProposer, stateRootHash);
+                    : preEval.Sign<T>(GenesisProposer, stateRootHash);
             }
 
             ValidatingActionRenderer<T> validator = null;
