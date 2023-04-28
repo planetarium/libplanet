@@ -64,6 +64,23 @@ public class BlockType<T> : ObjectGraphType<Block<T>>
             name: "LastCommit",
             description: "The LastCommit of the block.",
             resolve: ctx => ctx.Source.LastCommit);
+        Field<NonNullGraphType<LongGraphType>>(
+            name: "Difficulty",
+            description: "The mining difficulty that the block's nonce has to satisfy.",
+            deprecationReason: "Block does not have Difficulty field in PBFT.",
+            resolve: _ => 0);
+        Field<NonNullGraphType<BigIntGraphType>>(
+            name: "TotalDifficulty",
+            description: "The total mining difficulty since the genesis including " +
+                         "the block's difficulty.",
+            deprecationReason: "Block does not have TotalDifficulty field in PBFT.",
+            resolve: _ => 0);
+        Field<NonNullGraphType<ByteStringType>>(
+            name: "Nonce",
+            description: "The proof-of-work nonce which satisfies the required difficulty.",
+            deprecationReason: "Block does not have Nonce field in PBFT.",
+            resolve: _ => new byte[] { }
+        );
 
         Name = "Block";
     }
