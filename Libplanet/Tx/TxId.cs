@@ -13,13 +13,13 @@ namespace Libplanet.Tx
 {
     /// <summary>
     /// <see cref="TxId"/>, abbreviation of transaction identifier,
-    /// is a SHA-256 digest derived from a <see cref="Transaction{T}"/>'s
+    /// is a SHA-256 digest derived from a <see cref="Transaction"/>'s
     /// content.
     /// <para>As it is a SHA-256 digest, it consists of 32 <see cref="byte"/>s,
     /// and 64 characters in hexadecimal.
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
-    /// <seealso cref="Transaction{T}.Id"/>
+    /// <seealso cref="Transaction.Id"/>
     [Serializable]
     [JsonConverter(typeof(TxIdJsonConverter))]
     public readonly struct TxId

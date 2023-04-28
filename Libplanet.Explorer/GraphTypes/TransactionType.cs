@@ -8,7 +8,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class TransactionType<T> : ObjectGraphType<Transaction<T>>
+    public class TransactionType<T> : ObjectGraphType<Transaction>
         where T : IAction, new()
     {
         public TransactionType(IBlockChainContext<T> context)

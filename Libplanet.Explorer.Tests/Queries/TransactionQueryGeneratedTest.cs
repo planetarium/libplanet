@@ -53,7 +53,7 @@ public class TransactionQueryGeneratedTest
             Fx.Chain.Store.GetBlock<PolymorphicAction<SimpleAction>>(failBlock.PreviousHash!.Value);
         var successTx = successBlock.Transactions.First();
         var pk = Fx.PrivateKeys[0];
-        var stagingTx = Transaction<PolymorphicAction<SimpleAction>>.Create(
+        var stagingTx = Transaction.Create<NullAction>(
             Fx.Chain.GetNextTxNonce(pk.ToAddress()),
             pk,
             Fx.Chain.Genesis.Hash,
@@ -219,7 +219,7 @@ public class TransactionQueryGeneratedTest
             offsetVal = offsetVal >= 0 ? offsetVal : blocksToTest.Count + offsetVal;
             blocks = desc ? blocks.SkipLast(offsetVal) : blocks.Skip(offsetVal);
         }
-        IEnumerable<Transaction<PolymorphicAction<SimpleAction>>> txs =
+        IEnumerable<Transaction> txs =
             blocks.SelectMany(block => block.Transactions);
 
         if (desc)

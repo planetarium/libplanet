@@ -327,11 +327,11 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override Transaction<T> GetTransaction<T>(TxId txid)
+        public override Transaction GetTransaction(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
             {
-                return (Transaction<T>)cachedTx;
+                return (Transaction)cachedTx;
             }
 
             UPath path = TxPath(txid);
@@ -353,7 +353,7 @@ namespace Libplanet.Store
             IValue txNode = Codec.Decode(bytes);
             if (txNode is Bencodex.Types.Dictionary dict)
             {
-                Transaction<T> tx = TxMarshaler.UnmarshalTransactionWithoutVerification<T>(dict);
+                Transaction tx = TxMarshaler.UnmarshalTransactionWithoutVerification(dict);
                 _txCache.AddOrUpdate(txid, tx);
                 return tx;
             }
@@ -364,7 +364,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void PutTransaction<T>(Transaction<T> tx)
+        public override void PutTransaction(Transaction tx)
         {
             if (_txCache.ContainsKey(tx.Id))
             {
@@ -459,7 +459,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            foreach (Transaction<T> tx in block.Transactions)
+            foreach (Transaction tx in block.Transactions)
             {
                 PutTransaction(tx);
             }

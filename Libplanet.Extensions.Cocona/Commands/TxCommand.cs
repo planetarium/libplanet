@@ -115,7 +115,7 @@ public class TxCommand
         }
 
         bool invalid = false;
-        Transaction<NullAction>? tx = null;
+        Transaction? tx = null;
         if (!unsigned)
         {
             if (signature is not { } sig)
@@ -129,7 +129,7 @@ public class TxCommand
 
             try
             {
-                tx = unsignedTx.Verify<NullAction>(sig);
+                tx = unsignedTx.Verify(sig);
             }
             catch (Exception e)
             {

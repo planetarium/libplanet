@@ -16,7 +16,7 @@ namespace Libplanet.Benchmarks
     {
         private readonly ImmutableArray<Block<DumbAction>> Blocks = default;
         private readonly int BlocksCount = default;
-        private readonly ImmutableArray<Transaction<DumbAction>> Txs = default;
+        private readonly ImmutableArray<Transaction> Txs = default;
         private StoreFixture _fx = null;
         private int TxsCount = default;
         private IStore _store = null;
@@ -24,7 +24,7 @@ namespace Libplanet.Benchmarks
         public Store()
         {
             var blocks = new List<Block<DumbAction>>();
-            var txs = new List<Transaction<DumbAction>>();
+            var txs = new List<Transaction>();
             Block<DumbAction> genesis = TestUtils.ProposeGenesisBlock<DumbAction>(
                 TestUtils.GenesisProposer
             );
@@ -34,10 +34,10 @@ namespace Libplanet.Benchmarks
             long nonce = 0;
             for (int i = 0; i < 500; i++)
             {
-                var blockTxs = new List<Transaction<DumbAction>>();
+                var blockTxs = new List<Transaction>();
                 for (int j = 0; j < i % 5; j++)
                 {
-                    blockTxs.Add(Transaction<DumbAction>.Create(
+                    blockTxs.Add(Transaction.Create<DumbAction>(
                         nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
                 block = TestUtils.ProposeNextBlock(
@@ -153,7 +153,7 @@ namespace Libplanet.Benchmarks
         {
             InitializeFixture();
             int i = 0;
-            foreach (Transaction<DumbAction> tx in Txs)
+            foreach (Transaction tx in Txs)
             {
                 _store.PutTransaction(tx);
                 i++;
@@ -171,33 +171,33 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Transaction<DumbAction> GetOldTxOutOfManyTxs()
+        public Transaction GetOldTxOutOfManyTxs()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetTransaction<DumbAction>(Txs[0].Id);
+            return _store.GetTransaction(Txs[0].Id);
         }
 
         [Benchmark]
-        public Transaction<DumbAction> GetRecentTxOutOfManyTxs()
+        public Transaction GetRecentTxOutOfManyTxs()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetTransaction<DumbAction>(Txs[TxsCount - 2].Id);
+            return _store.GetTransaction(Txs[TxsCount - 2].Id);
         }
 
         [Benchmark]
-        public Transaction<DumbAction> TryGetNonExistentTxId()
+        public Transaction TryGetNonExistentTxId()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetTransaction<DumbAction>(default);
+            return _store.GetTransaction(default);
         }
     }
 }

@@ -17,18 +17,10 @@ namespace Libplanet.Tx
     /// Consists of <see cref="IAction"/> and is signed to be included in
     /// a <see cref="Blocks.Block{T}"/> and transmitted over the network.
     /// </summary>
-    /// <typeparam name="T">A class implementing <see cref="IAction"/> to
-    /// include.
-    /// Each game usually defines its own concrete class which implements
-    /// <see cref="IAction"/>, and uses it for this type parameter.
-    /// This type parameter is aligned with <see cref="Blocks.Block{T}"/>'s
-    /// and <see cref="Blockchain.BlockChain{T}"/>'s type parameters.
-    /// </typeparam>
     /// <seealso cref="ITransaction"/>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITransaction
-        where T : IAction, new()
+    public sealed class Transaction : IEquatable<Transaction>, ITransaction
     {
         private static readonly Codec Codec = new Codec();
 
@@ -37,7 +29,7 @@ namespace Libplanet.Tx
         private byte[] _signature;  // FIXME
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> instance by verifying a
+        /// Creates a new <see cref="Transaction"/> instance by verifying a
         /// <paramref name="signature"/> of an <paramref name="unsignedTx"/>.
         /// </summary>
         /// <param name="unsignedTx">The <see cref="IUnsignedTx"/> instance to combine with
@@ -58,7 +50,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> instance by signing an
+        /// Creates a new <see cref="Transaction"/> instance by signing an
         /// <paramref name="unsignedTx"/> with a <paramref name="privateKey"/>.
         /// </summary>
         /// <param name="unsignedTx">The <see cref="IUnsignedTx"/> instance to sign.</param>
@@ -73,7 +65,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> instance by combining an
+        /// Creates a new <see cref="Transaction"/> instance by combining an
         /// <paramref name="unsignedTx"/> with a <paramref name="alreadyVerifiedSignature"/>.
         /// </summary>
         /// <remarks>As the parameter name suggests, this constructor assumes that the given
@@ -93,7 +85,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// A unique identifier derived from this <see cref="Transaction{T}"/>'s
+        /// A unique identifier derived from this <see cref="Transaction"/>'s
         /// content.
         /// <para>For more characteristics, see <see cref="TxId"/> type.</para>
         /// </summary>
@@ -124,13 +116,13 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A digital signature of the content of this
-        /// <see cref="Transaction{T}"/>.  This is signed by the account
+        /// <see cref="Transaction"/>.  This is signed by the account
         /// who corresponds to <see cref="PublicKey"/>.
         /// This cannot be <see langword="null"/>.
         /// </summary>
         /// <returns>A new <see cref="byte"/> array of this transaction's
         /// signature.  Changing a returned array does not affect the internal
-        /// state of this <see cref="Transaction{T}"/> object.</returns>
+        /// state of this <see cref="Transaction"/> object.</returns>
         /// <remarks>Although this cannot be <see langword="null"/>, it can be an empty
         /// array if the transaction is not signed yet.</remarks>
         public byte[] Signature
@@ -166,18 +158,18 @@ namespace Libplanet.Tx
         public BlockHash? GenesisHash => _unsignedTx.GenesisHash;
 
         /// <summary>
-        /// Decodes a <see cref="Transaction{T}"/>'s
+        /// Decodes a <see cref="Transaction"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
         /// <param name="bytes">A <a href="https://bencodex.org/">Bencodex</a>
-        /// representation of a <see cref="Transaction{T}"/>.</param>
-        /// <returns>A decoded <see cref="Transaction{T}"/> object.</returns>
+        /// representation of a <see cref="Transaction"/>.</param>
+        /// <returns>A decoded <see cref="Transaction"/> object.</returns>
         /// <exception cref="InvalidTxSignatureException">Thrown when its
         /// <see cref="Signature"/> is invalid or not signed by
         /// the account who corresponds to <see cref="PublicKey"/>.
         /// </exception>
         /// <seealso cref="Serialize()"/>
-        public static Transaction<T> Deserialize(byte[] bytes)
+        public static Transaction Deserialize(byte[] bytes)
         {
             // TODO: Move this method to TxMarshaler.
             IValue value = new Codec().Decode(bytes);
@@ -188,11 +180,11 @@ namespace Libplanet.Tx
                     $"{value.GetType()}");
             }
 
-            return TxMarshaler.UnmarshalTransaction<T>(dict);
+            return TxMarshaler.UnmarshalTransaction(dict);
         }
 
         /// <summary>
-        /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
+        /// A fa&#xe7;ade factory to create a new <see cref="Transaction"/>.
         /// It automatically fills the following values from:
         /// <list type="table">
         /// <listheader>
@@ -214,7 +206,7 @@ namespace Libplanet.Tx
         /// </item>
         /// </list>
         /// <para>Note that the <paramref name="privateKey"/> in itself is not
-        /// included in the created <see cref="Transaction{T}"/>.</para>
+        /// included in the created <see cref="Transaction"/>.</para>
         /// </summary>
         /// <remarks>
         /// This factory method tries its best to fill the <see
@@ -223,7 +215,7 @@ namespace Libplanet.Tx
         /// mode&#x201d;), but remember that its result
         /// is approximated in some degree, because the result of
         /// <paramref name="actions"/> are not deterministic until
-        /// the <see cref="Transaction{T}"/> belongs to a <see
+        /// the <see cref="Transaction"/> belongs to a <see
         /// cref="Libplanet.Blocks.Block{T}"/>.
         /// <para>If an <see cref="IAction"/> depends on previous states or
         /// some randomness to determine what <see cref="Address"/> to update,
@@ -243,23 +235,23 @@ namespace Libplanet.Tx
         /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="nonce">The number of previous
-        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// <see cref="Transaction"/>s committed by the <see cref="Signer"/>
         /// of this transaction.  This goes to the
-        /// <see cref="Transaction{T}.Nonce"/> property.</param>
+        /// <see cref="Transaction.Nonce"/> property.</param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
         /// <see cref="Signature"/> properties, but this in itself is not
         /// included in the transaction.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
-        /// of the genesis which this <see cref="Transaction{T}"/> is made from.
+        /// of the genesis which this <see cref="Transaction"/> is made from.
         /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
         /// the <see cref="Actions"/> property, and these actionss are evaluated before
-        /// a <see cref="Transaction{T}"/> is created in order to fill
+        /// a <see cref="Transaction"/> is created in order to fill
         /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
         /// states affected by <paramref name="actions"/>.
@@ -267,24 +259,26 @@ namespace Libplanet.Tx
         /// the <see cref="UpdatedAddresses"/> property, besides
         /// <see cref="Address"/>es projected by evaluating
         /// <paramref name="actions"/>.  See also <em>Remarks</em> section.</param>
-        /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
+        /// <param name="timestamp">The time this <see cref="Transaction"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
-        /// <returns>A created new <see cref="Transaction{T}"/> signed by
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+        /// <returns>A created new <see cref="Transaction"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
-        public static Transaction<T> Create(
+        public static Transaction Create<T>(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IAction> actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null
-        ) =>
-            Create(
+            DateTimeOffset? timestamp = null)
+            where T : IAction, new() =>
+            Create<T>(
                 nonce,
                 privateKey,
                 genesisHash,
@@ -294,7 +288,7 @@ namespace Libplanet.Tx
             );
 
         /// <summary>
-        /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
+        /// A fa&#xe7;ade factory to create a new <see cref="Transaction"/>.
         /// It automatically fills the following values from:
         /// <list type="table">
         /// <listheader>
@@ -316,7 +310,7 @@ namespace Libplanet.Tx
         /// </item>
         /// </list>
         /// <para>Note that the <paramref name="privateKey"/> in itself is not
-        /// included in the created <see cref="Transaction{T}"/>.</para>
+        /// included in the created <see cref="Transaction"/>.</para>
         /// </summary>
         /// <remarks>
         /// This factory method tries its best to fill the <see
@@ -325,7 +319,7 @@ namespace Libplanet.Tx
         /// mode&#x201d;), but remember that its result
         /// is approximated in some degree, because the result of
         /// <paramref name="actions"/> are not deterministic until
-        /// the <see cref="Transaction{T}"/> belongs to a <see
+        /// the <see cref="Transaction"/> belongs to a <see
         /// cref="Libplanet.Blocks.Block{T}"/>.
         /// <para>If an <see cref="IAction"/> depends on previous states or
         /// some randomness to determine what <see cref="Address"/> to update,
@@ -345,23 +339,23 @@ namespace Libplanet.Tx
         /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="nonce">The number of previous
-        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// <see cref="Transaction"/>s committed by the <see cref="Signer"/>
         /// of this transaction.  This goes to the
-        /// <see cref="Transaction{T}.Nonce"/> property.</param>
+        /// <see cref="Transaction.Nonce"/> property.</param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
         /// <see cref="Signature"/> properties, but this in itself is not
         /// included in the transaction.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
-        /// of the genesis which this <see cref="Transaction{T}"/> is made from.
+        /// of the genesis which this <see cref="Transaction"/> is made from.
         /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
         /// the <see cref="Actions"/> property, and these actionss are evaluated before
-        /// a <see cref="Transaction{T}"/> is created in order to fill
+        /// a <see cref="Transaction"/> is created in order to fill
         /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
         /// states affected by <paramref name="actions"/>.
@@ -369,37 +363,38 @@ namespace Libplanet.Tx
         /// the <see cref="UpdatedAddresses"/> property, besides
         /// <see cref="Address"/>es projected by evaluating
         /// <paramref name="actions"/>.  See also <em>Remarks</em> section.</param>
-        /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
+        /// <param name="timestamp">The time this <see cref="Transaction"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
-        /// <returns>A created new <see cref="Transaction{T}"/> signed by
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+        /// <returns>A created new <see cref="Transaction"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
-        public static Transaction<T> Create(
+        public static Transaction Create<T>(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IValue> actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null
-        ) =>
-            Create(
+            DateTimeOffset? timestamp = null)
+            where T : IAction, new() =>
+            Create<T>(
                 nonce,
                 privateKey,
                 genesisHash,
                 new TxActionList(new List(actions)),
                 updatedAddresses,
-                timestamp
-            );
+                timestamp);
 
         /// <summary>
-        /// Encodes this <see cref="Transaction{T}"/> into a <see cref="byte"/> array.
+        /// Encodes this <see cref="Transaction"/> into a <see cref="byte"/> array.
         /// </summary>
         /// <returns>A <a href="https://bencodex.org/">Bencodex</a>
-        /// representation of this <see cref="Transaction{T}"/>.</returns>
+        /// representation of this <see cref="Transaction"/>.</returns>
         public byte[] Serialize() =>
             Codec.Encode(this.MarshalTransaction());
 
@@ -419,30 +414,30 @@ namespace Libplanet.Tx
             other is { } o && o.Equals(_unsignedTx);
 
         /// <inheritdoc />
-        public bool Equals(Transaction<T>? other) => Id.Equals(other?.Id);
+        public bool Equals(Transaction? other) => Id.Equals(other?.Id);
 
         /// <inheritdoc />
-        public override bool Equals(object? obj) => obj is Transaction<T> other && Equals(other);
+        public override bool Equals(object? obj) => obj is Transaction other && Equals(other);
 
         /// <inheritdoc />
         public override int GetHashCode() => Id.GetHashCode();
 
-        /// <inheritdoc cref="Transaction{T}(UnsignedTx, ImmutableArray{byte})"/>
-        /// <returns>A <see cref="Transaction{T}"/> instance.</returns>
-        internal static Transaction<T> CombineWithoutVerification(
+        /// <inheritdoc cref="Transaction(UnsignedTx, ImmutableArray{byte})"/>
+        /// <returns>A <see cref="Transaction"/> instance.</returns>
+        internal static Transaction CombineWithoutVerification(
             UnsignedTx unsignedTx,
             ImmutableArray<byte> alreadyVerifiedSignature
         ) =>
-            new Transaction<T>(unsignedTx, alreadyVerifiedSignature: alreadyVerifiedSignature);
+            new Transaction(unsignedTx, alreadyVerifiedSignature: alreadyVerifiedSignature);
 
-        private static Transaction<T> Create(
+        private static Transaction Create<T>(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             TxActionList actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null
-        )
+            DateTimeOffset? timestamp = null)
+            where T : IAction, new()
         {
             if (privateKey is null)
             {
@@ -457,16 +452,16 @@ namespace Libplanet.Tx
             var signMeta = new TxSigningMetadata(privateKey.PublicKey, nonce);
             var unsignedDraftTx = new UnsignedTx(draftInvoice, signMeta);
 
-            var draftTx = new Transaction<T>(unsignedDraftTx, privateKey);
+            var draftTx = new Transaction(unsignedDraftTx, privateKey);
             IImmutableSet<Address> evaluatedUpdatedAddresses =
-                ActionEvaluator.GetUpdatedAddresses(draftTx);
+                ActionEvaluator.GetUpdatedAddresses<T>(draftTx);
             var invoice = new TxInvoice(
                 draftInvoice.GenesisHash,
                 draftInvoice.UpdatedAddresses.Union(evaluatedUpdatedAddresses),
                 draftInvoice.Timestamp,
                 draftInvoice.Actions);
             var unsignedTx = new UnsignedTx(invoice, signMeta);
-            return new Transaction<T>(unsignedTx, privateKey);
+            return new Transaction(unsignedTx, privateKey);
         }
     }
 }

@@ -96,7 +96,7 @@ namespace Libplanet.Blockchain
                     HashSet<TxId> txIdsToUnstage = GetTxIdsWithRange(other, fastForwardPath);
                     foreach (TxId txId in txIdsToStage)
                     {
-                        StagePolicy.Stage(this, Store.GetTransaction<T>(txId));
+                        StagePolicy.Stage(this, Store.GetTransaction(txId));
                     }
 
                     Store.SetCanonicalChainId(other.Id);

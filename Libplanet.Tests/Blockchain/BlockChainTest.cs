@@ -195,7 +195,7 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            var tx1 = Transaction<PolymorphicAction<BaseAction>>.Create(
+            var tx1 = Transaction.Create<PolymorphicAction<BaseAction>>(
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
@@ -223,7 +223,7 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            var tx2 = Transaction<PolymorphicAction<BaseAction>>.Create(
+            var tx2 = Transaction.Create<PolymorphicAction<BaseAction>>(
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
@@ -239,7 +239,7 @@ namespace Libplanet.Tests.Blockchain
             result = BattleResult.FromBencodex((Bencodex.Types.Dictionary)state);
             Assert.Contains("bow", result.UsedWeapons);
 
-            var tx3 = Transaction<PolymorphicAction<BaseAction>>.Create(
+            var tx3 = Transaction.Create<PolymorphicAction<BaseAction>>(
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
@@ -559,11 +559,11 @@ namespace Libplanet.Tests.Blockchain
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
                 var genesis = ProposeGenesisBlock(
-                    ProposeGenesis(
+                    ProposeGenesis<DumbAction>(
                         GenesisProposer.PublicKey,
                         transactions: new[]
                         {
-                            Transaction<DumbAction>.Create(
+                            Transaction.Create<DumbAction>(
                                 0,
                                 new PrivateKey(),
                                 null,
@@ -621,7 +621,7 @@ namespace Libplanet.Tests.Blockchain
 
             var genesis = _blockChain.Genesis;
 
-            Transaction<DumbAction>[] txsA =
+            Transaction[] txsA =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey),
             };
@@ -644,7 +644,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidTxNonceException>(() =>
                 _blockChain.Append(b2, CreateBlockCommit(b2)));
 
-            Transaction<DumbAction>[] txsB =
+            Transaction[] txsB =
             {
                 _fx.MakeTransaction(
                     actions,
@@ -677,7 +677,7 @@ namespace Libplanet.Tests.Blockchain
 
             var genesis = _blockChain.Genesis;
 
-            Transaction<DumbAction>[] txsA =
+            Transaction[] txsA =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey),
                 _fx.MakeTransaction(privateKey: lessActivePrivateKey),
@@ -695,7 +695,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
 
-            Transaction<DumbAction>[] txsB =
+            Transaction[] txsB =
             {
                 _fx.MakeTransaction(
                     actions,
@@ -754,7 +754,7 @@ namespace Libplanet.Tests.Blockchain
         {
             Assert.Throws<ArgumentNullException>(() => _blockChain.Swap(null, render)());
 
-            (var addresses, Transaction<DumbAction>[] txs1) =
+            (var addresses, Transaction[] txs1) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
             var miner = new PrivateKey();
@@ -779,7 +779,7 @@ namespace Libplanet.Tests.Blockchain
             BlockHash tipHash = _blockChain.Tip.Hash;
             BlockChain<DumbAction> fork = _blockChain.Fork(tipHash);
 
-            Transaction<DumbAction>[][] txsA =
+            Transaction[][] txsA =
             {
                 new[] // block #2
                 {
@@ -821,7 +821,7 @@ namespace Libplanet.Tests.Blockchain
                 },
             };
 
-            foreach (Transaction<DumbAction>[] txs in txsA)
+            foreach (Transaction[] txs in txsA)
             {
                 Block<DumbAction> b = ProposeNext(
                     _blockChain.Tip,
@@ -833,7 +833,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(b, CreateBlockCommit(b));
             }
 
-            Transaction<DumbAction>[] txsB =
+            Transaction[] txsB =
             {
                 // block #2'
                 _fx.MakeTransaction(
@@ -1069,11 +1069,11 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             Block<DumbAction> genesisWithTx = ProposeGenesisBlock(
-                ProposeGenesis(
+                ProposeGenesis<DumbAction>(
                     GenesisProposer.PublicKey,
                     new[]
                     {
-                        Transaction<DumbAction>.Create(
+                        Transaction.Create<DumbAction>(
                             0,
                             new PrivateKey(),
                             null,
@@ -1120,9 +1120,9 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction(address, "foo"),
                     new DumbAction(i < 1 ? address : addresses[i - 1], "bar"),
                 };
-                Transaction<DumbAction>[] txs =
+                Transaction[] txs =
                 {
-                    Transaction<DumbAction>.Create(0, privateKey, chain.Genesis.Hash, actions),
+                    Transaction.Create<DumbAction>(0, privateKey, chain.Genesis.Hash, actions),
                 };
                 b = ProposeNext(
                     b,
@@ -1340,7 +1340,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
-            Transaction<DumbAction>[] txsA =
+            Transaction[] txsA =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
             };
@@ -1355,7 +1355,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
 
-            Transaction<DumbAction>[] txsB =
+            Transaction[] txsB =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 2),
@@ -1365,7 +1365,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(3, _blockChain.GetNextTxNonce(address));
 
-            Transaction<DumbAction>[] txsC =
+            Transaction[] txsC =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 3),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 3),
@@ -1374,7 +1374,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
 
-            Transaction<DumbAction>[] txsD =
+            Transaction[] txsD =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 5),
             };
@@ -1382,7 +1382,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
 
-            Transaction<DumbAction>[] txsE =
+            Transaction[] txsE =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 4),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 5),
@@ -1410,7 +1410,7 @@ namespace Libplanet.Tests.Blockchain
             var address = privateKey.ToAddress();
             var actions = new[] { new DumbAction(address, "foo") };
 
-            Transaction<DumbAction>[] txs =
+            Transaction[] txs =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
@@ -1420,7 +1420,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block = _blockChain.ProposeBlock(privateKey);
             _blockChain.Append(block, CreateBlockCommit(block));
 
-            Transaction<DumbAction>[] staleTxs =
+            Transaction[] staleTxs =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
@@ -1446,7 +1446,7 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> ProposeNext(
                 Block<DumbAction> block,
-                IReadOnlyList<Transaction<DumbAction>> txs
+                IReadOnlyList<Transaction> txs
             ) =>
                 TestUtils.ProposeNext(
                     block,
@@ -1456,7 +1456,7 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: CreateBlockCommit(block)
                 ).Evaluate(_fx.Proposer, _blockChain);
 
-            Transaction<DumbAction>[] txsA =
+            Transaction[] txsA =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
@@ -1464,7 +1464,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> b1 = ProposeNext(genesis, txsA);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
-            Transaction<DumbAction>[] txsB =
+            Transaction[] txsB =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 2),
             };
@@ -1472,7 +1472,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b2, CreateBlockCommit(b2));
 
             // Invalid if nonce is too low
-            Transaction<DumbAction>[] txsC =
+            Transaction[] txsC =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
             };
@@ -1481,7 +1481,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(b3a, CreateBlockCommit(b3a)));
 
             // Invalid if nonce is too high
-            Transaction<DumbAction>[] txsD =
+            Transaction[] txsD =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 4),
             };
@@ -1501,7 +1501,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
             _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
 
-            List<Transaction<DumbAction>> txs = _stagePolicy
+            List<Transaction> txs = _stagePolicy
                 .Iterate(_blockChain)
                 .OrderBy(tx => tx.Nonce)
                 .ToList();
@@ -1529,7 +1529,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKey, actions);
             _blockChain.MakeTransaction(privateKey, actions);
 
-            List<Transaction<DumbAction>> txs = _stagePolicy
+            List<Transaction> txs = _stagePolicy
                 .Iterate(_blockChain)
                 .OrderBy(tx => tx.Nonce)
                 .ToList();
@@ -1683,7 +1683,7 @@ namespace Libplanet.Tests.Blockchain
 
             void BuildIndex(Guid id, Block<DumbAction> block)
             {
-                foreach (Transaction<DumbAction> tx in block.Transactions)
+                foreach (Transaction tx in block.Transactions)
                 {
                     store.IncreaseTxNonce(id, tx.Signer);
                 }
@@ -1729,7 +1729,7 @@ namespace Libplanet.Tests.Blockchain
                 for (int j = 0; j < accountsCount; ++j)
                 {
                     int index = i * accountsCount + j;
-                    Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                    Transaction tx = Transaction.Create<DumbAction>(
                         store.GetTxNonce(chain.Id, signer),
                         privateKey,
                         chain.Genesis.Hash,
@@ -1790,7 +1790,7 @@ namespace Libplanet.Tests.Blockchain
         protected virtual StoreFixture GetStoreFixture(IAction blockAction) =>
             new MemoryStoreFixture(blockAction: blockAction);
 
-        private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
+        private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default,
             PrivateKey[] keys = null
@@ -1820,7 +1820,7 @@ namespace Libplanet.Tests.Blockchain
                 0xec, 0xe0,
             });
 
-            Transaction<DumbAction>[] txs =
+            Transaction[] txs =
             {
                 _fx.MakeTransaction(
                     new[]
@@ -1903,7 +1903,7 @@ namespace Libplanet.Tests.Blockchain
                     .ToArray();
 
             var systemTxs = systemActions
-                .Select((systemAction, i) => Transaction<DumbAction>.Create(
+                .Select((systemAction, i) => Transaction.Create<DumbAction>(
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
@@ -1911,7 +1911,7 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             var customTxs = new[]
             {
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     nonce: systemTxs.Length,
                     privateKey: privateKey,
                     genesisHash: null,
@@ -2017,13 +2017,13 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var genesisTx = Transaction<DumbAction>.Create(
+            var genesisTx = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 null,
-                Array.Empty<DumbAction>());
+                List.Empty);
             var genesisWithTx = ProposeGenesisBlock(
-                ProposeGenesis(GenesisProposer.PublicKey, new[] { genesisTx }),
+                ProposeGenesis<DumbAction>(GenesisProposer.PublicKey, new[] { genesisTx }),
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains);
@@ -2035,7 +2035,7 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisWithTx);
 
-            var blockTx = Transaction<DumbAction>.Create(
+            var blockTx = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 null,
@@ -2074,7 +2074,7 @@ namespace Libplanet.Tests.Blockchain
             };
             var privateKey = new PrivateKey();
             var txs = systemActions
-                .Select((systemAction, i) => Transaction<SetValidator>.Create(
+                .Select((systemAction, i) => Transaction.Create<SetValidator>(
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
@@ -2182,7 +2182,7 @@ namespace Libplanet.Tests.Blockchain
 
             public override TxPolicyViolationException ValidateNextBlockTx(
                 BlockChain<T> blockChain,
-                Transaction<T> transaction
+                Transaction transaction
             )
             {
                 _hook(blockChain);
@@ -2204,7 +2204,7 @@ namespace Libplanet.Tests.Blockchain
 
             public override TxPolicyViolationException ValidateNextBlockTx(
                 BlockChain<T> blockChain,
-                Transaction<T> transaction
+                Transaction transaction
             )
             {
                 _hook(blockChain);

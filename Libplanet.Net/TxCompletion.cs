@@ -44,13 +44,13 @@ namespace Libplanet.Net
                 .ForContext("Source", nameof(TxCompletion<TPeer, TAction>));
         }
 
-        public delegate IAsyncEnumerable<Transaction<TAction>> TxFetcher(
+        public delegate IAsyncEnumerable<Transaction> TxFetcher(
             TPeer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken
         );
 
-        public delegate void TxBroadcaster(TPeer except, IEnumerable<Transaction<TAction>> txs);
+        public delegate void TxBroadcaster(TPeer except, IEnumerable<Transaction> txs);
 
         internal AsyncAutoResetEvent TxReceived { get; }
 
@@ -97,7 +97,7 @@ namespace Libplanet.Net
                             if (task.IsCompleted &&
                                 !task.IsFaulted &&
                                 !task.IsCanceled &&
-                                task.Result is ISet<Transaction<TAction>> txs)
+                                task.Result is ISet<Transaction> txs)
                             {
                                 ProcessFetchedTxIds(txs, peerAsKey);
                             }
@@ -119,11 +119,11 @@ namespace Libplanet.Net
             while (true);
         }
 
-        private void ProcessFetchedTxIds(ISet<Transaction<TAction>> txs, TPeer peer)
+        private void ProcessFetchedTxIds(ISet<Transaction> txs, TPeer peer)
         {
             try
             {
-                var policyCompatTxs = new HashSet<Transaction<TAction>>(
+                var policyCompatTxs = new HashSet<Transaction>(
                     txs.Where(
                         tx =>
                         {
@@ -148,7 +148,7 @@ namespace Libplanet.Net
                             }
                         }));
 
-                var stagedTxs = new List<Transaction<TAction>>();
+                var stagedTxs = new List<Transaction>();
                 foreach (var tx in policyCompatTxs)
                 {
                     try
@@ -215,7 +215,7 @@ namespace Libplanet.Net
                 .Where(txId =>
                     !_blockChain.StagePolicy.Ignores(_blockChain, txId)
                         && _blockChain.StagePolicy.Get(_blockChain, txId, filtered: false) is null
-                        && _blockChain.Store.GetTransaction<TAction>(txId) is null));
+                        && _blockChain.Store.GetTransaction(txId) is null));
         }
 
         private class TxFetchJob
@@ -247,7 +247,7 @@ namespace Libplanet.Net
                 TPeer peer,
                 TxFetcher txFetcher,
                 TimeSpan waitFor,
-                Action<Task<ISet<Transaction<TAction>>>> continuation,
+                Action<Task<ISet<Transaction>>> continuation,
                 CancellationToken cancellationToken)
             {
                 var task = new TxFetchJob(txFetcher, peer);
@@ -279,7 +279,7 @@ namespace Libplanet.Net
                 }
             }
 
-            private async Task<ISet<Transaction<TAction>>> RequestAsync(
+            private async Task<ISet<Transaction>> RequestAsync(
                 TimeSpan waitFor,
                 CancellationToken cancellationToken
             )
@@ -316,7 +316,7 @@ namespace Libplanet.Net
                         txIds.Count);
                     var stopWatch = new Stopwatch();
                     stopWatch.Start();
-                    var txs = new HashSet<Transaction<TAction>>(
+                    var txs = new HashSet<Transaction>(
                         await _txFetcher(
                                 _peer,
                                 txIds,

@@ -90,7 +90,7 @@ namespace Libplanet.Action
     ///                     throw new Exception(
     ///                         "TargetAddress of CreateCharacter action " +
     ///                         "only can be the same address to the " +
-    ///                         "Transaction<T>.Signer.");
+    ///                         "Transaction.Signer.");
     ///                 else if (!(state is null))
     ///                     throw new Exception(
     ///                         "Character was already created.");

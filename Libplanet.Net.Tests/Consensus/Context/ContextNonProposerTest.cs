@@ -255,7 +255,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 validateNextBlockTx: IsSignerValid);
 
             TxPolicyViolationException? IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = TestUtils.PrivateKeys[1].PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)

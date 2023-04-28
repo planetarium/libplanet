@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly IReadOnlyList<PrivateKey> PrivateKeys;
         public readonly IReadOnlyList<Address> Addresses;
         public readonly IReadOnlyList<Arithmetic> Actions;
-        public readonly IReadOnlyList<Transaction<Arithmetic>> Txs;
+        public readonly IReadOnlyList<Transaction> Txs;
         public readonly PrivateKey Miner;
         public readonly Block<Arithmetic> Genesis;
         public readonly BlockChain<Arithmetic> Chain;
@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Fixtures
                 .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
                 .Select(pair => new { Action = Arithmetic.Add(pair.State), pair.Key })
                 .Select(pair =>
-                    Transaction<Arithmetic>.Create(
+                    Transaction.Create<Arithmetic>(
                         0,
                         pair.Key,
                         null,
@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Fixtures
             StateStore = new TrieStateStore(KVStore);
             var preEval =
             Genesis = TestUtils.ProposeGenesisBlock(
-                TestUtils.ProposeGenesis(
+                TestUtils.ProposeGenesis<Arithmetic>(
                     Miner.PublicKey,
                     Txs,
                     null,
@@ -104,8 +104,8 @@ namespace Libplanet.Tests.Fixtures
             Address signerAddress = signer.ToAddress();
             string rawStateKey = KeyConverters.ToStateKey(signerAddress);
             long nonce = Chain.GetNextTxNonce(signerAddress);
-            Transaction<Arithmetic> tx =
-                Transaction<Arithmetic>.Create(nonce, signer, Genesis.Hash, actions);
+            Transaction tx =
+                Transaction.Create<Arithmetic>(nonce, signer, Genesis.Hash, actions);
             BigInteger prevState = Chain.GetState(signerAddress) is Bencodex.Types.Integer i
                 ? i.Value
                 : 0;
@@ -187,11 +187,11 @@ namespace Libplanet.Tests.Fixtures
 
         public struct TxWithContext
         {
-            public Transaction<Arithmetic> Tx;
+            public Transaction Tx;
             public IReadOnlyList<(BigInteger Value, HashDigest<SHA256> RootHash)> ExpectedDelta;
 
             public void Deconstruct(
-                out Transaction<Arithmetic> tx,
+                out Transaction tx,
                 out IReadOnlyList<(BigInteger Value, HashDigest<SHA256> RootHash)> expectedDelta
             )
             {

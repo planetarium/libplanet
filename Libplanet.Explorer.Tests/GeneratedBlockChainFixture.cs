@@ -29,12 +29,12 @@ public class GeneratedBlockChainFixture
 
     public ImmutableDictionary<
             Address,
-            ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>>
+            ImmutableArray<Transaction>>
         SignedTxs { get; private set; }
 
     public ImmutableDictionary<
             Address,
-            ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>>
+            ImmutableArray<Transaction>>
         InvolvedTxs { get; private set; }
 
     public GeneratedBlockChainFixture(
@@ -61,19 +61,19 @@ public class GeneratedBlockChainFixture
         SignedTxs = PrivateKeys.Aggregate(
             ImmutableDictionary<
                 Address,
-                ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>>.Empty,
+                ImmutableArray<Transaction>>.Empty,
             (dict, pk) =>
                 dict.SetItem(
                     pk.ToAddress(),
-                    ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>.Empty));
+                    ImmutableArray<Transaction>.Empty));
         InvolvedTxs = PrivateKeys.Aggregate(
             ImmutableDictionary<
                 Address,
-                ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>>.Empty,
+                ImmutableArray<Transaction>>.Empty,
             (dict, pk) =>
                 dict.SetItem(
                     pk.ToAddress(),
-                    ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>.Empty));
+                    ImmutableArray<Transaction>.Empty));
 
         var privateKey = new PrivateKey();
         Chain = BlockChain<PolymorphicAction<SimpleAction>>.Create(
@@ -90,7 +90,7 @@ public class GeneratedBlockChainFixture
                 transactions: PrivateKeys
                     .OrderBy(pk => pk.ToAddress().ToHex())
                     .Select(
-                        (pk, i) => Transaction<PolymorphicAction<SimpleAction>>.Create(
+                        (pk, i) => Transaction.Create<PolymorphicAction<SimpleAction>>(
                             nonce: i,
                             privateKey: privateKey,
                             genesisHash: null,
@@ -116,7 +116,7 @@ public class GeneratedBlockChainFixture
                 AddBlock(
                     random.Next(),
                     actionsForTransactions.Select(actions =>
-                            Transaction<PolymorphicAction<SimpleAction>>.Create(
+                            Transaction.Create<PolymorphicAction<SimpleAction>>(
                                 Chain.GetNextTxNonce(pk.ToAddress()),
                                 pk,
                                 Chain.Genesis.Hash,
@@ -140,7 +140,7 @@ public class GeneratedBlockChainFixture
                 AddBlock(
                     random.Next(),
                     actionsForTransactions.Select(actions =>
-                            Transaction<PolymorphicAction<SimpleAction>>.Create(
+                            Transaction.Create<PolymorphicAction<SimpleAction>>(
                                 Chain.GetNextTxNonce(pk.ToAddress()),
                                 pk,
                                 Chain.Genesis.Hash,
@@ -150,14 +150,14 @@ public class GeneratedBlockChainFixture
         }
     }
 
-    private ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>> GetRandomTransactions(
+    private ImmutableArray<Transaction> GetRandomTransactions(
         int seed, int maxCount, bool giveMax = false)
     {
         var random = new System.Random(seed);
         var nonces = ImmutableDictionary<PrivateKey, long>.Empty;
         return Enumerable.Range(0, giveMax ? maxCount : random.Next(maxCount))
             .Aggregate(
-                ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>>.Empty,
+                ImmutableArray<Transaction>.Empty,
                 (arr, _) =>
                 {
                     var pk = PrivateKeys[random.Next(PrivateKeys.Length)];
@@ -174,7 +174,7 @@ public class GeneratedBlockChainFixture
             .ToImmutableArray();
     }
 
-    private Transaction<PolymorphicAction<SimpleAction>>
+    private Transaction
         GetRandomTransaction(int seed, PrivateKey pk, long nonce)
     {
         var random = new System.Random(seed);
@@ -182,7 +182,7 @@ public class GeneratedBlockChainFixture
         var bal = (int)(Chain.GetBalance(addr, TestCurrency).MajorUnit & int.MaxValue);
         return (random.Next() % 3) switch
         {
-            0 => Transaction<PolymorphicAction<SimpleAction>>.Create(
+            0 => Transaction.Create<PolymorphicAction<SimpleAction>>(
                 nonce,
                 pk,
                 Chain.Genesis.Hash,
@@ -192,7 +192,7 @@ public class GeneratedBlockChainFixture
                     : new IAction[] { new Mint(addr, TestCurrency * random.Next(1, 100)) },
                 GetRandomAddresses(random.Next())
             ),
-            _ => Transaction<PolymorphicAction<SimpleAction>>.Create(
+            _ => Transaction.Create<PolymorphicAction<SimpleAction>>(
                 nonce,
                 pk,
                 Chain.Genesis.Hash,
@@ -224,7 +224,7 @@ public class GeneratedBlockChainFixture
 
     private void AddBlock(
         int seed,
-        ImmutableArray<Transaction<PolymorphicAction<SimpleAction>>> transactions)
+        ImmutableArray<Transaction> transactions)
     {
         var random = new System.Random(seed);
         var pk = PrivateKeys[random.Next(PrivateKeys.Length)];

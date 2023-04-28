@@ -75,7 +75,7 @@ namespace Libplanet.Net
         /// to its peers.
         /// </summary>
         /// <remarks>
-        /// Broadcasts are also made whenever <see cref="Transaction{T}"/> is staged in addition
+        /// Broadcasts are also made whenever <see cref="Transaction"/> is staged in addition
         /// to regular broadcasts determined by this option.
         /// </remarks>
         public TimeSpan TxBroadcastInterval { get; set; }

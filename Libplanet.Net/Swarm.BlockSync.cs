@@ -557,7 +557,7 @@ namespace Libplanet.Net
 
                         actionExecutionState.ExecutedBlockCount += 1;
                         actionExecutionState.ExecutedBlockHash = deltaBlock.Hash;
-                        IEnumerable<Transaction<T>>
+                        IEnumerable<Transaction>
                             transactions = deltaBlock.Transactions.ToImmutableArray();
                         txsCount += transactions.Count();
                         actionsCount += transactions.Sum(

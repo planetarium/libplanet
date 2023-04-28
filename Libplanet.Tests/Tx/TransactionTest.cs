@@ -25,14 +25,14 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void ConstructorWithVerification()
         {
-            var tx = new Transaction<PolymorphicAction<BaseAction>>(
+            var tx = new Transaction(
                 _fx.Tx,
                 ImmutableArray.Create(_fx.Tx.Signature));
             Assert.Equal<ITransaction>(_fx.Tx, tx);
 
             var wrongSig = ImmutableArray.Create(_fx.TxWithActions.Signature);
             InvalidTxSignatureException e = Assert.Throws<InvalidTxSignatureException>(
-                () => new Transaction<PolymorphicAction<BaseAction>>(_fx.Tx, wrongSig));
+                () => new Transaction(_fx.Tx, wrongSig));
             TestUtils.AssertBytesEqual(
                 "d4e3e4db802ef1b19c4bc74dd8fae5da60108414a6772b060752825034cb7f1b",
                 e.TxId);
@@ -42,12 +42,12 @@ namespace Libplanet.Tests.Tx
         public void ConstructorWithSigning()
         {
             PrivateKey validKey = _fx.PrivateKey1;
-            var tx = new Transaction<PolymorphicAction<BaseAction>>(_fx.Tx, validKey);
+            var tx = new Transaction(_fx.Tx, validKey);
             Assert.Equal<ITransaction>(_fx.Tx, tx);
 
             var wrongKey = new PrivateKey();
             ArgumentException e = Assert.Throws<ArgumentException>(
-                () => new Transaction<PolymorphicAction<BaseAction>>(_fx.Tx, wrongKey));
+                () => new Transaction(_fx.Tx, wrongKey));
             Assert.Equal("privateKey", e.ParamName);
         }
 
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Tx
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             var foo = Currency.Uncapped("FOO", 2, minters: null);
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 privateKey,
                 null,
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Tx
             );
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 privateKey,
                 null,
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
-            Transaction<DumbAction> emptyTx = Transaction<DumbAction>.Create(
+            Transaction emptyTx = Transaction.Create<DumbAction>(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Tx
             );
             Assert.Empty(emptyTx.UpdatedAddresses);
 
-            var tx = Transaction<PolymorphicAction<BaseAction>>.Create(
+            var tx = Transaction.Create<PolymorphicAction<BaseAction>>(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -192,7 +192,7 @@ namespace Libplanet.Tests.Tx
             );
 
             Address additionalAddr = new PrivateKey().ToAddress();
-            var txWithAddr = Transaction<PolymorphicAction<BaseAction>>.Create(
+            var txWithAddr = Transaction.Create<PolymorphicAction<BaseAction>>(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -209,7 +209,7 @@ namespace Libplanet.Tests.Tx
         public void CreateWithDefaultTimestamp()
         {
             DateTimeOffset rightBefore = DateTimeOffset.UtcNow;
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -226,7 +226,7 @@ namespace Libplanet.Tests.Tx
         {
             // The privateKey parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     null,
                     null,
@@ -258,7 +258,7 @@ namespace Libplanet.Tests.Tx
                 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96, 0xa8, 0x63, 0x04, 0xb0,
                 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9, 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
-            var tx = new Transaction<DumbAction>(
+            var tx = new Transaction(
                 new UnsignedTx(
                 new TxInvoice(timestamp: timestamp),
                 new TxSigningMetadata(privateKey.PublicKey, nonce: 0L)
@@ -306,7 +306,7 @@ namespace Libplanet.Tests.Tx
         public void DetectBadSignature()
         {
             Assert.Throws<InvalidTxSignatureException>(() =>
-                new Transaction<DumbAction>(
+                new Transaction(
                     (IUnsignedTx)_fx.Tx,
                     new byte[_fx.Tx.Signature.Length].ToImmutableArray()
                 )
@@ -317,7 +317,7 @@ namespace Libplanet.Tests.Tx
         public void ActionsAreIsolatedFromOutside()
         {
             var actions = new List<DumbAction>();
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -355,16 +355,16 @@ namespace Libplanet.Tests.Tx
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
                 "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
                 "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
-            var tx = new Transaction<DumbAction>(unsignedTx, signature: signature);
+            var tx = new Transaction(unsignedTx, signature: signature);
 
             Assert.Equal<ITxInvoice>(invoice, tx);
             Assert.Equal<ITxSigningMetadata>(signingMetadata, tx);
             Assert.Equal<IUnsignedTx>(unsignedTx, tx);
 
-            var copy = new Transaction<DumbAction>(unsignedTx, signature: signature);
+            var copy = new Transaction(unsignedTx, signature: signature);
             Assert.Equal<IUnsignedTx>(tx, copy);
             Assert.Equal<ITransaction>(tx, copy);
-            Assert.Equal<Transaction<DumbAction>>(tx, copy);
+            Assert.Equal<Transaction>(tx, copy);
             Assert.True(tx.Equals((object)copy));
             Assert.Equal(tx.GetHashCode(), copy.GetHashCode());
 
@@ -394,12 +394,12 @@ namespace Libplanet.Tests.Tx
                 }
 
                 var diffUnsignedTx = new UnsignedTx(diffInvoice, diffSigningMetadata);
-                var diffTx = new Transaction<DumbAction>(
+                var diffTx = new Transaction(
                     diffUnsignedTx,
                     i == 4 ? wrongKey : privateKey);
                 Assert.NotEqual<IUnsignedTx>(tx, diffTx);
                 Assert.NotEqual<ITransaction>(tx, diffTx);
-                Assert.NotEqual<Transaction<DumbAction>>(tx, diffTx);
+                Assert.NotEqual<Transaction>(tx, diffTx);
                 Assert.False(tx.Equals((object)diffTx));
                 Assert.NotEqual(tx.GetHashCode(), diffTx.GetHashCode());
             }
@@ -433,7 +433,7 @@ namespace Libplanet.Tests.Tx
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
                 "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
                 "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
-            var tx = new Transaction<DumbAction>(unsignedTx, signature: signature);
+            var tx = new Transaction(unsignedTx, signature: signature);
 
 #pragma warning disable MEN002  // Long lines are OK for test JSON data.
             AssertJsonSerializable(

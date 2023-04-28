@@ -22,7 +22,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         public async Task Query()
         {
             var privateKey = new PrivateKey();
-            var transaction = Transaction<NullAction>.Create(
+            var transaction = Transaction.Create<NullAction>(
                 0,
                 privateKey,
                 new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),

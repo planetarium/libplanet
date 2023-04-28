@@ -26,7 +26,7 @@ namespace Libplanet.Action
         Address Signer { get; }
 
         /// <summary>
-        /// <see cref="Transaction{T}.Id"/> of a transaction that an executed <see cref="IAction"/>
+        /// <see cref="Transaction.Id"/> of a transaction that an executed <see cref="IAction"/>
         /// belongs to.  This is <see langword="null"/>
         /// iff <see cref="BlockAction"/> is <see langword="true"/>.
         /// </summary>

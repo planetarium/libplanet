@@ -191,23 +191,23 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
-        /// a given <see cref="Transaction{T}"/> is evaluated.
+        /// a given <see cref="Transaction"/> is evaluated.
         /// </summary>
-        /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
+        /// <param name="tx">The <see cref="Transaction"/> to evaluate.</param>
         /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </returns>
         /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// the <see cref="Transaction{T}"/>'s type parameter.</typeparam>
+        /// the <see cref="Transaction"/>'s type parameter.</typeparam>
         /// <remarks>
         /// A mock evaluation is performed on <paramref name="tx"/> using a mock
         /// <see cref="Block{T}"/> for its evaluation context and a mock
         /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
         /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </remarks>
-        internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction<T> tx)
+        internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction tx)
             where T : IAction, new()
         {
-            // TODO: This method should take IUnsignedTx instead of Transaction<T>
+            // TODO: This method should take IUnsignedTx instead of Transaction
             // FIXME this static method(and related APIs) should be removed since it doesn't
             // compatible with action type loader.
             // see also:

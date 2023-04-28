@@ -5,9 +5,9 @@ using Libplanet.Blocks;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// An exception that is thrown when the <see cref="Transaction{T}.Nonce"/>
-    /// of a <see cref="Transaction{T}"/> included in a <see cref="Block{T}"/>
-    /// is inconsistent with the expected nonce for the <see cref="Transaction{T}.Signer"/>
+    /// An exception that is thrown when the <see cref="Transaction.Nonce"/>
+    /// of a <see cref="Transaction"/> included in a <see cref="Block{T}"/>
+    /// is inconsistent with the expected nonce for the <see cref="Transaction.Signer"/>
     /// when appending to a <see cref="BlockChain{T}"/>.
     /// </summary>
     [Serializable]
@@ -18,12 +18,12 @@ namespace Libplanet.Tx
         /// <see cref="InvalidTxNonceException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="txId">The invalid <see cref="Transaction{T}"/>'s
-        /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
+        /// <param name="txId">The invalid <see cref="Transaction"/>'s
+        /// <see cref="Transaction.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
-        /// <param name="expectedNonce">The expected <see cref="Transaction{T}.Nonce"/> value
-        /// for the <see cref="Transaction{T}"/>.</param>
-        /// <param name="improperNonce">The actual <see cref="Transaction{T}.Nonce"/>.</param>
+        /// <param name="expectedNonce">The expected <see cref="Transaction.Nonce"/> value
+        /// for the <see cref="Transaction"/>.</param>
+        /// <param name="improperNonce">The actual <see cref="Transaction.Nonce"/>.</param>
         public InvalidTxNonceException(
             string message,
             TxId txId,
@@ -36,14 +36,14 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// The expected <see cref="Transaction{T}.Nonce"/> value
-        /// for the <see cref="Transaction{T}"/> with <see cref="TxId"/>
-        /// as its <see cref="Transaction{T}.Id"/>.
+        /// The expected <see cref="Transaction.Nonce"/> value
+        /// for the <see cref="Transaction"/> with <see cref="TxId"/>
+        /// as its <see cref="Transaction.Id"/>.
         /// </summary>
         public long ExpectedNonce { get; }
 
         /// <summary>
-        /// The actual <see cref="Transaction{T}.Nonce"/>, which is improper.
+        /// The actual <see cref="Transaction.Nonce"/>, which is improper.
         /// </summary>
         public long ImproperNonce { get; }
     }

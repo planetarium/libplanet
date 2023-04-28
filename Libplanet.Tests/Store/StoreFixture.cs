@@ -187,11 +187,11 @@ namespace Libplanet.Tests.Store
 
         public Block<DumbAction> Block5 { get; }
 
-        public Transaction<DumbAction> Transaction1 { get; }
+        public Transaction Transaction1 { get; }
 
-        public Transaction<DumbAction> Transaction2 { get; }
+        public Transaction Transaction2 { get; }
 
-        public Transaction<DumbAction> Transaction3 { get; }
+        public Transaction Transaction3 { get; }
 
         public IStore Store { get; set; }
 
@@ -203,7 +203,7 @@ namespace Libplanet.Tests.Store
 
         public abstract void Dispose();
 
-        public Transaction<DumbAction> MakeTransaction(
+        public Transaction MakeTransaction(
             IEnumerable<DumbAction> actions = null,
             ImmutableHashSet<Address> updatedAddresses = null,
             long nonce = 0,
@@ -214,7 +214,7 @@ namespace Libplanet.Tests.Store
             privateKey = privateKey ?? new PrivateKey();
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
 
-            return Transaction<DumbAction>.Create(
+            return Transaction.Create<DumbAction>(
                 nonce,
                 privateKey,
                 GenesisBlock.Hash,

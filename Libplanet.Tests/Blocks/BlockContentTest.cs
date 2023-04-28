@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Blocks
             AssertBlockContentsEqual(Block1Content, block1);
 
             Assert.Throws<InvalidBlockTxHashException>(() =>
-                new BlockContent<Arithmetic>(Block1Metadata, Array.Empty<Transaction<Arithmetic>>())
+                new BlockContent<Arithmetic>(Block1Metadata, Array.Empty<Transaction>())
             );
             Assert.Throws<InvalidBlockTxHashException>(
                 () => new BlockContent<Arithmetic>(Block1Metadata, new[] { Block1Tx0 })
@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Blocks
             var key = PrivateKey.FromString(
                 "ea0493b0ed67fc97b2e5e85a1d145adea294112f09df15398cb10f2ed5ad1a83"
             );
-            var tx2 = new Transaction<Arithmetic>(
+            var tx2 = new Transaction(
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void TransactionsWithDuplicateNonce()
         {
-            var dupTx1 = new Transaction<Arithmetic>(
+            var dupTx1 = new Transaction(
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void TransactionsWithMissingNonce()
         {
-            var dupTx1 = new Transaction<Arithmetic>(
+            var dupTx1 = new Transaction(
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Blocks
             var differentGenesisHash = BlockHash.FromString(
                 "76942b42f99c28da02ed916ebd2fadb189415e8288a4bd87f9ae3594127b79e6"
             );
-            var txWithDifferentGenesis = new Transaction<Arithmetic>(
+            var txWithDifferentGenesis = new Transaction(
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: differentGenesisHash,
@@ -157,7 +157,7 @@ namespace Libplanet.Tests.Blocks
                 ),
                 key
             );
-            Transaction<Arithmetic>[] inconsistentTxs =
+            Transaction[] inconsistentTxs =
                 Block1Content.Transactions.Append(txWithDifferentGenesis).ToArray();
             InvalidTxGenesisHashException e = Assert.Throws<InvalidTxGenesisHashException>(
                 () => new BlockContent<Arithmetic>(
@@ -190,7 +190,7 @@ namespace Libplanet.Tests.Blocks
         public void DeriveTxHash()
         {
             Assert.Null(
-                BlockContent<Arithmetic>.DeriveTxHash(Array.Empty<Transaction<Arithmetic>>())
+                BlockContent<Arithmetic>.DeriveTxHash(Array.Empty<Transaction>())
             );
             AssertBytesEqual(
                 Block1Metadata.TxHash,

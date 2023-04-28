@@ -191,7 +191,7 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    Transaction<T> tx = BlockChain.GetTransaction(txid);
+                    Transaction tx = BlockChain.GetTransaction(txid);
 
                     if (tx is null)
                     {

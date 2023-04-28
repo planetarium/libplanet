@@ -3,7 +3,7 @@ using Libplanet.Action;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// An abstract interface for a transaction.  Unlike <see cref="Transaction{T}"/>, it deals
+    /// An abstract interface for a transaction.  Unlike <see cref="Transaction"/>, it deals
     /// with custom actions in a non-generic way.  Instead, they are represented as
     /// <see cref="IAction"/>.
     /// </summary>

@@ -242,7 +242,7 @@ namespace Libplanet.Tests.Action
             );
 
             DumbAction action = new DumbAction(_addr[0], "a", _addr[1], _addr[0], 5);
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 _keys[0],
                 chain.Genesis.Hash,

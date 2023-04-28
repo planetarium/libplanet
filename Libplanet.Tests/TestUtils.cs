@@ -412,19 +412,19 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static PreEvaluationBlock<T> ProposeGenesis<T>(
             PublicKey proposer = null,
-            IReadOnlyList<Transaction<T>> transactions = null,
+            IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
-            var txs = transactions?.ToList() ?? new List<Transaction<T>>();
+            var txs = transactions?.ToList() ?? new List<Transaction>();
             long nonce = 0;
             validatorSet = validatorSet ?? ValidatorSet;
             txs.AddRange(
                 validatorSet.Validators.Select(
-                    validator => Transaction<T>.Create(
+                    validator => Transaction.Create<T>(
                         nonce++,
                         GenesisProposer,
                         null,
@@ -454,14 +454,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> ProposeGenesisBlock<T>(
             PrivateKey miner,
-            IReadOnlyList<Transaction<T>> transactions = null,
+            IReadOnlyList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default
         )
             where T : IAction, new()
         {
-            PreEvaluationBlock<T> preEval = ProposeGenesis(
+            PreEvaluationBlock<T> preEval = ProposeGenesis<T>(
                 miner?.PublicKey,
                 transactions,
                 null,
@@ -489,7 +489,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static PreEvaluationBlock<T> ProposeNext<T>(
             Block<T> previousBlock,
-            IReadOnlyList<Transaction<T>> transactions = null,
+            IReadOnlyList<Transaction> transactions = null,
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
@@ -498,7 +498,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             where T : IAction, new()
         {
             var txs = transactions is null
-                ? new List<Transaction<T>>()
+                ? new List<Transaction>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
 
             var content = new BlockContent<T>(
@@ -521,7 +521,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Block<T> ProposeNextBlock<T>(
             Block<T> previousBlock,
             PrivateKey miner,
-            IReadOnlyList<Transaction<T>> txs = null,
+            IReadOnlyList<Transaction> txs = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
@@ -613,7 +613,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             var txs = new[]
             {
-                Transaction<T>.Create(
+                Transaction.Create<T>(
                     0,
                     privateKey,
                     null,
@@ -623,7 +623,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             if (genesisBlock is null)
             {
-                var preEval = ProposeGenesis(
+                var preEval = ProposeGenesis<T>(
                     GenesisProposer.PublicKey,
                     txs,
                     validatorSet,

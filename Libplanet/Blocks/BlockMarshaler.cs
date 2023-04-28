@@ -124,13 +124,10 @@ namespace Libplanet.Blocks
                 header.Hash
             );
 
-        public static List MarshalTransactions<T>(this IReadOnlyList<Transaction<T>> txs)
-            where T : IAction, new()
-        =>
-            new List(txs.Select(tx => MarshalTransaction<T>(tx)).Cast<IValue>());
+        public static List MarshalTransactions(this IReadOnlyList<Transaction> txs) =>
+            new List(txs.Select(tx => MarshalTransaction(tx)).Cast<IValue>());
 
-        public static Binary MarshalTransaction<T>(this Transaction<T> tx)
-            where T : IAction, new() => new Binary(tx.Serialize());
+        public static Binary MarshalTransaction(this Transaction tx) => new Binary(tx.Serialize());
 
         public static Dictionary MarshalBlock(
             Dictionary marshaledBlockHeader,
@@ -239,21 +236,16 @@ namespace Libplanet.Blocks
             return new BlockHeader(preEvalHeader, (stateRootHash, sig, hash));
         }
 
-        public static IReadOnlyList<Transaction<T>> UnmarshalTransactions<T>(List marshaled)
-            where T : IAction, new()
-        =>
+        public static IReadOnlyList<Transaction> UnmarshalTransactions(List marshaled) =>
             marshaled
-                .Select(tx => Transaction<T>.Deserialize(((Binary)tx).ToByteArray()))
+                .Select(tx => Transaction.Deserialize(((Binary)tx).ToByteArray()))
                 .ToImmutableArray();
 
-        public static IReadOnlyList<Transaction<T>> UnmarshalBlockTransactions<T>(
-            Dictionary marshaledBlock
-        )
-            where T : IAction, new()
-        =>
+        public static IReadOnlyList<Transaction> UnmarshalBlockTransactions(
+            Dictionary marshaledBlock) =>
             marshaledBlock.ContainsKey(TransactionsKey)
-                ? UnmarshalTransactions<T>(marshaledBlock.GetValue<List>(TransactionsKey))
-                : ImmutableArray<Transaction<T>>.Empty;
+                ? UnmarshalTransactions(marshaledBlock.GetValue<List>(TransactionsKey))
+                : ImmutableArray<Transaction>.Empty;
 
         public static Block<T> UnmarshalBlock<T>(
             Dictionary marshaled
@@ -261,7 +253,7 @@ namespace Libplanet.Blocks
             where T : IAction, new()
         {
             BlockHeader header = UnmarshalBlockHeader(marshaled.GetValue<Dictionary>(HeaderKey));
-            IReadOnlyList<Transaction<T>> txs = UnmarshalBlockTransactions<T>(marshaled);
+            IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
             return new Block<T>(header, txs);
         }
     }

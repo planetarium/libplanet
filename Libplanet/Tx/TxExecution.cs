@@ -9,9 +9,9 @@ using Libplanet.Serialization;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// Summarizes an execution result of a <see cref="Transaction{T}"/>.
-    /// <para>Note that <see cref="Transaction{T}"/>s cannot be executed without belonging to
-    /// a <see cref="Block{T}"/>, and even if it's the same <see cref="Transaction{T}"/> its
+    /// Summarizes an execution result of a <see cref="Transaction"/>.
+    /// <para>Note that <see cref="Transaction"/>s cannot be executed without belonging to
+    /// a <see cref="Block{T}"/>, and even if it's the same <see cref="Transaction"/> its
     /// result can vary depending on <see cref="Block{T}"/> that it is executed within.</para>
     /// </summary>
     /// <seealso cref="TxSuccess"/>
@@ -41,19 +41,19 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> that
-        /// the <see cref="Transaction{T}"/> is executed within.
+        /// the <see cref="Transaction"/> is executed within.
         /// </summary>
         [Pure]
         public BlockHash BlockHash { get; }
 
         /// <summary>
-        /// The executed <see cref="Transaction{T}"/>'s <see cref="Transaction{T}.Id"/>.
+        /// The executed <see cref="Transaction"/>'s <see cref="Transaction.Id"/>.
         /// </summary>
         [Pure]
         public TxId TxId { get; }
 
         /// <summary>
-        /// The logs recorded while executing <see cref="Transaction{T}"/>'s actions.
+        /// The logs recorded while executing <see cref="Transaction"/>'s actions.
         /// </summary>
         [Pure]
         public List<List<string>>? ActionsLogsList { get; }

@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private readonly RecordingActionRenderer<Arithmetic> _record;
         private readonly AtomicActionRenderer<Arithmetic> _renderer;
         private readonly IntegerSet _fx;
-        private Transaction<Arithmetic> _successTx;
+        private Transaction _successTx;
 
         public AtomicActionRendererTest()
         {

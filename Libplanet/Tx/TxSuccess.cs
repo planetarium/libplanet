@@ -14,7 +14,7 @@ using FAV = Libplanet.Assets.FungibleAssetValue;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// Summarizes an execution result of a successful <see cref="Transaction{T}"/>.
+    /// Summarizes an execution result of a successful <see cref="Transaction"/>.
     /// </summary>
     [Serializable]
     public sealed class TxSuccess : TxExecution, ISerializable
@@ -23,9 +23,9 @@ namespace Libplanet.Tx
         /// Creates a <see cref="TxSuccess"/> instance.
         /// </summary>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
-        /// that the <see cref="Transaction{T}"/> is executed within.</param>
-        /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
-        /// cref="Transaction{T}.Id"/>.</param>
+        /// that the <see cref="Transaction"/> is executed within.</param>
+        /// <param name="txId">The executed <see cref="Transaction"/>'s <see
+        /// cref="Transaction.Id"/>.</param>
         /// <param name="actionsLogsList">The logs recorded while executing actions.</param>
         /// <param name="updatedStates">The states delta made by the actions in
         /// the transaction within the block.</param>

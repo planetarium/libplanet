@@ -16,7 +16,7 @@ namespace Libplanet.Tx
     /// <seealso cref="IUnsignedTx"/>
     /// <seealso cref="TxInvoice"/>
     /// <seealso cref="TxSigningMetadata"/>
-    /// <seealso cref="Transaction{T}"/>
+    /// <seealso cref="Transaction"/>
     public sealed class UnsignedTx : IUnsignedTx, IEquatable<UnsignedTx>
     {
         private static readonly Codec _codec = new Codec();

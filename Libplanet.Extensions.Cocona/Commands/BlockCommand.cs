@@ -128,12 +128,12 @@ public class BlockCommand
                 .Select(PublicKey.FromHex)
                 .Select(k => new Validator(k, BigInteger.One))
                 .ToList());
-        ImmutableList<Transaction<NullAction>> txs = Array.Empty<Transaction<NullAction>>()
+        ImmutableList<Transaction> txs = Array.Empty<Transaction>()
 
             // FIXME: Remove this pragma after fixing the following issue:
             // https://github.com/dotnet/platform-compat/blob/master/docs/PC002.md
  #pragma warning disable PC002
-            .Append(Transaction<NullAction>.Create(
+            .Append(Transaction.Create<NullAction>(
  #pragma warning restore PC002
                 0,
                 key,

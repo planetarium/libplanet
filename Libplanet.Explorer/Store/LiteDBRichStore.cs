@@ -284,11 +284,10 @@ namespace Libplanet.Explorer.Store
         ) =>
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
-        public Transaction<T> GetTransaction<T>(TxId txid)
-            where T : IAction, new()
+        /// <inheritdoc cref="IStore.GetTransaction(TxId)"/>
+        public Transaction GetTransaction(TxId txid)
         {
-            return _store.GetTransaction<T>(txid);
+            return _store.GetTransaction(txid);
         }
 
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
@@ -302,8 +301,7 @@ namespace Libplanet.Explorer.Store
             return _store.GetBlock<T>(blockHash);
         }
 
-        public void PutTransaction<T>(Transaction<T> tx)
-            where T : IAction, new()
+        public void PutTransaction(Transaction tx)
         {
             _store.PutTransaction(tx);
             StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);

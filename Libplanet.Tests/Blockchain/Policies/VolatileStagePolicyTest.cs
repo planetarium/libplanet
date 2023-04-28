@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Lifetime()
         {
             TimeSpan timeBuffer = TimeSpan.FromSeconds(1);
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void MaxLifetime()
         {
             var stagePolicy = new VolatileStagePolicy<DumbAction>(TimeSpan.MaxValue);
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
@@ -54,14 +54,14 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void StageUnstage()
         {
             TimeSpan timeBuffer = TimeSpan.FromSeconds(1);
-            Transaction<DumbAction> validTx = Transaction<DumbAction>.Create(
+            Transaction validTx = Transaction.Create<DumbAction>(
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
                 Enumerable.Empty<DumbAction>(),
                 timestamp: (DateTimeOffset.UtcNow - _stagePolicy.Lifetime) + timeBuffer
             );
-            Transaction<DumbAction> staleTx = Transaction<DumbAction>.Create(
+            Transaction staleTx = Transaction.Create<DumbAction>(
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,

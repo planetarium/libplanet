@@ -26,8 +26,8 @@ namespace Libplanet.Tests.Blockchain
                 "This test causes timeout"
             );
 
-            Transaction<DumbAction> MkTx(PrivateKey key, long nonce, DateTimeOffset? ts = null) =>
-                Transaction<DumbAction>.Create(
+            Transaction MkTx(PrivateKey key, long nonce, DateTimeOffset? ts = null) =>
+                Transaction.Create<DumbAction>(
                     nonce,
                     key,
                     _blockChain.Genesis.Hash,
@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransaction(MkTx(e, 2, DateTimeOffset.UtcNow));
             _blockChain.MakeTransaction(a, new DumbAction[0]);
 
-            ImmutableList<Transaction<DumbAction>> stagedTransactions =
+            ImmutableList<Transaction> stagedTransactions =
                 _blockChain.ListStagedTransactions();
 
             // List is ordered by nonce.
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             // A is prioritized over B, C, D, E:
-            IComparer<Transaction<DumbAction>> priority = Comparer<Transaction<DumbAction>>.Create(
+            IComparer<Transaction> priority = Comparer<Transaction>.Create(
                 (tx1, tx2) => tx1.Signer.Equals(a.ToAddress()) ? -1 : 1
             );
             stagedTransactions = _blockChain.ListStagedTransactions(priority);
@@ -104,7 +104,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ExecuteActions()
         {
-            (var addresses, Transaction<DumbAction>[] txs) =
+            (var addresses, Transaction[] txs) =
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 

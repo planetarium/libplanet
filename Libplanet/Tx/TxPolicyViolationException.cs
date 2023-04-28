@@ -4,7 +4,7 @@ using Libplanet.Blockchain.Policies;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// An exception <em>returned</em> when a <see cref="Transaction{T}"/> violates
+    /// An exception <em>returned</em> when a <see cref="Transaction"/> violates
     /// a <see cref="IBlockPolicy{T}"/>.
     /// </summary>
     [Serializable]
@@ -18,8 +18,8 @@ namespace Libplanet.Tx
         /// <param name="message">A description for the reason of violation
         /// given by an implementation of <see cref="IBlockPolicy{T}"/>.
         /// </param>
-        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the
-        /// <see cref="Transaction{T}"/> violating a <see cref="IBlockPolicy{T}"/>.
+        /// <param name="txid">The <see cref="Transaction.Id"/> of the
+        /// <see cref="Transaction"/> violating a <see cref="IBlockPolicy{T}"/>.
         /// Gets prepended to <paramref name="message"/>.</param>
         public TxPolicyViolationException(string message, TxId txid)
             : base(message, txid)
@@ -29,8 +29,8 @@ namespace Libplanet.Tx
         /// <inheritdoc cref="TxPolicyViolationException(string, TxId)"/>
         /// <param name="message">A description for the reason of violation
         /// given by an implementation of <see cref="IBlockPolicy{T}"/>. </param>
-        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the
-        /// <see cref="Transaction{T}"/> violating a <see cref="IBlockPolicy{T}"/>.
+        /// <param name="txid">The <see cref="Transaction.Id"/> of the
+        /// <see cref="Transaction"/> violating a <see cref="IBlockPolicy{T}"/>.
         /// Gets prepended to <paramref name="message"/>.</param>
         /// <param name="innerException">The <see cref="Exception"/> for
         /// <see cref="Exception.InnerException"/>.</param>

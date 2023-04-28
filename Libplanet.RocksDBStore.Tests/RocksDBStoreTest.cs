@@ -160,7 +160,7 @@ namespace Libplanet.RocksDBStore.Tests
         {
             var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
             var store = new RocksDBStore(path);
-            Transaction<DumbAction>[] txs = new[]
+            Transaction[] txs = new[]
             {
                 Fx.Transaction1,
                 Fx.Transaction2,
@@ -176,7 +176,7 @@ namespace Libplanet.RocksDBStore.Tests
 
                 Enumerable.Range(0, 3).AsParallel().ForAll(i =>
                 {
-                    Assert.NotNull(store.GetTransaction<DumbAction>(txs[i].Id));
+                    Assert.NotNull(store.GetTransaction(txs[i].Id));
                 });
             }
             finally
