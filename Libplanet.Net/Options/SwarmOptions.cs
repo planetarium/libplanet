@@ -122,10 +122,10 @@ namespace Libplanet.Net.Options
         public TimeoutOptions TimeoutOptions { get; set; } = new TimeoutOptions();
 
         /// <summary>
-        /// Various resource regulations for handling received <see cref="Message"/>s through
-        /// an <see cref="ITransport"/>.
+        /// Various task spawning regulations for handling received <see cref="Message"/>s
+        /// through an <see cref="ITransport"/>.
         /// </summary>
-        public ResourceRegulationOptions ResourceRegulationOptions { get; set; } =
-            new ResourceRegulationOptions();
+        public TaskRegulationOptions TaskRegulationOptions { get; set; } =
+            new TaskRegulationOptions();
     }
 }

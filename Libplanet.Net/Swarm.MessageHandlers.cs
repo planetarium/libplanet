@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Net.Messages;
@@ -12,8 +11,8 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private readonly Semaphore _transferBlocksSemaphore;
-        private readonly Semaphore _transferTxsSemaphore;
+        private readonly NullableSemaphore _transferBlocksSemaphore;
+        private readonly NullableSemaphore _transferTxsSemaphore;
 
         private Task ProcessMessageHandlerAsync(Message message)
         {
@@ -190,9 +189,12 @@ namespace Libplanet.Net
 
         private async Task TransferTxsAsync(Message message)
         {
-            if (!(_transferTxsSemaphore is null) &&
-                !_transferTxsSemaphore.WaitOne(TimeSpan.Zero))
+            if (!await _transferTxsSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
+                _logger.Debug(
+                    "Message {Message} is dropped due to task limit {Limit}",
+                    message,
+                    Options.TaskRegulationOptions.MaxTransferTxsTaskCount);
                 return;
             }
 
@@ -221,7 +223,15 @@ namespace Libplanet.Net
             }
             finally
             {
-                _transferTxsSemaphore?.Release();
+                int count = _transferTxsSemaphore.Release();
+                if (count >= 0)
+                {
+                    _logger.Debug(
+                        "{Count}/{Limit} tasks are remaining for handling {FName}",
+                        count,
+                        Options.TaskRegulationOptions.MaxTransferTxsTaskCount,
+                        nameof(TransferTxsAsync));
+                }
             }
         }
 
@@ -239,14 +249,14 @@ namespace Libplanet.Net
 
         private async Task TransferBlocksAsync(Message message)
         {
-            if (!(_transferBlocksSemaphore is null) &&
-                !_transferBlocksSemaphore.WaitOne(TimeSpan.Zero))
+            if (!await _transferBlocksSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
-                _logger.Debug("TransferBlocksAsync is lack of resource.");
+                _logger.Debug(
+                    "Message {Message} is dropped due to task limit {Limit}",
+                    message,
+                    Options.TaskRegulationOptions.MaxTransferBlocksTaskCount);
                 return;
             }
-
-            _logger.Debug("TransferBlocksAsync executed.");
 
             try
             {
@@ -320,7 +330,15 @@ namespace Libplanet.Net
             }
             finally
             {
-                _transferBlocksSemaphore?.Release();
+                int count = _transferBlocksSemaphore.Release();
+                if (count >= 0)
+                {
+                    _logger.Debug(
+                        "{Count}/{Limit} tasks are remaining for handling {FName}",
+                        count,
+                        Options.TaskRegulationOptions.MaxTransferBlocksTaskCount,
+                        nameof(TransferBlocksAsync));
+                }
             }
         }
     }

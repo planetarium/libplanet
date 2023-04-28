@@ -2,7 +2,7 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Options
 {
-    public class ResourceRegulationOptions
+    public class TaskRegulationOptions
     {
         /// <summary>
         /// Max limit to spawn a task that handles <see cref="GetBlocksMsg"/> message.

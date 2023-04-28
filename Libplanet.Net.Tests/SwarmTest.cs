@@ -1798,7 +1798,7 @@ namespace Libplanet.Net.Tests
         {
             var options = new SwarmOptions
             {
-                ResourceRegulationOptions =
+                TaskRegulationOptions =
                 {
                     MaxTransferBlocksTaskCount = 3,
                 },
@@ -1825,13 +1825,13 @@ namespace Libplanet.Net.Tests
                 for (int i = 0; i < 5; i++)
                 {
                     tasks.Add(
-                        transport.SendMessageAsync(
+                        Task.Run(async () => await transport.SendMessageAsync(
                             swarm.AsPeer,
                             content,
                             TimeSpan.FromMilliseconds(1000),
                             1,
                             false,
-                            default));
+                            default)));
                 }
 
                 try
@@ -1844,7 +1844,7 @@ namespace Libplanet.Net.Tests
                 }
 
                 Assert.Equal(
-                    options.ResourceRegulationOptions.MaxTransferBlocksTaskCount,
+                    options.TaskRegulationOptions.MaxTransferBlocksTaskCount,
                     tasks.Count(t => t.IsCompletedSuccessfully));
             }
             finally
@@ -1859,7 +1859,7 @@ namespace Libplanet.Net.Tests
         {
             var options = new SwarmOptions
             {
-                ResourceRegulationOptions =
+                TaskRegulationOptions =
                 {
                     MaxTransferTxsTaskCount = 3,
                 },
@@ -1906,7 +1906,7 @@ namespace Libplanet.Net.Tests
                 }
 
                 Assert.Equal(
-                    options.ResourceRegulationOptions.MaxTransferBlocksTaskCount,
+                    options.TaskRegulationOptions.MaxTransferBlocksTaskCount,
                     tasks.Count(t => t.IsCompletedSuccessfully));
             }
             finally
