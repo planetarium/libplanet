@@ -976,7 +976,7 @@ namespace Libplanet.Net.Tests
                         0,
                         new PrivateKey(),
                         miner1.BlockChain.Genesis.Hash,
-                        customActions: new[] { new Sleep() }
+                        actions: new[] { new Sleep() }
                     )
                 );
                 var b = miner1.BlockChain.ProposeBlock(

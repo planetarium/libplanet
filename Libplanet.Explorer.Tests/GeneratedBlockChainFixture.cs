@@ -94,11 +94,14 @@ public class GeneratedBlockChainFixture
                             nonce: i,
                             privateKey: privateKey,
                             genesisHash: null,
-                            systemAction: new Initialize(
-                                new ValidatorSet(
-                                    ImmutableList<Validator>.Empty.Add(
-                                        new Validator(pk.PublicKey, 1)).ToList()),
-                                ImmutableDictionary<Address, IValue>.Empty)))
+                            actions: new IAction[]
+                                {
+                                    new Initialize(
+                                        new ValidatorSet(
+                                            ImmutableList<Validator>.Empty.Add(
+                                                new Validator(pk.PublicKey, 1)).ToList()),
+                                        ImmutableDictionary<Address, IValue>.Empty),
+                                }))
                     .ToImmutableList()));
 
         MinedBlocks = MinedBlocks.SetItem(
@@ -185,9 +188,8 @@ public class GeneratedBlockChainFixture
                 Chain.Genesis.Hash,
                 Chain.GetBalance(addr, TestCurrency).MajorUnit > 0 &&
                 random.Next() % 2 == 0
-                    ? new Transfer(addr,
-                        TestCurrency * random.Next(1, bal))
-                    : new Mint(addr, TestCurrency * random.Next(1, 100)),
+                    ? new IAction[] { new Transfer(addr, TestCurrency * random.Next(1, bal)) }
+                    : new IAction[] { new Mint(addr, TestCurrency * random.Next(1, 100)) },
                 GetRandomAddresses(random.Next())
             ),
             _ => Transaction<PolymorphicAction<SimpleAction>>.Create(

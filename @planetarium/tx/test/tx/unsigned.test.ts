@@ -45,8 +45,8 @@ test("encodeUnsignedTxWithSystemAction", async () => {
     nonce: 123,
     signer: "268344BA46e6CA2A8a5096565548b9018bc687Ce",
     updatedAddresses: [],
-    actions: {
-      systemAction: {
+    actions: [
+      {
         "\ufefftype_id": "1",
         "\ufeffvalues": {
           "\ufeffamount": "12500",
@@ -59,7 +59,7 @@ test("encodeUnsignedTxWithSystemAction", async () => {
           "\ufeffrecipient": "0x8a29de186b85560d708451101c4bf02d63b25c50",
         },
       },
-    },
+    ],
     timestamp: "2022-05-23T01:02:00+00:00",
     publicKey:
       "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
@@ -132,25 +132,23 @@ test("encodeUnsignedTxWithCustomActions", async () => {
     nonce: 123,
     signer: "268344BA46e6CA2A8a5096565548b9018bc687Ce",
     updatedAddresses: [],
-    actions: {
-      customActions: [
-        {
-          "\ufefftype_id": "\ufefftransfer_asset",
-          "\ufeffvalues": {
-            "\ufeffamount": [
-              {
-                "\ufeffdecimalPlaces": "0x02",
-                "\ufeffminters": ["0x47d082a115c63e7b58b1532d20e631538eafadde"],
-                "\ufeffticker": "\ufeffNCG",
-              },
-              "1000",
-            ],
-            "\ufeffsender": "0x111cb8e18c6d70f5032000c5739c5ac36e793edb",
-            "\ufeffrecipient": "0x5a533067d0cba77490268b26195edb10b990143d",
-          },
+    actions: [
+      {
+        "\ufefftype_id": "\ufefftransfer_asset",
+        "\ufeffvalues": {
+          "\ufeffamount": [
+            {
+              "\ufeffdecimalPlaces": "0x02",
+              "\ufeffminters": ["0x47d082a115c63e7b58b1532d20e631538eafadde"],
+              "\ufeffticker": "\ufeffNCG",
+            },
+            "1000",
+          ],
+          "\ufeffsender": "0x111cb8e18c6d70f5032000c5739c5ac36e793edb",
+          "\ufeffrecipient": "0x5a533067d0cba77490268b26195edb10b990143d",
         },
-      ],
-    },
+      },
+    ],
     timestamp: "2022-05-23T01:02:00+00:00",
     publicKey:
       "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",

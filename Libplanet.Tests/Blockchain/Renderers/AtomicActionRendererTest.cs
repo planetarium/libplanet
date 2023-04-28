@@ -49,17 +49,17 @@ namespace Libplanet.Tests.Blockchain.Renderers
             AssertTypeAnd<RenderRecord<Arithmetic>.ActionSuccess>(records[1], r =>
             {
                 Assert.Equal(_successTx.Id, r.Context.TxId);
-                Assert.Equal(_successTx.CustomActions[0], r.Action);
+                Assert.Equal(_successTx.Actions[0], r.Action.PlainValue);
             });
             AssertTypeAnd<RenderRecord<Arithmetic>.ActionSuccess>(records[2], r =>
             {
                 Assert.Equal(_successTx.Id, r.Context.TxId);
-                Assert.Equal(_successTx.CustomActions[1], r.Action);
+                Assert.Equal(_successTx.Actions[1], r.Action.PlainValue);
             });
             AssertTypeAnd<RenderRecord<Arithmetic>.ActionSuccess>(records[3], r =>
             {
                 Assert.Equal(_successTx.Id, r.Context.TxId);
-                Assert.Equal(_successTx.CustomActions[2], r.Action);
+                Assert.Equal(_successTx.Actions[2], r.Action.PlainValue);
             });
             AssertTypeAnd<RenderRecord<Arithmetic>.Block>(records[4], r => Assert.True(r.End));
         }

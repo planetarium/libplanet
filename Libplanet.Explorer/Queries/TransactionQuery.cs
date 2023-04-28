@@ -156,7 +156,7 @@ namespace Libplanet.Explorer.Queries
                     var sigMeta = new TxSigningMetadata(publicKey, nonce);
                     var invoice = new TxInvoice(
                         chain.Genesis.Hash,
-                        actions: new TxCustomActionList(new IAction[] { action }));
+                        actions: new TxActionList(new IAction[] { action }));
                     var unsignedTx = new UnsignedTx(invoice, sigMeta);
                     return unsignedTx.SerializeUnsignedTx();
                 }

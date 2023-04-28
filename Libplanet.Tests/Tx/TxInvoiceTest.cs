@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Tx
                 random.NextAddress(),
                 random.NextAddress());
             var timestamp = DateTimeOffset.UtcNow;
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(random.NextAddress(), "foo"),
                 new DumbAction(random.NextAddress(), "bar"),
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Tx
             Assert.Null(invoice.GenesisHash);
             Assert.Empty(invoice.UpdatedAddresses);
             Assert.InRange(invoice.Timestamp, before, after);
-            Assert.IsType<TxCustomActionList>(invoice.Actions);
+            Assert.IsType<TxActionList>(invoice.Actions);
             Assert.Empty(invoice.Actions);
         }
 
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Tx
                 random.NextAddress(),
                 random.NextAddress());
             var timestamp = DateTimeOffset.UtcNow;
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(random.NextAddress(), "foo"),
                 new DumbAction(random.NextAddress(), "bar"),
@@ -96,7 +96,7 @@ namespace Libplanet.Tests.Tx
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
@@ -144,7 +144,7 @@ namespace Libplanet.Tests.Tx
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
-            var actions = new TxCustomActionList(new IAction[]
+            var actions = new TxActionList(new IAction[]
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
@@ -166,20 +166,18 @@ namespace Libplanet.Tests.Tx
                         ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
-                      ""actions"": {
-                        ""customActions"": [
-                          {
-                            ""\uFEFFitem"": ""\uFEFFfoo"",
-                            ""\uFEFFrecord_rehearsal"": false,
-                            ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
-                          },
-                          {
-                            ""\uFEFFitem"": ""\uFEFFbar"",
-                            ""\uFEFFrecord_rehearsal"": false,
-                            ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
-                          }
-                        ]
-                      }
+                      ""actions"": [
+                        {
+                          ""\uFEFFitem"": ""\uFEFFfoo"",
+                          ""\uFEFFrecord_rehearsal"": false,
+                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                        },
+                        {
+                          ""\uFEFFitem"": ""\uFEFFbar"",
+                          ""\uFEFFrecord_rehearsal"": false,
+                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                        }
+                      ]
                     }
                 ",
                 false);
@@ -197,7 +195,7 @@ namespace Libplanet.Tests.Tx
             public BlockHash? GenesisHash => BlockHash.FromString(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
 
-            public TxActionList Actions => new TxCustomActionList(new IAction[]
+            public TxActionList Actions => new TxActionList(new IAction[]
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),

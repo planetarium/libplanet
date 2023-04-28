@@ -115,11 +115,12 @@ namespace Libplanet.Tests.Fixtures
             (BigInteger, HashDigest<SHA256>) stagedStates = Chain.ListStagedTransactions()
                 .Where(t => t.Signer.Equals(signerAddress))
                 .OrderBy(t => t.Nonce)
-                .SelectMany(t => t.CustomActions)
-                .TakeWhile(a => a.Error is null)
+                .SelectMany(t => t.Actions)
+                .TakeWhile(a => TestUtils.ToAction<Arithmetic>(a).Error is null)
                 .Aggregate(prevPair, (prev, act) =>
                 {
-                    BigInteger nextState = act.Operator.ToFunc()(prev.Item1, act.Operand);
+                    var a = TestUtils.ToAction<Arithmetic>(act);
+                    BigInteger nextState = a.Operator.ToFunc()(prev.Item1, a.Operand);
                     var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
                         .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                     HashDigest<SHA256> nextRootHash =
@@ -127,14 +128,16 @@ namespace Libplanet.Tests.Fixtures
                     return (nextState, nextRootHash);
                 });
             Chain.StageTransaction(tx);
-            ImmutableArray<(BigInteger, HashDigest<SHA256>)> expectedDelta = tx.CustomActions
-                .Take(tx.CustomActions.TakeWhile(a => a.Error is null).Count() + 1)
+            ImmutableArray<(BigInteger, HashDigest<SHA256>)> expectedDelta = tx.Actions
+                .Take(tx.Actions
+                    .TakeWhile(a => TestUtils.ToAction<Arithmetic>(a).Error is null).Count() + 1)
                 .Aggregate(
                     ImmutableArray.Create(stagedStates),
                     (delta, act) =>
                     {
+                        var a = TestUtils.ToAction<Arithmetic>(act);
                         BigInteger nextState =
-                            act.Operator.ToFunc()(delta[delta.Length - 1].Item1, act.Operand);
+                            a.Operator.ToFunc()(delta[delta.Length - 1].Item1, a.Operand);
                         var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
                             .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                         HashDigest<SHA256> nextRootHash =

@@ -73,7 +73,7 @@ public class TransactionQueryTest
             0L,
             new PrivateKey(),
             Source.BlockChain.Genesis.Hash,
-            new Transfer(default, foo * 10)
+            new IAction[] { new Transfer(default, foo * 10) }
         );
         ExecutionResult result = await ExecuteQueryAsync(@$"
         {{

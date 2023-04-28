@@ -367,6 +367,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
+        public static T ToAction<T>(IValue plainValue)
+            where T : IAction, new()
+        {
+            var action = new T();
+            action.LoadPlainValue(plainValue);
+            return action;
+        }
+
         public static BlockCommit CreateBlockCommit<T>(
             Block<T> block,
             bool deterministicTimestamp = false)
@@ -420,10 +428,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         nonce++,
                         GenesisProposer,
                         null,
-                        systemAction: new Initialize(
-                            validatorSet: validatorSet,
-                            states: ImmutableDictionary.Create<Address, IValue>()
-                        ),
+                        actions: new IAction[]
+                            {
+                                new Initialize(
+                                    validatorSet: validatorSet,
+                                    states: ImmutableDictionary.Create<Address, IValue>()),
+                            },
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 
@@ -559,7 +569,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IBlockPolicy<T> policy,
             IStore store,
             IStateStore stateStore,
-            IEnumerable<T> actions = null,
+            IEnumerable<IAction> actions = null,
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -588,7 +598,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IBlockPolicy<T> policy,
             IStore store,
             IStateStore stateStore,
-            IEnumerable<T> actions = null,
+            IEnumerable<IAction> actions = null,
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -598,7 +608,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            actions = actions ?? ImmutableArray<T>.Empty;
+            actions = actions ?? ImmutableArray<IAction>.Empty;
             privateKey = privateKey ?? ChainPrivateKey;
 
             var txs = new[]

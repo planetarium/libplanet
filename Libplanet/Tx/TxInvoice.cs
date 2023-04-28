@@ -55,7 +55,7 @@ namespace Libplanet.Tx
         /// <param name="timestamp">The value for <see cref="Timestamp"/>.
         /// Time of creation by default.</param>
         /// <param name="actions">The value of <see cref="Actions"/>.
-        /// <see cref="TxCustomActionList"/> by default.</param>
+        /// <see cref="TxActionList"/> by default.</param>
         public TxInvoice(
             BlockHash? genesisHash = null,
             IEnumerable<Address>? updatedAddresses = null,
@@ -66,7 +66,7 @@ namespace Libplanet.Tx
                 genesisHash,
                 updatedAddresses?.ToImmutableHashSet() ?? ImmutableHashSet<Address>.Empty,
                 timestamp ?? DateTimeOffset.UtcNow,
-                actions ?? TxCustomActionList.Empty
+                actions ?? TxActionList.Empty
             )
         {
         }

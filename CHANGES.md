@@ -49,6 +49,19 @@ To be released.
         method's `evaluations` parameter type.
      -  `BlockChain<T>.EvaluateBlock()` method's return type.
      -  `BlockChain<T>.EvaluateGenesis()` method's return type.
+ -  Removed `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)`.  [[#3116]]
+ -  Removed `Transaction<T>.Create(long, PrivateKey, BlockHash?, IAction,
+    IImmutableSet<Address>?, DateTimeOffset?)`.  [[#3116]]
+ -  Added `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IEnumerable<IValue>, IImmutableSet<Address>?, DateTimeOffset?)`.  [[#3116]]
+ -  Removed `ITransaction.SystemAction` and `ITransaction.CustomActions`.
+    Use `ITxInvoice.Actions` instead.  [[#3116]]
+ -  Overhauled `TxActionList` class.  [[#3116]]
+     -  Changed `TxActionList` class to be `sealed` from `abstract`.
+        `TxActionList` is pretty much the old `TxCustomActionsList`.
+     -  Changed the JSON representation of `TxActionList` to be more simple.
+     -  Removed `TxSystemActionList` and `TxCustomActionsList`
 
 ### Backward-incompatible network protocol changes
 
@@ -92,6 +105,7 @@ To be released.
 [#3110]: https://github.com/planetarium/libplanet/pull/3110
 [#3111]: https://github.com/planetarium/libplanet/pull/3111
 [#3112]: https://github.com/planetarium/libplanet/pull/3112
+[#3116]: https://github.com/planetarium/libplanet/pull/3116
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 

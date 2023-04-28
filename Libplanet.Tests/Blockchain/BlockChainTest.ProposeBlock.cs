@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blockchain
                             5,  // Invalid nonce,
                             new PrivateKey(),
                             null,
-                            customActions: new[]
+                            actions: new[]
                             {
                                 new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
                             }),

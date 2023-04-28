@@ -294,11 +294,13 @@ namespace Libplanet.Tests.Tx
                 tx.Id
             );
 
-            Assert.Equal(2, tx.CustomActions.Count);
-            Assert.IsType<Attack>(tx.CustomActions[0].InnerAction);
+            Assert.Equal(2, tx.Actions.Count);
 
+            var innerAction0 = ToAction<PolymorphicAction<BaseAction>>(
+                tx.Actions[0]).InnerAction;
+            Assert.IsType<Attack>(innerAction0);
             var targetAddress =
-                ((Bencodex.Types.Dictionary)tx.CustomActions[0].InnerAction.PlainValue)
+                ((Bencodex.Types.Dictionary)innerAction0.PlainValue)
                     .GetValue<Binary>("target_address").ByteArray;
             AssertBytesEqual(
                 new Address(publicKey).ByteArray,
@@ -309,13 +311,16 @@ namespace Libplanet.Tests.Tx
                     .Add("weapon", "wand")
                     .Add("target", "orc")
                     .Add("target_address", new Address(publicKey).ByteArray),
-                tx.CustomActions[0].InnerAction.PlainValue
+                innerAction0.PlainValue
             );
-            Assert.IsType<Sleep>(tx.CustomActions[1].InnerAction);
+
+            var innerAction1 = ToAction<PolymorphicAction<BaseAction>>(
+                tx.Actions[1]).InnerAction;
+            Assert.IsType<Sleep>(innerAction1);
             Assert.Equal(
                 Bencodex.Types.Dictionary.Empty
                     .Add("zone_id", 10),
-                tx.CustomActions[1].InnerAction.PlainValue
+                innerAction1.PlainValue
             );
             Assert.Throws<DecodingException>(() =>
                 TxMarshaler.UnmarshalTransaction<DumbAction>(
