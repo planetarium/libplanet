@@ -228,16 +228,16 @@ public class GeneratedBlockChainFixture
     {
         var random = new System.Random(seed);
         var pk = PrivateKeys[random.Next(PrivateKeys.Length)];
-        var block = new BlockContent<PolymorphicAction<SimpleAction>>(
+        var block = new BlockContent(
                 new BlockMetadata(
                     Chain.Tip.Index + 1,
                     DateTimeOffset.UtcNow,
                     pk.PublicKey,
                     Chain.Tip.Hash,
-                    BlockContent<PolymorphicAction<SimpleAction>>.DeriveTxHash(transactions),
+                    BlockContent.DeriveTxHash(transactions),
                     Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value)),
                 transactions)
-            .Propose()
+            .Propose<PolymorphicAction<SimpleAction>>()
             .Evaluate(pk, Chain);
         Chain.Append(
             block,

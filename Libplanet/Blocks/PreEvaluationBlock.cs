@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -17,17 +16,17 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
-    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>, IPreEvaluationBlock
+    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock
         where T : IAction, new()
     {
-        private BlockContent<T> _content;
+        private BlockContent _content;
         private PreEvaluationBlockHeader _header;
 
         public PreEvaluationBlock(
             IPreEvaluationBlockHeader preEvaluationBlockHeader,
             IEnumerable<Transaction> transactions)
             : this(
-                new BlockContent<T>(preEvaluationBlockHeader, transactions),
+                new BlockContent(preEvaluationBlockHeader, transactions),
                 preEvaluationBlockHeader.PreEvaluationHash)
         {
         }
@@ -42,7 +41,7 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         internal PreEvaluationBlock(
-            BlockContent<T> content,
+            BlockContent content,
             in HashDigest<SHA256> preEvaluationHash)
         {
             _header = new PreEvaluationBlockHeader(content.Metadata, preEvaluationHash);
@@ -54,12 +53,11 @@ namespace Libplanet.Blocks
         /// </summary>
         public PreEvaluationBlockHeader Header => _header;
 
-        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
+        /// <inheritdoc cref="IBlockContent.Transactions"/>
         public IReadOnlyList<Transaction> Transactions => _content.Transactions;
 
         /// <inheritdoc cref="IBlockContent.Transactions" />
-        IImmutableSet<ITransaction> IBlockContent.Transactions =>
-            _content.Transactions.Cast<ITransaction>().ToImmutableHashSet();
+        IReadOnlyList<ITransaction> IBlockContent.Transactions => _content.Transactions;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;

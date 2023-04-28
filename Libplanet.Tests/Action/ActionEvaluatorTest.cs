@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Action
                     actions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var noStateRootBlock = new BlockContent<RandomAction>(
+            var noStateRootBlock = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: Block<RandomAction>.CurrentProtocolVersion,
                     index: 0,
@@ -79,9 +79,9 @@ namespace Libplanet.Tests.Action
                     miner: GenesisProposer.PublicKey.ToAddress(),
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
-                    txHash: BlockContent<RandomAction>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: txs).Propose();
+                transactions: txs).Propose<RandomAction>();
             Block<RandomAction> stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
                 BlockChain<RandomAction>.DetermineGenesisStateRootHash(
@@ -226,15 +226,15 @@ namespace Libplanet.Tests.Action
                 genesisHash: genesis.Hash,
                 actions: new[] { action });
             var txs = new Transaction[] { tx };
-            PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
+            PreEvaluationBlock<ThrowException> block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: new PrivateKey().PublicKey,
                     previousHash: genesis.Hash,
-                    txHash: BlockContent<ThrowException>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: txs).Propose();
+                transactions: txs).Propose<ThrowException>();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
                 ActionEvaluator.NullAccountStateGetter,
@@ -588,15 +588,15 @@ namespace Libplanet.Tests.Action
             var tx =
                 Transaction.Create<DumbAction>(0, _txFx.PrivateKey1, null, actions);
             var txs = new Transaction[] { tx };
-            var block = new BlockContent<DumbAction>(
+            var block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: keys[0].PublicKey,
                     previousHash: default(BlockHash),
-                    txHash: BlockContent<DumbAction>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
-                transactions: txs).Propose();
+                transactions: txs).Propose<DumbAction>();
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
@@ -744,15 +744,15 @@ namespace Libplanet.Tests.Action
                 actionTypeLoader: StaticActionTypeLoader.Create<ThrowException>(),
                 feeCalculator: null
             );
-            var block = new BlockContent<ThrowException>(
+            var block = new BlockContent(
                 new BlockMetadata(
                     index: 123,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: hash,
-                    txHash: BlockContent<ThrowException>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0)),
-                transactions: txs).Propose();
+                transactions: txs).Propose<ThrowException>();
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,

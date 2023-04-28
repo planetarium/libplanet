@@ -139,14 +139,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 privateKey: TestUtils.PrivateKeys[0]);
 
             var key = new PrivateKey();
-            var invalidBlock = new BlockContent<DumbAction>(
+            var invalidBlock = new BlockContent(
                 new BlockMetadata(
                     index: blockChain.Tip.Index + 1,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: key.PublicKey,
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(key, blockChain);
+                    lastCommit: null)).Propose<DumbAction>().Evaluate(key, blockChain);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -217,7 +217,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // 2. Index should be increased monotonically.
             // 3. Timestamp should be increased monotonically.
             // 4. PreviousHash should be matched with Tip hash.
-            var invalidBlock = new BlockContent<DumbAction>(
+            var invalidBlock = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion - 1,
                     index: blockChain.Tip.Index + 2,
@@ -227,7 +227,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose().Evaluate(TestUtils.PrivateKeys[1], blockChain);
+                .Propose<DumbAction>().Evaluate(TestUtils.PrivateKeys[1], blockChain);
 
             context.Start();
             context.ProduceMessage(

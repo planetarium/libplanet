@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Fixtures
     {
         public readonly PrivateKey GenesisKey;
         public readonly BlockHash GenesisHash;
-        public readonly BlockContent<Arithmetic> GenesisContent;
+        public readonly BlockContent GenesisContent;
         public readonly BlockMetadata GenesisMetadata;
 
         public readonly PrivateKey Block1Key;
@@ -25,13 +25,13 @@ namespace Libplanet.Tests.Fixtures
         public readonly PrivateKey Block1Tx1Key;
         public readonly Transaction Block1Tx0;
         public readonly Transaction Block1Tx1;
-        public readonly BlockContent<Arithmetic> Block1Content;
+        public readonly BlockContent Block1Content;
         public readonly HashDigest<SHA256> Block1TxHash;
         public readonly BlockMetadata Block1Metadata;
 
-        public readonly BlockContent<Arithmetic> GenesisContentPv0;
+        public readonly BlockContent GenesisContentPv0;
         public readonly BlockMetadata GenesisMetadataPv0;
-        public readonly BlockContent<Arithmetic> Block1ContentPv1;
+        public readonly BlockContent Block1ContentPv1;
         public readonly BlockMetadata Block1MetadataPv1;
 
         public BlockContentFixture()
@@ -52,13 +52,13 @@ namespace Libplanet.Tests.Fixtures
                 timestamp: DateTimeOffset.MinValue
             );
             Transaction[] genTxs = new[] { genTx };
-            GenesisContent = new BlockContent<Arithmetic>(
+            GenesisContent = new BlockContent(
                 new BlockMetadata(
                     index: 0,
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                     publicKey: GenesisKey.PublicKey,
                     previousHash: null,
-                    txHash: BlockContent<Arithmetic>.DeriveTxHash(genTxs),
+                    txHash: BlockContent.DeriveTxHash(genTxs),
                     lastCommit: null),
                 transactions: genTxs);
             GenesisMetadata = new BlockMetadata(GenesisContent);
@@ -107,20 +107,20 @@ namespace Libplanet.Tests.Fixtures
 
             var block1Transactions = new List<Transaction>() { Block1Tx0, Block1Tx1 }
                 .OrderBy(tx => tx.Id).ToList();
-            Block1Content = new BlockContent<Arithmetic>(
+            Block1Content = new BlockContent(
                 new BlockMetadata(
                     index: 1,
                     timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
                     publicKey: Block1Key.PublicKey,
                     previousHash: GenesisHash,
-                    txHash: BlockContent<Arithmetic>.DeriveTxHash(block1Transactions),
+                    txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null),
                 transactions: block1Transactions);
             Block1TxHash = HashDigest<SHA256>.FromString(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
             Block1Metadata = new BlockMetadata(Block1Content);
 
-            GenesisContentPv0 = new BlockContent<Arithmetic>(
+            GenesisContentPv0 = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: 0,
                     index: 0,
@@ -132,7 +132,7 @@ namespace Libplanet.Tests.Fixtures
                     lastCommit: null),
                 transactions: new List<Transaction>()); // Tweaked GenesisContent
             GenesisMetadataPv0 = new BlockMetadata(GenesisContentPv0);
-            Block1ContentPv1 = new BlockContent<Arithmetic>(
+            Block1ContentPv1 = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: 1,
                     index: 1,
@@ -140,7 +140,7 @@ namespace Libplanet.Tests.Fixtures
                     miner: Block1Key.ToAddress(),
                     publicKey: null,
                     previousHash: GenesisHash,
-                    txHash: BlockContent<Arithmetic>.DeriveTxHash(block1Transactions),
+                    txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null),
                 transactions: block1Transactions); // Tweaked Block1Content
             Block1MetadataPv1 = new BlockMetadata(Block1ContentPv1);

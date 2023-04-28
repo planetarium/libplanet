@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Blockchain
             _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
 
-            _validNext = new BlockContent<DumbAction>(
+            _validNext = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1,
@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Proposer.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Proposer, _blockChain);
+                    lastCommit: null)).Propose<DumbAction>().Evaluate(_fx.Proposer, _blockChain);
         }
 
         public void Dispose()

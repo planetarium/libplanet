@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.GenesisContent.Propose();
+                _contents.GenesisContent.Propose<Arithmetic>();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -61,16 +61,16 @@ namespace Libplanet.Tests.Blocks
                 AssertBytesEqual(genesis.StateRootHash, identicalGenesisStateRootHash);
 
                 var txs = new[] { _contents.Block1Tx0 };
-                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                BlockContent content1 = new BlockContent(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         previousHash: genesis.Hash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs);
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose<Arithmetic>();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
@@ -96,7 +96,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.GenesisContent.Propose();
+                _contents.GenesisContent.Propose<Arithmetic>();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -121,16 +121,16 @@ namespace Libplanet.Tests.Blocks
                 AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
 
                 var txs = new[] { _contents.Block1Tx0 };
-                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                BlockContent content1 = new BlockContent(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         previousHash: genesis.Hash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs);
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose<Arithmetic>();
 
                 HashDigest<SHA256> b1StateRootHash =
                     blockChain.DetermineBlockStateRootHash(preEval1, out _);

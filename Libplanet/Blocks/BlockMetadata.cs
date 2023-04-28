@@ -10,9 +10,9 @@ namespace Libplanet.Blocks
     /// A block metadata without transactions or any proof hash.  This represents
     /// metadata of a block that is not yet mined nor proven.
     /// <para>To represent a block content including its metadata and transactions, use
-    /// <see cref="BlockContent{T}"/>.</para>
+    /// <see cref="BlockContent"/>.</para>
     /// </summary>
-    /// <seealso cref="BlockContent{T}"/>
+    /// <seealso cref="BlockContent"/>
     public class BlockMetadata : IBlockMetadata
     {
         /// <summary>

@@ -160,7 +160,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             var key = new PrivateKey();
-            var differentBlock = new BlockContent<DumbAction>(
+            var differentBlock = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: blockChain.Tip.Index + 1,
@@ -170,7 +170,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose().Evaluate(key, blockChain);
+                .Propose<DumbAction>().Evaluate(key, blockChain);
 
             context.Start();
             await proposalSent.WaitAsync();

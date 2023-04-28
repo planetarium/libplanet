@@ -33,14 +33,14 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     privateKey.PublicKey,
                     VoteFlag.PreCommit).Sign(privateKey));
             var lastBlockCommit = new BlockCommit(1, 0, lastBlockHash, lastVotes);
-            var preEval = new BlockContent<NullAction>(
+            var preEval = new BlockContent(
                 new BlockMetadata(
                     index: 2,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     previousHash: lastBlockHash,
                     txHash: null,
-                    lastCommit: lastBlockCommit)).Propose();
+                    lastCommit: lastBlockCommit)).Propose<NullAction>();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);

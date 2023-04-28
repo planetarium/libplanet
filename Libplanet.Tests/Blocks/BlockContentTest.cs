@@ -24,14 +24,14 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CopyConstructors()
         {
-            var block1 = new BlockContent<Arithmetic>(Block1Metadata, Block1Content.Transactions);
+            var block1 = new BlockContent(Block1Metadata, Block1Content.Transactions);
             AssertBlockContentsEqual(Block1Content, block1);
 
             Assert.Throws<InvalidBlockTxHashException>(() =>
-                new BlockContent<Arithmetic>(Block1Metadata, Array.Empty<Transaction>())
+                new BlockContent(Block1Metadata, Array.Empty<Transaction>())
             );
             Assert.Throws<InvalidBlockTxHashException>(
-                () => new BlockContent<Arithmetic>(Block1Metadata, new[] { Block1Tx0 })
+                () => new BlockContent(Block1Metadata, new[] { Block1Tx0 })
             );
         }
 
@@ -56,13 +56,13 @@ namespace Libplanet.Tests.Blocks
                 )
             );
             var txs = new[] { tx2, Block1Tx0, Block1Tx1 }.OrderBy(tx => tx.Id).ToImmutableList();
-            var blockContent = new BlockContent<Arithmetic>(
+            var blockContent = new BlockContent(
                 new BlockMetadata(
                     index: Block1Content.Index,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: Block1Content.PublicKey,
                     previousHash: Block1Content.PreviousHash,
-                    txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs);
             Assert.Equal(
@@ -89,13 +89,13 @@ namespace Libplanet.Tests.Blocks
             );
             var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
-                () => new BlockContent<Arithmetic>(
+                () => new BlockContent(
                     new BlockMetadata(
                         index: Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs));
             Assert.Equal(Block1Tx1.Id, e.TxId);
@@ -122,13 +122,13 @@ namespace Libplanet.Tests.Blocks
             );
             var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
-                () => new BlockContent<Arithmetic>(
+                () => new BlockContent(
                     new BlockMetadata(
                         index: Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs));
             Assert.Equal(dupTx1.Id, e.TxId);
@@ -160,13 +160,13 @@ namespace Libplanet.Tests.Blocks
             Transaction[] inconsistentTxs =
                 Block1Content.Transactions.Append(txWithDifferentGenesis).ToArray();
             InvalidTxGenesisHashException e = Assert.Throws<InvalidTxGenesisHashException>(
-                () => new BlockContent<Arithmetic>(
+                () => new BlockContent(
                     new BlockMetadata(
                         index: Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(inconsistentTxs),
+                        txHash: BlockContent.DeriveTxHash(inconsistentTxs),
                         lastCommit: null),
                     transactions: inconsistentTxs));
             Assert.Equal(Block1Content.Transactions[0].GenesisHash, e.ExpectedGenesisHash);
@@ -190,14 +190,14 @@ namespace Libplanet.Tests.Blocks
         public void DeriveTxHash()
         {
             Assert.Null(
-                BlockContent<Arithmetic>.DeriveTxHash(Array.Empty<Transaction>())
+                BlockContent.DeriveTxHash(Array.Empty<Transaction>())
             );
             AssertBytesEqual(
                 Block1Metadata.TxHash,
-                BlockContent<Arithmetic>.DeriveTxHash(Block1Content.Transactions)
+                BlockContent.DeriveTxHash(Block1Content.Transactions)
             );
             Assert.Throws<ArgumentException>(
-                () => BlockContent<Arithmetic>.DeriveTxHash(Block1Content.Transactions.Reverse())
+                () => BlockContent.DeriveTxHash(Block1Content.Transactions.Reverse())
             );
         }
     }

@@ -58,17 +58,17 @@ namespace Libplanet.Blockchain
                 ? txs.OrderBy(tx => tx.Id).ToImmutableList()
                 : ImmutableList<Transaction>.Empty;
 
-            BlockContent<T> content = new BlockContent<T>(
+            BlockContent content = new BlockContent(
                 new BlockMetadata(
                     index: 0L,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     previousHash: null,
-                    txHash: BlockContent<T>.DeriveTxHash(transactions),
+                    txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null),
                 transactions: transactions);
 
-            PreEvaluationBlock<T> preEval = content.Propose();
+            PreEvaluationBlock<T> preEval = content.Propose<T>();
             IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(
                 preEval, blockAction, nativeTokenPredicate);
             return preEval.Sign(
@@ -161,7 +161,7 @@ namespace Libplanet.Blockchain
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
             var orderedTransactions = transactions.OrderBy(tx => tx.Id).ToList();
-            var blockContent = new BlockContent<T>(
+            var blockContent = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
@@ -169,10 +169,10 @@ namespace Libplanet.Blockchain
                     miner: proposer.ToAddress(),
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
-                    txHash: BlockContent<T>.DeriveTxHash(orderedTransactions),
+                    txHash: BlockContent.DeriveTxHash(orderedTransactions),
                     lastCommit: lastCommit),
                 transactions: orderedTransactions);
-            var preEval = blockContent.Propose();
+            var preEval = blockContent.Propose<T>();
             return ProposeBlock(proposer, preEval);
         }
 

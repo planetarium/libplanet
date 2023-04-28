@@ -16,7 +16,6 @@ namespace Libplanet.Blocks
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
     public sealed class Block<T> :
-        IPreEvaluationBlock<T>,
         IPreEvaluationBlock,
         IBlockHeader,
         IEquatable<Block<T>>
@@ -130,12 +129,11 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _preEvaluationBlock.LastCommit;
 
-        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
+        /// <inheritdoc cref="IBlockContent.Transactions"/>
         public IReadOnlyList<Transaction> Transactions => _preEvaluationBlock.Transactions;
 
         /// <inheritdoc cref="IBlockContent.Transactions"/>
-        IImmutableSet<ITransaction> IBlockContent.Transactions =>
-            ((IPreEvaluationBlock)_preEvaluationBlock).Transactions;
+        IReadOnlyList<ITransaction> IBlockContent.Transactions => _preEvaluationBlock.Transactions;
 
         /// <summary>
         /// Equivalent to <see cref="IEquatable{T}.Equals(T)"/>.
