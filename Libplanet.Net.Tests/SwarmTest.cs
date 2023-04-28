@@ -404,9 +404,8 @@ namespace Libplanet.Net.Tests
                     TestUtils.PrivateKeys[i].PublicKey,
                     new DnsEndPoint("127.0.0.1", 6000 + i))).ToImmutableList();
             var reactorOpts = Enumerable.Range(0, 4).Select(i =>
-                new ConsensusReactorOption()
+                new ConsensusReactorOption
                 {
-                    SeedPeers = consensusPeers,
                     ConsensusPeers = consensusPeers,
                     ConsensusPort = 6000 + i,
                     ConsensusPrivateKey = TestUtils.PrivateKeys[i],

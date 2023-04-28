@@ -246,12 +246,15 @@ namespace Libplanet.Net.Consensus
         /// <param name="count">Number of <see cref="BoundPeer"/> to choose.</param>
         /// <returns>
         /// An enumerable <see cref="BoundPeer"/>'s of length <paramref name="count"/>.</returns>
-        private static IEnumerable<BoundPeer> PeersToBroadcast(
+        private IEnumerable<BoundPeer> PeersToBroadcast(
             IEnumerable<BoundPeer> peers,
             int count)
         {
             var rnd = new Random();
-            return peers.OrderBy(x => rnd.Next()).Take(count);
+            return peers
+                .Where(x => !_seeds.Contains(x))
+                .OrderBy(x => rnd.Next())
+                .Take(count);
         }
 
         /// <summary>

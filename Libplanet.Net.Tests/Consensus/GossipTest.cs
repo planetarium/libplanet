@@ -263,6 +263,45 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async void DoNotBroadcastToSeedPeers()
+        {
+            bool received = false;
+            async Task ProcessMessage(Message msg)
+            {
+                if (msg.Content is HaveMessage)
+                {
+                    received = true;
+                }
+
+                await Task.CompletedTask;
+            }
+
+            Gossip gossip = CreateGossip(_ => { });
+
+            ITransport seed = CreateTransport();
+            seed.ProcessMessageHandler.Register(ProcessMessage);
+            try
+            {
+                _ = seed.StartAsync();
+                _ = gossip.StartAsync(default);
+                await seed.WaitForRunningAsync();
+                await gossip.WaitForRunningAsync();
+                gossip.AddMessage(new PingMsg());
+
+                // Wait heartbeat interval * 2.
+                await Task.Delay(2 * 1000);
+                Assert.False(received);
+            }
+            finally
+            {
+                await seed.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                seed.Dispose();
+                gossip.Dispose();
+            }
+        }
+
         private Gossip CreateGossip(
             Action<MessageContent> processMessage,
             PrivateKey? privateKey = null,
