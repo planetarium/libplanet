@@ -72,16 +72,13 @@
 
   <h1 id="Libplanet_Tx_TxActionList" data-uid="Libplanet.Tx.TxActionList" class="text-break">Class TxActionList
 </h1>
-  <div class="markdown level0 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level0 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">TxActionList</span></div>
-      <div class="level2"><a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a></div>
-      <div class="level2"><a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -115,30 +112,161 @@
   <h5 id="Libplanet_Tx_TxActionList_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonConverter(typeof(TxActionListJsonConverter))]
-public abstract class TxActionList : IReadOnlyList&lt;IValue&gt;, IReadOnlyCollection&lt;IValue&gt;, IEnumerable&lt;IValue&gt;, IEnumerable, IEquatable&lt;TxActionList&gt;, IBencodable</code></pre>
+public sealed class TxActionList : IReadOnlyList&lt;IValue&gt;, IReadOnlyCollection&lt;IValue&gt;, IEnumerable&lt;IValue&gt;, IEnumerable, IEquatable&lt;TxActionList&gt;, IBencodable</code></pre>
   </div>
-  <h5 id="Libplanet_Tx_TxActionList_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L43">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxActionList__ctor_" data-uid="Libplanet.Tx.TxActionList.#ctor*"></a>
+  <h4 id="Libplanet_Tx_TxActionList__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Tx.TxActionList.#ctor(Bencodex.Types.IValue)">TxActionList(IValue)</h4>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxActionList(IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.%23ctor(System.Collections.Generic.IEnumerable%7BLibplanet.Action.IAction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L38">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxActionList__ctor_" data-uid="Libplanet.Tx.TxActionList.#ctor*"></a>
+  <h4 id="Libplanet_Tx_TxActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__" data-uid="Libplanet.Tx.TxActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})">TxActionList(IEnumerable&lt;IAction&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a> instance with given
+<code data-dev-comment-type="paramref" class="paramref">actions</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxActionList(IEnumerable&lt;IAction&gt; actions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</td>
+        <td><span class="parametername">actions</span></td>
+        <td><p>The list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a
+transaction.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Empty.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Empty%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L27">View Source</a>
+  </span>
+  <h4 id="Libplanet_Tx_TxActionList_Empty" data-uid="Libplanet.Tx.TxActionList.Empty">Empty</h4>
+  <div class="markdown level1 summary"><p>An empty <a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly TxActionList Empty</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxActionList.html">TxActionList</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
 </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Actions.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Actions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L61">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxActionList_Actions_" data-uid="Libplanet.Tx.TxActionList.Actions*"></a>
+  <h4 id="Libplanet_Tx_TxActionList_Actions" data-uid="Libplanet.Tx.TxActionList.Actions">Actions</h4>
+  <div class="markdown level1 summary"><p>The list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a
+transaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableList&lt;IValue&gt; Actions { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L35">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L69">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Bencoded_" data-uid="Libplanet.Tx.TxActionList.Bencoded*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Bencoded" data-uid="Libplanet.Tx.TxActionList.Bencoded">Bencoded</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IValue Bencoded { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IValue Bencoded { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,27 +283,22 @@ it cannot be inherited from outside of this assembly.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxActionList_Bencoded_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Count.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L65">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Count_" data-uid="Libplanet.Tx.TxActionList.Count*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Count" data-uid="Libplanet.Tx.TxActionList.Count">Count</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public abstract int Count { get; }</code></pre>
+public int Count { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -192,27 +315,22 @@ public abstract int Count { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxActionList_Count_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L38">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L76">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Item_" data-uid="Libplanet.Tx.TxActionList.Item*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Item_System_Int32_" data-uid="Libplanet.Tx.TxActionList.Item(System.Int32)">Item[Int32]</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public abstract IValue this[int index] { get; }</code></pre>
+public IValue this[int index] { get; }</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -246,10 +364,29 @@ public abstract IValue this[int index] { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxActionList_Item_System_Int32__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">index</code> is less than zero.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">index</code> is greater than or equal to <a class="xref" href="Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Count">Count</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -257,18 +394,17 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L107">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Equals_" data-uid="Libplanet.Tx.TxActionList.Equals*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_" data-uid="Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)">Equals(TxActionList)</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public abstract bool Equals(TxActionList other)</code></pre>
+public bool Equals(TxActionList other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -302,21 +438,16 @@ public abstract bool Equals(TxActionList other)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L54">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_Equals_" data-uid="Libplanet.Tx.TxActionList.Equals*"></a>
   <h4 id="Libplanet_Tx_TxActionList_Equals_System_Object_" data-uid="Libplanet.Tx.TxActionList.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -358,27 +489,22 @@ public override bool Equals(object obj)</code></pre>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a></div>
-  <h5 id="Libplanet_Tx_TxActionList_Equals_System_Object__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_GetEnumerator_" data-uid="Libplanet.Tx.TxActionList.GetEnumerator*"></a>
   <h4 id="Libplanet_Tx_TxActionList_GetEnumerator" data-uid="Libplanet.Tx.TxActionList.GetEnumerator">GetEnumerator()</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public abstract IEnumerator&lt;IValue&gt; GetEnumerator()</code></pre>
+public IEnumerator&lt;IValue&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -395,21 +521,16 @@ public abstract IEnumerator&lt;IValue&gt; GetEnumerator()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxActionList_GetEnumerator_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L58">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L116">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_GetHashCode_" data-uid="Libplanet.Tx.TxActionList.GetHashCode*"></a>
   <h4 id="Libplanet_Tx_TxActionList_GetHashCode" data-uid="Libplanet.Tx.TxActionList.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -434,10 +555,6 @@ public override int GetHashCode()</code></pre>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
-  <h5 id="Libplanet_Tx_TxActionList_GetHashCode_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <h3 id="eii">Explicit Interface Implementations
 </h3>
   <span class="small pull-right mobile-hide">
@@ -445,12 +562,11 @@ it cannot be inherited from outside of this assembly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator*"></a>
   <h4 id="Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Tx.TxActionList.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
-  <div class="markdown level1 summary"><p>An abstract class to represent a list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.  It can be either
-<a class="xref" href="Libplanet.Tx.TxSystemActionList.html">TxSystemActionList</a> or <a class="xref" href="Libplanet.Tx.TxCustomActionList.html">TxCustomActionList</a>.</p>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -473,10 +589,6 @@ IEnumerator IEnumerable.GetEnumerator()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_TxActionList_System_Collections_IEnumerable_GetEnumerator_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It is a <a href="https://en.wikipedia.org/wiki/Sum_type">sum type</a> as
-it cannot be inherited from outside of this assembly.</p>
-</div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">System.Collections.Generic.IReadOnlyList&lt;T&gt;</a>
@@ -514,7 +626,7 @@ it cannot be inherited from outside of this assembly.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxActionList.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxActionList%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxActionList.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

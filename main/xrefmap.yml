@@ -3572,24 +3572,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item
   nameWithType: BlockChain<T>.Item
   nameWithType.vb: BlockChain(Of T).Item
-- uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: MakeTransaction(PrivateKey, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: MakeTransaction(PrivateKey, IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MakeTransaction(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-- uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable__0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: MakeTransaction(PrivateKey, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction*
   name: MakeTransaction
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_
@@ -28913,19 +28904,6 @@ references:
   commentId: T:Libplanet.Tx.ITransaction
   fullName: Libplanet.Tx.ITransaction
   nameWithType: ITransaction
-- uid: Libplanet.Tx.ITransaction.CustomActions
-  name: CustomActions
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_CustomActions
-  commentId: P:Libplanet.Tx.ITransaction.CustomActions
-  fullName: Libplanet.Tx.ITransaction.CustomActions
-  nameWithType: ITransaction.CustomActions
-- uid: Libplanet.Tx.ITransaction.CustomActions*
-  name: CustomActions
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_CustomActions_
-  commentId: Overload:Libplanet.Tx.ITransaction.CustomActions
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.CustomActions
-  nameWithType: ITransaction.CustomActions
 - uid: Libplanet.Tx.ITransaction.Id
   name: Id
   href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Id
@@ -28952,19 +28930,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITransaction.Signature
   nameWithType: ITransaction.Signature
-- uid: Libplanet.Tx.ITransaction.SystemAction
-  name: SystemAction
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction
-  commentId: P:Libplanet.Tx.ITransaction.SystemAction
-  fullName: Libplanet.Tx.ITransaction.SystemAction
-  nameWithType: ITransaction.SystemAction
-- uid: Libplanet.Tx.ITransaction.SystemAction*
-  name: SystemAction
-  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction_
-  commentId: Overload:Libplanet.Tx.ITransaction.SystemAction
-  isSpec: "True"
-  fullName: Libplanet.Tx.ITransaction.SystemAction
-  nameWithType: ITransaction.SystemAction
 - uid: Libplanet.Tx.ITxInvoice
   name: ITxInvoice
   href: api/Libplanet.Tx.ITxInvoice.html
@@ -29126,24 +29091,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Actions
   nameWithType: Transaction<T>.Actions
   nameWithType.vb: Transaction(Of T).Actions
-- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Action_IAction_System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Action.IAction, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Action.IAction, System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable__0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction`1.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_
@@ -29153,23 +29118,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Create
   nameWithType: Transaction<T>.Create
   nameWithType.vb: Transaction(Of T).Create
-- uid: Libplanet.Tx.Transaction`1.CustomActions
-  name: CustomActions
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions
-  commentId: P:Libplanet.Tx.Transaction`1.CustomActions
-  fullName: Libplanet.Tx.Transaction<T>.CustomActions
-  fullName.vb: Libplanet.Tx.Transaction(Of T).CustomActions
-  nameWithType: Transaction<T>.CustomActions
-  nameWithType.vb: Transaction(Of T).CustomActions
-- uid: Libplanet.Tx.Transaction`1.CustomActions*
-  name: CustomActions
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions_
-  commentId: Overload:Libplanet.Tx.Transaction`1.CustomActions
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.CustomActions
-  fullName.vb: Libplanet.Tx.Transaction(Of T).CustomActions
-  nameWithType: Transaction<T>.CustomActions
-  nameWithType.vb: Transaction(Of T).CustomActions
 - uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
   name: Deserialize(Byte[])
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___
@@ -29265,44 +29213,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Id
   nameWithType: Transaction<T>.Id
   nameWithType.vb: Transaction(Of T).Id
-- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions
-  name: ITransaction.CustomActions
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_CustomActions
-  commentId: P:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions
-  name.vb: Libplanet.Tx.ITransaction.CustomActions
-  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.CustomActions
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
-  nameWithType: Transaction<T>.ITransaction.CustomActions
-  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
-- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions*
-  name: ITransaction.CustomActions
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_CustomActions_
-  commentId: Overload:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions
-  isSpec: "True"
-  name.vb: Libplanet.Tx.ITransaction.CustomActions
-  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.CustomActions
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
-  nameWithType: Transaction<T>.ITransaction.CustomActions
-  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
-- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction
-  name: ITransaction.SystemAction
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_SystemAction
-  commentId: P:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction
-  name.vb: Libplanet.Tx.ITransaction.SystemAction
-  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.SystemAction
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
-  nameWithType: Transaction<T>.ITransaction.SystemAction
-  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
-- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction*
-  name: ITransaction.SystemAction
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_SystemAction_
-  commentId: Overload:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction
-  isSpec: "True"
-  name.vb: Libplanet.Tx.ITransaction.SystemAction
-  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.SystemAction
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
-  nameWithType: Transaction<T>.ITransaction.SystemAction
-  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
 - uid: Libplanet.Tx.Transaction`1.Nonce
   name: Nonce
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce
@@ -29445,23 +29355,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
   nameWithType: Transaction<T>.IEquatable<IUnsignedTx>.Equals
   nameWithType.vb: Transaction(Of T).System.IEquatable<Libplanet.Tx.IUnsignedTx>.Equals
-- uid: Libplanet.Tx.Transaction`1.SystemAction
-  name: SystemAction
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction
-  commentId: P:Libplanet.Tx.Transaction`1.SystemAction
-  fullName: Libplanet.Tx.Transaction<T>.SystemAction
-  fullName.vb: Libplanet.Tx.Transaction(Of T).SystemAction
-  nameWithType: Transaction<T>.SystemAction
-  nameWithType.vb: Transaction(Of T).SystemAction
-- uid: Libplanet.Tx.Transaction`1.SystemAction*
-  name: SystemAction
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction_
-  commentId: Overload:Libplanet.Tx.Transaction`1.SystemAction
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.SystemAction
-  fullName.vb: Libplanet.Tx.Transaction(Of T).SystemAction
-  nameWithType: Transaction<T>.SystemAction
-  nameWithType.vb: Transaction(Of T).SystemAction
 - uid: Libplanet.Tx.Transaction`1.Timestamp
   name: Timestamp
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Timestamp
@@ -29578,6 +29471,41 @@ references:
   commentId: T:Libplanet.Tx.TxActionList
   fullName: Libplanet.Tx.TxActionList
   nameWithType: TxActionList
+- uid: Libplanet.Tx.TxActionList.#ctor(Bencodex.Types.IValue)
+  name: TxActionList(IValue)
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Tx.TxActionList.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Tx.TxActionList.TxActionList(Bencodex.Types.IValue)
+  nameWithType: TxActionList.TxActionList(IValue)
+- uid: Libplanet.Tx.TxActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
+  name: TxActionList(IEnumerable<IAction>)
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__
+  commentId: M:Libplanet.Tx.TxActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
+  name.vb: TxActionList(IEnumerable(Of IAction))
+  fullName: Libplanet.Tx.TxActionList.TxActionList(System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>)
+  fullName.vb: Libplanet.Tx.TxActionList.TxActionList(System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction))
+  nameWithType: TxActionList.TxActionList(IEnumerable<IAction>)
+  nameWithType.vb: TxActionList.TxActionList(IEnumerable(Of IAction))
+- uid: Libplanet.Tx.TxActionList.#ctor*
+  name: TxActionList
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList__ctor_
+  commentId: Overload:Libplanet.Tx.TxActionList.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.TxActionList
+  nameWithType: TxActionList.TxActionList
+- uid: Libplanet.Tx.TxActionList.Actions
+  name: Actions
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Actions
+  commentId: P:Libplanet.Tx.TxActionList.Actions
+  fullName: Libplanet.Tx.TxActionList.Actions
+  nameWithType: TxActionList.Actions
+- uid: Libplanet.Tx.TxActionList.Actions*
+  name: Actions
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Actions_
+  commentId: Overload:Libplanet.Tx.TxActionList.Actions
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxActionList.Actions
+  nameWithType: TxActionList.Actions
 - uid: Libplanet.Tx.TxActionList.Bencoded
   name: Bencoded
   href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Bencoded
@@ -29604,6 +29532,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxActionList.Count
   nameWithType: TxActionList.Count
+- uid: Libplanet.Tx.TxActionList.Empty
+  name: Empty
+  href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Empty
+  commentId: F:Libplanet.Tx.TxActionList.Empty
+  fullName: Libplanet.Tx.TxActionList.Empty
+  nameWithType: TxActionList.Empty
 - uid: Libplanet.Tx.TxActionList.Equals(Libplanet.Tx.TxActionList)
   name: Equals(TxActionList)
   href: api/Libplanet.Tx.TxActionList.html#Libplanet_Tx_TxActionList_Equals_Libplanet_Tx_TxActionList_
@@ -29682,121 +29616,6 @@ references:
   fullName: Libplanet.Tx.TxActionList.System.Collections.IEnumerable.GetEnumerator
   nameWithType: TxActionList.IEnumerable.GetEnumerator
   nameWithType.vb: TxActionList.System.Collections.IEnumerable.GetEnumerator
-- uid: Libplanet.Tx.TxCustomActionList
-  name: TxCustomActionList
-  href: api/Libplanet.Tx.TxCustomActionList.html
-  commentId: T:Libplanet.Tx.TxCustomActionList
-  fullName: Libplanet.Tx.TxCustomActionList
-  nameWithType: TxCustomActionList
-- uid: Libplanet.Tx.TxCustomActionList.#ctor(Bencodex.Types.IValue)
-  name: TxCustomActionList(IValue)
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Tx.TxCustomActionList.#ctor(Bencodex.Types.IValue)
-  fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList(Bencodex.Types.IValue)
-  nameWithType: TxCustomActionList.TxCustomActionList(IValue)
-- uid: Libplanet.Tx.TxCustomActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
-  name: TxCustomActionList(IEnumerable<IAction>)
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__
-  commentId: M:Libplanet.Tx.TxCustomActionList.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Action.IAction})
-  name.vb: TxCustomActionList(IEnumerable(Of IAction))
-  fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList(System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>)
-  fullName.vb: Libplanet.Tx.TxCustomActionList.TxCustomActionList(System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction))
-  nameWithType: TxCustomActionList.TxCustomActionList(IEnumerable<IAction>)
-  nameWithType.vb: TxCustomActionList.TxCustomActionList(IEnumerable(Of IAction))
-- uid: Libplanet.Tx.TxCustomActionList.#ctor*
-  name: TxCustomActionList
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList__ctor_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.TxCustomActionList
-  nameWithType: TxCustomActionList.TxCustomActionList
-- uid: Libplanet.Tx.TxCustomActionList.Bencoded
-  name: Bencoded
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Bencoded
-  commentId: P:Libplanet.Tx.TxCustomActionList.Bencoded
-  fullName: Libplanet.Tx.TxCustomActionList.Bencoded
-  nameWithType: TxCustomActionList.Bencoded
-- uid: Libplanet.Tx.TxCustomActionList.Bencoded*
-  name: Bencoded
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Bencoded_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.Bencoded
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.Bencoded
-  nameWithType: TxCustomActionList.Bencoded
-- uid: Libplanet.Tx.TxCustomActionList.Count
-  name: Count
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Count
-  commentId: P:Libplanet.Tx.TxCustomActionList.Count
-  fullName: Libplanet.Tx.TxCustomActionList.Count
-  nameWithType: TxCustomActionList.Count
-- uid: Libplanet.Tx.TxCustomActionList.Count*
-  name: Count
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Count_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.Count
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.Count
-  nameWithType: TxCustomActionList.Count
-- uid: Libplanet.Tx.TxCustomActionList.CustomActions
-  name: CustomActions
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_CustomActions
-  commentId: P:Libplanet.Tx.TxCustomActionList.CustomActions
-  fullName: Libplanet.Tx.TxCustomActionList.CustomActions
-  nameWithType: TxCustomActionList.CustomActions
-- uid: Libplanet.Tx.TxCustomActionList.CustomActions*
-  name: CustomActions
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_CustomActions_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.CustomActions
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.CustomActions
-  nameWithType: TxCustomActionList.CustomActions
-- uid: Libplanet.Tx.TxCustomActionList.Empty
-  name: Empty
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Empty
-  commentId: F:Libplanet.Tx.TxCustomActionList.Empty
-  fullName: Libplanet.Tx.TxCustomActionList.Empty
-  nameWithType: TxCustomActionList.Empty
-- uid: Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)
-  name: Equals(TxActionList)
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Equals_Libplanet_Tx_TxActionList_
-  commentId: M:Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)
-  fullName: Libplanet.Tx.TxCustomActionList.Equals(Libplanet.Tx.TxActionList)
-  nameWithType: TxCustomActionList.Equals(TxActionList)
-- uid: Libplanet.Tx.TxCustomActionList.Equals*
-  name: Equals
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Equals_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.Equals
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.Equals
-  nameWithType: TxCustomActionList.Equals
-- uid: Libplanet.Tx.TxCustomActionList.GetEnumerator
-  name: GetEnumerator()
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_GetEnumerator
-  commentId: M:Libplanet.Tx.TxCustomActionList.GetEnumerator
-  fullName: Libplanet.Tx.TxCustomActionList.GetEnumerator()
-  nameWithType: TxCustomActionList.GetEnumerator()
-- uid: Libplanet.Tx.TxCustomActionList.GetEnumerator*
-  name: GetEnumerator
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_GetEnumerator_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.GetEnumerator
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.GetEnumerator
-  nameWithType: TxCustomActionList.GetEnumerator
-- uid: Libplanet.Tx.TxCustomActionList.Item(System.Int32)
-  name: Item[Int32]
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Item_System_Int32_
-  commentId: P:Libplanet.Tx.TxCustomActionList.Item(System.Int32)
-  name.vb: Item(Int32)
-  fullName: Libplanet.Tx.TxCustomActionList.Item[System.Int32]
-  fullName.vb: Libplanet.Tx.TxCustomActionList.Item(System.Int32)
-  nameWithType: TxCustomActionList.Item[Int32]
-  nameWithType.vb: TxCustomActionList.Item(Int32)
-- uid: Libplanet.Tx.TxCustomActionList.Item*
-  name: Item
-  href: api/Libplanet.Tx.TxCustomActionList.html#Libplanet_Tx_TxCustomActionList_Item_
-  commentId: Overload:Libplanet.Tx.TxCustomActionList.Item
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxCustomActionList.Item
-  nameWithType: TxCustomActionList.Item
 - uid: Libplanet.Tx.TxExecution
   name: TxExecution
   href: api/Libplanet.Tx.TxExecution.html
@@ -30852,112 +30671,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxSuccess.UpdatedStates
   nameWithType: TxSuccess.UpdatedStates
-- uid: Libplanet.Tx.TxSystemActionList
-  name: TxSystemActionList
-  href: api/Libplanet.Tx.TxSystemActionList.html
-  commentId: T:Libplanet.Tx.TxSystemActionList
-  fullName: Libplanet.Tx.TxSystemActionList
-  nameWithType: TxSystemActionList
-- uid: Libplanet.Tx.TxSystemActionList.#ctor(Bencodex.Types.IValue)
-  name: TxSystemActionList(IValue)
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Tx.TxSystemActionList.#ctor(Bencodex.Types.IValue)
-  fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList(Bencodex.Types.IValue)
-  nameWithType: TxSystemActionList.TxSystemActionList(IValue)
-- uid: Libplanet.Tx.TxSystemActionList.#ctor(Libplanet.Action.IAction)
-  name: TxSystemActionList(IAction)
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_Libplanet_Action_IAction_
-  commentId: M:Libplanet.Tx.TxSystemActionList.#ctor(Libplanet.Action.IAction)
-  fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList(Libplanet.Action.IAction)
-  nameWithType: TxSystemActionList.TxSystemActionList(IAction)
-- uid: Libplanet.Tx.TxSystemActionList.#ctor*
-  name: TxSystemActionList
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList__ctor_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.TxSystemActionList
-  nameWithType: TxSystemActionList.TxSystemActionList
-- uid: Libplanet.Tx.TxSystemActionList.Bencoded
-  name: Bencoded
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Bencoded
-  commentId: P:Libplanet.Tx.TxSystemActionList.Bencoded
-  fullName: Libplanet.Tx.TxSystemActionList.Bencoded
-  nameWithType: TxSystemActionList.Bencoded
-- uid: Libplanet.Tx.TxSystemActionList.Bencoded*
-  name: Bencoded
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Bencoded_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.Bencoded
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.Bencoded
-  nameWithType: TxSystemActionList.Bencoded
-- uid: Libplanet.Tx.TxSystemActionList.Count
-  name: Count
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Count
-  commentId: P:Libplanet.Tx.TxSystemActionList.Count
-  fullName: Libplanet.Tx.TxSystemActionList.Count
-  nameWithType: TxSystemActionList.Count
-- uid: Libplanet.Tx.TxSystemActionList.Count*
-  name: Count
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Count_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.Count
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.Count
-  nameWithType: TxSystemActionList.Count
-- uid: Libplanet.Tx.TxSystemActionList.Equals(Libplanet.Tx.TxActionList)
-  name: Equals(TxActionList)
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Equals_Libplanet_Tx_TxActionList_
-  commentId: M:Libplanet.Tx.TxSystemActionList.Equals(Libplanet.Tx.TxActionList)
-  fullName: Libplanet.Tx.TxSystemActionList.Equals(Libplanet.Tx.TxActionList)
-  nameWithType: TxSystemActionList.Equals(TxActionList)
-- uid: Libplanet.Tx.TxSystemActionList.Equals*
-  name: Equals
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Equals_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.Equals
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.Equals
-  nameWithType: TxSystemActionList.Equals
-- uid: Libplanet.Tx.TxSystemActionList.GetEnumerator
-  name: GetEnumerator()
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_GetEnumerator
-  commentId: M:Libplanet.Tx.TxSystemActionList.GetEnumerator
-  fullName: Libplanet.Tx.TxSystemActionList.GetEnumerator()
-  nameWithType: TxSystemActionList.GetEnumerator()
-- uid: Libplanet.Tx.TxSystemActionList.GetEnumerator*
-  name: GetEnumerator
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_GetEnumerator_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.GetEnumerator
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.GetEnumerator
-  nameWithType: TxSystemActionList.GetEnumerator
-- uid: Libplanet.Tx.TxSystemActionList.Item(System.Int32)
-  name: Item[Int32]
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Item_System_Int32_
-  commentId: P:Libplanet.Tx.TxSystemActionList.Item(System.Int32)
-  name.vb: Item(Int32)
-  fullName: Libplanet.Tx.TxSystemActionList.Item[System.Int32]
-  fullName.vb: Libplanet.Tx.TxSystemActionList.Item(System.Int32)
-  nameWithType: TxSystemActionList.Item[Int32]
-  nameWithType.vb: TxSystemActionList.Item(Int32)
-- uid: Libplanet.Tx.TxSystemActionList.Item*
-  name: Item
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_Item_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.Item
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.Item
-  nameWithType: TxSystemActionList.Item
-- uid: Libplanet.Tx.TxSystemActionList.SystemAction
-  name: SystemAction
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_SystemAction
-  commentId: P:Libplanet.Tx.TxSystemActionList.SystemAction
-  fullName: Libplanet.Tx.TxSystemActionList.SystemAction
-  nameWithType: TxSystemActionList.SystemAction
-- uid: Libplanet.Tx.TxSystemActionList.SystemAction*
-  name: SystemAction
-  href: api/Libplanet.Tx.TxSystemActionList.html#Libplanet_Tx_TxSystemActionList_SystemAction_
-  commentId: Overload:Libplanet.Tx.TxSystemActionList.SystemAction
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxSystemActionList.SystemAction
-  nameWithType: TxSystemActionList.SystemAction
 - uid: Libplanet.Tx.UnsignedTx
   name: UnsignedTx
   href: api/Libplanet.Tx.UnsignedTx.html

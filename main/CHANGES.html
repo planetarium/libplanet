@@ -117,6 +117,19 @@ method's <code>evaluations</code> parameter type.</li>
 <li><code>BlockChain&lt;T&gt;.EvaluateGenesis()</code> method's return type.</li>
 </ul>
 </li>
+<li>Removed <code>BlockChain&lt;T&gt;.MakeTransaction(PrivateKey, IAction, IImmutableSet&lt;Address&gt;, DateTimeOffset?)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Removed <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IAction, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IEnumerable&lt;IValue&gt;, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Removed <code>ITransaction.SystemAction</code> and <code>ITransaction.CustomActions</code>.
+Use <code>ITxInvoice.Actions</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Overhauled <code>TxActionList</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]
+<ul>
+<li>Changed <code>TxActionList</code> class to be <code>sealed</code> from <code>abstract</code>.
+<code>TxActionList</code> is pretty much the old <code>TxCustomActionsList</code>.</li>
+<li>Changed the JSON representation of <code>TxActionList</code> to be more simple.</li>
+<li>Removed <code>TxSystemActionList</code> and <code>TxCustomActionsList</code></li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
