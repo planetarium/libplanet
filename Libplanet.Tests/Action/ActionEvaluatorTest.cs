@@ -327,6 +327,7 @@ namespace Libplanet.Tests.Action
                         MakeAction(addresses[0], 'A', addresses[1]),
                         MakeAction(addresses[1], 'B', addresses[2]),
                     },
+                    updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
                 Transaction.Create<DumbAction>(
                     nonce: 0,
@@ -439,12 +440,14 @@ namespace Libplanet.Tests.Action
                     _txFx.PrivateKey1,
                     genesis.Hash,
                     new[] { MakeAction(addresses[0], 'D') },
+                    updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
                 Transaction.Create<DumbAction>(
                     0,
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
+                    updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
                 Transaction.Create<DumbAction>(
                     0,
@@ -461,6 +464,7 @@ namespace Libplanet.Tests.Action
                             recordRehearsal: true,
                             recordRandom: true),
                     },
+                    updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
@@ -505,11 +509,11 @@ namespace Libplanet.Tests.Action
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
-                Assert.Equal(
-                    expect.UpdatedStates,
-                    addresses
-                        .Select(eval.OutputStates.GetState)
-                        .Select(x => x is Text t ? t.Value : null));
+                List<string> updatedStates = addresses
+                    .Select(eval.OutputStates.GetState)
+                    .Select(x => x is Text t ? t.Value : null)
+                    .ToList();
+                Assert.Equal(expect.UpdatedStates, updatedStates);
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(
                     block2Txs[expect.TxIdx].Actions[expect.Item2],
@@ -1012,13 +1016,19 @@ namespace Libplanet.Tests.Action
                     .SelectMany(
                         signerNoncesPair => signerNoncesPair.nonces,
                         (signerNoncesPair, nonce) => (signerNoncesPair.signer, nonce))
-                    .Select(signerNoncePair => Transaction.Create<RandomAction>(
-                        nonce: signerNoncePair.nonce,
-                        privateKey: signerNoncePair.signer,
-                        genesisHash: null,
-                        actions:
-                            new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
-                        timestamp: epoch)).ToImmutableArray();
+                    .Select(signerNoncePair =>
+                    {
+                        Address targetAddress = signerNoncePair.signer.ToAddress();
+                        return Transaction.Create<RandomAction>(
+                            nonce: signerNoncePair.nonce,
+                            privateKey: signerNoncePair.signer,
+                            genesisHash: null,
+                            actions: new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
+                            updatedAddresses: ImmutableHashSet.Create(targetAddress),
+                            timestamp: epoch
+                        );
+                    }).ToImmutableArray();
+
             // Rearrange transactions so that transactions are not grouped by signers
             // while keeping the hard coded mixed order nonces above.
             txs = txs

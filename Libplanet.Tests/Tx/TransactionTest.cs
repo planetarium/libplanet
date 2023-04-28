@@ -125,17 +125,13 @@ namespace Libplanet.Tests.Tx
                 privateKey,
                 null,
                 new[] { new DumbAction(stateStore, "RecordRehearsal", true) },
-                ImmutableHashSet<Address>.Empty,
+                ImmutableHashSet.Create(stateStore),
                 timestamp
             );
 
             Assert.Equal(
                 new Address(privateKey.PublicKey),
                 tx.Signer
-            );
-            Assert.Equal(
-                new[] { stateStore }.ToImmutableHashSet(),
-                tx.UpdatedAddresses
             );
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
             Assert.Equal(timestamp, tx.Timestamp);
@@ -162,10 +158,6 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
-            Assert.Contains(
-                (stateStore, "RecordRehearsal"),
-                DumbAction.RehearsalRecords.Value
-            );
         }
 
         [Fact]
@@ -179,28 +171,17 @@ namespace Libplanet.Tests.Tx
             );
             Assert.Empty(emptyTx.UpdatedAddresses);
 
-            var tx = Transaction.Create<PolymorphicAction<BaseAction>>(
-                0,
-                _fx.PrivateKey1,
-                null,
-                _fx.TxWithActions.Actions
-            );
-            Assert.NotEmpty(tx.Actions);
-            Assert.Equal(
-                new[] { _fx.Address1 }.ToImmutableHashSet(),
-                tx.UpdatedAddresses
-            );
-
-            Address additionalAddr = new PrivateKey().ToAddress();
+            Address updatedAddr = new PrivateKey().ToAddress();
             var txWithAddr = Transaction.Create<PolymorphicAction<BaseAction>>(
                 0,
                 _fx.PrivateKey1,
                 null,
                 _fx.TxWithActions.Actions,
-                new[] { additionalAddr }.ToImmutableHashSet()
+                new[] { updatedAddr }.ToImmutableHashSet()
             );
+
             Assert.Equal(
-                new[] { _fx.Address1, additionalAddr }.ToHashSet(),
+                new[] { updatedAddr }.ToHashSet(),
                 txWithAddr.UpdatedAddresses.ToHashSet()
             );
         }

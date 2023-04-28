@@ -564,18 +564,17 @@ namespace Libplanet.Tests.Blockchain
                         transactions: new[]
                         {
                             Transaction.Create<DumbAction>(
-                                0,
-                                new PrivateKey(),
-                                null,
-                                new[] { action },
-                                null,
-                                DateTimeOffset.UtcNow),
+                                nonce: 0,
+                                privateKey: new PrivateKey(),
+                                genesisHash: null,
+                                actions: new[] { action },
+                                updatedAddresses: ImmutableHashSet.Create(_fx.Address1),
+                                timestamp: DateTimeOffset.UtcNow
+                            ),
                         }),
                     privateKey: GenesisProposer,
                     blockAction: _policy.BlockAction,
                     nativeTokenPredicate: _policy.NativeTokens.Contains);
-                Assert.Equal(1, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer<DumbAction>();
@@ -591,9 +590,6 @@ namespace Libplanet.Tests.Blockchain
                 // Creation does not render anything
                 Assert.Equal(0, renderer.ActionRecords.Count);
                 Assert.Equal(0, renderer.BlockRecords.Count);
-                // NOTE: Validaton and write to state store
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
                 Block block1 = blockChain.ProposeBlock(miner);
                 blockChain.Append(block1, CreateBlockCommit(block1));
@@ -607,9 +603,6 @@ namespace Libplanet.Tests.Blockchain
 
                 Assert.Equal(0, renderer.ActionRecords.Count(r => r.Action is DumbAction));
                 Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
-                // NOTE: AttachStateRootHash, Append
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
-                Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
             }
         }
 
@@ -1782,6 +1775,7 @@ namespace Libplanet.Tests.Blockchain
                     },
                     timestamp: epoch,
                     nonce: 0,
+                    updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
                     privateKey: privateKey),
                 _fx.MakeTransaction(
                     new[]
@@ -1791,6 +1785,7 @@ namespace Libplanet.Tests.Blockchain
                     },
                     timestamp: epoch.AddSeconds(5),
                     nonce: 1,
+                    updatedAddresses: new[] { addresses[2], addresses[3] }.ToImmutableHashSet(),
                     privateKey: privateKey),
             };
 
@@ -1867,7 +1862,9 @@ namespace Libplanet.Tests.Blockchain
                     nonce: systemTxs.Length,
                     privateKey: privateKey,
                     genesisHash: null,
-                    actions: customActions),
+                    actions: customActions,
+                    updatedAddresses: addresses.ToImmutableHashSet()
+                ),
             };
             var txs = systemTxs.Concat(customTxs).ToImmutableList();
             BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(

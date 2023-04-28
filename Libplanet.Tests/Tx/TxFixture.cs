@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -84,6 +85,9 @@ namespace Libplanet.Tests.Tx
                 PrivateKey1,
                 genesisHash,
                 actions,
+                updatedAddresses: ImmutableHashSet.Create(
+                    new Address("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc")
+                ),
                 timestamp: timestamp
             );
         }
