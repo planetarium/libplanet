@@ -2,7 +2,6 @@ import { BencodexDictionary, Dictionary } from "@planetarium/bencodex";
 import { CustomAction, encodeSystemAction, SystemAction } from "../action.js";
 import { encodeTxMetadata, TxMetadata } from "./metadata.js";
 
-const SYSTEM_ACTION_KEY = new Uint8Array([0x41]); // 'A'
 const CUSTOM_ACTION_KEY = new Uint8Array([0x61]); // 'a'
 
 export interface UnsignedTxWithSystemAction extends TxMetadata {
@@ -23,7 +22,7 @@ export function encodeUnsignedTxWithSystemAction(
 ): Dictionary {
   return new BencodexDictionary([
     ...encodeTxMetadata(metadata),
-    [SYSTEM_ACTION_KEY, encodeSystemAction(metadata.systemAction)],
+    [CUSTOM_ACTION_KEY, [encodeSystemAction(metadata.systemAction)]],
   ]);
 }
 
