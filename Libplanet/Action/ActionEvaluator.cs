@@ -190,65 +190,6 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the set of <see cref="Address"/>es that will be updated when
-        /// a given <see cref="Transaction"/> is evaluated.
-        /// </summary>
-        /// <param name="tx">The <see cref="Transaction"/> to evaluate.</param>
-        /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
-        /// </returns>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// the <see cref="Block"/>'s type parameter.</typeparam>
-        /// <remarks>
-        /// A mock evaluation is performed on <paramref name="tx"/> using a mock
-        /// <see cref="Block"/> for its evaluation context and a mock
-        /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
-        /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
-        /// </remarks>
-        internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction tx)
-            where T : IAction, new()
-        {
-            // TODO: This method should take IUnsignedTx instead of Transaction
-            // FIXME this static method(and related APIs) should be removed since it doesn't
-            // compatible with action type loader.
-            // see also:
-            // - https://github.com/planetarium/libplanet/issues/368
-            // - https://github.com/planetarium/libplanet/discussions/2440
-            // - https://github.com/planetarium/libplanet/pull/2703#discussion_r1130315141
-            IAccountStateDelta previousStates = new AccountStateDeltaImpl(
-                NullAccountStateGetter,
-                NullAccountBalanceGetter,
-                NullTotalSupplyGetter,
-                NullValidatorSetGetter,
-                tx.Signer);
-            ImmutableList<IAction> actions = tx.Actions is { } txActions
-                ? ImmutableList.CreateRange<IAction>(txActions.Select(a => ToAction<T>(a)))
-                : ImmutableList<IAction>.Empty;
-            IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
-                genesisHash: tx.GenesisHash,
-                preEvaluationHash: new HashDigest<SHA256>(new byte[HashDigest<SHA256>.Size]),
-                blockIndex: default,
-                txid: tx.Id,
-                previousStates: previousStates,
-                miner: default,
-                signer: tx.Signer,
-                signature: tx.Signature,
-                actions: actions,
-                rehearsal: true,
-                previousBlockStatesTrie: null,
-                nativeTokenPredicate: _ => true,
-                feeCalculator: null);
-
-            if (evaluations.Any())
-            {
-                return evaluations.Last().OutputStates.UpdatedAddresses;
-            }
-            else
-            {
-                return previousStates.UpdatedAddresses;
-            }
-        }
-
-        /// <summary>
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
