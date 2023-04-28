@@ -1,14 +1,12 @@
 using System.Globalization;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tests.Blocks;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
-using FxAction = Libplanet.Action.PolymorphicAction<Libplanet.Tests.Common.Action.BaseAction>;
 
 namespace Libplanet.Tests
 {
@@ -185,7 +183,7 @@ namespace Libplanet.Tests
                 _marshaledGenesis.Inspect(true));
             Assert.Equal(
                 _fx.Genesis,
-                BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledGenesis)
+                BlockMarshaler.UnmarshalBlock(_marshaledGenesis)
             );
             _output.WriteLine(
                 "{0} = {1}",
@@ -193,7 +191,7 @@ namespace Libplanet.Tests
                 _marshaledNext.Inspect(true));
             Assert.Equal(
                 _fx.Next,
-                BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledNext)
+                BlockMarshaler.UnmarshalBlock(_marshaledNext)
             );
             _output.WriteLine(
                 "{0} = {1}",
@@ -201,7 +199,7 @@ namespace Libplanet.Tests
                 _marshaledHasTx.Inspect(true));
             Assert.Equal(
                 _fx.HasTx,
-                BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledHasTx)
+                BlockMarshaler.UnmarshalBlock(_marshaledHasTx)
             );
         }
     }

@@ -5,7 +5,7 @@ using Libplanet.Blockchain.Policies;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// An exception thrown when the count of <see cref="Block{T}.Transactions"/>
+    /// An exception thrown when the count of <see cref="Block.Transactions"/>
     /// does not follow the constraint provided by <see cref="IBlockPolicy{T}"/>.
     /// </summary>
     [Serializable]
@@ -15,7 +15,7 @@ namespace Libplanet.Blocks
         /// Initializes a new instance of <see cref="InvalidBlockTxCountException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="txCount">The invalid count of <see cref="Block{T}.Transactions"/>
+        /// <param name="txCount">The invalid count of <see cref="Block.Transactions"/>
         /// according to <see cref="IBlockPolicy{T}"/>.</param>
         public InvalidBlockTxCountException(string message, int txCount)
             : base(message)

@@ -5,7 +5,7 @@ using Libplanet.Blockchain.Policies;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// An exception <em>returned</em> when a <see cref="Block{T}"/> violates
+    /// An exception <em>returned</em> when a <see cref="Block"/> violates
     /// a <see cref="IBlockPolicy{T}"/>.
     /// </summary>
     [Serializable]

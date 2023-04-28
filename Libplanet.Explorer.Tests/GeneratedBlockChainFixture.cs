@@ -24,7 +24,7 @@ public class GeneratedBlockChainFixture
 
     public ImmutableArray<PrivateKey> PrivateKeys { get; }
 
-    public ImmutableDictionary<Address, ImmutableArray<Block<PolymorphicAction<SimpleAction>>>>
+    public ImmutableDictionary<Address, ImmutableArray<Block>>
         MinedBlocks { get; private set; }
 
     public ImmutableDictionary<
@@ -52,12 +52,12 @@ public class GeneratedBlockChainFixture
         PrivateKeys = Enumerable.Range(0, privateKeyCount)
             .Aggregate(ImmutableArray<PrivateKey>.Empty, (arr, _) => arr.Add(new PrivateKey()));
         MinedBlocks = PrivateKeys.Aggregate(
-            ImmutableDictionary<Address, ImmutableArray<Block<PolymorphicAction<SimpleAction>>>>
+            ImmutableDictionary<Address, ImmutableArray<Block>>
                 .Empty,
             (dict, pk) =>
                 dict.SetItem(
                     pk.ToAddress(),
-                    ImmutableArray<Block<PolymorphicAction<SimpleAction>>>.Empty));
+                    ImmutableArray<Block>.Empty));
         SignedTxs = PrivateKeys.Aggregate(
             ImmutableDictionary<
                 Address,
@@ -106,7 +106,7 @@ public class GeneratedBlockChainFixture
 
         MinedBlocks = MinedBlocks.SetItem(
             Chain.Genesis.Miner,
-            ImmutableArray<Block<PolymorphicAction<SimpleAction>>>.Empty.Add(Chain.Genesis));
+            ImmutableArray<Block>.Empty.Add(Chain.Genesis));
 
         if (txActionsForPrefixBlocks is { } txActionsForPrefixBlocksVal)
         {

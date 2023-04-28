@@ -31,7 +31,7 @@ namespace Libplanet.Net.Consensus
                     "Starting round {NewRound} and is a proposer.",
                     round,
                     ToString());
-                if ((_validValue ?? GetValue()) is Block<T> proposalValue)
+                if ((_validValue ?? GetValue()) is Block proposalValue)
                 {
                     Proposal proposal = new ProposalMetadata(
                         Height,
@@ -113,7 +113,7 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            (Block<T> Block, int ValidRound)? propose = GetProposal(Round);
+            (Block Block, int ValidRound)? propose = GetProposal(Round);
             if (propose is { } p1 &&
                 p1.ValidRound == -1 &&
                 Step == Step.Propose)
@@ -250,7 +250,7 @@ namespace Libplanet.Net.Consensus
 
             int round = message.Round;
             if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
-                GetProposal(round) is (Block<T> block4, _) &&
+                GetProposal(round) is (Block block4, _) &&
                 HasTwoThirdsPreCommit(
                     round, preCommit => block4.Hash.Equals(preCommit.BlockHash)) &&
                 IsValid(block4, out _))

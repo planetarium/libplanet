@@ -64,10 +64,10 @@ namespace Libplanet.Tests.Blocks
 
         internal PrivateKey Miner { get; }
 
-        internal Block<PolymorphicAction<BaseAction>> Genesis { get; }
+        internal Block Genesis { get; }
 
-        internal Block<PolymorphicAction<BaseAction>> Next { get; }
+        internal Block Next { get; }
 
-        internal Block<PolymorphicAction<BaseAction>> HasTx { get; }
+        internal Block HasTx { get; }
     }
 }

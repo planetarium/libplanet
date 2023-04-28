@@ -57,7 +57,7 @@ namespace Libplanet.Blockchain
             try
             {
                 // Finds the branch point.
-                Block<T> branchpoint = FindTopCommon(this, other);
+                Block branchpoint = FindTopCommon(this, other);
 
                 if (branchpoint is null)
                 {
@@ -73,7 +73,7 @@ namespace Libplanet.Blockchain
                     branchpoint
                 );
 
-                Block<T> oldTip = Tip, newTip = other.Tip;
+                Block oldTip = Tip, newTip = other.Tip;
 
                 IReadOnlyList<BlockHash> rewindPath =
                     GetRewindPath(this, branchpoint.Hash);
@@ -103,7 +103,7 @@ namespace Libplanet.Blockchain
                     Guid obsoleteId = Id;
                     Id = other.Id;
 
-                    _blocks = new BlockSet<T>(Store);
+                    _blocks = new BlockSet(Store);
                     foreach (TxId txId in txIdsToUnstage)
                     {
                         StagePolicy.Unstage(this, txId);
@@ -136,9 +136,9 @@ namespace Libplanet.Blockchain
 
         internal void RenderSwap(
             bool render,
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint,
+            Block oldTip,
+            Block newTip,
+            Block branchpoint,
             IReadOnlyList<BlockHash> rewindPath,
             IReadOnlyList<BlockHash> fastForwardPath)
         {
@@ -162,9 +162,9 @@ namespace Libplanet.Blockchain
 
         internal void RenderFastForward(
             bool render,
-            Block<T> oldTip,
-            Block<T> newTip,
-            Block<T> branchpoint,
+            Block oldTip,
+            Block newTip,
+            Block branchpoint,
             IReadOnlyList<BlockHash> fastForwardPath)
         {
             if (render && ActionRenderers.Any())
@@ -174,7 +174,7 @@ namespace Libplanet.Blockchain
                 long count = 0;
                 foreach (BlockHash hash in fastForwardPath)
                 {
-                    Block<T> block = Store.GetBlock<T>(hash);
+                    Block block = Store.GetBlock(hash);
                     ImmutableList<IActionEvaluation> evaluations =
                         ActionEvaluator.Evaluate(block).ToImmutableList();
 
@@ -201,11 +201,11 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="evaluations"><see cref="IActionEvaluation"/>s of the block.  If it is
         /// <see langword="null"/>, evaluate actions of the <paramref name="block"/> again.</param>
-        /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
+        /// <param name="block"><see cref="Block"/> to render actions.</param>
         /// <returns>The number of actions rendered.</returns>
         internal long RenderActions(
             IReadOnlyList<IActionEvaluation> evaluations,
-            Block<T> block)
+            Block block)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -335,20 +335,20 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Finds the top most common <see cref="Block{T}"/> between chains <paramref name="c1"/>
+        /// Finds the top most common <see cref="Block"/> between chains <paramref name="c1"/>
         /// and <paramref name="c2"/>.
         /// </summary>
         /// <param name="c1">The first <see cref="BlockChain{T}"/> to compare.</param>
         /// <param name="c2">The second <see cref="BlockChain{T}"/> to compare.</param>
         /// <returns>
-        /// The top most common <see cref="Block{T}"/> between chains <paramref name="c1"/>
-        /// and <paramref name="c2"/>. If there is no such <see cref="Block{T}"/>,
+        /// The top most common <see cref="Block"/> between chains <paramref name="c1"/>
+        /// and <paramref name="c2"/>. If there is no such <see cref="Block"/>,
         /// returns <see langword="null"/> instead.
         /// </returns>
-        private static Block<T> FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
+        private static Block FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
         {
             long shorterHeight = Math.Min(c1.Count, c2.Count) - 1;
-            Block<T> b1 = c1[shorterHeight], b2 = c2[shorterHeight];
+            Block b1 = c1[shorterHeight], b2 = c2[shorterHeight];
 
             while (true)
             {

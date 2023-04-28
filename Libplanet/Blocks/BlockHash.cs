@@ -14,9 +14,9 @@ using Libplanet.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A value type to represent SHA-256 digest of <see cref="Block{T}"/> data.
+    /// A value type to represent SHA-256 digest of <see cref="Block"/> data.
     /// </summary>
-    /// <seealso cref="Block{T}.Hash"/>
+    /// <seealso cref="Block.Hash"/>
     [JsonConverter(typeof(BlockHashJsonConverter))]
     [Serializable]
     public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>, IBencodable
@@ -35,7 +35,7 @@ namespace Libplanet.Blocks
         /// Converts an immutable <see cref="byte"/> array into a <see cref="BlockHash"/>.
         /// </summary>
         /// <param name="blockHash">An immutable <see cref="byte"/> array that encodes
-        /// a SHA-256 digest of a <see cref="Block{T}"/>.</param>
+        /// a SHA-256 digest of a <see cref="Block"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
         /// </exception>

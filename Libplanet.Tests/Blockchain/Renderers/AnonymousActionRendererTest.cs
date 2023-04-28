@@ -25,13 +25,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private static Exception _exception = new Exception();
 
-        private static Block<DumbAction> _genesis =
+        private static Block _genesis =
             TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
-        private static Block<DumbAction> _blockA =
+        private static Block _blockA =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
-        private static Block<DumbAction> _blockB =
+        private static Block _blockB =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void BlockRenderer()
         {
-            (Block<DumbAction> Old, Block<DumbAction> New)? record = null;
+            (Block Old, Block New)? record = null;
             var renderer = new AnonymousActionRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),

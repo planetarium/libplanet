@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
         /// <para>
         /// Creates a new instance of <see cref="BlockLocator"/> with an indexer
         /// function, sampling after <paramref name="sampleAfter"/> number of
-        /// <see cref="Block{T}"/>s.
+        /// <see cref="Block"/>s.
         /// </para>
         /// <para>
         /// This collects all <see cref="BlockHash"/>es corresponding to indices inductively
@@ -52,14 +52,14 @@ namespace Libplanet.Blockchain
         /// reaches zero or the <see cref="BlockHash"/> returned by
         /// <paramref name="indexToBlockHash"/> for <c>i_k</c> is <see langword="null"/>,
         /// in which case the <see cref="BlockHash"/> corresponding to index <c>0</c>
-        /// (presumably a <see cref="BlockHash"/> of the genesis <see cref="Block{T}"/>)
+        /// (presumably a <see cref="BlockHash"/> of the genesis <see cref="Block"/>)
         /// is added at the end.
         /// </para>
         /// </summary>
         /// <param name="startIndex">The starting index.</param>
         /// <param name="indexToBlockHash">The function that converts an index to a
         /// <see cref="BlockHash"/>.  This can be <see langword="null"/> which indicates
-        /// a missing <see cref="Block{T}"/> at the index.  Any value from <c>0</c> to
+        /// a missing <see cref="Block"/> at the index.  Any value from <c>0</c> to
         /// <paramref name="startIndex"/> may be used as an argument to call this function.</param>
         /// <param name="sampleAfter">The number of consecutive blocks to include before sampling.
         /// </param>

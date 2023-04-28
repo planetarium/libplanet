@@ -11,7 +11,7 @@ namespace Libplanet.Blocks
     /// A block content without any proofs like nonce or hash.  This represents contents of a
     /// block that is not yet mined.
     /// </summary>
-    /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
+    /// <remarks>Unlike other model types like <see cref="Block"/> or
     /// <see cref="Transaction"/>, this type is mutable.</remarks>
     public sealed class BlockContent : IBlockContent
     {

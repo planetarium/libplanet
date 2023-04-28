@@ -7,19 +7,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class AnonymousRendererTest
     {
-        private static Block<DumbAction> _genesis =
+        private static Block _genesis =
             TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
-        private static Block<DumbAction> _blockA =
+        private static Block _blockA =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
-        private static Block<DumbAction> _blockB =
+        private static Block _blockB =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         [Fact]
         public void BlockRenderer()
         {
-            (Block<DumbAction> Old, Block<DumbAction> New)? record = null;
+            (Block Old, Block New)? record = null;
             var renderer = new AnonymousRenderer<DumbAction>
             {
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),

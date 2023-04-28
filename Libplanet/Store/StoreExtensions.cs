@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Blocks;
 
 namespace Libplanet.Store
@@ -35,7 +34,7 @@ namespace Libplanet.Store
             {
                 foreach (BlockHash blockHash in from.IterateIndexes(chainId))
                 {
-                    Block<NullAction> block = from.GetBlock<NullAction>(blockHash);
+                    Block block = from.GetBlock(blockHash);
                     to.PutBlock(block);
                     to.AppendIndex(chainId, blockHash);
                 }
@@ -53,7 +52,7 @@ namespace Libplanet.Store
         }
 
         /// <summary>
-        /// Gets the <see cref="Block{T}.StateRootHash"/> of the given <paramref name="blockHash"/>.
+        /// Gets the <see cref="Block.StateRootHash"/> of the given <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="store">The store that blocks are stored.</param>
         /// <param name="blockHash">The hash of the block to get the state root hash of.

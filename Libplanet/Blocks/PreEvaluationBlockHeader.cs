@@ -101,7 +101,7 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
-        /// This data is used as the input to calculate the block <see cref="Block{T}.Hash"/>,
+        /// This data is used as the input to calculate the block <see cref="Block.Hash"/>,
         /// rather than transmitting the block over the network.
         /// </summary>
         /// <param name="stateRootHash">The <see cref="Libplanet.Store.Trie.ITrie.Hash"/> of

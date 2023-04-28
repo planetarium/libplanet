@@ -40,7 +40,7 @@ namespace Libplanet.Action
         Address Miner { get; }
 
         /// <summary>
-        /// <see cref="Block{T}"/>.<see cref="Block{T}.Index"/> of a transaction that an executed
+        /// <see cref="Block"/>.<see cref="Block.Index"/> of a transaction that an executed
         /// <see cref="IAction"/> belongs to.
         /// </summary>
         [Pure]

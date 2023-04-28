@@ -101,7 +101,7 @@ public class StoreCommand
             throw Utils.Error($"cannot find the block with the TxId[{txId.ToString()}]");
         }
 
-        var blocks = IterateBlocks<Utils.DummyAction>(store, txId).ToImmutableList();
+        var blocks = IterateBlocks(store, txId).ToImmutableList();
 
         Console.WriteLine(Utils.SerializeHumanReadable(blocks));
     }
@@ -116,7 +116,7 @@ public class StoreCommand
     {
         using IStore store = Utils.LoadStoreFromUri(home);
         var blockHash = GetBlockHash(store, blockIndex);
-        var block = GetBlock<Utils.DummyAction>(store, blockHash);
+        var block = GetBlock(store, blockHash);
         Console.WriteLine(Utils.SerializeHumanReadable(block));
     }
 
@@ -129,7 +129,7 @@ public class StoreCommand
     )
     {
         using IStore store = Utils.LoadStoreFromUri(home);
-        var block = GetBlock<Utils.DummyAction>(store, BlockHash.FromString(blockHash));
+        var block = GetBlock(store, BlockHash.FromString(blockHash));
         Console.WriteLine(Utils.SerializeHumanReadable(block));
     }
 
@@ -160,10 +160,9 @@ public class StoreCommand
         }
     }
 
-    private static Block<T> GetBlock<T>(IStore store, BlockHash blockHash)
-        where T : IAction, new()
+    private static Block GetBlock(IStore store, BlockHash blockHash)
     {
-        if (!(store.GetBlock<T>(blockHash) is { } block))
+        if (!(store.GetBlock(blockHash) is { } block))
         {
             throw Utils.Error($"cannot find the block with the hash[{blockHash.ToString()}]");
         }
@@ -189,12 +188,11 @@ public class StoreCommand
         return blockHash;
     }
 
-    private static IEnumerable<Block<T>> IterateBlocks<T>(IStore store, TxId txId)
-        where T : IAction, new()
+    private static IEnumerable<Block> IterateBlocks(IStore store, TxId txId)
     {
         foreach (var blockHash in store.IterateTxIdBlockHashIndex(txId))
         {
-            yield return GetBlock<T>(store, blockHash);
+            yield return GetBlock(store, blockHash);
         }
     }
 

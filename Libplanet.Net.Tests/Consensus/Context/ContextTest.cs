@@ -7,7 +7,6 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -94,7 +93,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             // It needs a lastCommit to use, so we assume that index #1 block is already committed.
-            Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
             var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
 
@@ -103,7 +102,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Assert.Equal(Step.PreVote, context.Step);
             Assert.NotNull(proposal);
-            Block<DumbAction> proposed = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            Block proposed = BlockMarshaler.UnmarshalBlock(
                 (Dictionary)new Codec().Decode(proposal!.Proposal.MarshaledBlock));
             Assert.NotNull(proposed.LastCommit);
             Assert.Equal(lastCommit, proposed.LastCommit);
@@ -116,7 +115,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             ConsensusProposalMsg? proposal = null;
             var proposalSent = new AsyncAutoResetEvent();
-            Block<DumbAction>? proposedBlock = null;
+            Block? proposedBlock = null;
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
             var exceptionOccurred = new AsyncAutoResetEvent();
             Exception? exceptionThrown = null;
@@ -127,7 +126,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 validatorSet: TestUtils.ValidatorSet);
 
             // Add block #1 so we can start with a last commit for height 2.
-            Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
             var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
 
@@ -147,7 +146,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
                     proposal = proposalMsg;
-                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                    proposedBlock = BlockMarshaler.UnmarshalBlock(
                         (Dictionary)codec.Decode(proposalMsg!.Proposal.MarshaledBlock));
                     proposalSent.Set();
                 }

@@ -21,14 +21,14 @@ namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {
-        private static Block<DumbAction>[] _fixtureBlocksForPreloadAsyncCancellationTest;
+        private static Block[] _fixtureBlocksForPreloadAsyncCancellationTest;
 
         private readonly List<Func<Task>> _finalizers;
 
-        private static (Address, Block<DumbAction>[])
+        private static (Address, Block[])
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
-            Block<DumbAction>[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
+            Block[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
 
             if (blocks is null)
             {
@@ -50,16 +50,16 @@ namespace Libplanet.Net.Tests
                             );
                         }
 
-                        Block<DumbAction> block = chain.ProposeBlock(
+                        Block block = chain.ProposeBlock(
                             miner, CreateBlockCommit(chain.Tip));
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                         chain.Append(block, CreateBlockCommit(block));
                     }
 
-                    var blockList = new List<Block<DumbAction>>();
+                    var blockList = new List<Block>();
                     for (var i = 1; i < chain.Count; i++)
                     {
-                        Block<DumbAction> block = chain[i];
+                        Block block = chain[i];
                         blockList.Add(block);
                     }
 
@@ -80,7 +80,7 @@ namespace Libplanet.Net.Tests
             HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
-            Block<DumbAction> genesis = null,
+            Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
             return CreateSwarm(
@@ -107,7 +107,7 @@ namespace Libplanet.Net.Tests
             HostOptions hostOptions = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
-            Block<DumbAction> genesis = null,
+            Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
             policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));

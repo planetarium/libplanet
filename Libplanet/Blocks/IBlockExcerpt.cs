@@ -9,13 +9,13 @@ namespace Libplanet.Blocks
         /// <summary>
         /// A block's protocol version.
         /// </summary>
-        /// <seealso cref="Block{T}.ProtocolVersion"/>
+        /// <seealso cref="Block.ProtocolVersion"/>
         public int ProtocolVersion { get; }
 
         /// <summary>
         /// A block's index (height).
         /// </summary>
-        /// <seealso cref="Block{T}.Index"/>
+        /// <seealso cref="Block.Index"/>
         public long Index { get; }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         /// <seealso cref="IBlockHeader.StateRootHash"/>
-        /// <seealso cref="Block{T}.Hash"/>
+        /// <seealso cref="Block.Hash"/>
         public BlockHash Hash { get; }
     }
 }

@@ -9,19 +9,19 @@ namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
     /// <para>
-    /// An interface to determine if consecutive <see cref="Block{T}"/>s are valid.
+    /// An interface to determine if consecutive <see cref="Block"/>s are valid.
     /// </para>
     /// <para>
     /// An implementation of this interface should perform <em>all policy dependent checks</em>,
-    /// such as whether a <see cref="Block{T}"/> has the right difficulty,
+    /// such as whether a <see cref="Block"/> has the right difficulty,
     /// a <see cref="Transaction"/> has the right signer, etc.
     /// </para>
     /// <para>
-    /// Note that all index dependent sub-policies are ignored for genesis <see cref="Block{T}"/>s.
+    /// Note that all index dependent sub-policies are ignored for genesis <see cref="Block"/>s.
     /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// <see cref="Block"/>'s type parameter.</typeparam>
     public interface IBlockPolicy<T>
         where T : IAction, new()
     {
@@ -42,7 +42,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Checks if a <see cref="Transaction"/> can be included in a yet to be mined
-        /// <see cref="Block{T}"/> that can be appended to the given <see cref="BlockChain{T}"/>.
+        /// <see cref="Block"/> that can be appended to the given <see cref="BlockChain{T}"/>.
         /// </summary>
         /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to include
         /// given <paramref name="transaction"/>.</param>
@@ -55,10 +55,10 @@ namespace Libplanet.Blockchain.Policies
         /// <list type="bullet">
         /// <item>
         ///     <description>When selecting which <see cref="Transaction"/> to include
-        ///     when mining a next <see cref="Block{T}"/>.</description>
+        ///     when mining a next <see cref="Block"/>.</description>
         /// </item>
         /// <item>
-        ///     <description>When appending a <see cref="Block{T}"/>
+        ///     <description>When appending a <see cref="Block"/>
         ///     with <paramref name="transaction"/> to a <see cref="BlockChain{T}"/>.</description>
         /// </item>
         /// </list>
@@ -69,7 +69,7 @@ namespace Libplanet.Blockchain.Policies
             BlockChain<T> blockChain, Transaction transaction);
 
         /// <summary>
-        /// Checks if a <see cref="Block{T}"/> can be appended to
+        /// Checks if a <see cref="Block"/> can be appended to
         /// the given <see cref="BlockChain{T}"/>.
         /// </summary>
         /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to
@@ -81,52 +81,52 @@ namespace Libplanet.Blockchain.Policies
         /// or <see langword="null"/> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// Note that <see cref="ValidateNextBlockTx"/> will be called separately from
-        /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block{T}"/>.
+        /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block"/>.
         /// Hence, to reduce redundancy, an implementation of this interface should not
         /// call <see cref="ValidateNextBlockTx"/>.
         /// </remarks>
         BlockPolicyViolationException? ValidateNextBlock(
-            BlockChain<T> blockChain, Block<T> nextBlock);
+            BlockChain<T> blockChain, Block nextBlock);
 
         /// <summary>
-        /// Gets the maximum length of <see cref="Block{T}.Transactions"/> in bytes.
+        /// Gets the maximum length of <see cref="Block.Transactions"/> in bytes.
         /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// <param name="index">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// for which this constraint should apply.</param>
-        /// <returns>The maximum length of <see cref="Block{T}.Transactions"/> in bytes
+        /// <returns>The maximum length of <see cref="Block.Transactions"/> in bytes
         /// to accept.</returns>
         long GetMaxTransactionsBytes(long index);
 
         /// <summary>
         /// Gets the minimum number of <see cref="Transaction"/>s allowed for
-        /// a valid <see cref="Block{T}"/>.
+        /// a valid <see cref="Block"/>.
         /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// <param name="index">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// for which this constraint should apply.</param>
         /// <returns>The minimum number of <see cref="Transaction"/>s allowed for
-        /// a valid <see cref="Block{T}"/> can accept.</returns>
+        /// a valid <see cref="Block"/> can accept.</returns>
         [Pure]
         int GetMinTransactionsPerBlock(long index);
 
         /// <summary>
         /// Gets the maximum number of <see cref="Transaction"/>s allowed for
-        /// a valid <see cref="Block{T}"/>.
+        /// a valid <see cref="Block"/>.
         /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// <param name="index">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// for which this constraint should apply.</param>
         /// <returns>The maximum number of <see cref="Transaction"/>s allowed for
-        /// a valid <see cref="Block{T}"/> can accept.</returns>
+        /// a valid <see cref="Block"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerBlock(long index);
 
         /// <summary>
         /// Gets the maximum number of <see cref="Transaction"/>s allowed per signer for
-        /// a valid <see cref="Block{T}"/>.
+        /// a valid <see cref="Block"/>.
         /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// <param name="index">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// for which this constraint should apply.</param>
         /// <returns>The maximum number of <see cref="Transaction"/>s allowed per signer for
-        /// a valid <see cref="Block{T}"/> can accept.</returns>
+        /// a valid <see cref="Block"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
     }

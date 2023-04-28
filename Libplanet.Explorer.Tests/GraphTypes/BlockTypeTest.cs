@@ -45,7 +45,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, signature);
-            var block = new Block<NullAction>(preEval, (stateRootHash, signature, hash));
+            var block = new Block(preEval, (stateRootHash, signature, hash));
 
             // FIXME We need to test for `previousBlock` field too.
             var query =

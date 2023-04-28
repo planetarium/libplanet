@@ -35,7 +35,7 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// A marshalled <see cref="Block{T}"/>.
+        /// A marshalled <see cref="Block"/>.
         /// </summary>
         public Proposal Proposal { get; }
 

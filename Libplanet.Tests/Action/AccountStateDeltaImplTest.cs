@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Action
         {
         }
 
-        public override int ProtocolVersion { get; } = Block<DumbAction>.CurrentProtocolVersion;
+        public override int ProtocolVersion { get; } = Block.CurrentProtocolVersion;
 
         public override IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            Block<DumbAction> block = TestUtils.ProposeNext(
+            Block block = TestUtils.ProposeNext(
                     chain.Tip,
                     new[] { tx },
                     miner: _keys[1].PublicKey,

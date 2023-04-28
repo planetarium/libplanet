@@ -45,7 +45,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             _fx.Append(_fx.Propose());
             IReadOnlyList<RenderRecord<Arithmetic>> records = _record.Records;
             Assert.Equal(5, records.Count);
-            AssertTypeAnd<RenderRecord<Arithmetic>.Block>(records[0], r => Assert.True(r.Begin));
+            AssertTypeAnd<RenderRecord<Arithmetic>.BlockEvent>(
+                records[0], r => Assert.True(r.Begin));
             AssertTypeAnd<RenderRecord<Arithmetic>.ActionSuccess>(records[1], r =>
             {
                 Assert.Equal(_successTx.Id, r.Context.TxId);
@@ -61,7 +62,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 Assert.Equal(_successTx.Id, r.Context.TxId);
                 Assert.Equal(_successTx.Actions[2], r.Action.PlainValue);
             });
-            AssertTypeAnd<RenderRecord<Arithmetic>.Block>(records[4], r => Assert.True(r.End));
+            AssertTypeAnd<RenderRecord<Arithmetic>.BlockEvent>(records[4], r => Assert.True(r.End));
         }
 
         [Fact]
@@ -73,8 +74,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             _fx.Chain.Swap(@base, true)();
             IReadOnlyList<RenderRecord<Arithmetic>> records = _record.Records;
             Assert.Equal(2, records.Count);
-            AssertTypeAnd<RenderRecord<Arithmetic>.Block>(records[0], r => Assert.True(r.Begin));
-            AssertTypeAnd<RenderRecord<Arithmetic>.Block>(records[1], r => Assert.True(r.End));
+            AssertTypeAnd<RenderRecord<Arithmetic>.BlockEvent>(
+                records[0], r => Assert.True(r.Begin));
+            AssertTypeAnd<RenderRecord<Arithmetic>.BlockEvent>(
+                records[1], r => Assert.True(r.End));
         }
 
         private static void AssertTypeAnd<T>(object obj, Action<T> callback)

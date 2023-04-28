@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(keys[4], _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
             Assert.NotNull(_blockChain.GetBlockCommit(block1.Hash));
-            Block<DumbAction> block2 = TestUtils.ProposeNext(
+            Block block2 = TestUtils.ProposeNext(
                 block1,
                 txs,
                 miner: keys[4].PublicKey,
@@ -200,7 +200,7 @@ namespace Libplanet.Tests.Blockchain
                 nonce: 2,
                 privateKey: pk
             );
-            Block<DumbAction> block3 = TestUtils.ProposeNext(
+            Block block3 = TestUtils.ProposeNext(
                 block2,
                 new[] { tx1Transfer, tx2Error, tx3Transfer },
                 miner: keys[4].PublicKey,
@@ -348,7 +348,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(manyTxs.Count > maxTxs);
 
             var miner = new PrivateKey();
-            Block<DumbAction> block = TestUtils.ProposeNext(
+            Block block = TestUtils.ProposeNext(
                 _blockChain.Genesis,
                 manyTxs,
                 miner: miner.PublicKey,
@@ -377,7 +377,7 @@ namespace Libplanet.Tests.Blockchain
             blockChain.MakeTransaction(privateKey, new[] { action });
 
             renderer.ResetRecords();
-            Block<ThrowException> block = blockChain.ProposeBlock(new PrivateKey());
+            Block block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             Assert.Equal(2, blockChain.Count);
@@ -419,7 +419,7 @@ namespace Libplanet.Tests.Blockchain
 
                 var miner = new PrivateKey();
 
-                Block<DumbAction> block1 = TestUtils.ProposeNext(
+                Block block1 = TestUtils.ProposeNext(
                     fx.GenesisBlock,
                     new[] { validTx },
                     miner: miner.PublicKey,
@@ -428,7 +428,7 @@ namespace Libplanet.Tests.Blockchain
 
                 blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
-                Block<DumbAction> block2 = TestUtils.ProposeNext(
+                Block block2 = TestUtils.ProposeNext(
                     block1,
                     new[] { invalidTx },
                     miner: miner.PublicKey,
@@ -451,7 +451,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
             // Mining with empty staged.
-            Block<DumbAction> block1 = TestUtils.ProposeNext(
+            Block block1 = TestUtils.ProposeNext(
                 genesis,
                 miner: privateKey.PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10)
@@ -463,7 +463,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
             // Tx with nonce 0 is mined.
-            Block<DumbAction> block2 = TestUtils.ProposeNext(
+            Block block2 = TestUtils.ProposeNext(
                 block1,
                 ImmutableArray<Transaction>.Empty.Add(txs[0]),
                 miner: privateKey.PublicKey,
@@ -483,7 +483,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
             // Unmined tx is left intact in the stage.
-            Block<DumbAction> block3 = TestUtils.ProposeNext(
+            Block block3 = TestUtils.ProposeNext(
                 block2,
                 ImmutableArray<Transaction>.Empty.Add(txs[1]),
                 miner: privateKey.PublicKey,
@@ -513,7 +513,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, workspace.StagePolicy.Iterate(workspace, filtered: false).Count());
 
             // Mine nonce 0 tx.
-            Block<DumbAction> block1 = TestUtils.ProposeNext(
+            Block block1 = TestUtils.ProposeNext(
                 genesis,
                 miner: privateKey.PublicKey,
                 transactions: ImmutableArray<Transaction>.Empty.Add(txs[0]),
@@ -533,7 +533,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(workspace.StagePolicy.Iterate(workspace, filtered: false));
 
             // Mine nonce 1 tx.
-            Block<DumbAction> block2 = TestUtils.ProposeNext(
+            Block block2 = TestUtils.ProposeNext(
                 block1,
                 miner: privateKey.PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10),
@@ -582,7 +582,7 @@ namespace Libplanet.Tests.Blockchain
                 txA1 = Transaction.Create<DumbAction>(1, signerA, genesis, emptyActions);
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
-            Block<DumbAction> block = _blockChain.ProposeBlock(signerA);
+            Block block = _blockChain.ProposeBlock(signerA);
 
             Transaction
                 txA2 = Transaction.Create<DumbAction>(2, signerA, genesis, emptyActions),

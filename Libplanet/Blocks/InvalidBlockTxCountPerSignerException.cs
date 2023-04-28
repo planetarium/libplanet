@@ -7,7 +7,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// An exception thrown when the count of <see cref="Block{T}.Transactions"/>
+    /// An exception thrown when the count of <see cref="Block.Transactions"/>
     /// does not follow the constraint provided by <see cref="IBlockPolicy{T}"/>.
     /// </summary>
     [Serializable]
@@ -18,8 +18,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="signer">An offending <see cref="Address"/> with too many
-        /// <see cref="Transaction"/>'s in a <see cref="Block{T}"/>.</param>
-        /// <param name="txCount">The invalid count of <see cref="Block{T}.Transactions"/>
+        /// <see cref="Transaction"/>'s in a <see cref="Block"/>.</param>
+        /// <param name="txCount">The invalid count of <see cref="Block.Transactions"/>
         /// by <paramref name="signer"/> according to the <see cref="IBlockPolicy{T}"/>.</param>
         public InvalidBlockTxCountPerSignerException(string message, Address signer, int txCount)
             : base(message)

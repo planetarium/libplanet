@@ -14,7 +14,7 @@ namespace Libplanet.Blockchain
     public partial class BlockChain<T>
     {
         internal static Dictionary<Address, long> ValidateGenesisNonces(
-            Block<T> block)
+            Block block)
         {
             var nonceDeltas = new Dictionary<Address, long>();
             foreach (Transaction tx in block.Transactions.OrderBy(tx => tx.Nonce))
@@ -39,14 +39,14 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block{T}"/>.
+        /// Checks if given <paramref name="block"/> is a valid genesis <see cref="Block"/>.
         /// </summary>
-        /// <param name="block">The target <see cref="Block{T}"/> to validate.</param>
+        /// <param name="block">The target <see cref="Block"/> to validate.</param>
         /// <exception cref="ArgumentException">If <paramref name="block"/> has
-        /// <see cref="Block{T}.Index"/> value anything other than 0.</exception>
+        /// <see cref="Block.Index"/> value anything other than 0.</exception>
         /// <exception cref="InvalidBlockException">Thrown when given <paramref name="block"/>
         /// is invalid.</exception>
-        internal static void ValidateGenesis(Block<T> block)
+        internal static void ValidateGenesis(Block block)
         {
             if (block.Index != 0)
             {
@@ -56,8 +56,8 @@ namespace Libplanet.Blockchain
             }
 
             int actualProtocolVersion = block.ProtocolVersion;
-            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
-            if (block.ProtocolVersion > Block<T>.CurrentProtocolVersion)
+            const int currentProtocolVersion = Block.CurrentProtocolVersion;
+            if (block.ProtocolVersion > Block.CurrentProtocolVersion)
             {
                 throw new InvalidBlockProtocolVersionException(
                     $"The protocol version ({actualProtocolVersion}) of the block " +
@@ -82,7 +82,7 @@ namespace Libplanet.Blockchain
         }
 
         internal void ValidateBlockCommit(
-            Block<T> block,
+            Block block,
             BlockCommit blockCommit)
         {
             if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
@@ -165,7 +165,7 @@ namespace Libplanet.Blockchain
 
         internal Dictionary<Address, long> ValidateBlockNonces(
             Dictionary<Address, long> storedNonces,
-            Block<T> block)
+            Block block)
         {
             var nonceDeltas = new Dictionary<Address, long>();
             foreach (Transaction tx in block.Transactions.OrderBy(tx => tx.Nonce))
@@ -191,7 +191,7 @@ namespace Libplanet.Blockchain
             return nonceDeltas;
         }
 
-        internal void ValidateBlock(Block<T> block)
+        internal void ValidateBlock(Block block)
         {
             if (block.Index <= 0)
             {
@@ -209,7 +209,7 @@ namespace Libplanet.Blockchain
             }
 
             int actualProtocolVersion = block.ProtocolVersion;
-            const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;
+            const int currentProtocolVersion = Block.CurrentProtocolVersion;
 
             // FIXME: Crude way of checking protocol version for non-genesis block.
             // Ideally, whether this is called during instantiation should be made more explicit.
@@ -232,7 +232,7 @@ namespace Libplanet.Blockchain
                 throw new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
-            Block<T> lastBlock = this[index - 1];
+            Block lastBlock = this[index - 1];
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
@@ -301,23 +301,23 @@ namespace Libplanet.Blockchain
         /// comparing the state root hash calculated using <see cref="DetermineBlockStateRootHash"/>
         /// to the one in <paramref name="block"/>.
         /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> to validate against.</param>
+        /// <param name="block">The <see cref="Block"/> to validate against.</param>
         /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
         /// from which to extract the states to commit.</param>
         /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
         /// calculated by commiting to the <see cref="IStateStore"/> does not match
-        /// the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/>.</exception>
+        /// the <paramref name="block"/>'s <see cref="Block.StateRootHash"/>.</exception>
         /// <remarks>
         /// Since the state root hash for can only be calculated from making a commit
         /// to an <see cref="IStateStore"/>, this always has a side-effect to the
         /// <see cref="IStateStore"/> regardless of whether the state root hash
         /// obdatined through commiting to the <see cref="IStateStore"/>
-        /// matches the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/> or not.
+        /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="DetermineBlockStateRootHash"/>
         internal void ValidateBlockStateRootHash(
-            Block<T> block, out IReadOnlyList<IActionEvaluation> evaluations)
+            Block block, out IReadOnlyList<IActionEvaluation> evaluations)
         {
             var rootHash = DetermineBlockStateRootHash(block, out evaluations);
             if (!rootHash.Equals(block.StateRootHash))

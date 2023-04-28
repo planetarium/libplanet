@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Store
             var preEval = TestUtils.ProposeGenesis<DumbAction>(
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
-            GenesisBlock = preEval.Sign<DumbAction>(
+            GenesisBlock = preEval.Sign(
                 Proposer,
                 BlockChain<DumbAction>.DetermineGenesisStateRootHash(
                     preEval,
@@ -173,19 +173,19 @@ namespace Libplanet.Tests.Store
 
         public PrivateKey Proposer { get; }
 
-        public Block<DumbAction> GenesisBlock { get; }
+        public Block GenesisBlock { get; }
 
-        public Block<DumbAction> Block1 { get; }
+        public Block Block1 { get; }
 
-        public Block<DumbAction> Block2 { get; }
+        public Block Block2 { get; }
 
-        public Block<DumbAction> Block3 { get; }
+        public Block Block3 { get; }
 
-        public Block<DumbAction> Block3Alt { get; }
+        public Block Block3Alt { get; }
 
-        public Block<DumbAction> Block4 { get; }
+        public Block Block4 { get; }
 
-        public Block<DumbAction> Block5 { get; }
+        public Block Block5 { get; }
 
         public Transaction Transaction1 { get; }
 

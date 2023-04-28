@@ -115,7 +115,7 @@ namespace Libplanet.Net.Tests
             // 2, 3, 4,  5,  6: first chunk
             // 7, 8, 9, 10, 11: second chunk
             //   12,    13, 14: last chunk
-            ImmutableArray<Block<DumbAction>> fixture =
+            ImmutableArray<Block> fixture =
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
             const int initialHeight = 2;
             const int window = 5;
@@ -229,7 +229,7 @@ namespace Libplanet.Net.Tests
             // 2, 3, 4,  5,  6: first chunk
             // 7, 8, 9, 10, 11: second chunk
             //   12,    13, 14: last chunk
-            ImmutableArray<Block<DumbAction>> fixture =
+            ImmutableArray<Block> fixture =
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
 
             // Blocks each block has:
@@ -239,7 +239,7 @@ namespace Libplanet.Net.Tests
             //   D: 3, 7, 11
             char[] peers = { 'A', 'B', 'C', 'D' };
             ImmutableDictionary
-                <char, ImmutableDictionary<BlockHash, (Block<DumbAction>, BlockCommit)>>
+                <char, ImmutableDictionary<BlockHash, (Block, BlockCommit)>>
                     peerBlocks = peers.ToImmutableDictionary(
                         p => p,
                         p => fixture
@@ -261,9 +261,9 @@ namespace Libplanet.Net.Tests
                 .ToImmutableArray();
             bc.Demand(initialDemands);
             _logger.Verbose("Initial demands: {0}", initialDemands);
-            IAsyncEnumerable<Tuple<Block<DumbAction>, BlockCommit, char>> rv = bc.Complete(
+            IAsyncEnumerable<Tuple<Block, BlockCommit, char>> rv = bc.Complete(
                 new[] { 'A', 'B', 'C', 'D' },
-                (peer, hashes, token) => new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(
+                (peer, hashes, token) => new AsyncEnumerable<(Block, BlockCommit)>(
                     async yield =>
                     {
                         var blocksPeerHas = peerBlocks[peer];
@@ -272,7 +272,7 @@ namespace Libplanet.Net.Tests
                         {
                             if (blocksPeerHas.ContainsKey(hash))
                             {
-                                (Block<DumbAction> block, BlockCommit commit) = blocksPeerHas[hash];
+                                (Block block, BlockCommit commit) = blocksPeerHas[hash];
                                 await yield.ReturnAsync((block, commit));
                                 sent.Add(block.Hash);
                             }
@@ -282,7 +282,7 @@ namespace Libplanet.Net.Tests
                     })
             );
 
-            var downloadedBlocks = new HashSet<Tuple<Block<DumbAction>, BlockCommit>>();
+            var downloadedBlocks = new HashSet<Tuple<Block, BlockCommit>>();
             var sourcePeers = new HashSet<char>();
             await AsyncEnumerable.ForEachAsync(rv, triple =>
             {
@@ -299,10 +299,10 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
-            Block<DumbAction> demand = ProposeNextBlock(genesis, new PrivateKey());
+            Block genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
+            Block demand = ProposeNextBlock(genesis, new PrivateKey());
             BlockCommit demandCommit = TestUtils.CreateBlockCommit(demand);
-            Block<DumbAction> wrong = ProposeNextBlock(genesis, new PrivateKey());
+            Block wrong = ProposeNextBlock(genesis, new PrivateKey());
             BlockCommit wrongCommit = TestUtils.CreateBlockCommit(wrong);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
@@ -316,7 +316,7 @@ namespace Libplanet.Net.Tests
             long counter = 0;
             BlockCompletion<char, DumbAction>.BlockFetcher wrongBlockFetcher =
                 (peer, blockHashes, token) =>
-                    new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(async yield =>
+                    new AsyncEnumerable<(Block, BlockCommit)>(async yield =>
                     {
                         // Provides a wrong block (i.e., not corresponding to the demand)
                         // at first call, and then provide a proper block later calls.
@@ -326,9 +326,9 @@ namespace Libplanet.Net.Tests
                         Interlocked.Increment(ref counter);
                     });
 
-            Tuple<Block<DumbAction>, BlockCommit, char>[] expected =
+            Tuple<Block, BlockCommit, char>[] expected =
                 new[] { Tuple.Create(demand, demandCommit, 'A') };
-            Tuple<Block<DumbAction>, BlockCommit, char>[] result =
+            Tuple<Block, BlockCommit, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A' }, wrongBlockFetcher));
 
             Assert.Equal(expected, result);
@@ -337,14 +337,14 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithNonRespondingPeers()
         {
-            ImmutableArray<Block<DumbAction>> fixture =
+            ImmutableArray<Block> fixture =
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
             var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
             bc.Demand(fixture.Select(b => b.Hash));
 
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
                 (peer, blockHashes, token) =>
-                    new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(async yield =>
+                    new AsyncEnumerable<(Block, BlockCommit)>(async yield =>
                     {
                         // Peer A does not respond and Peer B does respond.
                         if (peer == 'A')
@@ -357,7 +357,7 @@ namespace Libplanet.Net.Tests
                             throw new Exception("Peer failed to respond");
                         }
 
-                        foreach (Block<DumbAction> b in fixture)
+                        foreach (Block b in fixture)
                         {
                             if (blockHashes.Contains(b.Hash))
                             {
@@ -366,7 +366,7 @@ namespace Libplanet.Net.Tests
                         }
                     });
 
-            Tuple<Block<DumbAction>, BlockCommit, char>[] result =
+            Tuple<Block, BlockCommit, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(
                     bc.Complete(new[] { 'A', 'B' }, blockFetcher));
             Assert.Equal(
@@ -377,14 +377,14 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithCrashingPeers()
         {
-            ImmutableArray<Block<DumbAction>> fixture =
+            ImmutableArray<Block> fixture =
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
             var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
             bc.Demand(fixture.Select(b => b.Hash));
 
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
                 (peer, blockHashes, token) =>
-                    new AsyncEnumerable<(Block<DumbAction>, BlockCommit)>(async yield =>
+                    new AsyncEnumerable<(Block, BlockCommit)>(async yield =>
                     {
                         // Peer A does crash and Peer B does respond.
                         if (peer == 'A')
@@ -392,7 +392,7 @@ namespace Libplanet.Net.Tests
                             throw new Exception("Peer A can't respond.");
                         }
 
-                        foreach (Block<DumbAction> b in fixture)
+                        foreach (Block b in fixture)
                         {
                             if (blockHashes.Contains(b.Hash))
                             {
@@ -401,19 +401,19 @@ namespace Libplanet.Net.Tests
                         }
                     });
 
-            Tuple<Block<DumbAction>, BlockCommit, char>[] result =
+            Tuple<Block, BlockCommit, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }, blockFetcher));
             Assert.Equal(
                 fixture.Select(b => (b, 'B')).ToHashSet(),
                 result.Select(triple => (triple.Item1, triple.Item3)).ToHashSet());
         }
 
-        private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
+        private IEnumerable<Block> GenerateBlocks<T>(int count)
             where T : IAction, new()
         {
             if (count >= 1)
             {
-                Block<T> block = ProposeGenesisBlock<T>(GenesisProposer);
+                Block block = ProposeGenesisBlock<T>(GenesisProposer);
                 yield return block;
 
                 for (int i = 1; i < count; i++)

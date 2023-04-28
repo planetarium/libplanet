@@ -5,7 +5,6 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -339,7 +338,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start(lastCommit: block2Commit);
             await proposalSent.WaitAsync();
             Bencodex.Codec codec = new Bencodex.Codec();
-            var proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            var proposedBlock = BlockMarshaler.UnmarshalBlock(
                 (Bencodex.Types.Dictionary)codec.Decode(proposal?.Proposal.MarshaledBlock!));
             Assert.Equal(context.Height + 1, proposedBlock.Index);
             await preVoteSent.WaitAsync();

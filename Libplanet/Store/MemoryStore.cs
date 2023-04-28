@@ -145,7 +145,7 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
             _blocks.Keys;
 
-        Block<T> IStore.GetBlock<T>(BlockHash blockHash)
+        Block IStore.GetBlock(BlockHash blockHash)
         {
             if (!_blocks.TryGetValue(blockHash, out BlockDigest digest))
             {
@@ -157,7 +157,7 @@ namespace Libplanet.Store
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
             IEnumerable<Transaction> txs = txids.Select(txid => (Transaction)_txs[txid]);
-            return new Block<T>(header, txs);
+            return new Block(header, txs);
         }
 
         long? IStore.GetBlockIndex(BlockHash blockHash) =>
@@ -166,7 +166,7 @@ namespace Libplanet.Store
         BlockDigest? IStore.GetBlockDigest(BlockHash blockHash) =>
             _blocks.TryGetValue(blockHash, out BlockDigest digest) ? digest : (BlockDigest?)null;
 
-        void IStore.PutBlock<T>(Block<T> block)
+        void IStore.PutBlock(Block block)
         {
             IReadOnlyList<Transaction> txs = block.Transactions;
             foreach (Transaction tx in txs)

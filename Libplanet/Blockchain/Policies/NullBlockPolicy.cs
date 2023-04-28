@@ -40,7 +40,7 @@ namespace Libplanet.Blockchain.Policies
 
         public virtual BlockPolicyViolationException ValidateNextBlock(
             BlockChain<T> blockChain,
-            Block<T> nextBlock
+            Block nextBlock
         )
         {
             if (_exceptionToThrow != null)

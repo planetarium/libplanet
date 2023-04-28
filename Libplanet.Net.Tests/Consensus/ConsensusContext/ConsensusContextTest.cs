@@ -8,7 +8,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -128,7 +127,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
-            Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
+            Block block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(-1, consensusContext.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));

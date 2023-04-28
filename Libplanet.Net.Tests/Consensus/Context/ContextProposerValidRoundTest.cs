@@ -69,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start();
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal);
-            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            Block proposedBlock = BlockMarshaler.UnmarshalBlock(
                 (Bencodex.Types.Dictionary)_codec.Decode(proposal!.Proposal.MarshaledBlock));
 
             // Force round change.
@@ -175,7 +175,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start();
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal);
-            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            Block proposedBlock = BlockMarshaler.UnmarshalBlock(
                 (Bencodex.Types.Dictionary)_codec.Decode(proposal!.Proposal.MarshaledBlock));
 
             // Force round change to 2.

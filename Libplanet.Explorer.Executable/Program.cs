@@ -465,7 +465,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public BlockPolicyViolationException ValidateNextBlock(
                 BlockChain<NullAction> blockChain,
-                Block<NullAction> nextBlock
+                Block nextBlock
             ) => _impl.ValidateNextBlock(blockChain, nextBlock);
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>

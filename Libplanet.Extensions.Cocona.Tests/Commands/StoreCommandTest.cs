@@ -21,12 +21,12 @@ public class StoreCommandTest : IDisposable
     private readonly ITestOutputHelper _testOutput;
     private readonly TextWriter _originalOut;
     private readonly TextWriter _originalError;
-    private readonly Block<Utils.DummyAction> _genesisBlock;
-    private readonly Block<Utils.DummyAction> _block1;
-    private readonly Block<Utils.DummyAction> _block2;
-    private readonly Block<Utils.DummyAction> _block3;
-    private readonly Block<Utils.DummyAction> _block4;
-    private readonly Block<Utils.DummyAction> _block5;
+    private readonly Block _genesisBlock;
+    private readonly Block _block1;
+    private readonly Block _block2;
+    private readonly Block _block3;
+    private readonly Block _block4;
+    private readonly Block _block5;
     private readonly Transaction _transaction1;
     private readonly Transaction _transaction2;
     private readonly Transaction _transaction3;
@@ -235,7 +235,7 @@ public class StoreCommandTest : IDisposable
         {
             void AssertTxBlockIndex(
                 Transaction tx,
-                Block<Utils.DummyAction> block
+                Block block
             )
             {
                 using var sw = new StringWriter();

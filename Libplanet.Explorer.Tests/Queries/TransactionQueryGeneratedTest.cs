@@ -50,7 +50,7 @@ public class TransactionQueryGeneratedTest
         var failBlock = Fx.Chain.Tip;
         var failTx = failBlock.Transactions.First();
         var successBlock =
-            Fx.Chain.Store.GetBlock<PolymorphicAction<SimpleAction>>(failBlock.PreviousHash!.Value);
+            Fx.Chain.Store.GetBlock(failBlock.PreviousHash!.Value);
         var successTx = successBlock.Transactions.First();
         var pk = Fx.PrivateKeys[0];
         var stagingTx = Transaction.Create<NullAction>(
@@ -101,7 +101,7 @@ public class TransactionQueryGeneratedTest
     }
 
     private async Task AssertTransactionsQueryPermutation(
-        ImmutableArray<Block<PolymorphicAction<SimpleAction>>> blocksToTest,
+        ImmutableArray<Block> blocksToTest,
         Address? signer,
         Address? involvedAddress)
     {
@@ -206,14 +206,14 @@ public class TransactionQueryGeneratedTest
     }
 
     private async Task AssertAgainstTransactionsQuery(
-        IReadOnlyList<Block<PolymorphicAction<SimpleAction>>> blocksToTest,
+        IReadOnlyList<Block> blocksToTest,
         Address? signer,
         Address? involvedAddress,
         bool desc,
         int? offset,
         int? limit)
     {
-        IEnumerable<Block<PolymorphicAction<SimpleAction>>> blocks = blocksToTest;
+        IEnumerable<Block> blocks = blocksToTest;
         if (offset is { } offsetVal)
         {
             offsetVal = offsetVal >= 0 ? offsetVal : blocksToTest.Count + offsetVal;

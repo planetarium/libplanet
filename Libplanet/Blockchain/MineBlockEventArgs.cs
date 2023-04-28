@@ -1,17 +1,15 @@
 #nullable disable
-using Libplanet.Action;
 using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
-    public class MineBlockEventArgs<T>
-        where T : IAction, new()
+    public class MineBlockEventArgs
     {
-        public MineBlockEventArgs(Block<T> block)
+        public MineBlockEventArgs(Block block)
         {
             Block = block;
         }
 
-        public Block<T> Block { get; }
+        public Block Block { get; }
     }
 }

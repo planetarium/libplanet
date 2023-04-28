@@ -46,14 +46,14 @@ namespace Libplanet.Explorer.Queries
 
         private static IBlockChainIndex Index => ChainContext.Index;
 
-        internal static IEnumerable<Block<T>> ListBlocks(
+        internal static IEnumerable<Block> ListBlocks(
             bool desc,
             long offset,
             long? limit,
             bool excludeEmptyTxs,
             Address? miner)
         {
-            Block<T> tip = Chain.Tip;
+            Block tip = Chain.Tip;
             long tipIndex = tip.Index;
             IStore store = ChainContext.Store;
 
@@ -89,7 +89,7 @@ namespace Libplanet.Explorer.Queries
 
             foreach (var index in indexList)
             {
-                var block = store.GetBlock<T>(index.value);
+                var block = store.GetBlock(index.value);
                 bool isMinerValid = miner is null || miner == block.Miner;
                 bool isTxValid = !excludeEmptyTxs || block.Transactions.Any();
                 if (!isMinerValid || !isTxValid)
@@ -104,7 +104,7 @@ namespace Libplanet.Explorer.Queries
         internal static IEnumerable<Transaction> ListTransactions(
             Address? signer, Address? involved, bool desc, long offset, int? limit)
         {
-            Block<T> tip = Chain.Tip;
+            Block tip = Chain.Tip;
             long tipIndex = tip.Index;
 
             if (offset < 0)
@@ -148,7 +148,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            Block<T> block = Chain[desc ? tipIndex - offset : offset];
+            Block block = Chain[desc ? tipIndex - offset : offset];
 
             while (!(block is null) && (limit is null || limit > 0))
             {
@@ -191,13 +191,13 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static Block<T> GetBlockByHash(BlockHash hash) => Store.GetBlock<T>(hash);
+        internal static Block GetBlockByHash(BlockHash hash) => Store.GetBlock(hash);
 
-        internal static Block<T> GetBlockByIndex(long index) => Chain[index];
+        internal static Block GetBlockByIndex(long index) => Chain[index];
 
         internal static Transaction GetTransaction(TxId id) => Chain.GetTransaction(id);
 
-        private static Block<T> GetNextBlock(Block<T> block, bool desc)
+        private static Block GetNextBlock(Block block, bool desc)
         {
             if (desc && block.PreviousHash is { } prev)
             {

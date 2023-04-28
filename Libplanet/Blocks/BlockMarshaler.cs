@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tx;
 
@@ -144,13 +143,10 @@ namespace Libplanet.Blocks
             return dict;
         }
 
-        public static Dictionary MarshalBlock<T>(this Block<T> block)
-            where T : IAction, new()
-        =>
+        public static Dictionary MarshalBlock(this Block block) =>
             MarshalBlock(
                 MarshalBlockHeader(block.Header),
-                MarshalTransactions(block.Transactions)
-            );
+                MarshalTransactions(block.Transactions));
 
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
             marshaledMetadata.GetValue<Integer>(IndexKey);
@@ -247,14 +243,11 @@ namespace Libplanet.Blocks
                 ? UnmarshalTransactions(marshaledBlock.GetValue<List>(TransactionsKey))
                 : ImmutableArray<Transaction>.Empty;
 
-        public static Block<T> UnmarshalBlock<T>(
-            Dictionary marshaled
-        )
-            where T : IAction, new()
+        public static Block UnmarshalBlock(Dictionary marshaled)
         {
             BlockHeader header = UnmarshalBlockHeader(marshaled.GetValue<Dictionary>(HeaderKey));
             IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
-            return new Block<T>(header, txs);
+            return new Block(header, txs);
         }
     }
 }

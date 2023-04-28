@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/> that
+        /// The <see cref="Block.Hash"/> of <see cref="Block"/> that
         /// a <see cref="BlockChain{T}"/> lacks the states.
         /// </summary>
         public BlockHash BlockHash { get; }

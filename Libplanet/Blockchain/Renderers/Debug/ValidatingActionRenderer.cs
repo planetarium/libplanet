@@ -40,8 +40,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// </summary>
         public BlockChain<T>? BlockChain { get; set; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
-        public override void RenderBlock(Block<T> oldTip, Block<T> newTip)
+        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        public override void RenderBlock(Block oldTip, Block newTip)
         {
             base.RenderBlock(oldTip, newTip);
             Validate();
@@ -71,8 +71,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
-        public override void RenderBlockEnd(Block<T> oldTip, Block<T> newTip)
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        public override void RenderBlockEnd(Block oldTip, Block newTip)
         {
             base.RenderBlockEnd(oldTip, newTip);
             Validate();
@@ -81,7 +81,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         private void Validate()
         {
             var state = RenderState.Ready;
-            RenderRecord<T>.Block? blockState = null;
+            RenderRecord<T>.BlockEvent? blockState = null;
             long previousActionBlockIndex = -1L;
             var records = new List<RenderRecord<T>>(Records.Count);
 
@@ -103,7 +103,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                         else if (record is RenderRecord<T>.BlockBase blockBase && blockBase.Begin)
                         {
 #pragma warning disable S1066
-                            if (blockBase is RenderRecord<T>.Block block)
+                            if (blockBase is RenderRecord<T>.BlockEvent block)
 #pragma warning restore S1066
                             {
                                 blockState = block;
@@ -121,7 +121,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                         {
                             throw BadRenderExc("Unexpected block state: null.");
                         }
-                        else if (record is RenderRecord<T>.Block block && block.End)
+                        else if (record is RenderRecord<T>.BlockEvent block && block.End)
                         {
                             if (block.OldTip != blockState.OldTip ||
                                 block.NewTip != blockState.NewTip)

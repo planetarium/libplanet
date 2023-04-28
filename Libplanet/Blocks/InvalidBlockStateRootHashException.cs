@@ -19,7 +19,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="expectedStateRootHash">The hash recorded as
-        /// <see cref="Block{T}.StateRootHash"/>>.</param>
+        /// <see cref="Block.StateRootHash"/>>.</param>
         /// <param name="actualStateRootHash">The hash of state trie on the block executed.</param>
         public InvalidBlockStateRootHashException(
             string message,
@@ -48,7 +48,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> ActualStateRootHash { get; }
 
         /// <summary>
-        /// The hash recorded as <see cref="Block{T}.StateRootHash"/>>.
+        /// The hash recorded as <see cref="Block.StateRootHash"/>>.
         /// </summary>
         [Pure]
         public HashDigest<SHA256> ExpectedStateRootHash { get; }

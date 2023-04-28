@@ -446,7 +446,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void PutBlock<T>(Block<T> block)
+        public override void PutBlock(Block block)
         {
             if (_blockCache.ContainsKey(block.Hash))
             {
@@ -736,7 +736,7 @@ namespace Libplanet.Store
             // FIXME: This implementation is too inefficient.  Fortunately, this method seems
             // unused (except for unit tests).  If this is never used why should we maintain
             // this?  This is basically only for making BlockSet<T> class to implement
-            // IDictionary<HashDigest<SHA256>, Block<T>>.Count property, which is never used either.
+            // IDictionary<HashDigest<SHA256>, Block>.Count property, which is never used either.
             // We'd better to refactor all such things so that unnecessary APIs are gone away.
             return IterateBlockHashes().LongCount();
         }

@@ -11,15 +11,15 @@ namespace Libplanet.Blockchain.Renderers
     /// on a <see cref="BlockChain{T}"/>.
     /// If you need more fine-grained events than <see cref="IRenderer{T}"/>,
     /// implement this interface instead.
-    /// <para>The invocation order of methods for each <see cref="Block{T}"/> are:</para>
+    /// <para>The invocation order of methods for each <see cref="Block"/> are:</para>
     /// <list type="number">
-    /// <item><description><see cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> (one time)
+    /// <item><description><see cref="IRenderer{T}.RenderBlock(Block, Block)"/> (one time)
     /// </description></item>
     /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
     /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/> (zero or more
     /// times)</description>
     /// </item>
-    /// <item><description><see cref="RenderBlockEnd(Block{T}, Block{T})"/> (one time)</description>
+    /// <item><description><see cref="RenderBlockEnd(Block, Block)"/> (one time)</description>
     /// </item>
     /// </list>
     /// </summary>
@@ -60,7 +60,7 @@ namespace Libplanet.Blockchain.Renderers
         /// cref="RenderActionError(IAction, IActionContext, Exception)"/> is called instead) or
         /// once the <paramref name="action"/> has been unrendered.
         /// <para>Also note that this method is invoked after <see
-        /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
+        /// cref="IRenderer{T}.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).</para>
         /// <para>The reason why the parameter <paramref name="action"/> takes
@@ -84,7 +84,7 @@ namespace Libplanet.Blockchain.Renderers
         /// name="action"/>.</param>
         /// <remarks>
         /// Also note that this method is invoked after <see
-        /// cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/> method is called
+        /// cref="IRenderer{T}.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).
         /// <para>The reason why the parameter <paramref name="action"/> takes
@@ -95,12 +95,12 @@ namespace Libplanet.Blockchain.Renderers
         void RenderActionError(IAction action, IActionContext context, Exception exception);
 
         /// <summary>
-        /// Does things that should be done right all actions in a new <see cref="Block{T}"/> are
+        /// Does things that should be done right all actions in a new <see cref="Block"/> are
         /// rendered.
         /// </summary>
         /// <remarks>It is guaranteed to be called only once for a block.</remarks>
         /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
         /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
-        void RenderBlockEnd(Block<T> oldTip, Block<T> newTip);
+        void RenderBlockEnd(Block oldTip, Block newTip);
     }
 }

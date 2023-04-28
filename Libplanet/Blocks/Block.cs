@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
-using Libplanet.Action;
-using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.JsonConverters;
 using Libplanet.Tx;
@@ -14,13 +12,7 @@ namespace Libplanet.Blocks
     /// <summary>
     /// The complete block including all block contents and action evaluation.
     /// </summary>
-    /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public sealed class Block<T> :
-        IPreEvaluationBlock,
-        IBlockHeader,
-        IEquatable<Block<T>>
-        where T : IAction, new()
+    public sealed class Block : IPreEvaluationBlock, IBlockHeader, IEquatable<Block>
     {
         /// <summary>
         /// The latest protocol version.
@@ -31,7 +23,7 @@ namespace Libplanet.Blocks
         private readonly PreEvaluationBlock _preEvaluationBlock;
 
         /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by combining a block <paramref name="header"/>
+        /// Creates a <see cref="Block"/> instance by combining a block <paramref name="header"/>
         /// and <paramref name="transactions"/>.
         /// </summary>
         /// <param name="header">The block header.</param>
@@ -65,7 +57,7 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a <see cref="Block{T}"/> instance by combining
+        /// Creates a <see cref="Block"/> instance by combining
         /// a <paramref name="preEvaluationBlock"/>, its corresponding
         /// <paramref name="proof.StateRootHash"/>, valid <paramref name="proof.Signature"/>,
         /// and correctly derived <paramref name="proof.Hash"/>.
@@ -143,7 +135,7 @@ namespace Libplanet.Blocks
         /// <param name="right">Another block.</param>
         /// <returns><see langword="true"/> if two blocks are equal.
         /// Otherwise <see langword="false"/>.</returns>
-        public static bool operator ==(Block<T>? left, Block<T>? right) =>
+        public static bool operator ==(Block? left, Block? right) =>
             Equals(left, right);
 
         /// <summary>
@@ -153,11 +145,11 @@ namespace Libplanet.Blocks
         /// <param name="right">Another block.</param>
         /// <returns><see langword="true"/> if two blocks are different.
         /// Otherwise <see langword="false"/>.</returns>
-        public static bool operator !=(Block<T>? left, Block<T>? right) =>
+        public static bool operator !=(Block? left, Block? right) =>
             !Equals(left, right);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(Block<T>? other)
+        public bool Equals(Block? other)
         {
             if (other is null)
             {
@@ -169,7 +161,7 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj) =>
-            obj is Block<T> other && Equals(other);
+            obj is Block other && Equals(other);
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode() =>

@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Action
             );
             var stateRootHash = chain.DetermineBlockStateRootHash(preEval, out _);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
-            Block<DumbAction> block = new Block<DumbAction>(preEval, (stateRootHash, null, hash));
+            Block block = new Block(preEval, (stateRootHash, null, hash));
             chain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,

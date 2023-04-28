@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateNextBlock()
         {
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Blockchain
         public void ValidateNextBlockProtocolVersion()
         {
             var protocolVersion = _blockChain.Tip.ProtocolVersion;
-            Block<DumbAction> block1 = new BlockContent(
+            Block block1 = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
                     index: 1L,
@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: null)).Propose().Evaluate<DumbAction>(_fx.Proposer, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
-            Block<DumbAction> block2 = new BlockContent(
+            Block block2 = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: protocolVersion - 1,
                     index: 2L,
@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
             {
-                Block<DumbAction> block3 = new BlockContent(
+                Block block3 = new BlockContent(
                     new BlockMetadata(
                         protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
                         index: 2L,
@@ -82,8 +82,8 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
 
-            Block<DumbAction> prev = _blockChain.Tip;
-            Block<DumbAction> blockWithAlreadyUsedIndex = new BlockContent(
+            Block prev = _blockChain.Tip;
+            Block blockWithAlreadyUsedIndex = new BlockContent(
                 new BlockMetadata(
                     index: prev.Index,
                     timestamp: DateTimeOffset.UtcNow,
@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Blockchain
                     TestUtils.CreateBlockCommit(blockWithAlreadyUsedIndex))
             );
 
-            Block<DumbAction> blockWithIndexAfterNonexistentIndex = new BlockContent(
+            Block blockWithIndexAfterNonexistentIndex = new BlockContent(
                 new BlockMetadata(
                     index: prev.Index + 2,
                     timestamp: DateTimeOffset.UtcNow,
@@ -118,7 +118,7 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
 
-            Block<DumbAction> invalidPreviousHashBlock = new BlockContent(
+            Block invalidPreviousHashBlock = new BlockContent(
                 new BlockMetadata(
                     index: 2,
                     timestamp: DateTimeOffset.UtcNow,
@@ -140,7 +140,7 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
 
-            Block<DumbAction> invalidPreviousTimestamp = new BlockContent(
+            Block invalidPreviousTimestamp = new BlockContent(
                 new BlockMetadata(
                     index: 2,
                     timestamp: _validNext.Timestamp.AddSeconds(-1),
@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisBlock);
 
-            Block<DumbAction> block1 = new BlockContent(
+            Block block1 = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1,
@@ -209,7 +209,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateNextBlockLastCommitNullAtIndexOne()
         {
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -224,7 +224,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateNextBlockLastCommitUpperIndexOne()
         {
-            Block<DumbAction> block1 = new BlockContent(
+            Block block1 = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -235,7 +235,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var blockCommit = TestUtils.CreateBlockCommit(block1);
-            Block<DumbAction> block2 = new BlockContent(
+            Block block2 = new BlockContent(
                 new BlockMetadata(
                     index: 2L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -251,7 +251,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateNextBlockLastCommitFailsUnexpectedValidator()
         {
-            Block<DumbAction> block1 = new BlockContent(
+            Block block1 = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -272,7 +272,7 @@ namespace Libplanet.Tests.Blockchain
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
             var blockCommit = new BlockCommit(1, 0, block1.Hash, votes);
 
-            Block<DumbAction> block2 = new BlockContent(
+            Block block2 = new BlockContent(
                 new BlockMetadata(
                     index: 2L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -288,7 +288,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateNextBlockLastCommitFailsDropExpectedValidator()
         {
-            Block<DumbAction> block1 = new BlockContent(
+            Block block1 = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
@@ -308,7 +308,7 @@ namespace Libplanet.Tests.Blockchain
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
             var blockCommit = new BlockCommit(1, 0, block1.Hash, votes);
-            Block<DumbAction> block2 = new BlockContent(
+            Block block2 = new BlockContent(
                 new BlockMetadata(
                     index: 2,
                     timestamp: DateTimeOffset.UtcNow,
@@ -346,7 +346,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateBlockCommitFailsDifferentBlockHash()
         {
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -367,7 +367,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateBlockCommitFailsDifferentHeight()
         {
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -388,7 +388,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateBlockCommitFailsDifferentValidatorSet()
         {
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -418,7 +418,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateBlockCommitFailsNullBlockCommit()
         {
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -449,7 +449,7 @@ namespace Libplanet.Tests.Blockchain
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 validatorSet: validatorSet);
-            Block<DumbAction> validNextBlock = new BlockContent(
+            Block validNextBlock = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: blockChain.Genesis.Timestamp.AddDays(1),

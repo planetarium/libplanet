@@ -197,10 +197,10 @@ namespace Libplanet.Action
         /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </returns>
         /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// the <see cref="Block{T}"/>'s type parameter.</typeparam>
+        /// the <see cref="Block"/>'s type parameter.</typeparam>
         /// <remarks>
         /// A mock evaluation is performed on <paramref name="tx"/> using a mock
-        /// <see cref="Block{T}"/> for its evaluation context and a mock
+        /// <see cref="Block"/> for its evaluation context and a mock
         /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
         /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
         /// </remarks>
@@ -257,7 +257,7 @@ namespace Libplanet.Action
         /// <param name="preEvaluationHash">The
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> of
         /// the <see cref="IPreEvaluationBlock"/> that <paramref name="actions"/> belong to.</param>
-        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// that <paramref name="actions"/> belong to.</param>
         /// <param name="txid">The <see cref="ITransaction.Id"/> of the
         /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.
@@ -761,7 +761,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="blockHeader">The header of block to reference.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
-        /// <see cref="Block{T}"/>.
+        /// <see cref="Block"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
             IPreEvaluationBlockHeader blockHeader)

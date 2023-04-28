@@ -51,7 +51,7 @@ namespace Libplanet.Net
         }
 
         private bool BlockCandidateProcess(
-            Branch<T> candidate,
+            Branch candidate,
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
@@ -110,16 +110,16 @@ namespace Libplanet.Net
 
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
-            Branch<T> candidate)
+            Branch candidate)
         {
             BlockChain<T> workspace = blockChain;
             List<Guid> scope = new List<Guid>();
             bool render = true;
 
-            Block<T> oldTip = workspace.Tip;
-            Block<T> newTip = candidate.Blocks.Last().Item1;
-            List<(Block<T>, BlockCommit)> blocks = candidate.Blocks.ToList();
-            Block<T> branchpoint = FindBranchpoint(
+            Block oldTip = workspace.Tip;
+            Block newTip = candidate.Blocks.Last().Item1;
+            List<(Block, BlockCommit)> blocks = candidate.Blocks.ToList();
+            Block branchpoint = FindBranchpoint(
                  oldTip,
                  newTip,
                  blocks.Select(pair => pair.Item1).ToList());
@@ -209,15 +209,15 @@ namespace Libplanet.Net
             return workspace;
         }
 
-        private Block<T> FindBranchpoint(Block<T> oldTip, Block<T> newTip, List<Block<T>> newBlocks)
+        private Block FindBranchpoint(Block oldTip, Block newTip, List<Block> newBlocks)
         {
-            while (oldTip is Block<T> && oldTip.Index > newTip.Index &&
+            while (oldTip is Block && oldTip.Index > newTip.Index &&
                    oldTip.PreviousHash is { } aPrev)
             {
                 oldTip = BlockChain[aPrev];
             }
 
-            while (newTip is Block<T> && newTip.Index > oldTip.Index &&
+            while (newTip is Block && newTip.Index > oldTip.Index &&
                    newTip.PreviousHash is { } bPrev)
             {
                 try
@@ -369,7 +369,7 @@ namespace Libplanet.Net
             var sessionRandom = new Random();
             int subSessionId = sessionRandom.Next();
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
-            Block<T> tip = blockChain.Tip;
+            Block tip = blockChain.Tip;
 
             IAsyncEnumerable<Tuple<long, BlockHash>> hashesAsync = GetBlockHashes(
                 peer: peer,
@@ -386,13 +386,13 @@ namespace Libplanet.Net
                 return false;
             }
 
-            IAsyncEnumerable<(Block<T>, BlockCommit)> blocksAsync = GetBlocksAsync(
+            IAsyncEnumerable<(Block, BlockCommit)> blocksAsync = GetBlocksAsync(
                 peer,
                 hashes.Select(pair => pair.Item2),
                 cancellationToken);
             try
             {
-                var branch = new Branch<T>(await blocksAsync.ToArrayAsync(cancellationToken));
+                var branch = new Branch(await blocksAsync.ToArrayAsync(cancellationToken));
                 BlockCandidateTable.Add(tip.Header, branch);
                 return true;
             }

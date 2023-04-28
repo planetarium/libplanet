@@ -42,7 +42,7 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                Block<DumbAction> block = minerChain.ProposeBlock(
+                Block block = minerChain.ProposeBlock(
                     minerKey, CreateBlockCommit(minerChain.Tip));
                 minerChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -124,10 +124,10 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
-            var blocks = new List<Block<DumbAction>>();
+            var blocks = new List<Block>();
             foreach (int i in Enumerable.Range(0, 12))
             {
-                Block<DumbAction> block = ProposeNext(
+                Block block = ProposeNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
                     miner: ChainPrivateKey.PublicKey,
                     lastCommit: CreateBlockCommit(minerChain.Tip)
@@ -405,7 +405,7 @@ namespace Libplanet.Net.Tests
             for (var i = 0; i < iteration; i++)
             {
                 sender.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
-                Block<DumbAction> block = sender.BlockChain.ProposeBlock(
+                Block block = sender.BlockChain.ProposeBlock(
                     senderKey, CreateBlockCommit(sender.BlockChain.Tip));
                 sender.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -442,7 +442,7 @@ namespace Libplanet.Net.Tests
 
             foreach (var unused in Enumerable.Range(0, 10))
             {
-                Block<ThrowException> block = minerSwarm.BlockChain.ProposeBlock(
+                Block block = minerSwarm.BlockChain.ProposeBlock(
                     minerKey, CreateBlockCommit(minerSwarm.BlockChain.Tip));
                 minerSwarm.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -466,7 +466,7 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow
                 );
 
-                Block<ThrowException> block = ProposeNext(
+                Block block = ProposeNext(
                     minerChain.Tip,
                     new[] { tx },
                     miner: ChainPrivateKey.PublicKey,
@@ -515,7 +515,7 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                Block<DumbAction> block = minerChain.ProposeBlock(
+                Block block = minerChain.ProposeBlock(
                     minerKey, CreateBlockCommit(minerChain.Tip));
                 minerChain.Append(block, CreateBlockCommit(block));
             }
@@ -688,11 +688,11 @@ namespace Libplanet.Net.Tests
 
             Guid receiverChainId = receiverChain.Id;
 
-            (Address address, IEnumerable<Block<DumbAction>> blocks) =
+            (Address address, IEnumerable<Block> blocks) =
                 MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
             var blockArray = blocks.ToArray();
-            foreach (Block<DumbAction> block in blockArray)
+            foreach (Block block in blockArray)
             {
                 minerChain.Append(block, CreateBlockCommit(block));
             }
@@ -768,10 +768,10 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
-            (_, IEnumerable<Block<DumbAction>> blocks) =
+            (_, IEnumerable<Block> blocks) =
                 MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
-            foreach (Block<DumbAction> block in blocks)
+            foreach (Block block in blocks)
             {
                 minerChain.Append(block, CreateBlockCommit(block));
             }
@@ -810,7 +810,7 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 25))
             {
-                Block<DumbAction> block = minerChain.ProposeBlock(
+                Block block = minerChain.ProposeBlock(
                     minerKey, CreateBlockCommit(minerChain.Tip));
                 minerChain.Append(block, CreateBlockCommit(block));
                 receiverChain.Append(block, CreateBlockCommit(block));
@@ -819,7 +819,7 @@ namespace Libplanet.Net.Tests
             var receiverForked = receiverChain.Fork(receiverChain[5].Hash);
             foreach (int i in Enumerable.Range(0, 20))
             {
-                Block<DumbAction> block = receiverForked.ProposeBlock(
+                Block block = receiverForked.ProposeBlock(
                     minerKey, CreateBlockCommit(receiverForked.Tip));
                 receiverForked.Append(block, CreateBlockCommit(block));
             }
@@ -828,7 +828,7 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 1))
             {
-                Block<DumbAction> block = minerChain.ProposeBlock(
+                Block block = minerChain.ProposeBlock(
                     minerKey, CreateBlockCommit(minerChain.Tip));
                 minerChain.Append(block, CreateBlockCommit(block));
             }
@@ -860,10 +860,10 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> minerChain = minerSwarm.BlockChain;
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
-            Block<DumbAction>[] blocks =
+            Block[] blocks =
                 MakeFixtureBlocksForPreloadAsyncCancellationTest().Item2;
 
-            foreach (Block<DumbAction> block in blocks)
+            foreach (Block block in blocks)
             {
                 minerChain.Append(block, CreateBlockCommit(block));
             }
@@ -871,7 +871,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> forked = minerChain.Fork(minerChain.Genesis.Hash);
             while (forked.Count <= minerChain.Count)
             {
-                Block<DumbAction> block = forked.ProposeBlock(
+                Block block = forked.ProposeBlock(
                     minerKey, CreateBlockCommit(forked.Tip));
                 forked.Append(block, CreateBlockCommit(block));
             }
@@ -912,10 +912,10 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = minerSwarm.BlockChain;
 
             receiverChain = receiverChain.Fork(receiverChain.Genesis.Hash);
-            Block<DumbAction>[] blocks =
+            Block[] blocks =
                 MakeFixtureBlocksForPreloadAsyncCancellationTest().Item2;
 
-            foreach (Block<DumbAction> block in blocks)
+            foreach (Block block in blocks)
             {
                 minerChain.Append(block, CreateBlockCommit(block));
             }
@@ -946,14 +946,14 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> minerChain2 = minerSwarm2.BlockChain;
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
-            Block<DumbAction> block1 = minerChain1.ProposeBlock(
+            Block block1 = minerChain1.ProposeBlock(
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block1, CreateBlockCommit(block1));
-            Block<DumbAction> block2 = minerChain1.ProposeBlock(
+            Block block2 = minerChain1.ProposeBlock(
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block2, CreateBlockCommit(block2));
 
-            Block<DumbAction> block = ProposeNext(
+            Block block = ProposeNext(
                 minerChain2.Tip,
                 miner: ChainPrivateKey.PublicKey,
                 lastCommit: CreateBlockCommit(minerChain2.Tip)
@@ -1017,14 +1017,14 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                Block<DumbAction> block = validSeedChain.ProposeBlock(
+                Block block = validSeedChain.ProposeBlock(
                     key1, CreateBlockCommit(validSeedChain.Tip));
                 validSeedChain.Append(block, CreateBlockCommit(block));
             }
 
             for (int i = 0; i < 20; i++)
             {
-                Block<DumbAction> block = invalidSeedChain.ProposeBlock(
+                Block block = invalidSeedChain.ProposeBlock(
                     key1, CreateBlockCommit(invalidSeedChain.Tip));
                 invalidSeedChain.Append(block, CreateBlockCommit(block));
             }
@@ -1079,7 +1079,7 @@ namespace Libplanet.Net.Tests
             seedChain.Swap(forked, false);
             for (int i = 0; i < 10; i++)
             {
-                Block<DumbAction> block = seedChain.ProposeBlock(
+                Block block = seedChain.ProposeBlock(
                     seedKey, CreateBlockCommit(seedChain.Tip));
                 seedChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -1132,7 +1132,7 @@ namespace Libplanet.Net.Tests
                     {
                         new DumbAction(default, $"Item{i}"),
                     });
-                Block<DumbAction> block = seedChain.ProposeBlock(
+                Block block = seedChain.ProposeBlock(
                     seedKey, CreateBlockCommit(seedChain.Tip));
                 seedChain.Append(block, TestUtils.CreateBlockCommit(block));
                 transactions.Add(transaction);

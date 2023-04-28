@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -36,7 +34,7 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> signature =
                 preEval.Header.MakeSignature(contents.GenesisKey, stateRootHash);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, signature);
-            var block = new Block<Arithmetic>(preEval, (stateRootHash, signature, hash));
+            var block = new Block(preEval, (stateRootHash, signature, hash));
             AssertPreEvaluationBlocksEqual(preEval, block);
             AssertBytesEqual(stateRootHash, block.StateRootHash);
             AssertBytesEqual(signature, block.Signature);
@@ -45,11 +43,9 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CompareToOtherBlock()
         {
-            Block<PolymorphicAction<BaseAction>> sameBlock1 = _fx.Genesis;
-            var sameBlock2 = BlockMarshaler.UnmarshalBlock<PolymorphicAction<BaseAction>>(
-                _fx.Genesis.MarshalBlock()
-            );
-            Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;
+            Block sameBlock1 = _fx.Genesis;
+            var sameBlock2 = BlockMarshaler.UnmarshalBlock(_fx.Genesis.MarshalBlock());
+            Block differentBlock = _fx.Next;
 
             Assert.Equal(sameBlock1, sameBlock2);
             Assert.NotEqual(sameBlock2, differentBlock);

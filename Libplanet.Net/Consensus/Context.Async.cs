@@ -11,7 +11,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Starts round #0 of consensus for <see cref="Height"/>.
         /// </summary>
-        /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
+        /// <param name="lastCommit">A <see cref="Block.LastCommit"/> from previous block.
         /// </param>
         /// <param name="bootstrapping">A <see langword="bool"/> flag indicating whether
         /// this <see cref="Context{T}"/> should run as a bootstrapping <see cref="Context{T}"/>

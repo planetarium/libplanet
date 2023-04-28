@@ -24,10 +24,10 @@ namespace Libplanet.Action
         /// Creates a new <see cref="UnexpectedlyTerminatedActionException"/> object.
         /// </summary>
         /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of the
-        /// <see cref="Block{T}"/> that <paramref name="action"/> belongs to.
+        /// <param name="preEvaluationHash">The <see cref="Block.PreEvaluationHash"/> of the
+        /// <see cref="Block"/> that <paramref name="action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode.</param>
-        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// that <paramref name="action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode.
         /// </param>
@@ -123,13 +123,13 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// The <see cref="Block{T}.PreEvaluationHash"/> of the <see cref="Block{T}"/> that
+        /// The <see cref="Block.PreEvaluationHash"/> of the <see cref="Block"/> that
         /// <see cref="Action"/> belongs to.  This can be <see langword="null"/> on rehearsal mode.
         /// </summary>
         public HashDigest<SHA256>? PreEvaluationHash { get; }
 
         /// <summary>
-        /// The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> that <see cref="Action"/>
+        /// The <see cref="Block.Index"/> of the <see cref="Block"/> that <see cref="Action"/>
         /// belongs to.  This can be <see langword="null"/> on rehearsal mode.
         /// </summary>
         public long? BlockIndex { get; }

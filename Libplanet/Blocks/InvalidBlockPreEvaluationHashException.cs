@@ -8,8 +8,8 @@ using Libplanet.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// The exception that is thrown when the a <see cref="Block{T}"/>'s
-    /// <see cref="Block{T}.PreEvaluationHash"/> is invalid.
+    /// The exception that is thrown when the a <see cref="Block"/>'s
+    /// <see cref="Block.PreEvaluationHash"/> is invalid.
     /// </summary>
     [Serializable]
     public class InvalidBlockPreEvaluationHashException
@@ -21,9 +21,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="actualPreEvaluationHash">The hash recorded as
-        /// <see cref="Block{T}.PreEvaluationHash"/>.</param>
+        /// <see cref="Block.PreEvaluationHash"/>.</param>
         /// <param name="expectedPreEvaluationHash">The hash calculated from the block except
-        /// <see cref="Block{T}.StateRootHash"/>.</param>
+        /// <see cref="Block.StateRootHash"/>.</param>
         public InvalidBlockPreEvaluationHashException(
             string message,
             ImmutableArray<byte> actualPreEvaluationHash,
@@ -45,13 +45,13 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// The hash calculated from the block except <see cref="Block{T}.StateRootHash"/>.
+        /// The hash calculated from the block except <see cref="Block.StateRootHash"/>.
         /// </summary>
         [Pure]
         public ImmutableArray<byte> ActualPreEvaluationHash { get; }
 
         /// <summary>
-        /// The hash recorded as <see cref="Block{T}.PreEvaluationHash"/>.
+        /// The hash recorded as <see cref="Block.PreEvaluationHash"/>.
         /// </summary>
         [Pure]
         public ImmutableArray<byte> ExpectedPreEvaluationHash { get; }

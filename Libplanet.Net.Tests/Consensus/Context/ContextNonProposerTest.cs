@@ -291,7 +291,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var invalidTx = diffPolicyBlockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
-            Block<DumbAction> invalidBlock = Libplanet.Tests.TestUtils.ProposeNext(
+            Block invalidBlock = Libplanet.Tests.TestUtils.ProposeNext(
                     blockChain.Genesis,
                     new[] { invalidTx },
                     miner: TestUtils.PrivateKeys[1].PublicKey,

@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -83,7 +82,7 @@ namespace Libplanet.Store
         /// fork.</param>
         /// <param name="destinationChainId">The chain ID of destination
         /// block indexes.</param>
-        /// <param name="branchpoint">The branchpoint <see cref="Block{T}"/> to fork.</param>
+        /// <param name="branchpoint">The branchpoint <see cref="Block"/> to fork.</param>
         /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
@@ -104,28 +103,23 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> IterateBlockHashes();
 
         /// <summary>
-        /// Gets the corresponding stored <see cref="Block{T}"/> to the given
+        /// Gets the corresponding stored <see cref="Block"/> to the given
         /// <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
+        /// <param name="blockHash"><see cref="Block.Hash"/> to find.</param>
         /// <returns>A found block, or <see langword="null"/> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-        // FIXME: We need to get rid of <T> and let this method be agnostic about Block<T>,
-        // which is too high-level abstraction for IStore.
-        Block<T> GetBlock<T>(BlockHash blockHash)
-            where T : IAction, new();
+        Block GetBlock(BlockHash blockHash);
 
         /// <summary>
-        /// Gets a stored block's <see cref="Block{T}.Index"/> by its <see cref="Block{T}.Hash"/>.
+        /// Gets a stored block's <see cref="Block.Index"/> by its <see cref="Block.Hash"/>.
         /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
+        /// <param name="blockHash"><see cref="Block.Hash"/> to find.</param>
         /// <remarks>
         /// It provides only limited information, but can be called without any type parameter
-        /// unlike <see cref="GetBlock{T}"/>.
+        /// unlike <see cref="GetBlock"/>.
         /// </remarks>
-        /// <returns>A found block's <see cref="Block{T}.Index"/>, or <see langword="null"/> if
+        /// <returns>A found block's <see cref="Block.Index"/>, or <see langword="null"/> if
         /// no block having such <paramref name="blockHash"/> is stored.</returns>
         long? GetBlockIndex(BlockHash blockHash);
 
@@ -133,7 +127,7 @@ namespace Libplanet.Store
         /// Gets the corresponding stored <see cref="BlockDigest"/> to the given
         /// <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
+        /// <param name="blockHash"><see cref="Block.Hash"/> to find.</param>
         /// <returns>A found <see cref="BlockDigest"/>, or <see langword="null"/> if no block
         /// having such <paramref name="blockHash"/> is stored.</returns>
         BlockDigest? GetBlockDigest(BlockHash blockHash);
@@ -142,12 +136,9 @@ namespace Libplanet.Store
         /// Puts the given <paramref name="block"/> in to the store.
         /// If the same block already exists in the store it does nothing.
         /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> to put into the store.
+        /// <param name="block">A <see cref="Block"/> to put into the store.
         /// </param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="block"/>.</typeparam>
-        void PutBlock<T>(Block<T> block)
-            where T : IAction, new();
+        void PutBlock(Block block);
 
         /// <summary>
         /// Removes a block from the store.
@@ -158,13 +149,13 @@ namespace Libplanet.Store
         bool DeleteBlock(BlockHash blockHash);
 
         /// <summary>
-        /// Determines whether the <see cref="IStore"/> contains <see cref="Block{T}"/>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="Block"/>
         /// the specified <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
+        /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block"/> to
         /// check if it is in the <see cref="IStore"/>.</param>
         /// <returns>
-        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="Block{T}"/> with
+        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="Block"/> with
         /// the specified <paramref name="blockHash"/>; otherwise, <see langword="false"/>.
         /// </returns>
         bool ContainsBlock(BlockHash blockHash);
@@ -198,7 +189,7 @@ namespace Libplanet.Store
         /// <summary>
         /// Retrieves the recorded transaction execution summary.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the recorded transaction
+        /// <param name="blockHash">The <see cref="Block.Hash"/> of the recorded transaction
         /// execution to retrieve.</param>
         /// <param name="txid">The <see cref="Transaction.Id"/> of the recorded transaction
         /// execution to retrieve.</param>
@@ -214,7 +205,7 @@ namespace Libplanet.Store
         /// it overwrites the record silently.
         /// </summary>
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/>.</param>
-        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block{T}"/>.
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block"/>.
         /// </param>
         void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
@@ -238,7 +229,7 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/>.</param>
         /// <param name="blockHash">The <see cref="BlockHash"/>
-        /// of the <see cref="Block{T}"/>.</param>.
+        /// of the <see cref="Block"/>.</param>.
         void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
         /// <summary>

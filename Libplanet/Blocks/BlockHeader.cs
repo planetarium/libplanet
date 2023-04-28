@@ -6,7 +6,7 @@ using Libplanet.Crypto;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// Block header containing information about <see cref="Block{T}"/>s except transactions.
+    /// Block header containing information about <see cref="Block"/>s except transactions.
     /// </summary>
     public sealed class BlockHeader : IBlockHeader
     {
