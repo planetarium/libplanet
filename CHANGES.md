@@ -6,6 +6,14 @@ Version 1.0.1
 
 To be released.
 
+### Bug fixes
+
+ -  Fixed a bug where `BlockChain<T>.Append()` hadn't update tx executions
+    even `evaluateActions` set to `true` when `actionEvaluations` are given.
+    [[#3125]]
+
+[#3125]: https://github.com/planetarium/libplanet/pull/3125
+
 
 Version 1.0.0
 -------------
