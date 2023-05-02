@@ -73,6 +73,7 @@ To be released.
         instead.
      -  Changed `PreEvaluationBlock<T>` to `PreEvaluationBlock`.
          -  `PreEvaluationBlock.Evaluate<T>()` now requires type parameter `T`.
+ -  Removed `PreEvaluationBlock.Evaluate<T>()` method.  [[#3127]]
 
 ### Backward-incompatible network protocol changes
 
@@ -119,6 +120,7 @@ To be released.
 [#3116]: https://github.com/planetarium/libplanet/pull/3116
 [#3121]: https://github.com/planetarium/libplanet/pull/3121
 [#3123]: https://github.com/planetarium/libplanet/pull/3123
+[#3127]: https://github.com/planetarium/libplanet/pull/3127
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
