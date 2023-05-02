@@ -80,7 +80,7 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.html">RenderRecord</a>&lt;T&gt;</div>
     <div class="level2"><span class="xref">RenderRecord&lt;T&gt;.BlockBase</span></div>
-      <div class="level3"><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.Block.html">RenderRecord&lt;T&gt;.Block</a></div>
+      <div class="level3"><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.BlockEvent.html">RenderRecord&lt;T&gt;.BlockEvent</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,19 +119,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_BlockBase__ctor_System_Int64_System_String_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord%601.BlockBase.%23ctor(System.Int64%2CSystem.String%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_BlockBase__ctor_System_Int64_System_String_Libplanet_Blocks_Block_Libplanet_Blocks_Block_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord%601.BlockBase.%23ctor(System.Int64%2CSystem.String%2CLibplanet.Blocks.Block%2CLibplanet.Blocks.Block%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L156">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_BlockBase__ctor_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.BlockBase.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_BlockBase__ctor_System_Int64_System_String_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__System_Boolean_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.BlockBase.#ctor(System.Int64,System.String,Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},System.Boolean)">BlockBase(Int64, String, Block&lt;T&gt;, Block&lt;T&gt;, Boolean)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_BlockBase__ctor_System_Int64_System_String_Libplanet_Blocks_Block_Libplanet_Blocks_Block_System_Boolean_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.BlockBase.#ctor(System.Int64,System.String,Libplanet.Blocks.Block,Libplanet.Blocks.Block,System.Boolean)">BlockBase(Int64, String, Block, Block, Boolean)</h4>
   <div class="markdown level1 summary"><p>Represents a block event.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BlockBase(long index, string stackTrace, Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip, bool end = false)</code></pre>
+    <pre><code class="lang-csharp hljs">protected BlockBase(long index, string stackTrace, Block oldTip, Block newTip, bool end = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,12 +154,12 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">oldTip</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">newTip</span></td>
         <td></td>
       </tr>
@@ -248,7 +248,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; NewTip { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Block NewTip { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -260,7 +260,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -279,7 +279,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; OldTip { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Block OldTip { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,7 +291,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
         <td></td>
       </tr>
     </tbody>

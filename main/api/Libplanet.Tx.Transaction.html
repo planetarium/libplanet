@@ -73,7 +73,7 @@
   <h1 id="Libplanet_Tx_Transaction" data-uid="Libplanet.Tx.Transaction" class="text-break">Class Transaction
 </h1>
   <div class="markdown level0 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -725,7 +725,7 @@ the given <code data-dev-comment-type="paramref" class="paramref">privateKey</co
       <tr>
         <td><span class="parametername">T</span></td>
         <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
-to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+to <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>'s type parameter.</p>
 </td>
       </tr>
     </tbody>
@@ -736,18 +736,18 @@ the given <code data-dev-comment-type="paramref" class="paramref">actions</code>
 mode”), but remember that its result
 is approximated in some degree, because the result of
 <code data-dev-comment-type="paramref" class="paramref">actions</code> are not deterministic until
-the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> belongs to a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> belongs to a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
 <p>If an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> depends on previous states or
 some randomness to determine what <a class="xref" href="Libplanet.Address.html">Address</a> to update,
 the automatically filled <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_UpdatedAddresses">UpdatedAddresses</a> became
 mismatched from the <a class="xref" href="Libplanet.Address.html">Address</a>es
 <code data-dev-comment-type="paramref" class="paramref">actions</code> actually update after
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is mined.
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> is mined.
 Although such case would be rare, a programmer could manually give
 the <code data-dev-comment-type="paramref" class="paramref">updatedAddresses</code> parameter
 the <a class="xref" href="Libplanet.Address.html">Address</a>es they predict to be updated.</p>
 <p>If an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> oversimplifies the assumption
-about the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> it belongs to,
+about the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> it belongs to,
 runtime exceptions could be thrown from this factory method.
 The best solution to that is not to oversimplify things,
 there is an option to check <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>&apos;s
@@ -898,7 +898,7 @@ the given <code data-dev-comment-type="paramref" class="paramref">privateKey</co
       <tr>
         <td><span class="parametername">T</span></td>
         <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
-to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+to <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>'s type parameter.</p>
 </td>
       </tr>
     </tbody>
@@ -909,18 +909,18 @@ the given <code data-dev-comment-type="paramref" class="paramref">actions</code>
 mode”), but remember that its result
 is approximated in some degree, because the result of
 <code data-dev-comment-type="paramref" class="paramref">actions</code> are not deterministic until
-the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> belongs to a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> belongs to a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
 <p>If an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> depends on previous states or
 some randomness to determine what <a class="xref" href="Libplanet.Address.html">Address</a> to update,
 the automatically filled <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_UpdatedAddresses">UpdatedAddresses</a> became
 mismatched from the <a class="xref" href="Libplanet.Address.html">Address</a>es
 <code data-dev-comment-type="paramref" class="paramref">actions</code> actually update after
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is mined.
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> is mined.
 Although such case would be rare, a programmer could manually give
 the <code data-dev-comment-type="paramref" class="paramref">updatedAddresses</code> parameter
 the <a class="xref" href="Libplanet.Address.html">Address</a>es they predict to be updated.</p>
 <p>If an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> oversimplifies the assumption
-about the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> it belongs to,
+about the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> it belongs to,
 runtime exceptions could be thrown from this factory method.
 The best solution to that is not to oversimplify things,
 there is an option to check <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>&apos;s
@@ -1034,7 +1034,7 @@ the account who corresponds to <a class="xref" href="Libplanet.Tx.Transaction.ht
   <a id="Libplanet_Tx_Transaction_Equals_" data-uid="Libplanet.Tx.Transaction.Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_Equals_Libplanet_Tx_Transaction_" data-uid="Libplanet.Tx.Transaction.Equals(Libplanet.Tx.Transaction)">Equals(Transaction)</h4>
   <div class="markdown level1 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1089,7 +1089,7 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
   <a id="Libplanet_Tx_Transaction_Equals_" data-uid="Libplanet.Tx.Transaction.Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_Equals_System_Object_" data-uid="Libplanet.Tx.Transaction.Equals(System.Object)">Equals(Object)</h4>
   <div class="markdown level1 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1146,7 +1146,7 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
   <a id="Libplanet_Tx_Transaction_GetHashCode_" data-uid="Libplanet.Tx.Transaction.GetHashCode*"></a>
   <h4 id="Libplanet_Tx_Transaction_GetHashCode" data-uid="Libplanet.Tx.Transaction.GetHashCode">GetHashCode()</h4>
   <div class="markdown level1 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1227,7 +1227,7 @@ representation of this <a class="xref" href="Libplanet.Tx.Transaction.html">Tran
   <a id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)">IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice)</h4>
   <div class="markdown level1 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1283,7 +1283,7 @@ bool IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice other)</code></pre>
   <a id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_Libplanet_Tx_ITxSigningMetadata_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)">IEquatable&lt;ITxSigningMetadata&gt;.Equals(ITxSigningMetadata)</h4>
   <div class="markdown level1 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1339,7 +1339,7 @@ bool IEquatable&lt;ITxSigningMetadata&gt;.Equals(ITxSigningMetadata other)</code
   <a id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_Libplanet_Tx_IUnsignedTx_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals(Libplanet.Tx.IUnsignedTx)">IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx)</h4>
   <div class="markdown level1 summary"><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>

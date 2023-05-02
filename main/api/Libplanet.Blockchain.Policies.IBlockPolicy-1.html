@@ -73,15 +73,15 @@
   <h1 id="Libplanet_Blockchain_Policies_IBlockPolicy_1" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1" class="text-break">Interface IBlockPolicy&lt;T&gt;
 </h1>
   <div class="markdown level0 summary"><p>
-An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are valid.
+An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s are valid.
 </p>
 <p>
 An implementation of this interface should perform <em>all policy dependent checks</em>,
-such as whether a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has the right difficulty,
+such as whether a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> has the right difficulty,
 a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> has the right signer, etc.
 </p>
 <p>
-Note that all index dependent sub-policies are ignored for genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.
+Note that all index dependent sub-policies are ignored for genesis <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s.
 </p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -104,7 +104,7 @@ Note that all index dependent sub-policies are ignored for genesis <a class="xre
       <tr>
         <td><span class="parametername">T</span></td>
         <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
-<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+<a class="xref" href="Libplanet.Blocks.Block.html">Block</a>'s type parameter.</p>
 </td>
       </tr>
     </tbody>
@@ -152,15 +152,15 @@ Note that all index dependent sub-policies are ignored for genesis <a class="xre
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_FeeCalculator_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.FeeCalculator*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_FeeCalculator" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.FeeCalculator">FeeCalculator</h4>
   <div class="markdown level1 summary"><p>
-An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are valid.
+An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s are valid.
 </p>
 <p>
 An implementation of this interface should perform <em>all policy dependent checks</em>,
-such as whether a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has the right difficulty,
+such as whether a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> has the right difficulty,
 a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> has the right signer, etc.
 </p>
 <p>
-Note that all index dependent sub-policies are ignored for genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.
+Note that all index dependent sub-policies are ignored for genesis <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -228,7 +228,7 @@ IImmutableSet&lt;Currency&gt; NativeTokens { get; }</code></pre>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes(System.Int64)">GetMaxTransactionsBytes(Int64)</h4>
-  <div class="markdown level1 summary"><p>Gets the maximum length of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> in bytes.</p>
+  <div class="markdown level1 summary"><p>Gets the maximum length of <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Transactions">Transactions</a> in bytes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -248,7 +248,7 @@ IImmutableSet&lt;Currency&gt; NativeTokens { get; }</code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>
 for which this constraint should apply.</p>
 </td>
       </tr>
@@ -265,7 +265,7 @@ for which this constraint should apply.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
-        <td><p>The maximum length of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> in bytes
+        <td><p>The maximum length of <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Transactions">Transactions</a> in bytes
 to accept.</p>
 </td>
       </tr>
@@ -281,7 +281,7 @@ to accept.</p>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)">GetMaxTransactionsPerBlock(Int64)</h4>
   <div class="markdown level1 summary"><p>Gets the maximum number of <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s allowed for
-a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+a valid <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -302,7 +302,7 @@ int GetMaxTransactionsPerBlock(long index)</code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>
 for which this constraint should apply.</p>
 </td>
       </tr>
@@ -320,7 +320,7 @@ for which this constraint should apply.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The maximum number of <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s allowed for
-a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
+a valid <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> can accept.</p>
 </td>
       </tr>
     </tbody>
@@ -335,7 +335,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> 
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)">GetMaxTransactionsPerSignerPerBlock(Int64)</h4>
   <div class="markdown level1 summary"><p>Gets the maximum number of <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s allowed per signer for
-a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+a valid <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -356,7 +356,7 @@ int GetMaxTransactionsPerSignerPerBlock(long index)</code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>
 for which this constraint should apply.</p>
 </td>
       </tr>
@@ -374,7 +374,7 @@ for which this constraint should apply.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The maximum number of <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s allowed per signer for
-a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
+a valid <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> can accept.</p>
 </td>
       </tr>
     </tbody>
@@ -389,7 +389,7 @@ a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> 
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMinTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMinTransactionsPerBlock*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMinTransactionsPerBlock(System.Int64)">GetMinTransactionsPerBlock(Int64)</h4>
   <div class="markdown level1 summary"><p>Gets the minimum number of <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s allowed for
-a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+a valid <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -410,7 +410,7 @@ int GetMinTransactionsPerBlock(long index)</code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>
 for which this constraint should apply.</p>
 </td>
       </tr>
@@ -428,27 +428,27 @@ for which this constraint should apply.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The minimum number of <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s allowed for
-a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
+a valid <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> can accept.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.ValidateNextBlock(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicy%601.ValidateNextBlock(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Policies/IBlockPolicy.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Checks if a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can be appended to
+  <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block)">ValidateNextBlock(BlockChain&lt;T&gt;, Block)</h4>
+  <div class="markdown level1 summary"><p>Checks if a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> can be appended to
 the given <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">BlockPolicyViolationException ValidateNextBlock(BlockChain&lt;T&gt; blockChain, Block&lt;T&gt; nextBlock)</code></pre>
+    <pre><code class="lang-csharp hljs">BlockPolicyViolationException ValidateNextBlock(BlockChain&lt;T&gt; blockChain, Block nextBlock)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -468,7 +468,7 @@ append <code data-dev-comment-type="paramref" class="paramref">nextBlock</code>.
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">nextBlock</span></td>
         <td><p>The next block to append to
 <code data-dev-comment-type="paramref" class="paramref">blockChain</code>.</p>
@@ -494,9 +494,9 @@ or <span class="xref">null</span> if <code data-dev-comment-type="paramref" clas
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Note that <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction_">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction)</a> will be called separately from
-a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> when appending a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
+a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> when appending a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.
 Hence, to reduce redundancy, an implementation of this interface should not
 call <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction_">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction)</a>.</p>
 </div>
@@ -510,7 +510,7 @@ call <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Lib
   <a id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx*"></a>
   <h4 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction)">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction)</h4>
   <div class="markdown level1 summary"><p>Checks if a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> can be included in a yet to be mined
-<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that can be appended to the given <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+<a class="xref" href="Libplanet.Blocks.Block.html">Block</a> that can be appended to the given <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -563,9 +563,9 @@ or <span class="xref">null</span> if <code data-dev-comment-type="paramref" clas
   <h5 id="Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This is used in two different cases:</p>
 <ul><li>When selecting which <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> to include
-    when mining a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</li><li>When appending a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+    when mining a next <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</li><li>When appending a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>
     with <code data-dev-comment-type="paramref" class="paramref">transaction</code> to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</li></ul>
-This is called separately from <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</a> from
+This is called separately from <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_">ValidateNextBlock(BlockChain&lt;T&gt;, Block)</a> from
 a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.
 </div>
 </article>

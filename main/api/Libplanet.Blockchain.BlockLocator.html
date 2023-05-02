@@ -181,7 +181,7 @@
   <div class="markdown level1 summary"><p>
 Creates a new instance of <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> with an indexer
 function, sampling after <code data-dev-comment-type="paramref" class="paramref">sampleAfter</code> number of
-<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.
+<a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s.
 </p>
 <p>
 This collects all <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>es corresponding to indices inductively
@@ -198,7 +198,7 @@ where <code>s = max(sampleAfter, 0)</code> and the sequence terminates after ind
 reaches zero or the <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> returned by
 <code data-dev-comment-type="paramref" class="paramref">indexToBlockHash</code> for <code>i_k</code> is <span class="xref">null</span>,
 in which case the <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> corresponding to index <code>0</code>
-(presumably a <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of the genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>)
+(presumably a <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of the genesis <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>)
 is added at the end.
 
 </div>
@@ -228,7 +228,7 @@ is added at the end.
         <td><span class="parametername">indexToBlockHash</span></td>
         <td><p>The function that converts an index to a
 <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>.  This can be <span class="xref">null</span> which indicates
-a missing <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> at the index.  Any value from <code>0</code> to
+a missing <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> at the index.  Any value from <code>0</code> to
 <code data-dev-comment-type="paramref" class="paramref">startIndex</code> may be used as an argument to call this function.</p>
 </td>
       </tr>
