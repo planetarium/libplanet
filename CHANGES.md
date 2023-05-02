@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed type parameter `T` from `Transaction.Create<T>()` and
+    `PreEvaluationBlock.Evaluate<T>()`.  [[#3122]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -18,11 +21,16 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Transaction.Create()` method no more fills `Transaction.UpdatedAddresses`
+    automatically.  [[#368], [#3122]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3122]: https://github.com/planetarium/libplanet/pull/3122
 
 
 Version 1.1.0
