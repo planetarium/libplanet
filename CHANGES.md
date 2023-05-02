@@ -64,6 +64,15 @@ To be released.
      -  Removed `TxSystemActionList` and `TxCustomActionsList`
  -  Changed `Transaction<T>` to `Transaction` to be non-generic.  [[#3121]]
      -  `Transaction.Create<T>()` now requires type parameter `T`.
+ -  Changed `Block<T>` to `Block` to be non-generic.  [[#3123]]
+     -  Removed `IBlockContent<T>` interface.  Use `IBlockContent` instead.
+        Also changed `IBlockContent.IImmutableSet<ITransaction>` to
+        `IBlockContent.ReadOnlyList<ITransaction>`.
+     -  Changed `BlockContent<T>` to `BlockContent`.
+     -  Removed `IPreEvaluationBlock<T>` interface.  Use `IPreEvaluationBlock`
+        instead.
+     -  Changed `PreEvaluationBlock<T>` to `PreEvaluationBlock`.
+         -  `PreEvaluationBlock.Evaluate<T>()` now requires type parameter `T`.
 
 ### Backward-incompatible network protocol changes
 
@@ -109,6 +118,7 @@ To be released.
 [#3112]: https://github.com/planetarium/libplanet/pull/3112
 [#3116]: https://github.com/planetarium/libplanet/pull/3116
 [#3121]: https://github.com/planetarium/libplanet/pull/3121
+[#3123]: https://github.com/planetarium/libplanet/pull/3123
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
