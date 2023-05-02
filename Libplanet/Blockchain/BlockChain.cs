@@ -1158,21 +1158,24 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    if (evaluateActions && actionEvaluations is null)
+                    if (evaluateActions)
                     {
-                        _logger.Information(
-                            "Executing actions in block #{BlockIndex} {BlockHash}...",
-                            block.Index,
-                            block.Hash);
-                        ValidateBlockStateRootHash(block, out actionEvaluations);
+                        if (actionEvaluations is null)
+                        {
+                            _logger.Information(
+                                "Executing actions in block #{BlockIndex} {BlockHash}...",
+                                block.Index,
+                                block.Hash);
+                            ValidateBlockStateRootHash(block, out actionEvaluations);
+                            _logger.Information(
+                                "Executed actions in block #{BlockIndex} {BlockHash}",
+                                block.Index,
+                                block.Hash);
+                        }
+
                         IEnumerable<TxExecution> txExecutions =
                             MakeTxExecutions(block, actionEvaluations);
                         UpdateTxExecutions(txExecutions);
-
-                        _logger.Information(
-                            "Executed actions in block #{BlockIndex} {BlockHash}",
-                            block.Index,
-                            block.Hash);
 
                         // FIXME: Using evaluateActions as a proxy flag for preloading status.
                         const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
