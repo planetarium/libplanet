@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Fixtures
                 .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
                 .Select(pair => new { Action = Arithmetic.Add(pair.State), pair.Key })
                 .Select(pair =>
-                    Transaction.Create<Arithmetic>(
+                    Transaction.Create(
                         0,
                         pair.Key,
                         null,
@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Fixtures
             StateStore = new TrieStateStore(KVStore);
             var preEval =
             Genesis = TestUtils.ProposeGenesisBlock<Arithmetic>(
-                TestUtils.ProposeGenesis<Arithmetic>(
+                TestUtils.ProposeGenesis(
                     Miner.PublicKey,
                     Txs,
                     null,
@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Fixtures
             string rawStateKey = KeyConverters.ToStateKey(signerAddress);
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =
-                Transaction.Create<Arithmetic>(nonce, signer, Genesis.Hash, actions);
+                Transaction.Create(nonce, signer, Genesis.Hash, actions);
             BigInteger prevState = Chain.GetState(signerAddress) is Bencodex.Types.Integer i
                 ? i.Value
                 : 0;

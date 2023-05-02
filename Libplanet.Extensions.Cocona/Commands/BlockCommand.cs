@@ -133,7 +133,7 @@ public class BlockCommand
             // FIXME: Remove this pragma after fixing the following issue:
             // https://github.com/dotnet/platform-compat/blob/master/docs/PC002.md
  #pragma warning disable PC002
-            .Append(Transaction.Create<NullAction>(
+            .Append(Transaction.Create(
  #pragma warning restore PC002
                 0,
                 key,

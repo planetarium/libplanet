@@ -43,7 +43,7 @@ public class TransactionQueryTest
     [Fact]
     public async Task BindSignatureWithCustomActions()
     {
-        var tx = Transaction.Create<NullAction>(
+        var tx = Transaction.Create(
             0L,
             new PrivateKey(),
             Source.BlockChain.Genesis.Hash,
@@ -69,7 +69,7 @@ public class TransactionQueryTest
     public async Task BindSignatureWithSystemAction()
     {
         var foo = Currency.Uncapped("FOO", 2, ImmutableHashSet<Address>.Empty);
-        var tx = Transaction.Create<NullAction>(
+        var tx = Transaction.Create(
             0L,
             new PrivateKey(),
             Source.BlockChain.Genesis.Hash,

@@ -85,7 +85,6 @@ Released on May 9, 2023.
      -  Changed the JSON representation of `TxActionList` to be more simple.
      -  Removed `TxSystemActionList` and `TxCustomActionsList`
  -  Changed `Transaction<T>` to `Transaction` to be non-generic.  [[#3121]]
-     -  `Transaction.Create<T>()` now requires type parameter `T`.
  -  Changed `Block<T>` to `Block` to be non-generic.  [[#3123]]
      -  Removed `IBlockContent<T>` interface.  Use `IBlockContent` instead.
         Also changed `IBlockContent.IImmutableSet<ITransaction>` to

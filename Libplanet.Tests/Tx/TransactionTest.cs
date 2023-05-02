@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Tx
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             var foo = Currency.Uncapped("FOO", 2, minters: null);
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 privateKey,
                 null,
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Tx
             );
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 privateKey,
                 null,
@@ -163,7 +163,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
-            Transaction emptyTx = Transaction.Create<DumbAction>(
+            Transaction emptyTx = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -172,7 +172,7 @@ namespace Libplanet.Tests.Tx
             Assert.Empty(emptyTx.UpdatedAddresses);
 
             Address updatedAddr = new PrivateKey().ToAddress();
-            var txWithAddr = Transaction.Create<PolymorphicAction<BaseAction>>(
+            var txWithAddr = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -190,7 +190,7 @@ namespace Libplanet.Tests.Tx
         public void CreateWithDefaultTimestamp()
         {
             DateTimeOffset rightBefore = DateTimeOffset.UtcNow;
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Tx
         {
             // The privateKey parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     null,
                     null,
@@ -298,7 +298,7 @@ namespace Libplanet.Tests.Tx
         public void ActionsAreIsolatedFromOutside()
         {
             var actions = new List<DumbAction>();
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,

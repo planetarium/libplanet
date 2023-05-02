@@ -782,7 +782,7 @@ namespace Libplanet.Blockchain
             lock (_txLock)
             {
                 // FIXME: Exception should be documented when the genesis block does not exist.
-                Transaction tx = Transaction.Create<T>(
+                Transaction tx = Transaction.Create(
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     Genesis.Hash,

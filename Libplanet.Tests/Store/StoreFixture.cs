@@ -103,7 +103,7 @@ namespace Libplanet.Tests.Store
                     ? rh
                     : (HashDigest<SHA256>?)null;
             Proposer = TestUtils.GenesisProposer;
-            var preEval = TestUtils.ProposeGenesis<DumbAction>(
+            var preEval = TestUtils.ProposeGenesis(
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
             GenesisBlock = preEval.Sign(
@@ -214,7 +214,7 @@ namespace Libplanet.Tests.Store
             privateKey = privateKey ?? new PrivateKey();
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
 
-            return Transaction.Create<DumbAction>(
+            return Transaction.Create(
                 nonce,
                 privateKey,
                 GenesisBlock.Hash,

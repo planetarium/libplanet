@@ -90,7 +90,7 @@ public class GeneratedBlockChainFixture
                 transactions: PrivateKeys
                     .OrderBy(pk => pk.ToAddress().ToHex())
                     .Select(
-                        (pk, i) => Transaction.Create<PolymorphicAction<SimpleAction>>(
+                        (pk, i) => Transaction.Create(
                             nonce: i,
                             privateKey: privateKey,
                             genesisHash: null,
@@ -116,7 +116,7 @@ public class GeneratedBlockChainFixture
                 AddBlock(
                     random.Next(),
                     actionsForTransactions.Select(actions =>
-                            Transaction.Create<PolymorphicAction<SimpleAction>>(
+                            Transaction.Create(
                                 Chain.GetNextTxNonce(pk.ToAddress()),
                                 pk,
                                 Chain.Genesis.Hash,
@@ -140,7 +140,7 @@ public class GeneratedBlockChainFixture
                 AddBlock(
                     random.Next(),
                     actionsForTransactions.Select(actions =>
-                            Transaction.Create<PolymorphicAction<SimpleAction>>(
+                            Transaction.Create(
                                 Chain.GetNextTxNonce(pk.ToAddress()),
                                 pk,
                                 Chain.Genesis.Hash,
@@ -182,7 +182,7 @@ public class GeneratedBlockChainFixture
         var bal = (int)(Chain.GetBalance(addr, TestCurrency).MajorUnit & int.MaxValue);
         return (random.Next() % 3) switch
         {
-            0 => Transaction.Create<PolymorphicAction<SimpleAction>>(
+            0 => Transaction.Create(
                 nonce,
                 pk,
                 Chain.Genesis.Hash,
@@ -192,7 +192,7 @@ public class GeneratedBlockChainFixture
                     : new IAction[] { new Mint(addr, TestCurrency * random.Next(1, 100)) },
                 GetRandomAddresses(random.Next())
             ),
-            _ => Transaction.Create<PolymorphicAction<SimpleAction>>(
+            _ => Transaction.Create(
                 nonce,
                 pk,
                 Chain.Genesis.Hash,

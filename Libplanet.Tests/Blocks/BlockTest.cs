@@ -61,13 +61,13 @@ namespace Libplanet.Tests.Blocks
             DateTimeOffset timestamp = DateTimeOffset.UtcNow;
             var signers = Enumerable.Range(0, signerCount).Select(_ => new PrivateKey());
             ImmutableArray<Transaction> txs = signers.Select(signer =>
-                Transaction.Create<RandomAction>(
+                Transaction.Create(
                     0,
                     signer,
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
-            var blockA = ProposeGenesis<RandomAction>(timestamp: timestamp, transactions: txs);
-            var blockB = ProposeGenesis<RandomAction>(timestamp: timestamp, transactions: txs);
+            var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
+            var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }

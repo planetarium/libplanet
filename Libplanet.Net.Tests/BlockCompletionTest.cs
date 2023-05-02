@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dasync.Collections;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -115,8 +114,7 @@ namespace Libplanet.Net.Tests
             // 2, 3, 4,  5,  6: first chunk
             // 7, 8, 9, 10, 11: second chunk
             //   12,    13, 14: last chunk
-            ImmutableArray<Block> fixture =
-                GenerateBlocks<DumbAction>(15).ToImmutableArray();
+            ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
             const int initialHeight = 2;
             const int window = 5;
             var bc = new BlockCompletion<int, DumbAction>(
@@ -229,8 +227,7 @@ namespace Libplanet.Net.Tests
             // 2, 3, 4,  5,  6: first chunk
             // 7, 8, 9, 10, 11: second chunk
             //   12,    13, 14: last chunk
-            ImmutableArray<Block> fixture =
-                GenerateBlocks<DumbAction>(15).ToImmutableArray();
+            ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
 
             // Blocks each block has:
             //   A: 0, 4, 8,  12
@@ -299,7 +296,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            Block genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
+            Block genesis = ProposeGenesisBlock(GenesisProposer);
             Block demand = ProposeNextBlock(genesis, new PrivateKey());
             BlockCommit demandCommit = TestUtils.CreateBlockCommit(demand);
             Block wrong = ProposeNextBlock(genesis, new PrivateKey());
@@ -337,8 +334,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithNonRespondingPeers()
         {
-            ImmutableArray<Block> fixture =
-                GenerateBlocks<DumbAction>(15).ToImmutableArray();
+            ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
             var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
             bc.Demand(fixture.Select(b => b.Hash));
 
@@ -377,8 +373,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithCrashingPeers()
         {
-            ImmutableArray<Block> fixture =
-                GenerateBlocks<DumbAction>(15).ToImmutableArray();
+            ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
             var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
             bc.Demand(fixture.Select(b => b.Hash));
 
@@ -408,12 +403,11 @@ namespace Libplanet.Net.Tests
                 result.Select(triple => (triple.Item1, triple.Item3)).ToHashSet());
         }
 
-        private IEnumerable<Block> GenerateBlocks<T>(int count)
-            where T : IAction, new()
+        private IEnumerable<Block> GenerateBlocks(int count)
         {
             if (count >= 1)
             {
-                Block block = ProposeGenesisBlock<T>(GenesisProposer);
+                Block block = ProposeGenesisBlock(GenesisProposer);
                 yield return block;
 
                 for (int i = 1; i < count; i++)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Bencodex;
@@ -353,11 +354,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             var action = new DelayAction(100);
-            var tx = Transaction.Create<DelayAction>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: TestUtils.PrivateKeys[1],
                 genesisHash: blockChain.Genesis.Hash,
-                actions: new[] { action });
+                actions: new[] { action },
+                updatedAddresses: ImmutableHashSet.Create(DelayAction.TrivialUpdatedAddress)
+            );
             blockChain.StageTransaction(tx);
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 

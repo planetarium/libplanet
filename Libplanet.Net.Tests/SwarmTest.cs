@@ -644,7 +644,7 @@ namespace Libplanet.Net.Tests
                 await CreateSwarm(keyB, genesis: genesis).ConfigureAwait(false);
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 new PrivateKey(),
                 chainB.Genesis.Hash,
@@ -972,7 +972,7 @@ namespace Libplanet.Net.Tests
             foreach (var i in Enumerable.Range(0, 8))
             {
                 miner1.BlockChain.StageTransaction(
-                    Transaction.Create<DumbAction>(
+                    Transaction.Create(
                         0,
                         new PrivateKey(),
                         miner1.BlockChain.Genesis.Hash,

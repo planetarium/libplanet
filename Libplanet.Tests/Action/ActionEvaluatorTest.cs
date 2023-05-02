@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Action
             var txAddress = signer.ToAddress();
             var txs = new[]
             {
-                Transaction.Create<RandomAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy<EvaluateTestAction>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction.Create<EvaluateTestAction>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -177,7 +177,7 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy<ThrowException>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction.Create<ThrowException>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -220,7 +220,7 @@ namespace Libplanet.Tests.Action
                     stateStore: stateStore);
             var genesis = chain.Genesis;
             // Evaluation is run with rehearsal true to get updated addresses on tx creation.
-            var tx = Transaction.Create<ThrowException>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address5,
             };
 
-            Block genesis = ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
+            Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
@@ -311,7 +311,7 @@ namespace Libplanet.Tests.Action
 
             Transaction[] block1Txs =
             {
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey1,
                     genesisHash: genesis.Hash,
@@ -322,13 +322,13 @@ namespace Libplanet.Tests.Action
                     },
                     updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey2,
                     genesisHash: genesis.Hash,
                     actions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey3,
                     genesisHash: genesis.Hash,
@@ -427,21 +427,21 @@ namespace Libplanet.Tests.Action
                 // Note that these timestamps in themselves does not have any meanings but are
                 // only arbitrary.  These purpose to make their evaluation order in a block
                 // equal to the order we (the test) intend:
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     _txFx.PrivateKey1,
                     genesis.Hash,
                     new[] { MakeAction(addresses[0], 'D') },
                     updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
                     updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     _txFx.PrivateKey3,
                     genesis.Hash,
@@ -582,7 +582,7 @@ namespace Libplanet.Tests.Action
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
             var tx =
-                Transaction.Create<DumbAction>(0, _txFx.PrivateKey1, null, actions);
+                Transaction.Create(0, _txFx.PrivateKey1, null, actions);
             var txs = new Transaction[] { tx };
             var block = new BlockContent(
                 new BlockMetadata(
@@ -701,7 +701,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateTxResultThrowingException()
         {
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
-            var tx = Transaction.Create<ThrowException>(
+            var tx = Transaction.Create(
                 0,
                 _txFx.PrivateKey1,
                 null,
@@ -984,7 +984,7 @@ namespace Libplanet.Tests.Action
                     .Select(signerNoncePair =>
                     {
                         Address targetAddress = signerNoncePair.signer.ToAddress();
-                        return Transaction.Create<RandomAction>(
+                        return Transaction.Create(
                             nonce: signerNoncePair.nonce,
                             privateKey: signerNoncePair.signer,
                             genesisHash: null,
@@ -1099,7 +1099,7 @@ namespace Libplanet.Tests.Action
                 SignerKey = new PrivateKey().ToAddress(),
             };
 
-            var tx = Transaction.Create<EvaluateTestAction>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,

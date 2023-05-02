@@ -7,7 +7,6 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
-using Libplanet.Tests.Common.Action;
 using NetMQ;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -27,7 +26,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
+            Block genesis = ProposeGenesisBlock(GenesisProposer);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
@@ -111,7 +110,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
-            Block genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
+            Block genesis = ProposeGenesisBlock(GenesisProposer);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             Assert.Equal(
                 new MessageId(ByteUtil.ParseHex(

@@ -87,7 +87,7 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block block1 = ProposeNextBlock(
-                ProposeGenesisBlock<DumbAction>(GenesisProposer),
+                ProposeGenesisBlock(GenesisProposer),
                 GenesisProposer,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
@@ -775,7 +775,7 @@ namespace Libplanet.Tests.Store
                     ArbitraryBytes = arbitraryBytes.ToImmutableArray(),
                     Md5Digest = digest.ToImmutableArray(),
                 };
-                return Transaction.Create<AtomicityTestAction>(
+                return Transaction.Create(
                     txNonce,
                     key,
                     null,
@@ -1046,7 +1046,7 @@ namespace Libplanet.Tests.Store
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var policy = new NullBlockPolicy<NullAction>();
-                var preEval = ProposeGenesis<NullAction>(proposer: GenesisProposer.PublicKey);
+                var preEval = ProposeGenesis(proposer: GenesisProposer.PublicKey);
                 var genesis = preEval.Sign(
                     GenesisProposer,
                     BlockChain<NullAction>.DetermineGenesisStateRootHash(

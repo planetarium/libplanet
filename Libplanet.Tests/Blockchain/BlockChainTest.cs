@@ -197,7 +197,7 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            var tx1 = Transaction.Create<PolymorphicAction<BaseAction>>(
+            var tx1 = Transaction.Create(
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
@@ -225,7 +225,7 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            var tx2 = Transaction.Create<PolymorphicAction<BaseAction>>(
+            var tx2 = Transaction.Create(
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
@@ -241,7 +241,7 @@ namespace Libplanet.Tests.Blockchain
             result = BattleResult.FromBencodex((Bencodex.Types.Dictionary)state);
             Assert.Contains("bow", result.UsedWeapons);
 
-            var tx3 = Transaction.Create<PolymorphicAction<BaseAction>>(
+            var tx3 = Transaction.Create(
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
@@ -559,11 +559,11 @@ namespace Libplanet.Tests.Blockchain
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
                 var genesis = ProposeGenesisBlock<DumbAction>(
-                    ProposeGenesis<DumbAction>(
+                    ProposeGenesis(
                         GenesisProposer.PublicKey,
                         transactions: new[]
                         {
-                            Transaction.Create<DumbAction>(
+                            Transaction.Create(
                                 nonce: 0,
                                 privateKey: new PrivateKey(),
                                 genesisHash: null,
@@ -971,7 +971,7 @@ namespace Libplanet.Tests.Blockchain
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
                 Block genesis2 = ProposeGenesisBlock<DumbAction>(
-                    ProposeGenesis<DumbAction>(
+                    ProposeGenesis(
                         timestamp: DateTimeOffset.UtcNow,
                         proposer: GenesisProposer.PublicKey),
                     privateKey: GenesisProposer,
@@ -1025,11 +1025,11 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             Block genesisWithTx = ProposeGenesisBlock<DumbAction>(
-                ProposeGenesis<DumbAction>(
+                ProposeGenesis(
                     GenesisProposer.PublicKey,
                     new[]
                     {
-                        Transaction.Create<DumbAction>(
+                        Transaction.Create(
                             0,
                             new PrivateKey(),
                             null,
@@ -1078,7 +1078,7 @@ namespace Libplanet.Tests.Blockchain
                 };
                 Transaction[] txs =
                 {
-                    Transaction.Create<DumbAction>(0, privateKey, chain.Genesis.Hash, actions),
+                    Transaction.Create(0, privateKey, chain.Genesis.Hash, actions),
                 };
                 b = chain.ProposeBlock(
                     _fx.Proposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
@@ -1598,7 +1598,7 @@ namespace Libplanet.Tests.Blockchain
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
             Block genesisBlock = ProposeGenesisBlock<DumbAction>(
-                ProposeGenesis<DumbAction>(GenesisProposer.PublicKey),
+                ProposeGenesis(GenesisProposer.PublicKey),
                 GenesisProposer,
                 blockPolicy.BlockAction,
                 blockPolicy.NativeTokens.Contains);
@@ -1673,7 +1673,7 @@ namespace Libplanet.Tests.Blockchain
                 for (int j = 0; j < accountsCount; ++j)
                 {
                     int index = i * accountsCount + j;
-                    Transaction tx = Transaction.Create<DumbAction>(
+                    Transaction tx = Transaction.Create(
                         store.GetTxNonce(chain.Id, signer),
                         privateKey,
                         chain.Genesis.Hash,
@@ -1850,7 +1850,7 @@ namespace Libplanet.Tests.Blockchain
                     .ToArray();
 
             var systemTxs = systemActions
-                .Select((systemAction, i) => Transaction.Create<DumbAction>(
+                .Select((systemAction, i) => Transaction.Create(
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
@@ -1858,7 +1858,7 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             var customTxs = new[]
             {
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: systemTxs.Length,
                     privateKey: privateKey,
                     genesisHash: null,
@@ -1966,13 +1966,13 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var genesisTx = Transaction.Create<DumbAction>(
+            var genesisTx = Transaction.Create(
                 0,
                 new PrivateKey(),
                 null,
                 List.Empty);
             var genesisWithTx = ProposeGenesisBlock<DumbAction>(
-                ProposeGenesis<DumbAction>(GenesisProposer.PublicKey, new[] { genesisTx }),
+                ProposeGenesis(GenesisProposer.PublicKey, new[] { genesisTx }),
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains);
@@ -1984,7 +1984,7 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisWithTx);
 
-            var blockTx = Transaction.Create<DumbAction>(
+            var blockTx = Transaction.Create(
                 0,
                 new PrivateKey(),
                 null,
@@ -2023,7 +2023,7 @@ namespace Libplanet.Tests.Blockchain
             };
             var privateKey = new PrivateKey();
             var txs = systemActions
-                .Select((systemAction, i) => Transaction.Create<SetValidator>(
+                .Select((systemAction, i) => Transaction.Create(
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,

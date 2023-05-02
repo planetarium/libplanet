@@ -404,21 +404,20 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
-        public static PreEvaluationBlock ProposeGenesis<T>(
+        public static PreEvaluationBlock ProposeGenesis(
             PublicKey proposer = null,
             IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
-            where T : IAction, new()
         {
             var txs = transactions?.ToList() ?? new List<Transaction>();
             long nonce = 0;
             validatorSet = validatorSet ?? ValidatorSet;
             txs.AddRange(
                 validatorSet.Validators.Select(
-                    validator => Transaction.Create<T>(
+                    validator => Transaction.Create(
                         nonce++,
                         GenesisProposer,
                         null,
@@ -446,16 +445,15 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return content.Propose();
         }
 
-        public static Block ProposeGenesisBlock<T>(
+        public static Block ProposeGenesisBlock(
             PrivateKey miner,
             IReadOnlyList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default
         )
-            where T : IAction, new()
         {
-            PreEvaluationBlock preEval = ProposeGenesis<T>(
+            PreEvaluationBlock preEval = ProposeGenesis(
                 miner?.PublicKey,
                 transactions,
                 null,
@@ -603,7 +601,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             var txs = new[]
             {
-                Transaction.Create<T>(
+                Transaction.Create(
                     0,
                     privateKey,
                     null,
@@ -613,7 +611,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             if (genesisBlock is null)
             {
-                var preEval = ProposeGenesis<T>(
+                var preEval = ProposeGenesis(
                     GenesisProposer.PublicKey,
                     txs,
                     validatorSet,

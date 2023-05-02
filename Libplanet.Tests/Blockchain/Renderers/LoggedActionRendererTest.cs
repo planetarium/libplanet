@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static Exception _exception = new Exception();
 
         private static DumbBlock _genesis =
-            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
+            TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
 
         private static DumbBlock _blockA =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);

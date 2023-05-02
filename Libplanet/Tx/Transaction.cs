@@ -231,22 +231,19 @@ namespace Libplanet.Tx
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block"/>'s type parameter.</typeparam>
         /// <returns>A created new <see cref="Transaction"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
-        public static Transaction Create<T>(
+        public static Transaction Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IAction> actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null)
-            where T : IAction, new() =>
-            Create<T>(
+            DateTimeOffset? timestamp = null) =>
+            Create(
                 nonce,
                 privateKey,
                 genesisHash,
@@ -303,22 +300,18 @@ namespace Libplanet.Tx
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block"/>'s type parameter.</typeparam>
         /// <returns>A created new <see cref="Transaction"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
-#pragma warning disable S2326
-        public static Transaction Create<T>(
+        public static Transaction Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IValue> actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null)
-            where T : IAction, new() =>
+            DateTimeOffset? timestamp = null) =>
             Create(
                 nonce,
                 privateKey,
@@ -327,7 +320,7 @@ namespace Libplanet.Tx
                 updatedAddresses,
                 timestamp
             );
-#pragma warning restore S2326
+
         /// <summary>
         /// Encodes this <see cref="Transaction"/> into a <see cref="byte"/> array.
         /// </summary>
