@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Blocks
                     transactions: txs);
                 PreEvaluationBlock preEval1 = content1.Propose();
 
-                Block block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
+                Block block1 = blockChain.EvaluateAndSign(preEval1, _contents.Block1Key);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
                 _output.WriteLine("#1: {0}", block1);
 

@@ -906,11 +906,8 @@ namespace Libplanet.Tests.Action
                 privateKey: ChainPrivateKey);
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
-            var block = ProposeNext(
-                genesis,
-                txs,
-                miner: GenesisProposer.PublicKey
-            ).Evaluate(GenesisProposer, chain);
+            var block = chain.ProposeBlock(
+                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
 
             AccountStateGetter accountStateGetter =
                 ActionEvaluator.NullAccountStateGetter;

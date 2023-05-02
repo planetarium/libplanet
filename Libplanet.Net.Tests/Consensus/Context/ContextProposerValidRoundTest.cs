@@ -5,7 +5,6 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -160,17 +159,18 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             var key = new PrivateKey();
-            var differentBlock = new BlockContent(
-                new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                    index: blockChain.Tip.Index + 1,
-                    timestamp: blockChain.Tip.Timestamp.Add(TimeSpan.FromSeconds(1)),
-                    miner: key.PublicKey.ToAddress(),
-                    publicKey: key.PublicKey,
-                    previousHash: blockChain.Tip.Hash,
-                    txHash: null,
-                    lastCommit: null))
-                .Propose().Evaluate<DumbAction>(key, blockChain);
+            var differentBlock = blockChain.EvaluateAndSign(
+                new BlockContent(
+                    new BlockMetadata(
+                        protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                        index: blockChain.Tip.Index + 1,
+                        timestamp: blockChain.Tip.Timestamp.Add(TimeSpan.FromSeconds(1)),
+                        miner: key.PublicKey.ToAddress(),
+                        publicKey: key.PublicKey,
+                        previousHash: blockChain.Tip.Hash,
+                        txHash: null,
+                        lastCommit: null)).Propose(),
+                key);
 
             context.Start();
             await proposalSent.WaitAsync();

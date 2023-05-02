@@ -257,7 +257,7 @@ namespace Libplanet.Tests.Action
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
             Block block = ProtocolVersion < 2
                 ? new Block(preEvalBlock, (stateRootHash, null, hash))
-                : preEvalBlock.Evaluate(privateKey, chain);
+                : chain.EvaluateAndSign(preEvalBlock, privateKey);
             chain.Append(
                 block,
                 TestUtils.CreateBlockCommit(block)

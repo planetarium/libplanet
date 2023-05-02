@@ -228,7 +228,8 @@ public class GeneratedBlockChainFixture
     {
         var random = new System.Random(seed);
         var pk = PrivateKeys[random.Next(PrivateKeys.Length)];
-        var block = new BlockContent(
+        var block = Chain.EvaluateAndSign(
+            new BlockContent(
                 new BlockMetadata(
                     Chain.Tip.Index + 1,
                     DateTimeOffset.UtcNow,
@@ -236,9 +237,8 @@ public class GeneratedBlockChainFixture
                     Chain.Tip.Hash,
                     BlockContent.DeriveTxHash(transactions),
                     Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value)),
-                transactions)
-            .Propose()
-            .Evaluate<PolymorphicAction<SimpleAction>>(pk, Chain);
+                transactions).Propose(),
+            pk);
         Chain.Append(
             block,
             new BlockCommit(
