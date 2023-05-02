@@ -594,5 +594,48 @@ namespace Libplanet.Tests.Blockchain
                 }.Select(tx => tx.Id).ToImmutableHashSet(),
                 _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Select(tx => tx.Id));
         }
+
+        [SkippableFact]
+        public void CachedActionEvaluationWrittenOnAppend()
+        {
+            var signer = new PrivateKey();
+            var miner = new PrivateKey();
+            var dummy = new PrivateKey();
+            BlockHash genesis = _blockChain.Genesis.Hash;
+            Transaction<DumbAction>
+                txA0 = Transaction<DumbAction>.Create(
+                    0,
+                    signer,
+                    genesis,
+                    new DumbAction[]
+                    {
+                        new DumbAction(
+                            dummy.ToAddress(), "foo", dummy.ToAddress(), dummy.ToAddress(), 10),
+                    }),
+                txA1 = Transaction<DumbAction>.Create(
+                    1,
+                    signer,
+                    genesis,
+                    new DumbAction[]
+                    {
+                        new DumbAction(
+                            dummy.ToAddress(), "bar", dummy.ToAddress(), dummy.ToAddress(), 20),
+                    });
+            _blockChain.StageTransaction(txA0);
+            _blockChain.StageTransaction(txA1);
+            Block<DumbAction> block = _blockChain.ProposeBlock(miner);
+            IReadOnlyList<ActionEvaluation> actionEvaluations = _blockChain.EvaluateBlock(block);
+            Assert.Equal(0L, _blockChain.Tip.Index);
+            _blockChain.Append(
+                block,
+                TestUtils.CreateBlockCommit(block),
+                evaluateActions: true,
+                renderBlocks: true,
+                renderActions: true,
+                actionEvaluations: actionEvaluations);
+            Assert.Equal(1L, _blockChain.Tip.Index);
+            Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA0.Id));
+            Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA1.Id));
+        }
     }
 }
