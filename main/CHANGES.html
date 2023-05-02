@@ -130,6 +130,11 @@ Use <code>ITxInvoice.Actions</code> instead.  [<a href="https://github.com/plane
 <li>Removed <code>TxSystemActionList</code> and <code>TxCustomActionsList</code></li>
 </ul>
 </li>
+<li>Changed <code>Transaction&lt;T&gt;</code> to <code>Transaction</code> to be non-generic.  [<a href="https://github.com/planetarium/libplanet/pull/3121">#3121</a>]
+<ul>
+<li><code>Transaction.Create&lt;T&gt;()</code> now requires type parameter <code>T</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
