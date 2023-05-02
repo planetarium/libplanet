@@ -8913,22 +8913,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.PreEvaluationBlock.PreEvaluationBlock
   nameWithType: PreEvaluationBlock.PreEvaluationBlock
-- uid: Libplanet.Blocks.PreEvaluationBlock.Evaluate*
-  name: Evaluate
-  href: api/Libplanet.Blocks.PreEvaluationBlock.html#Libplanet_Blocks_PreEvaluationBlock_Evaluate_
-  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock.Evaluate
-  isSpec: "True"
-  fullName: Libplanet.Blocks.PreEvaluationBlock.Evaluate
-  nameWithType: PreEvaluationBlock.Evaluate
-- uid: Libplanet.Blocks.PreEvaluationBlock.Evaluate``1(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{``0})
-  name: Evaluate<T>(PrivateKey, BlockChain<T>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock.html#Libplanet_Blocks_PreEvaluationBlock_Evaluate__1_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain___0__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock.Evaluate``1(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{``0})
-  name.vb: Evaluate(Of T)(PrivateKey, BlockChain(Of T))
-  fullName: Libplanet.Blocks.PreEvaluationBlock.Evaluate<T>(Libplanet.Crypto.PrivateKey, Libplanet.Blockchain.BlockChain<T>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock.Evaluate(Of T)(Libplanet.Crypto.PrivateKey, Libplanet.Blockchain.BlockChain(Of T))
-  nameWithType: PreEvaluationBlock.Evaluate<T>(PrivateKey, BlockChain<T>)
-  nameWithType.vb: PreEvaluationBlock.Evaluate(Of T)(PrivateKey, BlockChain(Of T))
 - uid: Libplanet.Blocks.PreEvaluationBlock.Header
   name: Header
   href: api/Libplanet.Blocks.PreEvaluationBlock.html#Libplanet_Blocks_PreEvaluationBlock_Header
