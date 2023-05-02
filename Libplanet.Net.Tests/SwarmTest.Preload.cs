@@ -467,14 +467,10 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow
                 );
 
-                Block block = minerChain.EvaluateAndSign(
-                    ProposeNext(
-                        minerChain.Tip,
-                        new[] { tx },
-                        miner: ChainPrivateKey.PublicKey,
-                        blockInterval: TimeSpan.FromSeconds(1),
-                        lastCommit: CreateBlockCommit(minerChain.Tip)),
-                    ChainPrivateKey);
+                Block block = minerChain.ProposeBlock(
+                    ChainPrivateKey,
+                    new[] { tx }.ToImmutableList(),
+                    CreateBlockCommit(minerChain.Tip));
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
 
                 await receiverSwarm.PreloadAsync();
@@ -955,12 +951,8 @@ namespace Libplanet.Net.Tests
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block2, CreateBlockCommit(block2));
 
-            Block block = minerChain2.EvaluateAndSign(
-                ProposeNext(
-                    minerChain2.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    lastCommit: CreateBlockCommit(minerChain2.Tip)),
-                ChainPrivateKey);
+            Block block = minerChain2.ProposeBlock(
+                ChainPrivateKey, CreateBlockCommit(minerChain2.Tip));
             minerChain2.Append(block, CreateBlockCommit(block));
 
             Assert.True(minerChain1.Count > minerChain2.Count);

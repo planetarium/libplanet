@@ -187,7 +187,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
         /// does not match to the block miner's <see cref="PublicKey"/>.</exception>
         // FIXME: Remove this method.
-        public Block EvaluateAndSign(
+        internal Block EvaluateAndSign(
             PreEvaluationBlock preEvaluationBlock, PrivateKey privateKey)
         =>
             preEvaluationBlock.ProtocolVersion >= 2

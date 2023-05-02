@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -754,20 +755,15 @@ namespace Libplanet.Net.Tests
                     privateKey: privateKey),
             };
 
-            Block block1 = blockChain.EvaluateAndSign(
-                ProposeNext(
-                    blockChain.Genesis,
-                    new[] { transactions[0] },
-                    miner: GenesisProposer.PublicKey),
-                GenesisProposer);
+            Block block1 = blockChain.ProposeBlock(
+                GenesisProposer,
+                new[] { transactions[0] }.ToImmutableList(),
+                TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
-            Block block2 = blockChain.EvaluateAndSign(
-                ProposeNext(
-                    block1,
-                    new[] { transactions[1] },
-                    miner: GenesisProposer.PublicKey,
-                    lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)),
-                GenesisProposer);
+            Block block2 = blockChain.ProposeBlock(
+                GenesisProposer,
+                new[] { transactions[1] }.ToImmutableList(),
+                CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
             try
