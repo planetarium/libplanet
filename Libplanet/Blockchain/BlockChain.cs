@@ -1199,8 +1199,6 @@ namespace Libplanet.Blockchain
                         Store.IncreaseTxNonce(Id, pair.Key, pair.Value);
                     }
 
-                    Store.AppendIndex(Id, block.Hash);
-
                     foreach (var tx in block.Transactions)
                     {
                         Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
@@ -1210,6 +1208,8 @@ namespace Libplanet.Blockchain
                     {
                         Store.PutChainBlockCommit(Id, blockCommit);
                     }
+
+                    Store.AppendIndex(Id, block.Hash);
                 }
                 finally
                 {
