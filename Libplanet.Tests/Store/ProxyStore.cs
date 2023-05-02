@@ -78,16 +78,12 @@ namespace Libplanet.Tests.Store
         ) =>
             Store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
-        public virtual Transaction<T> GetTransaction<T>(TxId txid)
-            where T : IAction, new()
-        =>
-            Store.GetTransaction<T>(txid);
+        /// <inheritdoc cref="IStore.GetTransaction(TxId)"/>
+        public virtual Transaction GetTransaction(TxId txid) =>
+            Store.GetTransaction(txid);
 
-        /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
-        public virtual void PutTransaction<T>(Transaction<T> tx)
-            where T : IAction, new()
-        =>
+        /// <inheritdoc cref="IStore.GetTransaction(TxId)"/>
+        public virtual void PutTransaction(Transaction tx) =>
             Store.PutTransaction(tx);
 
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>

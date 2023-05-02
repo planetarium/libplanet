@@ -104,16 +104,16 @@ public interface IBlockChainIndex
         int? fromHeight = null, int? maxCount = null, bool desc = false, Address? producer = null);
 
     /// <summary>
-    /// Get the <see cref="TxId"/> of the indexed <see cref="Transaction{T}"/>s starting at
+    /// Get the <see cref="TxId"/> of the indexed <see cref="Transaction"/>s starting at
     /// <paramref name="fromNonce"/> that was signed by the <paramref name="signer"/>, at most
     /// <paramref name="maxCount"/>.
     /// </summary>
-    /// <param name="signer">The signer of the <see cref="Transaction{T}"/>.</param>
+    /// <param name="signer">The signer of the <see cref="Transaction"/>.</param>
     /// <param name="fromNonce">The tx nonce to start from (inclusive).</param>
     /// <param name="maxCount">The upper limit of <see cref="TxId"/>s to return.</param>
     /// <param name="desc">Whether to look up the <see cref="TxId"/>s in the descending order.
     /// </param>
-    /// <returns>The <see cref="TxId"/> of the indexed <see cref="Transaction{T}"/>s signed by
+    /// <returns>The <see cref="TxId"/> of the indexed <see cref="Transaction"/>s signed by
     /// the <paramref name="signer"/> starting at <paramref name="fromNonce"/> and at most
     /// <paramref name="maxCount"/>.</returns>
     IEnumerable<TxId> GetSignedTxIdsByAddress(
@@ -125,12 +125,12 @@ public interface IBlockChainIndex
 
     /// <summary>
     /// Get the <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/> that contains the
-    /// <see cref="Transaction{T}"/> with the <paramref name="txId"/>.
+    /// <see cref="Transaction"/> with the <paramref name="txId"/>.
     /// </summary>
-    /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/> to look up the
+    /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/> to look up the
     /// containing <see cref="Block{T}"/>.</param>
     /// <returns>The <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/> that contains the
-    /// <see cref="Transaction{T}"/> with the <paramref name="txId"/>.</returns>
+    /// <see cref="Transaction"/> with the <paramref name="txId"/>.</returns>
     /// <exception cref="IndexOutOfRangeException">Thrown if the <paramref name="txId"/> does not
     /// exist in the index.</exception>
     BlockHash GetContainedBlockHashByTxId(TxId txId);
@@ -140,25 +140,25 @@ public interface IBlockChainIndex
 
     /// <summary>
     /// Attempt to get the <see cref="BlockHash"/> of the indexed block that contains the
-    /// <see cref="Transaction{T}"/> with the <paramref name="txId"/>, and return whether if the
+    /// <see cref="Transaction"/> with the <paramref name="txId"/>, and return whether if the
     /// lookup was successful.
     /// </summary>
-    /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/> to find the
+    /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/> to find the
     /// containing <see cref="Block{T}"/>.</param>
     /// <param name="containedBlock">The <see cref="BlockHash"/> of the indexed block that contains
-    /// the <see cref="Transaction{T}"/> with the <paramref name="txId"/>, if it exists.</param>
+    /// the <see cref="Transaction"/> with the <paramref name="txId"/>, if it exists.</param>
     /// <returns>Whether the retrieval was successful.</returns>
     bool TryGetContainedBlockHashById(TxId txId, out BlockHash containedBlock);
 
     /// <summary>
     /// Attempt to get the <see cref="BlockHash"/> of the indexed block that contains the
-    /// <see cref="Transaction{T}"/> with the <paramref name="txId"/>, and return the retrieved
+    /// <see cref="Transaction"/> with the <paramref name="txId"/>, and return the retrieved
     /// <see cref="BlockHash"/> if it exists, or <c>null</c> if it does not.
     /// </summary>
-    /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/> to find the
+    /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/> to find the
     /// containing <see cref="Block{T}"/>.</param>
     /// <returns>The <see cref="BlockHash"/> of the block containing the
-    /// <see cref="Transaction{T}"/> with the <paramref name="txId"/> if it exists, or <c>null</c>
+    /// <see cref="Transaction"/> with the <paramref name="txId"/> if it exists, or <c>null</c>
     /// if it does not.</returns>
     Task<BlockHash?> TryGetContainedBlockHashByIdAsync(TxId txId);
 
@@ -167,7 +167,7 @@ public interface IBlockChainIndex
     /// </summary>
     /// <param name="address">The address to retrieve the tx nonce.</param>
     /// <returns>The last tx nonce of the <paramref name="address"/> that was indexed.</returns>
-    /// <remarks>This method does not return the tx nonces of <see cref="Transaction{T}"/>s that
+    /// <remarks>This method does not return the tx nonces of <see cref="Transaction"/>s that
     /// are currently staged.</remarks>
     long? GetLastNonceByAddress(Address address);
 

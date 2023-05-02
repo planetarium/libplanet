@@ -101,7 +101,7 @@ namespace Libplanet.Explorer.Queries
             }
         }
 
-        internal static IEnumerable<Transaction<T>> ListTransactions(
+        internal static IEnumerable<Transaction> ListTransactions(
             Address? signer, Address? involved, bool desc, long offset, int? limit)
         {
             Block<T> tip = Chain.Tip;
@@ -169,7 +169,7 @@ namespace Libplanet.Explorer.Queries
             }
         }
 
-        internal static IEnumerable<Transaction<T>> ListStagedTransactions(
+        internal static IEnumerable<Transaction> ListStagedTransactions(
             Address? signer, Address? involved, bool desc, int offset, int? limit)
         {
             if (offset < 0)
@@ -195,7 +195,7 @@ namespace Libplanet.Explorer.Queries
 
         internal static Block<T> GetBlockByIndex(long index) => Chain[index];
 
-        internal static Transaction<T> GetTransaction(TxId id) => Chain.GetTransaction(id);
+        internal static Transaction GetTransaction(TxId id) => Chain.GetTransaction(id);
 
         private static Block<T> GetNextBlock(Block<T> block, bool desc)
         {
@@ -212,7 +212,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         private static bool IsValidTransaction(
-            Transaction<T> tx,
+            Transaction tx,
             Address? signer,
             Address? involved)
         {

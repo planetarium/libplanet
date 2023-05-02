@@ -14,7 +14,7 @@ namespace Libplanet.Tx
     /// <seealso cref="ITxInvoice"/>
     /// <seealso cref="TxSigningMetadata"/>
     /// <seealso cref="UnsignedTx"/>
-    /// <seealso cref="Transaction{T}"/>
+    /// <seealso cref="Transaction"/>
     public sealed class TxInvoice : ITxInvoice, IEquatable<TxInvoice>
     {
         /// <summary>

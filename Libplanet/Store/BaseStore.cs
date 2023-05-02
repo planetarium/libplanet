@@ -46,11 +46,9 @@ namespace Libplanet.Store
             BlockHash branchpoint
         );
 
-        public abstract Transaction<T> GetTransaction<T>(TxId txid)
-            where T : IAction, new();
+        public abstract Transaction GetTransaction(TxId txid);
 
-        public abstract void PutTransaction<T>(Transaction<T> tx)
-            where T : IAction, new();
+        public abstract void PutTransaction(Transaction tx);
 
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
@@ -62,10 +60,10 @@ namespace Libplanet.Store
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
                 BlockHeader header = blockDigest.GetHeader();
-                (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
+                (TxId TxId, Transaction Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new TxId(bytes.ToArray()))
                     .OrderBy(txid => txid)
-                    .Select(txid => (txid, GetTransaction<T>(txid)))
+                    .Select(txid => (txid, GetTransaction(txid)))
                     .ToArray();
 
                 TxId[] missingTxIds =

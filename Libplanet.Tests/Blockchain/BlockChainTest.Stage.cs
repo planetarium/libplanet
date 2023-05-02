@@ -14,7 +14,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void StageTransaction()
         {
-            var txs = new HashSet<Transaction<DumbAction>>()
+            var txs = new HashSet<Transaction>()
             {
                 _fx.Transaction1,
                 _fx.Transaction2,
@@ -28,17 +28,17 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void StageTransactionWithDifferentGenesis()
         {
-            Transaction<DumbAction> tx1 = Transaction<DumbAction>.Create(
+            Transaction tx1 = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 _blockChain.Genesis.Hash,
                 new List<DumbAction>());
-            Transaction<DumbAction> tx2 = Transaction<DumbAction>.Create(
+            Transaction tx2 = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 null,
                 new List<DumbAction>());
-            Transaction<DumbAction> tx3 = Transaction<DumbAction>.Create(
+            Transaction tx3 = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 default(BlockHash),
@@ -57,25 +57,25 @@ namespace Libplanet.Tests.Blockchain
         {
             var key = new PrivateKey();
 
-            Transaction<DumbAction> tx_0_0 = _fx.MakeTransaction(
+            Transaction tx_0_0 = _fx.MakeTransaction(
                 new DumbAction[0],
                 ImmutableHashSet<Address>.Empty,
                 nonce: 0,
                 privateKey: key
             );
-            Transaction<DumbAction> tx_0_1 = _fx.MakeTransaction(
+            Transaction tx_0_1 = _fx.MakeTransaction(
                 new DumbAction[0],
                 ImmutableHashSet<Address>.Empty,
                 nonce: 0,
                 privateKey: key
             );
-            Transaction<DumbAction> tx_1_0 = _fx.MakeTransaction(
+            Transaction tx_1_0 = _fx.MakeTransaction(
                 new DumbAction[0],
                 ImmutableHashSet<Address>.Empty,
                 nonce: 1,
                 privateKey: key
             );
-            Transaction<DumbAction> tx_1_1 = _fx.MakeTransaction(
+            Transaction tx_1_1 = _fx.MakeTransaction(
                 new DumbAction[0],
                 ImmutableHashSet<Address>.Empty,
                 nonce: 1,
@@ -116,7 +116,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void UnstageTransaction()
         {
-            Transaction<DumbAction>[] txs = { _fx.Transaction1, _fx.Transaction2 };
+            Transaction[] txs = { _fx.Transaction1, _fx.Transaction2 };
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
             StageTransactions(txs);
@@ -132,9 +132,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.GetStagedTransactionIds());
         }
 
-        private void StageTransactions(IEnumerable<Transaction<DumbAction>> txs)
+        private void StageTransactions(IEnumerable<Transaction> txs)
         {
-            foreach (Transaction<DumbAction> tx in txs)
+            foreach (Transaction tx in txs)
             {
                 _blockChain.StageTransaction(tx);
             }

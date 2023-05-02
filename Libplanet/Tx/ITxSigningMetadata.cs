@@ -13,7 +13,7 @@ namespace Libplanet.Tx
     public interface ITxSigningMetadata : IEquatable<ITxSigningMetadata>
     {
         /// <summary>
-        /// The number of previous <see cref="Transaction{T}"/>s committed by
+        /// The number of previous <see cref="Transaction"/>s committed by
         /// the <see cref="Signer"/> of this transaction.  This nonce is used for preventing replay
         /// attack.
         /// </summary>

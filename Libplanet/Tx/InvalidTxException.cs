@@ -14,8 +14,8 @@ namespace Libplanet.Tx
         /// </summary>
         /// <param name="message">A descriptive error message for programmers.
         /// </param>
-        /// <param name="txid">The invalid <see cref="Transaction{T}"/>'s
-        /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
+        /// <param name="txid">The invalid <see cref="Transaction"/>'s
+        /// <see cref="Transaction.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
         protected InvalidTxException(string message, TxId txid)
             : base($"{txid.ToHex()}: {message}")
@@ -26,8 +26,8 @@ namespace Libplanet.Tx
         /// <inheritdoc cref="InvalidTxException(string, TxId)"/>
         /// <param name="message">A descriptive error message for programmers.
         /// </param>
-        /// <param name="txid">The invalid <see cref="Transaction{T}"/>'s
-        /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
+        /// <param name="txid">The invalid <see cref="Transaction"/>'s
+        /// <see cref="Transaction.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="innerException">The <see cref="Exception"/> for
         /// <see cref="Exception.InnerException"/>.</param>
@@ -41,7 +41,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// The <see cref="TxId"/> of the invalid <see cref="Transaction{T}"/>.
+        /// The <see cref="TxId"/> of the invalid <see cref="Transaction"/>.
         /// </summary>
         public TxId TxId { get; }
     }

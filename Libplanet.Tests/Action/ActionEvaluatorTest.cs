@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Action
             var txAddress = signer.ToAddress();
             var txs = new[]
             {
-                Transaction<RandomAction>.Create(
+                Transaction.Create<RandomAction>(
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy<EvaluateTestAction>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction<EvaluateTestAction>.Create(
+            var tx = Transaction.Create<EvaluateTestAction>(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -177,7 +177,7 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy<ThrowException>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction<ThrowException>.Create(
+            var tx = Transaction.Create<ThrowException>(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -220,12 +220,12 @@ namespace Libplanet.Tests.Action
                     stateStore: stateStore);
             var genesis = chain.Genesis;
             // Evaluation is run with rehearsal true to get updated addresses on tx creation.
-            var tx = Transaction<ThrowException>.Create(
+            var tx = Transaction.Create<ThrowException>(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
                 actions: new[] { action });
-            var txs = new Transaction<ThrowException>[] { tx };
+            var txs = new Transaction[] { tx };
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
                 new BlockMetadata(
                     index: 1L,
@@ -316,9 +316,9 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullValidatorSetGetter,
                 genesis.Miner);
 
-            Transaction<DumbAction>[] block1Txs =
+            Transaction[] block1Txs =
             {
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey1,
                     genesisHash: genesis.Hash,
@@ -328,13 +328,13 @@ namespace Libplanet.Tests.Action
                         MakeAction(addresses[1], 'B', addresses[2]),
                     },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey2,
                     genesisHash: genesis.Hash,
                     actions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey3,
                     genesisHash: genesis.Hash,
@@ -429,24 +429,24 @@ namespace Libplanet.Tests.Action
                 }.ToImmutableDictionary(),
                 balances1);
 
-            Transaction<DumbAction>[] block2Txs =
+            Transaction[] block2Txs =
             {
                 // Note that these timestamps in themselves does not have any meanings but are
                 // only arbitrary.  These purpose to make their evaluation order in a block
                 // equal to the order we (the test) intend:
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     _txFx.PrivateKey1,
                     genesis.Hash,
                     new[] { MakeAction(addresses[0], 'D') },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     _txFx.PrivateKey3,
                     genesis.Hash,
@@ -586,8 +586,8 @@ namespace Libplanet.Tests.Action
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
             var tx =
-                Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
-            var txs = new Transaction<DumbAction>[] { tx };
+                Transaction.Create<DumbAction>(0, _txFx.PrivateKey1, null, actions);
+            var txs = new Transaction[] { tx };
             var block = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
@@ -726,14 +726,14 @@ namespace Libplanet.Tests.Action
         public void EvaluateTxResultThrowingException()
         {
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
-            var tx = Transaction<ThrowException>.Create(
+            var tx = Transaction.Create<ThrowException>(
                 0,
                 _txFx.PrivateKey1,
                 null,
                 new[] { action },
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
-            var txs = new Transaction<ThrowException>[] { tx };
+            var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
@@ -776,7 +776,7 @@ namespace Libplanet.Tests.Action
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
             // txA: ((5 + 1) * 2) + 3 = 15
-            (Transaction<Arithmetic> txA, var deltaA) = fx.Sign(
+            (Transaction txA, var deltaA) = fx.Sign(
                 0,
                 Arithmetic.Add(1),
                 Arithmetic.Mul(2),
@@ -831,7 +831,7 @@ namespace Libplanet.Tests.Action
 
             // txB: error(10 - 3) + -3 =
             //           (10 - 3)      = 7  (only input of error() is left)
-            (Transaction<Arithmetic> txB, var deltaB) = fx.Sign(
+            (Transaction txB, var deltaB) = fx.Sign(
                 1,
                 Arithmetic.Sub(3),
                 new Arithmetic(),
@@ -904,7 +904,7 @@ namespace Libplanet.Tests.Action
                 stateStore: _storeFx.StateStore,
                 genesisBlock: _storeFx.GenesisBlock,
                 privateKey: ChainPrivateKey);
-            (_, Transaction<DumbAction>[] txs) = MakeFixturesForAppendTests();
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = ProposeNext(
                 genesis,
@@ -1010,12 +1010,12 @@ namespace Libplanet.Tests.Action
                 ImmutableArray.Create(2, 1, 0)
             );
             // Unix Epoch used for hard coded timestamp.
-            ImmutableArray<Transaction<RandomAction>> txs =
+            ImmutableArray<Transaction> txs =
                 signers.Zip(noncesPerSigner, (signer, nonces) => (signer, nonces))
                     .SelectMany(
                         signerNoncesPair => signerNoncesPair.nonces,
                         (signerNoncesPair, nonce) => (signerNoncesPair.signer, nonce))
-                    .Select(signerNoncePair => Transaction<RandomAction>.Create(
+                    .Select(signerNoncePair => Transaction.Create<RandomAction>(
                         nonce: signerNoncePair.nonce,
                         privateKey: signerNoncePair.signer,
                         genesisHash: null,
@@ -1066,7 +1066,7 @@ namespace Libplanet.Tests.Action
                     .Select(tx => tx.Signer.ToString())));
         }
 
-        private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
+        private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
         {
@@ -1087,7 +1087,7 @@ namespace Libplanet.Tests.Action
                 0xec, 0xe0,
             });
 
-            Transaction<DumbAction>[] txs =
+            Transaction[] txs =
             {
                 _storeFx.MakeTransaction(
                     new[]
@@ -1127,7 +1127,7 @@ namespace Libplanet.Tests.Action
                 SignerKey = new PrivateKey().ToAddress(),
             };
 
-            var tx = Transaction<EvaluateTestAction>.Create(
+            var tx = Transaction.Create<EvaluateTestAction>(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -1176,7 +1176,7 @@ namespace Libplanet.Tests.Action
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
             // txA: ((5 + 1) * 2) + 3 = 15
-            (Transaction<Arithmetic> txA, var deltaA) = fx.Sign(
+            (Transaction txA, var deltaA) = fx.Sign(
                 0,
                 Arithmetic.Add(1),
                 Arithmetic.Mul(2),

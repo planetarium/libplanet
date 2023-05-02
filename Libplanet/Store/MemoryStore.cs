@@ -134,12 +134,12 @@ namespace Libplanet.Store
             }
         }
 
-        Transaction<T> IStore.GetTransaction<T>(TxId txid) =>
-            _txs.TryGetValue(txid, out object untyped) && untyped is Transaction<T> tx
+        Transaction IStore.GetTransaction(TxId txid) =>
+            _txs.TryGetValue(txid, out object untyped) && untyped is Transaction tx
                 ? tx
                 : null;
 
-        void IStore.PutTransaction<T>(Transaction<T> tx) =>
+        void IStore.PutTransaction(Transaction tx) =>
             _txs[tx.Id] = tx;
 
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
@@ -156,7 +156,7 @@ namespace Libplanet.Store
             ImmutableArray<TxId> txids = digest.TxIds
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
-            IEnumerable<Transaction<T>> txs = txids.Select(txid => (Transaction<T>)_txs[txid]);
+            IEnumerable<Transaction> txs = txids.Select(txid => (Transaction)_txs[txid]);
             return new Block<T>(header, txs);
         }
 
@@ -168,8 +168,8 @@ namespace Libplanet.Store
 
         void IStore.PutBlock<T>(Block<T> block)
         {
-            IReadOnlyList<Transaction<T>> txs = block.Transactions;
-            foreach (Transaction<T> tx in txs)
+            IReadOnlyList<Transaction> txs = block.Transactions;
+            foreach (Transaction tx in txs)
             {
                 _txs[tx.Id] = tx;
             }

@@ -19,7 +19,7 @@ namespace Libplanet.Blockchain.Policies
     {
         public static readonly TimeSpan DefaultTargetBlockInterval = TimeSpan.FromSeconds(5);
 
-        private readonly Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>
+        private readonly Func<BlockChain<T>, Transaction, TxPolicyViolationException?>
             _validateNextBlockTx;
 
         private readonly Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>
@@ -41,13 +41,13 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         /// <param name="blockAction">A <see cref="IAction"/> to executed for
         /// every <see cref="Block{T}"/>.  Set to <see langword="null"/> by default, which results
-        /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
+        /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
         /// Set to <see cref="DefaultTargetBlockInterval"/> by default.
         /// </param>
         /// <param name="validateNextBlockTx">The predicate that determines if
-        /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
+        /// a <see cref="Transaction"/> follows the policy.  Set to a constant function of
         /// <see langword="null"/> by default.</param>
         /// <param name="validateNextBlock">The predicate that determines if
         /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
@@ -58,11 +58,11 @@ namespace Libplanet.Blockchain.Policies
         /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxTransactionsBytes"/>.
         /// Set to a constant size of <c>100</c>KiB, i.e. <c>100 * 1024</c>, by default.</param>
         /// <param name="getMinTransactionsPerBlock">The function determining the minimum number of
-        /// <see cref="Transaction{T}"/>s that must be included in a <see cref="Block{T}"/>.
+        /// <see cref="Transaction"/>s that must be included in a <see cref="Block{T}"/>.
         /// Goes to <see cref="GetMinTransactionsPerBlock"/>.  Set to a constant function
         /// of <c>0</c> by default.</param>
         /// <param name="getMaxTransactionsPerBlock">The function determining how many
-        /// <see cref="Transaction{T}"/>s can be included in a <see cref="Block{T}"/>.
+        /// <see cref="Transaction"/>s can be included in a <see cref="Block{T}"/>.
         /// Goes to <see cref="GetMaxTransactionsPerBlock"/>.  Set to a constant function
         /// of <c>100</c> by default.</param>
         /// <param name="getMaxTransactionsPerSignerPerBlock">The function determining the maximum
@@ -75,7 +75,7 @@ namespace Libplanet.Blockchain.Policies
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
-            Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
+            Func<BlockChain<T>, Transaction, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
                 validateNextBlock = null,
@@ -109,7 +109,7 @@ namespace Libplanet.Blockchain.Policies
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
 
-                    long blockBytes = BlockMarshaler.MarshalTransactions<T>(block.Transactions)
+                    long blockBytes = BlockMarshaler.MarshalTransactions(block.Transactions)
                         .EncodingLength;
                     if (blockBytes > maxTransactionsBytes)
                     {
@@ -177,7 +177,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(
-            BlockChain<T> blockChain, Transaction<T> transaction)
+            BlockChain<T> blockChain, Transaction transaction)
         {
             return _validateNextBlockTx(blockChain, transaction);
         }

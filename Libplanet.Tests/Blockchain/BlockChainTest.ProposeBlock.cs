@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Blockchain
                     signer = new PrivateKey();
                 }
 
-                Transaction<DumbAction> heavyTx = _fx.MakeTransaction(
+                Transaction heavyTx = _fx.MakeTransaction(
                     manyActions,
                     nonce: nonce,
                     privateKey: signer);
@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Blockchain
                     new PrivateKey(),
                     new[]
                     {
-                        Transaction<DumbAction>.Create(
+                        Transaction.Create<DumbAction>(
                             5,  // Invalid nonce,
                             new PrivateKey(),
                             null,
@@ -159,7 +159,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock);
                 var txs = new[]
                 {
-                    Transaction<DumbAction>.Create(
+                    Transaction.Create<DumbAction>(
                         5,  // Invalid nonce
                         new PrivateKey(),
                         _blockChain.Genesis.Hash,
@@ -189,13 +189,13 @@ namespace Libplanet.Tests.Blockchain
 
             var txs = new[]
             {
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     keys[0],
                     _blockChain.Genesis.Hash,
                     new[] { new DumbAction(addrA, "1a"), new DumbAction(addrB, "1b") }
                 ),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     1,
                     keys[0],
                     _blockChain.Genesis.Hash,
@@ -203,13 +203,13 @@ namespace Libplanet.Tests.Blockchain
                 ),
 
                 // pending txs1
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     1,
                     keys[1],
                     _blockChain.Genesis.Hash,
                     new[] { new DumbAction(addrE, "3a"), new DumbAction(addrA, "3b") }
                 ),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     2,
                     keys[1],
                     _blockChain.Genesis.Hash,
@@ -217,13 +217,13 @@ namespace Libplanet.Tests.Blockchain
                 ),
 
                 // pending txs2
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     keys[2],
                     _blockChain.Genesis.Hash,
                     new[] { new DumbAction(addrD, "5a"), new DumbAction(addrE, "5b") }
                 ),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     2,
                     keys[2],
                     _blockChain.Genesis.Hash,
@@ -239,7 +239,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Null(_blockChain.GetState(addrD));
             Assert.Null(_blockChain.GetState(addrE));
 
-            foreach (Transaction<DumbAction> tx in txs)
+            foreach (Transaction tx in txs)
             {
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
             }
@@ -268,7 +268,7 @@ namespace Libplanet.Tests.Blockchain
             );
             Assert.Equal(new Text("5b"), _blockChain.GetState(addrE));
 
-            foreach (Transaction<DumbAction> tx in new[] { txs[0], txs[1], txs[4] })
+            foreach (Transaction tx in new[] { txs[0], txs[1], txs[4] })
             {
                 TxExecution txx = _blockChain.GetTxExecution(block.Hash, tx.Id);
                 _logger.Debug(
@@ -291,7 +291,7 @@ namespace Libplanet.Tests.Blockchain
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
@@ -331,19 +331,19 @@ namespace Libplanet.Tests.Blockchain
             var key = new PrivateKey();
             var txs = new[]
             {
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     2,
                     key,
                     _blockChain.Genesis.Hash,
                     new DumbAction[0]
                 ),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     1,
                     key,
                     _blockChain.Genesis.Hash,
                     new DumbAction[0]
                 ),
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     0,
                     key,
                     _blockChain.Genesis.Hash,
@@ -362,7 +362,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(
                 new[]
                 {
-                    Transaction<DumbAction>.Create(
+                    Transaction.Create<DumbAction>(
                         0,
                         key,
                         _blockChain.Genesis.Hash,
@@ -377,7 +377,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(
                 new[]
                 {
-                    Transaction<DumbAction>.Create(
+                    Transaction.Create<DumbAction>(
                         0,
                         key,
                         _blockChain.Genesis.Hash,
@@ -450,24 +450,24 @@ namespace Libplanet.Tests.Blockchain
             Address b = keyB.ToAddress(); // Rank 1
             Address c = keyC.ToAddress(); // Rank 2
             int Rank(Address address) => address.Equals(a) ? 0 : address.Equals(b) ? 1 : 2;
-            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 50)
+            Transaction[] txsA = Enumerable.Range(0, 50)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
                 .ToArray();
-            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 60)
+            Transaction[] txsB = Enumerable.Range(0, 60)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
                 .ToArray();
-            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 40)
+            Transaction[] txsC = Enumerable.Range(0, 40)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
                 .ToArray();
 
             var random = new Random();
-            Transaction<DumbAction>[] txs =
+            Transaction[] txs =
                 txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
             StageTransactions(txs);
             Assert.Equal(txs.Length, _blockChain.ListStagedTransactions().Count);
 
-            IComparer<Transaction<DumbAction>> txPriority =
-                Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
+            IComparer<Transaction> txPriority =
+                Comparer<Transaction>.Create((tx1, tx2) =>
                     Rank(tx1.Signer).CompareTo(Rank(tx2.Signer)));
             Block<DumbAction> block = _blockChain.ProposeBlock(
                 new PrivateKey(),
@@ -567,27 +567,27 @@ namespace Libplanet.Tests.Blockchain
             _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
             _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
 
-            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 3)
+            Transaction[] txsA = Enumerable.Range(0, 3)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
                 .ToArray();
-            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 4)
+            Transaction[] txsB = Enumerable.Range(0, 4)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
                 .ToArray();
-            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 2)
+            Transaction[] txsC = Enumerable.Range(0, 2)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
                 .ToArray();
             var random = new Random();
-            Transaction<DumbAction>[] txs =
+            Transaction[] txs =
                 txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
             Assert.Empty(_blockChain.ListStagedTransactions());
             StageTransactions(txs);
 
             // Test if minTransactions and minTransactionsPerSigner work:
-            ImmutableList<Transaction<DumbAction>> gathered =
+            ImmutableList<Transaction> gathered =
                 _blockChain.GatherTransactionsToPropose(1024 * 1024, 5, 3, 0);
             Assert.Equal(5, gathered.Count);
             var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
-            foreach (Transaction<DumbAction> tx in gathered)
+            foreach (Transaction tx in gathered)
             {
                 long expectedNonce = expectedNonces[tx.Signer];
                 Assert.True(expectedNonce < 3);
@@ -596,8 +596,8 @@ namespace Libplanet.Tests.Blockchain
             }
 
             // Test if txPriority works:
-            IComparer<Transaction<DumbAction>> txPriority =
-                Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
+            IComparer<Transaction> txPriority =
+                Comparer<Transaction>.Create((tx1, tx2) =>
                 {
                     int rank1 = tx1.Signer.Equals(a) ? 0 : (tx1.Signer.Equals(b) ? 1 : 2);
                     int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);

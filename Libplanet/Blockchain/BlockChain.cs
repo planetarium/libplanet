@@ -24,7 +24,7 @@ namespace Libplanet.Blockchain
 {
     /// <summary>
     /// <para>
-    /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
+    /// A class have <see cref="Block{T}"/>s, <see cref="Transaction"/>s, and the chain
     /// information.
     /// </para>
     /// <para>
@@ -71,7 +71,7 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain{T}"/>.</param>
         /// <param name="stagePolicy">The staging policy to follow.</param>
         /// <param name="store"><see cref="IStore"/> to store <see cref="Block{T}"/>s,
-        /// <see cref="Transaction{T}"/>s, and <see cref="BlockChain{T}"/> information.</param>
+        /// <see cref="Transaction"/>s, and <see cref="BlockChain{T}"/> information.</param>
         /// <param name="genesisBlock">The genesis <see cref="Block{T}"/> of
         /// the <see cref="BlockChain{T}"/>, which is a part of the consensus.
         /// If the given <paramref name="store"/> already contains the genesis block
@@ -402,7 +402,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="InvalidBlockException">Thrown when <paramref name="genesisBlock"/>
         /// is invalid.</exception>
         /// <exception cref="InvalidTxException">Thrown when <paramref name="genesisBlock"/>
-        /// contains an invalid <see cref="Transaction{T}"/>.</exception>
+        /// contains an invalid <see cref="Transaction"/>.</exception>
         public static BlockChain<T> Create(
             IBlockPolicy<T> policy,
             IStagePolicy<T> stagePolicy,
@@ -527,12 +527,12 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Gets the transaction corresponding to the <paramref name="txId"/>.
         /// </summary>
-        /// <param name="txId">A <see cref="TxId"/> of the <see cref="Transaction{T}"/> to get.
+        /// <param name="txId">A <see cref="TxId"/> of the <see cref="Transaction"/> to get.
         /// </param>
-        /// <returns><see cref="Transaction{T}"/> with <paramref name="txId"/>.</returns>
+        /// <returns><see cref="Transaction"/> with <paramref name="txId"/>.</returns>
         /// <exception cref="KeyNotFoundException">Thrown when there is no
-        /// <see cref="Transaction{T}"/> with a given <paramref name="txId"/>.</exception>
-        public Transaction<T> GetTransaction(TxId txId)
+        /// <see cref="Transaction"/> with a given <paramref name="txId"/>.</exception>
+        public Transaction GetTransaction(TxId txId)
         {
             if (StagePolicy.Get(this, txId) is { } tx)
             {
@@ -542,7 +542,7 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                if (Store.GetTransaction<T>(txId) is { } transaction)
+                if (Store.GetTransaction(txId) is { } transaction)
                 {
                     return transaction;
                 }
@@ -666,12 +666,12 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
-        /// <see cref="Transaction{T}"/> within a <see cref="Block{T}"/>.
+        /// <see cref="Transaction"/> within a <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
-        /// that the <see cref="Transaction{T}"/> is executed within.</param>
-        /// <param name="txid">The executed <see cref="Transaction{T}"/>'s
-        /// <see cref="Transaction{T}.Id"/>.</param>
+        /// that the <see cref="Transaction"/> is executed within.</param>
+        /// <param name="txid">The executed <see cref="Transaction"/>'s
+        /// <see cref="Transaction.Id"/>.</param>
         /// <returns>The recorded <see cref="TxExecution"/>.  If the transaction has never been
         /// executed within the block, it returns <see langword="null"/> instead.</returns>
         public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
@@ -697,9 +697,9 @@ namespace Libplanet.Blockchain
         /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
         /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{T}.Nonce"/> is different from
+        /// <see cref="Transaction.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{T}.Signer"/>.</exception>
+        /// <see cref="Transaction.Signer"/>.</exception>
         /// <exception cref="InvalidBlockCommitException">Thrown when the given
         /// <paramref name="block"/> and <paramref name="blockCommit"/> is invalid.</exception>
         public void Append(
@@ -712,14 +712,14 @@ namespace Libplanet.Blockchain
         /// Adds <paramref name="transaction"/> to the pending list so that a next
         /// <see cref="Block{T}"/> to be mined may contain given <paramref name="transaction"/>.
         /// </summary>
-        /// <param name="transaction"><see cref="Transaction{T}"/> to add to the pending list.
+        /// <param name="transaction"><see cref="Transaction"/> to add to the pending list.
         /// </param>
         /// <returns><see langword="true"/> if staging was successful,
         /// <see langword="false"/> otherwise.</returns>
         /// <exception cref="InvalidTxGenesisHashException">Thrown when given
-        /// <paramref name="transaction"/> has invalid <see cref="Transaction{T}.GenesisHash"/>.
+        /// <paramref name="transaction"/> has invalid <see cref="Transaction.GenesisHash"/>.
         /// </exception>
-        public bool StageTransaction(Transaction<T> transaction)
+        public bool StageTransaction(Transaction transaction)
         {
             if (!transaction.GenesisHash.Equals(Genesis.Hash))
             {
@@ -738,26 +738,26 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Removes a <paramref name="transaction"/> from the pending list.
         /// </summary>
-        /// <param name="transaction">A <see cref="Transaction{T}"/>
+        /// <param name="transaction">A <see cref="Transaction"/>
         /// to remove from the pending list.</param>
         /// <returns><see langword="true"/> if unstaging was successful,
         /// <see langword="false"/> otherwise.</returns>
         /// <seealso cref="StageTransaction"/>
-        public bool UnstageTransaction(Transaction<T> transaction) =>
+        public bool UnstageTransaction(Transaction transaction) =>
             StagePolicy.Unstage(this, transaction.Id);
 
         /// <summary>
-        /// Gets next <see cref="Transaction{T}.Nonce"/> of the address.
+        /// Gets next <see cref="Transaction.Nonce"/> of the address.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> from which to obtain the
-        /// <see cref="Transaction{T}.Nonce"/> value.</param>
-        /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
+        /// <see cref="Transaction.Nonce"/> value.</param>
+        /// <returns>The next <see cref="Transaction.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
             => StagePolicy.GetNextTxNonce(this, address);
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> with custom actions and stage it.
+        /// Creates a new <see cref="Transaction"/> with custom actions and stage it.
         /// It's available only if the genesis block exists.
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
@@ -766,11 +766,11 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
         /// <paramref name="actions"/>.</param>
-        /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
+        /// <param name="timestamp">The time this <see cref="Transaction"/> is created and
         /// signed.</param>
-        /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
+        /// <returns>A created new <see cref="Transaction"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
-        public Transaction<T> MakeTransaction(
+        public Transaction MakeTransaction(
             PrivateKey privateKey,
             IEnumerable<IAction> actions,
             IImmutableSet<Address> updatedAddresses = null,
@@ -780,7 +780,7 @@ namespace Libplanet.Blockchain
             lock (_txLock)
             {
                 // FIXME: Exception should be documented when the genesis block does not exist.
-                Transaction<T> tx = Transaction<T>.Create(
+                Transaction tx = Transaction.Create<T>(
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     Genesis.Hash,
@@ -1089,7 +1089,7 @@ namespace Libplanet.Blockchain
                     throw bpve;
                 }
 
-                foreach (Transaction<T> tx in block.Transactions)
+                foreach (Transaction tx in block.Transactions)
                 {
                     if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                     {
@@ -1165,7 +1165,7 @@ namespace Libplanet.Blockchain
                         block.Transactions.Count(),
                         block.Index,
                         block.Hash);
-                    foreach (Transaction<T> tx in block.Transactions)
+                    foreach (Transaction tx in block.Transactions)
                     {
                         UnstageTransaction(tx);
                     }
@@ -1281,27 +1281,27 @@ namespace Libplanet.Blockchain
         /// <returns>A list of staged transactions.  This guarantees that for transactions signed
         /// by the same address, those with greater nonce never comes before those with
         /// lesser nonce.</returns>
-        internal ImmutableList<Transaction<T>> ListStagedTransactions(
-            IComparer<Transaction<T>> txPriority = null
+        internal ImmutableList<Transaction> ListStagedTransactions(
+            IComparer<Transaction> txPriority = null
         )
         {
-            IEnumerable<Transaction<T>> unorderedTxs = StagePolicy.Iterate(this);
+            IEnumerable<Transaction> unorderedTxs = StagePolicy.Iterate(this);
             if (txPriority is { } comparer)
             {
                 unorderedTxs = unorderedTxs.OrderBy(tx => tx, comparer);
             }
 
-            Transaction<T>[] txs = unorderedTxs.ToArray();
+            Transaction[] txs = unorderedTxs.ToArray();
 
-            Dictionary<Address, LinkedList<Transaction<T>>> seats = txs
+            Dictionary<Address, LinkedList<Transaction>> seats = txs
                 .GroupBy(tx => tx.Signer)
-                .Select(g => (g.Key, new LinkedList<Transaction<T>>(g.OrderBy(tx => tx.Nonce))))
+                .Select(g => (g.Key, new LinkedList<Transaction>(g.OrderBy(tx => tx.Nonce))))
                 .ToDictionary(pair => pair.Item1, pair => pair.Item2);
 
             return txs.Select(tx =>
             {
-                LinkedList<Transaction<T>> seat = seats[tx.Signer];
-                Transaction<T> first = seat.First.Value;
+                LinkedList<Transaction> seat = seats[tx.Signer];
+                Transaction first = seat.First.Value;
                 seat.RemoveFirst();
                 return first;
             }).ToImmutableList();

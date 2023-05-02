@@ -644,7 +644,7 @@ namespace Libplanet.Net.Tests
                 await CreateSwarm(keyB, genesis: genesis).ConfigureAwait(false);
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 chainB.Genesis.Hash,
@@ -661,7 +661,7 @@ namespace Libplanet.Net.Tests
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
-                List<Transaction<DumbAction>> txs =
+                List<Transaction> txs =
                     await swarmA.GetTxsAsync(
                         swarmB.AsPeer,
                         new[] { tx.Id },
@@ -972,7 +972,7 @@ namespace Libplanet.Net.Tests
             foreach (var i in Enumerable.Range(0, 8))
             {
                 miner1.BlockChain.StageTransaction(
-                    Transaction<Sleep>.Create(
+                    Transaction.Create<DumbAction>(
                         0,
                         new PrivateKey(),
                         miner1.BlockChain.Genesis.Hash,
@@ -1115,7 +1115,7 @@ namespace Libplanet.Net.Tests
             var validKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress) ||
@@ -1177,7 +1177,7 @@ namespace Libplanet.Net.Tests
             var validKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress) ||

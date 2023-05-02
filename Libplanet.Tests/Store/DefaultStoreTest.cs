@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -57,11 +56,11 @@ namespace Libplanet.Tests.Store
             var identicalStore = new DefaultStore(Path.Combine(tmpDir, dirName));
             Assert.Equal(
                 Fx.Transaction1,
-                identicalStore.GetTransaction<DumbAction>(Fx.Transaction1.Id)
+                identicalStore.GetTransaction(Fx.Transaction1.Id)
             );
             Assert.Equal(
                 Fx.Transaction2,
-                identicalStore.GetTransaction<DumbAction>(Fx.Transaction2.Id)
+                identicalStore.GetTransaction(Fx.Transaction2.Id)
             );
         }
 

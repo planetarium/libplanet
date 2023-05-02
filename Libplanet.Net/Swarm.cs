@@ -454,7 +454,7 @@ namespace Libplanet.Net
             BroadcastBlock(null, block);
         }
 
-        public void BroadcastTxs(IEnumerable<Transaction<T>> txs)
+        public void BroadcastTxs(IEnumerable<Transaction> txs)
         {
             BroadcastTxs(null, txs);
         }
@@ -873,7 +873,7 @@ namespace Libplanet.Net
             _logger.Information("Downloaded {Count} block(s) from {Peer}", count, peer);
         }
 
-        internal async IAsyncEnumerable<Transaction<T>> GetTxsAsync(
+        internal async IAsyncEnumerable<Transaction> GetTxsAsync(
             BoundPeer peer,
             IEnumerable<TxId> txIds,
             [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -912,7 +912,7 @@ namespace Libplanet.Net
             {
                 if (message.Content is TxMsg parsed)
                 {
-                    Transaction<T> tx = Transaction<T>.Deserialize(parsed.Payload);
+                    Transaction tx = Transaction.Deserialize(parsed.Payload);
                     yield return tx;
                 }
                 else
@@ -1149,7 +1149,7 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
-        private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction<T>> txs)
+        private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
             _logger.Information("Broadcasting {Count} txIds...", txIds.Count);

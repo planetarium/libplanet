@@ -23,8 +23,8 @@ namespace Libplanet.Tests.Fixtures
         public readonly PrivateKey Block1Key;
         public readonly PrivateKey Block1Tx0Key;
         public readonly PrivateKey Block1Tx1Key;
-        public readonly Transaction<Arithmetic> Block1Tx0;
-        public readonly Transaction<Arithmetic> Block1Tx1;
+        public readonly Transaction Block1Tx0;
+        public readonly Transaction Block1Tx1;
         public readonly BlockContent<Arithmetic> Block1Content;
         public readonly HashDigest<SHA256> Block1TxHash;
         public readonly BlockMetadata Block1Metadata;
@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Fixtures
             TimeSpan kst = TimeSpan.FromHours(9);
             GenesisKey = PrivateKey.FromString(
                 "9bf4664ba09a89faeb684b94e69ffde01d26ae14b556204d3f6ab58f61f78418");
-            Transaction<Arithmetic> genTx = Transaction<Arithmetic>.Create(
+            Transaction genTx = Transaction.Create<Arithmetic>(
                 0,
                 GenesisKey,
                 null,
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Fixtures
                     },
                 timestamp: DateTimeOffset.MinValue
             );
-            Transaction<Arithmetic>[] genTxs = new[] { genTx };
+            Transaction[] genTxs = new[] { genTx };
             GenesisContent = new BlockContent<Arithmetic>(
                 new BlockMetadata(
                     index: 0,
@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Fixtures
                 "fcf30b333d04ccfeb562f000a32df488e7154949d31ddcac3cf9278acb5786c7");
             Block1Tx0Key = PrivateKey.FromString(
                 "2d5c20079bc4b2e6eab9ecbb405da8ba6590c436edfb07b7d4466563d7dac096");
-            Block1Tx0 = new Transaction<Arithmetic>(
+            Block1Tx0 = new Transaction(
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Fixtures
             );
             Block1Tx1Key = PrivateKey.FromString(
                 "105341c78dfb0dd313b961081630444c2586a1f01fb0c625368ffdc9136cfa30");
-            Block1Tx1 = new Transaction<Arithmetic>(
+            Block1Tx1 = new Transaction(
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Fixtures
                 )
             );
 
-            var block1Transactions = new List<Transaction<Arithmetic>>() { Block1Tx0, Block1Tx1 }
+            var block1Transactions = new List<Transaction>() { Block1Tx0, Block1Tx1 }
                 .OrderBy(tx => tx.Id).ToList();
             Block1Content = new BlockContent<Arithmetic>(
                 new BlockMetadata(
@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: null,
                     txHash: null,
                     lastCommit: null),
-                transactions: new List<Transaction<Arithmetic>>()); // Tweaked GenesisContent
+                transactions: new List<Transaction>()); // Tweaked GenesisContent
             GenesisMetadataPv0 = new BlockMetadata(GenesisContentPv0);
             Block1ContentPv1 = new BlockContent<Arithmetic>(
                 new BlockMetadata(

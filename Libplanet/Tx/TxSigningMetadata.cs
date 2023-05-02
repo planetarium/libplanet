@@ -10,7 +10,7 @@ namespace Libplanet.Tx
     /// <seealso cref="ITxSigningMetadata" />
     /// <seealso cref="TxInvoice"/>
     /// <seealso cref="UnsignedTx"/>
-    /// <seealso cref="Transaction{T}"/>
+    /// <seealso cref="Transaction"/>
     public sealed class TxSigningMetadata : ITxSigningMetadata, IEquatable<TxSigningMetadata>
     {
         /// <summary>

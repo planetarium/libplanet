@@ -212,8 +212,8 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             ).PublicKey;
-            Transaction<DumbAction> tx =
-                TxMarshaler.UnmarshalTransaction<DumbAction>(_marshaledTransaction);
+            Transaction tx =
+                TxMarshaler.UnmarshalTransaction(_marshaledTransaction);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
@@ -244,7 +244,7 @@ namespace Libplanet.Tests.Tx
             );
 
             Assert.Throws<DecodingException>(() =>
-                TxMarshaler.UnmarshalTransaction<DumbAction>(_marshaledUnsignedTx));
+                TxMarshaler.UnmarshalTransaction(_marshaledUnsignedTx));
         }
 
         [Fact]
@@ -259,8 +259,8 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             ).PublicKey;
-            Transaction<PolymorphicAction<BaseAction>> tx =
-                TxMarshaler.UnmarshalTransaction<PolymorphicAction<BaseAction>>(
+            Transaction tx =
+                TxMarshaler.UnmarshalTransaction(
                     _marshaledTransactionWithCustomActions);
 
             Assert.Equal(publicKey, tx.PublicKey);
@@ -323,7 +323,7 @@ namespace Libplanet.Tests.Tx
                 innerAction1.PlainValue
             );
             Assert.Throws<DecodingException>(() =>
-                TxMarshaler.UnmarshalTransaction<DumbAction>(
+                TxMarshaler.UnmarshalTransaction(
                     _marshaledUnsignedTxWithCustomActions));
         }
     }

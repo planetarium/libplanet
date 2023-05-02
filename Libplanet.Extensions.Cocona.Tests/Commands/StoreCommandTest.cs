@@ -27,10 +27,10 @@ public class StoreCommandTest : IDisposable
     private readonly Block<Utils.DummyAction> _block3;
     private readonly Block<Utils.DummyAction> _block4;
     private readonly Block<Utils.DummyAction> _block5;
-    private readonly Transaction<Utils.DummyAction> _transaction1;
-    private readonly Transaction<Utils.DummyAction> _transaction2;
-    private readonly Transaction<Utils.DummyAction> _transaction3;
-    private readonly Transaction<Utils.DummyAction> _transaction4;
+    private readonly Transaction _transaction1;
+    private readonly Transaction _transaction2;
+    private readonly Transaction _transaction3;
+    private readonly Transaction _transaction4;
 
     public StoreCommandTest(ITestOutputHelper testOutput)
     {
@@ -234,7 +234,7 @@ public class StoreCommandTest : IDisposable
         foreach (var fx in _storeFixtures)
         {
             void AssertTxBlockIndex(
-                Transaction<Utils.DummyAction> tx,
+                Transaction tx,
                 Block<Utils.DummyAction> block
             )
             {
@@ -346,9 +346,9 @@ public class StoreCommandTest : IDisposable
         Console.SetError(_originalError);
     }
 
-    private Transaction<Utils.DummyAction> DummyTransaction()
+    private Transaction DummyTransaction()
     {
-        return Transaction<Utils.DummyAction>.Create(
+        return Transaction.Create<Utils.DummyAction>(
             0,
             new PrivateKey(),
             _genesisBlock.Hash,

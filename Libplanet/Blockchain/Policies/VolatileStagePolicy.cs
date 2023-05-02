@@ -15,21 +15,21 @@ namespace Libplanet.Blockchain.Policies
     /// An in memory implementation of the <see cref="IStagePolicy{T}"/>.
     /// </para>
     /// <para>
-    /// This implementation holds on to every unconfirmed <see cref="Transaction{T}"/> except
+    /// This implementation holds on to every unconfirmed <see cref="Transaction"/> except
     /// for the following reasons:
     /// <list type="bullet">
     ///     <item>
-    ///         <description>A <see cref="Transaction{T}"/> has been specifically marked to
-    ///         be ignored due to <see cref="Transaction{T}"/> not being valid.</description>
+    ///         <description>A <see cref="Transaction"/> has been specifically marked to
+    ///         be ignored due to <see cref="Transaction"/> not being valid.</description>
     ///     </item>
     ///     <item>
-    ///         <description>A <see cref="Transaction{T}"/> has expired due to its staleness.
+    ///         <description>A <see cref="Transaction"/> has expired due to its staleness.
     ///         </description>
     ///     </item>
     /// </list>
     /// </para>
     /// <para>
-    /// Additionally, any <see cref="Transaction{T}"/> with a lower nonce than that of returned by
+    /// Additionally, any <see cref="Transaction"/> with a lower nonce than that of returned by
     /// the <see cref="BlockChain{T}"/> is masked and filtered by default.
     /// </para>
     /// </summary>
@@ -38,7 +38,7 @@ namespace Libplanet.Blockchain.Policies
     public class VolatileStagePolicy<T> : IStagePolicy<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<TxId, Transaction<T>> _staged;
+        private readonly ConcurrentDictionary<TxId, Transaction> _staged;
         private readonly HashSet<TxId> _ignored;
         private readonly ReaderWriterLockSlim _lock;
         private readonly ILogger _logger;
@@ -63,22 +63,22 @@ namespace Libplanet.Blockchain.Policies
                 .ForContext<VolatileStagePolicy<T>>()
                 .ForContext("Source", nameof(VolatileStagePolicy<T>));
             Lifetime = lifetime;
-            _staged = new ConcurrentDictionary<TxId, Transaction<T>>();
+            _staged = new ConcurrentDictionary<TxId, Transaction>();
             _ignored = new HashSet<TxId>();
             _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
         /// <summary>
-        /// Lifespan for <see cref="Transaction{T}"/>s.  Any <see cref="Transaction{T}"/> older
+        /// Lifespan for <see cref="Transaction"/>s.  Any <see cref="Transaction"/> older
         /// than this <see cref="TimeSpan"/> will be considered expired.
         /// </summary>
         /// <remarks>
-        /// Expired <see cref="Transaction{T}"/>s cannot be staged.
+        /// Expired <see cref="Transaction"/>s cannot be staged.
         /// </remarks>
         public TimeSpan Lifetime { get; }
 
         /// <inheritdoc/>
-        public bool Stage(BlockChain<T> blockChain, Transaction<T> transaction)
+        public bool Stage(BlockChain<T> blockChain, Transaction transaction)
         {
             if (Expired(transaction))
             {
@@ -198,7 +198,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
+        public Transaction? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
         {
             _lock.EnterReadLock();
             try
@@ -212,9 +212,9 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true)
+        public IEnumerable<Transaction> Iterate(BlockChain<T> blockChain, bool filtered = true)
         {
-            List<Transaction<T>> transactions = new List<Transaction<T>>();
+            List<Transaction> transactions = new List<Transaction>();
 
             _lock.EnterReadLock();
             try
@@ -222,7 +222,7 @@ namespace Libplanet.Blockchain.Policies
                 List<TxId> txIds = _staged.Keys.ToList();
                 foreach (TxId txId in txIds)
                 {
-                    if (GetInner(blockChain, txId, filtered) is Transaction<T> tx)
+                    if (GetInner(blockChain, txId, filtered) is Transaction tx)
                     {
                         transactions.Add(tx);
                     }
@@ -240,11 +240,11 @@ namespace Libplanet.Blockchain.Policies
         public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
         {
             long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
-            IEnumerable<Transaction<T>> orderedTxs = Iterate(blockChain, filtered: true)
+            IEnumerable<Transaction> orderedTxs = Iterate(blockChain, filtered: true)
                 .Where(tx => tx.Signer.Equals(address))
                 .OrderBy(tx => tx.Nonce);
 
-            foreach (Transaction<T> tx in orderedTxs)
+            foreach (Transaction tx in orderedTxs)
             {
                 if (nonce < tx.Nonce)
                 {
@@ -259,16 +259,16 @@ namespace Libplanet.Blockchain.Policies
             return nonce;
         }
 
-        private bool Expired(Transaction<T> transaction) =>
+        private bool Expired(Transaction transaction) =>
             Lifetime < DateTimeOffset.UtcNow - transaction.Timestamp;
 
         /// <remarks>
         /// It has been intended to avoid recursive lock, hence doesn't hold any synchronous scope.
         /// Therefore, we should manage the lock from its caller side.
         /// </remarks>
-        private Transaction<T>? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
+        private Transaction? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
         {
-            if (_staged.TryGetValue(id, out Transaction<T>? tx) && tx is { })
+            if (_staged.TryGetValue(id, out Transaction? tx) && tx is { })
             {
                 if (Expired(tx) || _ignored.Contains(tx.Id))
                 {

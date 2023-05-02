@@ -114,11 +114,10 @@ namespace Libplanet.Tests.Store
             return _store.GetBlockDigest(blockHash);
         }
 
-        public Transaction<T> GetTransaction<T>(TxId txid)
-            where T : IAction, new()
+        public Transaction GetTransaction(TxId txid)
         {
             Log(nameof(GetTransaction), txid);
-            return _store.GetTransaction<T>(txid);
+            return _store.GetTransaction(txid);
         }
 
         public BlockHash? IndexBlockHash(Guid chainId, long index)
@@ -152,11 +151,10 @@ namespace Libplanet.Tests.Store
             _store.PutBlock<T>(block);
         }
 
-        public void PutTransaction<T>(Transaction<T> tx)
-            where T : IAction, new()
+        public void PutTransaction(Transaction tx)
         {
             Log(nameof(PutTransaction), tx);
-            _store.PutTransaction<T>(tx);
+            _store.PutTransaction(tx);
         }
 
         public bool ContainsTransaction(TxId txId)

@@ -142,7 +142,7 @@ public class StoreCommand
     )
     {
         IStore store = Utils.LoadStoreFromUri(home);
-        var tx = GetTransaction<Utils.DummyAction>(store, new TxId(ByteUtil.ParseHex(strTxId)));
+        var tx = GetTransaction(store, new TxId(ByteUtil.ParseHex(strTxId)));
         Console.WriteLine(Utils.SerializeHumanReadable(tx));
         store?.Dispose();
     }
@@ -198,10 +198,9 @@ public class StoreCommand
         }
     }
 
-    private static Transaction<T> GetTransaction<T>(IStore store, TxId txId)
-        where T : IAction, new()
+    private static Transaction GetTransaction(IStore store, TxId txId)
     {
-        if (!(store.GetTransaction<T>(txId) is { } tx))
+        if (!(store.GetTransaction(txId) is { } tx))
         {
             throw Utils.Error($"cannot find the tx with the tx id[{txId.ToString()}]");
         }

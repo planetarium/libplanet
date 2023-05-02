@@ -17,7 +17,7 @@ namespace Libplanet.Blockchain
             Block<T> block)
         {
             var nonceDeltas = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            foreach (Transaction tx in block.Transactions.OrderBy(tx => tx.Nonce))
             {
                 nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
                 long expectedNonce = nonceDelta;
@@ -168,7 +168,7 @@ namespace Libplanet.Blockchain
             Block<T> block)
         {
             var nonceDeltas = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions.OrderBy(tx => tx.Nonce))
+            foreach (Transaction tx in block.Transactions.OrderBy(tx => tx.Nonce))
             {
                 nonceDeltas.TryGetValue(tx.Signer, out var nonceDelta);
                 storedNonces.TryGetValue(tx.Signer, out var storedNonce);

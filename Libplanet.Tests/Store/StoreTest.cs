@@ -544,34 +544,34 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void StoreTx()
         {
-            Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id));
-            Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
+            Assert.Null(Fx.Store.GetTransaction(Fx.Transaction1.Id));
+            Assert.Null(Fx.Store.GetTransaction(Fx.Transaction2.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction1);
             Assert.Equal(
                 Fx.Transaction1,
-                Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
+                Fx.Store.GetTransaction(Fx.Transaction1.Id)
             );
-            Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
+            Assert.Null(Fx.Store.GetTransaction(Fx.Transaction2.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction2);
             Assert.Equal(
                 Fx.Transaction1,
-                Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
+                Fx.Store.GetTransaction(Fx.Transaction1.Id)
             );
             Assert.Equal(
                 Fx.Transaction2,
-                Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
+                Fx.Store.GetTransaction(Fx.Transaction2.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Assert.Equal(
                 Fx.Transaction2,
-                Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id)
+                Fx.Store.GetTransaction(Fx.Transaction2.Id)
             );
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
         }
@@ -760,7 +760,7 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void TxAtomicity()
         {
-            Transaction<AtomicityTestAction> MakeTx(
+            Transaction MakeTx(
                 System.Random random,
                 MD5 md5,
                 PrivateKey key,
@@ -775,7 +775,7 @@ namespace Libplanet.Tests.Store
                     ArbitraryBytes = arbitraryBytes.ToImmutableArray(),
                     Md5Digest = digest.ToImmutableArray(),
                 };
-                return Transaction<AtomicityTestAction>.Create(
+                return Transaction.Create<AtomicityTestAction>(
                     txNonce,
                     key,
                     null,
@@ -788,7 +788,7 @@ namespace Libplanet.Tests.Store
             const int taskCount = 5;
             const int txCount = 30;
             var md5Hasher = MD5.Create();
-            Transaction<AtomicityTestAction> commonTx = MakeTx(
+            Transaction commonTx = MakeTx(
                 new System.Random(),
                 md5Hasher,
                 new PrivateKey(),
@@ -802,7 +802,7 @@ namespace Libplanet.Tests.Store
                     PrivateKey key = new PrivateKey();
                     var random = new System.Random();
                     var md5 = MD5.Create();
-                    Transaction<AtomicityTestAction> tx;
+                    Transaction tx;
                     for (int j = 0; j < 50; j++)
                     {
                         Fx.Store.PutTransaction(commonTx);

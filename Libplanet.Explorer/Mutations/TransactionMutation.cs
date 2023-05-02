@@ -34,7 +34,7 @@ namespace Libplanet.Explorer.Mutations
                 {
                     BlockChain<T> chain = _context.BlockChain;
                     byte[] payload = ByteUtil.ParseHex(context.GetArgument<string>("payload"));
-                    Transaction<T> tx = Transaction<T>.Deserialize(payload);
+                    Transaction tx = Transaction.Deserialize(payload);
                     if (!chain.StageTransaction(tx))
                     {
                         throw new ExecutionError(

@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Blocks
             HasTx = TestUtils.ProposeNextBlock(
                 Next,
                 miner: Miner,
-                txs: new List<Transaction<PolymorphicAction<BaseAction>>>
+                txs: new List<Transaction>
                 {
                     TxFixture.TxWithActions,
                 },

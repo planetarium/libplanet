@@ -11,7 +11,7 @@ using Libplanet.Crypto;
 namespace Libplanet.Tx
 {
     /// <summary>
-    /// A <see cref="Transaction{T}"/> without actions and signature.
+    /// A <see cref="Transaction"/> without actions and signature.
     /// </summary>
     public sealed class TxMetadata
     {
@@ -81,7 +81,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// The number of previous <see cref="Transaction{T}"/>s committed by
+        /// The number of previous <see cref="Transaction"/>s committed by
         /// the <see cref="Signer"/> of this transaction.  This nonce is used for preventing
         /// replay attack.
         /// </summary>

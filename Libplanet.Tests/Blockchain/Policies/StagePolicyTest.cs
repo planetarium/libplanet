@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         protected readonly MemoryStoreFixture _fx;
         protected readonly BlockChain<DumbAction> _chain;
         protected readonly PrivateKey _key;
-        protected readonly Transaction<DumbAction>[] _txs;
+        protected readonly Transaction[] _txs;
 
         protected StagePolicyTest()
         {
@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.GenesisBlock);
             _key = new PrivateKey();
             _txs = Enumerable.Range(0, 5).Select(i =>
-                Transaction<DumbAction>.Create(
+                Transaction.Create<DumbAction>(
                     i,
                     _key,
                     _fx.GenesisBlock.Hash,
@@ -45,13 +45,13 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Stage()
         {
             void AssertTxSetEqual(
-                IEnumerable<Transaction<DumbAction>> setOne,
-                IEnumerable<Transaction<DumbAction>> setTwo)
+                IEnumerable<Transaction> setOne,
+                IEnumerable<Transaction> setTwo)
             {
                 Assert.Equal(setOne.OrderBy(tx => tx.Id), setTwo.OrderBy(tx => tx.Id));
             }
 
-            var duplicateNonceTx = Transaction<DumbAction>.Create(
+            var duplicateNonceTx = Transaction.Create<DumbAction>(
                 2,
                 _key,
                 _fx.GenesisBlock.Hash,
@@ -89,13 +89,13 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Unstage()
         {
             void AssertTxSetEqual(
-                IEnumerable<Transaction<DumbAction>> setOne,
-                IEnumerable<Transaction<DumbAction>> setTwo)
+                IEnumerable<Transaction> setOne,
+                IEnumerable<Transaction> setTwo)
             {
                 Assert.Equal(setOne.OrderBy(tx => tx.Id), setTwo.OrderBy(tx => tx.Id));
             }
 
-            foreach (Transaction<DumbAction> tx in _txs)
+            foreach (Transaction tx in _txs)
             {
                 StagePolicy.Stage(_chain, tx);
             }
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Ignores()
         {
             // By default, nothing is ignored.
-            foreach (Transaction<DumbAction> tx in _txs)
+            foreach (Transaction tx in _txs)
             {
                 Assert.False(StagePolicy.Ignores(_chain, tx.Id));
             }
@@ -163,7 +163,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void Get()
         {
-            foreach (Transaction<DumbAction> tx in _txs)
+            foreach (Transaction tx in _txs)
             {
                 Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             StagePolicy.Stage(_chain, _txs[0]);
             Assert.Equal(_txs[0], StagePolicy.Get(_chain, _txs[0].Id));
 
-            foreach (Transaction<DumbAction> tx in _txs.Skip(1))
+            foreach (Transaction tx in _txs.Skip(1))
             {
                 Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }
@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             StagePolicy.Unstage(_chain, _txs[0].Id);
             Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
 
-            foreach (Transaction<DumbAction> tx in _txs.Skip(1))
+            foreach (Transaction tx in _txs.Skip(1))
             {
                 Assert.Null(StagePolicy.Get(_chain, tx.Id));
             }

@@ -26,12 +26,12 @@ namespace Libplanet.Blockchain
         /// </para>
         /// <para>
         /// Make sure that the nonces for <paramref name="transactions"/> are correct and
-        /// each <see cref="Transaction{T}.GenesisHash"/> is set to <see langword="null"/>.
+        /// each <see cref="Transaction.GenesisHash"/> is set to <see langword="null"/>.
         /// </para>
         /// </summary>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
-        /// <param name="transactions">A list of <see cref="Transaction{T}"/>s to include
+        /// <param name="transactions">A list of <see cref="Transaction"/>s to include
         /// in the genesis <see cref="Block{T}"/>.</param>
         /// <param name="timestamp">The timestamp of the genesis block.  If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
@@ -48,7 +48,7 @@ namespace Libplanet.Blockchain
         // nativeTokenPredicate.  (Or at least there should be such an overload.)
         public static Block<T> ProposeGenesisBlock(
             PrivateKey privateKey = null,
-            ImmutableList<Transaction<T>> transactions = null,
+            ImmutableList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
@@ -56,7 +56,7 @@ namespace Libplanet.Blockchain
             privateKey ??= new PrivateKey();
             transactions = transactions is { } txs
                 ? txs.OrderBy(tx => tx.Id).ToImmutableList()
-                : ImmutableList<Transaction<T>>.Empty;
+                : ImmutableList<Transaction>.Empty;
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
@@ -79,7 +79,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// <para>
-        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction"/>s.
         /// </para>
         /// <para>
         /// By default, if successful, a policy adhering <see cref="Block{T}"/> is produced with
@@ -98,7 +98,7 @@ namespace Libplanet.Blockchain
         public Block<T> ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
-            IComparer<Transaction<T>> txPriority = null)
+            IComparer<Transaction> txPriority = null)
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
@@ -108,7 +108,7 @@ namespace Libplanet.Blockchain
                 index,
                 prevHash);
 
-            ImmutableList<Transaction<T>> transactions;
+            ImmutableList<Transaction> transactions;
             try
             {
                 transactions = GatherTransactionsToPropose(index, txPriority);
@@ -136,23 +136,23 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// <para>
         /// Proposes a next <see cref="Block{T}"/> using a specified
-        /// list of <see cref="Transaction{T}"/>s.
+        /// list of <see cref="Transaction"/>s.
         /// </para>
         /// <para>
-        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction{T}})"/>,
+        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction})"/>,
         /// this may result in a <see cref="Block{T}"/> that does not conform to the
         /// <see cref="Policy"/>.
         /// </para>
         /// </summary>
         /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
         /// </param>
-        /// <param name="transactions">The list of <see cref="Transaction{T}"/>s to include.</param>
+        /// <param name="transactions">The list of <see cref="Transaction"/>s to include.</param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block{T}"/>.</param>
         /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
         internal Block<T> ProposeBlock(
             PrivateKey proposer,
-            ImmutableList<Transaction<T>> transactions,
+            ImmutableList<Transaction> transactions,
             BlockCommit lastCommit)
         {
             long index = Count;
@@ -183,9 +183,9 @@ namespace Libplanet.Blockchain
                 DetermineBlockStateRootHash(preEvaluationBlock, out _));
 
         /// <summary>
-        /// Gathers <see cref="Transaction{T}"/>s for proposing a <see cref="Block{T}"/> for
-        /// index <pararef name="index"/>.  Gathered <see cref="Transaction{T}"/>s are
-        /// guaranteed to satisified the following <see cref="Transaction{T}"/> related
+        /// Gathers <see cref="Transaction"/>s for proposing a <see cref="Block{T}"/> for
+        /// index <pararef name="index"/>.  Gathered <see cref="Transaction"/>s are
+        /// guaranteed to satisified the following <see cref="Transaction"/> related
         /// policies:
         /// <list type="bullet">
         ///     <item><description>
@@ -205,13 +205,13 @@ namespace Libplanet.Blockchain
         /// <param name="index">The index of the <see cref="Block{T}"/> to propose.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s
+        /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction"/>s
         /// to propose.</returns>
         /// <exception cref="InvalidOperationException">Thrown when not all policies
         /// can be satisfied.</exception>
-        internal ImmutableList<Transaction<T>> GatherTransactionsToPropose(
+        internal ImmutableList<Transaction> GatherTransactionsToPropose(
             long index,
-            IComparer<Transaction<T>> txPriority = null) =>
+            IComparer<Transaction> txPriority = null) =>
             GatherTransactionsToPropose(
                 Policy.GetMaxTransactionsBytes(index),
                 Policy.GetMaxTransactionsPerBlock(index),
@@ -220,52 +220,52 @@ namespace Libplanet.Blockchain
                 txPriority);
 
         /// <summary>
-        /// Gathers <see cref="Transaction{T}"/>s for proposing a next block
-        /// from the current set of staged <see cref="Transaction{T}"/>s.
+        /// Gathers <see cref="Transaction"/>s for proposing a next block
+        /// from the current set of staged <see cref="Transaction"/>s.
         /// </summary>
         /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.</param>
-        /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
+        /// <param name="maxTransactions">The maximum number of <see cref="Transaction"/>s
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
-        /// <see cref="Transaction{T}"/>s with the same signer allowed.</param>
-        /// <param name="minTransactions">The minimum number of <see cref="Transaction{T}"/>s
+        /// <see cref="Transaction"/>s with the same signer allowed.</param>
+        /// <param name="minTransactions">The minimum number of <see cref="Transaction"/>s
         /// allowed.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction{T}"/>s with its
+        /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction"/>s with its
         /// count not exceeding <paramref name="maxTransactions"/> and the number of
-        /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
+        /// <see cref="Transaction"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when not all policies
         /// can be satisfied.</exception>
-        internal ImmutableList<Transaction<T>> GatherTransactionsToPropose(
+        internal ImmutableList<Transaction> GatherTransactionsToPropose(
             long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             int minTransactions,
-            IComparer<Transaction<T>> txPriority = null)
+            IComparer<Transaction> txPriority = null)
         {
             long index = Count;
-            ImmutableList<Transaction<T>> stagedTransactions = ListStagedTransactions(txPriority);
+            ImmutableList<Transaction> stagedTransactions = ListStagedTransactions(txPriority);
             _logger.Information(
                 "Gathering transactions to propose for block #{Index} from {TxCount} " +
                 "staged transactions...",
                 index,
                 stagedTransactions.Count);
 
-            var transactions = new List<Transaction<T>>();
+            var transactions = new List<Transaction>();
 
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
             List estimatedEncoding = BlockMarshaler.MarshalTransactions(
-                new List<Transaction<T>>());
+                new List<Transaction>());
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
             var toProposeCounts = new Dictionary<Address, int>();
 
             foreach (
-                (Transaction<T> tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
+                (Transaction tx, int i) in stagedTransactions.Select((val, idx) => (val, idx)))
             {
                 _logger.Verbose(
                     "Validating tx {Iter}/{Total} {TxId} to include in block #{Index}...",

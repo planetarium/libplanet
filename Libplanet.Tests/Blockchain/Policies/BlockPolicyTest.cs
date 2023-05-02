@@ -74,7 +74,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var validKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -103,7 +103,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             //Invalid Transaction with inner-exception
             TxPolicyViolationException IsSignerValidWithInnerException(
-                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+                BlockChain<DumbAction> chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)

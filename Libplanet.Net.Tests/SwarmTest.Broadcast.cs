@@ -304,7 +304,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
             BlockChain<DumbAction> chainC = swarmC.BlockChain;
 
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 chainA.Genesis.Hash,
@@ -413,7 +413,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
             BlockChain<DumbAction> chainC = swarmC.BlockChain;
 
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 chainA.Genesis.Hash,
@@ -473,7 +473,7 @@ namespace Libplanet.Net.Tests
                 swarms[i] = await CreateSwarm(blockChains[i]).ConfigureAwait(false);
             }
 
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+            Transaction tx = Transaction.Create<DumbAction>(
                 0,
                 new PrivateKey(),
                 blockChains[size - 1].Genesis.Hash,
@@ -732,7 +732,7 @@ namespace Libplanet.Net.Tests
 
             receiverRenderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
 
-            Transaction<DumbAction>[] transactions =
+            Transaction[] transactions =
             {
                 fx1.MakeTransaction(
                     new[]
@@ -975,7 +975,7 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 new[] { new DumbAction(address, "quz") });
 
-            var tx4 = Transaction<DumbAction>.Create(
+            var tx4 = Transaction.Create<DumbAction>(
                 4,
                 privateKey,
                 swarm1.BlockChain.Genesis.Hash,
@@ -1001,7 +1001,7 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new[] { tx1, tx2, tx3 }.ToHashSet(),
                     replies.Select(
-                        m => Transaction<DumbAction>.Deserialize(
+                        m => Transaction.Deserialize(
                             ((TxMsg)m.Content).Payload)).ToHashSet());
             }
             finally
@@ -1051,11 +1051,11 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> block1 = ProposeNextBlock(
                 receiver.BlockChain.Genesis,
                 key,
-                new Transaction<DumbAction>[] { });
+                new Transaction[] { });
             Block<DumbAction> block2 = ProposeNextBlock(
                 block1,
                 key,
-                new Transaction<DumbAction>[] { });
+                new Transaction[] { });
 
             try
             {

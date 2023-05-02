@@ -14,7 +14,7 @@ namespace Libplanet.Blocks
     /// The complete block including all block contents and action evaluation.
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
+    /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
     public sealed class Block<T> :
         IPreEvaluationBlock<T>,
         IPreEvaluationBlock,
@@ -57,7 +57,7 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="header"/> has an invalid
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>.</exception>
-        public Block(IBlockHeader header, IEnumerable<Transaction<T>> transactions)
+        public Block(IBlockHeader header, IEnumerable<Transaction> transactions)
             : this(
                 new PreEvaluationBlock<T>(header, transactions),
                 (header.StateRootHash, header.Signature, header.Hash))
@@ -131,7 +131,7 @@ namespace Libplanet.Blocks
         public BlockCommit? LastCommit => _preEvaluationBlock.LastCommit;
 
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        public IReadOnlyList<Transaction<T>> Transactions => _preEvaluationBlock.Transactions;
+        public IReadOnlyList<Transaction> Transactions => _preEvaluationBlock.Transactions;
 
         /// <inheritdoc cref="IBlockContent.Transactions"/>
         IImmutableSet<ITransaction> IBlockContent.Transactions =>

@@ -16,7 +16,7 @@ namespace Libplanet.Blocks
     /// hash.
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
+    /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
     public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>, IPreEvaluationBlock
         where T : IAction, new()
     {
@@ -25,7 +25,7 @@ namespace Libplanet.Blocks
 
         public PreEvaluationBlock(
             IPreEvaluationBlockHeader preEvaluationBlockHeader,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction> transactions)
             : this(
                 new BlockContent<T>(preEvaluationBlockHeader, transactions),
                 preEvaluationBlockHeader.PreEvaluationHash)
@@ -55,7 +55,7 @@ namespace Libplanet.Blocks
         public PreEvaluationBlockHeader Header => _header;
 
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        public IReadOnlyList<Transaction<T>> Transactions => _content.Transactions;
+        public IReadOnlyList<Transaction> Transactions => _content.Transactions;
 
         /// <inheritdoc cref="IBlockContent.Transactions" />
         IImmutableSet<ITransaction> IBlockContent.Transactions =>

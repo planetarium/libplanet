@@ -31,8 +31,8 @@ namespace Libplanet.Action
         /// that <paramref name="action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode.
         /// </param>
-        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of
-        /// the <see cref="Transaction{T}"/> that <paramref name="action"/> belongs to.
+        /// <param name="txid">The <see cref="Transaction.Id"/> of
+        /// the <see cref="Transaction"/> that <paramref name="action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode or if <paramref name="action"/> is
         /// a <see cref="IBlockPolicy{T}.BlockAction"/>.
         /// </param>
@@ -135,7 +135,7 @@ namespace Libplanet.Action
         public long? BlockIndex { get; }
 
         /// <summary>
-        /// The <see cref="Transaction{T}.Id"/> of the <see cref="Transaction{T}"/> that
+        /// The <see cref="Transaction.Id"/> of the <see cref="Transaction"/> that
         /// <see cref="Action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode or
         /// if <see cref="Action"/> is a <see cref="IBlockPolicy{T}.BlockAction"/>.

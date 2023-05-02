@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Tx
             );
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
-            Transaction<DumbAction> tx = invoice.Sign<DumbAction>(privateKey, 123L);
+            Transaction tx = invoice.Sign(privateKey, 123L);
             Assert.Equal<ITxInvoice>(invoice, tx);
             Assert.Equal<ITxSigningMetadata>(new TxSigningMetadata(privateKey.PublicKey, 123L), tx);
             Assert.True(new UnsignedTx(tx).VerifySignature(tx.Signature.ToImmutableArray()));

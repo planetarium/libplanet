@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -67,11 +66,8 @@ namespace Libplanet.Tx
                 .AddRange(unsignedTx.MarshalTxSigningMetadata());
 
         [Pure]
-        public static Bencodex.Types.Dictionary MarshalTransaction<T>(
-            this Transaction<T> transaction
-        )
-            where T : IAction, new()
-        =>
+        public static Bencodex.Types.Dictionary MarshalTransaction(
+            this Transaction transaction) =>
             transaction.MarshalUnsignedTx().Add(SignatureKey, transaction.Signature);
 
         [Pure]
@@ -128,8 +124,7 @@ namespace Libplanet.Tx
                 : (ImmutableArray<byte>?)null;
 
         [Pure]
-        public static Transaction<T> UnmarshalTransaction<T>(Bencodex.Types.Dictionary dictionary)
-            where T : IAction, new()
+        public static Transaction UnmarshalTransaction(Bencodex.Types.Dictionary dictionary)
         {
             ImmutableArray<byte>? sig = UnmarshalTransactionSignature(dictionary);
             if (!(sig is { } signature))
@@ -137,7 +132,7 @@ namespace Libplanet.Tx
                 throw new DecodingException("Transaction signature is missing.");
             }
 
-            return UnmarshalUnsignedTx(dictionary).Verify<T>(signature);
+            return UnmarshalUnsignedTx(dictionary).Verify(signature);
         }
 
         [Pure]
@@ -162,28 +157,23 @@ namespace Libplanet.Tx
         }
 
         [Pure]
-        internal static Transaction<T> UnmarshalTransactionWithoutVerification<T>(
-            Bencodex.Types.Dictionary dictionary
-        )
-            where T : IAction, new()
+        internal static Transaction UnmarshalTransactionWithoutVerification(
+            Bencodex.Types.Dictionary dictionary)
         {
             ImmutableArray<byte> sig
                 = dictionary.TryGetValue(SignatureKey, out IValue s) && s is Binary bin
                 ? bin
                 : new Binary(new byte[0]);
-            return UnmarshalUnsignedTx(dictionary).CombineWithoutVerification<T>(sig);
+            return UnmarshalUnsignedTx(dictionary).CombineWithoutVerification(sig);
         }
 
         [Pure]
-        internal static Transaction<T> DeserializeTransactionWithoutVerification<T>(
-            byte[] bytes
-        )
-            where T : IAction, new()
+        internal static Transaction DeserializeTransactionWithoutVerification(byte[] bytes)
         {
             IValue node = Codec.Decode(bytes);
             if (node is Bencodex.Types.Dictionary dict)
             {
-                return UnmarshalTransactionWithoutVerification<T>(dict);
+                return UnmarshalTransactionWithoutVerification(dict);
             }
 
             throw new DecodingException(
@@ -193,13 +183,11 @@ namespace Libplanet.Tx
         }
 
         [Pure]
-        internal static Transaction<T> DeserializeTransactionWithoutVerification<T>(
-            ImmutableArray<byte> bytes
-        )
-            where T : IAction, new()
+        internal static Transaction DeserializeTransactionWithoutVerification(
+            ImmutableArray<byte> bytes)
         {
             byte[] arrayView = Unsafe.As<ImmutableArray<byte>, byte[]>(ref bytes);
-            return DeserializeTransactionWithoutVerification<T>(arrayView);
+            return DeserializeTransactionWithoutVerification(arrayView);
         }
 
         // TODO: SerializeTransaction, DeserializeTransaction

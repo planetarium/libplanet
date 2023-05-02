@@ -457,7 +457,7 @@ namespace Libplanet.Net.Tests
                 var action = new ThrowException { ThrowOnExecution = true };
 
                 var chainId = receiverChain.Id;
-                Transaction<ThrowException> tx = Transaction<ThrowException>.Create(
+                Transaction tx = Transaction.Create<ThrowException>(
                     0,
                     new PrivateKey(),
                     minerSwarm.BlockChain.Genesis.Hash,
@@ -1123,7 +1123,7 @@ namespace Libplanet.Net.Tests
             Swarm<DumbAction> seed = await CreateSwarm(seedChain).ConfigureAwait(false);
             Swarm<DumbAction> receiver = await CreateSwarm(receiverChain).ConfigureAwait(false);
 
-            List<Transaction<DumbAction>> transactions = new List<Transaction<DumbAction>>();
+            List<Transaction> transactions = new List<Transaction>();
             for (int i = 0; i < 10; i++)
             {
                 var transaction = seedChain.MakeTransaction(

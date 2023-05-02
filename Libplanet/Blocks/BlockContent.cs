@@ -13,14 +13,14 @@ namespace Libplanet.Blocks
     /// block that is not yet mined.
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
+    /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
     /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
-    /// <see cref="Transaction{T}"/>, this type is mutable.</remarks>
+    /// <see cref="Transaction"/>, this type is mutable.</remarks>
     public sealed class BlockContent<T> : IBlockContent<T>
         where T : IAction, new()
     {
         private BlockMetadata _blockMetadata;
-        private IReadOnlyList<Transaction<T>> _transactions;
+        private IReadOnlyList<Transaction> _transactions;
 
         /// <summary>
         /// Creates a new <see cref="BlockContent{T}"/> instance filled with given
@@ -47,14 +47,14 @@ namespace Libplanet.Blocks
         /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
         /// <paramref name="transactions"/>.</exception>
         /// <seealso cref="BlockMetadata"/>
-        public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
+        public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction> transactions)
             : this(new BlockMetadata(metadata), transactions)
         {
         }
 
         /// <summary>
         /// Creates a new <see cref="BlockContent{T}"/> instance with given
-        /// <paramref name="metadata"/> and without any <see cref="Transaction{T}"/>s.
+        /// <paramref name="metadata"/> and without any <see cref="Transaction"/>s.
         /// </summary>
         /// <param name="metadata">The <see cref="BlockMetadata"/> to include in the block.</param>
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given
@@ -62,7 +62,7 @@ namespace Libplanet.Blocks
         /// <see lagnword="null"/>.</exception>
         public BlockContent(
             BlockMetadata metadata)
-            : this(metadata, new List<Transaction<T>>())
+            : this(metadata, new List<Transaction>())
         {
         }
 
@@ -85,10 +85,10 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
         /// inconsistent genesis hashes.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="transactions"/> is
-        /// not ordered by <see cref="Transaction{T}.Id"/>s.</exception>
+        /// not ordered by <see cref="Transaction.Id"/>s.</exception>
         public BlockContent(
             BlockMetadata metadata,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction> transactions)
         {
             // Check if TxHash provided by metadata is valid.
             HashDigest<SHA256>? derivedTxHash = DeriveTxHash(transactions);
@@ -104,12 +104,12 @@ namespace Libplanet.Blocks
             // Check if transactions are ordered with valid nonces.
             transactions.ValidateTxNonces(metadata.Index);
             TxId? prevId = null;
-            foreach (Transaction<T> tx in transactions)
+            foreach (Transaction tx in transactions)
             {
                 if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
                 {
                     throw new ArgumentException(
-                        $"Transactions must be ordered by their {nameof(Transaction<T>.Id)}s.",
+                        $"Transactions must be ordered by their {nameof(Transaction.Id)}s.",
                         nameof(transactions));
                 }
 
@@ -152,31 +152,31 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Transactions belonging to the block.
         /// </summary>
-        /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
-        public IReadOnlyList<Transaction<T>> Transactions => _transactions;
+        /// <remarks>This is always ordered by <see cref="Transaction.Id"/>.</remarks>
+        public IReadOnlyList<Transaction> Transactions => _transactions;
 
         /// <summary>
         /// Derives <see cref="IBlockMetadata.TxHash"/> from given <paramref name="transactions"/>.
         /// </summary>
         /// <param name="transactions">The transactions to derive
         /// <see cref="IBlockMetadata.TxHash"/> from.  This must be ordered by
-        /// <see cref="Transaction{T}.Id"/>.</param>
+        /// <see cref="Transaction.Id"/>.</param>
         /// <returns>The derived <see cref="IBlockMetadata.TxHash"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="transactions"/> are
-        /// not ordered by their <see cref="Transaction{T}.Id"/>s.</exception>
-        public static HashDigest<SHA256>? DeriveTxHash(IEnumerable<Transaction<T>> transactions)
+        /// not ordered by their <see cref="Transaction.Id"/>s.</exception>
+        public static HashDigest<SHA256>? DeriveTxHash(IEnumerable<Transaction> transactions)
         {
             TxId? prevId = null;
             SHA256 hasher = SHA256.Create();
 
             // Bencodex lists look like: l...e
             hasher.TransformBlock(new byte[] { 0x6c }, 0, 1, null, 0);  // "l"
-            foreach (Transaction<T> tx in transactions)
+            foreach (Transaction tx in transactions)
             {
                 if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
                 {
                     throw new ArgumentException(
-                        $"Transactions must be ordered by their {nameof(Transaction<T>.Id)}s.",
+                        $"Transactions must be ordered by their {nameof(Transaction.Id)}s.",
                         nameof(transactions)
                     );
                 }

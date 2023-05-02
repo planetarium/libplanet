@@ -26,10 +26,10 @@ namespace Libplanet.Store
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
-        /// <see cref="Transaction{T}"/> ids the <see cref="Block{T}"/> has.
+        /// <see cref="Transaction"/> ids the <see cref="Block{T}"/> has.
         /// </summary>
         /// <param name="header"><see cref="BlockHeader"/> of the <see cref="Block{T}"/>.</param>
-        /// <param name="txIds"><see cref="Transaction{T}"/> ids the <see cref="Block{T}"/> has.
+        /// <param name="txIds"><see cref="Transaction"/> ids the <see cref="Block{T}"/> has.
         /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
@@ -102,9 +102,9 @@ namespace Libplanet.Store
         public ImmutableArray<byte>? Signature { get; }
 
         /// <summary>
-        /// The <see cref="Transaction{T}.Id"/>s of <see cref="Transaction{T}"/>s in
+        /// The <see cref="Transaction.Id"/>s of <see cref="Transaction"/>s in
         /// a <see cref="Block{T}"/>.  This is <em>not</em> necessarily ordered by
-        /// <see cref="Transaction{T}.Id"/>.
+        /// <see cref="Transaction.Id"/>.
         /// </summary>
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 

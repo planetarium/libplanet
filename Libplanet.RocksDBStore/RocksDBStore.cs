@@ -662,11 +662,11 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override Transaction<T> GetTransaction<T>(TxId txid)
+        public override Transaction GetTransaction(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
             {
-                return (Transaction<T>)cachedTx;
+                return (Transaction)cachedTx;
             }
 
             byte[] key = TxKey(txid);
@@ -691,8 +691,8 @@ namespace Libplanet.RocksDBStore
 
                 byte[] txBytes = txDb.Get(key);
 
-                Transaction<T> tx =
-                    TxMarshaler.DeserializeTransactionWithoutVerification<T>(txBytes);
+                Transaction tx =
+                    TxMarshaler.DeserializeTransactionWithoutVerification(txBytes);
                 _txCache.AddOrUpdate(txid, tx);
                 return tx;
             }
@@ -708,7 +708,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void PutTransaction<T>(Transaction<T> tx)
+        public override void PutTransaction(Transaction tx)
         {
             if (_txCache.ContainsKey(tx.Id))
             {
@@ -853,7 +853,7 @@ namespace Libplanet.RocksDBStore
 
             long timestamp = block.Timestamp.ToUnixTimeSeconds();
 
-            foreach (Transaction<T> tx in block.Transactions)
+            foreach (Transaction tx in block.Transactions)
             {
                 PutTransaction(tx);
             }
