@@ -62,6 +62,8 @@ To be released.
         `TxActionList` is pretty much the old `TxCustomActionsList`.
      -  Changed the JSON representation of `TxActionList` to be more simple.
      -  Removed `TxSystemActionList` and `TxCustomActionsList`
+ -  Changed `Transaction<T>` to `Transaction` to be non-generic.  [[#3121]]
+     -  `Transaction.Create<T>()` now requires type parameter `T`.
 
 ### Backward-incompatible network protocol changes
 
@@ -106,6 +108,7 @@ To be released.
 [#3111]: https://github.com/planetarium/libplanet/pull/3111
 [#3112]: https://github.com/planetarium/libplanet/pull/3112
 [#3116]: https://github.com/planetarium/libplanet/pull/3116
+[#3121]: https://github.com/planetarium/libplanet/pull/3121
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
