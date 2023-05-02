@@ -754,18 +754,20 @@ namespace Libplanet.Net.Tests
                     privateKey: privateKey),
             };
 
-            Block block1 = ProposeNext(
-                blockChain.Genesis,
-                new[] { transactions[0] },
-                miner: GenesisProposer.PublicKey
-            ).Evaluate(GenesisProposer, blockChain);
+            Block block1 = blockChain.EvaluateAndSign(
+                ProposeNext(
+                    blockChain.Genesis,
+                    new[] { transactions[0] },
+                    miner: GenesisProposer.PublicKey),
+                GenesisProposer);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
-            Block block2 = ProposeNext(
-                block1,
-                new[] { transactions[1] },
-                miner: GenesisProposer.PublicKey,
-                lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)
-            ).Evaluate(GenesisProposer, blockChain);
+            Block block2 = blockChain.EvaluateAndSign(
+                ProposeNext(
+                    block1,
+                    new[] { transactions[1] },
+                    miner: GenesisProposer.PublicKey,
+                    lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0)),
+                GenesisProposer);
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
             try

@@ -127,11 +127,12 @@ namespace Libplanet.Net.Tests
             var blocks = new List<Block>();
             foreach (int i in Enumerable.Range(0, 12))
             {
-                Block block = ProposeNext(
-                    previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                    miner: ChainPrivateKey.PublicKey,
-                    lastCommit: CreateBlockCommit(minerChain.Tip)
-                ).Evaluate(ChainPrivateKey, minerChain);
+                Block block = minerChain.EvaluateAndSign(
+                    ProposeNext(
+                        previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
+                        miner: ChainPrivateKey.PublicKey,
+                        lastCommit: CreateBlockCommit(minerChain.Tip)),
+                    ChainPrivateKey);
                 blocks.Add(block);
                 if (i != 11)
                 {
@@ -466,13 +467,14 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow
                 );
 
-                Block block = ProposeNext(
-                    minerChain.Tip,
-                    new[] { tx },
-                    miner: ChainPrivateKey.PublicKey,
-                    blockInterval: TimeSpan.FromSeconds(1),
-                    lastCommit: CreateBlockCommit(minerChain.Tip)
-                ).Evaluate(ChainPrivateKey, minerChain);
+                Block block = minerChain.EvaluateAndSign(
+                    ProposeNext(
+                        minerChain.Tip,
+                        new[] { tx },
+                        miner: ChainPrivateKey.PublicKey,
+                        blockInterval: TimeSpan.FromSeconds(1),
+                        lastCommit: CreateBlockCommit(minerChain.Tip)),
+                    ChainPrivateKey);
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
 
                 await receiverSwarm.PreloadAsync();
@@ -953,11 +955,12 @@ namespace Libplanet.Net.Tests
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block2, CreateBlockCommit(block2));
 
-            Block block = ProposeNext(
-                minerChain2.Tip,
-                miner: ChainPrivateKey.PublicKey,
-                lastCommit: CreateBlockCommit(minerChain2.Tip)
-            ).Evaluate(ChainPrivateKey, minerChain2);
+            Block block = minerChain2.EvaluateAndSign(
+                ProposeNext(
+                    minerChain2.Tip,
+                    miner: ChainPrivateKey.PublicKey,
+                    lastCommit: CreateBlockCommit(minerChain2.Tip)),
+                ChainPrivateKey);
             minerChain2.Append(block, CreateBlockCommit(block));
 
             Assert.True(minerChain1.Count > minerChain2.Count);
