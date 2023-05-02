@@ -86,14 +86,14 @@
 An in memory implementation of the <a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy&lt;T&gt;</a>.
 </p>
 <p>
-This implementation holds on to every unconfirmed <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> except
+This implementation holds on to every unconfirmed <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> except
 for the following reasons:
-<ul><li>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has been specifically marked to
-        be ignored due to <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> not being valid.</li><li>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has expired due to its staleness.
+<ul><li>A <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> has been specifically marked to
+        be ignored due to <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> not being valid.</li><li>A <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> has expired due to its staleness.
 </li></ul>
 
 <p>
-Additionally, any <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> with a lower nonce than that of returned by
+Additionally, any <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> with a lower nonce than that of returned by
 the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> is masked and filtered by default.
 </p>
 </section>
@@ -106,7 +106,7 @@ An interface to determine if consecutive <a class="xref" href="Libplanet.Blocks.
 <p>
 An implementation of this interface should perform <em>all policy dependent checks</em>,
 such as whether a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has the right difficulty,
-a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> has the right signer, etc.
+a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> has the right signer, etc.
 </p>
 <p>
 Note that all index dependent sub-policies are ignored for genesis <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.

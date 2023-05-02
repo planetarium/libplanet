@@ -1137,13 +1137,13 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/MemoryStore.cs/#L137">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction``1(Libplanet.Tx.TxId)">IStore.GetTransaction&lt;T&gt;(TxId)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction(Libplanet.Tx.TxId)">IStore.GetTransaction(TxId)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
@@ -1155,8 +1155,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Transaction&lt;T&gt; IStore.GetTransaction&lt;T&gt;(TxId txid)
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">Transaction IStore.GetTransaction(TxId txid)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1185,22 +1184,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
+        <td><a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -1773,13 +1757,13 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_Libplanet_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PutTransaction(Libplanet.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/MemoryStore.cs/#L142">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction``1(Libplanet.Tx.Transaction{``0})">IStore.PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_Libplanet_Tx_Transaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction(Libplanet.Tx.Transaction)">IStore.PutTransaction(Transaction)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
@@ -1791,8 +1775,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void IStore.PutTransaction&lt;T&gt;(Transaction&lt;T&gt; tx)
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">void IStore.PutTransaction(Transaction tx)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1805,23 +1788,8 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a></td>
         <td><span class="parametername">tx</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
         <td></td>
       </tr>
     </tbody>

@@ -105,8 +105,8 @@ reinforcements, breakages, trades, that are non-trivial and affect game states
 should be recorded to the append-only log.  Each log has its own digital
 signature to prove that the corresponding gamer is responsible.</p>
 <p>We call the unit of such pair of log and its signature a
-<a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, and it consists of multiple
-<a class="xref" href="../api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.  How transactions and actions grouped is
+@&quot;Libplanet.Tx.Transaction`1&quot;, and it consists of multiple
+@&quot;Libplanet.Tx.Transaction`1.Actions&quot;.  How transactions and actions grouped is
 left to a game engineer's discretion.  For example, if there are four actions
 like <em>A</em> to <em>D</em>, these can be grouped altogether (e.g., <em>{A, B, C, D}</em>),
 or be into two or three groups (e.g., <em>{A} &amp; {B, C, D}</em>), or rather have
@@ -139,11 +139,11 @@ throughput, it is nonsense to group two turns of actions into one transaction.
 A player's next turn can start only after the opponent's current turn is
 determined.  From this perspective, a transaction represents a unit of
 dependency, rather than a unit of throughput.</p>
-<p>At a code level, another difference between <a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> and
-<a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> is that <a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> is not
+<p>At a code level, another difference between @&quot;Libplanet.Tx.Transaction`1&quot; and
+<a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> is that @&quot;Libplanet.Tx.Transaction`1&quot; is not
 extensible whereas <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> is.  By design, an extension
 point for game engineers is <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a>.  To sum up,
-<a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> purposes to control synchronization on
+@&quot;Libplanet.Tx.Transaction`1&quot; purposes to control synchronization on
 the network and <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> purposes to implement the actual
 game logic.</p>
 <h2 id="accounts-and-addresses">Accounts and addresses</h2>

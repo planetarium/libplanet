@@ -164,7 +164,7 @@ public class MyAction : IAction
                     throw new Exception(
                         &quot;TargetAddress of CreateCharacter action &quot; +
                         &quot;only can be the same address to the &quot; +
-                        &quot;Transaction&lt;T>.Signer.&quot;);
+                        &quot;Transaction.Signer.&quot;);
                 else if (!(state is null))
                     throw new Exception(
                         &quot;Character was already created.&quot;);

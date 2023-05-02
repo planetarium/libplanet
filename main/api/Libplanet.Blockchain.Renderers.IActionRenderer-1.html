@@ -113,7 +113,7 @@ times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRende
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_IActionRenderer_1_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Although <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s affect the states in
+  <div class="markdown level0 remarks"><p>Although <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s affect the states in
 the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> all or nothing at all (i.e., atomically),
 <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> receives all action-related events
 (<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IAction, IActionContext, IAccountStateDelta)</a>/<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IAction, IActionContext, Exception)</a>) <em>immediately</em>
@@ -190,7 +190,7 @@ once the <code data-dev-comment-type="paramref" class="paramref">action</code> h
 <p>The reason why the parameter <code data-dev-comment-type="paramref" class="paramref">action</code> takes
 <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> instead of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is because it can take
 block actions (<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>) besides transaction
-actions (<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>).</p>
+actions (<a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Actions">Actions</a>).</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -248,7 +248,7 @@ That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_
 <p>The reason why the parameter <code data-dev-comment-type="paramref" class="paramref">action</code> takes
 <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> instead of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is because it can take
 block actions (<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_BlockAction">BlockAction</a>) besides transaction
-actions (<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>).</p>
+actions (<a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Actions">Actions</a>).</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>

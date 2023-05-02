@@ -364,7 +364,7 @@ the specified <code data-dev-comment-type="paramref" class="paramref">blockHash<
   </span>
   <a id="Libplanet_Store_DefaultStore_ContainsTransaction_" data-uid="Libplanet.Store.DefaultStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)">ContainsTransaction(TxId)</h4>
-  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>
 the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -385,7 +385,7 @@ the specified <code data-dev-comment-type="paramref" class="paramref">txId</code
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txId</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>
 to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
 </td>
       </tr>
@@ -402,7 +402,7 @@ to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">ISto
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>
 with the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>; otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
@@ -719,7 +719,7 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txId</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
 </td>
       </tr>
       <tr>
@@ -845,7 +845,7 @@ block indexes.</p>
   </span>
   <a id="Libplanet_Store_DefaultStore_ForkTxNonces_" data-uid="Libplanet.Store.DefaultStore.ForkTxNonces*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ForkTxNonces_System_Guid_System_Guid_" data-uid="Libplanet.Store.DefaultStore.ForkTxNonces(System.Guid,System.Guid)">ForkTxNonces(Guid, Guid)</h4>
-  <div class="markdown level1 summary"><p>Forks <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>s from
+  <div class="markdown level1 summary"><p>Forks <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce">Nonce</a>s from
 <code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> to
 <code data-dev-comment-type="paramref" class="paramref">destinationChainId</code>.</p>
 </div>
@@ -868,14 +868,14 @@ block indexes.</p>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">sourceChainId</span></td>
         <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>s to fork.</p>
+<a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce">Nonce</a>s to fork.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">destinationChainId</span></td>
         <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of destination
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>s.</p>
+<a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce">Nonce</a>s.</p>
 </td>
       </tr>
     </tbody>
@@ -1156,13 +1156,13 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L330">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetTransaction_" data-uid="Libplanet.Store.DefaultStore.GetTransaction*"></a>
-  <h4 id="Libplanet_Store_DefaultStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
+  <h4 id="Libplanet_Store_DefaultStore_GetTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.GetTransaction(Libplanet.Tx.TxId)">GetTransaction(TxId)</h4>
   <div class="markdown level1 summary"><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
 the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
 for some complex indices.</p>
@@ -1188,8 +1188,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Transaction&lt;T&gt; GetTransaction&lt;T&gt;(TxId txid)
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public override Transaction GetTransaction(TxId txid)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1218,29 +1217,14 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
+        <td><a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_">BaseStore.GetTransaction&lt;T&gt;(TxId)</a></div>
-  <h5 id="Libplanet_Store_DefaultStore_GetTransaction__1_Libplanet_Tx_TxId__seealso">See Also</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTransaction_Libplanet_Tx_TxId_">BaseStore.GetTransaction(TxId)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_GetTransaction_Libplanet_Tx_TxId__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
   </div>
@@ -1280,7 +1264,7 @@ execution to retrieve.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txid</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> of the recorded transaction
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Id">Id</a> of the recorded transaction
 execution to retrieve.</p>
 </td>
       </tr>
@@ -1319,7 +1303,7 @@ execution to retrieve.</p>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetTxNonce_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetTxNonce_System_Guid_Libplanet_Address_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce(System.Guid,Libplanet.Address)">GetTxNonce(Guid, Address)</h4>
-  <div class="markdown level1 summary"><p>Gets <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce of the
+  <div class="markdown level1 summary"><p>Gets <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonce of the
 <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1340,14 +1324,14 @@ execution to retrieve.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
-        <td><p>The ID of the chain to get <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+        <td><p>The ID of the chain to get <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonce.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
         <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to get
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+<a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonce.</p>
 </td>
       </tr>
     </tbody>
@@ -1363,8 +1347,8 @@ execution to retrieve.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
-        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce. If there is no
-previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, return 0.</p>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonce. If there is no
+previous <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>, return 0.</p>
 </td>
       </tr>
     </tbody>
@@ -1406,7 +1390,7 @@ the tx nonce counter for <code data-dev-comment-type="paramref" class="paramref"
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The ID of the chain to increase
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+<a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonce.</p>
 </td>
       </tr>
       <tr>
@@ -1723,8 +1707,8 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   </span>
   <a id="Libplanet_Store_DefaultStore_ListTxNonces_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ListTxNonces_System_Guid_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces(System.Guid)">ListTxNonces(Guid)</h4>
-  <div class="markdown level1 summary"><p>Lists all <a class="xref" href="Libplanet.Address.html">Address</a>es that have ever signed <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>,
-and their corresponding <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+  <div class="markdown level1 summary"><p>Lists all <a class="xref" href="Libplanet.Address.html">Address</a>es that have ever signed <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>,
+and their corresponding <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonces.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1745,7 +1729,7 @@ and their corresponding <a class="xref" href="Libplanet.Tx.Transaction-1.html">T
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The ID of the chain to list <a class="xref" href="Libplanet.Address.html">Address</a>es and their
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+<a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> nonces.</p>
 </td>
       </tr>
     </tbody>
@@ -1986,13 +1970,13 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTransaction_Libplanet_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTransaction(Libplanet.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DefaultStore.cs/#L367">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutTransaction_" data-uid="Libplanet.Store.DefaultStore.PutTransaction*"></a>
-  <h4 id="Libplanet_Store_DefaultStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.DefaultStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Store_DefaultStore_PutTransaction_Libplanet_Tx_Transaction_" data-uid="Libplanet.Store.DefaultStore.PutTransaction(Libplanet.Tx.Transaction)">PutTransaction(Transaction)</h4>
   <div class="markdown level1 summary"><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
 the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
 for some complex indices.</p>
@@ -2018,8 +2002,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void PutTransaction&lt;T&gt;(Transaction&lt;T&gt; tx)
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void PutTransaction(Transaction tx)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2032,30 +2015,15 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a></td>
         <td><span class="parametername">tx</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Libplanet.Store.BaseStore.PutTransaction&lt;T&gt;(Libplanet.Tx.Transaction&lt;T&gt;)</span></div>
-  <h5 id="Libplanet_Store_DefaultStore_PutTransaction__1_Libplanet_Tx_Transaction___0___seealso">See Also</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTransaction_Libplanet_Tx_Transaction_">BaseStore.PutTransaction(Transaction)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_PutTransaction_Libplanet_Tx_Transaction__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
   </div>
@@ -2216,7 +2184,7 @@ it overwrites the record silently.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txId</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
 </td>
       </tr>
       <tr>

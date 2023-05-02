@@ -80,7 +80,7 @@
       <section><p>Serves as the base class for exceptions thrown when a transaction is invalid.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxGenesisHashException.html">InvalidTxGenesisHashException</a></h4>
-      <section><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash">GenesisHash</a>
+      <section><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GenesisHash">GenesisHash</a>
 is different from the <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of
 <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Genesis">Genesis</a>.</p>
 </section>
@@ -89,16 +89,16 @@ is different from the <a class="xref" href="Libplanet.HashDigest-1.html">HashDig
 found.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></h4>
-      <section><p>An exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
-of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
-is inconsistent with the expected nonce for the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>
+      <section><p>An exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce">Nonce</a>
+of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+is inconsistent with the expected nonce for the <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Signer">Signer</a>
 when appending to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></h4>
-      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature">Signature</a> is invalid.</p>
+      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s
+<a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Signature">Signature</a> is invalid.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a></h4>
+      <h4><a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a></h4>
       <section><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
 </section>
@@ -109,13 +109,13 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
       <section><p>A list of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s to be executed in a transaction.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a></h4>
-      <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
-<p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
+      <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> its
 result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that it is executed within.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a></h4>
-      <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> with any exception-throwing
+      <section><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> with any exception-throwing
 actions.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxInvoice.html">TxInvoice</a></h4>
@@ -124,17 +124,17 @@ actions.</p>
       <h4><a class="xref" href="Libplanet.Tx.TxMarshaler.html">TxMarshaler</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Tx.TxMetadata.html">TxMetadata</a></h4>
-      <section><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> without actions and signature.</p>
+      <section><p>A <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> without actions and signature.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a></h4>
-      <section><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> violates
+      <section><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> violates
 a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxSigningMetadata.html">TxSigningMetadata</a></h4>
       <section><p>A concrete implementation of <a class="xref" href="Libplanet.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a></h4>
-      <section><p>Summarizes an execution result of a successful <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+      <section><p>Summarizes an execution result of a successful <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.UnsignedTx.html">UnsignedTx</a></h4>
       <section><p>A concrete implementation of <a class="xref" href="Libplanet.Tx.IUnsignedTx.html">IUnsignedTx</a>.</p>
@@ -143,7 +143,7 @@ a <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBloc
 </h3>
       <h4><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></h4>
       <section><p><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
-is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s
 content.</p>
 <p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
 and 64 characters in hexadecimal.
@@ -152,7 +152,7 @@ and 64 characters in hexadecimal.
     <h3 id="interfaces">Interfaces
 </h3>
       <h4><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></h4>
-      <section><p>An abstract interface for a transaction.  Unlike <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, it deals
+      <section><p>An abstract interface for a transaction.  Unlike <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>, it deals
 with custom actions in a non-generic way.  Instead, they are represented as
 <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
 </section>

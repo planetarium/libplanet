@@ -72,7 +72,7 @@
 
   <h1 id="Libplanet_Tx_InvalidTxGenesisHashException" data-uid="Libplanet.Tx.InvalidTxGenesisHashException" class="text-break">Class InvalidTxGenesisHashException
 </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash">GenesisHash</a>
+  <div class="markdown level0 summary"><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GenesisHash">GenesisHash</a>
 is different from the <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of
 <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Genesis">Genesis</a>.</p>
 </div>
@@ -193,8 +193,8 @@ public sealed class InvalidTxGenesisHashException : InvalidTxException, ISeriali
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txid</span></td>
-        <td><p>The invalid <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.  It is automatically included to
+        <td><p>The invalid <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s
+<a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Id">Id</a>.  It is automatically included to
 the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.message#system-exception-message">Message</a> string.</p>
 </td>
       </tr>
@@ -209,7 +209,7 @@ value of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><span class="parametername">improperGenesisHash</span></td>
         <td><p>The actual
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash">GenesisHash</a>.  This can be <span class="xref">null</span>.</p>
+<a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GenesisHash">GenesisHash</a>.  This can be <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -257,7 +257,7 @@ value of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_
   </span>
   <a id="Libplanet_Tx_InvalidTxGenesisHashException_ImproperGenesisHash_" data-uid="Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash*"></a>
   <h4 id="Libplanet_Tx_InvalidTxGenesisHashException_ImproperGenesisHash" data-uid="Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash">ImproperGenesisHash</h4>
-  <div class="markdown level1 summary"><p>The actual <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash">GenesisHash</a>, which is improper.</p>
+  <div class="markdown level1 summary"><p>The actual <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GenesisHash">GenesisHash</a>, which is improper.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>

@@ -72,9 +72,9 @@
 
   <h1 id="Libplanet_Tx_TxExecution" data-uid="Libplanet.Tx.TxExecution" class="text-break">Class TxExecution
 </h1>
-  <div class="markdown level0 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
-<p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
+  <div class="markdown level0 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> its
 result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that it is executed within.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -131,9 +131,9 @@ public abstract class TxExecution : ISerializable</code></pre>
   </span>
   <a id="Libplanet_Tx_TxExecution__ctor_" data-uid="Libplanet.Tx.TxExecution.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxExecution__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">TxExecution(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
-<p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> its
 result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that it is executed within.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -178,9 +178,9 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxExecution.cs/#L22">View Source</a>
   </span>
   <h4 id="Libplanet_Tx_TxExecution__codec" data-uid="Libplanet.Tx.TxExecution._codec">_codec</h4>
-  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
-<p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> its
 result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that it is executed within.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -219,7 +219,7 @@ result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html
   </span>
   <a id="Libplanet_Tx_TxExecution_ActionsLogsList_" data-uid="Libplanet.Tx.TxExecution.ActionsLogsList*"></a>
   <h4 id="Libplanet_Tx_TxExecution_ActionsLogsList" data-uid="Libplanet.Tx.TxExecution.ActionsLogsList">ActionsLogsList</h4>
-  <div class="markdown level1 summary"><p>The logs recorded while executing <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s actions.</p>
+  <div class="markdown level1 summary"><p>The logs recorded while executing <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s actions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -257,7 +257,7 @@ public List&lt;List&lt;string&gt;&gt; ActionsLogsList { get; }</code></pre>
   <a id="Libplanet_Tx_TxExecution_BlockHash_" data-uid="Libplanet.Tx.TxExecution.BlockHash*"></a>
   <h4 id="Libplanet_Tx_TxExecution_BlockHash" data-uid="Libplanet.Tx.TxExecution.BlockHash">BlockHash</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that
-the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> is executed within.</p>
+the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> is executed within.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -294,7 +294,7 @@ public BlockHash BlockHash { get; }</code></pre>
   </span>
   <a id="Libplanet_Tx_TxExecution_TxId_" data-uid="Libplanet.Tx.TxExecution.TxId*"></a>
   <h4 id="Libplanet_Tx_TxExecution_TxId" data-uid="Libplanet.Tx.TxExecution.TxId">TxId</h4>
-  <div class="markdown level1 summary"><p>The executed <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.</p>
+  <div class="markdown level1 summary"><p>The executed <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Id">Id</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -333,9 +333,9 @@ public TxId TxId { get; }</code></pre>
   </span>
   <a id="Libplanet_Tx_TxExecution_GetObjectData_" data-uid="Libplanet.Tx.TxExecution.GetObjectData*"></a>
   <h4 id="Libplanet_Tx_TxExecution_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
-<p>Note that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s cannot be executed without belonging to
-a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> its
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> its
 result can vary depending on <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that it is executed within.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
