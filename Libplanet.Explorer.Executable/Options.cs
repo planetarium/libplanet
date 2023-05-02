@@ -129,14 +129,14 @@ namespace Libplanet.Explorer.Executable
 
         public string GenesisBlockPath { get; set; }
 
-        internal Block<NullAction> GetGenesisBlock(IBlockPolicy<NullAction> policy)
+        internal Block GetGenesisBlock(IBlockPolicy<NullAction> policy)
         {
             var uri = new Uri(GenesisBlockPath);
             using (var client = new WebClient())
             {
                 var serialized = client.DownloadData(uri);
                 var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
-                return BlockMarshaler.UnmarshalBlock<NullAction>(dict);
+                return BlockMarshaler.UnmarshalBlock(dict);
             }
         }
     }

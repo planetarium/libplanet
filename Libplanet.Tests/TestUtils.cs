@@ -330,11 +330,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.TxHash, actual.TxHash);
         }
 
-        public static void AssertBlockContentsEqual<T>(
-            IBlockContent<T> expected,
-            IBlockContent<T> actual
-        )
-            where T : IAction, new()
+        public static void AssertBlockContentsEqual(
+            IBlockContent expected, IBlockContent actual)
         {
             AssertBlockMetadataEqual(expected, actual);
             Assert.Equal(expected.Transactions, actual.Transactions);
@@ -349,11 +346,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.PreEvaluationHash, actual.PreEvaluationHash);
         }
 
-        public static void AssertPreEvaluationBlocksEqual<T>(
-            IPreEvaluationBlock<T> expected,
-            IPreEvaluationBlock<T> actual
-        )
-            where T : IAction, new()
+        public static void AssertPreEvaluationBlocksEqual(
+            IPreEvaluationBlock expected,
+            IPreEvaluationBlock actual)
         {
             AssertPreEvaluationBlockHeadersEqual(expected, actual);
             AssertBlockContentsEqual(expected, actual);
@@ -375,10 +370,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return action;
         }
 
-        public static BlockCommit CreateBlockCommit<T>(
-            Block<T> block,
-            bool deterministicTimestamp = false)
-            where T : IAction, new() =>
+        public static BlockCommit CreateBlockCommit(
+            Block block,
+            bool deterministicTimestamp = false) =>
                 block.Index > 0 &&
                 block.ProtocolVersion > BlockMetadata.PoWProtocolVersion
                     ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
@@ -410,12 +404,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
-        public static PreEvaluationBlock<T> ProposeGenesis<T>(
+        public static PreEvaluationBlock ProposeGenesis<T>(
             PublicKey proposer = null,
             IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion
+            int protocolVersion = Block.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
@@ -437,7 +431,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 
-            var content = new BlockContent<T>(
+            var content = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
                     index: 0,
@@ -446,22 +440,22 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     miner: (proposer ?? GenesisProposer.PublicKey).ToAddress(),
                     publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
-                    txHash: BlockContent<T>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs);
             return content.Propose();
         }
 
-        public static Block<T> ProposeGenesisBlock<T>(
+        public static Block ProposeGenesisBlock<T>(
             PrivateKey miner,
             IReadOnlyList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default
         )
             where T : IAction, new()
         {
-            PreEvaluationBlock<T> preEval = ProposeGenesis<T>(
+            PreEvaluationBlock preEval = ProposeGenesis<T>(
                 miner?.PublicKey,
                 transactions,
                 null,
@@ -471,8 +465,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval.Sign(miner, stateRootHash);
         }
 
-        public static Block<T> ProposeGenesisBlock<T>(
-            PreEvaluationBlock<T> preEval,
+        public static Block ProposeGenesisBlock<T>(
+            PreEvaluationBlock preEval,
             PrivateKey privateKey,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
@@ -487,21 +481,19 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     out _));
         }
 
-        public static PreEvaluationBlock<T> ProposeNext<T>(
-            Block<T> previousBlock,
+        public static PreEvaluationBlock ProposeNext(
+            Block previousBlock,
             IReadOnlyList<Transaction> transactions = null,
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion,
-            BlockCommit lastCommit = null
-        )
-            where T : IAction, new()
+            int protocolVersion = Block.CurrentProtocolVersion,
+            BlockCommit lastCommit = null)
         {
             var txs = transactions is null
                 ? new List<Transaction>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
 
-            var content = new BlockContent<T>(
+            var content = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
                     index: previousBlock.Index + 1,
@@ -510,7 +502,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     miner: miner?.ToAddress() ?? previousBlock.Miner,
                     publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                     previousHash: previousBlock.Hash,
-                    txHash: BlockContent<T>.DeriveTxHash(txs),
+                    txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: lastCommit),
                 transactions: txs);
             var preEval = content.Propose();
@@ -518,23 +510,21 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval;
         }
 
-        public static Block<T> ProposeNextBlock<T>(
-            Block<T> previousBlock,
+        public static Block ProposeNextBlock(
+            Block previousBlock,
             PrivateKey miner,
             IReadOnlyList<Transaction> txs = null,
             TimeSpan? blockInterval = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null
-        )
-            where T : IAction, new()
+            BlockCommit lastCommit = null)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
                 "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
             );
 
-            PreEvaluationBlock<T> preEval = ProposeNext(
+            PreEvaluationBlock preEval = ProposeNext(
                 previousBlock,
                 txs,
                 miner?.PublicKey,
@@ -560,7 +550,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// Works only if <paramref name="genesisBlock"/> is null.</param>
         /// <param name="renderers">
         /// An <see cref="IEnumerable{T}"/> of <see cref="IRenderer{T}"/>s.</param>
-        /// <param name="genesisBlock">Genesis <see cref="Block{T}"/> of the chain.
+        /// <param name="genesisBlock">Genesis <see cref="Block"/> of the chain.
         /// If null is given, a genesis will be generated.</param>
         /// <param name="protocolVersion">Block protocol version of genesis block.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
@@ -574,8 +564,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer<T>> renderers = null,
-            Block<T> genesisBlock = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion
+            Block genesisBlock = null,
+            int protocolVersion = Block.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
@@ -603,8 +593,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer<T>> renderers = null,
-            Block<T> genesisBlock = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion
+            Block genesisBlock = null,
+            int protocolVersion = Block.CurrentProtocolVersion
         )
             where T : IAction, new()
         {
@@ -635,7 +625,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     policy.NativeTokens.Contains,
                     out _);
                 genesisBlock = protocolVersion < 2
-                    ? new Block<T>(
+                    ? new Block(
                         preEval,
                         (
                             stateRootHash,

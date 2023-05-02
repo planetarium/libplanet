@@ -2,26 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Caching;
-using Libplanet.Action;
 using Libplanet.Blocks;
 
 namespace Libplanet.Store
 {
-    public class BlockSet<T> : BaseIndex<BlockHash, Block<T>>
-        where T : IAction, new()
+    public class BlockSet : BaseIndex<BlockHash, Block>
     {
-        private readonly LRUCache<BlockHash, Block<T>> _cache;
+        private readonly LRUCache<BlockHash, Block> _cache;
 
         public BlockSet(IStore store, int cacheSize = 4096)
             : base(store)
         {
-            _cache = new LRUCache<BlockHash, Block<T>>(cacheSize, Math.Max(cacheSize / 64, 8));
+            _cache = new LRUCache<BlockHash, Block>(cacheSize, Math.Max(cacheSize / 64, 8));
         }
 
         public override ICollection<BlockHash> Keys =>
             Store.IterateBlockHashes().ToList();
 
-        public override ICollection<Block<T>> Values =>
+        public override ICollection<Block> Values =>
             Store.IterateBlockHashes()
                 .Select(GetBlock)
                 .Where(block => block is { })
@@ -32,11 +30,11 @@ namespace Libplanet.Store
 
         public override bool IsReadOnly => false;
 
-        public override Block<T> this[BlockHash key]
+        public override Block this[BlockHash key]
         {
             get
             {
-                Block<T>? block = GetBlock(key);
+                Block? block = GetBlock(key);
                 if (block is null)
                 {
                     throw new KeyNotFoundException(
@@ -72,7 +70,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override bool Contains(KeyValuePair<BlockHash, Block<T>> item) =>
+        public override bool Contains(KeyValuePair<BlockHash, Block> item) =>
             Store.ContainsBlock(item.Key);
 
         public override bool ContainsKey(BlockHash key) =>
@@ -87,9 +85,9 @@ namespace Libplanet.Store
             return deleted;
         }
 
-        private Block<T>? GetBlock(BlockHash key)
+        private Block? GetBlock(BlockHash key)
         {
-            if (_cache.TryGet(key, out Block<T> cached))
+            if (_cache.TryGet(key, out Block cached))
             {
                 if (Store.ContainsBlock(key))
                 {
@@ -102,7 +100,7 @@ namespace Libplanet.Store
                 }
             }
 
-            Block<T> fetched = Store.GetBlock<T>(key);
+            Block fetched = Store.GetBlock(key);
             if (fetched is { })
             {
                 _cache.AddReplace(key, fetched);

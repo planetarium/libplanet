@@ -156,8 +156,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
             protected BlockBase(
                 long index,
                 string stackTrace,
-                Block<T> oldTip,
-                Block<T> newTip,
+                Block oldTip,
+                Block newTip,
                 bool end = false
             )
                 : base(index, stackTrace)
@@ -170,12 +170,12 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <summary>
             /// The tip before update.
             /// </summary>
-            public Libplanet.Blocks.Block<T> OldTip { get; }
+            public Block OldTip { get; }
 
             /// <summary>
             /// The tip after update.
             /// </summary>
-            public Libplanet.Blocks.Block<T> NewTip { get; }
+            public Block NewTip { get; }
 
             /// <summary>
             /// Whether it is not an <c>End</c> event.
@@ -197,7 +197,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <summary>
         /// Represents a block event.
         /// </summary>
-        public class Block : BlockBase
+        public class BlockEvent : BlockBase
         {
             /// <summary>
             /// Creates a block event record.
@@ -207,11 +207,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <param name="oldTip">The tip before update.</param>
             /// <param name="newTip">The tip after update.</param>
             /// <param name="end">Whether it is an <c>End</c> event.</param>
-            public Block(
+            public BlockEvent(
                 long index,
                 string stackTrace,
-                Block<T> oldTip,
-                Block<T> newTip,
+                Block oldTip,
+                Block newTip,
                 bool end = false
             )
                 : base(index, stackTrace, oldTip, newTip, end)

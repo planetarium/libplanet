@@ -38,7 +38,7 @@ namespace Libplanet.Net
             _demandEnqueued = new SemaphoreSlim(0);
         }
 
-        public delegate IAsyncEnumerable<(Block<TAction>, BlockCommit)> BlockFetcher(
+        public delegate IAsyncEnumerable<(Block, BlockCommit)> BlockFetcher(
             TPeer peer,
             IEnumerable<BlockHash> blockHashes,
             CancellationToken cancellationToken
@@ -119,7 +119,7 @@ namespace Libplanet.Net
                    (!(_completionPredicate is null) && _completionPredicate(blockHash));
         }
 
-        public bool Satisfy(Block<TAction> block)
+        public bool Satisfy(Block block)
         {
             if (block is null)
             {
@@ -184,7 +184,7 @@ namespace Libplanet.Net
         /// for the task to complete.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
-        public async IAsyncEnumerable<Tuple<Block<TAction>, BlockCommit, TPeer>> Complete(
+        public async IAsyncEnumerable<Tuple<Block, BlockCommit, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher,
             [EnumeratorCancellation] CancellationToken cancellationToken = default
@@ -197,7 +197,7 @@ namespace Libplanet.Net
 
             var pool = new PeerPool(peers);
             var queue =
-                new AsyncProducerConsumerQueue<Tuple<Block<TAction>, BlockCommit, TPeer>>();
+                new AsyncProducerConsumerQueue<Tuple<Block, BlockCommit, TPeer>>();
 
             Task producer = Task.Run(async () =>
             {
@@ -231,7 +231,7 @@ namespace Libplanet.Net
 
             while (await queue.OutputAvailableAsync(cancellationToken))
             {
-                Tuple<Block<TAction>, BlockCommit, TPeer> triple;
+                Tuple<Block, BlockCommit, TPeer> triple;
                 try
                 {
                     triple = await queue.DequeueAsync(cancellationToken);
@@ -293,7 +293,7 @@ namespace Libplanet.Net
             IList<BlockHash> blockHashes,
             BlockFetcher blockFetcher,
             CancellationToken cancellationToken,
-            AsyncProducerConsumerQueue<Tuple<Block<TAction>, BlockCommit, TPeer>> queue
+            AsyncProducerConsumerQueue<Tuple<Block, BlockCommit, TPeer>> queue
         ) =>
             async (peer, ct) =>
             {
@@ -309,10 +309,10 @@ namespace Libplanet.Net
 
                     try
                     {
-                        ConfiguredCancelableAsyncEnumerable<(Block<TAction>, BlockCommit)> blocks =
+                        ConfiguredCancelableAsyncEnumerable<(Block, BlockCommit)> blocks =
                             blockFetcher(peer, blockHashes, cancellationToken)
                                 .WithCancellation(cancellationToken);
-                        await foreach ((Block<TAction> block, BlockCommit commit) in blocks)
+                        await foreach ((Block block, BlockCommit commit) in blocks)
                         {
                             _logger.Debug(
                                 "Downloaded block #{BlockIndex} {BlockHash} from {Peer}",

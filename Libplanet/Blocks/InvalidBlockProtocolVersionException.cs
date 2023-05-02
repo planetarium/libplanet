@@ -4,8 +4,8 @@ using System.Runtime.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// The exception that is thrown when a <see cref="Block{T}"/>'s
-    /// <see cref="Block{T}.ProtocolVersion"/> (or a <see cref="BlockHeader"/>'s
+    /// The exception that is thrown when a <see cref="Block"/>'s
+    /// <see cref="Block.ProtocolVersion"/> (or a <see cref="BlockHeader"/>'s
     /// <see cref="BlockHeader.ProtocolVersion"/>) is invalid.
     /// </summary>
     [Serializable]

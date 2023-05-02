@@ -837,7 +837,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void PutBlock<T>(Block<T> block)
+        public override void PutBlock(Block block)
         {
             if (_blockCache.ContainsKey(block.Hash))
             {

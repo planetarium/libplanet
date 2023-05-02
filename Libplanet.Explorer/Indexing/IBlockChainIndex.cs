@@ -17,7 +17,7 @@ public interface IBlockChainIndex
 {
     /// <summary>
     /// The height and the <see cref="BlockHash"/> of the most recently indexed
-    /// <see cref="Block{T}"/>.
+    /// <see cref="Block"/>.
     /// </summary>
     /// <exception cref="IndexOutOfRangeException">Thrown if the index is empty.</exception>
     (long Index, BlockHash Hash) Tip { get; }
@@ -31,20 +31,20 @@ public interface IBlockChainIndex
 
     /// <summary>
     /// Get the height and the <see cref="BlockHash"/> of the most recently indexed
-    /// <see cref="Block{T}"/>.
+    /// <see cref="Block"/>.
     /// </summary>
     /// <returns>A <see cref="ValueTuple{Long,BlockHash}"/> that contains the height and the
-    /// <see cref="BlockHash"/> of the most recently indexed <see cref="Block{T}"/>.</returns>
+    /// <see cref="BlockHash"/> of the most recently indexed <see cref="Block"/>.</returns>
     /// <exception cref="IndexOutOfRangeException">Thrown if the index is empty.</exception>
     Task<(long Index, BlockHash Hash)> GetTipAsync();
 
     /// <summary>
-    /// Get the indexed height of the <see cref="Block{T}"/> with the given <paramref name="hash"/>.
+    /// Get the indexed height of the <see cref="Block"/> with the given <paramref name="hash"/>.
     /// </summary>
     /// <param name="hash">The <see cref="BlockHash"/> of the desired indexed
-    /// <see cref="Block{T}"/>.</param>
+    /// <see cref="Block"/>.</param>
     /// <returns>The height of the block with the <paramref name="hash"/>.</returns>
-    /// <exception cref="IndexOutOfRangeException">Thrown if the <see cref="Block{T}"/> with the
+    /// <exception cref="IndexOutOfRangeException">Thrown if the <see cref="Block"/> with the
     /// given <paramref name="hash"/> is not indexed yet.</exception>
     long BlockHashToIndex(BlockHash hash);
 
@@ -52,28 +52,28 @@ public interface IBlockChainIndex
     Task<long> BlockHashToIndexAsync(BlockHash hash);
 
     /// <summary>
-    /// Gets the indexed <see cref="BlockHash"/> of the <see cref="Block{T}"/> at
+    /// Gets the indexed <see cref="BlockHash"/> of the <see cref="Block"/> at
     /// <paramref name="index"/> height.
     /// </summary>
-    /// <param name="index">The height of the desired indexed <see cref="Block{T}"/>.</param>
-    /// <returns>The indexed <see cref="BlockHash"/> of the <see cref="Block{T}"/> at
+    /// <param name="index">The height of the desired indexed <see cref="Block"/>.</param>
+    /// <returns>The indexed <see cref="BlockHash"/> of the <see cref="Block"/> at
     /// <paramref name="index"/> height.</returns>
     /// <exception cref="IndexOutOfRangeException">Thrown if the index does not contain the
-    /// <see cref="Block{T}"/> at the given <paramref name="index"/>.</exception>
+    /// <see cref="Block"/> at the given <paramref name="index"/>.</exception>
     BlockHash IndexToBlockHash(long index);
 
     /// <inheritdoc cref="IndexToBlockHash"/>
     Task<BlockHash> IndexToBlockHashAsync(long index);
 
     /// <summary>
-    /// Get the height and the <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/>s in the
+    /// Get the height and the <see cref="BlockHash"/> of the indexed <see cref="Block"/>s in the
     /// given <paramref name="indexRange"/>.
     /// </summary>
-    /// <param name="indexRange">The range of <see cref="Block{T}"/> height to look up.</param>
+    /// <param name="indexRange">The range of <see cref="Block"/> height to look up.</param>
     /// <param name="desc">Whether to look up the index in the descending order.</param>
     /// <param name="producer">The producer of the block, if filtering by the producer is desired.
     /// </param>
-    /// <returns>The height and the <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/>s
+    /// <returns>The height and the <see cref="BlockHash"/> of the indexed <see cref="Block"/>s
     /// in the given <paramref name="indexRange"/>.</returns>
     /// <exception cref="IndexOutOfRangeException">Thrown if the given range exceeds the block
     /// count.</exception>
@@ -85,15 +85,15 @@ public interface IBlockChainIndex
         Range indexRange, bool desc = false, Address? producer = null);
 
     /// <summary>
-    /// Get the height and the <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/>s
+    /// Get the height and the <see cref="BlockHash"/> of the indexed <see cref="Block"/>s
     /// starting at <paramref name="fromHeight"/>, at most <paramref name="maxCount"/>.
     /// </summary>
     /// <param name="fromHeight">The starting height.</param>
-    /// <param name="maxCount">The upper limit of <see cref="Block{T}"/>s to look up.</param>
+    /// <param name="maxCount">The upper limit of <see cref="Block"/>s to look up.</param>
     /// <param name="desc">Whether to look up the index in the descending order.</param>
     /// <param name="producer">The producer of the block, if filtering by the producer is desired.
     /// </param>
-    /// <returns>The height and the <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/>s
+    /// <returns>The height and the <see cref="BlockHash"/> of the indexed <see cref="Block"/>s
     /// starting at <paramref name="fromHeight"/> and at most <paramref name="maxCount"/>.
     /// </returns>
     IEnumerable<(long Index, BlockHash Hash)> GetBlockHashesFromIndex(
@@ -124,12 +124,12 @@ public interface IBlockChainIndex
         Address signer, int? fromNonce = null, int? maxCount = null, bool desc = false);
 
     /// <summary>
-    /// Get the <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/> that contains the
+    /// Get the <see cref="BlockHash"/> of the indexed <see cref="Block"/> that contains the
     /// <see cref="Transaction"/> with the <paramref name="txId"/>.
     /// </summary>
     /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/> to look up the
-    /// containing <see cref="Block{T}"/>.</param>
-    /// <returns>The <see cref="BlockHash"/> of the indexed <see cref="Block{T}"/> that contains the
+    /// containing <see cref="Block"/>.</param>
+    /// <returns>The <see cref="BlockHash"/> of the indexed <see cref="Block"/> that contains the
     /// <see cref="Transaction"/> with the <paramref name="txId"/>.</returns>
     /// <exception cref="IndexOutOfRangeException">Thrown if the <paramref name="txId"/> does not
     /// exist in the index.</exception>
@@ -144,7 +144,7 @@ public interface IBlockChainIndex
     /// lookup was successful.
     /// </summary>
     /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/> to find the
-    /// containing <see cref="Block{T}"/>.</param>
+    /// containing <see cref="Block"/>.</param>
     /// <param name="containedBlock">The <see cref="BlockHash"/> of the indexed block that contains
     /// the <see cref="Transaction"/> with the <paramref name="txId"/>, if it exists.</param>
     /// <returns>Whether the retrieval was successful.</returns>
@@ -156,7 +156,7 @@ public interface IBlockChainIndex
     /// <see cref="BlockHash"/> if it exists, or <c>null</c> if it does not.
     /// </summary>
     /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction"/> to find the
-    /// containing <see cref="Block{T}"/>.</param>
+    /// containing <see cref="Block"/>.</param>
     /// <returns>The <see cref="BlockHash"/> of the block containing the
     /// <see cref="Transaction"/> with the <paramref name="txId"/> if it exists, or <c>null</c>
     /// if it does not.</returns>
@@ -175,7 +175,7 @@ public interface IBlockChainIndex
     Task<long?> GetLastNonceByAddressAsync(Address address);
 
     /// <summary>
-    /// Index the metadata of a <see cref="Block{T}"/> corresponding to the given
+    /// Index the metadata of a <see cref="Block"/> corresponding to the given
     /// <paramref name="blockDigest"/>.
     /// </summary>
     /// <param name="blockDigest">The block digest object to index.</param>

@@ -75,10 +75,10 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         protected ILogger Logger { get; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
+        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
         public void RenderBlock(
-            Block<T> oldTip,
-            Block<T> newTip
+            Block oldTip,
+            Block newTip
         ) =>
             LogBlockRendering(
                 nameof(RenderBlock),
@@ -89,9 +89,9 @@ namespace Libplanet.Blockchain.Renderers
 
         protected void LogBlockRendering(
             string methodName,
-            Block<T> oldTip,
-            Block<T> newTip,
-            System.Action<Block<T>, Block<T>> callback
+            Block oldTip,
+            Block newTip,
+            System.Action<Block, Block> callback
         )
         {
             Logger.Write(

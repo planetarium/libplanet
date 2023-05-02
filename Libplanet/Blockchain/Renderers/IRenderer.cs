@@ -8,9 +8,9 @@ namespace Libplanet.Blockchain.Renderers
     /// <para>Usually, implementations of this interface purpose to update the in-memory game states
     /// (if exist), or send a signal to the UI thread (usually the main thread) so that the graphics
     /// on the display is redrawn.</para>
-    /// <para>The invocation order of methods for each <see cref="Block{T}"/> are:</para>
+    /// <para>The invocation order of methods for each <see cref="Block"/> are:</para>
     /// <list type="number">
-    /// <item><description><see cref="RenderBlock(Block{T}, Block{T})"/> (one time)</description>
+    /// <item><description><see cref="RenderBlock(Block, Block)"/> (one time)</description>
     /// </item>
     /// </list>
     /// </summary>
@@ -20,13 +20,13 @@ namespace Libplanet.Blockchain.Renderers
         where T : IAction, new()
     {
         /// <summary>
-        /// Does things that should be done right after a new <see cref="Block{T}"/> is appended to
+        /// Does things that should be done right after a new <see cref="Block"/> is appended to
         /// a <see cref="BlockChain{T}"/> (so that its <see cref="BlockChain{T}.Tip"/> has changed).
         /// </summary>
         /// <remarks>It is guaranteed to be called only once for a block, and only after applied to
         /// the blockchain, unless it has been stale due to reorg.</remarks>
         /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
         /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
-        void RenderBlock(Block<T> oldTip, Block<T> newTip);
+        void RenderBlock(Block oldTip, Block newTip);
     }
 }

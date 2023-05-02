@@ -449,7 +449,7 @@ namespace Libplanet.Net
         /// <remarks>It does not have to be called manually, because <see cref="Swarm{T}"/> in
         /// itself watches <see cref="BlockChain"/> for <see cref="BlockChain{T}.Tip"/> changes and
         /// immediately broadcasts updates if anything changes.</remarks>
-        public void BroadcastBlock(Block<T> block)
+        public void BroadcastBlock(Block block)
         {
             BroadcastBlock(null, block);
         }
@@ -581,7 +581,7 @@ namespace Libplanet.Net
                         Peers.Count);
                 }
 
-                Block<T> localTip = BlockChain.Tip;
+                Block localTip = BlockChain.Tip;
                 IBlockExcerpt topmostTip = peersWithExcerpts
                     .Select(pair => pair.Item2)
                     .Greatest(tip => tip.Index);
@@ -787,7 +787,7 @@ namespace Libplanet.Net
             throw new InvalidMessageContentException(errorMessage, parsedMessage.Content);
         }
 
-        internal async IAsyncEnumerable<(Block<T>, BlockCommit)> GetBlocksAsync(
+        internal async IAsyncEnumerable<(Block, BlockCommit)> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<BlockHash> blockHashes,
             [EnumeratorCancellation] CancellationToken cancellationToken
@@ -850,7 +850,7 @@ namespace Libplanet.Net
                         byte[] blockPayload = payloads[i];
                         byte[] commitPayload = payloads[i + 1];
                         cancellationToken.ThrowIfCancellationRequested();
-                        Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
+                        Block block = BlockMarshaler.UnmarshalBlock(
                             (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
                         BlockCommit commit = commitPayload.Length == 0
                             ? null
@@ -927,7 +927,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Gets all <see cref="BlockHash"/>es for <see cref="Block{T}"/>s needed to be downloaded
+        /// Gets all <see cref="BlockHash"/>es for <see cref="Block"/>s needed to be downloaded
         /// by querying <see cref="BoundPeer"/>s.
         /// </summary>
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> to use as a reference
@@ -941,7 +941,7 @@ namespace Libplanet.Net
         /// a notification that this operation should be canceled.</param>
         /// <returns>An <see cref="IAsyncEnumerable{T}"/> of <see langword="long"/> and
         /// <see cref="BlockHash"/> pairs, where the <see langword="long"/> value is the
-        /// <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> associated with the
+        /// <see cref="Block.Index"/> of the <see cref="Block"/> associated with the
         /// <see cref="BlockHash"/> value.</returns>
         /// <exception cref="AggregateException">Thrown when failed to download
         /// <see cref="BlockHash"/>es from a <see cref="BoundPeer"/>.</exception>
@@ -1139,7 +1139,7 @@ namespace Libplanet.Net
                 exceptions);
         }
 
-        private void BroadcastBlock(Address? except, Block<T> block)
+        private void BroadcastBlock(Address? except, Block block)
         {
             _logger.Information(
                 "Trying to broadcast block #{Index} {Hash}...",
@@ -1182,7 +1182,7 @@ namespace Libplanet.Net
             int maxPeersToDial,
             CancellationToken cancellationToken)
         {
-            Block<T> tip = BlockChain.Tip;
+            Block tip = BlockChain.Tip;
             BlockHash genesisHash = BlockChain.Genesis.Hash;
             return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
                 .Where(
@@ -1353,12 +1353,12 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Checks if the corresponding <see cref="Block{T}"/> to a given
+        /// Checks if the corresponding <see cref="Block"/> to a given
         /// <see cref="IBlockExcerpt"/> is needed for <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="target">The <see cref="IBlockExcerpt"/> to compare to the current
         /// <see cref="BlockChain{T}.Tip"/> of <see cref="BlockChain"/>.</param>
-        /// <returns><see langword="true"/> if the corresponding <see cref="Block{T}"/> to
+        /// <returns><see langword="true"/> if the corresponding <see cref="Block"/> to
         /// <paramref name="target"/> is needed, otherwise, <see langword="false"/>.</returns>
         private bool IsBlockNeeded(IBlockExcerpt target)
         {

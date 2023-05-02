@@ -13,7 +13,7 @@ namespace Libplanet.Blockchain.Policies
     /// A default implementation of <see cref="IBlockPolicy{T}"/> interface.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// to <see cref="Block"/>'s type parameter.</typeparam>
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
@@ -22,7 +22,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<BlockChain<T>, Transaction, TxPolicyViolationException?>
             _validateNextBlockTx;
 
-        private readonly Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>
+        private readonly Func<BlockChain<T>, Block, BlockPolicyViolationException?>
             _validateNextBlock;
 
         private readonly Func<long, long> _getMaxTransactionsBytes;
@@ -40,7 +40,7 @@ namespace Libplanet.Blockchain.Policies
         /// </para>
         /// </summary>
         /// <param name="blockAction">A <see cref="IAction"/> to executed for
-        /// every <see cref="Block{T}"/>.  Set to <see langword="null"/> by default, which results
+        /// every <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
@@ -50,24 +50,24 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Transaction"/> follows the policy.  Set to a constant function of
         /// <see langword="null"/> by default.</param>
         /// <param name="validateNextBlock">The predicate that determines if
-        /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
+        /// a <see cref="Block"/> follows the policy.  Set to a default implementation
         /// where block's hash algorithm type, bytes count, and transactions count are validated.
         /// </param>
         /// <param name="getMaxTransactionsBytes">The function determining the maximum size of
-        /// <see cref="Block{T}.Transactions"/> in number of <c>byte</c>s given
-        /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxTransactionsBytes"/>.
+        /// <see cref="Block.Transactions"/> in number of <c>byte</c>s given
+        /// its <see cref="Block.Index"/>.  Goes to <see cref="GetMaxTransactionsBytes"/>.
         /// Set to a constant size of <c>100</c>KiB, i.e. <c>100 * 1024</c>, by default.</param>
         /// <param name="getMinTransactionsPerBlock">The function determining the minimum number of
-        /// <see cref="Transaction"/>s that must be included in a <see cref="Block{T}"/>.
+        /// <see cref="Transaction"/>s that must be included in a <see cref="Block"/>.
         /// Goes to <see cref="GetMinTransactionsPerBlock"/>.  Set to a constant function
         /// of <c>0</c> by default.</param>
         /// <param name="getMaxTransactionsPerBlock">The function determining how many
-        /// <see cref="Transaction"/>s can be included in a <see cref="Block{T}"/>.
+        /// <see cref="Transaction"/>s can be included in a <see cref="Block"/>.
         /// Goes to <see cref="GetMaxTransactionsPerBlock"/>.  Set to a constant function
         /// of <c>100</c> by default.</param>
         /// <param name="getMaxTransactionsPerSignerPerBlock">The function determining the maximum
         /// number of transactions from the same signer that can be included in
-        /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
+        /// a <see cref="Block"/> given the <see cref="Block"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
         /// <param name="nativeTokens">A fixed set of <see cref="Currency"/> objects that are
@@ -77,7 +77,7 @@ namespace Libplanet.Blockchain.Policies
             TimeSpan? blockInterval = null,
             Func<BlockChain<T>, Transaction, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
-            Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
+            Func<BlockChain<T>, Block, BlockPolicyViolationException?>?
                 validateNextBlock = null,
             Func<long, long>? getMaxTransactionsBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
@@ -168,7 +168,7 @@ namespace Libplanet.Blockchain.Policies
         public IImmutableSet<Currency> NativeTokens { get; }
 
         /// <summary>
-        /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.
+        /// Targeted time interval between two consecutive <see cref="Block"/>s.
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
@@ -185,7 +185,7 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public virtual BlockPolicyViolationException? ValidateNextBlock(
             BlockChain<T> blockChain,
-            Block<T> nextBlock)
+            Block nextBlock)
         {
             return _validateNextBlock(blockChain, nextBlock);
         }

@@ -106,7 +106,7 @@ namespace Libplanet.Blockchain
         /// to an <see cref="IStateStore"/>, this always has a side-effect to
         /// <see cref="StateStore"/> regardless of whether the state root hash
         /// obdatined through commiting to <see cref="StateStore"/>
-        /// matches the <paramref name="block"/>'s <see cref="Block{T}.StateRootHash"/> or not.
+        /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="ValidateBlockStateRootHash"/>

@@ -56,10 +56,10 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
         public void RenderBlockEnd(
-            Block<T> oldTip,
-            Block<T> newTip
+            Block oldTip,
+            Block newTip
         ) =>
             LogBlockRendering(
                 nameof(RenderBlockEnd),

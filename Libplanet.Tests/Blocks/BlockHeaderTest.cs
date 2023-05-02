@@ -17,8 +17,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Constructors()
         {
-            Block<FxAction>[] fixtures = { _fx.Genesis, _fx.Next, _fx.HasTx };
-            foreach (Block<FxAction> fx in fixtures)
+            Block[] fixtures = { _fx.Genesis, _fx.Next, _fx.HasTx };
+            foreach (Block fx in fixtures)
             {
                 var preEval = new PreEvaluationBlockHeader(fx);
                 var header = new BlockHeader(preEval, (fx.StateRootHash, fx.Signature, fx.Hash));
@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateSignature()
         {
-            Block<FxAction> fx = _fx.HasTx;
+            Block fx = _fx.HasTx;
             var preEval = new PreEvaluationBlockHeader(fx);
             HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
             ImmutableArray<byte> invalidSig = preEval.MakeSignature(_fx.Miner, arbitraryHash);
@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateHash()
         {
-            Block<FxAction> fx = _fx.HasTx;
+            Block fx = _fx.HasTx;
             var preEval = new PreEvaluationBlockHeader(fx);
             ImmutableArray<byte> sig = fx.Signature.Value;
             HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();

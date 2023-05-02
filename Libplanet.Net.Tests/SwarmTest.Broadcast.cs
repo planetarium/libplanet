@@ -96,7 +96,7 @@ namespace Libplanet.Net.Tests
             var minerChain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
             {
-                Block<DumbAction> block = minerChain.ProposeBlock(
+                Block block = minerChain.ProposeBlock(
                     miner, CreateBlockCommit(minerChain.Tip));
                 minerChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -200,7 +200,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(seedSwarm);
 
                 await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
-                Block<DumbAction> block = seedChain.ProposeBlock(seedMiner);
+                Block block = seedChain.ProposeBlock(seedMiner);
                 seedChain.Append(block, TestUtils.CreateBlockCommit(block));
                 seedSwarm.BroadcastBlock(block);
                 Assert.NotEqual(seedChain.Tip, receiverChain.Tip);
@@ -312,7 +312,7 @@ namespace Libplanet.Net.Tests
             );
 
             chainA.StageTransaction(tx);
-            Block<DumbAction> block = chainA.ProposeBlock(minerA);
+            Block block = chainA.ProposeBlock(minerA);
             chainA.Append(block, TestUtils.CreateBlockCommit(block));
 
             try
@@ -374,7 +374,7 @@ namespace Libplanet.Net.Tests
                 {
                     for (var i = 0; i < 10; i++)
                     {
-                        Block<DumbAction> block = chainC.ProposeBlock(
+                        Block block = chainC.ProposeBlock(
                             minerC, CreateBlockCommit(chainC.Tip));
                         chainC.Append(block, TestUtils.CreateBlockCommit(block));
                     }
@@ -585,7 +585,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                Block<DumbAction> block = chainB.ProposeBlock(keyB);
+                Block block = chainB.ProposeBlock(keyB);
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
 
                 var tx3 = chainA.MakeTransaction(
@@ -653,14 +653,14 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                Block<DumbAction> block = chainA.ProposeBlock(
+                Block block = chainA.ProposeBlock(
                     keyA, CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                Block<DumbAction> block = chainB.ProposeBlock(
+                Block block = chainB.ProposeBlock(
                     keyB, CreateBlockCommit(chainB.Tip));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -754,13 +754,13 @@ namespace Libplanet.Net.Tests
                     privateKey: privateKey),
             };
 
-            Block<DumbAction> block1 = ProposeNext(
+            Block block1 = ProposeNext(
                 blockChain.Genesis,
                 new[] { transactions[0] },
                 miner: GenesisProposer.PublicKey
             ).Evaluate(GenesisProposer, blockChain);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
-            Block<DumbAction> block2 = ProposeNext(
+            Block block2 = ProposeNext(
                 block1,
                 new[] { transactions[1] },
                 miner: GenesisProposer.PublicKey,
@@ -909,23 +909,23 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                Block<DumbAction> block = chainA.ProposeBlock(
+                Block block = chainA.ProposeBlock(
                     keyA, CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
-            Block<DumbAction> chainATip = chainA.Tip;
+            Block chainATip = chainA.Tip;
 
             foreach (int i in Enumerable.Range(0, 5))
             {
-                Block<DumbAction> block = chainB.ProposeBlock(
+                Block block = chainB.ProposeBlock(
                     keyB, CreateBlockCommit(chainB.Tip));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                Block<DumbAction> block = chainC.ProposeBlock(
+                Block block = chainC.ProposeBlock(
                     keyB, CreateBlockCommit(chainC.Tip));
                 chainC.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -1048,11 +1048,11 @@ namespace Libplanet.Net.Tests
 
             mockTransport.ProcessMessageHandler.Register(MessageHandler);
 
-            Block<DumbAction> block1 = ProposeNextBlock(
+            Block block1 = ProposeNextBlock(
                 receiver.BlockChain.Genesis,
                 key,
                 new Transaction[] { });
-            Block<DumbAction> block2 = ProposeNextBlock(
+            Block block2 = ProposeNextBlock(
                 block1,
                 key,
                 new Transaction[] { });

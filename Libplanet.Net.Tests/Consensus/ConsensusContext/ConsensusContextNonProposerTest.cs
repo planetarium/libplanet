@@ -8,7 +8,6 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using xRetry;
@@ -93,7 +92,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightTwoProposalSent.WaitAsync();
             Assert.NotNull(proposal);
 
-            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            Block proposedBlock = BlockMarshaler.UnmarshalBlock(
                 (Dictionary)codec.Decode(proposal!.Proposal.MarshaledBlock));
             ImmutableArray<Vote> votes = proposedBlock.LastCommit?.Votes is { } vs
                 ? vs
@@ -160,7 +159,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(blockChain[1]));
@@ -220,7 +219,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightTwoStepChangedToEndCommit.WaitAsync();
 
             var blockHeightTwo =
-                BlockMarshaler.UnmarshalBlock<DumbAction>(
+                BlockMarshaler.UnmarshalBlock(
                     (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[3],
@@ -243,7 +242,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var codec = new Codec();
             var heightTwoProposalSent = new AsyncAutoResetEvent();
-            Block<DumbAction>? proposedBlock = null;
+            Block? proposedBlock = null;
 
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
@@ -255,7 +254,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 if (eventArgs.Height == 2 &&
                     eventArgs.Message is ConsensusProposalMsg propose)
                 {
-                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                    proposedBlock = BlockMarshaler.UnmarshalBlock(
                         (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
                     heightTwoProposalSent.Set();
                 }
@@ -264,7 +263,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var createdLastCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, createdLastCommit);
 

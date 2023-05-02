@@ -29,15 +29,13 @@ namespace Libplanet.Tests
                 chainB.BlockHashes.Select(h => chainB[h]).ToArray()
             );
 
-        public static void CompareBothChains<T>(
+        public static void CompareBothChains(
             this ILogger logger,
             LogEventLevel logLevel,
             string labelA,
-            IReadOnlyList<Block<T>> chainA,
+            IReadOnlyList<Block> chainA,
             string labelB,
-            IReadOnlyList<Block<T>> chainB
-        )
-            where T : IAction, new()
+            IReadOnlyList<Block> chainB)
         {
             if (chainA is null)
             {

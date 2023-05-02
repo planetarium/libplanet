@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tx;
 
@@ -12,18 +11,15 @@ namespace Libplanet.Blocks
     /// A block content without any proofs like nonce or hash.  This represents contents of a
     /// block that is not yet mined.
     /// </summary>
-    /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
-    /// parameter is aligned with <see cref="Transaction"/>'s type parameter.</typeparam>
-    /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
+    /// <remarks>Unlike other model types like <see cref="Block"/> or
     /// <see cref="Transaction"/>, this type is mutable.</remarks>
-    public sealed class BlockContent<T> : IBlockContent<T>
-        where T : IAction, new()
+    public sealed class BlockContent : IBlockContent
     {
         private BlockMetadata _blockMetadata;
         private IReadOnlyList<Transaction> _transactions;
 
         /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance filled with given
+        /// Creates a new <see cref="BlockContent"/> instance filled with given
         /// <paramref name="metadata"/> and <paramref name="transactions"/>.
         /// </summary>
         /// <remarks>
@@ -53,7 +49,7 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance with given
+        /// Creates a new <see cref="BlockContent"/> instance with given
         /// <paramref name="metadata"/> and without any <see cref="Transaction"/>s.
         /// </summary>
         /// <param name="metadata">The <see cref="BlockMetadata"/> to include in the block.</param>
@@ -67,7 +63,7 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance with given
+        /// Creates a new <see cref="BlockContent"/> instance with given
         /// <paramref name="metadata"/> and <paramref name="transactions"/>.
         /// </summary>
         /// <param name="metadata">The <see cref="BlockMetadata"/> to include in the block.</param>
@@ -155,6 +151,8 @@ namespace Libplanet.Blocks
         /// <remarks>This is always ordered by <see cref="Transaction.Id"/>.</remarks>
         public IReadOnlyList<Transaction> Transactions => _transactions;
 
+        IReadOnlyList<ITransaction> IBlockContent.Transactions => _transactions;
+
         /// <summary>
         /// Derives <see cref="IBlockMetadata.TxHash"/> from given <paramref name="transactions"/>.
         /// </summary>
@@ -195,9 +193,9 @@ namespace Libplanet.Blocks
             return new HashDigest<SHA256>(hasher.Hash);
         }
 
-        public PreEvaluationBlock<T> Propose()
+        public PreEvaluationBlock Propose()
         {
-            return new PreEvaluationBlock<T>(
+            return new PreEvaluationBlock(
                 this,
                 _blockMetadata.DerivePreEvaluationHash(default));
         }

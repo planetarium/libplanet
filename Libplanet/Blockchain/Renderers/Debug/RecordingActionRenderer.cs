@@ -42,8 +42,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
         internal IReadOnlyList<RenderRecord<T>.ActionError> ActionErrorRecords =>
             Records.OfType<RenderRecord<T>.ActionError>().ToImmutableArray();
 
-        internal IReadOnlyList<RenderRecord<T>.Block> BlockRecords =>
-            Records.OfType<RenderRecord<T>.Block>().ToImmutableArray();
+        internal IReadOnlyList<RenderRecord<T>.BlockEvent> BlockRecords =>
+            Records.OfType<RenderRecord<T>.BlockEvent>().ToImmutableArray();
 
         internal EventHandler<IAction>? RenderEventHandler { get; set; }
 
@@ -93,10 +93,10 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
-        public virtual void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
+        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        public virtual void RenderBlock(Block oldTip, Block newTip) =>
             _records.Add(
-                new RenderRecord<T>.Block(
+                new RenderRecord<T>.BlockEvent(
                     index: _nextIndex++,
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     oldTip: oldTip,
@@ -104,10 +104,10 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
-        public virtual void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        public virtual void RenderBlockEnd(Block oldTip, Block newTip) =>
             _records.Add(
-                new RenderRecord<T>.Block(
+                new RenderRecord<T>.BlockEvent(
                     index: _nextIndex++,
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     end: true,

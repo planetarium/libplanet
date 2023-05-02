@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// Serves as the base class for exceptions related <see cref="Block{T}"/>s' integrity and
+    /// Serves as the base class for exceptions related <see cref="Block"/>s' integrity and
     /// validity.
     /// </summary>
     public abstract class InvalidBlockException : Exception

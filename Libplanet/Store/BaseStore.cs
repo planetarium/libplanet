@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -54,8 +53,7 @@ namespace Libplanet.Store
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
         /// <inheritdoc/>
-        public Block<T> GetBlock<T>(BlockHash blockHash)
-            where T : IAction, new()
+        public Block GetBlock(BlockHash blockHash)
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
@@ -75,7 +73,7 @@ namespace Libplanet.Store
                         $"at block {blockHash}:\n" + string.Join("\n  ", missingTxIds));
                 }
 
-                return new Block<T>(header, txs.Select(pair => pair.Tx));
+                return new Block(header, txs.Select(pair => pair.Tx));
             }
 
             return null;
@@ -91,8 +89,7 @@ namespace Libplanet.Store
         public abstract BlockDigest? GetBlockDigest(BlockHash blockHash);
 
         /// <inheritdoc/>
-        public abstract void PutBlock<T>(Block<T> block)
-            where T : IAction, new();
+        public abstract void PutBlock(Block block);
 
         /// <inheritdoc/>
         public abstract bool DeleteBlock(BlockHash blockHash);

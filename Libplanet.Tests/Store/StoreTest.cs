@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = ProposeNextBlock(
+            Block block1 = ProposeNextBlock(
                 ProposeGenesisBlock<DumbAction>(GenesisProposer),
                 GenesisProposer,
                 new[] { Fx.Transaction1 });
@@ -323,9 +323,9 @@ namespace Libplanet.Tests.Store
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block3.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -341,9 +341,9 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+                Fx.Store.GetBlock(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block3.Hash));
             Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -358,11 +358,11 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
+                Fx.Store.GetBlock(Fx.Block1.Hash));
             Assert.Equal(
                 Fx.Block2,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+                Fx.Store.GetBlock(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block3.Hash));
             Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -375,11 +375,11 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new HashSet<BlockHash> { Fx.Block2.Hash },
                 Fx.Store.IterateBlockHashes().ToHashSet());
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block1.Hash));
             Assert.Equal(
                 Fx.Block2,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+                Fx.Store.GetBlock(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock(Fx.Block3.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -986,7 +986,7 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 = ProposeNextBlock(
+            Block anotherBlock3 = ProposeNextBlock(
                 Fx.Block2,
                 Fx.Proposer,
                 lastCommit: CreateBlockCommit(Fx.Block2.Hash, 2, 0));
@@ -1077,10 +1077,7 @@ namespace Libplanet.Tests.Store
                     Assert.Equal(s1.IterateIndexes(chainId), s2.IterateIndexes(chainId));
                     foreach (BlockHash blockHash in s1.IterateIndexes(chainId))
                     {
-                        Assert.Equal(
-                            s1.GetBlock<NullAction>(blockHash),
-                            s2.GetBlock<NullAction>(blockHash)
-                        );
+                        Assert.Equal(s1.GetBlock(blockHash), s2.GetBlock(blockHash));
                     }
                 }
 
@@ -1094,14 +1091,14 @@ namespace Libplanet.Tests.Store
         {
             using (StoreFixture fx = FxConstructor())
             {
-                Block<DumbAction> genesisBlock = fx.GenesisBlock;
-                Block<DumbAction> block = ProposeNextBlock(
+                Block genesisBlock = fx.GenesisBlock;
+                Block block = ProposeNextBlock(
                     genesisBlock,
                     miner: fx.Proposer);
 
                 fx.Store.PutBlock(block);
-                Block<DumbAction> storedBlock =
-                    fx.Store.GetBlock<DumbAction>(block.Hash);
+                Block storedBlock =
+                    fx.Store.GetBlock(block.Hash);
 
                 Assert.Equal(block, storedBlock);
             }

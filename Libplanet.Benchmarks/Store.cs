@@ -14,7 +14,7 @@ namespace Libplanet.Benchmarks
 {
     public class Store
     {
-        private readonly ImmutableArray<Block<DumbAction>> Blocks = default;
+        private readonly ImmutableArray<Block> Blocks = default;
         private readonly int BlocksCount = default;
         private readonly ImmutableArray<Transaction> Txs = default;
         private StoreFixture _fx = null;
@@ -23,13 +23,11 @@ namespace Libplanet.Benchmarks
 
         public Store()
         {
-            var blocks = new List<Block<DumbAction>>();
+            var blocks = new List<Block>();
             var txs = new List<Transaction>();
-            Block<DumbAction> genesis = TestUtils.ProposeGenesisBlock<DumbAction>(
-                TestUtils.GenesisProposer
-            );
+            Block genesis = TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             blocks.Add(genesis);
-            Block<DumbAction> block = genesis;
+            Block block = genesis;
             var key = new PrivateKey();
             long nonce = 0;
             for (int i = 0; i < 500; i++)
@@ -88,7 +86,7 @@ namespace Libplanet.Benchmarks
         {
             InitializeFixture();
             int i = 0;
-            foreach (Block<DumbAction> block in Blocks)
+            foreach (Block block in Blocks)
             {
                 _store.PutBlock(block);
                 i++;
@@ -106,33 +104,33 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Block<DumbAction> GetOldBlockOutOfManyBlocks()
+        public Block GetOldBlockOutOfManyBlocks()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock<DumbAction>(Blocks[0].Hash);
+            return _store.GetBlock(Blocks[0].Hash);
         }
 
         [Benchmark]
-        public Block<DumbAction> GetRecentBlockOutOfManyBlocks()
+        public Block GetRecentBlockOutOfManyBlocks()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock<DumbAction>(Blocks[BlocksCount - 2].Hash);
+            return _store.GetBlock(Blocks[BlocksCount - 2].Hash);
         }
 
         [Benchmark]
-        public Block<DumbAction> TryGetNonExistentBlockHash()
+        public Block TryGetNonExistentBlockHash()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock<DumbAction>(default);
+            return _store.GetBlock(default);
         }
 
         [Benchmark]

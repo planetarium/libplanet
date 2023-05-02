@@ -26,13 +26,13 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates an instance of <see cref="BlockCommit"/> given a set of <see cref="Vote"/>s.
         /// </summary>
-        /// <param name="height">The <see cref="Block{T}.Index"/> of the last committed
-        /// <see cref="Block{T}"/>.</param>
+        /// <param name="height">The <see cref="Block.Index"/> of the last committed
+        /// <see cref="Block"/>.</param>
         /// <param name="round">The round in which a consensus was reached.</param>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the last commited
-        /// <see cref="Block{T}"/>.</param>
+        /// <param name="blockHash">The <see cref="Block.Hash"/> of the last commited
+        /// <see cref="Block"/>.</param>
         /// <param name="votes">The set of <see cref="Vote"/>s as a proof for the commit
-        /// of the last <see cref="Block{T}"/>.</param>
+        /// of the last <see cref="Block"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when either
         /// <paramref name="height"/> or <paramref name="round"/> is negative.</exception>
         /// <exception cref="ArgumentException">Thrown for any of the following reasons:

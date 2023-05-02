@@ -11,8 +11,8 @@ namespace Libplanet.Net.Messages
         /// Creates an instance of <see cref="BlocksMsg"/> with given <paramref name="payloads"/>.
         /// </summary>
         /// <param name="payloads">The payload for this <see cref="Message"/>.  The length
-        /// should be twice the length of <see cref="Block{T}"/>s to send where even indices are
-        /// encoded <see cref="Block{T}"/>s and odd indices are encoded <see cref="BlockCommit"/>s.
+        /// should be twice the length of <see cref="Block"/>s to send where even indices are
+        /// encoded <see cref="Block"/>s and odd indices are encoded <see cref="BlockCommit"/>s.
         /// </param>
         /// <exception cref="ArgumentException">Thrown when the length of
         /// <paramref name="payloads"/> is not even.</exception>
@@ -42,7 +42,7 @@ namespace Libplanet.Net.Messages
 
         /// <summary>
         /// A <see cref="List{T}"/> of <see langword="byte"/> arrays representing the payload
-        /// of this <see cref="Message"/>.  Even indices are encoded <see cref="Block{T}"/>s
+        /// of this <see cref="Message"/>.  Even indices are encoded <see cref="Block"/>s
         /// and odd indices are encoded <see cref="BlockCommit"/>s.
         /// </summary>
         /// <remarks>

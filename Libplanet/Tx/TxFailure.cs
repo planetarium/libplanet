@@ -19,7 +19,7 @@ namespace Libplanet.Tx
         /// <summary>
         /// Creates a <see cref="TxFailure"/> instance.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
+        /// <param name="blockHash">The <see cref="Block.Hash"/> of the <see cref="Block"/>
         /// that the <see cref="Transaction"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction"/>'s <see
         /// cref="Transaction.Id"/>.</param>
@@ -43,7 +43,7 @@ namespace Libplanet.Tx
         /// <summary>
         /// Creates a <see cref="TxFailure"/> instance.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/>
+        /// <param name="blockHash">The <see cref="Block.Hash"/> of the <see cref="Block"/>
         /// that the <see cref="Transaction"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction"/>'s <see
         /// cref="Transaction.Id"/>.</param>

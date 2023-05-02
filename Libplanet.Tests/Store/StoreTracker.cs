@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -95,11 +94,10 @@ namespace Libplanet.Tests.Store
             _store.DeleteChainId(chainId);
         }
 
-        public Block<T> GetBlock<T>(BlockHash blockHash)
-            where T : IAction, new()
+        public Block GetBlock(BlockHash blockHash)
         {
             Log(nameof(GetBlock), blockHash);
-            return _store.GetBlock<T>(blockHash);
+            return _store.GetBlock(blockHash);
         }
 
         public long? GetBlockIndex(BlockHash blockHash)
@@ -144,11 +142,10 @@ namespace Libplanet.Tests.Store
             return _store.ListChainIds();
         }
 
-        public void PutBlock<T>(Block<T> block)
-            where T : IAction, new()
+        public void PutBlock(Block block)
         {
             Log(nameof(PutBlock), block);
-            _store.PutBlock<T>(block);
+            _store.PutBlock(block);
         }
 
         public void PutTransaction(Transaction tx)

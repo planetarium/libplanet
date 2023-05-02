@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly IReadOnlyList<Arithmetic> Actions;
         public readonly IReadOnlyList<Transaction> Txs;
         public readonly PrivateKey Miner;
-        public readonly Block<Arithmetic> Genesis;
+        public readonly Block Genesis;
         public readonly BlockChain<Arithmetic> Chain;
         public readonly IStore Store;
         public readonly IKeyValueStore KVStore;
@@ -71,13 +71,13 @@ namespace Libplanet.Tests.Fixtures
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             var preEval =
-            Genesis = TestUtils.ProposeGenesisBlock(
+            Genesis = TestUtils.ProposeGenesisBlock<Arithmetic>(
                 TestUtils.ProposeGenesis<Arithmetic>(
                     Miner.PublicKey,
                     Txs,
                     null,
                     DateTimeOffset.UtcNow,
-                    Block<Arithmetic>.CurrentProtocolVersion),
+                    Block.CurrentProtocolVersion),
                 Miner,
                 policy.BlockAction,
                 policy.NativeTokens.Contains);
@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Fixtures
 
         public IReadOnlyList<IRenderer<Arithmetic>> Renderers => Chain.Renderers;
 
-        public Block<Arithmetic> Tip => Chain.Tip;
+        public Block Tip => Chain.Tip;
 
         public TxWithContext Sign(PrivateKey signer, params Arithmetic[] actions)
         {
@@ -155,10 +155,10 @@ namespace Libplanet.Tests.Fixtures
         public TxWithContext Sign(int signerIndex, params Arithmetic[] actions) =>
             Sign(PrivateKeys[signerIndex], actions);
 
-        public Block<Arithmetic> Propose() => Chain.ProposeBlock(
+        public Block Propose() => Chain.ProposeBlock(
             Miner, TestUtils.CreateBlockCommit(Chain.Tip));
 
-        public void Append(Block<Arithmetic> block) =>
+        public void Append(Block block) =>
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)

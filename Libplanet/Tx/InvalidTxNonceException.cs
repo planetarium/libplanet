@@ -6,7 +6,7 @@ namespace Libplanet.Tx
 {
     /// <summary>
     /// An exception that is thrown when the <see cref="Transaction.Nonce"/>
-    /// of a <see cref="Transaction"/> included in a <see cref="Block{T}"/>
+    /// of a <see cref="Transaction"/> included in a <see cref="Block"/>
     /// is inconsistent with the expected nonce for the <see cref="Transaction.Signer"/>
     /// when appending to a <see cref="BlockChain{T}"/>.
     /// </summary>

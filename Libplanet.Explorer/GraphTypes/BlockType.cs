@@ -5,7 +5,7 @@ using Libplanet.Explorer.Interfaces;
 
 namespace Libplanet.Explorer.GraphTypes;
 
-public class BlockType<T> : ObjectGraphType<Block<T>>
+public class BlockType<T> : ObjectGraphType<Block>
     where T : IAction, new()
 {
     public BlockType(IBlockChainContext<T> context)
@@ -42,7 +42,7 @@ public class BlockType<T> : ObjectGraphType<Block<T>>
                     return null;
                 }
 
-                return context.Store.GetBlock<T>(h);
+                return context.Store.GetBlock(h);
             }
         );
         Field(x => x.Timestamp);

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -91,12 +90,8 @@ namespace Libplanet.Tests.Store
             Store.IterateBlockHashes();
 
         /// <inheritdoc cref="IStore.GetBlock{T}"/>
-        public virtual Block<T> GetBlock<T>(
-            BlockHash blockHash
-        )
-            where T : IAction, new()
-        =>
-            Store.GetBlock<T>(blockHash);
+        public virtual Block GetBlock(BlockHash blockHash) =>
+            Store.GetBlock(blockHash);
 
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
         public virtual long? GetBlockIndex(BlockHash blockHash) =>
@@ -107,9 +102,7 @@ namespace Libplanet.Tests.Store
             Store.GetBlockDigest(blockHash);
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
-        public virtual void PutBlock<T>(Block<T> block)
-            where T : IAction, new()
-        =>
+        public virtual void PutBlock(Block block) =>
             Store.PutBlock(block);
 
         /// <inheritdoc cref="IStore.DeleteBlock(BlockHash)"/>

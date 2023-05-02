@@ -19,7 +19,7 @@ namespace Libplanet.Blockchain
         /// <param name="evaluations">The result of evaluated actions.</param>
         /// <returns>The corresponding <see cref="TxExecution"/>s.</returns>
         internal IEnumerable<TxExecution> MakeTxExecutions(
-            Block<T> block,
+            Block block,
             IReadOnlyList<IActionEvaluation> evaluations
         )
         {

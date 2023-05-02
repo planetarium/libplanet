@@ -14,7 +14,7 @@ namespace Libplanet.Benchmarks
         private BlockChain<DumbAction> _blockChain;
         private PrivateKey _privateKey;
         private BlockCommit _lastCommit;
-        private Block<DumbAction> _block;
+        private Block _block;
 
         public ProposeBlock()
         {

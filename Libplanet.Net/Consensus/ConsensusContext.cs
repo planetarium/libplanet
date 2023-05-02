@@ -318,7 +318,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="e">The event arguments given by <see cref="BlockChain{T}.TipChanged"/>
         /// as a tuple of the old tip and the new tip.
         /// </param>
-        private void OnTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
+        private void OnTipChanged(object? sender, (Block OldTip, Block NewTip) e)
         {
             // TODO: Should set delay by using GST.
             _newHeightCts?.Cancel();

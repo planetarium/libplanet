@@ -9,7 +9,7 @@ using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
 using Xunit;
 using Constants = Serilog.Core.Constants;
-using DumbBlock = Libplanet.Blocks.Block<Libplanet.Tests.Common.Action.DumbAction>;
+using DumbBlock = Libplanet.Blocks.Block;
 
 namespace Libplanet.Tests.Blockchain.Renderers
 {

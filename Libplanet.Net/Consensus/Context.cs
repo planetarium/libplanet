@@ -101,11 +101,11 @@ namespace Libplanet.Net.Consensus
             LRUCache<BlockHash, (bool IsValid, IReadOnlyList<IActionEvaluation> EvaluatedActions)>
             _blockValidationCache;
 
-        private Block<T>? _lockedValue;
+        private Block? _lockedValue;
         private int _lockedRound;
-        private Block<T>? _validValue;
+        private Block? _validValue;
         private int _validRound;
-        private Block<T>? _decision;
+        private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
 
@@ -315,15 +315,15 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Creates a new <see cref="Block{T}"/> to propose.
+        /// Creates a new <see cref="Block"/> to propose.
         /// </summary>
-        /// <returns>A new <see cref="Block{T}"/> if successfully proposed,
+        /// <returns>A new <see cref="Block"/> if successfully proposed,
         /// otherwise <see langword="null"/>.</returns>
-        private Block<T>? GetValue()
+        private Block? GetValue()
         {
             try
             {
-                Block<T> block = _blockChain.ProposeBlock(_privateKey, _lastCommit);
+                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit);
                 _blockChain.Store.PutBlock(block);
                 return block;
             }
@@ -354,15 +354,15 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Validates the given block.
         /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> to validate.</param>
-        /// <param name="evaluatedActions">A list of evaluated actions from <see cref="Block{T}"/>.
+        /// <param name="block">A <see cref="Block"/> to validate.</param>
+        /// <param name="evaluatedActions">A list of evaluated actions from <see cref="Block"/>.
         /// If a given block is invalid, this will returns
         /// <see cref="ImmutableArray{ActionEvaluations}.Empty"/>
         /// lists.
         /// </param>
         /// <returns><see langword="true"/> if block is valid, otherwise <see langword="false"/>.
         /// </returns>
-        private bool IsValid(Block<T> block, out IReadOnlyList<IActionEvaluation> evaluatedActions)
+        private bool IsValid(Block block, out IReadOnlyList<IActionEvaluation> evaluatedActions)
         {
             if (_blockValidationCache.TryGet(block.Hash, out var cached))
             {
@@ -475,12 +475,12 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block<T>, int)? GetProposal(int round)
+        private (Block, int)? GetProposal(int round)
         {
             ConsensusProposalMsg? proposal = _messageLog.GetProposal(round);
             if (proposal is { } p)
             {
-                var block = BlockMarshaler.UnmarshalBlock<T>(
+                var block = BlockMarshaler.UnmarshalBlock(
                     (Dictionary)_codec.Decode(p.Proposal.MarshaledBlock));
                 return (block, p.Proposal.ValidRound);
             }

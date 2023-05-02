@@ -42,9 +42,9 @@ namespace Libplanet.Blockchain.Renderers
 
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderBlockEnd(Block{T}, Block{T})"/>.
+        /// <see cref="RenderBlockEnd(Block, Block)"/>.
         /// </summary>
-        public Action<Block<T>, Block<T>>? BlockEndRenderer { get; set; }
+        public Action<Block, Block>? BlockEndRenderer { get; set; }
 
         /// <inheritdoc
         /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
@@ -60,8 +60,8 @@ namespace Libplanet.Blockchain.Renderers
         public void RenderActionError(IAction action, IActionContext context, Exception exception)
             => ActionErrorRenderer?.Invoke(action, context, exception);
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
-        public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip) =>
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        public void RenderBlockEnd(Block oldTip, Block newTip) =>
             BlockEndRenderer?.Invoke(oldTip, newTip);
     }
 }

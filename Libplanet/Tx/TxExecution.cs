@@ -11,8 +11,8 @@ namespace Libplanet.Tx
     /// <summary>
     /// Summarizes an execution result of a <see cref="Transaction"/>.
     /// <para>Note that <see cref="Transaction"/>s cannot be executed without belonging to
-    /// a <see cref="Block{T}"/>, and even if it's the same <see cref="Transaction"/> its
-    /// result can vary depending on <see cref="Block{T}"/> that it is executed within.</para>
+    /// a <see cref="Block"/>, and even if it's the same <see cref="Transaction"/> its
+    /// result can vary depending on <see cref="Block"/> that it is executed within.</para>
     /// </summary>
     /// <seealso cref="TxSuccess"/>
     /// <seealso cref="TxFailure"/>
@@ -40,7 +40,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// The <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> that
+        /// The <see cref="Block.Hash"/> of the <see cref="Block"/> that
         /// the <see cref="Transaction"/> is executed within.
         /// </summary>
         [Pure]

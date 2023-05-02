@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Messages
                 new TrieStateStore(new MemoryKeyValueStore())
             );
             var codec = new Codec();
-            Block<DumbAction> genesis = chain.Genesis;
+            Block genesis = chain.Genesis;
             var transaction = chain.MakeTransaction(privateKey, new DumbAction[] { });
             switch (type)
             {

@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.GetState(default));
 
             var proposerA = new PrivateKey();
-            Block<DumbAction> block = _blockChain.ProposeBlock(proposerA);
+            Block block = _blockChain.ProposeBlock(proposerA);
             _blockChain.Append(block, CreateBlockCommit(block));
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var proposerB = new PrivateKey();
-            Block<DumbAction> anotherBlock = _blockChain.ProposeBlock(
+            Block anotherBlock = _blockChain.ProposeBlock(
                 proposerB,
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
             _blockChain.Append(anotherBlock, CreateBlockCommit(anotherBlock));
@@ -58,7 +58,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.GetState(default)
             );
 
-            Block<DumbAction> block3 = _blockChain.ProposeBlock(
+            Block block3 = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.StageTransaction(heavyTx);
             }
 
-            Block<DumbAction> block4 = _blockChain.ProposeBlock(
+            Block block4 = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
             Assert.False(_blockChain.ContainsBlock(block4.Hash));
@@ -244,7 +244,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
             }
 
-            Block<DumbAction> block = _blockChain.ProposeBlock(keyA);
+            Block block = _blockChain.ProposeBlock(keyA);
             _blockChain.Append(block, CreateBlockCommit(block));
 
             Assert.True(_blockChain.ContainsBlock(block.Hash));
@@ -351,7 +351,7 @@ namespace Libplanet.Tests.Blockchain
                 ),
             };
             StageTransactions(txs);
-            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
+            Block block = _blockChain.ProposeBlock(new PrivateKey());
             Assert.Equal(txs.Length, block.Transactions.Count());
         }
 
@@ -370,7 +370,7 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             );
-            Block<DumbAction> block1 = _blockChain.ProposeBlock(new PrivateKey());
+            Block block1 = _blockChain.ProposeBlock(new PrivateKey());
             _blockChain.Append(block1, CreateBlockCommit(block1));
 
             // Trying to propose with lower nonce (0) than expected.
@@ -385,7 +385,7 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             );
-            Block<DumbAction> block2 = _blockChain.ProposeBlock(
+            Block block2 = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
             _blockChain.Append(block2, CreateBlockCommit(block2));
@@ -469,7 +469,7 @@ namespace Libplanet.Tests.Blockchain
             IComparer<Transaction> txPriority =
                 Comparer<Transaction>.Create((tx1, tx2) =>
                     Rank(tx1.Signer).CompareTo(Rank(tx2.Signer)));
-            Block<DumbAction> block = _blockChain.ProposeBlock(
+            Block block = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 txPriority: txPriority);
             Assert.Equal(100, block.Transactions.Count);
@@ -491,7 +491,7 @@ namespace Libplanet.Tests.Blockchain
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
             var blockCommit = new BlockCommit(
                 _blockChain.Tip.Index, 0, _blockChain.Tip.Hash, votes);
-            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey(), blockCommit);
+            Block block = _blockChain.ProposeBlock(new PrivateKey(), blockCommit);
 
             Assert.NotNull(block.LastCommit);
             Assert.Equal(block.LastCommit, blockCommit);
@@ -507,7 +507,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txsA);
-            Block<DumbAction> b1 = _blockChain.ProposeBlock(new PrivateKey());
+            Block b1 = _blockChain.ProposeBlock(new PrivateKey());
             _blockChain.Append(b1, CreateBlockCommit(b1));
             Assert.Equal(
                 txsA,
@@ -525,7 +525,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(txsB);
 
             // Propose only txs having higher or equal with nonce than expected nonce.
-            Block<DumbAction> b2 = _blockChain.ProposeBlock(
+            Block b2 = _blockChain.ProposeBlock(
                 new PrivateKey(), CreateBlockCommit(b1));
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
@@ -542,7 +542,7 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txs);
-            Block<DumbAction> b = _blockChain.ProposeBlock(privateKey);
+            Block b = _blockChain.ProposeBlock(privateKey);
             _blockChain.Append(b, CreateBlockCommit(b));
 
             Assert.Single(b.Transactions);

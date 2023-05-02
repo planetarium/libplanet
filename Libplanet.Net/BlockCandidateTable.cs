@@ -11,7 +11,7 @@ namespace Libplanet.Net
 {
     /// <summary>
     /// <para>
-    /// A class for storing downloaded <see cref="Block{T}"/>s as <see cref="Dictionary{K, V}"/>.
+    /// A class for storing downloaded <see cref="Block"/>s as <see cref="Dictionary{K, V}"/>.
     /// A <see cref="BlockHeader"/> is used as a key for storing downloading context.
     /// </para>
     /// <para>
@@ -19,19 +19,19 @@ namespace Libplanet.Net
     /// </para>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// to <see cref="Block"/>'s type parameter.</typeparam>
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
         private readonly ILogger _logger;
-        private readonly ConcurrentDictionary<BlockHeader, Branch<T>> _table;
+        private readonly ConcurrentDictionary<BlockHeader, Branch> _table;
 
         public BlockCandidateTable()
         {
             _logger = Log
                 .ForContext<BlockCandidateTable<T>>()
                 .ForContext("Source", nameof(BlockCandidateTable<T>));
-            _table = new ConcurrentDictionary<BlockHeader, Branch<T>>();
+            _table = new ConcurrentDictionary<BlockHeader, Branch>();
         }
 
         public long Count
@@ -50,9 +50,9 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="blockHeader">The header of the <see cref="BlockChain{T}"/>'s
         /// tip at the time of downloading the blocks.</param>
-        /// <param name="branch">The list of downloaded <see cref="Block{T}"/>s and
+        /// <param name="branch">The list of downloaded <see cref="Block"/>s and
         /// its <see cref="BlockCommit"/>s.</param>
-        public void Add(BlockHeader blockHeader, Branch<T> branch)
+        public void Add(BlockHeader blockHeader, Branch branch)
         {
             if (_table.ContainsKey(blockHeader))
             {
@@ -82,18 +82,18 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Get the <see cref="Block{T}"/>s which are in the table by <see cref="BlockHeader"/>.
+        /// Get the <see cref="Block"/>s which are in the table by <see cref="BlockHeader"/>.
         /// </summary>
         /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
         /// tip of this round.</param>
-        /// <returns>A <see cref="List{T}"/> of <see cref="Block{T}"/>s with associated
+        /// <returns>A <see cref="List{T}"/> of <see cref="Block"/>s with associated
         /// <see cref="BlockCommit"/>s by
         /// <paramref name="thisRoundTip"/> if found, otherwise <see langword="null"/>.
         /// The result is guaranteed to be non-empty and consecutive sorted by
-        /// <see cref="Block{T}.Index"/>.
+        /// <see cref="Block.Index"/>.
         /// </returns>
         /// <seealso cref="Add"/>
-        public Branch<T>? GetCurrentRoundCandidate(
+        public Branch? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
             return _table.TryGetValue(thisRoundTip, out var branch)

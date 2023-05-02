@@ -28,12 +28,12 @@ namespace Libplanet.Blockchain.Renderers
     {
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderBlock(Block{T}, Block{T})"/>.
+        /// <see cref="RenderBlock(Block, Block)"/>.
         /// </summary>
-        public Action<Block<T>, Block<T>>? BlockRenderer { get; set; }
+        public Action<Block, Block>? BlockRenderer { get; set; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
-        public void RenderBlock(Block<T> oldTip, Block<T> newTip) =>
+        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        public void RenderBlock(Block oldTip, Block newTip) =>
             BlockRenderer?.Invoke(oldTip, newTip);
     }
 }

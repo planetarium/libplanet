@@ -26,7 +26,7 @@ namespace Libplanet.Net
                         nameof(GetChainStatusMsg));
 
                     // This is based on the assumption that genesis block always exists.
-                    Block<T> tip = BlockChain.Tip;
+                    Block tip = BlockChain.Tip;
                     var chainStatus = new ChainStatusMsg(
                         tip.ProtocolVersion,
                         BlockChain.Genesis.Hash,
@@ -242,7 +242,7 @@ namespace Libplanet.Net
             foreach (BlockHash hash in hashes)
             {
                 _logger.Verbose(logMsg, count, total, hash, reqId);
-                if (_store.GetBlock<T>(hash) is { } block)
+                if (_store.GetBlock(hash) is { } block)
                 {
                     byte[] blockPayload = Codec.Encode(block.MarshalBlock());
                     payloads.Add(blockPayload);

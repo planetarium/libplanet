@@ -32,12 +32,12 @@ namespace Libplanet.Tests.Blocks
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
-            PreEvaluationBlock<Arithmetic> preEvalGenesis =
+            PreEvaluationBlock preEvalGenesis =
                 _contents.GenesisContent.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
-                Block<Arithmetic> genesis = preEvalGenesis.Sign(
+                Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
                     BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
                         preEvalGenesis,
@@ -61,18 +61,18 @@ namespace Libplanet.Tests.Blocks
                 AssertBytesEqual(genesis.StateRootHash, identicalGenesisStateRootHash);
 
                 var txs = new[] { _contents.Block1Tx0 };
-                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                BlockContent content1 = new BlockContent(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         previousHash: genesis.Hash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs);
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
+                PreEvaluationBlock preEval1 = content1.Propose();
 
-                Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
+                Block block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
                 _output.WriteLine("#1: {0}", block1);
 
@@ -95,8 +95,7 @@ namespace Libplanet.Tests.Blocks
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
-            PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.GenesisContent.Propose();
+            PreEvaluationBlock preEvalGenesis = _contents.GenesisContent.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -104,7 +103,7 @@ namespace Libplanet.Tests.Blocks
                     BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
                         preEvalGenesis, blockAction, _ => true, out _);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
-                Block<Arithmetic> genesis =
+                Block genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -121,21 +120,21 @@ namespace Libplanet.Tests.Blocks
                 AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
 
                 var txs = new[] { _contents.Block1Tx0 };
-                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                BlockContent content1 = new BlockContent(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         previousHash: genesis.Hash,
-                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs);
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
+                PreEvaluationBlock preEval1 = content1.Propose();
 
                 HashDigest<SHA256> b1StateRootHash =
                     blockChain.DetermineBlockStateRootHash(preEval1, out _);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);
-                Block<Arithmetic> block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
+                Block block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
                 _output.WriteLine("#1: {0}", block1);
 
                 blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));

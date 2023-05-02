@@ -11,7 +11,7 @@ namespace Libplanet
 {
     /// <summary>
     /// An arbitrary <see cref="byte"/>s that is used as salt for
-    /// deriving <see cref="PreEvaluationBlock{T}.PreEvaluationHash"/> from its content.
+    /// deriving <see cref="PreEvaluationBlock.PreEvaluationHash"/> from its content.
     /// </summary>
     [JsonConverter(typeof(NonceJsonConverter))]
     public struct Nonce : IEquatable<Nonce>

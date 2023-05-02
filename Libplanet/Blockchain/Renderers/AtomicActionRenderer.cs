@@ -46,14 +46,14 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block{T}, Block{T})"/>
-        public void RenderBlock(Block<T> oldTip, Block<T> newTip)
+        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        public void RenderBlock(Block oldTip, Block newTip)
         {
             ActionRenderer.RenderBlock(oldTip, newTip);
         }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block{T}, Block{T})"/>
-        public void RenderBlockEnd(Block<T> oldTip, Block<T> newTip)
+        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        public void RenderBlockEnd(Block oldTip, Block newTip)
         {
             FlushBuffer(null, ActionRenderer.RenderAction);
             ActionRenderer.RenderBlockEnd(oldTip, newTip);

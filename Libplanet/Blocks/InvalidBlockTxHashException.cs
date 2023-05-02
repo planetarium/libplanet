@@ -12,9 +12,9 @@ namespace Libplanet.Blocks
         /// Initializes a new instance of <see cref="InvalidBlockTxHashException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="blockTxHash">The hash digest of <see cref="Block{T}.TxHash"/>.</param>
+        /// <param name="blockTxHash">The hash digest of <see cref="Block.TxHash"/>.</param>
         /// <param name="calculatedTxHash">The calculated hash digest from
-        /// <see cref="Block{T}.Transactions"/>.</param>
+        /// <see cref="Block.Transactions"/>.</param>
         public InvalidBlockTxHashException(
             string message,
             HashDigest<SHA256>? blockTxHash,

@@ -2,23 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Action;
 using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// A class representing a consecutive list of <see cref="Block{T}"/>s.
+    /// A class representing a consecutive list of <see cref="Block"/>s.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public class Branch<T>
-        where T : IAction, new()
+    public class Branch
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="Branch{T}"/> from <paramref name="blocks"/>.
+        /// Initializes a new instance of <see cref="Branch"/> from <paramref name="blocks"/>.
         /// </summary>
-        /// <param name="blocks">An enumerable of <see cref="Block{T}"/> and
+        /// <param name="blocks">An enumerable of <see cref="Block"/> and
         /// <see cref="BlockCommit"/> pairs to convert from.</param>
         /// <exception cref="ArgumentException">Thrown for failing to satisfy any of the following:
         /// <list type="bullet">
@@ -27,14 +23,14 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         ///     <item><description>
         ///         Given <paramref name="blocks"/> are consecutive in the sense that indices
-        ///         are unique, consecutive, and every <see cref="Block{T}.PreviousHash"/> match
-        ///         the <see cref="Block{T}.Hash"/> of the previous <see cref="Block{T}"/>.
+        ///         are unique, consecutive, and every <see cref="Block.PreviousHash"/> match
+        ///         the <see cref="Block.Hash"/> of the previous <see cref="Block"/>.
         ///     </description></item>
         /// </list>
         /// </exception>
-        public Branch(IEnumerable<(Block<T>, BlockCommit)> blocks)
+        public Branch(IEnumerable<(Block, BlockCommit)> blocks)
         {
-            ImmutableArray<(Block<T>, BlockCommit)> sorted =
+            ImmutableArray<(Block, BlockCommit)> sorted =
                 blocks.OrderBy(block => block.Item1.Index).ToImmutableArray();
             if (!sorted.Any())
             {
@@ -58,7 +54,7 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// An <see cref="ImmutableArray{T}"/> of <see cref="Block{T}"/> and
+        /// An <see cref="ImmutableArray{T}"/> of <see cref="Block"/> and
         /// <see cref="BlockCommit"/> pairs guaranteed to satisfy
         /// the following properties:
         /// <list type="bullet">
@@ -70,11 +66,11 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         ///     <item><description>
         ///         The elements are consecutive in the sense that indices
-        ///         are unique, consecutive, and every <see cref="Block{T}.PreviousHash"/> match
-        ///         the <see cref="Block{T}.Hash"/> of the previous <see cref="Block{T}"/>.
+        ///         are unique, consecutive, and every <see cref="Block.PreviousHash"/> match
+        ///         the <see cref="Block.Hash"/> of the previous <see cref="Block"/>.
         ///     </description></item>
         /// </list>
         /// </summary>
-        public ImmutableArray<(Block<T>, BlockCommit)> Blocks { get; }
+        public ImmutableArray<(Block, BlockCommit)> Blocks { get; }
     }
 }

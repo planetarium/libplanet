@@ -20,7 +20,7 @@ namespace Libplanet.Blockchain
         /// Propose a genesis block for creating a <see cref="BlockChain{T}"/>.
         /// </para>
         /// <para>
-        /// Note that a genesis <see cref="Block{T}"/> produced may not be suitable as
+        /// Note that a genesis <see cref="Block"/> produced may not be suitable as
         /// a genesis for <see cref="BlockChain{T}.Create"/> if given
         /// <paramref name="transactions"/> is invalid.
         /// </para>
@@ -32,7 +32,7 @@ namespace Libplanet.Blockchain
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
         /// <param name="transactions">A list of <see cref="Transaction"/>s to include
-        /// in the genesis <see cref="Block{T}"/>.</param>
+        /// in the genesis <see cref="Block"/>.</param>
         /// <param name="timestamp">The timestamp of the genesis block.  If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
         /// <param name="blockAction">A block action to execute and be rendered for every block.
@@ -42,11 +42,11 @@ namespace Libplanet.Blockchain
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
-        /// <returns>A genesis <see cref="Block{T}"/> proposed with given parameters.</returns>
+        /// <returns>A genesis <see cref="Block"/> proposed with given parameters.</returns>
         /// <seealso cref="BlockChain{T}.Create"/>
         // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction and
         // nativeTokenPredicate.  (Or at least there should be such an overload.)
-        public static Block<T> ProposeGenesisBlock(
+        public static Block ProposeGenesisBlock(
             PrivateKey privateKey = null,
             ImmutableList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -58,17 +58,17 @@ namespace Libplanet.Blockchain
                 ? txs.OrderBy(tx => tx.Id).ToImmutableList()
                 : ImmutableList<Transaction>.Empty;
 
-            BlockContent<T> content = new BlockContent<T>(
+            BlockContent content = new BlockContent(
                 new BlockMetadata(
                     index: 0L,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     previousHash: null,
-                    txHash: BlockContent<T>.DeriveTxHash(transactions),
+                    txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null),
                 transactions: transactions);
 
-            PreEvaluationBlock<T> preEval = content.Propose();
+            PreEvaluationBlock preEval = content.Propose();
             IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(
                 preEval, blockAction, nativeTokenPredicate);
             return preEval.Sign(
@@ -79,23 +79,23 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// <para>
-        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction"/>s.
+        /// Proposes a next <see cref="Block"/> using staged <see cref="Transaction"/>s.
         /// </para>
         /// <para>
-        /// By default, if successful, a policy adhering <see cref="Block{T}"/> is produced with
+        /// By default, if successful, a policy adhering <see cref="Block"/> is produced with
         /// current timestamp that can be appeneded to the current chain.
         /// </para>
         /// </summary>
         /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
         /// </param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
-        /// <see cref="Block{T}"/>.</param>
+        /// <see cref="Block"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
+        /// <returns>A <see cref="Block"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
-        public Block<T> ProposeBlock(
+        public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
             IComparer<Transaction> txPriority = null)
@@ -135,12 +135,12 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// <para>
-        /// Proposes a next <see cref="Block{T}"/> using a specified
+        /// Proposes a next <see cref="Block"/> using a specified
         /// list of <see cref="Transaction"/>s.
         /// </para>
         /// <para>
         /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction})"/>,
-        /// this may result in a <see cref="Block{T}"/> that does not conform to the
+        /// this may result in a <see cref="Block"/> that does not conform to the
         /// <see cref="Policy"/>.
         /// </para>
         /// </summary>
@@ -148,9 +148,9 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="transactions">The list of <see cref="Transaction"/>s to include.</param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
-        /// <see cref="Block{T}"/>.</param>
-        /// <returns>A <see cref="Block{T}"/> that is proposed.</returns>
-        internal Block<T> ProposeBlock(
+        /// <see cref="Block"/>.</param>
+        /// <returns>A <see cref="Block"/> that is proposed.</returns>
+        internal Block ProposeBlock(
             PrivateKey proposer,
             ImmutableList<Transaction> transactions,
             BlockCommit lastCommit)
@@ -161,7 +161,7 @@ namespace Libplanet.Blockchain
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
             var orderedTransactions = transactions.OrderBy(tx => tx.Id).ToList();
-            var blockContent = new BlockContent<T>(
+            var blockContent = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
@@ -169,21 +169,21 @@ namespace Libplanet.Blockchain
                     miner: proposer.ToAddress(),
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
-                    txHash: BlockContent<T>.DeriveTxHash(orderedTransactions),
+                    txHash: BlockContent.DeriveTxHash(orderedTransactions),
                     lastCommit: lastCommit),
                 transactions: orderedTransactions);
             var preEval = blockContent.Propose();
             return ProposeBlock(proposer, preEval);
         }
 
-        internal Block<T> ProposeBlock(
+        internal Block ProposeBlock(
             PrivateKey proposer,
-            PreEvaluationBlock<T> preEvaluationBlock) => preEvaluationBlock.Sign(
+            PreEvaluationBlock preEvaluationBlock) => preEvaluationBlock.Sign(
                 proposer,
                 DetermineBlockStateRootHash(preEvaluationBlock, out _));
 
         /// <summary>
-        /// Gathers <see cref="Transaction"/>s for proposing a <see cref="Block{T}"/> for
+        /// Gathers <see cref="Transaction"/>s for proposing a <see cref="Block"/> for
         /// index <pararef name="index"/>.  Gathered <see cref="Transaction"/>s are
         /// guaranteed to satisified the following <see cref="Transaction"/> related
         /// policies:
@@ -202,7 +202,7 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </summary>
-        /// <param name="index">The index of the <see cref="Block{T}"/> to propose.</param>
+        /// <param name="index">The index of the <see cref="Block"/> to propose.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>An <see cref="ImmutableList"/> of <see cref="Transaction"/>s

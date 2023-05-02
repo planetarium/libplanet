@@ -209,8 +209,7 @@ namespace Libplanet.Explorer.Store
             _store.GetBlockCommitHashes();
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
-        public void PutBlock<T>(Block<T> block)
-            where T : IAction, new()
+        public void PutBlock(Block block)
         {
             if (_blockCache.ContainsKey(block.Hash))
             {
@@ -295,10 +294,9 @@ namespace Libplanet.Explorer.Store
             _store.IterateBlockHashes();
 
         /// <inheritdoc cref="IStore.GetBlock{T}"/>
-        public Block<T> GetBlock<T>(BlockHash blockHash)
-            where T : IAction, new()
+        public Block GetBlock(BlockHash blockHash)
         {
-            return _store.GetBlock<T>(blockHash);
+            return _store.GetBlock(blockHash);
         }
 
         public void PutTransaction(Transaction tx)

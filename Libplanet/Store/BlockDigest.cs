@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -26,10 +25,10 @@ namespace Libplanet.Store
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
-        /// <see cref="Transaction"/> ids the <see cref="Block{T}"/> has.
+        /// <see cref="Transaction"/> ids the <see cref="Block"/> has.
         /// </summary>
-        /// <param name="header"><see cref="BlockHeader"/> of the <see cref="Block{T}"/>.</param>
-        /// <param name="txIds"><see cref="Transaction"/> ids the <see cref="Block{T}"/> has.
+        /// <param name="header"><see cref="BlockHeader"/> of the <see cref="Block"/>.</param>
+        /// <param name="txIds"><see cref="Transaction"/> ids the <see cref="Block"/> has.
         /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
@@ -43,10 +42,10 @@ namespace Libplanet.Store
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from
-        /// <see cref="Bencodex.Types.Dictionary"/> representation of the <see cref="Block{T}"/>.
+        /// <see cref="Bencodex.Types.Dictionary"/> representation of the <see cref="Block"/>.
         /// </summary>
         /// <param name="dict">
-        /// <see cref="Bencodex.Types.Dictionary"/> representation of the <see cref="Block{T}"/>.
+        /// <see cref="Bencodex.Types.Dictionary"/> representation of the <see cref="Block"/>.
         /// </param>
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
@@ -103,20 +102,18 @@ namespace Libplanet.Store
 
         /// <summary>
         /// The <see cref="Transaction.Id"/>s of <see cref="Transaction"/>s in
-        /// a <see cref="Block{T}"/>.  This is <em>not</em> necessarily ordered by
+        /// a <see cref="Block"/>.  This is <em>not</em> necessarily ordered by
         /// <see cref="Transaction.Id"/>.
         /// </summary>
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
         /// <summary>
-        /// Gets <see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
+        /// Gets <see cref="BlockDigest"/> representation of the <see cref="Block"/>.
         /// </summary>
         /// <param name="block">The block instance to get its digest.</param>
-        /// <typeparam name="T">An action type.</typeparam>
-        /// <returns><see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
+        /// <returns><see cref="BlockDigest"/> representation of the <see cref="Block"/>.
         /// </returns>
-        public static BlockDigest FromBlock<T>(Block<T> block)
-            where T : IAction, new()
+        public static BlockDigest FromBlock(Block block)
         {
             return new BlockDigest(
                 header: block.Header,

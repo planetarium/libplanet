@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Libplanet.Blocks;
 using Libplanet.Store;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 
 namespace Libplanet.Tests.Store
@@ -10,12 +9,12 @@ namespace Libplanet.Tests.Store
     public class BlockSetTest : IDisposable
     {
         private readonly StoreFixture _fx;
-        private readonly BlockSet<DumbAction> _set;
+        private readonly BlockSet _set;
 
         public BlockSetTest()
         {
             _fx = new MemoryStoreFixture();
-            _set = new BlockSet<DumbAction>(_fx.Store);
+            _set = new BlockSet(_fx.Store);
         }
 
         [Fact]
@@ -45,7 +44,7 @@ namespace Libplanet.Tests.Store
                 _set.Keys.ToHashSet());
 
             Assert.Equal(
-                new HashSet<Block<DumbAction>>()
+                new HashSet<Block>()
                 {
                     _fx.Block1,
                     _fx.Block2,

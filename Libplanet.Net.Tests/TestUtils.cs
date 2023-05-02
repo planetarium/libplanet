@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -83,7 +82,7 @@ namespace Libplanet.Net.Tests
         public static BlockChain<DumbAction> CreateDummyBlockChain(
             MemoryStoreFixture fx,
             IBlockPolicy<DumbAction>? policy = null,
-            Block<DumbAction>? genesisBlock = null)
+            Block? genesisBlock = null)
         {
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy ?? Policy,
@@ -95,7 +94,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static ConsensusProposalMsg CreateConsensusPropose(
-            Block<DumbAction> block,
+            Block block,
             PrivateKey privateKey,
             long height = 1,
             int round = 0,
@@ -112,8 +111,8 @@ namespace Libplanet.Net.Tests
                     validRound).Sign(privateKey));
         }
 
-        public static BlockCommit CreateBlockCommit<T>(Block<T> block)
-            where T : IAction, new() => Libplanet.Tests.TestUtils.CreateBlockCommit(block);
+        public static BlockCommit CreateBlockCommit(Block block) =>
+            Libplanet.Tests.TestUtils.CreateBlockCommit(block);
 
         public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round) =>
             Libplanet.Tests.TestUtils.CreateBlockCommit(blockHash, height, round);

@@ -50,11 +50,11 @@ public class BlockCommand
             : File.OpenRead(file);
         string sourceName = file == "-" ? "stdin" : $"file {file}";
         Codec codec = new ();
-        Block<NullAction> block;
+        Block block;
         try
         {
             var dict = (Bencodex.Types.Dictionary)codec.Decode(inputStream);
-            block = BlockMarshaler.UnmarshalBlock<NullAction>(dict);
+            block = BlockMarshaler.UnmarshalBlock(dict);
         }
         catch (DecodingException e)
         {
@@ -144,7 +144,7 @@ public class BlockCommand
                 }))
             .ToImmutableList();
 
-        Block<NullAction> genesis = BlockChain<NullAction>.ProposeGenesisBlock(
+        Block genesis = BlockChain<NullAction>.ProposeGenesisBlock(
             privateKey: key,
             transactions: txs,
             blockAction: blockPolicyParams.GetBlockAction(),
@@ -157,7 +157,7 @@ public class BlockCommand
             : File.Open(file, FileMode.Create);
         switch (format)
         {
-            // FIXME: Configure JsonConverter for Block<T>:
+            // FIXME: Configure JsonConverter for Block:
             case OutputFormat.Json:
                 var writerOptions = new JsonWriterOptions { Indented = true };
                 using (var writer = new Utf8JsonWriter(stream, writerOptions))

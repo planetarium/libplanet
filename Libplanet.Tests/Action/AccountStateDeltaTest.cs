@@ -255,8 +255,8 @@ namespace Libplanet.Tests.Action
                 protocolVersion: ProtocolVersion);
             var stateRootHash = chain.DetermineBlockStateRootHash(preEvalBlock, out _);
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
-            Block<DumbAction> block = ProtocolVersion < 2
-                ? new Block<DumbAction>(preEvalBlock, (stateRootHash, null, hash))
+            Block block = ProtocolVersion < 2
+                ? new Block(preEvalBlock, (stateRootHash, null, hash))
                 : preEvalBlock.Evaluate(privateKey, chain);
             chain.Append(
                 block,

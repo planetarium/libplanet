@@ -69,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start();
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal);
-            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            Block proposedBlock = BlockMarshaler.UnmarshalBlock(
                 (Bencodex.Types.Dictionary)_codec.Decode(proposal!.Proposal.MarshaledBlock));
 
             // Force round change.
@@ -160,7 +160,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             var key = new PrivateKey();
-            var differentBlock = new BlockContent<DumbAction>(
+            var differentBlock = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: blockChain.Tip.Index + 1,
@@ -170,12 +170,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose().Evaluate(key, blockChain);
+                .Propose().Evaluate<DumbAction>(key, blockChain);
 
             context.Start();
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal);
-            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+            Block proposedBlock = BlockMarshaler.UnmarshalBlock(
                 (Bencodex.Types.Dictionary)_codec.Decode(proposal!.Proposal.MarshaledBlock));
 
             // Force round change to 2.
