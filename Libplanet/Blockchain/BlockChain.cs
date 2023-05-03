@@ -1110,9 +1110,6 @@ namespace Libplanet.Blockchain
                             block.Index,
                             block.Hash);
                         ValidateBlockStateRootHash(block, out actionEvaluations);
-                        IEnumerable<TxExecution> txExecutions =
-                            MakeTxExecutions(block, actionEvaluations);
-                        UpdateTxExecutions(txExecutions);
 
                         _logger.Information(
                             "Executed actions in block #{BlockIndex} {BlockHash}",
@@ -1136,12 +1133,14 @@ namespace Libplanet.Blockchain
                     }
 
                     _blocks[block.Hash] = block;
+                    IEnumerable<TxExecution> txExecutions =
+                        MakeTxExecutions(block, actionEvaluations);
+                    UpdateTxExecutions(txExecutions);
+
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
                         Store.IncreaseTxNonce(Id, pair.Key, pair.Value);
                     }
-
-                    Store.AppendIndex(Id, block.Hash);
 
                     foreach (var tx in block.Transactions)
                     {
@@ -1152,6 +1151,8 @@ namespace Libplanet.Blockchain
                     {
                         Store.PutChainBlockCommit(Id, blockCommit);
                     }
+
+                    Store.AppendIndex(Id, block.Hash);
                 }
                 finally
                 {

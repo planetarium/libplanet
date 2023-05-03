@@ -130,6 +130,25 @@ To be released.
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
 
+Version 1.0.1
+-------------
+
+Released on May 3, 2023.
+
+### Bug fixes
+
+ -  Fixed a bug where `BlockChain<T>.Append()` hadn't update tx executions
+    even `evaluateActions` set to `true` when `actionEvaluations` are given.
+    [[#3125]]
+ -  (Libplanet.Explorer) Fixed a bug where `BlockQuery.blocks` field had thrown
+    `KeyNotFoundException` when appending block simultaneously.
+    [[#3126], [#3130]]
+
+[#3125]: https://github.com/planetarium/libplanet/pull/3125
+[#3126]: https://github.com/planetarium/libplanet/issues/3126
+[#3130]: https://github.com/planetarium/libplanet/pull/3130
+
+
 Version 1.0.0
 -------------
 
