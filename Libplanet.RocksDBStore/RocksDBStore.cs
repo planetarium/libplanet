@@ -532,15 +532,14 @@ namespace Libplanet.RocksDBStore
                 return cached;
             }
 
-            List<BlockHash> indexes = IterateIndexes(chainId, offset, limit, false)
-                .ToList();
+            List<BlockHash> indexes = IterateIndexes(chainId, offset, limit, false).ToList();
 
             if (ic is null)
             {
-                _indexCache[chainId] = new LruCache<(int, int?), List<BlockHash>>();
+                _indexCache[chainId] = ic = new LruCache<(int, int?), List<BlockHash>>();
             }
 
-            _indexCache[chainId][(offset, limit)] = indexes;
+            ic[(offset, limit)] = indexes;
             return indexes;
         }
 
