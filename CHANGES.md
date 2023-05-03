@@ -76,7 +76,7 @@ To be released.
  -  Removed `PreEvaluationBlock.Evaluate<T>()` method.  [[#3127]]
  -  Renamed `IActionTypeLoader` to `IActionLoader`.  [[#3135]]
      -  Added `IActionLoader.Load(long, IValue)` interface method.
-     -  Removed `IActionTypeLoaderContext` class.  Use `long` instead.
+     -  Removed `ActionTypeLoaderContext` class.  Use `long` instead.
      -  Renamed `StaticActionTypeLoader` to `StaticActionLoader`.
 
 ### Backward-incompatible network protocol changes
