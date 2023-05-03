@@ -602,8 +602,8 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             var dummy = new PrivateKey();
             BlockHash genesis = _blockChain.Genesis.Hash;
-            Transaction<DumbAction>
-                txA0 = Transaction<DumbAction>.Create(
+            Transaction
+                txA0 = Transaction.Create<DumbAction>(
                     0,
                     signer,
                     genesis,
@@ -612,7 +612,7 @@ namespace Libplanet.Tests.Blockchain
                         new DumbAction(
                             dummy.ToAddress(), "foo", dummy.ToAddress(), dummy.ToAddress(), 10),
                     }),
-                txA1 = Transaction<DumbAction>.Create(
+                txA1 = Transaction.Create<DumbAction>(
                     1,
                     signer,
                     genesis,
@@ -623,15 +623,13 @@ namespace Libplanet.Tests.Blockchain
                     });
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
-            Block<DumbAction> block = _blockChain.ProposeBlock(miner);
-            IReadOnlyList<ActionEvaluation> actionEvaluations = _blockChain.EvaluateBlock(block);
+            Block block = _blockChain.ProposeBlock(miner);
+            IReadOnlyList<IActionEvaluation> actionEvaluations = _blockChain.EvaluateBlock(block);
             Assert.Equal(0L, _blockChain.Tip.Index);
             _blockChain.Append(
                 block,
                 TestUtils.CreateBlockCommit(block),
-                evaluateActions: true,
-                renderBlocks: true,
-                renderActions: true,
+                render: true,
                 actionEvaluations: actionEvaluations);
             Assert.Equal(1L, _blockChain.Tip.Index);
             Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA0.Id));
