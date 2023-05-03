@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Load()
         {
-            var actionTypeLoader = new StaticActionTypeLoader(
+            var actionTypeLoader = new StaticActionLoader(
                 new[] { typeof(Attack).Assembly },
                 typeof(BaseAction)
             );
@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void DuplicateIds()
         {
-            var actionTypeLoader = new StaticActionTypeLoader(
+            var actionTypeLoader = new StaticActionLoader(
                 new[] { typeof(Attack).Assembly }
             );
 

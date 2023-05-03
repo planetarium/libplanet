@@ -150,7 +150,7 @@ namespace Libplanet.Action
     public sealed class PolymorphicAction<T> : IAction
         where T : IAction
     {
-        private static StaticActionTypeLoader _actionTypeLoader;
+        private static StaticActionLoader _actionTypeLoader;
 
         private static IDictionary<IValue, Type> _types;
 
@@ -180,11 +180,11 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// <see cref="StaticActionTypeLoader"/> for <see cref="PolymorphicAction{T}"/>.
+        /// <see cref="StaticActionLoader"/> for <see cref="PolymorphicAction{T}"/>.
         /// </summary>
-        public static StaticActionTypeLoader ActionTypeLoader
+        public static StaticActionLoader ActionTypeLoader
         {
-            get => _actionTypeLoader ??= new StaticActionTypeLoader(
+            get => _actionTypeLoader ??= new StaticActionLoader(
                 Assembly.GetEntryAssembly() is Assembly entryAssembly
                     ? new[] { typeof(T).Assembly, entryAssembly }
                     : new[] { typeof(T).Assembly },

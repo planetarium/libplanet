@@ -86,7 +86,7 @@ namespace Libplanet.Blockchain
                 trieGetter: null,
                 genesisHash: null,
                 nativeTokenPredicate: nativeTokenPredicate,
-                actionTypeLoader: StaticActionTypeLoader.Create<T>(),
+                actionTypeLoader: StaticActionLoader.Create<T>(),
                 feeCalculator: null);
             return actionEvaluator.Evaluate(preEvaluationBlock);
         }
