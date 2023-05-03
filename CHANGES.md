@@ -133,7 +133,7 @@ To be released.
 Version 1.0.1
 -------------
 
-To be released.
+Released on May 3, 2023.
 
 ### Bug fixes
 
@@ -146,7 +146,7 @@ To be released.
 
 [#3125]: https://github.com/planetarium/libplanet/pull/3125
 [#3126]: https://github.com/planetarium/libplanet/issues/3126
-[#3130]: https://github.com/planetarium/libplanet/pull/3126
+[#3130]: https://github.com/planetarium/libplanet/pull/3130
 
 
 Version 1.0.0
