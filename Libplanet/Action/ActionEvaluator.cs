@@ -30,7 +30,7 @@ namespace Libplanet.Action
         private readonly IBlockChainStates _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
-        private readonly IActionTypeLoader _actionTypeLoader;
+        private readonly IActionLoader _actionTypeLoader;
         private readonly IFeeCalculator? _feeCalculator;
 
 #pragma warning disable MEN002
@@ -49,7 +49,7 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
+        /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using action type lookup.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
@@ -57,7 +57,7 @@ namespace Libplanet.Action
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate,
-            IActionTypeLoader actionTypeLoader,
+            IActionLoader actionTypeLoader,
             IFeeCalculator? feeCalculator
         )
 #pragma warning restore MEN002
@@ -610,8 +610,7 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            IEnumerable<IAction> customActions = CreateCustomActions(
-                ActionTypeLoaderContext.From(blockHeader), tx);
+            IEnumerable<IAction> customActions = CreateCustomActions(blockHeader.Index, tx);
             ImmutableList<IAction> actions = ImmutableList.CreateRange(customActions);
             return EvaluateActions(
                 genesisHash: _genesisHash,
@@ -817,49 +816,13 @@ namespace Libplanet.Action
                 validatorSetGetter);
         }
 
-        private IEnumerable<IAction> CreateCustomActions(
-            IActionTypeLoaderContext actionTypeLoaderContext,
-            ITransaction tx
-        )
+        private IEnumerable<IAction> CreateCustomActions(long index, ITransaction tx)
         {
             if (tx.Actions is { } actions)
             {
-                IDictionary<IValue, Type> types = _actionTypeLoader.Load(actionTypeLoaderContext);
-
                 foreach (IValue rawAction in actions)
                 {
-                    if (Registry.IsSystemAction(rawAction))
-                    {
-                        yield return Registry.Deserialize(rawAction);
-                    }
-                    else
-                    {
-                        IAction action;
-
-                        // it means that, we will bypass PolymorphicAction....
-                        if (rawAction is Dictionary pv &&
-                            pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
-                            rawTypeId is Text typeId &&
-                            types.TryGetValue(typeId, out Type? actionType))
-                        {
-                            action = (IAction)Activator.CreateInstance(actionType)!;
-                            action.LoadPlainValue(pv["values"]);
-                        }
-                        else if (_actionTypeLoader is StaticActionTypeLoader loader &&
-                                loader.BaseType is { } baseActionType)
-                        {
-                            action = (IAction)Activator.CreateInstance(baseActionType)!;
-                            action.LoadPlainValue(rawAction);
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException(
-                                $"Failed to instantiate given action: {rawAction}"
-                            );
-                        }
-
-                        yield return action;
-                    }
+                    yield return _actionTypeLoader.LoadAction(index, rawAction);
                 }
             }
         }

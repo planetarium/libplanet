@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using Bencodex.Types;
+using Libplanet.Action.Sys;
 
 namespace Libplanet.Action
 {
     /// <summary>
-    /// An <see cref="IActionTypeLoader"/> implementation to load action types
+    /// An <see cref="IActionLoader"/> implementation to load action types
     /// without branching by block index.
     /// </summary>
-    public class StaticActionTypeLoader : IActionTypeLoader
+    public class StaticActionLoader : IActionLoader
     {
         private readonly Type? _baseType;
         private readonly ImmutableHashSet<Assembly> _assembliesSet;
@@ -18,11 +19,11 @@ namespace Libplanet.Action
         private IDictionary<IValue, Type>? _types;
 
         /// <summary>
-        /// Creates a new <see cref="StaticActionTypeLoader"/> instance.
+        /// Creates a new <see cref="StaticActionLoader"/> instance.
         /// </summary>
         /// <param name="assemblies">The assemblies to load actions from.</param>
         /// <param name="baseType">The base type of actions to load.</param>
-        public StaticActionTypeLoader(IEnumerable<Assembly> assemblies, Type? baseType = null)
+        public StaticActionLoader(IEnumerable<Assembly> assemblies, Type? baseType = null)
         {
             _baseType = baseType;
             _assembliesSet = assemblies.ToImmutableHashSet();
@@ -31,27 +32,50 @@ namespace Libplanet.Action
 
         internal Type? BaseType => _baseType;
 
-        /// <summary>
-        /// Load action types inherited the base type given in the constructor from assemblies.
-        /// </summary>
-        /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine
-        /// what action types to use. But it isn't used in this implementation.</param>
-        /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IDictionary<IValue, Type> Load(IActionTypeLoaderContext context) => Load();
+        /// <inheritdoc cref="IActionLoader.Load"/>.
+        public IDictionary<IValue, Type> Load(long index) => Load();
 
-        /// <summary>
-        /// Load all action types from assemblies.
-        /// </summary>
-        /// <param name="context">A <see cref="IActionTypeLoaderContext"/> to determine what action
-        /// types to use. But it isn't used in this implementation.</param>
-        /// <returns>A dictionary made of action id to action type pairs.</returns>
-        public IEnumerable<Type> LoadAllActionTypes(IActionTypeLoaderContext context)
+        /// <inheritdoc cref="IActionLoader.LoadAllActionTypes"/>.
+        public IEnumerable<Type> LoadAllActionTypes(long index)
             => LoadAllActionTypesImpl(_assembliesSet);
 
-        internal static StaticActionTypeLoader Create<T>()
+        /// <inheritdoc cref="IActionLoader.LoadAction"/>.
+        public IAction LoadAction(long index, IValue value)
+        {
+            if (Registry.IsSystemAction(value))
+            {
+                return Registry.Deserialize(value);
+            }
+
+            IAction action;
+            var types = Load(index);
+            if (value is Dictionary pv &&
+                pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
+                rawTypeId is Text typeId &&
+                types.TryGetValue(typeId, out Type? actionType))
+            {
+                action = (IAction)Activator.CreateInstance(actionType)!;
+                action.LoadPlainValue(pv["values"]);
+            }
+            else if (BaseType is { } baseActionType)
+            {
+                action = (IAction)Activator.CreateInstance(baseActionType)!;
+                action.LoadPlainValue(value);
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Failed to instantiate given action: {value}"
+                );
+            }
+
+            return action;
+        }
+
+        internal static StaticActionLoader Create<T>()
             where T : IAction, new()
         {
-            return new StaticActionTypeLoader(
+            return new StaticActionLoader(
                 Assembly.GetEntryAssembly() is Assembly entryAssembly
                     ? new[] { typeof(T).Assembly, entryAssembly }
                     : new[] { typeof(T).Assembly },

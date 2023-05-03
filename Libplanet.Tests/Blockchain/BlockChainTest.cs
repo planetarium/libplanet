@@ -1617,7 +1617,7 @@ namespace Libplanet.Tests.Blockchain
                     stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                 genesisHash: genesisBlock.Hash,
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
-                actionTypeLoader: StaticActionTypeLoader.Create<DumbAction>(),
+                actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                 feeCalculator: null
             );
             var chain = BlockChain<DumbAction>.Create(

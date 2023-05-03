@@ -644,7 +644,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: genesisBlock.Hash,
                     nativeTokenPredicate: policy.NativeTokens.Contains,
-                    actionTypeLoader: StaticActionTypeLoader.Create<T>(),
+                    actionTypeLoader: StaticActionLoader.Create<T>(),
                     feeCalculator: null
             );
 #pragma warning disable S1121

@@ -98,7 +98,7 @@ namespace Libplanet.Tests.Action
                     trieGetter: null,
                     genesisHash: null,
                     nativeTokenPredicate: _ => true,
-                    actionTypeLoader: StaticActionTypeLoader.Create<RandomAction>(),
+                    actionTypeLoader: StaticActionLoader.Create<RandomAction>(),
                     feeCalculator: null
                 );
             var generatedRandomNumbers = new List<int>();
@@ -306,7 +306,7 @@ namespace Libplanet.Tests.Action
                 trieGetter: null,
                 genesisHash: null,
                 nativeTokenPredicate: _ => true,
-                actionTypeLoader: StaticActionTypeLoader.Create<DumbAction>(),
+                actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                 feeCalculator: null);
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
@@ -603,7 +603,7 @@ namespace Libplanet.Tests.Action
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true,
-                actionTypeLoader: StaticActionTypeLoader.Create<DumbAction>(),
+                actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                 feeCalculator: null
             );
 
@@ -741,7 +741,7 @@ namespace Libplanet.Tests.Action
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true,
-                actionTypeLoader: StaticActionTypeLoader.Create<ThrowException>(),
+                actionTypeLoader: StaticActionLoader.Create<ThrowException>(),
                 feeCalculator: null
             );
             var block = new BlockContent(
