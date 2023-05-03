@@ -151,6 +151,13 @@ instead.</li>
 </ul>
 </li>
 <li>Removed <code>PreEvaluationBlock.Evaluate&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3127">#3127</a>]</li>
+<li>Renamed <code>IActionTypeLoader</code> to <code>IActionLoader</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3135">#3135</a>]
+<ul>
+<li>Added <code>IActionLoader.Load(long, IValue)</code> interface method.</li>
+<li>Removed <code>ActionTypeLoaderContext</code> class.  Use <code>long</code> instead.</li>
+<li>Renamed <code>StaticActionTypeLoader</code> to <code>StaticActionLoader</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

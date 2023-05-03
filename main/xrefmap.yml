@@ -135,15 +135,15 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluator
   fullName: Libplanet.Action.ActionEvaluator
   nameWithType: ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader,Libplanet.Action.IFeeCalculator)
-  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader, IFeeCalculator)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_Libplanet_Action_IFeeCalculator_
-  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader,Libplanet.Action.IFeeCalculator)
-  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader, IFeeCalculator)
-  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>, System.Nullable<Libplanet.Blocks.BlockHash>, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionTypeLoader, Libplanet.Action.IFeeCalculator)
-  fullName.vb: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie), System.Nullable(Of Libplanet.Blocks.BlockHash), System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionTypeLoader, Libplanet.Action.IFeeCalculator)
-  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader, IFeeCalculator)
-  nameWithType.vb: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader, IFeeCalculator)
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionLoader,Libplanet.Action.IFeeCalculator)
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionLoader, IFeeCalculator)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie__System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionLoader_Libplanet_Action_IFeeCalculator_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie},System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionLoader,Libplanet.Action.IFeeCalculator)
+  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionLoader, IFeeCalculator)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>, System.Nullable<Libplanet.Blocks.BlockHash>, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionLoader, Libplanet.Action.IFeeCalculator)
+  fullName.vb: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie), System.Nullable(Of Libplanet.Blocks.BlockHash), System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionLoader, Libplanet.Action.IFeeCalculator)
+  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func<BlockHash, ITrie>, Nullable<BlockHash>, Predicate<Currency>, IActionLoader, IFeeCalculator)
+  nameWithType.vb: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Func(Of BlockHash, ITrie), Nullable(Of BlockHash), Predicate(Of Currency), IActionLoader, IFeeCalculator)
 - uid: Libplanet.Action.ActionEvaluator.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
@@ -841,38 +841,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionEvaluator.Evaluate
   nameWithType: IActionEvaluator.Evaluate
-- uid: Libplanet.Action.IActionTypeLoader
-  name: IActionTypeLoader
-  href: api/Libplanet.Action.IActionTypeLoader.html
-  commentId: T:Libplanet.Action.IActionTypeLoader
-  fullName: Libplanet.Action.IActionTypeLoader
-  nameWithType: IActionTypeLoader
-- uid: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
-  name: Load(IActionTypeLoaderContext)
-  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_Libplanet_Action_IActionTypeLoaderContext_
-  commentId: M:Libplanet.Action.IActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
-  fullName: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
-  nameWithType: IActionTypeLoader.Load(IActionTypeLoaderContext)
-- uid: Libplanet.Action.IActionTypeLoader.Load*
+- uid: Libplanet.Action.IActionLoader
+  name: IActionLoader
+  href: api/Libplanet.Action.IActionLoader.html
+  commentId: T:Libplanet.Action.IActionLoader
+  fullName: Libplanet.Action.IActionLoader
+  nameWithType: IActionLoader
+- uid: Libplanet.Action.IActionLoader.Load(System.Int64)
+  name: Load(Int64)
+  href: api/Libplanet.Action.IActionLoader.html#Libplanet_Action_IActionLoader_Load_System_Int64_
+  commentId: M:Libplanet.Action.IActionLoader.Load(System.Int64)
+  fullName: Libplanet.Action.IActionLoader.Load(System.Int64)
+  nameWithType: IActionLoader.Load(Int64)
+- uid: Libplanet.Action.IActionLoader.Load*
   name: Load
-  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_
-  commentId: Overload:Libplanet.Action.IActionTypeLoader.Load
+  href: api/Libplanet.Action.IActionLoader.html#Libplanet_Action_IActionLoader_Load_
+  commentId: Overload:Libplanet.Action.IActionLoader.Load
   isSpec: "True"
-  fullName: Libplanet.Action.IActionTypeLoader.Load
-  nameWithType: IActionTypeLoader.Load
-- uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
-  name: LoadAllActionTypes(IActionTypeLoaderContext)
-  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_Libplanet_Action_IActionTypeLoaderContext_
-  commentId: M:Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
-  fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
-  nameWithType: IActionTypeLoader.LoadAllActionTypes(IActionTypeLoaderContext)
-- uid: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes*
+  fullName: Libplanet.Action.IActionLoader.Load
+  nameWithType: IActionLoader.Load
+- uid: Libplanet.Action.IActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  name: LoadAction(Int64, IValue)
+  href: api/Libplanet.Action.IActionLoader.html#Libplanet_Action_IActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.IActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.IActionLoader.LoadAction(System.Int64, Bencodex.Types.IValue)
+  nameWithType: IActionLoader.LoadAction(Int64, IValue)
+- uid: Libplanet.Action.IActionLoader.LoadAction*
+  name: LoadAction
+  href: api/Libplanet.Action.IActionLoader.html#Libplanet_Action_IActionLoader_LoadAction_
+  commentId: Overload:Libplanet.Action.IActionLoader.LoadAction
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionLoader.LoadAction
+  nameWithType: IActionLoader.LoadAction
+- uid: Libplanet.Action.IActionLoader.LoadAllActionTypes(System.Int64)
+  name: LoadAllActionTypes(Int64)
+  href: api/Libplanet.Action.IActionLoader.html#Libplanet_Action_IActionLoader_LoadAllActionTypes_System_Int64_
+  commentId: M:Libplanet.Action.IActionLoader.LoadAllActionTypes(System.Int64)
+  fullName: Libplanet.Action.IActionLoader.LoadAllActionTypes(System.Int64)
+  nameWithType: IActionLoader.LoadAllActionTypes(Int64)
+- uid: Libplanet.Action.IActionLoader.LoadAllActionTypes*
   name: LoadAllActionTypes
-  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_LoadAllActionTypes_
-  commentId: Overload:Libplanet.Action.IActionTypeLoader.LoadAllActionTypes
+  href: api/Libplanet.Action.IActionLoader.html#Libplanet_Action_IActionLoader_LoadAllActionTypes_
+  commentId: Overload:Libplanet.Action.IActionLoader.LoadAllActionTypes
   isSpec: "True"
-  fullName: Libplanet.Action.IActionTypeLoader.LoadAllActionTypes
-  nameWithType: IActionTypeLoader.LoadAllActionTypes
+  fullName: Libplanet.Action.IActionLoader.LoadAllActionTypes
+  nameWithType: IActionLoader.LoadAllActionTypes
 - uid: Libplanet.Action.IActionTypeLoaderContext
   name: IActionTypeLoaderContext
   href: api/Libplanet.Action.IActionTypeLoaderContext.html
@@ -1375,54 +1388,67 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
-- uid: Libplanet.Action.StaticActionTypeLoader
-  name: StaticActionTypeLoader
-  href: api/Libplanet.Action.StaticActionTypeLoader.html
-  commentId: T:Libplanet.Action.StaticActionTypeLoader
-  fullName: Libplanet.Action.StaticActionTypeLoader
-  nameWithType: StaticActionTypeLoader
-- uid: Libplanet.Action.StaticActionTypeLoader.#ctor(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Type)
-  name: StaticActionTypeLoader(IEnumerable<Assembly>, Type)
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader__ctor_System_Collections_Generic_IEnumerable_System_Reflection_Assembly__System_Type_
-  commentId: M:Libplanet.Action.StaticActionTypeLoader.#ctor(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Type)
-  name.vb: StaticActionTypeLoader(IEnumerable(Of Assembly), Type)
-  fullName: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>, System.Type)
-  fullName.vb: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader(System.Collections.Generic.IEnumerable(Of System.Reflection.Assembly), System.Type)
-  nameWithType: StaticActionTypeLoader.StaticActionTypeLoader(IEnumerable<Assembly>, Type)
-  nameWithType.vb: StaticActionTypeLoader.StaticActionTypeLoader(IEnumerable(Of Assembly), Type)
-- uid: Libplanet.Action.StaticActionTypeLoader.#ctor*
-  name: StaticActionTypeLoader
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader__ctor_
-  commentId: Overload:Libplanet.Action.StaticActionTypeLoader.#ctor
+- uid: Libplanet.Action.StaticActionLoader
+  name: StaticActionLoader
+  href: api/Libplanet.Action.StaticActionLoader.html
+  commentId: T:Libplanet.Action.StaticActionLoader
+  fullName: Libplanet.Action.StaticActionLoader
+  nameWithType: StaticActionLoader
+- uid: Libplanet.Action.StaticActionLoader.#ctor(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Type)
+  name: StaticActionLoader(IEnumerable<Assembly>, Type)
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader__ctor_System_Collections_Generic_IEnumerable_System_Reflection_Assembly__System_Type_
+  commentId: M:Libplanet.Action.StaticActionLoader.#ctor(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Type)
+  name.vb: StaticActionLoader(IEnumerable(Of Assembly), Type)
+  fullName: Libplanet.Action.StaticActionLoader.StaticActionLoader(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>, System.Type)
+  fullName.vb: Libplanet.Action.StaticActionLoader.StaticActionLoader(System.Collections.Generic.IEnumerable(Of System.Reflection.Assembly), System.Type)
+  nameWithType: StaticActionLoader.StaticActionLoader(IEnumerable<Assembly>, Type)
+  nameWithType.vb: StaticActionLoader.StaticActionLoader(IEnumerable(Of Assembly), Type)
+- uid: Libplanet.Action.StaticActionLoader.#ctor*
+  name: StaticActionLoader
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader__ctor_
+  commentId: Overload:Libplanet.Action.StaticActionLoader.#ctor
   isSpec: "True"
-  fullName: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader
-  nameWithType: StaticActionTypeLoader.StaticActionTypeLoader
-- uid: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
-  name: Load(IActionTypeLoaderContext)
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Action_IActionTypeLoaderContext_
-  commentId: M:Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
-  fullName: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Action.IActionTypeLoaderContext)
-  nameWithType: StaticActionTypeLoader.Load(IActionTypeLoaderContext)
-- uid: Libplanet.Action.StaticActionTypeLoader.Load*
+  fullName: Libplanet.Action.StaticActionLoader.StaticActionLoader
+  nameWithType: StaticActionLoader.StaticActionLoader
+- uid: Libplanet.Action.StaticActionLoader.Load(System.Int64)
+  name: Load(Int64)
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader_Load_System_Int64_
+  commentId: M:Libplanet.Action.StaticActionLoader.Load(System.Int64)
+  fullName: Libplanet.Action.StaticActionLoader.Load(System.Int64)
+  nameWithType: StaticActionLoader.Load(Int64)
+- uid: Libplanet.Action.StaticActionLoader.Load*
   name: Load
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_
-  commentId: Overload:Libplanet.Action.StaticActionTypeLoader.Load
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader_Load_
+  commentId: Overload:Libplanet.Action.StaticActionLoader.Load
   isSpec: "True"
-  fullName: Libplanet.Action.StaticActionTypeLoader.Load
-  nameWithType: StaticActionTypeLoader.Load
-- uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
-  name: LoadAllActionTypes(IActionTypeLoaderContext)
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_Libplanet_Action_IActionTypeLoaderContext_
-  commentId: M:Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
-  fullName: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes(Libplanet.Action.IActionTypeLoaderContext)
-  nameWithType: StaticActionTypeLoader.LoadAllActionTypes(IActionTypeLoaderContext)
-- uid: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes*
+  fullName: Libplanet.Action.StaticActionLoader.Load
+  nameWithType: StaticActionLoader.Load
+- uid: Libplanet.Action.StaticActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  name: LoadAction(Int64, IValue)
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.StaticActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.StaticActionLoader.LoadAction(System.Int64, Bencodex.Types.IValue)
+  nameWithType: StaticActionLoader.LoadAction(Int64, IValue)
+- uid: Libplanet.Action.StaticActionLoader.LoadAction*
+  name: LoadAction
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader_LoadAction_
+  commentId: Overload:Libplanet.Action.StaticActionLoader.LoadAction
+  isSpec: "True"
+  fullName: Libplanet.Action.StaticActionLoader.LoadAction
+  nameWithType: StaticActionLoader.LoadAction
+- uid: Libplanet.Action.StaticActionLoader.LoadAllActionTypes(System.Int64)
+  name: LoadAllActionTypes(Int64)
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader_LoadAllActionTypes_System_Int64_
+  commentId: M:Libplanet.Action.StaticActionLoader.LoadAllActionTypes(System.Int64)
+  fullName: Libplanet.Action.StaticActionLoader.LoadAllActionTypes(System.Int64)
+  nameWithType: StaticActionLoader.LoadAllActionTypes(Int64)
+- uid: Libplanet.Action.StaticActionLoader.LoadAllActionTypes*
   name: LoadAllActionTypes
-  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_LoadAllActionTypes_
-  commentId: Overload:Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes
+  href: api/Libplanet.Action.StaticActionLoader.html#Libplanet_Action_StaticActionLoader_LoadAllActionTypes_
+  commentId: Overload:Libplanet.Action.StaticActionLoader.LoadAllActionTypes
   isSpec: "True"
-  fullName: Libplanet.Action.StaticActionTypeLoader.LoadAllActionTypes
-  nameWithType: StaticActionTypeLoader.LoadAllActionTypes
+  fullName: Libplanet.Action.StaticActionLoader.LoadAllActionTypes
+  nameWithType: StaticActionLoader.LoadAllActionTypes
 - uid: Libplanet.Action.SupplyOverflowException
   name: SupplyOverflowException
   href: api/Libplanet.Action.SupplyOverflowException.html
