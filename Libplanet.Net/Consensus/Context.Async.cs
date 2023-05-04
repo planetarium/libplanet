@@ -164,7 +164,7 @@ namespace Libplanet.Net.Consensus
             mutation();
             (int MessageLogSize, int Round, Step Step) nextState =
                 (_messageLog.GetTotalCount(), Round, Step);
-            if (prevState != nextState)
+            while (prevState != nextState)
             {
                 _logger.Information(
                     "State (MessageLogSize, Round, Step) changed from " +
@@ -178,8 +178,9 @@ namespace Libplanet.Net.Consensus
                     nextState.Step);
                 StateChanged?.Invoke(
                     this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
-
-                ProduceMutation(() => ProcessGenericUponRules());
+                prevState = (_messageLog.GetTotalCount(), Round, Step);
+                ProcessGenericUponRules();
+                nextState = (_messageLog.GetTotalCount(), Round, Step);
             }
 
             MutationConsumed?.Invoke(this, mutation);
