@@ -1,10 +1,14 @@
 #!/usr/bin/env pwsh
 param (
   [Parameter(Mandatory, Position=0, HelpMessage="Enter a version to download.")]
-  [ValidatePattern("^[0-9]+\.[1-9][0-9]*\.[0-9]+$")]
+  [ValidatePattern("^([1-9][0-9]*|0)\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)$")]
   [string]
   $Version
 )
+
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
+$DebugPreference = "Continue"
 
 function New-TemporaryDirectory {
   New-TemporaryFile | ForEach-Object {
@@ -17,6 +21,11 @@ function Test-Npx(
   [Parameter(Mandatory, Position=0)][string[]]$Command,
   [Parameter(Mandatory, Position=1)][string]$Expected
 ) {
+  if ($env:ACTIONS_RUNNER_DEBUG -eq "true") {
+    $cmd = $Command -Join " "
+    & "npx" @Command
+    Write-Debug "The command 'npx $cmd' terminated with $?."
+  }
   $actual = & "npx" @Command
   if ($actual -ne $Expected) {
     $cmd = $Command -Join " "
@@ -31,9 +40,17 @@ function Test-Planet() {
   Test-Npx @("planet", "--version") "planet $Version"
 }
 
-$ErrorActionPreference = "Stop"
-$InformationPreference = "Continue"
-$DebugPreference = "Continue"
+if (-not (Get-Command yarn 2> $null)) {
+  Write-Error "The yarn is unavailable."
+  exit 1
+} elseif (-not (Get-Command npm 2> $null)) {
+  Write-Error "The npm is unavailable."
+  exit 1
+} elseif (-not (Get-Command npx 2> $null)) {
+  Write-Error "The npx command is unavailable."
+  exit 1
+}
+
 $PackageDir = Resolve-Path (Split-Path -Path $PSScriptRoot -Parent)
 
 Copy-Item (Join-Path -Path $PackageDir -ChildPath "package.json") `
