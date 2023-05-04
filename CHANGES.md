@@ -78,6 +78,7 @@ To be released.
      -  Added `IActionLoader.Load(long, IValue)` interface method.
      -  Removed `ActionTypeLoaderContext` class.  Use `long` instead.
      -  Renamed `StaticActionTypeLoader` to `StaticActionLoader`.
+ -  Added `IActionEvaluator.IActionLoader` property.  [[#3136]]
 
 ### Backward-incompatible network protocol changes
 
@@ -99,6 +100,9 @@ To be released.
     methods are no longer invoked by a `BlockChain<T>`.  [[#3087]]
 
 ### Bug fixes
+
+ -  Fixes a bug where `BlockChain<T>` could not propose if a certain type of
+    invalid `Transaction` was staged.  [[#3136]]
 
 ### Dependencies
 
@@ -126,6 +130,7 @@ To be released.
 [#3123]: https://github.com/planetarium/libplanet/pull/3123
 [#3127]: https://github.com/planetarium/libplanet/pull/3127
 [#3135]: https://github.com/planetarium/libplanet/pull/3135
+[#3136]: https://github.com/planetarium/libplanet/pull/3136
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
