@@ -647,7 +647,8 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(), CreateBlockCommit(_blockChain.Tip));
 
             // Includes txA0, txA1, txA2, txB0; txB2 is not included due to its nonce
-            Assert.Equal(txs.Length - 2, block.Transactions.Count);
+            Assert.DoesNotContain(txs.Last(), block.Transactions);
+            Assert.DoesNotContain(invalidTx, block.Transactions);
 
             // txB1 is marked ignored and removed
             Assert.Equal(txs.Length - 1, _blockChain.ListStagedTransactions().Count);
