@@ -30,7 +30,7 @@ namespace Libplanet.Action
         private readonly IBlockChainStates _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
-        private readonly IActionLoader _actionTypeLoader;
+        private readonly IActionLoader _actionLoader;
         private readonly IFeeCalculator? _feeCalculator;
 
 #pragma warning disable MEN002
@@ -70,9 +70,13 @@ namespace Libplanet.Action
             _trieGetter = trieGetter;
             _genesisHash = genesisHash;
             _nativeTokenPredicate = nativeTokenPredicate;
-            _actionTypeLoader = actionTypeLoader;
+            _actionLoader = actionTypeLoader;
             _feeCalculator = feeCalculator;
         }
+
+        /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>
+        [Pure]
+        public IActionLoader ActionLoader => _actionLoader;
 
         /// <summary>
         /// Creates a random seed.
@@ -96,13 +100,9 @@ namespace Libplanet.Action
                 ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - actionOffset;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
-        IReadOnlyList<IActionEvaluation> IActionEvaluator.Evaluate(IPreEvaluationBlock block) =>
-            Evaluate(block);
-
-        [Pure]
-        public IReadOnlyList<ActionEvaluation> Evaluate(IPreEvaluationBlock block)
+        public IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -822,7 +822,7 @@ namespace Libplanet.Action
             {
                 foreach (IValue rawAction in actions)
                 {
-                    yield return _actionTypeLoader.LoadAction(index, rawAction);
+                    yield return _actionLoader.LoadAction(index, rawAction);
                 }
             }
         }
