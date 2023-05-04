@@ -42,34 +42,42 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionLoader.LoadAction"/>.
         public IAction LoadAction(long index, IValue value)
         {
-            if (Registry.IsSystemAction(value))
+            try
             {
-                return Registry.Deserialize(value);
-            }
+                if (Registry.IsSystemAction(value))
+                {
+                    return Registry.Deserialize(value);
+                }
 
-            IAction action;
-            var types = Load(index);
-            if (value is Dictionary pv &&
-                pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
-                rawTypeId is Text typeId &&
-                types.TryGetValue(typeId, out Type? actionType))
-            {
-                action = (IAction)Activator.CreateInstance(actionType)!;
-                action.LoadPlainValue(pv["values"]);
-            }
-            else if (BaseType is { } baseActionType)
-            {
-                action = (IAction)Activator.CreateInstance(baseActionType)!;
-                action.LoadPlainValue(value);
-            }
-            else
-            {
-                throw new InvalidOperationException(
-                    $"Failed to instantiate given action: {value}"
-                );
-            }
+                IAction action;
+                var types = Load(index);
+                if (value is Dictionary pv &&
+                    pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
+                    rawTypeId is Text typeId &&
+                    types.TryGetValue(typeId, out Type? actionType))
+                {
+                    action = (IAction)Activator.CreateInstance(actionType)!;
+                    action.LoadPlainValue(pv["values"]);
+                }
+                else if (BaseType is { } baseActionType)
+                {
+                    action = (IAction)Activator.CreateInstance(baseActionType)!;
+                    action.LoadPlainValue(value);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Failed to instantiate an action from {value} for index {index}");
+                }
 
-            return action;
+                return action;
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(
+                    $"Failed to instantiate an action from {value} for index {index}",
+                    e);
+            }
         }
 
         internal static StaticActionLoader Create<T>()
