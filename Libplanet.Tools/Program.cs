@@ -1,16 +1,15 @@
-using System.Security.Cryptography;
-using Libplanet.Crypto;
-using Libplanet.Crypto.Secp256k1;
-using CryptoConfig = Libplanet.Crypto.CryptoConfig;
-
 namespace Libplanet.Tools;
 
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Cocona;
+using Libplanet.Crypto.Secp256k1;
+using Libplanet.Crypto;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Extensions;
+using CryptoConfig = Libplanet.Crypto.CryptoConfig;
 
 [HasSubCommands(typeof(ApvCommand), "apv", Description = "App protocol version utilities.")]
 [HasSubCommands(typeof(KeyCommand), "key", Description = "Manage private keys.")]
@@ -31,7 +30,16 @@ public class Program
 
     public static Task Main(string[] args)
     {
-        CryptoConfig.CryptoBackend = new Secp256k1CryptoBackend<SHA256>();
+        try
+        {
+            CryptoConfig.CryptoBackend = new Secp256k1CryptoBackend<SHA256>();
+        }
+        catch (Exception)
+        {
+            // If it fails to load the Secp256k1CryptoBackend<T> for any reason
+            // fall back to the DefaultCryptoBackend<T> instead.
+        }
+
         return CoconaLiteApp.CreateHostBuilder()
             .ConfigureServices(services =>
             {

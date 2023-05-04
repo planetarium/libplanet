@@ -6,6 +6,12 @@ Version 1.0.2
 
 To be released.
 
+ -  (Libplanet.Tools) The `planet` command now falls back to the default
+    cryptography backend instead of crash when it fails to load *libsecp256k1*
+    at runtime.  [[#3138]]
+
+[#3138]: https://github.com/planetarium/libplanet/pull/3138
+
 
 Version 1.0.1
 -------------
