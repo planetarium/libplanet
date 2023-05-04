@@ -151,6 +151,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator
   nameWithType: ActionEvaluator.ActionEvaluator
+- uid: Libplanet.Action.ActionEvaluator.ActionLoader
+  name: ActionLoader
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_ActionLoader
+  commentId: P:Libplanet.Action.ActionEvaluator.ActionLoader
+  fullName: Libplanet.Action.ActionEvaluator.ActionLoader
+  nameWithType: ActionEvaluator.ActionLoader
+- uid: Libplanet.Action.ActionEvaluator.ActionLoader*
+  name: ActionLoader
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_ActionLoader_
+  commentId: Overload:Libplanet.Action.ActionEvaluator.ActionLoader
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluator.ActionLoader
+  nameWithType: ActionEvaluator.ActionLoader
 - uid: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
   name: Evaluate(IPreEvaluationBlock)
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_
@@ -180,23 +193,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluator.GenerateRandomSeed
   nameWithType: ActionEvaluator.GenerateRandomSeed
-- uid: Libplanet.Action.ActionEvaluator.Libplanet#Action#IActionEvaluator#Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
-  name: IActionEvaluator.Evaluate(IPreEvaluationBlock)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_
-  commentId: M:Libplanet.Action.ActionEvaluator.Libplanet#Action#IActionEvaluator#Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
-  name.vb: Libplanet.Action.IActionEvaluator.Evaluate(IPreEvaluationBlock)
-  fullName: Libplanet.Action.ActionEvaluator.Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
-  nameWithType: ActionEvaluator.IActionEvaluator.Evaluate(IPreEvaluationBlock)
-  nameWithType.vb: ActionEvaluator.Libplanet.Action.IActionEvaluator.Evaluate(IPreEvaluationBlock)
-- uid: Libplanet.Action.ActionEvaluator.Libplanet#Action#IActionEvaluator#Evaluate*
-  name: IActionEvaluator.Evaluate
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Libplanet_Action_IActionEvaluator_Evaluate_
-  commentId: Overload:Libplanet.Action.ActionEvaluator.Libplanet#Action#IActionEvaluator#Evaluate
-  isSpec: "True"
-  name.vb: Libplanet.Action.IActionEvaluator.Evaluate
-  fullName: Libplanet.Action.ActionEvaluator.Libplanet.Action.IActionEvaluator.Evaluate
-  nameWithType: ActionEvaluator.IActionEvaluator.Evaluate
-  nameWithType.vb: ActionEvaluator.Libplanet.Action.IActionEvaluator.Evaluate
 - uid: Libplanet.Action.ActionTypeAttribute
   name: ActionTypeAttribute
   href: api/Libplanet.Action.ActionTypeAttribute.html
@@ -828,6 +824,19 @@ references:
   commentId: T:Libplanet.Action.IActionEvaluator
   fullName: Libplanet.Action.IActionEvaluator
   nameWithType: IActionEvaluator
+- uid: Libplanet.Action.IActionEvaluator.ActionLoader
+  name: ActionLoader
+  href: api/Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_ActionLoader
+  commentId: P:Libplanet.Action.IActionEvaluator.ActionLoader
+  fullName: Libplanet.Action.IActionEvaluator.ActionLoader
+  nameWithType: IActionEvaluator.ActionLoader
+- uid: Libplanet.Action.IActionEvaluator.ActionLoader*
+  name: ActionLoader
+  href: api/Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_ActionLoader_
+  commentId: Overload:Libplanet.Action.IActionEvaluator.ActionLoader
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionEvaluator.ActionLoader
+  nameWithType: IActionEvaluator.ActionLoader
 - uid: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Blocks.IPreEvaluationBlock)
   name: Evaluate(IPreEvaluationBlock)
   href: api/Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_

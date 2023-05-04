@@ -158,6 +158,7 @@ instead.</li>
 <li>Renamed <code>StaticActionTypeLoader</code> to <code>StaticActionLoader</code>.</li>
 </ul>
 </li>
+<li>Added <code>IActionEvaluator.IActionLoader</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3136">#3136</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -177,6 +178,10 @@ and <code>IActionRenderer&lt;T&gt;.UnrenderActionError()</code>, i.e., these int
 methods are no longer invoked by a <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3087">#3087</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixes a bug where <code>BlockChain&lt;T&gt;</code> could not propose if a certain type of
+invalid <code>Transaction</code> was staged.  [<a href="https://github.com/planetarium/libplanet/pull/3136">#3136</a>]</li>
+</ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>Upgrade <em>Bencodex</em> from <a href="https://www.nuget.org/packages/Bencodex/0.8.0">0.8.0</a> to
