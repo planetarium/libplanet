@@ -1,12 +1,16 @@
 Libplanet changelog
 ===================
 
+Version 1.0.2
+-------------
+
+To be released.
+
+
 Version 1.0.1
 -------------
 
 Released on May 3, 2023.
-
-### Bug fixes
 
  -  Fixed a bug where `BlockChain<T>.Append()` hadn't update tx executions
     even `evaluateActions` set to `true` when `actionEvaluations` are given.
