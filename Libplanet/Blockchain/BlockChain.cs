@@ -1110,27 +1110,26 @@ namespace Libplanet.Blockchain
                             block.Index,
                             block.Hash);
                         ValidateBlockStateRootHash(block, out actionEvaluations);
-
                         _logger.Information(
                             "Executed actions in block #{BlockIndex} {BlockHash}",
                             block.Index,
                             block.Hash);
-
-                        // FIXME: Using evaluateActions as a proxy flag for preloading status.
-                        const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-                        _logger
-                            .ForContext("Tag", "Metric")
-                            .ForContext("Subtag", "BlockAppendTimestamp")
-                            .Information(
-                                "Block #{BlockIndex} {BlockHash} with " +
-                                "timestamp {BlockTimestamp} appended at {AppendTimestamp}",
-                                block.Index,
-                                block.Hash,
-                                block.Timestamp.ToString(
-                                    TimestampFormat, CultureInfo.InvariantCulture),
-                                DateTimeOffset.UtcNow.ToString(
-                                    TimestampFormat, CultureInfo.InvariantCulture));
                     }
+
+                    // FIXME: Using evaluateActions as a proxy flag for preloading status.
+                    const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "BlockAppendTimestamp")
+                        .Information(
+                            "Block #{BlockIndex} {BlockHash} with " +
+                            "timestamp {BlockTimestamp} appended at {AppendTimestamp}",
+                            block.Index,
+                            block.Hash,
+                            block.Timestamp.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture),
+                            DateTimeOffset.UtcNow.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture));
 
                     _blocks[block.Hash] = block;
                     IEnumerable<TxExecution> txExecutions =
