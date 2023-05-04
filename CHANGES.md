@@ -4,7 +4,7 @@ Libplanet changelog
 Version 1.0.2
 -------------
 
-To be released.
+Released on May 4, 2023.
 
  -  (Libplanet.Tools) The `planet` command now falls back to the default
     cryptography backend instead of crash when it fails to load *libsecp256k1*
