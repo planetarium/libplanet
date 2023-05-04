@@ -9,7 +9,10 @@ To be released.
  -  (Libplanet.Tools) The `planet` command now falls back to the default
     cryptography backend instead of crash when it fails to load *libsecp256k1*
     at runtime.  [[#3138]]
+ -  (@planetarium/cli) Fixed the installer bug that it had failed with some
+    recent Node.js versions on Windows.   [[#3107], [#3138]]
 
+[#3107]: https://github.com/planetarium/libplanet/issues/3107
 [#3138]: https://github.com/planetarium/libplanet/pull/3138
 
 
