@@ -609,5 +609,49 @@ namespace Libplanet.Tests.Blockchain
                 gathered.Select(tx => tx.Id).ToArray()
             );
         }
+
+        [SkippableFact]
+        public void MarkTransactionsToIgnoreWhileProposing()
+        {
+            var keyA = new PrivateKey();
+            var keyB = new PrivateKey();
+            var unsignedInvalidTx = new UnsignedTx(
+                new TxInvoice(
+                    _blockChain.Genesis.Hash,
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow,
+                    new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
+                new TxSigningMetadata(keyB.PublicKey, 1));
+            var invalidTx = new Transaction(
+                unsignedInvalidTx, unsignedInvalidTx.CreateSignature(keyB));
+            var txs = new[]
+            {
+                Transaction.Create<DumbAction>(
+                    0, keyA, _blockChain.Genesis.Hash, new DumbAction[0]),
+                Transaction.Create<DumbAction>(
+                    1, keyA, _blockChain.Genesis.Hash, new DumbAction[0]),
+                Transaction.Create<DumbAction>(
+                    2, keyA, _blockChain.Genesis.Hash, new DumbAction[0]),
+                Transaction.Create<DumbAction>(
+                    0, keyB, _blockChain.Genesis.Hash, new DumbAction[0]),
+                invalidTx,
+                Transaction.Create<DumbAction>(
+                    2, keyB, _blockChain.Genesis.Hash, new DumbAction[0]),
+            };
+
+            // Invalid tx can be staged.
+            StageTransactions(txs);
+            Assert.Equal(txs.Length, _blockChain.ListStagedTransactions().Count);
+
+            var block = _blockChain.ProposeBlock(
+                new PrivateKey(), CreateBlockCommit(_blockChain.Tip));
+
+            // Includes txA0, txA1, txA2, txB0; txB2 is not included due to its nonce
+            Assert.Equal(txs.Length - 2, block.Transactions.Count);
+
+            // txB1 is marked ignored and removed
+            Assert.Equal(txs.Length - 1, _blockChain.ListStagedTransactions().Count);
+            Assert.True(_blockChain.StagePolicy.Ignores(_blockChain, invalidTx.Id));
+        }
     }
 }
