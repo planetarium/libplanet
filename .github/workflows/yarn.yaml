@@ -51,11 +51,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Required for the latest-tag action
     - id: latest-tag
       name: Get the latest tag
       uses: WyriHaximus/github-action-get-previous-tag@v1
       with:
-        fallback: 0.27.3
+        fallback: 1.0.0
     - if: runner.os != 'Windows'
       run: |
         set -ev
@@ -64,10 +66,11 @@ jobs:
       env:
         LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
     - if: runner.os == 'Windows'
+      shell: pwsh
       run: |
         $ErrorActionPreference = "Stop"
         cd Libplanet.Tools\
-        powershell `
+        pwsh `
           -ExecutionPolicy Bypass `
           -File bin\npm-test.ps1 `
           -Version $env:LATEST_VERSION
