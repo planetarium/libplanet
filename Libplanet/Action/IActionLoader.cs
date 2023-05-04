@@ -34,6 +34,9 @@ namespace Libplanet.Action
         /// <paramref name="value"/>.</param>
         /// <param name="value">The <see cref="IValue"/> to deserialize to
         /// an <see cref="IAction"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when an <see cref="IAction"/> cannot be
+        /// instantiated with given <paramref name="index"/> and <paramref name="value"/>.
+        /// </exception>
         /// <returns>An <see cref="IAction"/> instantiated with <paramref name="value"/>.</returns>
         public IAction LoadAction(long index, IValue value);
     }

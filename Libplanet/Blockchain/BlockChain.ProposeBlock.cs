@@ -336,6 +336,23 @@ namespace Libplanet.Blockchain
                         continue;
                     }
 
+                    try
+                    {
+                        foreach (IValue rawAction in tx.Actions)
+                        {
+                            _ = ActionEvaluator.ActionLoader.LoadAction(index, rawAction);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            e,
+                            "Failed to load an action in tx; marking tx {TxId} as ignored...",
+                            tx.Id);
+                        StagePolicy.Ignore(this, tx.Id);
+                        continue;
+                    }
+
                     _logger.Verbose(
                         "Adding tx {Iter}/{Total} {TxId} to the list of transactions " +
                         "to be proposed",

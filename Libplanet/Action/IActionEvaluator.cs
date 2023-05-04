@@ -8,6 +8,13 @@ namespace Libplanet.Action
     public interface IActionEvaluator
     {
         /// <summary>
+        /// The <see cref="IActionLoader"/> used by this <see cref="IActionEvaluator"/>
+        /// when evaluating <see cref="Block"/>s.
+        /// </summary>
+        [Pure]
+        IActionLoader ActionLoader { get; }
+
+        /// <summary>
         /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
