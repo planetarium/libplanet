@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -313,6 +316,101 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task EnterPreVoteNilOnInvalidAction()
+        {
+            // NOTE: This test does not check tx nonces, different state root hash.
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            var timeoutProcessed = false;
+            var nilPreVoteSent = new AsyncAutoResetEvent();
+            var nilPreCommitSent = new AsyncAutoResetEvent();
+            var txSigner = new PrivateKey();
+            var policy = new BlockPolicy<DumbAction>(
+                blockAction: new MinerReward(1),
+                getMaxTransactionsBytes: _ => 50 * 1024);
+
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                policy: policy,
+                privateKey: TestUtils.PrivateKeys[0]);
+            context.StateChanged += (_, evnetArgs) =>
+            {
+                if (evnetArgs.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+            };
+            context.TimeoutProcessed += (_, __) =>
+            {
+                timeoutProcessed = true;
+            };
+            context.MessageBroadcasted += (_, message) =>
+            {
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                {
+                    nilPreVoteSent.Set();
+                }
+                else if (
+                    message is ConsensusPreCommitMsg commit && commit.PreCommit.BlockHash is null)
+                {
+                    nilPreCommitSent.Set();
+                }
+            };
+
+            using var fx = new MemoryStoreFixture(policy.BlockAction);
+
+            var unsignedInvalidTx = new UnsignedTx(
+                new TxInvoice(
+                    blockChain.Genesis.Hash,
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow,
+                    new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
+                new TxSigningMetadata(txSigner.PublicKey, 0));
+            var invalidTx = new Transaction(
+                unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));
+            var txs = new[] { invalidTx };
+
+            var metadata = new BlockMetadata(
+                index: 1L,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: TestUtils.PrivateKeys[1].PublicKey,
+                previousHash: blockChain.Genesis.Hash,
+                txHash: BlockContent.DeriveTxHash(txs),
+                lastCommit: null);
+            var preEval = new PreEvaluationBlock(
+                new PreEvaluationBlockHeader(
+                    metadata, metadata.DerivePreEvaluationHash(default)),
+                txs);
+            var invalidBlock = preEval.Sign(
+                TestUtils.PrivateKeys[1],
+                HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(1024)));
+
+            context.Start();
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(
+                    invalidBlock,
+                    TestUtils.PrivateKeys[1]));
+            await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
+            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(1, context.Height);
+            Assert.Equal(0, context.Round);
+
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[1], 1, 0, invalidBlock.Hash, VoteFlag.PreVote)));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2], 1, 0, null, VoteFlag.PreVote)));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[3], 1, 0, null, VoteFlag.PreVote)));
+            await nilPreCommitSent.WaitAsync();
+            Assert.Equal(Step.PreCommit, context.Step);
         }
 
         [Fact(Timeout = Timeout)]

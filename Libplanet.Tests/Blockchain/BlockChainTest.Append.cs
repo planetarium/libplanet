@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -634,6 +635,47 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1L, _blockChain.Tip.Index);
             Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA0.Id));
             Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA1.Id));
+        }
+
+        [SkippableFact]
+        public void CannotAppendBlockWithInvalidActions()
+        {
+            var txSigner = new PrivateKey();
+            var unsignedInvalidTx = new UnsignedTx(
+                new TxInvoice(
+                    _blockChain.Genesis.Hash,
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow,
+                    new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
+                new TxSigningMetadata(txSigner.PublicKey, 1));
+            var invalidTx = new Transaction(
+                unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));
+            var txs = new[]
+            {
+                Transaction.Create<DumbAction>(
+                    0, txSigner, _blockChain.Genesis.Hash, new DumbAction[0]),
+                invalidTx,
+                Transaction.Create<DumbAction>(
+                    2, txSigner, _blockChain.Genesis.Hash, new DumbAction[0]),
+            }.OrderBy(tx => tx.Id);
+
+            var metadata = new BlockMetadata(
+                index: 1L,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: _fx.Proposer.PublicKey,
+                previousHash: _blockChain.Genesis.Hash,
+                txHash: BlockContent.DeriveTxHash(txs),
+                lastCommit: null);
+            var preEval = new PreEvaluationBlock(
+                new PreEvaluationBlockHeader(
+                    metadata, metadata.DerivePreEvaluationHash(default)),
+                txs);
+            var block = preEval.Sign(
+                _fx.Proposer, HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(1024)));
+
+            Assert.Throws<InvalidActionException>(
+                () => _blockChain.Append(block, TestUtils.CreateBlockCommit(block)));
+            Assert.Equal(0, _blockChain.Tip.Index);
         }
     }
 }
