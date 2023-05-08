@@ -79,6 +79,9 @@ To be released.
      -  Removed `ActionTypeLoaderContext` class.  Use `long` instead.
      -  Renamed `StaticActionTypeLoader` to `StaticActionLoader`.
  -  Added `IActionEvaluator.IActionLoader` property.  [[#3136]]
+ -  Changed `IActionLoader.LoadAction()` to throw `InvalidActionException`
+    instead of `ArgumentException` when an action cannot be instantiated.
+    [[#3140]]
 
 ### Backward-incompatible network protocol changes
 
@@ -91,6 +94,7 @@ To be released.
  -  Added `IActionEvaluation` interface.  [[#3089]]
  -  Added parameterless constructor to `Mint`, `Transfer`, and `Initialize`.
     [[#3112]]
+ -  Added `InvalidActionException` class.  [[#3140]]
 
 ### Behavioral changes
 
@@ -106,6 +110,9 @@ To be released.
 
  -  Fixes a bug where `BlockChain<T>` could not propose if a certain type of
     invalid `Transaction` was staged.  [[#3136]]
+ -  Fixes a bug where `Context<T>` would completely halt if a `Block`
+    with an `IValue` as one of its action that cannot be instantiated via
+    its `IActionLoader`.  [[#3140]]
 
 ### Dependencies
 
@@ -135,6 +142,7 @@ To be released.
 [#3135]: https://github.com/planetarium/libplanet/pull/3135
 [#3136]: https://github.com/planetarium/libplanet/pull/3136
 [#3137]: https://github.com/planetarium/libplanet/pull/3137
+[#3140]: https://github.com/planetarium/libplanet/pull/3140
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
