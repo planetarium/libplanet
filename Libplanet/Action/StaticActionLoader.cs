@@ -74,8 +74,9 @@ namespace Libplanet.Action
             }
             catch (Exception e)
             {
-                throw new ArgumentException(
+                throw new InvalidActionException(
                     $"Failed to instantiate an action from {value} for index {index}",
+                    value,
                     e);
             }
         }

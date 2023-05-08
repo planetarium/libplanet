@@ -33,6 +33,26 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void LoadAction()
+        {
+            var actionTypeLoader = new StaticActionLoader(
+                new[] { typeof(Attack).Assembly }, typeof(Attack));
+            actionTypeLoader.Load();
+
+            var plainValue = Dictionary.Empty
+                .Add("weapon", "foo")
+                .Add("target", "bar")
+                .Add("target_address", new Binary(TestUtils.GetRandomBytes(Address.Size)));
+            var action = new Attack();
+            action.LoadPlainValue(plainValue);
+
+            var loadedAction = actionTypeLoader.LoadAction(0, action.PlainValue);
+            Assert.Equal(plainValue, loadedAction.PlainValue);
+            Assert.Throws<InvalidActionException>(
+                () => actionTypeLoader.LoadAction(0, new Text("baz")));
+        }
+
+        [Fact]
         public void DuplicateIds()
         {
             var actionTypeLoader = new StaticActionLoader(
