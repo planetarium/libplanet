@@ -32,10 +32,8 @@ namespace Libplanet.Action
 
         internal Type? BaseType => _baseType;
 
-        /// <inheritdoc cref="IActionLoader.Load"/>.
         public IDictionary<IValue, Type> Load(long index) => Load();
 
-        /// <inheritdoc cref="IActionLoader.LoadAllActionTypes"/>.
         public IEnumerable<Type> LoadAllActionTypes(long index)
             => LoadAllActionTypesImpl(_assembliesSet);
 
