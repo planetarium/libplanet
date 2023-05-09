@@ -3,10 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
+using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
+using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -265,6 +271,136 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         VoteFlag.PreVote)));
             await exceptionOccurred.WaitAsync();
             Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task CanPreCommitOnEndCommit()
+        {
+            var enteredPreVote = new AsyncAutoResetEvent();
+            var enteredPreCommit = new AsyncAutoResetEvent();
+            var enteredEndCommit = new AsyncAutoResetEvent();
+            var blockHeightOneAppended = new AsyncAutoResetEvent();
+            var enteredHeightTwo = new AsyncAutoResetEvent();
+
+            TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
+
+            var policy = new BlockPolicy<DelayAction>(
+                blockAction: new MinerReward(1),
+                getMaxTransactionsBytes: _ => 50 * 1024);
+            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
+                policy,
+                fx.Store,
+                new TrieStateStore(new MemoryKeyValueStore()));
+
+            Context<DelayAction>? context = null;
+
+            void BroadcastMessage(ConsensusMsg message) =>
+                Task.Run(() =>
+                {
+                    context!.ProduceMessage(message);
+                });
+
+            var consensusContext = new ConsensusContext<DelayAction>(
+                BroadcastMessage,
+                blockChain,
+                TestUtils.PrivateKeys[0],
+                newHeightDelay,
+                new ContextTimeoutOption());
+
+            context = new Context<DelayAction>(
+                consensusContext,
+                blockChain,
+                1L,
+                TestUtils.PrivateKeys[0],
+                blockChain.GetValidatorSet(blockChain[0L].Hash),
+                contextTimeoutOptions: new ContextTimeoutOption());
+
+            consensusContext.Contexts.Add(1L, context);
+
+            context.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step == Step.PreVote)
+                {
+                    enteredPreVote.Set();
+                }
+
+                if (eventArgs.Step == Step.PreCommit)
+                {
+                    enteredPreCommit.Set();
+                }
+
+                if (eventArgs.Step == Step.EndCommit)
+                {
+                    enteredEndCommit.Set();
+                }
+            };
+
+            blockChain.TipChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.NewTip.Index == 1L)
+                {
+                    blockHeightOneAppended.Set();
+                }
+            };
+
+            consensusContext.StateChanged += (_, eventArgs) =>
+            {
+                if (consensusContext.Height == 2L)
+                {
+                    enteredHeightTwo.Set();
+                }
+            };
+
+            var action = new DelayAction(100);
+            var tx = Transaction.Create<DelayAction>(
+                nonce: 0,
+                privateKey: TestUtils.PrivateKeys[1],
+                genesisHash: blockChain.Genesis.Hash,
+                actions: new[] { action });
+            blockChain.StageTransaction(tx);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+
+            context.Start();
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
+
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusPreVoteMsg(
+                        new VoteMetadata(
+                            1,
+                            0,
+                            block.Hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.PrivateKeys[i].PublicKey,
+                            VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
+            }
+
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusPreCommitMsg(
+                        new VoteMetadata(
+                            1,
+                            0,
+                            block.Hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.PrivateKeys[i].PublicKey,
+                            VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
+            }
+
+            await Task.WhenAll(blockHeightOneAppended.WaitAsync(), enteredHeightTwo.WaitAsync());
+
+            Assert.True(enteredPreVote.IsSet);
+            Assert.True(enteredPreCommit.IsSet);
+            Assert.True(enteredEndCommit.IsSet);
+            Assert.True(
+                context.GetBlockCommit()!.Votes.Any(
+                    vote =>
+                        vote.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey) &&
+                        vote.Flag.Equals(VoteFlag.PreCommit)));
         }
     }
 }
