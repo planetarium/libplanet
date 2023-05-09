@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Fixtures
         public IntegerSet(
             IReadOnlyList<BigInteger?> initialStates,
             IBlockPolicy<Arithmetic> policy = null,
-            IEnumerable<IRenderer<Arithmetic>> renderers = null
+            IEnumerable<IRenderer> renderers = null
         )
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Fixtures
 
         public IBlockPolicy<Arithmetic> Policy => Chain.Policy;
 
-        public IReadOnlyList<IRenderer<Arithmetic>> Renderers => Chain.Renderers;
+        public IReadOnlyList<IRenderer> Renderers => Chain.Renderers;
 
         public Block Tip => Chain.Tip;
 

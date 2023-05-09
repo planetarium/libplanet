@@ -547,7 +547,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// <param name="timestamp"><see cref="DateTimeOffset"/> of the genesis block.
         /// Works only if <paramref name="genesisBlock"/> is null.</param>
         /// <param name="renderers">
-        /// An <see cref="IEnumerable{T}"/> of <see cref="IRenderer{T}"/>s.</param>
+        /// An <see cref="IEnumerable{T}"/> of <see cref="IRenderer"/>s.</param>
         /// <param name="genesisBlock">Genesis <see cref="Block"/> of the chain.
         /// If null is given, a genesis will be generated.</param>
         /// <param name="protocolVersion">Block protocol version of genesis block.</param>
@@ -561,7 +561,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
-            IEnumerable<IRenderer<T>> renderers = null,
+            IEnumerable<IRenderer> renderers = null,
             Block genesisBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
@@ -590,7 +590,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
-            IEnumerable<IRenderer<T>> renderers = null,
+            IEnumerable<IRenderer> renderers = null,
             Block genesisBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )

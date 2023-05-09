@@ -12,6 +12,8 @@ To be released.
 
  -  Removed type parameter `T` from `Transaction.Create<T>()` and
     `PreEvaluationBlock.Evaluate<T>()`.  [[#3122]]
+ -  Removed type parameter `T` from `IRenderer` and its all implementations.
+    [[#3147]]
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +33,7 @@ To be released.
 ### CLI tools
 
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
+[#3147]: https://github.com/planetarium/libplanet/pull/3147
 
 
 Version 1.1.0

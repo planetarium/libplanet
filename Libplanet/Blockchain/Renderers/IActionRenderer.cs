@@ -9,11 +9,11 @@ namespace Libplanet.Blockchain.Renderers
     /// <summary>
     /// Listens state changes of every step of actions, besides blocks,
     /// on a <see cref="BlockChain{T}"/>.
-    /// If you need more fine-grained events than <see cref="IRenderer{T}"/>,
+    /// If you need more fine-grained events than <see cref="IRenderer"/>,
     /// implement this interface instead.
     /// <para>The invocation order of methods for each <see cref="Block"/> are:</para>
     /// <list type="number">
-    /// <item><description><see cref="IRenderer{T}.RenderBlock(Block, Block)"/> (one time)
+    /// <item><description><see cref="IRenderer.RenderBlock(Block, Block)"/> (one time)
     /// </description></item>
     /// <item><description><see cref="RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
     /// &amp; <see cref="RenderActionError(IAction, IActionContext, Exception)"/> (zero or more
@@ -25,20 +25,17 @@ namespace Libplanet.Blockchain.Renderers
     /// </summary>
     /// <remarks>Although <see cref="Transaction"/>s affect the states in
     /// the <see cref="IStateStore"/> all or nothing at all (i.e., atomically),
-    /// <see cref="IActionRenderer{T}"/> receives all action-related events
+    /// <see cref="IActionRenderer"/> receives all action-related events
     /// (<see cref="RenderAction"/>/<see cref="RenderActionError"/>) <em>immediately</em>
     /// without buffering, which means actions are rendered <em>even before</em> whether there are
     /// any actions throwing an exception in the same transaction is determined.  In other words,
-    /// for <see cref="IActionRenderer{T}"/>s, it is not guaranteed that actions in a transaction
+    /// for <see cref="IActionRenderer"/>s, it is not guaranteed that actions in a transaction
     /// are atomic.
     /// <para>If your action renderer expects to receive only render events about actions belonging
     /// successful transactions, wrap your action renderer with
-    /// <see cref="AtomicActionRenderer{T}"/>.</para>
+    /// <see cref="AtomicActionRenderer"/>.</para>
     /// </remarks>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public interface IActionRenderer<T> : IRenderer<T>
-        where T : IAction, new()
+    public interface IActionRenderer : IRenderer
     {
         /// <summary>
         /// Does things that should be done right after an <paramref name="action"/>
@@ -60,13 +57,9 @@ namespace Libplanet.Blockchain.Renderers
         /// cref="RenderActionError(IAction, IActionContext, Exception)"/> is called instead) or
         /// once the <paramref name="action"/> has been unrendered.
         /// <para>Also note that this method is invoked after <see
-        /// cref="IRenderer{T}.RenderBlock(Block, Block)"/> method is called
+        /// cref="IRenderer.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).</para>
-        /// <para>The reason why the parameter <paramref name="action"/> takes
-        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
-        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction.Actions"/>).</para>
         /// </remarks>
         void RenderAction(IAction action, IActionContext context, IAccountStateDelta nextStates);
 
@@ -84,13 +77,9 @@ namespace Libplanet.Blockchain.Renderers
         /// name="action"/>.</param>
         /// <remarks>
         /// Also note that this method is invoked after <see
-        /// cref="IRenderer{T}.RenderBlock(Block, Block)"/> method is called
+        /// cref="IRenderer.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).
-        /// <para>The reason why the parameter <paramref name="action"/> takes
-        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
-        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction.Actions"/>).</para>
         /// </remarks>
         void RenderActionError(IAction action, IActionContext context, Exception exception);
 

@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.True(_blockChain.ContainsBlock(block2.Hash));
 
-            RenderRecord<DumbAction>.ActionSuccess[] renders = _renderer.ActionSuccessRecords
+            RenderRecord.ActionSuccess[] renders = _renderer.ActionSuccessRecords
                 .Where(r => r.Action is DumbAction)
                 .ToArray();
             DumbAction[] actions = renders.Select(r => (DumbAction)r.Action).ToArray();
@@ -119,7 +119,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             Address minerAddress = addresses[4];
-            RenderRecord<DumbAction>.ActionSuccess[] blockRenders = _renderer.ActionSuccessRecords
+            RenderRecord.ActionSuccess[] blockRenders = _renderer.ActionSuccessRecords
                 .Where(r => r.Action is MinerReward)
                 .ToArray();
 
@@ -346,7 +346,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
-            var renderer = new RecordingActionRenderer<ThrowException>();
+            var renderer = new RecordingActionRenderer();
             BlockChain<ThrowException> blockChain =
                 TestUtils.MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
@@ -361,7 +361,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, blockChain.Count);
             Assert.Empty(renderer.ActionSuccessRecords);
             Assert.Single(renderer.ActionErrorRecords);
-            RenderRecord<ThrowException>.ActionError errorRecord = renderer.ActionErrorRecords[0];
+            RenderRecord.ActionError errorRecord = renderer.ActionErrorRecords[0];
             Assert.Equal(action.PlainValue, errorRecord.Action.PlainValue);
             Assert.IsType<UnexpectedlyTerminatedActionException>(errorRecord.Exception);
             Assert.IsType<ThrowException.SomeException>(errorRecord.Exception.InnerException);

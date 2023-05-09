@@ -887,7 +887,7 @@ namespace Libplanet.Net.Tests
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var renderer = new RecordingActionRenderer<DumbAction>();
+            var renderer = new RecordingActionRenderer();
             var chain = MakeBlockChain(
                 policy,
                 new MemoryStore(),

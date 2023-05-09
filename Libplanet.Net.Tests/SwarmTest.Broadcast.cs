@@ -717,8 +717,8 @@ namespace Libplanet.Net.Tests
             var privateKey = new PrivateKey();
             var minerSwarm = await CreateSwarm(blockChain, privateKey).ConfigureAwait(false);
             var fx2 = new MemoryStoreFixture();
-            var receiverRenderer = new RecordingActionRenderer<DumbAction>();
-            var loggedRenderer = new LoggedActionRenderer<DumbAction>(
+            var receiverRenderer = new RecordingActionRenderer();
+            var loggedRenderer = new LoggedActionRenderer(
                 receiverRenderer,
                 _logger);
             var receiverChain = MakeBlockChain(
