@@ -28776,6 +28776,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.Transaction.Actions
   nameWithType: Transaction.Actions
+- uid: Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_
@@ -28783,24 +28801,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.Transaction.Create
   nameWithType: Transaction.Create
-- uid: Libplanet.Tx.Transaction.Create``1(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create<T>(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create__1_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction.Create``1(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Of T)(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction.Create<T>(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction.Create(Of T)(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction.Create<T>(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction.Create(Of T)(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-- uid: Libplanet.Tx.Transaction.Create``1(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create<T>(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create__1_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction.Create``1(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Of T)(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction.Create<T>(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction.Create(Of T)(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction.Create<T>(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction.Create(Of T)(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction.Deserialize(System.Byte[])
   name: Deserialize(Byte[])
   href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Deserialize_System_Byte___
