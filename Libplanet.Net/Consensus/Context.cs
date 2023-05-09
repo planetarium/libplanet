@@ -415,7 +415,8 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (Exception e) when (
                     e is InvalidBlockException ||
-                    e is InvalidTxException)
+                    e is InvalidTxException ||
+                    e is InvalidActionException)
                 {
                     _logger.Debug(
                         e,

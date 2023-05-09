@@ -99,6 +99,8 @@ namespace Libplanet.Blockchain
         /// <paramref name="evaluations"/>.</param>
         /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
         /// from which to extract the states to commit.</param>
+        /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
+        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <returns>The state root hash given <paramref name="block"/> and
         /// its <paramref name="evaluations"/>.
         /// </returns>
@@ -164,6 +166,8 @@ namespace Libplanet.Blockchain
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute.</param>
         /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="IActionEvaluation"/>s for
         /// given <paramref name="block"/>.</returns>
+        /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
+        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         [Pure]
         public IReadOnlyList<IActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>

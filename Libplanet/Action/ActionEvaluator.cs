@@ -610,8 +610,8 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            IEnumerable<IAction> customActions = CreateCustomActions(blockHeader.Index, tx);
-            ImmutableList<IAction> actions = ImmutableList.CreateRange(customActions);
+            ImmutableList<IAction> actions =
+                ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
             return EvaluateActions(
                 genesisHash: _genesisHash,
                 preEvaluationHash: blockHeader.PreEvaluationHash,
@@ -816,7 +816,7 @@ namespace Libplanet.Action
                 validatorSetGetter);
         }
 
-        private IEnumerable<IAction> CreateCustomActions(long index, ITransaction tx)
+        private IEnumerable<IAction> LoadActions(long index, ITransaction tx)
         {
             if (tx.Actions is { } actions)
             {

@@ -696,6 +696,8 @@ namespace Libplanet.Blockchain
         /// </exception>
         /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
         /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>
+        /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
+        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
         /// <see cref="Transaction.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
