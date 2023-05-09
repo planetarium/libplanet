@@ -76,33 +76,48 @@ public class GeneratedBlockChainFixture
                     ImmutableArray<Transaction>.Empty));
 
         var privateKey = new PrivateKey();
+        var policy = new BlockPolicy<PolymorphicAction<SimpleAction>>(
+            blockInterval: TimeSpan.FromMilliseconds(1),
+            getMaxTransactionsPerBlock: _ => int.MaxValue,
+            getMaxTransactionsBytes: _ => long.MaxValue,
+            nativeTokens: ImmutableHashSet<Currency>.Empty.Add(TestCurrency)
+        );
+        IStore store = new MemoryStore();
+        Block genesisBlock = BlockChain<PolymorphicAction<SimpleAction>>.ProposeGenesisBlock(
+            transactions: PrivateKeys
+                .OrderBy(pk => pk.ToAddress().ToHex())
+                .Select(
+                    (pk, i) => Transaction.Create(
+                        nonce: i,
+                        privateKey: privateKey,
+                        genesisHash: null,
+                        actions: new IAction[]
+                            {
+                                new Initialize(
+                                    new ValidatorSet(
+                                        ImmutableList<Validator>.Empty.Add(
+                                            new Validator(pk.PublicKey, 1)).ToList()),
+                                    ImmutableDictionary<Address, IValue>.Empty),
+                            }))
+                .ToImmutableList());
         Chain = BlockChain<PolymorphicAction<SimpleAction>>.Create(
-            new BlockPolicy<PolymorphicAction<SimpleAction>>(
-                blockInterval: TimeSpan.FromMilliseconds(1),
-                getMaxTransactionsPerBlock: _ => int.MaxValue,
-                getMaxTransactionsBytes: _ => long.MaxValue,
-                nativeTokens: ImmutableHashSet<Currency>.Empty.Add(TestCurrency)
-            ),
+            policy,
             new VolatileStagePolicy<PolymorphicAction<SimpleAction>>(),
-            new MemoryStore(),
+            store,
             stateStore,
-            BlockChain<PolymorphicAction<SimpleAction>>.ProposeGenesisBlock(
-                transactions: PrivateKeys
-                    .OrderBy(pk => pk.ToAddress().ToHex())
-                    .Select(
-                        (pk, i) => Transaction.Create(
-                            nonce: i,
-                            privateKey: privateKey,
-                            genesisHash: null,
-                            actions: new IAction[]
-                                {
-                                    new Initialize(
-                                        new ValidatorSet(
-                                            ImmutableList<Validator>.Empty.Add(
-                                                new Validator(pk.PublicKey, 1)).ToList()),
-                                        ImmutableDictionary<Address, IValue>.Empty),
-                                }))
-                    .ToImmutableList()));
+            genesisBlock,
+            new ActionEvaluator(
+                policyBlockActionGetter: _ => policy.BlockAction,
+                blockChainStates: new BlockChainStates(store, stateStore),
+                trieGetter: hash => stateStore.GetStateRoot(
+                    store.GetBlockDigest(hash)?.StateRootHash
+                ),
+                genesisHash: genesisBlock.Hash,
+                nativeTokenPredicate: policy.NativeTokens.Contains,
+                actionTypeLoader: StaticActionLoader.Create<SimpleAction>(),
+                feeCalculator: null
+            )
+        );
 
         MinedBlocks = MinedBlocks.SetItem(
             Chain.Genesis.Miner,

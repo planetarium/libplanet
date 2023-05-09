@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -191,7 +192,18 @@ namespace Libplanet.Tests.Blockchain
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                genesisBlock);
+                genesisBlock,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: new BlockChainStates(store, stateStore),
+                    trieGetter: hash => stateStore.GetStateRoot(
+                        store.GetBlockDigest(hash)?.StateRootHash),
+                    genesisHash: genesisBlock.Hash,
+                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
 
             Block block1 = chain1.EvaluateAndSign(
                 new BlockContent(

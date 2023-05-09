@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Store;
@@ -81,7 +82,18 @@ namespace Libplanet.RocksDBStore.Tests
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,
-                    Fx.GenesisBlock
+                    Fx.GenesisBlock,
+                    new ActionEvaluator(
+                        policyBlockActionGetter: _ => null,
+                        blockChainStates: new BlockChainStates(store, stateStore),
+                        trieGetter: hash => stateStore.GetStateRoot(
+                            store.GetBlockDigest(hash)?.StateRootHash
+                        ),
+                        genesisHash: Fx.GenesisBlock.Hash,
+                        nativeTokenPredicate: _ => false,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
                 );
                 store.Dispose();
 

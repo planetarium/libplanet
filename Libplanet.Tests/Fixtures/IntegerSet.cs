@@ -87,6 +87,17 @@ namespace Libplanet.Tests.Fixtures
                 Store,
                 StateStore,
                 Genesis,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: new BlockChainStates(Store, StateStore),
+                    trieGetter: hash => StateStore.GetStateRoot(
+                        Store.GetBlockDigest(hash)?.StateRootHash
+                    ),
+                    genesisHash: Genesis.Hash,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
+                    feeCalculator: null
+                ),
                 renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
             );
         }
