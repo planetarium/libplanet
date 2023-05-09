@@ -4,7 +4,7 @@ Libplanet changelog
 Version 1.1.0
 -------------
 
-To be released.
+Released on May 9, 2023.
 
 ### Deprecated APIs
 
