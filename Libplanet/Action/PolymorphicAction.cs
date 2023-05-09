@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -150,11 +149,16 @@ namespace Libplanet.Action
     public sealed class PolymorphicAction<T> : IAction
         where T : IAction
     {
-        private static StaticActionLoader _actionTypeLoader;
-
-        private static IDictionary<IValue, Type> _types;
+        private static readonly PolymorphicActionLoader _innerActionLoader;
+        private static readonly IDictionary<IValue, Type> _types;
 
         private T _innerAction;
+
+        static PolymorphicAction()
+        {
+            _innerActionLoader = PolymorphicActionLoader.Create<T>();
+            _types = _innerActionLoader.Types;
+        }
 
         /// <summary>
         /// Do not use this constructor.
@@ -177,20 +181,6 @@ namespace Libplanet.Action
         public PolymorphicAction(T innerAction)
         {
             InnerAction = innerAction;
-        }
-
-        /// <summary>
-        /// <see cref="StaticActionLoader"/> for <see cref="PolymorphicAction{T}"/>.
-        /// </summary>
-        public static StaticActionLoader ActionTypeLoader
-        {
-            get => _actionTypeLoader ??= new StaticActionLoader(
-                Assembly.GetEntryAssembly() is Assembly entryAssembly
-                    ? new[] { typeof(T).Assembly, entryAssembly }
-                    : new[] { typeof(T).Assembly },
-                typeof(T)
-            );
-            set => _actionTypeLoader = value;
         }
 
         /// <summary>
@@ -243,10 +233,8 @@ namespace Libplanet.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            var type = plainValue["type_id"];
-            var innerAction = (T)Activator.CreateInstance(GetType(type));
-            innerAction.LoadPlainValue(plainValue["values"]);
-            InnerAction = innerAction;
+            // FIXME: Arbitrary index passing.
+            InnerAction = (T)_innerActionLoader.LoadAction(0, plainValue);
         }
 
         /// <inheritdoc/>
@@ -264,12 +252,6 @@ namespace Libplanet.Action
             const string polymorphicActionFullName = nameof(Libplanet) + "." + nameof(Action) +
                                                      "." + nameof(PolymorphicAction<T>);
             return $"{polymorphicActionFullName}<{_innerAction}>";
-        }
-
-        private static Type GetType(IValue typeId)
-        {
-            _types ??= ActionTypeLoader.Load();
-            return _types[typeId];
         }
     }
 }
