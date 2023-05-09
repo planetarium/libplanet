@@ -196,12 +196,52 @@ Released on May 16, 2023.
 Version 1.1.1
 -------------
 
-Released on May 15, 2023.
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  Removed type parameter `T` from `Transaction.Create<T>()` and
+    `PreEvaluationBlock.Evaluate<T>()`.  [[#3122]]
+ -  Signatures of `IActionRenderer<T>`'s methods was changed.  [[#3117]]
+     -  The signature of
+        `RenderAction(IAction, IActionContext, IAccountStateDelta)`
+        method was changed to
+        `RenderAction(IValue, IActionContext, IAccountStateDelta)`.
+     -  The signature of
+       `RenderActionError(IAction, IActionContext, Exception)`
+        method was changed to
+        `RenderActionError(IValue, IActionContext, Exception)`.
+ -  Removed `trieGetter` parameter from `ActionEvaluator` constructor.
+    [[#3149]]
+ -  Added `IBlockChainStates.GetTrie()` interface method.  [[#3149]]
+ -  `BlockChain<T>.Create()` static method now requires `actionEvaluator`
+    parameter explicitly.  [[#3149]]
+ -  Removed `IBlockPolicy.NativeTokens` property.  [[#3153]]
+     - Removed `NonNativeTokenException` class.
+     - Removed `IActionContext.IsNativeToken()` method.
+     - Removed `nativeTokenPredicate` parameter from `ActionEvaluator()`
+     - Removed `nativeTokenPredicate` parameter from all `BlockChain<T>`'s
+       methods.
+     - (Libplanet.Explorer) Removed `BlockPolicyType<T>` class.
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+ -  Added `IAccountStateDelta.UsedGas(Address)` method.
+    [[#3144]]
+ -  Added `IAccountStateDelta.AvailableGas(Address)` method.
+    [[#3144]]
 
  -  (@planetarium/cli) Fixed the installer bug that it had failed on Linux and
     macOS since version 1.0.2.  [[#3107], [#3160], [#3161]]
 
 [#3161]: https://github.com/planetarium/libplanet/pull/3161
+
+[#3144]: https://github.com/planetarium/libplanet/pull/3144
 
 
 Version 1.1.0
