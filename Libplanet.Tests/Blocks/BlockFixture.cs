@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Tx;
 using Libplanet.Tx;
 
@@ -18,7 +16,7 @@ namespace Libplanet.Tests.Blocks
         public BlockFixture()
         {
             Miner = TestUtils.GenesisProposer;
-            Genesis = TestUtils.ProposeGenesisBlock<PolymorphicAction<BaseAction>>(
+            Genesis = TestUtils.ProposeGenesisBlock(
                 protocolVersion: ProtocolVersion,
                 miner: Miner,
                 stateRootHash: HashDigest<SHA256>.FromString(

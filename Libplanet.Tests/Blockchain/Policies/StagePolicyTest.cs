@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.GenesisBlock);
             _key = new PrivateKey();
             _txs = Enumerable.Range(0, 5).Select(i =>
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     i,
                     _key,
                     _fx.GenesisBlock.Hash,
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 Assert.Equal(setOne.OrderBy(tx => tx.Id), setTwo.OrderBy(tx => tx.Id));
             }
 
-            var duplicateNonceTx = Transaction.Create<DumbAction>(
+            var duplicateNonceTx = Transaction.Create(
                 2,
                 _key,
                 _fx.GenesisBlock.Hash,

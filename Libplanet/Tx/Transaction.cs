@@ -208,32 +208,6 @@ namespace Libplanet.Tx
         /// <para>Note that the <paramref name="privateKey"/> in itself is not
         /// included in the created <see cref="Transaction"/>.</para>
         /// </summary>
-        /// <remarks>
-        /// This factory method tries its best to fill the <see
-        /// cref="UpdatedAddresses"/> property by actually evaluating
-        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
-        /// mode&#x201d;), but remember that its result
-        /// is approximated in some degree, because the result of
-        /// <paramref name="actions"/> are not deterministic until
-        /// the <see cref="Transaction"/> belongs to a <see
-        /// cref="Libplanet.Blocks.Block"/>.
-        /// <para>If an <see cref="IAction"/> depends on previous states or
-        /// some randomness to determine what <see cref="Address"/> to update,
-        /// the automatically filled <see cref="UpdatedAddresses"/> became
-        /// mismatched from the <see cref="Address"/>es
-        /// <paramref name="actions"/> actually update after
-        /// a <see cref="Libplanet.Blocks.Block"/> is mined.
-        /// Although such case would be rare, a programmer could manually give
-        /// the <paramref name="updatedAddresses"/> parameter
-        /// the <see cref="Address"/>es they predict to be updated.</para>
-        /// <para>If an <see cref="IAction"/> oversimplifies the assumption
-        /// about the <see cref="Libplanet.Blocks.Block"/> it belongs to,
-        /// runtime exceptions could be thrown from this factory method.
-        /// The best solution to that is not to oversimplify things,
-        /// there is an option to check <see cref="IActionContext"/>'s
-        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
-        /// a conditional logic for the case.</para>
-        /// </remarks>
         /// <param name="nonce">The number of previous
         /// <see cref="Transaction"/>s committed by the <see cref="Signer"/>
         /// of this transaction.  This goes to the
@@ -250,35 +224,26 @@ namespace Libplanet.Tx
         /// </param>
         /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
-        /// the <see cref="Actions"/> property, and these actionss are evaluated before
-        /// a <see cref="Transaction"/> is created in order to fill
-        /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
+        /// the <see cref="Actions"/> property.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.
-        /// These <see cref="Address"/>es are also included in
-        /// the <see cref="UpdatedAddresses"/> property, besides
-        /// <see cref="Address"/>es projected by evaluating
-        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.</param>
+        /// states affected by <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block"/>'s type parameter.</typeparam>
         /// <returns>A created new <see cref="Transaction"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
-        public static Transaction Create<T>(
+        public static Transaction Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IAction> actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null)
-            where T : IAction, new() =>
-            Create<T>(
+            DateTimeOffset? timestamp = null) =>
+            Create(
                 nonce,
                 privateKey,
                 genesisHash,
@@ -312,32 +277,6 @@ namespace Libplanet.Tx
         /// <para>Note that the <paramref name="privateKey"/> in itself is not
         /// included in the created <see cref="Transaction"/>.</para>
         /// </summary>
-        /// <remarks>
-        /// This factory method tries its best to fill the <see
-        /// cref="UpdatedAddresses"/> property by actually evaluating
-        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
-        /// mode&#x201d;), but remember that its result
-        /// is approximated in some degree, because the result of
-        /// <paramref name="actions"/> are not deterministic until
-        /// the <see cref="Transaction"/> belongs to a <see
-        /// cref="Libplanet.Blocks.Block"/>.
-        /// <para>If an <see cref="IAction"/> depends on previous states or
-        /// some randomness to determine what <see cref="Address"/> to update,
-        /// the automatically filled <see cref="UpdatedAddresses"/> became
-        /// mismatched from the <see cref="Address"/>es
-        /// <paramref name="actions"/> actually update after
-        /// a <see cref="Libplanet.Blocks.Block"/> is mined.
-        /// Although such case would be rare, a programmer could manually give
-        /// the <paramref name="updatedAddresses"/> parameter
-        /// the <see cref="Address"/>es they predict to be updated.</para>
-        /// <para>If an <see cref="IAction"/> oversimplifies the assumption
-        /// about the <see cref="Libplanet.Blocks.Block"/> it belongs to,
-        /// runtime exceptions could be thrown from this factory method.
-        /// The best solution to that is not to oversimplify things,
-        /// there is an option to check <see cref="IActionContext"/>'s
-        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
-        /// a conditional logic for the case.</para>
-        /// </remarks>
         /// <param name="nonce">The number of previous
         /// <see cref="Transaction"/>s committed by the <see cref="Signer"/>
         /// of this transaction.  This goes to the
@@ -354,41 +293,33 @@ namespace Libplanet.Tx
         /// </param>
         /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
-        /// the <see cref="Actions"/> property, and these actionss are evaluated before
-        /// a <see cref="Transaction"/> is created in order to fill
-        /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
+        /// the <see cref="Actions"/> property.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.
-        /// These <see cref="Address"/>es are also included in
-        /// the <see cref="UpdatedAddresses"/> property, besides
-        /// <see cref="Address"/>es projected by evaluating
-        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.</param>
+        /// states affected by <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block"/>'s type parameter.</typeparam>
         /// <returns>A created new <see cref="Transaction"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="actions"/>.
         /// </exception>
-        public static Transaction Create<T>(
+        public static Transaction Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IValue> actions,
             IImmutableSet<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null)
-            where T : IAction, new() =>
-            Create<T>(
+            DateTimeOffset? timestamp = null) =>
+            Create(
                 nonce,
                 privateKey,
                 genesisHash,
                 new TxActionList(new List(actions)),
                 updatedAddresses,
-                timestamp);
+                timestamp
+            );
 
         /// <summary>
         /// Encodes this <see cref="Transaction"/> into a <see cref="byte"/> array.
@@ -430,14 +361,13 @@ namespace Libplanet.Tx
         ) =>
             new Transaction(unsignedTx, alreadyVerifiedSignature: alreadyVerifiedSignature);
 
-        private static Transaction Create<T>(
+        private static Transaction Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
             TxActionList actions,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null)
-            where T : IAction, new()
         {
             if (privateKey is null)
             {
@@ -450,14 +380,9 @@ namespace Libplanet.Tx
                 timestamp ?? DateTimeOffset.UtcNow,
                 actions);
             var signMeta = new TxSigningMetadata(privateKey.PublicKey, nonce);
-            var unsignedDraftTx = new UnsignedTx(draftInvoice, signMeta);
-
-            var draftTx = new Transaction(unsignedDraftTx, privateKey);
-            IImmutableSet<Address> evaluatedUpdatedAddresses =
-                ActionEvaluator.GetUpdatedAddresses<T>(draftTx);
             var invoice = new TxInvoice(
                 draftInvoice.GenesisHash,
-                draftInvoice.UpdatedAddresses.Union(evaluatedUpdatedAddresses),
+                draftInvoice.UpdatedAddresses,
                 draftInvoice.Timestamp,
                 draftInvoice.Actions);
             var unsignedTx = new UnsignedTx(invoice, signMeta);

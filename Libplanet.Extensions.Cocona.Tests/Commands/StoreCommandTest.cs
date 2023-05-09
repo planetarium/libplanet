@@ -51,7 +51,7 @@ public class StoreCommandTest : IDisposable
         }
 
         _genesisBlock =
-                TestUtils.ProposeGenesisBlock<Utils.DummyAction>(TestUtils.GenesisProposer);
+                TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
         _transaction1 = DummyTransaction();
         _transaction2 = DummyTransaction();
         _transaction3 = DummyTransaction();
@@ -348,7 +348,7 @@ public class StoreCommandTest : IDisposable
 
     private Transaction DummyTransaction()
     {
-        return Transaction.Create<Utils.DummyAction>(
+        return Transaction.Create(
             0,
             new PrivateKey(),
             _genesisBlock.Hash,

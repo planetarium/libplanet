@@ -53,7 +53,7 @@ public class TransactionQueryGeneratedTest
             Fx.Chain.Store.GetBlock(failBlock.PreviousHash!.Value);
         var successTx = successBlock.Transactions.First();
         var pk = Fx.PrivateKeys[0];
-        var stagingTx = Transaction.Create<NullAction>(
+        var stagingTx = Transaction.Create(
             Fx.Chain.GetNextTxNonce(pk.ToAddress()),
             pk,
             Fx.Chain.Genesis.Hash,

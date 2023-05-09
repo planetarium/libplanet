@@ -152,15 +152,6 @@ namespace Libplanet.Tests.Blockchain
                 var s = (TxSuccess)e;
                 Assert.Equal(block2.Hash, s.BlockHash);
                 Assert.Equal(tx.Id, s.TxId);
-                Assert.Equal(tx.UpdatedAddresses, s.UpdatedAddresses);
-                Address[] updatedAddrs = tx.UpdatedAddresses.ToArray();
-                Assert.Equal(
-                    updatedAddrs.Zip(
-                        _blockChain.GetStates(updatedAddrs),
-                        (k, v) => new KeyValuePair<Address, IValue>(k, v)
-                    ).ToImmutableDictionary(),
-                    s.UpdatedStates
-                );
                 Assert.Empty(s.FungibleAssetsDelta);
                 Assert.Empty(s.UpdatedFungibleAssets);
             }
@@ -545,21 +536,21 @@ namespace Libplanet.Tests.Blockchain
             BlockHash genesis = _blockChain.Genesis.Hash;
             DumbAction[] emptyActions = new DumbAction[0];
             Transaction
-                txA0 = Transaction.Create<DumbAction>(0, signerA, genesis, emptyActions),
-                txA1 = Transaction.Create<DumbAction>(1, signerA, genesis, emptyActions);
+                txA0 = Transaction.Create(0, signerA, genesis, emptyActions),
+                txA1 = Transaction.Create(1, signerA, genesis, emptyActions);
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
             Block block = _blockChain.ProposeBlock(signerA);
 
             Transaction
-                txA2 = Transaction.Create<DumbAction>(2, signerA, genesis, emptyActions),
-                txA0_ = Transaction.Create<DumbAction>(0, signerA, genesis, emptyActions),
-                txA1_ = Transaction.Create<DumbAction>(1, signerA, genesis, emptyActions),
-                txB0 = Transaction.Create<DumbAction>(1, signerB, genesis, emptyActions),
-                txB1 = Transaction.Create<DumbAction>(1, signerB, genesis, emptyActions),
-                txB2 = Transaction.Create<DumbAction>(2, signerB, genesis, emptyActions),
-                txB0_ = Transaction.Create<DumbAction>(1, signerB, genesis, emptyActions),
-                txB1_ = Transaction.Create<DumbAction>(1, signerB, genesis, emptyActions);
+                txA2 = Transaction.Create(2, signerA, genesis, emptyActions),
+                txA0_ = Transaction.Create(0, signerA, genesis, emptyActions),
+                txA1_ = Transaction.Create(1, signerA, genesis, emptyActions),
+                txB0 = Transaction.Create(1, signerB, genesis, emptyActions),
+                txB1 = Transaction.Create(1, signerB, genesis, emptyActions),
+                txB2 = Transaction.Create(2, signerB, genesis, emptyActions),
+                txB0_ = Transaction.Create(1, signerB, genesis, emptyActions),
+                txB1_ = Transaction.Create(1, signerB, genesis, emptyActions);
             _blockChain.StageTransaction(txA2);
             _blockChain.StageTransaction(txA0_);
             _blockChain.StageTransaction(txA1_);
@@ -604,7 +595,7 @@ namespace Libplanet.Tests.Blockchain
             var dummy = new PrivateKey();
             BlockHash genesis = _blockChain.Genesis.Hash;
             Transaction
-                txA0 = Transaction.Create<DumbAction>(
+                txA0 = Transaction.Create(
                     0,
                     signer,
                     genesis,
@@ -613,7 +604,7 @@ namespace Libplanet.Tests.Blockchain
                         new DumbAction(
                             dummy.ToAddress(), "foo", dummy.ToAddress(), dummy.ToAddress(), 10),
                     }),
-                txA1 = Transaction.Create<DumbAction>(
+                txA1 = Transaction.Create(
                     1,
                     signer,
                     genesis,
@@ -652,11 +643,21 @@ namespace Libplanet.Tests.Blockchain
                 unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));
             var txs = new[]
             {
-                Transaction.Create<DumbAction>(
-                    0, txSigner, _blockChain.Genesis.Hash, new DumbAction[0]),
+                Transaction.Create(
+                    nonce: 0,
+                    privateKey: txSigner,
+                    genesisHash: _blockChain.Genesis.Hash,
+                    actions: Array.Empty<DumbAction>(),
+                    updatedAddresses: ImmutableHashSet<Address>.Empty
+                ),
                 invalidTx,
-                Transaction.Create<DumbAction>(
-                    2, txSigner, _blockChain.Genesis.Hash, new DumbAction[0]),
+                Transaction.Create(
+                    nonce: 2,
+                    privateKey: txSigner,
+                    genesisHash: _blockChain.Genesis.Hash,
+                    actions: Array.Empty<DumbAction>(),
+                    updatedAddresses: ImmutableHashSet<Address>.Empty
+                ),
             }.OrderBy(tx => tx.Id);
 
             var metadata = new BlockMetadata(

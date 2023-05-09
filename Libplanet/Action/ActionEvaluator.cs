@@ -190,65 +190,6 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the set of <see cref="Address"/>es that will be updated when
-        /// a given <see cref="Transaction"/> is evaluated.
-        /// </summary>
-        /// <param name="tx">The <see cref="Transaction"/> to evaluate.</param>
-        /// <returns>An <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
-        /// </returns>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// the <see cref="Block"/>'s type parameter.</typeparam>
-        /// <remarks>
-        /// A mock evaluation is performed on <paramref name="tx"/> using a mock
-        /// <see cref="Block"/> for its evaluation context and a mock
-        /// <see cref="IAccountStateDelta"/> as its previous state to obtain the
-        /// <see cref="IImmutableSet{T}"/> of updated <see cref="Address"/>es.
-        /// </remarks>
-        internal static IImmutableSet<Address> GetUpdatedAddresses<T>(Transaction tx)
-            where T : IAction, new()
-        {
-            // TODO: This method should take IUnsignedTx instead of Transaction
-            // FIXME this static method(and related APIs) should be removed since it doesn't
-            // compatible with action type loader.
-            // see also:
-            // - https://github.com/planetarium/libplanet/issues/368
-            // - https://github.com/planetarium/libplanet/discussions/2440
-            // - https://github.com/planetarium/libplanet/pull/2703#discussion_r1130315141
-            IAccountStateDelta previousStates = new AccountStateDeltaImpl(
-                NullAccountStateGetter,
-                NullAccountBalanceGetter,
-                NullTotalSupplyGetter,
-                NullValidatorSetGetter,
-                tx.Signer);
-            ImmutableList<IAction> actions = tx.Actions is { } txActions
-                ? ImmutableList.CreateRange<IAction>(txActions.Select(a => ToAction<T>(a)))
-                : ImmutableList<IAction>.Empty;
-            IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
-                genesisHash: tx.GenesisHash,
-                preEvaluationHash: new HashDigest<SHA256>(new byte[HashDigest<SHA256>.Size]),
-                blockIndex: default,
-                txid: tx.Id,
-                previousStates: previousStates,
-                miner: default,
-                signer: tx.Signer,
-                signature: tx.Signature,
-                actions: actions,
-                rehearsal: true,
-                previousBlockStatesTrie: null,
-                nativeTokenPredicate: _ => true,
-                feeCalculator: null);
-
-            if (evaluations.Any())
-            {
-                return evaluations.Last().OutputStates.UpdatedAddresses;
-            }
-            else
-            {
-                return previousStates.UpdatedAddresses;
-            }
-        }
-
-        /// <summary>
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
@@ -260,9 +201,7 @@ namespace Libplanet.Action
         /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// that <paramref name="actions"/> belong to.</param>
         /// <param name="txid">The <see cref="ITransaction.Id"/> of the
-        /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.
-        /// This can be <see langword="null"/> on rehearsal mode or if an <see cref="IAction"/> is a
-        /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
         /// <param name="miner">An address of block miner.</param>
@@ -273,9 +212,6 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
-        /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <see langword="false"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
@@ -314,7 +250,6 @@ namespace Libplanet.Action
             byte[] signature,
             IImmutableList<IAction> actions,
             Predicate<Currency> nativeTokenPredicate,
-            bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
             IFeeCalculator? feeCalculator = null,
@@ -334,7 +269,6 @@ namespace Libplanet.Action
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
-                    rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
                     nativeTokenPredicate: nativeTokenPredicate,
@@ -364,10 +298,6 @@ namespace Libplanet.Action
                     if (blockIndex == 0)
                     {
                         logger?.Verbose("The actions in the genesis block don't be charged");
-                    }
-                    else if (rehearsal)
-                    {
-                        logger?.Verbose("rehearsal don't be charged");
                     }
                     else if (blockAction)
                     {
@@ -418,53 +348,36 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
-                    if (rehearsal)
-                    {
-                        var message =
-                            $"The action {action} threw an exception during its " +
-                            "rehearsal.  It is probably because the logic of the " +
-                            $"action {action} is not enough generic so that it " +
-                            "can cover every case including rehearsal mode.\n" +
-                            "The IActionContext.Rehearsal property also might be " +
-                            "useful to make the action can deal with the case of " +
-                            "rehearsal mode.\n" +
-                            "See also this exception's InnerException property.";
-                        exc = new UnexpectedlyTerminatedActionException(
-                            message, null, null, null, null, action, e);
-                    }
-                    else
-                    {
-                        var message =
-                            "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
-                            "pre-evaluation hash {PreEvaluationHash} and previous " +
-                            "state root hash {StateRootHash} threw an exception " +
-                            "during execution";
-                        HashDigest<SHA256>? stateRootHash = context.PreviousStateRootHash;
-                        logger?.Error(
-                            e,
-                            message,
-                            action,
-                            txid,
-                            blockIndex,
-                            ByteUtil.Hex(preEvaluationHash.ByteArray),
-                            stateRootHash);
-                        var innerMessage =
-                            $"The action {action} (block #{blockIndex}, " +
-                            $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash.ByteArray)}, " +
-                            $"tx {txid}, previous state root hash {stateRootHash}) threw " +
-                            "an exception during execution.  " +
-                            "See also this exception's InnerException property";
-                        logger?.Error(
-                            "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
-                        exc = new UnexpectedlyTerminatedActionException(
-                            innerMessage,
-                            preEvaluationHash,
-                            blockIndex,
-                            txid,
-                            stateRootHash,
-                            action,
-                            e);
-                    }
+                    var message =
+                        "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
+                        "pre-evaluation hash {PreEvaluationHash} and previous " +
+                        "state root hash {StateRootHash} threw an exception " +
+                        "during execution";
+                    HashDigest<SHA256>? stateRootHash = context.PreviousStateRootHash;
+                    logger?.Error(
+                        e,
+                        message,
+                        action,
+                        txid,
+                        blockIndex,
+                        ByteUtil.Hex(preEvaluationHash.ByteArray),
+                        stateRootHash);
+                    var innerMessage =
+                        $"The action {action} (block #{blockIndex}, " +
+                        $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash.ByteArray)}, " +
+                        $"tx {txid}, previous state root hash {stateRootHash}) threw " +
+                        "an exception during execution.  " +
+                        "See also this exception's InnerException property";
+                    logger?.Error(
+                        "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
+                    exc = new UnexpectedlyTerminatedActionException(
+                        innerMessage,
+                        preEvaluationHash,
+                        blockIndex,
+                        txid,
+                        stateRootHash,
+                        action,
+                        e);
                 }
 
                 // As IActionContext.Random is stateful, we cannot reuse
@@ -607,7 +520,6 @@ namespace Libplanet.Action
             IPreEvaluationBlockHeader blockHeader,
             ITransaction tx,
             IAccountStateDelta previousStates,
-            bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
             ImmutableList<IAction> actions =
@@ -622,7 +534,6 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
-                rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 nativeTokenPredicate: _nativeTokenPredicate,
                 feeCalculator: _feeCalculator,
@@ -671,7 +582,6 @@ namespace Libplanet.Action
                 signer: blockHeader.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { policyBlockAction }.ToImmutableList(),
-                rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true,
                 nativeTokenPredicate: _nativeTokenPredicate

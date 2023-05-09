@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Action
             var txAddress = signer.ToAddress();
             var txs = new[]
             {
-                Transaction.Create<RandomAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy<EvaluateTestAction>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction.Create<EvaluateTestAction>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -177,7 +177,7 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy<ThrowException>(),
                 store: store,
                 stateStore: stateStore);
-            var tx = Transaction.Create<ThrowException>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -220,7 +220,7 @@ namespace Libplanet.Tests.Action
                     stateStore: stateStore);
             var genesis = chain.Genesis;
             // Evaluation is run with rehearsal true to get updated addresses on tx creation.
-            var tx = Transaction.Create<ThrowException>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
@@ -243,18 +243,11 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullValidatorSetGetter,
                 genesis.Miner);
 
-            // ToList() is required for realization.
-            actionEvaluator.EvaluateTx(
-                blockHeader: block,
-                tx: tx,
-                previousStates: previousStates,
-                rehearsal: true).ToList();
             Assert.Throws<OutOfMemoryException>(
                 () => actionEvaluator.EvaluateTx(
                     blockHeader: block,
                     tx: tx,
-                    previousStates: previousStates,
-                    rehearsal: false).ToList());
+                    previousStates: previousStates).ToList());
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.Evaluate(block).ToList());
         }
@@ -299,7 +292,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address5,
             };
 
-            Block genesis = ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
+            Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
@@ -318,7 +311,7 @@ namespace Libplanet.Tests.Action
 
             Transaction[] block1Txs =
             {
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey1,
                     genesisHash: genesis.Hash,
@@ -327,14 +320,15 @@ namespace Libplanet.Tests.Action
                         MakeAction(addresses[0], 'A', addresses[1]),
                         MakeAction(addresses[1], 'B', addresses[2]),
                     },
+                    updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey2,
                     genesisHash: genesis.Hash,
                     actions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey3,
                     genesisHash: genesis.Hash,
@@ -380,7 +374,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
-                Assert.False(eval.InputContext.Rehearsal);
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
                     (Integer)eval.OutputStates.GetState(
@@ -434,19 +427,21 @@ namespace Libplanet.Tests.Action
                 // Note that these timestamps in themselves does not have any meanings but are
                 // only arbitrary.  These purpose to make their evaluation order in a block
                 // equal to the order we (the test) intend:
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     _txFx.PrivateKey1,
                     genesis.Hash,
                     new[] { MakeAction(addresses[0], 'D') },
+                    updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') },
+                    updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     _txFx.PrivateKey3,
                     genesis.Hash,
@@ -461,6 +456,7 @@ namespace Libplanet.Tests.Action
                             recordRehearsal: true,
                             recordRandom: true),
                     },
+                    updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
@@ -505,11 +501,11 @@ namespace Libplanet.Tests.Action
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
-                Assert.Equal(
-                    expect.UpdatedStates,
-                    addresses
-                        .Select(eval.OutputStates.GetState)
-                        .Select(x => x is Text t ? t.Value : null));
+                List<string> updatedStates = addresses
+                    .Select(eval.OutputStates.GetState)
+                    .Select(x => x is Text t ? t.Value : null)
+                    .ToList();
+                Assert.Equal(expect.UpdatedStates, updatedStates);
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(
                     block2Txs[expect.TxIdx].Actions[expect.Item2],
@@ -586,7 +582,7 @@ namespace Libplanet.Tests.Action
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
             var tx =
-                Transaction.Create<DumbAction>(0, _txFx.PrivateKey1, null, actions);
+                Transaction.Create(0, _txFx.PrivateKey1, null, actions);
             var txs = new Transaction[] { tx };
             var block = new BlockContent(
                 new BlockMetadata(
@@ -607,126 +603,105 @@ namespace Libplanet.Tests.Action
                 feeCalculator: null
             );
 
-            foreach (bool rehearsal in new[] { false, true })
+            DumbAction.RehearsalRecords.Value =
+                ImmutableList<(Address, string)>.Empty;
+            var evaluations = actionEvaluator.EvaluateTx(
+                blockHeader: block,
+                tx: tx,
+                previousStates: new AccountStateDeltaImpl(
+                    ActionEvaluator.NullAccountStateGetter,
+                    ActionEvaluator.NullAccountBalanceGetter,
+                    ActionEvaluator.NullTotalSupplyGetter,
+                    ActionEvaluator.NullValidatorSetGetter,
+                    tx.Signer
+                )
+            ).ToImmutableArray();
+
+            Assert.Equal(actions.Length, evaluations.Length);
+            string[][] expectedStates =
             {
-                DumbAction.RehearsalRecords.Value =
-                    ImmutableList<(Address, string)>.Empty;
-                var evaluations = actionEvaluator.EvaluateTx(
-                    blockHeader: block,
-                    tx: tx,
-                    previousStates: new AccountStateDeltaImpl(
-                        ActionEvaluator.NullAccountStateGetter,
-                        ActionEvaluator.NullAccountBalanceGetter,
-                        ActionEvaluator.NullTotalSupplyGetter,
-                        ActionEvaluator.NullValidatorSetGetter,
-                        tx.Signer),
-                    rehearsal: rehearsal).ToImmutableArray();
+                new[] { "0", null, null },
+                new[] { "0", "1", null },
+                new[] { "0,2", "1", null },
+                new[] { "0,2", "1", "R:False" },
+            };
+            BigInteger[][] expectedBalances =
+            {
+                new BigInteger[] { -5, 5, 0 },
+                new BigInteger[] { -5, 15, -10 },
+                new BigInteger[] { 5, 5, -10 },
+                new BigInteger[] { 5, 5, -10 },
+            };
 
-                Assert.Equal(actions.Length, evaluations.Length);
-                string[][] expectedStates =
-                {
-                    new[] { "0", null, null },
-                    new[] { "0", "1", null },
-                    new[] { "0,2", "1", null },
-                    new[] { "0,2", "1", $"R:{rehearsal}" },
-                };
-                BigInteger[][] expectedBalances =
-                {
-                    new BigInteger[] { -5, 5, 0 },
-                    new BigInteger[] { -5, 15, -10 },
-                    new BigInteger[] { 5, 5, -10 },
-                    new BigInteger[] { 5, 5, -10 },
-                };
-
-                Currency currency = DumbAction.DumbCurrency;
-                IValue[] initStates = new IValue[3];
-                BigInteger[] initBalances = new BigInteger[3];
-                for (int i = 0; i < evaluations.Length; i++)
-                {
-                    IActionEvaluation eval = evaluations[i];
-                    Assert.Equal(actions[i].PlainValue, eval.Action);
-                    Assert.Equal(_txFx.Address1, eval.InputContext.Signer);
-                    Assert.Equal(tx.Id, eval.InputContext.TxId);
-                    Assert.Equal(addresses[0], eval.InputContext.Miner);
-                    Assert.Equal(1, eval.InputContext.BlockIndex);
-                    Assert.Equal(rehearsal, eval.InputContext.Rehearsal);
-                    Assert.Equal(
-                        (Integer)eval.OutputStates.GetState(
-                            DumbAction.RandomRecordsAddress),
-                        (Integer)eval.InputContext.Random.Next());
-                    IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
-                    Assert.Equal(
-                        prevEval is null
-                            ? initStates
-                            : addresses.Select(prevEval.OutputStates.GetState),
-                        addresses.Select(eval.InputContext.PreviousStates.GetState));
-                    Assert.Equal(
-                        expectedStates[i],
-                        addresses.Select(eval.OutputStates.GetState)
-                            .Select(x => x is Text t ? t.Value : null));
-                    Assert.Equal(
-                        prevEval is null
-                            ? initBalances
-                            : addresses.Select(a =>
-                                prevEval.OutputStates.GetBalance(a, currency).RawValue),
-                        addresses.Select(
-                            a => eval.InputContext.PreviousStates
-                                    .GetBalance(a, currency).RawValue));
-                    Assert.Equal(
-                        expectedBalances[i],
-                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue));
-                }
-
-                if (rehearsal)
-                {
-                    Assert.Contains(
-                        (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value);
-                }
-                else
-                {
-                    Assert.DoesNotContain(
-                        (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value);
-                }
-
-                DumbAction.RehearsalRecords.Value =
-                    ImmutableList<(Address, string)>.Empty;
-                IAccountStateDelta delta = actionEvaluator.EvaluateTx(
-                    blockHeader: block,
-                    tx: tx,
-                    previousStates: new AccountStateDeltaImpl(
-                        ActionEvaluator.NullAccountStateGetter,
-                        ActionEvaluator.NullAccountBalanceGetter,
-                        ActionEvaluator.NullTotalSupplyGetter,
-                        ActionEvaluator.NullValidatorSetGetter,
-                        tx.Signer),
-                    rehearsal: rehearsal
-                ).Last().OutputStates;
+            Currency currency = DumbAction.DumbCurrency;
+            IValue[] initStates = new IValue[3];
+            BigInteger[] initBalances = new BigInteger[3];
+            for (int i = 0; i < evaluations.Length; i++)
+            {
+                IActionEvaluation eval = evaluations[i];
+                Assert.Equal(actions[i].PlainValue, eval.Action);
+                Assert.Equal(_txFx.Address1, eval.InputContext.Signer);
+                Assert.Equal(tx.Id, eval.InputContext.TxId);
+                Assert.Equal(addresses[0], eval.InputContext.Miner);
+                Assert.Equal(1, eval.InputContext.BlockIndex);
                 Assert.Equal(
-                    evaluations[3].OutputStates.GetUpdatedStates(),
-                    delta.GetUpdatedStates());
-
-                if (rehearsal)
-                {
-                    Assert.Contains(
-                        (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value);
-                }
-                else
-                {
-                    Assert.DoesNotContain(
-                        (addresses[2], "R"),
-                        DumbAction.RehearsalRecords.Value);
-                }
+                    (Integer)eval.OutputStates.GetState(
+                        DumbAction.RandomRecordsAddress),
+                    (Integer)eval.InputContext.Random.Next());
+                IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
+                Assert.Equal(
+                    prevEval is null
+                        ? initStates
+                        : addresses.Select(prevEval.OutputStates.GetState),
+                    addresses.Select(eval.InputContext.PreviousStates.GetState));
+                Assert.Equal(
+                    expectedStates[i],
+                    addresses.Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
+                Assert.Equal(
+                    prevEval is null
+                        ? initBalances
+                        : addresses.Select(a =>
+                            prevEval.OutputStates.GetBalance(a, currency).RawValue),
+                    addresses.Select(
+                        a => eval.InputContext.PreviousStates
+                                .GetBalance(a, currency).RawValue));
+                Assert.Equal(
+                    expectedBalances[i],
+                    addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue));
             }
+
+            Assert.DoesNotContain(
+                (addresses[2], "R"),
+                DumbAction.RehearsalRecords.Value);
+
+            DumbAction.RehearsalRecords.Value =
+                ImmutableList<(Address, string)>.Empty;
+            IAccountStateDelta delta = actionEvaluator.EvaluateTx(
+                blockHeader: block,
+                tx: tx,
+                previousStates: new AccountStateDeltaImpl(
+                    ActionEvaluator.NullAccountStateGetter,
+                    ActionEvaluator.NullAccountBalanceGetter,
+                    ActionEvaluator.NullTotalSupplyGetter,
+                    ActionEvaluator.NullValidatorSetGetter,
+                    tx.Signer
+                )
+            ).Last().OutputStates;
+            Assert.Equal(
+                evaluations[3].OutputStates.GetUpdatedStates(),
+                delta.GetUpdatedStates());
+
+            Assert.DoesNotContain(
+                (addresses[2], "R"),
+                DumbAction.RehearsalRecords.Value);
         }
 
         [Fact]
         public void EvaluateTxResultThrowingException()
         {
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
-            var tx = Transaction.Create<ThrowException>(
+            var tx = Transaction.Create(
                 0,
                 _txFx.PrivateKey1,
                 null,
@@ -761,17 +736,15 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator.NullAccountBalanceGetter,
                     ActionEvaluator.NullTotalSupplyGetter,
                     ActionEvaluator.NullValidatorSetGetter,
-                    tx.Signer),
-                rehearsal: false
+                    tx.Signer
+                )
             ).Last().OutputStates;
 
             Assert.Empty(nextStates.GetUpdatedStates());
         }
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void EvaluateActions(bool rehearsal)
+        [Fact]
+        public void EvaluateActions()
         {
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
@@ -796,7 +769,6 @@ namespace Libplanet.Tests.Action
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false,
                 nativeTokenPredicate: _ => true
@@ -819,7 +791,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(deltaA[i].RootHash, context.PreviousStateRootHash);
                 Assert.Equal(txA.Signer, context.Signer);
                 Assert.False(context.BlockAction);
-                Assert.Equal(rehearsal, context.Rehearsal);
                 Assert.Equal(
                     i > 0 ? new[] { txA.Signer } : new Address[0],
                     prevStates.UpdatedAddresses);
@@ -851,7 +822,6 @@ namespace Libplanet.Tests.Action
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
                 blockAction: false,
                 nativeTokenPredicate: _ => true
@@ -876,7 +846,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(deltaB[i].RootHash, context.PreviousStateRootHash);
                 Assert.Equal(txB.Signer, context.Signer);
                 Assert.False(context.BlockAction);
-                Assert.Equal(rehearsal, context.Rehearsal);
                 Assert.Equal(
                     i > 0 ? new[] { txB.Signer } : new Address[0],
                     prevStates.UpdatedAddresses);
@@ -1012,13 +981,19 @@ namespace Libplanet.Tests.Action
                     .SelectMany(
                         signerNoncesPair => signerNoncesPair.nonces,
                         (signerNoncesPair, nonce) => (signerNoncesPair.signer, nonce))
-                    .Select(signerNoncePair => Transaction.Create<RandomAction>(
-                        nonce: signerNoncePair.nonce,
-                        privateKey: signerNoncePair.signer,
-                        genesisHash: null,
-                        actions:
-                            new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
-                        timestamp: epoch)).ToImmutableArray();
+                    .Select(signerNoncePair =>
+                    {
+                        Address targetAddress = signerNoncePair.signer.ToAddress();
+                        return Transaction.Create(
+                            nonce: signerNoncePair.nonce,
+                            privateKey: signerNoncePair.signer,
+                            genesisHash: null,
+                            actions: new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
+                            updatedAddresses: ImmutableHashSet.Create(targetAddress),
+                            timestamp: epoch
+                        );
+                    }).ToImmutableArray();
+
             // Rearrange transactions so that transactions are not grouped by signers
             // while keeping the hard coded mixed order nonces above.
             txs = txs
@@ -1124,7 +1099,7 @@ namespace Libplanet.Tests.Action
                 SignerKey = new PrivateKey().ToAddress(),
             };
 
-            var tx = Transaction.Create<EvaluateTestAction>(
+            var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
@@ -1192,7 +1167,6 @@ namespace Libplanet.Tests.Action
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                rehearsal: true,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false,
                 nativeTokenPredicate: _ => true

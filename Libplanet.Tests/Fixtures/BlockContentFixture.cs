@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Fixtures
             TimeSpan kst = TimeSpan.FromHours(9);
             GenesisKey = PrivateKey.FromString(
                 "9bf4664ba09a89faeb684b94e69ffde01d26ae14b556204d3f6ab58f61f78418");
-            Transaction genTx = Transaction.Create<Arithmetic>(
+            Transaction genTx = Transaction.Create(
                 0,
                 GenesisKey,
                 null,

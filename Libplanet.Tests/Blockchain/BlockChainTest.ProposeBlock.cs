@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Blockchain
                     new PrivateKey(),
                     new[]
                     {
-                        Transaction.Create<DumbAction>(
+                        Transaction.Create(
                             5,  // Invalid nonce,
                             new PrivateKey(),
                             null,
@@ -159,7 +159,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock);
                 var txs = new[]
                 {
-                    Transaction.Create<DumbAction>(
+                    Transaction.Create(
                         5,  // Invalid nonce
                         new PrivateKey(),
                         _blockChain.Genesis.Hash,
@@ -189,13 +189,13 @@ namespace Libplanet.Tests.Blockchain
 
             var txs = new[]
             {
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     keys[0],
                     _blockChain.Genesis.Hash,
                     new[] { new DumbAction(addrA, "1a"), new DumbAction(addrB, "1b") }
                 ),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     1,
                     keys[0],
                     _blockChain.Genesis.Hash,
@@ -203,13 +203,13 @@ namespace Libplanet.Tests.Blockchain
                 ),
 
                 // pending txs1
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     1,
                     keys[1],
                     _blockChain.Genesis.Hash,
                     new[] { new DumbAction(addrE, "3a"), new DumbAction(addrA, "3b") }
                 ),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     2,
                     keys[1],
                     _blockChain.Genesis.Hash,
@@ -217,13 +217,13 @@ namespace Libplanet.Tests.Blockchain
                 ),
 
                 // pending txs2
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     keys[2],
                     _blockChain.Genesis.Hash,
                     new[] { new DumbAction(addrD, "5a"), new DumbAction(addrE, "5b") }
                 ),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     2,
                     keys[2],
                     _blockChain.Genesis.Hash,
@@ -331,19 +331,19 @@ namespace Libplanet.Tests.Blockchain
             var key = new PrivateKey();
             var txs = new[]
             {
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     2,
                     key,
                     _blockChain.Genesis.Hash,
                     new DumbAction[0]
                 ),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     1,
                     key,
                     _blockChain.Genesis.Hash,
                     new DumbAction[0]
                 ),
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     key,
                     _blockChain.Genesis.Hash,
@@ -362,7 +362,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(
                 new[]
                 {
-                    Transaction.Create<DumbAction>(
+                    Transaction.Create(
                         0,
                         key,
                         _blockChain.Genesis.Hash,
@@ -377,7 +377,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(
                 new[]
                 {
-                    Transaction.Create<DumbAction>(
+                    Transaction.Create(
                         0,
                         key,
                         _blockChain.Genesis.Hash,
@@ -622,37 +622,35 @@ namespace Libplanet.Tests.Blockchain
                     DateTimeOffset.UtcNow,
                     new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(keyB.PublicKey, 1));
-            var invalidTx = new Transaction(
-                unsignedInvalidTx, unsignedInvalidTx.CreateSignature(keyB));
+            var txWithInvalidAction = new Transaction(
+                unsignedInvalidTx, unsignedInvalidTx.CreateSignature(keyB)
+            );
+            Transaction txWithInvalidNonce = Transaction.Create(
+                2, keyB, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()
+            );
             var txs = new[]
             {
-                Transaction.Create<DumbAction>(
-                    0, keyA, _blockChain.Genesis.Hash, new DumbAction[0]),
-                Transaction.Create<DumbAction>(
-                    1, keyA, _blockChain.Genesis.Hash, new DumbAction[0]),
-                Transaction.Create<DumbAction>(
-                    2, keyA, _blockChain.Genesis.Hash, new DumbAction[0]),
-                Transaction.Create<DumbAction>(
-                    0, keyB, _blockChain.Genesis.Hash, new DumbAction[0]),
-                invalidTx,
-                Transaction.Create<DumbAction>(
-                    2, keyB, _blockChain.Genesis.Hash, new DumbAction[0]),
+                Transaction.Create(0, keyA, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
+                Transaction.Create(1, keyA, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
+                Transaction.Create(2, keyA, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
+                Transaction.Create(0, keyB, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
+                txWithInvalidAction,
+                txWithInvalidNonce,
             };
 
-            // Invalid tx can be staged.
+            // Invalid txs can be staged.
             StageTransactions(txs);
             Assert.Equal(txs.Length, _blockChain.ListStagedTransactions().Count);
 
             var block = _blockChain.ProposeBlock(
                 new PrivateKey(), CreateBlockCommit(_blockChain.Tip));
 
-            // Includes txA0, txA1, txA2, txB0; txB2 is not included due to its nonce
-            Assert.DoesNotContain(txs.Last(), block.Transactions);
-            Assert.DoesNotContain(invalidTx, block.Transactions);
+            Assert.DoesNotContain(txWithInvalidNonce, block.Transactions);
+            Assert.DoesNotContain(txWithInvalidAction, block.Transactions);
 
-            // txB1 is marked ignored and removed
+            // txWithInvalidAction is marked ignored and removed
             Assert.Equal(txs.Length - 1, _blockChain.ListStagedTransactions().Count);
-            Assert.True(_blockChain.StagePolicy.Ignores(_blockChain, invalidTx.Id));
+            Assert.True(_blockChain.StagePolicy.Ignores(_blockChain, txWithInvalidAction.Id));
         }
     }
 }

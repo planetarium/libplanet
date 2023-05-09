@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
             var genesisBlock = TestUtils.ProposeGenesisBlock<DumbAction>(
-                TestUtils.ProposeGenesis<DumbAction>(TestUtils.GenesisProposer.PublicKey),
+                TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer,
                 policy.BlockAction,
                 policy.NativeTokens.Contains);

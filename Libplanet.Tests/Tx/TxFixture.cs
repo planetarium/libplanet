@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -59,7 +60,7 @@ namespace Libplanet.Tests.Tx
             var recipient = new Address(PrivateKey1.PublicKey);
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
-            Tx = Transaction.Create<PolymorphicAction<BaseAction>>(
+            Tx = Transaction.Create(
                 0,
                 PrivateKey1,
                 genesisHash,
@@ -79,11 +80,14 @@ namespace Libplanet.Tests.Tx
                     ZoneId = 10,
                 },
             };
-            TxWithActions = Transaction.Create<PolymorphicAction<BaseAction>>(
+            TxWithActions = Transaction.Create(
                 0,
                 PrivateKey1,
                 genesisHash,
                 actions,
+                updatedAddresses: ImmutableHashSet.Create(
+                    new Address("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc")
+                ),
                 timestamp: timestamp
             );
         }

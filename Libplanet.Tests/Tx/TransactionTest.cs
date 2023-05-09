@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Tx
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             var foo = Currency.Uncapped("FOO", 2, minters: null);
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 privateKey,
                 null,
@@ -120,22 +120,18 @@ namespace Libplanet.Tests.Tx
             );
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 privateKey,
                 null,
                 new[] { new DumbAction(stateStore, "RecordRehearsal", true) },
-                ImmutableHashSet<Address>.Empty,
+                ImmutableHashSet.Create(stateStore),
                 timestamp
             );
 
             Assert.Equal(
                 new Address(privateKey.PublicKey),
                 tx.Signer
-            );
-            Assert.Equal(
-                new[] { stateStore }.ToImmutableHashSet(),
-                tx.UpdatedAddresses
             );
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
             Assert.Equal(timestamp, tx.Timestamp);
@@ -162,16 +158,12 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
-            Assert.Contains(
-                (stateStore, "RecordRehearsal"),
-                DumbAction.RehearsalRecords.Value
-            );
         }
 
         [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
-            Transaction emptyTx = Transaction.Create<DumbAction>(
+            Transaction emptyTx = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -179,28 +171,17 @@ namespace Libplanet.Tests.Tx
             );
             Assert.Empty(emptyTx.UpdatedAddresses);
 
-            var tx = Transaction.Create<PolymorphicAction<BaseAction>>(
-                0,
-                _fx.PrivateKey1,
-                null,
-                _fx.TxWithActions.Actions
-            );
-            Assert.NotEmpty(tx.Actions);
-            Assert.Equal(
-                new[] { _fx.Address1 }.ToImmutableHashSet(),
-                tx.UpdatedAddresses
-            );
-
-            Address additionalAddr = new PrivateKey().ToAddress();
-            var txWithAddr = Transaction.Create<PolymorphicAction<BaseAction>>(
+            Address updatedAddr = new PrivateKey().ToAddress();
+            var txWithAddr = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,
                 _fx.TxWithActions.Actions,
-                new[] { additionalAddr }.ToImmutableHashSet()
+                new[] { updatedAddr }.ToImmutableHashSet()
             );
+
             Assert.Equal(
-                new[] { _fx.Address1, additionalAddr }.ToHashSet(),
+                new[] { updatedAddr }.ToHashSet(),
                 txWithAddr.UpdatedAddresses.ToHashSet()
             );
         }
@@ -209,7 +190,7 @@ namespace Libplanet.Tests.Tx
         public void CreateWithDefaultTimestamp()
         {
             DateTimeOffset rightBefore = DateTimeOffset.UtcNow;
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,
@@ -226,7 +207,7 @@ namespace Libplanet.Tests.Tx
         {
             // The privateKey parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction.Create<DumbAction>(
+                Transaction.Create(
                     0,
                     null,
                     null,
@@ -317,7 +298,7 @@ namespace Libplanet.Tests.Tx
         public void ActionsAreIsolatedFromOutside()
         {
             var actions = new List<DumbAction>();
-            Transaction tx = Transaction.Create<DumbAction>(
+            Transaction tx = Transaction.Create(
                 0,
                 _fx.PrivateKey1,
                 null,

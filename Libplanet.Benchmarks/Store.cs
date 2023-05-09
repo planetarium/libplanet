@@ -25,7 +25,7 @@ namespace Libplanet.Benchmarks
         {
             var blocks = new List<Block>();
             var txs = new List<Transaction>();
-            Block genesis = TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
+            Block genesis = TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
             blocks.Add(genesis);
             Block block = genesis;
             var key = new PrivateKey();
@@ -35,7 +35,7 @@ namespace Libplanet.Benchmarks
                 var blockTxs = new List<Transaction>();
                 for (int j = 0; j < i % 5; j++)
                 {
-                    blockTxs.Add(Transaction.Create<DumbAction>(
+                    blockTxs.Add(Transaction.Create(
                         nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
                 block = TestUtils.ProposeNextBlock(
