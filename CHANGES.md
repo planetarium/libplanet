@@ -1,12 +1,16 @@
 Libplanet changelog
 ===================
 
+Version 1.1.1
+-------------
+
+To be released.
+
+
 Version 1.1.0
 -------------
 
 Released on May 9, 2023.
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -83,10 +87,6 @@ Released on May 9, 2023.
     instead of `ArgumentException` when an action cannot be instantiated.
     [[#3140]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `IActionEvaluator` interface.  [[#3082]]
@@ -120,9 +120,6 @@ Released on May 9, 2023.
     [0.10.0][Bencodex 0.10.0].  [[#3106]]
  -  Upgrade *Bencodex.Json* from [0.8.0][Bencodex.Json 0.8.0] to
     [0.10.0][Bencodex.Json 0.10.0].  [[#3106]]
-
-
-### CLI tools
 
 [#3082]: https://github.com/planetarium/libplanet/pull/3082
 [#3083]: https://github.com/planetarium/libplanet/pull/3083
