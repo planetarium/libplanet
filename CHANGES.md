@@ -98,6 +98,9 @@ To be released.
     `IRenderer<T>.RenderReorgEnd()`, `IActionRenderer<T>.UnrenderAction()`,
     and `IActionRenderer<T>.UnrenderActionError()`, i.e., these interface
     methods are no longer invoked by a `BlockChain<T>`.  [[#3087]]
+ -  Changed `Context<T>.ConsumeMutation()` to iteratively call
+    `Context<T>.ProcessGenericUponRules()` itself, instead of producing
+    submutations of it.  [[#3137]]
 
 ### Bug fixes
 
@@ -131,6 +134,7 @@ To be released.
 [#3127]: https://github.com/planetarium/libplanet/pull/3127
 [#3135]: https://github.com/planetarium/libplanet/pull/3135
 [#3136]: https://github.com/planetarium/libplanet/pull/3136
+[#3137]: https://github.com/planetarium/libplanet/pull/3137
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
