@@ -217,9 +217,9 @@ namespace Libplanet.Tests.Action
                 return currency * 0;
             }
 
-            public decimal UsedGas(Address address) => 0;
+            public long UsedGas(Address address) => 0;
 
-            public decimal AvailableGas(Address address) => 1;
+            public long AvailableGas(Address address) => 1;
 
             public virtual ValidatorSet GetValidatorSet()
             {
@@ -240,9 +240,9 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta SetValidator(Validator validator) => this;
 
-            public IAccountStateDelta AddGas(Address address, decimal gas) => this;
+            public IAccountStateDelta AddGas(Address address, long gas) => this;
 
-            public IAccountStateDelta SetGasLimit(Address address, decimal gasLimit) => this;
+            public IAccountStateDelta SetGasLimit(Address address, long gasLimit) => this;
         }
     }
 }

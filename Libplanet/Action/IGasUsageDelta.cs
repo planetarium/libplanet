@@ -21,7 +21,7 @@ namespace Libplanet.Action
         /// <paramref name="gas"/> added.
         /// </returns>
         [Pure]
-        IAccountStateDelta AddGas(Address address, decimal gas);
+        IAccountStateDelta AddGas(Address address, long gas);
 
         /// <summary>
         /// Sets the gas limit of the account.
@@ -33,6 +33,6 @@ namespace Libplanet.Action
         /// <paramref name="gasLimit"/> set.
         /// </returns>
         [Pure]
-        IAccountStateDelta SetGasLimit(Address address, decimal gasLimit);
+        IAccountStateDelta SetGasLimit(Address address, long gasLimit);
     }
 }

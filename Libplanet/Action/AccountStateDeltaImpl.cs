@@ -46,7 +46,7 @@ namespace Libplanet.Action
             UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
-            UpdatedGas = ImmutableDictionary<Address, (decimal, decimal)>.Empty;
+            UpdatedGas = ImmutableDictionary<Address, (long, long)>.Empty;
             Signer = signer;
         }
 
@@ -96,7 +96,7 @@ namespace Libplanet.Action
 
         protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
-        protected IImmutableDictionary<Address, (decimal Limit, decimal Used)>
+        protected IImmutableDictionary<Address, (long Limit, long Used)>
             UpdatedGas { get; set; }
 
         /// <inheritdoc/>
@@ -177,12 +177,12 @@ namespace Libplanet.Action
         }
 
         [Pure]
-        public decimal UsedGas(Address address) =>
+        public long UsedGas(Address address) =>
             UpdatedGas.TryGetValue(address, out var usedGas)
             ? usedGas.Used
             : throw new GasLimitNotSetException(address);
 
-        public decimal AvailableGas(Address address) =>
+        public long AvailableGas(Address address) =>
             UpdatedGas.TryGetValue(address, out var usedGas)
                 ? usedGas.Limit - usedGas.Used
                 : throw new GasLimitNotSetException(address);
@@ -335,13 +335,13 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta AddGas(Address address, decimal gas) =>
+        public IAccountStateDelta AddGas(Address address, long gas) =>
             UpdatedGas.TryGetValue(address, out var usedGas)
             ? UpdateGas(UpdatedGas.SetItem(address, (usedGas.Limit, usedGas.Used + gas)))
             : throw new GasLimitNotSetException(address);
 
         /// <inheritdoc/>
-        public IAccountStateDelta SetGasLimit(Address address, decimal gasLimit) =>
+        public IAccountStateDelta SetGasLimit(Address address, long gasLimit) =>
             UpdateGas(UpdatedGas.TryGetValue(address, out var gas)
                 ? UpdatedGas.SetItem(address, (gasLimit, gas.Used))
                 : UpdatedGas.SetItem(address, (gasLimit, 0)));
@@ -453,7 +453,7 @@ namespace Libplanet.Action
             };
 
         protected virtual AccountStateDeltaImpl UpdateGas(
-            IImmutableDictionary<Address, (decimal Limit, decimal Used)> updatedUsedGas
+            IImmutableDictionary<Address, (long Limit, long Used)> updatedUsedGas
         ) =>
             new AccountStateDeltaImpl(
                 StateGetter,

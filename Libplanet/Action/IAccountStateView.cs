@@ -82,7 +82,7 @@ namespace Libplanet.Action
         /// <param name="address">The address to query.</param>
         /// <returns>The total Gas used by the <paramref name="address"/>.</returns>
         [Pure]
-        decimal UsedGas(Address address);
+        long UsedGas(Address address);
 
         /// <summary>
         /// Returns the available Gas of the <paramref name="address"/>.
@@ -94,6 +94,6 @@ namespace Libplanet.Action
         /// The available Gas of the <paramref name="address"/>.
         /// </returns>
         [Pure]
-        decimal AvailableGas(Address address);
+        long AvailableGas(Address address);
     }
 }

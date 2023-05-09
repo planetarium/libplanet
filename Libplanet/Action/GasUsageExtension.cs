@@ -7,7 +7,7 @@ namespace Libplanet.Action
         public static IAccountStateDelta AddGas(
             this IAccountStateDelta delta,
             Address address,
-            decimal gas)
+            long gas)
         {
             if (delta is IGasUsageDelta impl)
             {
@@ -20,7 +20,7 @@ namespace Libplanet.Action
         public static IAccountStateDelta SetGasLimit(
             this IAccountStateDelta delta,
             Address address,
-            decimal gasLimit)
+            long gasLimit)
         {
             if (delta is IGasUsageDelta impl)
             {
