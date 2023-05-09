@@ -409,9 +409,9 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
+            ActionEvaluator actionEvaluator,
             IEnumerable<IRenderer<T>> renderers = null,
-            IBlockChainStates blockChainStates = null,
-            ActionEvaluator actionEvaluator = null)
+            IBlockChainStates blockChainStates = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)
@@ -421,6 +421,10 @@ namespace Libplanet.Blockchain
             else if (stateStore is null)
             {
                 throw new ArgumentNullException(nameof(stateStore));
+            }
+            else if (actionEvaluator is null)
+            {
+                throw new ArgumentNullException(nameof(actionEvaluator));
             }
             else if (store.GetCanonicalChainId() is { } canonId)
             {
@@ -473,16 +477,6 @@ namespace Libplanet.Blockchain
             stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
-            actionEvaluator ??= new ActionEvaluator(
-                _ => policy.BlockAction,
-                blockChainStates: blockChainStates,
-                trieGetter: hash => stateStore.GetStateRoot(
-                    store.GetBlockDigest(hash)?.StateRootHash),
-                genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                actionTypeLoader: StaticActionLoader.Create<T>(),
-                feeCalculator: null
-            );
 
             return new BlockChain<T>(
                 policy,

@@ -399,7 +399,18 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     fx.Store,
                     fx.StateStore,
-                    fx.GenesisBlock);
+                    fx.GenesisBlock,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        trieGetter: hash => fx.StateStore.GetStateRoot(
+                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
+                        genesisHash: fx.GenesisBlock.Hash,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                );
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });

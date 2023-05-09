@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -39,7 +40,18 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _stagePolicy,
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock);
+                _fx.GenesisBlock,
+                new ActionEvaluator(
+                    _ => _policy.BlockAction,
+                    blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
+                    trieGetter: hash => _fx.StateStore.GetStateRoot(
+                        _fx.Store.GetBlockDigest(hash)?.StateRootHash),
+                    genesisHash: _fx.GenesisBlock.Hash,
+                    nativeTokenPredicate: _policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
         }
 
         public void Dispose()

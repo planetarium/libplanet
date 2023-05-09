@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -35,7 +36,19 @@ namespace Libplanet.Benchmarks
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock);
+                _fx.GenesisBlock,
+                new ActionEvaluator(
+                    policyBlockActionGetter: _ => null,
+                    blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
+                    trieGetter: hash => _fx.StateStore.GetStateRoot(
+                        _fx.Store.GetBlockDigest(hash)?.StateRootHash
+                    ),
+                    genesisHash: _fx.GenesisBlock.Hash,
+                    nativeTokenPredicate: _ => false,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
             var key = new PrivateKey();
             for (var i = 0; i < 500; i++)
             {

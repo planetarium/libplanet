@@ -5,6 +5,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Net.Consensus;
@@ -56,12 +57,25 @@ namespace Libplanet.Net.Tests.Consensus
                         TestUtils.PrivateKeys[i].PublicKey,
                         new DnsEndPoint("127.0.0.1", 6000 + i)));
                 stores[i] = new MemoryStore();
+                var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 blockChains[i] = BlockChain<DumbAction>.Create(
                     TestUtils.Policy,
                     new VolatileStagePolicy<DumbAction>(),
                     stores[i],
-                    new TrieStateStore(new MemoryKeyValueStore()),
-                    fx.GenesisBlock);
+                    stateStore,
+                    fx.GenesisBlock,
+                    new ActionEvaluator(
+                        policyBlockActionGetter: _ => TestUtils.Policy.BlockAction,
+                        blockChainStates: new BlockChainStates(stores[i], stateStore),
+                        trieGetter: hash => stateStore.GetStateRoot(
+                            stores[i].GetBlockDigest(hash)?.StateRootHash
+                        ),
+                        genesisHash: fx.GenesisBlock.Hash,
+                        nativeTokenPredicate: _ => false,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                );
             }
 
             for (var i = 0; i < 4; i++)

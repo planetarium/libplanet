@@ -142,7 +142,18 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     fx.Store,
                     fx.StateStore,
-                    genesis));
+                    genesis,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        trieGetter: hash => fx.StateStore.GetStateRoot(
+                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
+                        genesisHash: genesis.Hash,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                ));
             }
         }
 
@@ -151,12 +162,24 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx = new MemoryStoreFixture())
             {
+                var policy = new BlockPolicy<DumbAction>();
                 var blockChain = BlockChain<DumbAction>.Create(
-                    new BlockPolicy<DumbAction>(),
+                    policy,
                     new VolatileStagePolicy<DumbAction>(),
                     fx.Store,
                     fx.StateStore,
-                    fx.GenesisBlock);
+                    fx.GenesisBlock,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        trieGetter: hash => fx.StateStore.GetStateRoot(
+                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
+                        genesisHash: fx.GenesisBlock.Hash,
+                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                );
                 var txs = new[]
                 {
                     Transaction.Create<DumbAction>(
@@ -307,7 +330,18 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     fx.Store,
                     fx.StateStore,
-                    fx.GenesisBlock);
+                    fx.GenesisBlock,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        trieGetter: hash => fx.StateStore.GetStateRoot(
+                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
+                        genesisHash: fx.GenesisBlock.Hash,
+                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                );
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
