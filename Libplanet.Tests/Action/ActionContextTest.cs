@@ -179,7 +179,10 @@ namespace Libplanet.Tests.Action
             Assert.Equal(callPreviousStateRootHash ? 1 : 0, keyValueStore.ListKeys().Count());
         }
 
-        private class DumbAccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
+        private class DumbAccountStateDelta :
+            IGasUsageDelta,
+            IValidatorSupportStateDelta,
+            IAccountStateDelta
         {
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
@@ -214,6 +217,10 @@ namespace Libplanet.Tests.Action
                 return currency * 0;
             }
 
+            public decimal UsedGas(Address address) => 0;
+
+            public decimal AvailableGas(Address address) => 1;
+
             public virtual ValidatorSet GetValidatorSet()
             {
                 return new ValidatorSet();
@@ -232,6 +239,10 @@ namespace Libplanet.Tests.Action
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
 
             public IAccountStateDelta SetValidator(Validator validator) => this;
+
+            public IAccountStateDelta AddGas(Address address, decimal gas) => this;
+
+            public IAccountStateDelta SetGasLimit(Address address, decimal gasLimit) => this;
         }
     }
 }
