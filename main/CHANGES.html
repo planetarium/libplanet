@@ -176,6 +176,9 @@ instead.</li>
 <code>IRenderer&lt;T&gt;.RenderReorgEnd()</code>, <code>IActionRenderer&lt;T&gt;.UnrenderAction()</code>,
 and <code>IActionRenderer&lt;T&gt;.UnrenderActionError()</code>, i.e., these interface
 methods are no longer invoked by a <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3087">#3087</a>]</li>
+<li>Changed <code>Context&lt;T&gt;.ConsumeMutation()</code> to iteratively call
+<code>Context&lt;T&gt;.ProcessGenericUponRules()</code> itself, instead of producing
+submutations of it.  [<a href="https://github.com/planetarium/libplanet/pull/3137">#3137</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
