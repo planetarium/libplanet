@@ -159,6 +159,9 @@ instead.</li>
 </ul>
 </li>
 <li>Added <code>IActionEvaluator.IActionLoader</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3136">#3136</a>]</li>
+<li>Changed <code>IActionLoader.LoadAction()</code> to throw <code>InvalidActionException</code>
+instead of <code>ArgumentException</code> when an action cannot be instantiated.
+[<a href="https://github.com/planetarium/libplanet/pull/3140">#3140</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -169,6 +172,7 @@ instead.</li>
 <li>Added <code>IActionEvaluation</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3089">#3089</a>]</li>
 <li>Added parameterless constructor to <code>Mint</code>, <code>Transfer</code>, and <code>Initialize</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3112">#3112</a>]</li>
+<li>Added <code>InvalidActionException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3140">#3140</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -184,6 +188,9 @@ submutations of it.  [<a href="https://github.com/planetarium/libplanet/pull/313
 <ul>
 <li>Fixes a bug where <code>BlockChain&lt;T&gt;</code> could not propose if a certain type of
 invalid <code>Transaction</code> was staged.  [<a href="https://github.com/planetarium/libplanet/pull/3136">#3136</a>]</li>
+<li>Fixes a bug where <code>Context&lt;T&gt;</code> would completely halt if a <code>Block</code>
+with an <code>IValue</code> as one of its action that cannot be instantiated via
+its <code>IActionLoader</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3140">#3140</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>

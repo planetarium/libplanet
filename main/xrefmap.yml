@@ -1010,6 +1010,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.InsufficientBalanceException.GetObjectData
   nameWithType: InsufficientBalanceException.GetObjectData
+- uid: Libplanet.Action.InvalidActionException
+  name: InvalidActionException
+  href: api/Libplanet.Action.InvalidActionException.html
+  commentId: T:Libplanet.Action.InvalidActionException
+  fullName: Libplanet.Action.InvalidActionException
+  nameWithType: InvalidActionException
+- uid: Libplanet.Action.InvalidActionException.#ctor(System.String,Bencodex.Types.IValue,System.Exception)
+  name: InvalidActionException(String, IValue, Exception)
+  href: api/Libplanet.Action.InvalidActionException.html#Libplanet_Action_InvalidActionException__ctor_System_String_Bencodex_Types_IValue_System_Exception_
+  commentId: M:Libplanet.Action.InvalidActionException.#ctor(System.String,Bencodex.Types.IValue,System.Exception)
+  fullName: Libplanet.Action.InvalidActionException.InvalidActionException(System.String, Bencodex.Types.IValue, System.Exception)
+  nameWithType: InvalidActionException.InvalidActionException(String, IValue, Exception)
+- uid: Libplanet.Action.InvalidActionException.#ctor*
+  name: InvalidActionException
+  href: api/Libplanet.Action.InvalidActionException.html#Libplanet_Action_InvalidActionException__ctor_
+  commentId: Overload:Libplanet.Action.InvalidActionException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.InvalidActionException.InvalidActionException
+  nameWithType: InvalidActionException.InvalidActionException
+- uid: Libplanet.Action.InvalidActionException.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.InvalidActionException.html#Libplanet_Action_InvalidActionException_PlainValue
+  commentId: P:Libplanet.Action.InvalidActionException.PlainValue
+  fullName: Libplanet.Action.InvalidActionException.PlainValue
+  nameWithType: InvalidActionException.PlainValue
+- uid: Libplanet.Action.InvalidActionException.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.InvalidActionException.html#Libplanet_Action_InvalidActionException_PlainValue_
+  commentId: Overload:Libplanet.Action.InvalidActionException.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.InvalidActionException.PlainValue
+  nameWithType: InvalidActionException.PlainValue
 - uid: Libplanet.Action.IRandom
   name: IRandom
   href: api/Libplanet.Action.IRandom.html
