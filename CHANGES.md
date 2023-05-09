@@ -13,11 +13,16 @@ To be released.
  -  Added `IAccountStateDelta.TotalUpdatedFungibleAssets` interface property.
     [[#3208]]
 
+ -  Added `ITransaction.MaxGasPrice` property.  [[#3201]]
+ -  Added `ITransaction.GasLimit` property.  [[#3201]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `FungibleAssetValue.Serialize()` method.  [[#3201]]
 
 ### Behavioral changes
 
