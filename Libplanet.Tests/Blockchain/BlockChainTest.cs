@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Blockchain
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 ),
-                renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
+                renderers: new[] { new LoggedActionRenderer(_renderer, Log.Logger) }
             );
             _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
@@ -281,9 +281,9 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
-            IActionRenderer<DumbAction>[] renderers = Enumerable.Range(0, 2).Select(i =>
-                new LoggedActionRenderer<DumbAction>(
-                    new AnonymousActionRenderer<DumbAction>
+            IActionRenderer[] renderers = Enumerable.Range(0, 2).Select(i =>
+                new LoggedActionRenderer(
+                    new AnonymousActionRenderer
                     {
                         ActionRenderer = (act, context, nextStates) =>
                             // Consuming the random state through IRandom.Next() should not
@@ -318,8 +318,8 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var recordingRenderer = new RecordingActionRenderer<DumbAction>();
-            var renderer = new LoggedActionRenderer<DumbAction>(recordingRenderer, Log.Logger);
+            var recordingRenderer = new RecordingActionRenderer();
+            var renderer = new LoggedActionRenderer(recordingRenderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
@@ -333,10 +333,10 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(block, CreateBlockCommit(block));
 
             Assert.Equal(2, blockChain.Count);
-            IReadOnlyList<RenderRecord<DumbAction>.BlockEvent> blockLogs =
+            IReadOnlyList<RenderRecord.BlockEvent> blockLogs =
                 recordingRenderer.BlockRecords;
             Assert.Equal(2, blockLogs.Count);
-            IReadOnlyList<RenderRecord<DumbAction>.ActionBase> actionLogs =
+            IReadOnlyList<RenderRecord.ActionBase> actionLogs =
                 recordingRenderer.ActionRecords;
             Assert.Single(actions);
             Assert.Equal(prevBlock, blockLogs[0].OldTip);
@@ -356,7 +356,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
 
-            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
+            IActionRenderer renderer = new AnonymousActionRenderer
             {
                 ActionRenderer = (a, __, nextStates) =>
                 {
@@ -366,7 +366,7 @@ namespace Libplanet.Tests.Blockchain
                     }
                 },
             };
-            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            renderer = new LoggedActionRenderer(renderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
@@ -588,7 +588,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => r.Rehearsal));
 
                 store.PutBlock(genesis);
-                var renderer = new RecordingActionRenderer<DumbAction>();
+                var renderer = new RecordingActionRenderer();
                 var blockChain = BlockChain<DumbAction>.Create(
                     _policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -854,11 +854,11 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
             Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 
-            RenderRecord<DumbAction>.BlockBase[] blockLevelRenders = _renderer.Records
-                .OfType<RenderRecord<DumbAction>.BlockBase>()
+            RenderRecord.BlockBase[] blockLevelRenders = _renderer.Records
+                .OfType<RenderRecord.BlockBase>()
                 .ToArray();
 
-            RenderRecord<DumbAction>.ActionBase[] actionRenders = _renderer.ActionRecords
+            RenderRecord.ActionBase[] actionRenders = _renderer.ActionRecords
                 .Where(r => r.Action is DumbAction)
                 .ToArray();
             DumbAction[] actions = actionRenders.Select(r => (DumbAction)r.Action).ToArray();
@@ -873,9 +873,9 @@ namespace Libplanet.Tests.Blockchain
             if (render)
             {
                 Assert.Equal(2, blockLevelRenders.Length);
-                Assert.IsType<RenderRecord<DumbAction>.BlockEvent>(blockLevelRenders[0]);
+                Assert.IsType<RenderRecord.BlockEvent>(blockLevelRenders[0]);
                 Assert.True(blockLevelRenders[0].Begin);
-                Assert.IsType<RenderRecord<DumbAction>.BlockEvent>(blockLevelRenders[1]);
+                Assert.IsType<RenderRecord.BlockEvent>(blockLevelRenders[1]);
                 Assert.True(blockLevelRenders[1].End);
 
                 Assert.True(blockLevelRenders[0].Index < actionRenders[0].Index);
@@ -890,7 +890,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal("fork-bar", actions[1].Item);
                 Assert.Equal("fork-baz", actions[2].Item);
 
-                RenderRecord<DumbAction>.ActionBase[] blockActionRenders = _renderer.ActionRecords
+                RenderRecord.ActionBase[] blockActionRenders = _renderer.ActionRecords
                     .Where(r => r.Action is MinerReward)
                     .ToArray();
 
@@ -983,7 +983,7 @@ namespace Libplanet.Tests.Blockchain
         public void SwapForSameTip(bool render)
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
-            IReadOnlyList<RenderRecord<DumbAction>> prevRecords = _renderer.Records;
+            IReadOnlyList<RenderRecord> prevRecords = _renderer.Records;
             _blockChain.Swap(fork, render: render)();
 
             // Render methods should be invoked if and only if the tip changes
@@ -1657,7 +1657,7 @@ namespace Libplanet.Tests.Blockchain
             MakeIncompleteBlockStates(
                 IStore store,
                 IStateStore stateStore,
-                IRenderer<DumbAction> renderer = null
+                IRenderer renderer = null
             )
         {
             List<int> presentIndices = new List<int>() { 4, 7 };
@@ -1869,9 +1869,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.BlockRecords);
             Block block = _blockChain.ProposeBlock(new PrivateKey());
             _blockChain.Append(block, CreateBlockCommit(block));
-            IReadOnlyList<RenderRecord<DumbAction>.BlockEvent> records = _renderer.BlockRecords;
+            IReadOnlyList<RenderRecord.BlockEvent> records = _renderer.BlockRecords;
             Assert.Equal(2, records.Count);
-            foreach (RenderRecord<DumbAction>.BlockEvent record in records)
+            foreach (RenderRecord.BlockEvent record in records)
             {
                 Assert.Equal(genesis, record.OldTip);
                 Assert.Equal(block, record.NewTip);

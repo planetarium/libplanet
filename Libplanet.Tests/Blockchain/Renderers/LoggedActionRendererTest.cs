@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default, default, default, default, 123, _stateDelta, default, rehearsal
                 );
             Exception actionError = new Exception();
-            IActionRenderer<DumbAction> actionRenderer;
+            IActionRenderer actionRenderer;
             if (error)
             {
                 Action<IAction, IActionContext, Exception> render = (action, cxt, e) =>
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                         throw new ThrowException.SomeException(string.Empty);
                     }
                 };
-                actionRenderer = new AnonymousActionRenderer<DumbAction>
+                actionRenderer = new AnonymousActionRenderer
                 {
                     ActionErrorRenderer = render,
                 };
@@ -115,13 +115,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                         throw new ThrowException.SomeException(string.Empty);
                     }
                 };
-                actionRenderer = new AnonymousActionRenderer<DumbAction>
+                actionRenderer = new AnonymousActionRenderer
                 {
                     ActionRenderer = render,
                 };
             }
 
-            actionRenderer = new LoggedActionRenderer<DumbAction>(
+            actionRenderer = new LoggedActionRenderer(
                 actionRenderer,
                 _logger,
                 LogEventLevel.Information
@@ -184,7 +184,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 firstLog.Properties["BlockIndex"].ToString()
             );
             Assert.Equal(
-                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousActionRenderer).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);
@@ -271,12 +271,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 }
             }
 
-            IActionRenderer<DumbAction> actionRenderer = new AnonymousActionRenderer<DumbAction>
+            IActionRenderer actionRenderer = new AnonymousActionRenderer
             {
                 BlockRenderer = end ? (Action<DumbBlock, DumbBlock>)null : Callback,
                 BlockEndRenderer = end ? Callback : (Action<DumbBlock, DumbBlock>)null,
             };
-            actionRenderer = new LoggedActionRenderer<DumbAction>(actionRenderer, _logger);
+            actionRenderer = new LoggedActionRenderer(actionRenderer, _logger);
             var invoke = end
                 ? (Action<DumbBlock, DumbBlock>)actionRenderer.RenderBlockEnd
                 : actionRenderer.RenderBlock;
@@ -325,7 +325,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Equal($"\"{_genesis.Hash}\"", firstLog.Properties["OldHash"].ToString());
             Assert.Equal(
-                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousActionRenderer).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);

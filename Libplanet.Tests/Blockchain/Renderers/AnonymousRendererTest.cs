@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void BlockRenderer()
         {
             (Block Old, Block New)? record = null;
-            var renderer = new AnonymousRenderer<DumbAction>
+            var renderer = new AnonymousRenderer
             {
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };

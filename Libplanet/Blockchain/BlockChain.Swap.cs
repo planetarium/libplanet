@@ -144,7 +144,7 @@ namespace Libplanet.Blockchain
         {
             if (render)
             {
-                foreach (IRenderer<T> renderer in Renderers)
+                foreach (IRenderer renderer in Renderers)
                 {
                     renderer.RenderBlock(
                         oldTip: oldTip,
@@ -189,7 +189,7 @@ namespace Libplanet.Blockchain
                     nameof(Swap),
                     count);
 
-                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                foreach (IActionRenderer renderer in ActionRenderers)
                 {
                     renderer.RenderBlockEnd(oldTip, newTip);
                 }
@@ -232,7 +232,7 @@ namespace Libplanet.Blockchain
                     ? Policy.BlockAction!
                     : ToAction(evaluation.Action);
 
-                foreach (IActionRenderer<T> renderer in ActionRenderers)
+                foreach (IActionRenderer renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
                     {

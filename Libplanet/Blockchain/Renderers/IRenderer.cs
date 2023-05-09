@@ -1,4 +1,3 @@
-using Libplanet.Action;
 using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain.Renderers
@@ -14,10 +13,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </item>
     /// </list>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public interface IRenderer<T>
-        where T : IAction, new()
+    public interface IRenderer
     {
         /// <summary>
         /// Does things that should be done right after a new <see cref="Block"/> is appended to
