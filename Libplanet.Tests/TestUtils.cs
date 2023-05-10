@@ -28,6 +28,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -764,6 +765,37 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var deserialized = JsonSerializer.Deserialize<T>(expectedJson, options);
                 Assert.Equal(obj, deserialized);
             }
+        }
+
+        public static bool IsDumbAction(IValue action)
+        {
+            return action is Dictionary dictionary &&
+                dictionary.Keys.ToHashSet().IsSubsetOf(new IKey[]
+                {
+                    (Text)"item",
+                    (Text)"target_address",
+                    (Text)"record_rehearsal",
+                    (Text)"record_random",
+                    (Text)"idempotent",
+                    (Text)"transfer_from",
+                    (Text)"transfer_to",
+                    (Text)"transfer_amount",
+                    (Text)"validators",
+                }.ToHashSet());
+        }
+
+        public static bool IsMinerReward(IValue action)
+        {
+            return action is Dictionary dictionary &&
+                   dictionary.TryGetValue((Text)"reward", out IValue rewards) &&
+                   rewards is Integer;
+        }
+
+        public static DumbAction ToDumbAction(IValue plainValue)
+        {
+            var action = new DumbAction();
+            action.LoadPlainValue(plainValue);
+            return action;
         }
     }
 }

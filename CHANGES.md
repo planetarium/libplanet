@@ -12,6 +12,15 @@ To be released.
 
  -  Removed type parameter `T` from `Transaction.Create<T>()` and
     `PreEvaluationBlock.Evaluate<T>()`.  [[#3122]]
+ -  Signatures of `IActionRenderer<T>`'s methods was changed.  [[#3117]]
+     -  The signature of
+        `RenderAction(IAction, IActionContext, IAccountStateDelta)`
+        method was changed to
+        `RenderAction(IValue, IActionContext, IAccountStateDelta)`.
+     -  The signature of
+       `RenderActionError(IAction, IActionContext, Exception)`
+        method was changed to
+        `RenderActionError(IValue, IActionContext, Exception)`.
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +39,7 @@ To be released.
 
 ### CLI tools
 
+[#3117]: https://github.com/planetarium/libplanet/pull/3117
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
 
 

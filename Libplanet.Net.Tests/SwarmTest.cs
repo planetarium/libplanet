@@ -930,7 +930,7 @@ namespace Libplanet.Net.Tests
             miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
 
             renderer.RenderEventHandler += (_, a) =>
-                renderCount += a is DumbAction ? 1 : 0;
+                renderCount += IsDumbAction(a) ? 1 : 0;
 
             await StartAsync(miner1);
             await StartAsync(miner2);

@@ -1,4 +1,5 @@
 using System;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
@@ -39,7 +40,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             protected ActionBase(
                 long index,
                 string stackTrace,
-                IAction action,
+                IValue action,
                 IActionContext context,
                 bool unrender = false
             )
@@ -53,7 +54,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <summary>
             /// The rendered action.
             /// </summary>
-            public IAction Action { get; }
+            public IValue Action { get; }
 
             /// <summary>
             /// The action evaluation context.
@@ -93,7 +94,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             public ActionSuccess(
                 long index,
                 string stackTrace,
-                IAction action,
+                IValue action,
                 IActionContext context,
                 IAccountStateDelta nextStates,
                 bool unrender = false
@@ -129,7 +130,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             public ActionError(
                 long index,
                 string stackTrace,
-                IAction action,
+                IValue action,
                 IActionContext context,
                 Exception exception,
                 bool unrender = false

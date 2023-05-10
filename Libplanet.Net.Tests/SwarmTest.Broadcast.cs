@@ -731,7 +731,7 @@ namespace Libplanet.Net.Tests
 
             int renderCount = 0;
 
-            receiverRenderer.RenderEventHandler += (_, a) => renderCount += a is DumbAction ? 1 : 0;
+            receiverRenderer.RenderEventHandler += (_, a) => renderCount += IsDumbAction(a) ? 1 : 0;
 
             Transaction[] transactions =
             {

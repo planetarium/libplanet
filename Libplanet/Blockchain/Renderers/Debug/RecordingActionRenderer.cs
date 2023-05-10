@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Serilog;
@@ -45,7 +46,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         internal IReadOnlyList<RenderRecord<T>.BlockEvent> BlockRecords =>
             Records.OfType<RenderRecord<T>.BlockEvent>().ToImmutableArray();
 
-        internal EventHandler<IAction>? RenderEventHandler { get; set; }
+        internal EventHandler<IValue>? RenderEventHandler { get; set; }
 
         /// <summary>
         /// Empties the render event <see cref="Records"/>.
@@ -59,7 +60,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderAction"/>
         public virtual void RenderAction(
-            IAction action,
+            IValue action,
             IActionContext context,
             IAccountStateDelta nextStates
         )
@@ -79,7 +80,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
         /// <inheritdoc cref="IActionRenderer{T}.RenderActionError"/>
         public virtual void RenderActionError(
-            IAction action,
+            IValue action,
             IActionContext context,
             Exception exception
         ) =>

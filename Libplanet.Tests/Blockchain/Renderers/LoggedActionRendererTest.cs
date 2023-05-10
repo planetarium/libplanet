@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Consensus;
@@ -17,7 +18,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class LoggedActionRendererTest : IDisposable
     {
-        private static IAction _action = new DumbAction();
+        private static IValue _action = new DumbAction().PlainValue;
 
         private static IAccountStateDelta _stateDelta =
             new AccountStateDeltaImpl(
@@ -80,7 +81,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             IActionRenderer<DumbAction> actionRenderer;
             if (error)
             {
-                Action<IAction, IActionContext, Exception> render = (action, cxt, e) =>
+                Action<IValue, IActionContext, Exception> render = (action, cxt, e) =>
                 {
                     LogEvent[] logs = LogEvents.ToArray();
                     Assert.Single(logs);
@@ -101,7 +102,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
             else
             {
-                Action<IAction, IActionContext, IAccountStateDelta> render = (action, cxt, next) =>
+                Action<IValue, IActionContext, IAccountStateDelta> render = (action, cxt, next) =>
                 {
                     LogEvent[] logs = LogEvents.ToArray();
                     Assert.Single(logs);
@@ -175,10 +176,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             string methodName =
                 "Render" + "Action" + (error ? "Error" : string.Empty);
             Assert.Equal($"\"{methodName}\"", firstLog.Properties["MethodName"].ToString());
-            Assert.Equal(
-                $"\"{typeof(DumbAction).FullName}\"",
-                firstLog.Properties["ActionType"].ToString()
-            );
             Assert.Equal(
                 actionContext.BlockIndex.ToString(CultureInfo.InvariantCulture),
                 firstLog.Properties["BlockIndex"].ToString()

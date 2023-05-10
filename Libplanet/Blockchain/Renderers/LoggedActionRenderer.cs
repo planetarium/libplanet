@@ -1,4 +1,5 @@
 using System;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Serilog;
@@ -69,9 +70,9 @@ namespace Libplanet.Blockchain.Renderers
             );
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IAction, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer{T}.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(
-            IAction action,
+            IValue action,
             IActionContext context,
             IAccountStateDelta nextStates
         ) =>
@@ -83,9 +84,9 @@ namespace Libplanet.Blockchain.Renderers
             );
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IAction, IActionContext, Exception)"/>
+        /// cref="IActionRenderer{T}.RenderActionError(IValue, IActionContext, Exception)"/>
         public void RenderActionError(
-            IAction action,
+            IValue action,
             IActionContext context,
             Exception exception
         ) =>
@@ -98,7 +99,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void LogActionRendering(
             string methodName,
-            IAction action,
+            IValue action,
             IActionContext context,
             System.Action callback
         )
