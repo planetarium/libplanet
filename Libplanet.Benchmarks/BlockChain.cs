@@ -40,9 +40,6 @@ namespace Libplanet.Benchmarks
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
-                    trieGetter: hash => _fx.StateStore.GetStateRoot(
-                        _fx.Store.GetBlockDigest(hash)?.StateRootHash
-                    ),
                     genesisHash: _fx.GenesisBlock.Hash,
                     nativeTokenPredicate: _ => false,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),

@@ -146,8 +146,6 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        trieGetter: hash => fx.StateStore.GetStateRoot(
-                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
                         genesisHash: genesis.Hash,
                         nativeTokenPredicate: policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
@@ -172,8 +170,6 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        trieGetter: hash => fx.StateStore.GetStateRoot(
-                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
                         genesisHash: fx.GenesisBlock.Hash,
                         nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
@@ -334,8 +330,6 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        trieGetter: hash => fx.StateStore.GetStateRoot(
-                            fx.Store.GetBlockDigest(hash)?.StateRootHash),
                         genesisHash: fx.GenesisBlock.Hash,
                         nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),

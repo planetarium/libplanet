@@ -90,9 +90,6 @@ namespace Libplanet.Tests.Fixtures
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(Store, StateStore),
-                    trieGetter: hash => StateStore.GetStateRoot(
-                        Store.GetBlockDigest(hash)?.StateRootHash
-                    ),
                     genesisHash: Genesis.Hash,
                     nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),

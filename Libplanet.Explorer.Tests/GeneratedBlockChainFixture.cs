@@ -109,9 +109,6 @@ public class GeneratedBlockChainFixture
             new ActionEvaluator(
                 policyBlockActionGetter: _ => policy.BlockAction,
                 blockChainStates: new BlockChainStates(store, stateStore),
-                trieGetter: hash => stateStore.GetStateRoot(
-                    store.GetBlockDigest(hash)?.StateRootHash
-                ),
                 genesisHash: genesisBlock.Hash,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 actionTypeLoader: StaticActionLoader.Create<SimpleAction>(),

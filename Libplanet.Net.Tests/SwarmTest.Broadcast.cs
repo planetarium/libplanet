@@ -474,9 +474,6 @@ namespace Libplanet.Net.Tests
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fxs[i].Store, fxs[i].StateStore),
-                        trieGetter: hash => fxs[i].StateStore.GetStateRoot(
-                            fxs[i].Store.GetBlockDigest(hash)?.StateRootHash
-                        ),
                         genesisHash: fxs[i].GenesisBlock.Hash,
                         nativeTokenPredicate: _ => false,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),

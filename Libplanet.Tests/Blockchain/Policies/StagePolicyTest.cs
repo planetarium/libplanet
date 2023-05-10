@@ -32,8 +32,6 @@ namespace Libplanet.Tests.Blockchain.Policies
                 new ActionEvaluator(
                     _ => _policy.BlockAction,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
-                    trieGetter: hash => _fx.StateStore.GetStateRoot(
-                        _fx.Store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: _fx.GenesisBlock.Hash,
                     nativeTokenPredicate: _policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),

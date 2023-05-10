@@ -67,9 +67,6 @@ namespace Libplanet.Net.Tests.Consensus
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => TestUtils.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(stores[i], stateStore),
-                        trieGetter: hash => stateStore.GetStateRoot(
-                            stores[i].GetBlockDigest(hash)?.StateRootHash
-                        ),
                         genesisHash: fx.GenesisBlock.Hash,
                         nativeTokenPredicate: _ => false,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),

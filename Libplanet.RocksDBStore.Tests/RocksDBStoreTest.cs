@@ -86,9 +86,6 @@ namespace Libplanet.RocksDBStore.Tests
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => null,
                         blockChainStates: new BlockChainStates(store, stateStore),
-                        trieGetter: hash => stateStore.GetStateRoot(
-                            store.GetBlockDigest(hash)?.StateRootHash
-                        ),
                         genesisHash: Fx.GenesisBlock.Hash,
                         nativeTokenPredicate: _ => false,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
