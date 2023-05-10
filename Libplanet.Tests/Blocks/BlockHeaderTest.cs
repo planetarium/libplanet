@@ -4,7 +4,6 @@ using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
-using FxAction = Libplanet.Action.PolymorphicAction<Libplanet.Tests.Common.Action.BaseAction>;
 
 namespace Libplanet.Tests.Blocks
 {

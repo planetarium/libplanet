@@ -1,41 +1,52 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Action.Sys;
+using Libplanet.Blockchain;
 
 namespace Libplanet.Action
 {
     /// <summary>
-    /// An <see cref="IActionLoader"/> implementation to load action types
-    /// without branching by block index.
+    /// An <see cref="IActionLoader"/> implementation for a single <see cref="IAction"/> type.
     /// </summary>
     public class StaticActionLoader : IActionLoader
     {
-        private readonly Type? _baseType;
-        private readonly ImmutableHashSet<Assembly> _assembliesSet;
-
-        private IDictionary<IValue, Type>? _types;
+        private Type _type;
 
         /// <summary>
         /// Creates a new <see cref="StaticActionLoader"/> instance.
+        /// The <see cref="IAction"/> type to load is restricted to given type
+        /// <paramref name="type"/>, except for those handled by <see cref="Registry"/>
+        /// for system <see cref="IAction"/>s.
         /// </summary>
-        /// <param name="assemblies">The assemblies to load actions from.</param>
-        /// <param name="baseType">The base type of actions to load.</param>
-        public StaticActionLoader(IEnumerable<Assembly> assemblies, Type? baseType = null)
+        /// <param name="type">The type of <see cref="IAction"/> to load.  It should match
+        /// the <see cref="BlockChain{T}"/>'s type parameter.</param>
+        /// <exception cref="ArgumentException">Thrown when given type <paramref name="type"/>
+        /// is not a <see langword="class"/> or cannot be assigned to <see cref="IAction"/>.
+        /// </exception>
+        private StaticActionLoader(Type type)
         {
-            _baseType = baseType;
-            _assembliesSet = assemblies.ToImmutableHashSet();
-            _types = null;
+            if (!type.IsClass)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(type)} must be a class: {type}", nameof(type));
+            }
+            else if (!typeof(IAction).IsAssignableFrom(type))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(type)} must be assignable to {nameof(IAction)}: {type}",
+                    nameof(type));
+            }
+
+            _type = type;
         }
 
-        internal Type? BaseType => _baseType;
+        public Type Type => _type;
 
-        public IDictionary<IValue, Type> Load(long index) => Load();
-
-        public IEnumerable<Type> LoadAllActionTypes(long index)
-            => LoadAllActionTypesImpl(_assembliesSet);
+        public static StaticActionLoader Create<T>()
+            where T : IAction
+        {
+            return new StaticActionLoader(typeof(T));
+        }
 
         /// <inheritdoc cref="IActionLoader.LoadAction"/>.
         public IAction LoadAction(long index, IValue value)
@@ -47,27 +58,8 @@ namespace Libplanet.Action
                     return Registry.Deserialize(value);
                 }
 
-                IAction action;
-                var types = Load(index);
-                if (value is Dictionary pv &&
-                    pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
-                    rawTypeId is Text typeId &&
-                    types.TryGetValue(typeId, out Type? actionType))
-                {
-                    action = (IAction)Activator.CreateInstance(actionType)!;
-                    action.LoadPlainValue(pv["values"]);
-                }
-                else if (BaseType is { } baseActionType)
-                {
-                    action = (IAction)Activator.CreateInstance(baseActionType)!;
-                    action.LoadPlainValue(value);
-                }
-                else
-                {
-                    throw new InvalidOperationException(
-                        $"Failed to instantiate an action from {value} for index {index}");
-                }
-
+                IAction action = (IAction)Activator.CreateInstance(_type)!;
+                action.LoadPlainValue(value);
                 return action;
             }
             catch (Exception e)
@@ -77,70 +69,6 @@ namespace Libplanet.Action
                     value,
                     e);
             }
-        }
-
-        internal static StaticActionLoader Create<T>()
-            where T : IAction, new()
-        {
-            return new StaticActionLoader(
-                Assembly.GetEntryAssembly() is Assembly entryAssembly
-                    ? new[] { typeof(T).Assembly, entryAssembly }
-                    : new[] { typeof(T).Assembly },
-                typeof(T)
-            );
-        }
-
-        internal IDictionary<IValue, Type> Load() =>
-            _types ??= LoadImpl(_assembliesSet, _baseType);
-
-        private static IEnumerable<Type> LoadAllActionTypesImpl(IEnumerable<Assembly> assembliesSet)
-        {
-            var actionType = typeof(IAction);
-            foreach (Assembly asm in assembliesSet)
-            {
-                foreach (Type t in asm.GetTypes())
-                {
-                    if (actionType.IsAssignableFrom(t))
-                    {
-                        yield return t;
-                    }
-                }
-            }
-        }
-
-        private static IDictionary<IValue, Type> LoadImpl(
-            IEnumerable<Assembly> assembliesSet, Type? baseType = null)
-        {
-            var types = new Dictionary<IValue, Type>();
-            var actionType = typeof(IAction);
-            foreach (Type t in LoadAllActionTypesImpl(assembliesSet))
-            {
-                if (baseType is { } bt && !bt.IsAssignableFrom(t))
-                {
-                    continue;
-                }
-
-                if (ActionTypeAttribute.ValueOf(t) is IValue actionId)
-                {
-                    if (types.TryGetValue(actionId, out Type? existing))
-                    {
-                        if (existing != t)
-                        {
-                            throw new DuplicateActionTypeIdentifierException(
-                                "Multiple action types are associated with the same type ID.",
-                                actionId.ToString() ?? "null",
-                                ImmutableHashSet.Create(existing, t)
-                            );
-                        }
-
-                        continue;
-                    }
-
-                    types[actionId] = t;
-                }
-            }
-
-            return types;
         }
     }
 }

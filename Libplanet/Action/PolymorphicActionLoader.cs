@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using Bencodex.Types;
-using Libplanet.Action.Sys;
 
 namespace Libplanet.Action
 {
     /// <summary>
-    /// An <see cref="IActionLoader"/> implementation to load action types
-    /// without branching by block index.
+    /// An <see cref="IActionLoader"/> implementation internally used by
+    /// <see cref="PolymorphicAction{T}"/>.
     /// </summary>
-    public class PolymorphicActionLoader : IActionLoader
+    internal class PolymorphicActionLoader : IActionLoader
     {
         private readonly Type _baseType;
 
@@ -38,11 +37,6 @@ namespace Libplanet.Action
         {
             try
             {
-                if (Registry.IsSystemAction(value))
-                {
-                    return Registry.Deserialize(value);
-                }
-
                 IAction action;
                 if (value is Dictionary pv &&
                     pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
@@ -51,11 +45,6 @@ namespace Libplanet.Action
                 {
                     action = (IAction)Activator.CreateInstance(actionType)!;
                     action.LoadPlainValue(pv["values"]);
-                }
-                else if (BaseType is { } baseActionType)
-                {
-                    action = (IAction)Activator.CreateInstance(baseActionType)!;
-                    action.LoadPlainValue(value);
                 }
                 else
                 {
@@ -101,8 +90,7 @@ namespace Libplanet.Action
                             throw new DuplicateActionTypeIdentifierException(
                                 "Multiple action types are associated with the same type ID.",
                                 typeId.ToString() ?? "null",
-                                ImmutableHashSet.Create(existing, t)
-                            );
+                                ImmutableHashSet.Create(existing, t));
                         }
 
                         continue;
