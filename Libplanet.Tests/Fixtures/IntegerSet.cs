@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -90,7 +91,7 @@ namespace Libplanet.Tests.Fixtures
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(Store, StateStore),
                     genesisHash: Genesis.Hash,
-                    actionTypeLoader: new StaticActionLoader(typeof(Arithmetic)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(Arithmetic)),
                     feeCalculator: null
                 ),
                 renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }

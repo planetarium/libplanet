@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -476,7 +477,7 @@ namespace Libplanet.Net.Tests
                         policyBlockActionGetter: _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fxs[i].Store, fxs[i].StateStore),
                         genesisHash: fxs[i].GenesisBlock.Hash,
-                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                        actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

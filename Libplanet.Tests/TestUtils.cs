@@ -17,6 +17,7 @@ using Bencodex.Types;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -635,7 +636,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: new StaticActionLoader(typeof(T)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(T)),
                     feeCalculator: null
             );
 #pragma warning disable S1121

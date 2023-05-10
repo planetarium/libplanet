@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -139,7 +140,7 @@ namespace Libplanet.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: new StaticActionLoader(typeof(T)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(T)),
                     feeCalculator: null
                 )
             )

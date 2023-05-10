@@ -156,7 +156,7 @@ namespace Libplanet.Action
 
         static PolymorphicAction()
         {
-            _innerActionLoader = PolymorphicActionLoader.Create<T>();
+            _innerActionLoader = new PolymorphicActionLoader(typeof(T));
             _types = _innerActionLoader.Types;
         }
 

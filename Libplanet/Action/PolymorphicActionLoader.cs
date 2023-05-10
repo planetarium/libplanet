@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using Bencodex.Types;
+using Libplanet.Action.Loader;
 
 namespace Libplanet.Action
 {
@@ -10,6 +11,10 @@ namespace Libplanet.Action
     /// An <see cref="IActionLoader"/> implementation internally used by
     /// <see cref="PolymorphicAction{T}"/>.
     /// </summary>
+    /// <remarks>
+    /// This does not necessarily has to be an <see cref="IActionLoader"/>.
+    /// This will be deprecated and removed soon together with <see cref="PolymorphicAction{T}"/>.
+    /// </remarks>
     internal class PolymorphicActionLoader : IActionLoader
     {
         private readonly Type _baseType;
@@ -19,13 +24,12 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="PolymorphicActionLoader"/> instance.
         /// </summary>
-        /// <param name="assemblies">The assemblies to load actions from.</param>
         /// <param name="baseType">The base type of actions to load.  This corresponds to
         /// the type parameter of <see cref="PolymorphicAction{T}"/>.</param>
-        private PolymorphicActionLoader(IEnumerable<Assembly> assemblies, Type baseType)
+        public PolymorphicActionLoader(Type baseType)
         {
             _baseType = baseType;
-            _types = LoadTypes(assemblies.ToImmutableHashSet(), _baseType);
+            _types = LoadTypes(baseType.Assembly, _baseType);
         }
 
         internal Type BaseType => _baseType;
@@ -63,18 +67,12 @@ namespace Libplanet.Action
             }
         }
 
-        internal static PolymorphicActionLoader Create<T>()
-            where T : IAction
-        {
-            return new PolymorphicActionLoader(new[] { typeof(T).Assembly }, typeof(T));
-        }
-
         private static IDictionary<IValue, Type> LoadTypes(
-            IEnumerable<Assembly> assembliesSet, Type baseType)
+            Assembly assembly, Type baseType)
         {
             var types = new Dictionary<IValue, Type>();
             var actionType = typeof(IAction);
-            foreach (Type t in LoadAllActionTypes(assembliesSet))
+            foreach (Type t in LoadAllActionTypes(assembly))
             {
                 if (!baseType.IsAssignableFrom(t))
                 {
@@ -103,17 +101,14 @@ namespace Libplanet.Action
             return types;
         }
 
-        private static IEnumerable<Type> LoadAllActionTypes(IEnumerable<Assembly> assembliesSet)
+        private static IEnumerable<Type> LoadAllActionTypes(Assembly assembly)
         {
             var actionType = typeof(IAction);
-            foreach (Assembly asm in assembliesSet)
+            foreach (Type t in assembly.GetTypes())
             {
-                foreach (Type t in asm.GetTypes())
+                if (actionType.IsAssignableFrom(t))
                 {
-                    if (actionType.IsAssignableFrom(t))
-                    {
-                        yield return t;
-                    }
+                    yield return t;
                 }
             }
         }

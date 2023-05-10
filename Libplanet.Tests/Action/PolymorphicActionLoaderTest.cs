@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Create()
         {
-            var loader = PolymorphicActionLoader.Create<BaseAction>();
+            var loader = new PolymorphicActionLoader(typeof(BaseAction));
             Assert.Equal(
                 new Dictionary<IValue, Type>
                 {
@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Action
                 },
                 loader.Types);
 
-            loader = PolymorphicActionLoader.Create<Attack>();
+            loader = new PolymorphicActionLoader(typeof(Attack));
             Assert.Equal(
                 new Dictionary<IValue, Type> { [new Text("attack")] = typeof(Attack) },
                 loader.Types);
@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void LoadAction()
         {
-            var loader = PolymorphicActionLoader.Create<Attack>();
+            var loader = new PolymorphicActionLoader(typeof(Attack));
 
             var plainValue = Dictionary.Empty
                 .Add("type_id", "attack")

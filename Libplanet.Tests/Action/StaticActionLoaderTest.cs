@@ -1,5 +1,6 @@
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 
@@ -10,16 +11,16 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Create()
         {
-            var loader = new StaticActionLoader(typeof(Attack));
+            var loader = new SimpleActionLoader(typeof(Attack));
             Assert.Equal(typeof(Attack), loader.Type);
-            loader = new StaticActionLoader(typeof(BaseAction));
+            loader = new SimpleActionLoader(typeof(BaseAction));
             Assert.Equal(typeof(BaseAction), loader.Type);
         }
 
         [Fact]
         public void LoadAction()
         {
-            var actionTypeLoader = new StaticActionLoader(typeof(Attack));
+            var actionTypeLoader = new SimpleActionLoader(typeof(Attack));
 
             var plainValue = Dictionary.Empty
                 .Add("weapon", "foo")

@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -95,7 +96,7 @@ namespace Libplanet.Tests.Action
                     policyBlockActionGetter: _ => null,
                     blockChainStates: NullChainStates.Instance,
                     genesisHash: null,
-                    actionTypeLoader: new StaticActionLoader(typeof(RandomAction)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(RandomAction)),
                     feeCalculator: null
                 );
             var generatedRandomNumbers = new List<int>();
@@ -294,7 +295,7 @@ namespace Libplanet.Tests.Action
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: null,
-                actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                 feeCalculator: null);
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
@@ -592,7 +593,7 @@ namespace Libplanet.Tests.Action
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: tx.GenesisHash,
-                actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                 feeCalculator: null
             );
 
@@ -707,7 +708,7 @@ namespace Libplanet.Tests.Action
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: tx.GenesisHash,
-                actionTypeLoader: new StaticActionLoader(typeof(ThrowException)),
+                actionTypeLoader: new SimpleActionLoader(typeof(ThrowException)),
                 feeCalculator: null
             );
             var block = new BlockContent(

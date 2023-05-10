@@ -1,6 +1,6 @@
 using Bencodex.Types;
 
-namespace Libplanet.Action
+namespace Libplanet.Action.Loader
 {
     /// <summary>
     /// An interface to load actions branched by block index.

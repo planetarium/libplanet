@@ -1,5 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -30,7 +31,7 @@ namespace Libplanet.Benchmarks
                     policyBlockActionGetter: _ => null,
                     blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                     genesisHash: fx.GenesisBlock.Hash,
-                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );

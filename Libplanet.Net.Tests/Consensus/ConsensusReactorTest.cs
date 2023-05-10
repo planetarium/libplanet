@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Net.Consensus;
@@ -68,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus
                         policyBlockActionGetter: _ => TestUtils.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(stores[i], stateStore),
                         genesisHash: fx.GenesisBlock.Hash,
-                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                        actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

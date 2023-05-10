@@ -5,10 +5,10 @@ using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Action.Sys;
 
-namespace Libplanet.Action
+namespace Libplanet.Action.Loader
 {
     /// <summary>
-    /// An <see cref="IActionLoader"/> implementation for a single <see cref="IAction"/> type.
+    /// An <see cref="IActionLoader"/> implementation for multiple <see cref="IAction"/> types.
     /// </summary>
     public class TypedActionLoader : IActionLoader
     {

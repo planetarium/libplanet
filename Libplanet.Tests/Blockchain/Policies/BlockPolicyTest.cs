@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -45,7 +46,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     _ => _policy.BlockAction,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
                     genesisHash: _fx.GenesisBlock.Hash,
-                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );

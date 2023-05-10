@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -196,7 +197,7 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
+                    actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );
