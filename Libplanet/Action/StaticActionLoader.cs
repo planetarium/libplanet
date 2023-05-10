@@ -23,7 +23,7 @@ namespace Libplanet.Action
         /// <exception cref="ArgumentException">Thrown when given type <paramref name="type"/>
         /// is not a <see langword="class"/> or cannot be assigned to <see cref="IAction"/>.
         /// </exception>
-        private StaticActionLoader(Type type)
+        public StaticActionLoader(Type type)
         {
             if (!type.IsClass)
             {
@@ -41,12 +41,6 @@ namespace Libplanet.Action
         }
 
         public Type Type => _type;
-
-        public static StaticActionLoader Create<T>()
-            where T : IAction
-        {
-            return new StaticActionLoader(typeof(T));
-        }
 
         /// <inheritdoc cref="IActionLoader.LoadAction"/>.
         public IAction LoadAction(long index, IValue value)

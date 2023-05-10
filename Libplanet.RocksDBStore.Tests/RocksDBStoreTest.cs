@@ -87,7 +87,7 @@ namespace Libplanet.RocksDBStore.Tests
                         policyBlockActionGetter: _ => null,
                         blockChainStates: new BlockChainStates(store, stateStore),
                         genesisHash: Fx.GenesisBlock.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

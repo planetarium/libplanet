@@ -139,7 +139,7 @@ namespace Libplanet.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<T>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(T)),
                     feeCalculator: null
                 )
             )

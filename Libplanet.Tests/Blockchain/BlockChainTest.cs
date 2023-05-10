@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Blockchain
                     _ => _policy.BlockAction,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
                     genesisHash: _fx.GenesisBlock.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 ),
                 renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
@@ -596,7 +596,7 @@ namespace Libplanet.Tests.Blockchain
                         _ => _policy.BlockAction,
                         blockChainStates: new BlockChainStates(store, stateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     ),
                     renderers: new[] { renderer }
@@ -1001,7 +1001,7 @@ namespace Libplanet.Tests.Blockchain
                         _ => _policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx2.Store, fx2.StateStore),
                         genesisHash: genesis2.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );
@@ -1069,7 +1069,7 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisWithTx.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );
@@ -1279,7 +1279,7 @@ namespace Libplanet.Tests.Blockchain
                         _ => _blockChain.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(emptyFx.Store, emptyFx.StateStore),
                         genesisHash: emptyFx.GenesisBlock.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );
@@ -1293,7 +1293,7 @@ namespace Libplanet.Tests.Blockchain
                         _ => _blockChain.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(forkFx.Store, forkFx.StateStore),
                         genesisHash: forkFx.GenesisBlock.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );
@@ -1649,7 +1649,7 @@ namespace Libplanet.Tests.Blockchain
                 _ => blockPolicy.BlockAction,
                 blockChainStates: chainStates,
                 genesisHash: genesisBlock.Hash,
-                actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                 feeCalculator: null
             );
             var chain = BlockChain<DumbAction>.Create(
@@ -1922,7 +1922,7 @@ namespace Libplanet.Tests.Blockchain
                         storeFixture.StateStore
                     ),
                     genesisHash: storeFixture.GenesisBlock.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );
@@ -1964,7 +1964,7 @@ namespace Libplanet.Tests.Blockchain
                     _ => _blockChain.Policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisBlockA.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );
@@ -2046,7 +2046,7 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisWithTx.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );
@@ -2113,7 +2113,7 @@ namespace Libplanet.Tests.Blockchain
                         storeFixture.Store,
                         storeFixture.StateStore),
                     genesisHash: genesis.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<SetValidator>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );

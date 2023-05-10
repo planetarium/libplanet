@@ -108,7 +108,7 @@ public class GeneratedBlockChainFixture
                 policyBlockActionGetter: _ => policy.BlockAction,
                 blockChainStates: new BlockChainStates(store, stateStore),
                 genesisHash: genesisBlock.Hash,
-                actionTypeLoader: StaticActionLoader.Create<SimpleAction>(),
+                actionTypeLoader: new StaticActionLoader(typeof(SimpleAction)),
                 feeCalculator: null
             )
         );

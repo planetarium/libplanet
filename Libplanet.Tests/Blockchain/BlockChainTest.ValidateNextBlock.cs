@@ -196,7 +196,7 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    actionTypeLoader: new StaticActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );

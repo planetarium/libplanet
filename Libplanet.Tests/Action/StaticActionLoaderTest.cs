@@ -10,16 +10,16 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Create()
         {
-            var loader = StaticActionLoader.Create<Attack>();
+            var loader = new StaticActionLoader(typeof(Attack));
             Assert.Equal(typeof(Attack), loader.Type);
-            loader = StaticActionLoader.Create<BaseAction>();
+            loader = new StaticActionLoader(typeof(BaseAction));
             Assert.Equal(typeof(BaseAction), loader.Type);
         }
 
         [Fact]
         public void LoadAction()
         {
-            var actionTypeLoader = StaticActionLoader.Create<Attack>();
+            var actionTypeLoader = new StaticActionLoader(typeof(Attack));
 
             var plainValue = Dictionary.Empty
                 .Add("weapon", "foo")
