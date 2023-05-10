@@ -21,6 +21,8 @@ To be released.
        `RenderActionError(IAction, IActionContext, Exception)`
         method was changed to
         `RenderActionError(IValue, IActionContext, Exception)`.
+ -  Removed `trieGetter` parameter from `ActionEvaluator` constructor.  [[#3149]]
+ -  Added `IBlockChainStates.GetTrie()` interface method.  [[#3149]]
 
 ### Backward-incompatible network protocol changes
 
