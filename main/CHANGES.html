@@ -68,6 +68,18 @@
 <ul>
 <li>Removed type parameter <code>T</code> from <code>Transaction.Create&lt;T&gt;()</code> and
 <code>PreEvaluationBlock.Evaluate&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3122">#3122</a>]</li>
+<li>Signatures of <code>IActionRenderer&lt;T&gt;</code>'s methods was changed.  [<a href="https://github.com/planetarium/libplanet/pull/3117">#3117</a>]
+<ul>
+<li>The signature of
+<code>RenderAction(IAction, IActionContext, IAccountStateDelta)</code>
+method was changed to
+<code>RenderAction(IValue, IActionContext, IAccountStateDelta)</code>.</li>
+<li>The signature of
+<code>RenderActionError(IAction, IActionContext, Exception)</code>
+method was changed to
+<code>RenderActionError(IValue, IActionContext, Exception)</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

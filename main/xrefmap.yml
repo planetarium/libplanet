@@ -5049,14 +5049,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).BlockEndRenderer
   nameWithType: AnonymousActionRenderer<T>.BlockEndRenderer
   nameWithType.vb: AnonymousActionRenderer(Of T).BlockEndRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: RenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: AnonymousActionRenderer<T>.RenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: AnonymousActionRenderer(Of T).RenderAction(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: AnonymousActionRenderer<T>.RenderAction(IValue, IActionContext, IAccountStateDelta)
+  nameWithType.vb: AnonymousActionRenderer(Of T).RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_RenderAction_
@@ -5066,14 +5066,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).RenderAction
   nameWithType: AnonymousActionRenderer<T>.RenderAction
   nameWithType.vb: AnonymousActionRenderer(Of T).RenderAction
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: AnonymousActionRenderer<T>.RenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: AnonymousActionRenderer(Of T).RenderActionError(IAction, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  name: RenderActionError(IValue, IActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer<T>.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer(Of T).RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  nameWithType: AnonymousActionRenderer<T>.RenderActionError(IValue, IActionContext, Exception)
+  nameWithType.vb: AnonymousActionRenderer(Of T).RenderActionError(IValue, IActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer`1.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_1_RenderActionError_
@@ -5187,14 +5187,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).ActionRenderer
   nameWithType: AtomicActionRenderer<T>.ActionRenderer
   nameWithType.vb: AtomicActionRenderer(Of T).ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: RenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: AtomicActionRenderer<T>.RenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: AtomicActionRenderer(Of T).RenderAction(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: AtomicActionRenderer<T>.RenderAction(IValue, IActionContext, IAccountStateDelta)
+  nameWithType.vb: AtomicActionRenderer(Of T).RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderAction_
@@ -5204,14 +5204,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderAction
   nameWithType: AtomicActionRenderer<T>.RenderAction
   nameWithType.vb: AtomicActionRenderer(Of T).RenderAction
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: AtomicActionRenderer<T>.RenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: AtomicActionRenderer(Of T).RenderActionError(IAction, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  name: RenderActionError(IValue, IActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer<T>.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer(Of T).RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  nameWithType: AtomicActionRenderer<T>.RenderActionError(IValue, IActionContext, Exception)
+  nameWithType.vb: AtomicActionRenderer(Of T).RenderActionError(IValue, IActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer`1.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_1_RenderActionError_
@@ -5365,14 +5365,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).Records
   nameWithType: RecordingActionRenderer<T>.Records
   nameWithType.vb: RecordingActionRenderer(Of T).Records
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: RenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: RecordingActionRenderer<T>.RenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: RecordingActionRenderer(Of T).RenderAction(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: RecordingActionRenderer<T>.RenderAction(IValue, IActionContext, IAccountStateDelta)
+  nameWithType.vb: RecordingActionRenderer(Of T).RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderAction_
@@ -5382,14 +5382,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderAction
   nameWithType: RecordingActionRenderer<T>.RenderAction
   nameWithType.vb: RecordingActionRenderer(Of T).RenderAction
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: RecordingActionRenderer<T>.RenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: RecordingActionRenderer(Of T).RenderActionError(IAction, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  name: RenderActionError(IValue, IActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer<T>.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer(Of T).RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  nameWithType: RecordingActionRenderer<T>.RenderActionError(IValue, IActionContext, Exception)
+  nameWithType.vb: RecordingActionRenderer(Of T).RenderActionError(IValue, IActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer`1.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_1_RenderActionError_
@@ -5485,14 +5485,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionBase
   nameWithType: RenderRecord<T>.ActionBase
   nameWithType.vb: RenderRecord(Of T).ActionBase
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionBase.#ctor(System.Int64,System.String,Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Boolean)
-  name: ActionBase(Int64, String, IAction, IActionContext, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionBase.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionBase__ctor_System_Int64_System_String_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionBase.#ctor(System.Int64,System.String,Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.ActionBase.ActionBase(System.Int64, System.String, Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionBase.ActionBase(System.Int64, System.String, Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Boolean)
-  nameWithType: RenderRecord<T>.ActionBase.ActionBase(Int64, String, IAction, IActionContext, Boolean)
-  nameWithType.vb: RenderRecord(Of T).ActionBase.ActionBase(Int64, String, IAction, IActionContext, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionBase.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Boolean)
+  name: ActionBase(Int64, String, IValue, IActionContext, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionBase.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionBase__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionBase.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.ActionBase.ActionBase(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionBase.ActionBase(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Boolean)
+  nameWithType: RenderRecord<T>.ActionBase.ActionBase(Int64, String, IValue, IActionContext, Boolean)
+  nameWithType.vb: RenderRecord(Of T).ActionBase.ActionBase(Int64, String, IValue, IActionContext, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionBase.#ctor*
   name: ActionBase
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionBase.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionBase__ctor_
@@ -5596,14 +5596,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionError
   nameWithType: RenderRecord<T>.ActionError
   nameWithType.vb: RenderRecord(Of T).ActionError
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionError.#ctor(System.Int64,System.String,Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception,System.Boolean)
-  name: ActionError(Int64, String, IAction, IActionContext, Exception, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionError.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionError__ctor_System_Int64_System_String_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionError.#ctor(System.Int64,System.String,Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.ActionError.ActionError(System.Int64, System.String, Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionError.ActionError(System.Int64, System.String, Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception, System.Boolean)
-  nameWithType: RenderRecord<T>.ActionError.ActionError(Int64, String, IAction, IActionContext, Exception, Boolean)
-  nameWithType.vb: RenderRecord(Of T).ActionError.ActionError(Int64, String, IAction, IActionContext, Exception, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionError.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception,System.Boolean)
+  name: ActionError(Int64, String, IValue, IActionContext, Exception, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionError.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionError__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionError.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.ActionError.ActionError(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionError.ActionError(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception, System.Boolean)
+  nameWithType: RenderRecord<T>.ActionError.ActionError(Int64, String, IValue, IActionContext, Exception, Boolean)
+  nameWithType.vb: RenderRecord(Of T).ActionError.ActionError(Int64, String, IValue, IActionContext, Exception, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionError.#ctor*
   name: ActionError
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionError.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionError__ctor_
@@ -5656,14 +5656,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionSuccess
   nameWithType: RenderRecord<T>.ActionSuccess
   nameWithType.vb: RenderRecord(Of T).ActionSuccess
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionSuccess.#ctor(System.Int64,System.String,Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Boolean)
-  name: ActionSuccess(Int64, String, IAction, IActionContext, IAccountStateDelta, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionSuccess__ctor_System_Int64_System_String_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionSuccess.#ctor(System.Int64,System.String,Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.ActionSuccess.ActionSuccess(System.Int64, System.String, Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionSuccess.ActionSuccess(System.Int64, System.String, Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Boolean)
-  nameWithType: RenderRecord<T>.ActionSuccess.ActionSuccess(Int64, String, IAction, IActionContext, IAccountStateDelta, Boolean)
-  nameWithType.vb: RenderRecord(Of T).ActionSuccess.ActionSuccess(Int64, String, IAction, IActionContext, IAccountStateDelta, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Boolean)
+  name: ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord<T>.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord(Of T).ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Boolean)
+  nameWithType: RenderRecord<T>.ActionSuccess.ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
+  nameWithType.vb: RenderRecord(Of T).ActionSuccess.ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord`1.ActionSuccess.#ctor*
   name: ActionSuccess
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord-1.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_1_ActionSuccess__ctor_
@@ -5956,14 +5956,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).BlockChain
   nameWithType: ValidatingActionRenderer<T>.BlockChain
   nameWithType.vb: ValidatingActionRenderer(Of T).BlockChain
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: RenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: ValidatingActionRenderer<T>.RenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: ValidatingActionRenderer(Of T).RenderAction(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: ValidatingActionRenderer<T>.RenderAction(IValue, IActionContext, IAccountStateDelta)
+  nameWithType.vb: ValidatingActionRenderer(Of T).RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderAction_
@@ -5973,14 +5973,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderAction
   nameWithType: ValidatingActionRenderer<T>.RenderAction
   nameWithType.vb: ValidatingActionRenderer(Of T).RenderAction
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: ValidatingActionRenderer<T>.RenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: ValidatingActionRenderer(Of T).RenderActionError(IAction, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  name: RenderActionError(IValue, IActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer<T>.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer(Of T).RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  nameWithType: ValidatingActionRenderer<T>.RenderActionError(IValue, IActionContext, Exception)
+  nameWithType.vb: ValidatingActionRenderer(Of T).RenderActionError(IValue, IActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer`1.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer-1.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_1_RenderActionError_
@@ -6033,14 +6033,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T)
   nameWithType: IActionRenderer<T>
   nameWithType.vb: IActionRenderer(Of T)
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: RenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: IActionRenderer<T>.RenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: IActionRenderer(Of T).RenderAction(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: IActionRenderer<T>.RenderAction(IValue, IActionContext, IAccountStateDelta)
+  nameWithType.vb: IActionRenderer(Of T).RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_
@@ -6050,14 +6050,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).RenderAction
   nameWithType: IActionRenderer<T>.RenderAction
   nameWithType.vb: IActionRenderer(Of T).RenderAction
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: IActionRenderer<T>.RenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: IActionRenderer(Of T).RenderActionError(IAction, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  name: RenderActionError(IValue, IActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.IActionRenderer<T>.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer(Of T).RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  nameWithType: IActionRenderer<T>.RenderActionError(IValue, IActionContext, Exception)
+  nameWithType.vb: IActionRenderer(Of T).RenderActionError(IValue, IActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.IActionRenderer`1.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_
@@ -6154,14 +6154,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).ActionRenderer
   nameWithType: LoggedActionRenderer<T>.ActionRenderer
   nameWithType.vb: LoggedActionRenderer(Of T).ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: RenderAction(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_RenderAction_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderAction(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).RenderAction(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: LoggedActionRenderer<T>.RenderAction(IAction, IActionContext, IAccountStateDelta)
-  nameWithType.vb: LoggedActionRenderer(Of T).RenderAction(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: LoggedActionRenderer<T>.RenderAction(IValue, IActionContext, IAccountStateDelta)
+  nameWithType.vb: LoggedActionRenderer(Of T).RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_RenderAction_
@@ -6171,14 +6171,14 @@ references:
   fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).RenderAction
   nameWithType: LoggedActionRenderer<T>.RenderAction
   nameWithType.vb: LoggedActionRenderer(Of T).RenderAction
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IAction, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_RenderActionError_Libplanet_Action_IAction_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderActionError(Libplanet.Action.IAction,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).RenderActionError(Libplanet.Action.IAction, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: LoggedActionRenderer<T>.RenderActionError(IAction, IActionContext, Exception)
-  nameWithType.vb: LoggedActionRenderer(Of T).RenderActionError(IAction, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  name: RenderActionError(IValue, IActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer<T>.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer(Of T).RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
+  nameWithType: LoggedActionRenderer<T>.RenderActionError(IValue, IActionContext, Exception)
+  nameWithType.vb: LoggedActionRenderer(Of T).RenderActionError(IValue, IActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer`1.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_1_RenderActionError_
