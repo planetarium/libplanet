@@ -278,10 +278,10 @@ namespace Libplanet.Net.Tests.Consensus
                 await Task.CompletedTask;
             }
 
-            Gossip gossip = CreateGossip(_ => { });
-
             ITransport seed = CreateTransport();
             seed.ProcessMessageHandler.Register(ProcessMessage);
+            Gossip gossip = CreateGossip(_ => { }, seeds: new[] { seed.AsPeer });
+
             try
             {
                 _ = seed.StartAsync();
