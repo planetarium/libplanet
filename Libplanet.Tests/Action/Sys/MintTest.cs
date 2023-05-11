@@ -86,6 +86,7 @@ namespace Libplanet.Tests.Action.Sys
                 blockIndex: 123L,
                 previousStates: prevStates,
                 randomSeed: 123,
+                gasLimit: 0,
                 rehearsal: false,
                 previousBlockStatesTrie: null,
                 blockAction: false,

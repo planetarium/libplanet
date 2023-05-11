@@ -22,7 +22,15 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default);
 
         private static IActionContext _actionContext =
-            new ActionContext(default, default, default, default, default, _stateDelta, default);
+            new ActionContext(
+                default,
+                default,
+                default,
+                default,
+                default,
+                _stateDelta,
+                default,
+                0);
 
         private static Exception _exception = new Exception();
 

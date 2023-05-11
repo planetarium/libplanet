@@ -47,6 +47,7 @@ namespace Libplanet.Tests.Action
                         address
                     ),
                     123,
+                    0,
                     false
                 ),
                 new AccountStateDeltaImpl(
