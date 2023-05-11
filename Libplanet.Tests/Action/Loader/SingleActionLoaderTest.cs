@@ -6,23 +6,23 @@ using Xunit;
 
 namespace Libplanet.Tests.Action
 {
-    public class SimpleActionLoaderTest
+    public class SingleActionLoaderTest
     {
         [Fact]
         public void Create()
         {
-            var loader = new SimpleActionLoader(typeof(Attack));
+            var loader = new SingleActionLoader(typeof(Attack));
             Assert.Equal(typeof(Attack), loader.Type);
-            loader = new SimpleActionLoader(typeof(BaseAction));
+            loader = new SingleActionLoader(typeof(BaseAction));
             Assert.Equal(typeof(BaseAction), loader.Type);
-            loader = new SimpleActionLoader(typeof(PolymorphicAction<BaseAction>));
+            loader = new SingleActionLoader(typeof(PolymorphicAction<BaseAction>));
             Assert.Equal(typeof(PolymorphicAction<BaseAction>), loader.Type);
         }
 
         [Fact]
         public void LoadAction()
         {
-            var actionTypeLoader = new SimpleActionLoader(typeof(Attack));
+            var actionTypeLoader = new SingleActionLoader(typeof(Attack));
 
             var plainValue = Dictionary.Empty
                 .Add("weapon", "foo")
@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void HandlePolymorphicAction()
         {
-            var loader = new SimpleActionLoader(typeof(PolymorphicAction<BaseAction>));
+            var loader = new SingleActionLoader(typeof(PolymorphicAction<BaseAction>));
 
             var weapon = "frying pan";
             var target = "mosquito";

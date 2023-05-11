@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Fixtures
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(Store, StateStore),
                     genesisHash: Genesis.Hash,
-                    actionTypeLoader: new SimpleActionLoader(typeof(Arithmetic)),
+                    actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
                     feeCalculator: null
                 ),
                 renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }

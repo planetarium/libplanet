@@ -14,9 +14,9 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Create()
         {
-            var loader1 = new SimpleActionLoader(typeof(DumbAction));
-            var loader2 = new SimpleActionLoader(typeof(Attack));
-            var loader3 = new SimpleActionLoader(typeof(RandomAction));
+            var loader1 = new SingleActionLoader(typeof(DumbAction));
+            var loader2 = new SingleActionLoader(typeof(Attack));
+            var loader3 = new SingleActionLoader(typeof(RandomAction));
 
             // Works fine with single loader
             var indexedLoader = new IndexedActionLoader(
@@ -39,9 +39,9 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void LoadAction()
         {
-            var loader1 = new SimpleActionLoader(typeof(DumbAction));
-            var loader2 = new SimpleActionLoader(typeof(Attack));
-            var loader3 = new SimpleActionLoader(typeof(RandomAction));
+            var loader1 = new SingleActionLoader(typeof(DumbAction));
+            var loader2 = new SingleActionLoader(typeof(Attack));
+            var loader3 = new SingleActionLoader(typeof(RandomAction));
             var action1 = new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo");
             var action2 = new Attack();
             action2.LoadPlainValue(Dictionary.Empty

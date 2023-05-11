@@ -8,12 +8,12 @@ namespace Libplanet.Action.Loader
     /// <summary>
     /// An <see cref="IActionLoader"/> implementation for a single <see cref="IAction"/> type.
     /// </summary>
-    public class SimpleActionLoader : IActionLoader
+    public class SingleActionLoader : IActionLoader
     {
         private Type _type;
 
         /// <summary>
-        /// Creates a new <see cref="SimpleActionLoader"/> instance.
+        /// Creates a new <see cref="SingleActionLoader"/> instance.
         /// The <see cref="IAction"/> type to load is restricted to given type
         /// <paramref name="type"/>, except for those handled by <see cref="Registry"/>
         /// for system <see cref="IAction"/>s.
@@ -23,7 +23,7 @@ namespace Libplanet.Action.Loader
         /// <exception cref="ArgumentException">Thrown when given type <paramref name="type"/>
         /// is not a <see langword="class"/> or cannot be assigned to <see cref="IAction"/>.
         /// </exception>
-        public SimpleActionLoader(Type type)
+        public SingleActionLoader(Type type)
         {
             if (!type.IsClass)
             {

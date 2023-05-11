@@ -140,7 +140,7 @@ namespace Libplanet.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: new SimpleActionLoader(typeof(T)),
+                    actionTypeLoader: new SingleActionLoader(typeof(T)),
                     feeCalculator: null
                 )
             )

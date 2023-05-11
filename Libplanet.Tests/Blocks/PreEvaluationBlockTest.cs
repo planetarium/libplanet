@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Blocks
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );
@@ -123,7 +123,7 @@ namespace Libplanet.Tests.Blocks
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

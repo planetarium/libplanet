@@ -42,7 +42,7 @@ namespace Libplanet.Benchmarks
                     policyBlockActionGetter: _ => null,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
                     genesisHash: _fx.GenesisBlock.Hash,
-                    actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
+                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 )
             );

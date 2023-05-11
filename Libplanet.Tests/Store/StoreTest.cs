@@ -1062,7 +1062,7 @@ namespace Libplanet.Tests.Store
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(s1, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: new SimpleActionLoader(typeof(DumbAction)),
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

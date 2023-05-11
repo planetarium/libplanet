@@ -75,7 +75,7 @@ namespace Libplanet.Blockchain
                 _ => blockAction,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: null,
-                actionTypeLoader: new SimpleActionLoader(typeof(T)),
+                actionTypeLoader: new SingleActionLoader(typeof(T)),
                 feeCalculator: null);
             return actionEvaluator.Evaluate(preEvaluationBlock);
         }

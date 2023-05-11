@@ -636,7 +636,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    actionTypeLoader: new SimpleActionLoader(typeof(T)),
+                    actionTypeLoader: new SingleActionLoader(typeof(T)),
                     feeCalculator: null
             );
 #pragma warning disable S1121
