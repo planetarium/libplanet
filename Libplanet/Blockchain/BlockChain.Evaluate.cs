@@ -7,7 +7,6 @@ using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -26,9 +25,6 @@ namespace Libplanet.Blockchain
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> for which
         /// to determine the state root hash.</param>
         /// <param name="blockAction">The <see cref="IBlockPolicy{T}.BlockAction"/> to use.</param>
-        /// <param name="nativeTokenPredicate">The predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="evaluations">The evaluation result from <see cref="EvaluateGenesis"/>
         /// for <paramref name="preEvaluationBlock"/>.</param>
         /// <returns>The state root hash calculated by committing <paramref name="evaluations"/> to
@@ -42,10 +38,9 @@ namespace Libplanet.Blockchain
         public static HashDigest<SHA256> DetermineGenesisStateRootHash(
             IPreEvaluationBlock preEvaluationBlock,
             IAction blockAction,
-            Predicate<Currency> nativeTokenPredicate,
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
-            evaluations = EvaluateGenesis(preEvaluationBlock, blockAction, nativeTokenPredicate);
+            evaluations = EvaluateGenesis(preEvaluationBlock, blockAction);
             ImmutableDictionary<string, IValue> delta = evaluations.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
@@ -59,19 +54,14 @@ namespace Libplanet.Blockchain
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to
         /// evaluate.</param>
         /// <param name="blockAction">The <see cref="IBlockPolicy{T}.BlockAction"/> to use.</param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="IActionEvaluation"/>s
         /// resulting from evaluating <paramref name="preEvaluationBlock"/> using
-        /// <paramref name="blockAction"/> and <paramref name="nativeTokenPredicate"/>.</returns>
+        /// <paramref name="blockAction"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="preEvaluationBlock"/>s
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         [Pure]
         public static IReadOnlyList<IActionEvaluation> EvaluateGenesis(
-            IPreEvaluationBlock preEvaluationBlock,
-            IAction blockAction,
-            Predicate<Currency> nativeTokenPredicate)
+            IPreEvaluationBlock preEvaluationBlock, IAction blockAction)
         {
             if (preEvaluationBlock.Index > 0)
             {
@@ -84,7 +74,6 @@ namespace Libplanet.Blockchain
                 _ => blockAction,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: null,
-                nativeTokenPredicate: nativeTokenPredicate,
                 actionTypeLoader: StaticActionLoader.Create<T>(),
                 feeCalculator: null);
             return actionEvaluator.Evaluate(preEvaluationBlock);

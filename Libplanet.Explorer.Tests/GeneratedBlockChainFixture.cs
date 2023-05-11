@@ -79,9 +79,7 @@ public class GeneratedBlockChainFixture
         var policy = new BlockPolicy<PolymorphicAction<SimpleAction>>(
             blockInterval: TimeSpan.FromMilliseconds(1),
             getMaxTransactionsPerBlock: _ => int.MaxValue,
-            getMaxTransactionsBytes: _ => long.MaxValue,
-            nativeTokens: ImmutableHashSet<Currency>.Empty.Add(TestCurrency)
-        );
+            getMaxTransactionsBytes: _ => long.MaxValue);
         IStore store = new MemoryStore();
         Block genesisBlock = BlockChain<PolymorphicAction<SimpleAction>>.ProposeGenesisBlock(
             transactions: PrivateKeys
@@ -110,7 +108,6 @@ public class GeneratedBlockChainFixture
                 policyBlockActionGetter: _ => policy.BlockAction,
                 blockChainStates: new BlockChainStates(store, stateStore),
                 genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
                 actionTypeLoader: StaticActionLoader.Create<SimpleAction>(),
                 feeCalculator: null
             )

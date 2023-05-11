@@ -139,7 +139,6 @@ namespace Libplanet.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<T>(),
                     feeCalculator: null
                 )
@@ -440,7 +439,6 @@ namespace Libplanet.Blockchain
             var computedStateRootHash = DetermineGenesisStateRootHash(
                 preEval,
                 policy.BlockAction,
-                policy.NativeTokens.Contains,
                 out IReadOnlyList<IActionEvaluation> evals);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {

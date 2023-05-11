@@ -99,12 +99,6 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal(FOO * 125, nextStates.GetBalance(recipient, FOO));
             Assert.Equal(BAR * 0, nextStates.GetBalance(recipient, BAR));
 
-            var transferBar = new Transfer(recipient, BAR * 10);
-            NonNativeTokenException exc = Assert.Throws<NonNativeTokenException>(
-                () => transferBar.Execute(context)
-            );
-            Assert.Equal(BAR, exc.NonNativeToken);
-
             var transferFromUnsufficientBalance = new Transfer(signer, FOO * 1000);
             InsufficientBalanceException exc2 = Assert.Throws<InsufficientBalanceException>(
                 () => transferFromUnsufficientBalance.Execute(context)

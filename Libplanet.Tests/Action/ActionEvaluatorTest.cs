@@ -87,7 +87,6 @@ namespace Libplanet.Tests.Action
                 BlockChain<RandomAction>.DetermineGenesisStateRootHash(
                     noStateRootBlock,
                     null,
-                    _ => true,
                     out IReadOnlyList<IActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
@@ -96,7 +95,6 @@ namespace Libplanet.Tests.Action
                     policyBlockActionGetter: _ => null,
                     blockChainStates: NullChainStates.Instance,
                     genesisHash: null,
-                    nativeTokenPredicate: _ => true,
                     actionTypeLoader: StaticActionLoader.Create<RandomAction>(),
                     feeCalculator: null
                 );
@@ -296,7 +294,6 @@ namespace Libplanet.Tests.Action
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: null,
-                nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                 feeCalculator: null);
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
@@ -595,7 +592,6 @@ namespace Libplanet.Tests.Action
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: tx.GenesisHash,
-                nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                 feeCalculator: null
             );
@@ -711,7 +707,6 @@ namespace Libplanet.Tests.Action
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: tx.GenesisHash,
-                nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionLoader.Create<ThrowException>(),
                 feeCalculator: null
             );
@@ -766,8 +761,7 @@ namespace Libplanet.Tests.Action
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
-                blockAction: false,
-                nativeTokenPredicate: _ => true
+                blockAction: false
             ).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
@@ -819,8 +813,7 @@ namespace Libplanet.Tests.Action
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
-                blockAction: false,
-                nativeTokenPredicate: _ => true
+                blockAction: false
             ).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
@@ -1164,8 +1157,7 @@ namespace Libplanet.Tests.Action
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
-                blockAction: false,
-                nativeTokenPredicate: _ => true
+                blockAction: false
             ).ToArray();
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())

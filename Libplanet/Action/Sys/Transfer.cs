@@ -10,7 +10,6 @@ namespace Libplanet.Action.Sys
     /// A system action that transfers the ownership of specified <see cref="Amount"/> of tokens to
     /// another account.
     /// </summary>
-    /// <remarks>Only native tokens can be transferred.</remarks>
     [JsonConverter(typeof(SysActionJsonConverter))]
     [ActionType(1)]
     public sealed class Transfer : IAction, IEquatable<Transfer>, IEquatable<IAction>
@@ -100,20 +99,11 @@ namespace Libplanet.Action.Sys
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
         public IAccountStateDelta Execute(IActionContext context)
         {
-            if (!context.IsNativeToken(Amount.Currency))
-            {
-                var message =
-                    $"System action {nameof(Transfer)} only accepts native tokens, " +
-                    $"but {Amount.Currency} is not native.";
-                throw new NonNativeTokenException(Amount.Currency, message);
-            }
-
             return context.PreviousStates.TransferAsset(
                 context.Signer,
                 Recipient,
                 Amount,
-                allowNegativeBalance: false
-            );
+                allowNegativeBalance: false);
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>

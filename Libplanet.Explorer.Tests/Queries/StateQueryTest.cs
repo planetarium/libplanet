@@ -27,8 +27,7 @@ public class StateQueryTest
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
         (IBlockChainStates, IBlockPolicy<NullAction>) source = (
-            new MockChainStates(),
-            new BlockPolicy<NullAction>(nativeTokens: ImmutableHashSet.Create(currency))
+            new MockChainStates(), new BlockPolicy<NullAction>()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
@@ -51,10 +50,9 @@ public class StateQueryTest
     [Fact]
     public async Task Balance()
     {
-        var currency = Currency.Uncapped("ABC", 2, minters: null);
         (IBlockChainStates, IBlockPolicy<NullAction>) source = (
             new MockChainStates(),
-            new BlockPolicy<NullAction>(nativeTokens: ImmutableHashSet.Create(currency))
+            new BlockPolicy<NullAction>()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
@@ -98,11 +96,7 @@ public class StateQueryTest
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
          (IBlockChainStates, IBlockPolicy<NullAction>) source = (
-            new MockChainStates(),
-            new BlockPolicy<NullAction>(
-                nativeTokens: ImmutableHashSet.Create(currency, legacyToken)
-            )
-        );
+            new MockChainStates(), new BlockPolicy<NullAction>());
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
             totalSupply(

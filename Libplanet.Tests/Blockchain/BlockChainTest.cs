@@ -66,7 +66,6 @@ namespace Libplanet.Tests.Blockchain
                     _ => _policy.BlockAction,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
                     genesisHash: _fx.GenesisBlock.Hash,
-                    nativeTokenPredicate: _policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 ),
@@ -583,8 +582,7 @@ namespace Libplanet.Tests.Blockchain
                             ),
                         }),
                     privateKey: GenesisProposer,
-                    blockAction: _policy.BlockAction,
-                    nativeTokenPredicate: _policy.NativeTokens.Contains);
+                    blockAction: _policy.BlockAction);
 
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer<DumbAction>();
@@ -598,7 +596,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => _policy.BlockAction,
                         blockChainStates: new BlockChainStates(store, stateStore),
                         genesisHash: genesis.Hash,
-                        nativeTokenPredicate: _policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     ),
@@ -993,8 +990,7 @@ namespace Libplanet.Tests.Blockchain
                         timestamp: DateTimeOffset.UtcNow,
                         proposer: GenesisProposer.PublicKey),
                     privateKey: GenesisProposer,
-                    blockAction: _policy.BlockAction,
-                    nativeTokenPredicate: _policy.NativeTokens.Contains);
+                    blockAction: _policy.BlockAction);
                 var chain2 = BlockChain<DumbAction>.Create(
                     _policy,
                     _stagePolicy,
@@ -1005,7 +1001,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => _policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx2.Store, fx2.StateStore),
                         genesisHash: genesis2.Hash,
-                        nativeTokenPredicate: _policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )
@@ -1063,8 +1058,7 @@ namespace Libplanet.Tests.Blockchain
                         ),
                     }),
                 GenesisProposer,
-                policy.BlockAction,
-                policy.NativeTokens.Contains);
+                policy.BlockAction);
             var chain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1075,7 +1069,6 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisWithTx.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 )
@@ -1286,7 +1279,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => _blockChain.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(emptyFx.Store, emptyFx.StateStore),
                         genesisHash: emptyFx.GenesisBlock.Hash,
-                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )
@@ -1301,7 +1293,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => _blockChain.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(forkFx.Store, forkFx.StateStore),
                         genesisHash: forkFx.GenesisBlock.Hash,
-                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )
@@ -1652,14 +1643,12 @@ namespace Libplanet.Tests.Blockchain
             Block genesisBlock = ProposeGenesisBlock<DumbAction>(
                 ProposeGenesis(GenesisProposer.PublicKey),
                 GenesisProposer,
-                blockPolicy.BlockAction,
-                blockPolicy.NativeTokens.Contains);
+                blockPolicy.BlockAction);
             var chainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                 _ => blockPolicy.BlockAction,
                 blockChainStates: chainStates,
                 genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                 feeCalculator: null
             );
@@ -1933,7 +1922,6 @@ namespace Libplanet.Tests.Blockchain
                         storeFixture.StateStore
                     ),
                     genesisHash: storeFixture.GenesisBlock.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 )
@@ -1976,7 +1964,6 @@ namespace Libplanet.Tests.Blockchain
                     _ => _blockChain.Policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisBlockA.Hash,
-                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 )
@@ -2047,8 +2034,7 @@ namespace Libplanet.Tests.Blockchain
             var genesisWithTx = ProposeGenesisBlock<DumbAction>(
                 ProposeGenesis(GenesisProposer.PublicKey, new[] { genesisTx }),
                 privateKey: GenesisProposer,
-                blockAction: policy.BlockAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains);
+                blockAction: policy.BlockAction);
 
             var chain = BlockChain<DumbAction>.Create(
                 policy,
@@ -2060,7 +2046,6 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisWithTx.Hash,
-                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 )
@@ -2128,7 +2113,6 @@ namespace Libplanet.Tests.Blockchain
                         storeFixture.Store,
                         storeFixture.StateStore),
                     genesisHash: genesis.Hash,
-                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<SetValidator>(),
                     feeCalculator: null
                 )

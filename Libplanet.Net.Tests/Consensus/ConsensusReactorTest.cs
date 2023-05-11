@@ -68,7 +68,6 @@ namespace Libplanet.Net.Tests.Consensus
                         policyBlockActionGetter: _ => TestUtils.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(stores[i], stateStore),
                         genesisHash: fx.GenesisBlock.Hash,
-                        nativeTokenPredicate: _ => false,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )

@@ -1,6 +1,5 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -97,17 +96,6 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="log">A log to record in <see cref="TxExecution"/>.</param>
         void PutLog(string log);
-
-        /// <summary>
-        /// Checks whether the specified <paramref name="currency"/> is a native token defined by
-        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
-        /// </summary>
-        /// <param name="currency">A token currency to check.</param>
-        /// <returns><see langword="true"/> if the specified <paramref name="currency"/> is a native
-        /// token, otherwise <see langword="false"/>.</returns>
-        /// <seealso cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>
-        [Pure]
-        bool IsNativeToken(Currency currency);
 
         /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed

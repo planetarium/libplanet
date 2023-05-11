@@ -1,8 +1,6 @@
 #nullable disable
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -25,9 +23,6 @@ namespace Libplanet.Blockchain.Policies
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
 
         public IAction BlockAction => null;
-
-        /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
-        public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
         public IFeeCalculator FeeCalculator => null;
 

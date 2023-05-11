@@ -1050,7 +1050,7 @@ namespace Libplanet.Tests.Store
                 var genesis = preEval.Sign(
                     GenesisProposer,
                     BlockChain<NullAction>.DetermineGenesisStateRootHash(
-                        preEval, policy.BlockAction, policy.NativeTokens.Contains, out _));
+                        preEval, policy.BlockAction, out _));
                 var blocks = BlockChain<NullAction>.Create(
                     policy,
                     new VolatileStagePolicy<NullAction>(),
@@ -1061,7 +1061,6 @@ namespace Libplanet.Tests.Store
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(s1, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<NullAction>(),
                         feeCalculator: null
                     )

@@ -75,9 +75,6 @@ public class BlockPolicyParams : ICommandParameterSet
     public IAction? GetBlockAction() =>
         GetBlockAction(LoadAssemblies());
 
-    public IImmutableSet<Currency>? GetNativeTokens() =>
-        GetNativeTokens(LoadAssemblies());
-
     [SuppressMessage(
         "Major Code Smell",
         "S3011:Reflection should not be used to increase accessibility of classes, methods, " +
@@ -151,19 +148,5 @@ public class BlockPolicyParams : ICommandParameterSet
             .GetType()
             .GetProperty(nameof(IBlockPolicy<NullAction>.BlockAction));
         return (IAction?)prop!.GetValue(policy);
-    }
-
-    internal IImmutableSet<Currency>? GetNativeTokens(Assembly[] assemblies)
-    {
-        object? policy = GetBlockPolicy(assemblies);
-        if (policy is null)
-        {
-            return null;
-        }
-
-        PropertyInfo? prop = policy
-            .GetType()
-            .GetProperty(nameof(IBlockPolicy<NullAction>.NativeTokens));
-        return (IImmutableSet<Currency>)prop!.GetValue(policy)!;
     }
 }

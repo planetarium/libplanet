@@ -476,7 +476,6 @@ namespace Libplanet.Net.Tests
                         policyBlockActionGetter: _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fxs[i].Store, fxs[i].StateStore),
                         genesisHash: fxs[i].GenesisBlock.Hash,
-                        nativeTokenPredicate: _ => false,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )
