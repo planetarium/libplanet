@@ -356,8 +356,33 @@ namespace Libplanet.Net.Consensus
             // TODO: To optimize WantMessage count to minimum, should remove duplications.
             var copy = _haveDict.ToDictionary(pair => pair.Key, pair => pair.Value.ToArray());
             _haveDict = new ConcurrentDictionary<BoundPeer, HashSet<MessageId>>();
+            var optimized = new Dictionary<BoundPeer, MessageId[]>();
+            while (copy.Any())
+            {
+                var longest = copy.OrderBy(pair => pair.Value.Length).Last();
+                optimized.Add(longest.Key, longest.Value);
+                copy.Remove(longest.Key);
+                var removeCandidate = new List<BoundPeer>();
+                foreach (var pair in copy)
+                {
+                    var clean = pair.Value.Where(id => !longest.Value.Contains(id)).ToArray();
+                    if (clean.Any())
+                    {
+                        copy[pair.Key] = clean;
+                    }
+                    else
+                    {
+                        removeCandidate.Add(pair.Key);
+                    }
+                }
 
-            await copy.ParallelForEachAsync(
+                foreach (var peer in removeCandidate)
+                {
+                    copy.Remove(peer);
+                }
+            }
+
+            await optimized.ParallelForEachAsync(
                 async pair =>
                 {
                     MessageId[] idsToGet = pair.Value;
