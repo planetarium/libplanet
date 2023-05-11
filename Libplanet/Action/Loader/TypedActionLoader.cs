@@ -29,6 +29,12 @@ namespace Libplanet.Action.Loader
         /// <seealso cref="TypedActionLoader.Create"/>
         public TypedActionLoader(IDictionary<IValue, Type> types)
         {
+            if (types.Count == 0)
+            {
+                throw new ArgumentException(
+                    $"Give {nameof(types)} cannot be empty.", nameof(types));
+            }
+
             _types = types;
         }
 
@@ -85,7 +91,7 @@ namespace Libplanet.Action.Loader
                     $"At least one of {nameof(assembly)} and {nameof(baseType)} must be non-null.");
             }
 
-            assembly ??= baseType!.Assembly;
+            assembly = assembly ?? baseType!.Assembly;
             return new TypedActionLoader(LoadTypes(assembly, baseType));
         }
 
@@ -133,7 +139,7 @@ namespace Libplanet.Action.Loader
             var actionType = typeof(IAction);
             foreach (Type t in LoadAllActionTypes(assembly))
             {
-                if (baseType is null || !baseType.IsAssignableFrom(t))
+                if (baseType is { } type && !baseType.IsAssignableFrom(t))
                 {
                     continue;
                 }

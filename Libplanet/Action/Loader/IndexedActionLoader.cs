@@ -69,7 +69,7 @@ namespace Libplanet.Action.Loader
                 }
 
                 var loaderIndex = _loaders.Count(pair => pair.StartIndex <= index);
-                var loader = _loaders[loaderIndex].Loader;
+                var loader = _loaders[loaderIndex - 1].Loader;
                 return loader.LoadAction(index, value);
             }
             catch (Exception e)
