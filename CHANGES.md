@@ -142,6 +142,8 @@ Released on May 9, 2023.
  -  Changed `Context<T>.ConsumeMutation()` to iteratively call
     `Context<T>.ProcessGenericUponRules()` itself, instead of producing
     submutations of it.  [[#3137]]
+ -  (Libplanet.Explorer) The `CurrencyInputType`'s `totalSupplyTrackable` field
+    became nullable with `false` as its default value.  [[#3151]]
 
 ### Bug fixes
 
@@ -177,6 +179,7 @@ Released on May 9, 2023.
 [#3136]: https://github.com/planetarium/libplanet/pull/3136
 [#3137]: https://github.com/planetarium/libplanet/pull/3137
 [#3140]: https://github.com/planetarium/libplanet/pull/3140
+[#3151]: https://github.com/planetarium/libplanet/pull/3151
 [Bencodex 0.10.0]: https://www.nuget.org/packages/Bencodex/0.10.0
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
