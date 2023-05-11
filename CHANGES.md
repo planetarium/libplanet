@@ -125,6 +125,8 @@ Released on May 9, 2023.
 ### Added APIs
 
  -  Added `IActionEvaluator` interface.  [[#3082]]
+ -  Added `SwarmOptions.TaskRegulationOptions` property.  [[#3109]]
+ -  Added `TaskRegulationOptions` class.  [[#3109]]
  -  Added `ActionTypeAttribute(int)` constructor.  [[#3111]]
  -  Added `IActionEvaluation` interface.  [[#3089]]
  -  Added parameterless constructor to `Mint`, `Transfer`, and `Initialize`.

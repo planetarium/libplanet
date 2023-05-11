@@ -1,7 +1,8 @@
 using System;
+using Libplanet.Net.Options;
 using Xunit;
 
-namespace Libplanet.Net.Tests
+namespace Libplanet.Net.Tests.Options
 {
     public class HostOptionsTest
     {

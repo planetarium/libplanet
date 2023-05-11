@@ -2,7 +2,7 @@ using System;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Options
 {
     public class PreloadOptions
     {
