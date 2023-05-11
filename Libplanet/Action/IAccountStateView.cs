@@ -75,25 +75,5 @@ namespace Libplanet.Action
         /// <seealso cref="Currency.MaximumSupply"/>
         [Pure]
         FungibleAssetValue GetTotalSupply(Currency currency);
-
-        /// <summary>
-        /// Returns the total Gas used by the <paramref name="address"/>.
-        /// </summary>
-        /// <param name="address">The address to query.</param>
-        /// <returns>The total Gas used by the <paramref name="address"/>.</returns>
-        [Pure]
-        long UsedGas(Address address);
-
-        /// <summary>
-        /// Returns the available Gas of the <paramref name="address"/>.
-        /// </summary>
-        /// <param name="address">
-        /// The address to query.
-        /// </param>
-        /// <returns>
-        /// The available Gas of the <paramref name="address"/>.
-        /// </returns>
-        [Pure]
-        long AvailableGas(Address address);
     }
 }

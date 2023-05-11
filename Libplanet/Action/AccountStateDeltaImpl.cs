@@ -14,10 +14,7 @@ namespace Libplanet.Action
     /// An internal implementation of <see cref="IAccountStateDelta"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDeltaImpl :
-        IGasUsageDelta,
-        IValidatorSupportStateDelta,
-        IAccountStateDelta
+    internal class AccountStateDeltaImpl : IValidatorSupportStateDelta, IAccountStateDelta
     {
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
@@ -46,7 +43,6 @@ namespace Libplanet.Action
             UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
-            UpdatedGas = ImmutableDictionary<Address, (long, long)>.Empty;
             Signer = signer;
         }
 
@@ -95,9 +91,6 @@ namespace Libplanet.Action
         protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
 
         protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
-
-        protected IImmutableDictionary<Address, (long Limit, long Used)>
-            UpdatedGas { get; set; }
 
         /// <inheritdoc/>
         [Pure]
@@ -175,17 +168,6 @@ namespace Libplanet.Action
 
             return TotalSupplyGetter(currency);
         }
-
-        [Pure]
-        public long UsedGas(Address address) =>
-            UpdatedGas.TryGetValue(address, out var usedGas)
-            ? usedGas.Used
-            : throw new GasLimitNotSetException(address);
-
-        public long AvailableGas(Address address) =>
-            UpdatedGas.TryGetValue(address, out var usedGas)
-                ? usedGas.Limit - usedGas.Used
-                : throw new GasLimitNotSetException(address);
 
         /// <inheritdoc/>
         [Pure]
@@ -333,20 +315,7 @@ namespace Libplanet.Action
             return UpdateValidatorSet(GetValidatorSet().Update(validator));
         }
 
-        /// <inheritdoc/>
-        [Pure]
-        public IAccountStateDelta AddGas(Address address, long gas) =>
-            UpdatedGas.TryGetValue(address, out var usedGas)
-            ? UpdateGas(UpdatedGas.SetItem(address, (usedGas.Limit, usedGas.Used + gas)))
-            : throw new GasLimitNotSetException(address);
-
-        /// <inheritdoc/>
-        public IAccountStateDelta SetGasLimit(Address address, long gasLimit) =>
-            UpdateGas(UpdatedGas.TryGetValue(address, out var gas)
-                ? UpdatedGas.SetItem(address, (gasLimit, gas.Used))
-                : UpdatedGas.SetItem(address, (gasLimit, 0)));
-
-                /// <summary>
+        /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>,
         /// <paramref name="accountBalanceGetter"/>, and <paramref name="totalSupplyGetter"/>,
         /// with a subtype of <see cref="AccountStateDeltaImpl"/> that corresponds to the
@@ -450,23 +419,6 @@ namespace Libplanet.Action
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
-            };
-
-        protected virtual AccountStateDeltaImpl UpdateGas(
-            IImmutableDictionary<Address, (long Limit, long Used)> updatedUsedGas
-        ) =>
-            new AccountStateDeltaImpl(
-                StateGetter,
-                BalanceGetter,
-                TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
-            {
-                UpdatedStates = UpdatedStates,
-                UpdatedFungibles = UpdatedFungibles,
-                UpdatedTotalSupply = UpdatedTotalSupply,
-                UpdatedValidatorSet = UpdatedValidatorSet,
-                UpdatedGas = updatedUsedGas,
             };
     }
 }
