@@ -209,6 +209,8 @@ methods are no longer invoked by a <code>BlockChain&lt;T&gt;</code>.  [<a href="
 <li>Changed <code>Context&lt;T&gt;.ConsumeMutation()</code> to iteratively call
 <code>Context&lt;T&gt;.ProcessGenericUponRules()</code> itself, instead of producing
 submutations of it.  [<a href="https://github.com/planetarium/libplanet/pull/3137">#3137</a>]</li>
+<li>(Libplanet.Explorer) The <code>CurrencyInputType</code>'s <code>totalSupplyTrackable</code> field
+became nullable with <code>false</code> as its default value.  [<a href="https://github.com/planetarium/libplanet/pull/3151">#3151</a>]</li>
 </ul>
 <h3 id="bug-fixes-1">Bug fixes</h3>
 <ul>
