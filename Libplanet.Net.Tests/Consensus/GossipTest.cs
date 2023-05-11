@@ -303,17 +303,74 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async void DoNotSendDuplicateMessageRequest()
+        {
+            int received = 0;
+            async Task ProcessMessage(Message msg)
+            {
+                if (msg.Content is WantMessage)
+                {
+                    received++;
+                }
+
+                await Task.CompletedTask;
+            }
+
+            Gossip receiver = CreateGossip(_ => { });
+            ITransport sender1 = CreateTransport();
+            sender1.ProcessMessageHandler.Register(ProcessMessage);
+            ITransport sender2 = CreateTransport();
+            sender2.ProcessMessageHandler.Register(ProcessMessage);
+
+            try
+            {
+                _ = receiver.StartAsync(default);
+                _ = sender1.StartAsync(default);
+                _ = sender2.StartAsync(default);
+                await receiver.WaitForRunningAsync();
+                await sender1.WaitForRunningAsync();
+                await sender2.WaitForRunningAsync();
+                var msg1 = new PingMsg();
+                var msg2 = new PongMsg();
+                await sender1.SendMessageAsync(
+                    receiver.AsPeer,
+                    new HaveMessage(new[] { msg1.Id, msg2.Id }),
+                    null,
+                    default);
+                await sender2.SendMessageAsync(
+                    receiver.AsPeer,
+                    new HaveMessage(new[] { msg1.Id, msg2.Id }),
+                    null,
+                    default);
+
+                // Wait heartbeat interval * 2.
+                await Task.Delay(2 * 1000);
+                Assert.Equal(1, received);
+            }
+            finally
+            {
+                await receiver.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await sender1.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await sender2.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                receiver.Dispose();
+                sender1.Dispose();
+                sender2.Dispose();
+            }
+        }
+
         private Gossip CreateGossip(
             Action<MessageContent> processMessage,
             PrivateKey? privateKey = null,
             int? port = null,
-            IEnumerable<BoundPeer>? peers = null)
+            IEnumerable<BoundPeer>? peers = null,
+            IEnumerable<BoundPeer>? seeds = null)
         {
             var transport = CreateTransport(privateKey, port);
             return new Gossip(
                 transport,
                 peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
-                ImmutableArray<BoundPeer>.Empty,
+                seeds?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
                 processMessage,
                 TimeSpan.FromMinutes(2));
         }
