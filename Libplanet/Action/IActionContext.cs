@@ -107,5 +107,21 @@ namespace Libplanet.Action
         /// is entirely equivalent to the original's unconsumed initial state.</returns>
         [Pure]
         IActionContext GetUnconsumedContext();
+
+        /// <summary>
+        /// Returns the total gas used by the current action.
+        /// </summary>
+        /// <returns>The total gas used by the current action.</returns>
+        [Pure]
+        long GasUsed();
+
+        /// <summary>
+        /// Returns the limit gas of the current action.
+        /// </summary>
+        /// <returns>
+        /// The limit gas of the current action.
+        /// </returns>
+        [Pure]
+        long GasLimit();
     }
 }
