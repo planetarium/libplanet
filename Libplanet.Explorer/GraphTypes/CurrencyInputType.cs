@@ -29,7 +29,7 @@ namespace Libplanet.Explorer.GraphTypes
             );
             Field<BigIntGraphType>("maximumSupplyMajorUnit");
             Field<BigIntGraphType>("maximumSupplyMinorUnit");
-            Field<NonNullGraphType<BooleanGraphType>>(
+            Field<BooleanGraphType>(
                 "totalSupplyTrackable",
                 "Whether the total supply of this currency is trackable."
             );
@@ -53,7 +53,15 @@ namespace Libplanet.Explorer.GraphTypes
                 }
             }
 
-            bool totalSupplyTrackable = (bool)value["totalSupplyTrackable"]!;
+            const bool DefaultTotalSupplyTrackable = false;
+            bool totalSupplyTrackable = value.TryGetValue(
+                "totalSupplyTrackable", out object? booleanValue)
+                ? (
+                    booleanValue is bool boolean
+                        ? boolean
+                        : throw new ExecutionError("totalSupplyTrackable must be boolean value.")
+                  )
+                : DefaultTotalSupplyTrackable;
             (BigInteger, BigInteger)? maximumSupply = GetMaximumSupply(value);
             if (maximumSupply is { } && !totalSupplyTrackable)
             {

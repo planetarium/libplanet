@@ -69,6 +69,28 @@ public class CurrencyInputTypeTest
                     },
                 }
             },
+            new object[] {
+                @"query
+                {
+                    currency(currency: { ticker: ""ABC"", decimalPlaces: 5, minters: null })
+                    {
+                        ticker
+                        decimalPlaces
+                        totalSupplyTrackable
+                        minters
+                    }
+                }",
+                new Dictionary<string, object>
+                {
+                    ["currency"] = new Dictionary<string, object>
+                    {
+                        ["ticker"] = "ABC",
+                        ["decimalPlaces"] = (byte)5,
+                        ["totalSupplyTrackable"] = false,
+                        ["minters"] = null,
+                    },
+                }
+            },
         };
     }
 }
