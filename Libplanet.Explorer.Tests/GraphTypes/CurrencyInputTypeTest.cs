@@ -12,30 +12,11 @@ namespace Libplanet.Explorer.Tests.GraphTypes;
 
 public class CurrencyInputTypeTest
 {
-    [Fact]
-    public async Task Input()
+    [Theory]
+    [MemberData(nameof(InputTestCases))]
+    public async Task Input(string query, Dictionary<string, object> expected)
     {
-        var result = await ExecuteQueryAsync<TestQuery>(
-            @"query
-            {
-                currency(currency: { ticker: ""ABC"", decimalPlaces: 5, totalSupplyTrackable: false, minters: null })
-                {
-                    ticker
-                    decimalPlaces
-                    totalSupplyTrackable
-                    minters
-                }
-            }");
-        var expected = new Dictionary<string, object>
-        {
-            ["currency"] = new Dictionary<string, object>
-            {
-                ["ticker"] = "ABC",
-                ["decimalPlaces"] = (byte)5,
-                ["totalSupplyTrackable"] = false,
-                ["minters"] = null,
-            },
-        };
+        var result = await ExecuteQueryAsync<TestQuery>(query);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
@@ -61,6 +42,34 @@ public class CurrencyInputTypeTest
         Assert.Contains(
             "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must be present or omitted",
             error.Message);
+    }
+
+    public static IEnumerable<object[]> InputTestCases()
+    {
+        return new object[][] {
+            new object[] {
+                @"query
+                {
+                    currency(currency: { ticker: ""ABC"", decimalPlaces: 5, totalSupplyTrackable: false, minters: null })
+                    {
+                        ticker
+                        decimalPlaces
+                        totalSupplyTrackable
+                        minters
+                    }
+                }",
+                new Dictionary<string, object>
+                {
+                    ["currency"] = new Dictionary<string, object>
+                    {
+                        ["ticker"] = "ABC",
+                        ["decimalPlaces"] = (byte)5,
+                        ["totalSupplyTrackable"] = false,
+                        ["minters"] = null,
+                    },
+                }
+            },
+        };
     }
 }
 
