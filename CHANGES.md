@@ -109,9 +109,9 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
- -  Added `IAccountStateDelta.UsedGas(Address)` method.
+ -  Added `IActionContext.GasUsed()` method.
     [[#3144]]
- -  Added `IAccountStateDelta.AvailableGas(Address)` method.
+ -  Added `IActionContext.GasLimit()` method.
     [[#3144]]
 
  -  (@planetarium/cli) Fixed the installer bug that it had failed on Linux and
