@@ -105,11 +105,11 @@ namespace Libplanet.Action
                 BlockIndex,
                 PreviousStates,
                 _randomSeed,
+                _gasLimit,
                 Rehearsal,
                 _previousBlockStatesTrie,
                 BlockAction,
                 _nativeTokenPredicate,
-                GetGasMeter.Value?.GasUsed,
                 new List<string>());
 
         /// <summary>
@@ -132,22 +132,14 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Returns the available gas of the current action.
+        /// Returns the gas limit of the current action.
         /// </summary>
         /// <returns>
-        /// The available gas of the current action.
+        /// The gas limit of the current action.
         /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when <see cref="GetGasMeter"/> is not initialized.
-        /// </exception>
-        public long GasAvailable()
+        public long GasLimit()
         {
-            if (GetGasMeter.Value is { } gasMeter)
-            {
-                return gasMeter.GasAvailable;
-            }
-
-            throw new InvalidOperationException($"{nameof(GetGasMeter)} is not initialized.");
+            return _gasLimit;
         }
     }
 }
