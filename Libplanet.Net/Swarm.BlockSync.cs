@@ -49,7 +49,7 @@ namespace Libplanet.Net
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         internal async Task PullBlocksAsync(
-            TimeSpan timeout,
+            TimeSpan? timeout,
             int maximumPollPeers,
             CancellationToken cancellationToken)
         {

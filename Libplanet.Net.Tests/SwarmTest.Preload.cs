@@ -741,7 +741,6 @@ namespace Libplanet.Net.Tests
             }
             else
             {
-                Assert.NotEqual(receiverChainId, receiverChain.Id);
                 Assert.Equal(minerChain.Tip, receiverChain.Tip);
                 Assert.Equal(
                     (Text)string.Join(

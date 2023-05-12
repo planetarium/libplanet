@@ -342,7 +342,8 @@ namespace Libplanet.Net
                         Options.MaximumPollPeers,
                         _cancellationToken
                     ),
-                    () => ConsumeBlockCandidates(_cancellationToken),
+                    () => ConsumeBlockCandidates(
+                        TimeSpan.FromMilliseconds(10), true, _cancellationToken),
                     () => RefreshTableAsync(
                         Options.RefreshPeriod,
                         Options.RefreshLifespan,
@@ -625,11 +626,14 @@ namespace Libplanet.Net
                 }
 
                 _logger.Information("Preloading (trial #{Trial}) started...", i + 1);
-                BlockChain<T> workspace = BlockChain.Fork(localTip.Hash, inheritRenderers: false);
-                await CompleteBlocksAsync(
+
+                BlockCandidateTable.Cleanup((_) => true);
+                await PullBlocksAsync(
                     peersWithExcerpts,
-                    workspace,
-                    progress,
+                    cancellationToken);
+
+                await ConsumeBlockCandidates(
+                    render: false,
                     cancellationToken: cancellationToken);
             }
 
