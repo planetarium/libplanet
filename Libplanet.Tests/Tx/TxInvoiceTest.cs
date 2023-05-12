@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -87,6 +89,8 @@ namespace Libplanet.Tests.Tx
             Assert.True(mock.UpdatedAddresses.SetEquals(copyFromInterface.UpdatedAddresses));
             Assert.Equal(mock.Timestamp, copyFromInterface.Timestamp);
             Assert.Equal(mock.Actions, copyFromInterface.Actions);
+            Assert.Equal(mock.MaxGasPrice, copyFromInterface.MaxGasPrice);
+            Assert.Equal(mock.GasLimit, copyFromInterface.GasLimit);
         }
 
         [Fact]
@@ -123,14 +127,20 @@ namespace Libplanet.Tests.Tx
 
             Assert.False(invoice1.Equals(null));
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var invoice = new TxInvoice(
-                    i == 0 ? (BlockHash?)null : genesisHash,
-                    i == 1 ? null : updatedAddresses,
-                    i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
-                    i == 3 ? null : actions
-                );
+                        i == 0 ? (BlockHash?)null : genesisHash,
+                        i == 1 ? null : updatedAddresses,
+                        i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
+                        i == 3 ? null : actions,
+                        i == 4 ? (FungibleAssetValue?)null : new FungibleAssetValue(
+                            Currency.Uncapped(
+                                "FOO",
+                                18,
+                                new PrivateKey().ToAddress()),
+                            100),
+                        i == 5 ? (long?)null : 10);
                 Assert.False(invoice1.Equals(invoice));
                 Assert.False(invoice1.Equals((object)invoice));
                 Assert.NotEqual(invoice1.GetHashCode(), invoice.GetHashCode());
@@ -153,13 +163,18 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
+                actions,
+                new FungibleAssetValue(
+                    Currency.Uncapped("FOO", 18, AddressA),
+                    1234,
+                    5678),
+                100
             );
 #pragma warning disable MEN002  // Long lines are OK for test JSON data.
             TestUtils.AssertJsonSerializable(
                 invoice,
-                @"
-                    {
+                $@"
+                    {{
                       ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265"",
                       ""updatedAddresses"": [
                         ""B61CE2Ce6d28237C1BC6E114616616762f1a12Ab"",
@@ -167,18 +182,32 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
                       ""actions"": [
-                        {
+                        {{
                           ""\uFEFFitem"": ""\uFEFFfoo"",
                           ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
-                        },
-                        {
+                        }},
+                        {{
                           ""\uFEFFitem"": ""\uFEFFbar"",
                           ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
-                        }
-                      ]
-                    }
+                        }}
+                      ],
+                      ""maxGasPrice"": {{
+                        ""quantity"": ""1234.000000000000005678"",
+                        ""currency"": {{
+                          ""maximumSupply"": null,
+                          ""ticker"": ""FOO"",
+                          ""decimalPlaces"": 18,
+                          ""minters"": [
+                            ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
+                          ],
+                          ""hash"": ""a0d19219acb8d69815b3d299393c48bc8a93e0ec"",
+                          ""totalSupplyTrackable"": true
+                        }}
+                      }},
+                      ""gasLimit"": 100,
+                    }}
                 ",
                 false);
 #pragma warning restore MEN002
@@ -200,6 +229,10 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
             });
+
+            public FungibleAssetValue? MaxGasPrice => null;
+
+            public long? GasLimit => null;
 
             bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
         }
