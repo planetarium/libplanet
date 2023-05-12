@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -39,7 +40,7 @@ namespace Libplanet.Tx
         /// <paramref name="signature"/> is not valid for <paramref name="unsignedTx"/>.</exception>
         public Transaction(IUnsignedTx unsignedTx, ImmutableArray<byte> signature)
         {
-            _unsignedTx = unsignedTx is UnsignedTx u ? u : new UnsignedTx(unsignedTx);
+            _unsignedTx = unsignedTx as UnsignedTx ?? new UnsignedTx(unsignedTx);
             _signature = signature.IsDefaultOrEmpty ? Array.Empty<byte>() : signature.ToArray();
 
             if (!_unsignedTx.VerifySignature(signature))
@@ -59,7 +60,7 @@ namespace Libplanet.Tx
         /// does not match the public key of <paramref name="unsignedTx"/>.</exception>
         public Transaction(IUnsignedTx unsignedTx, PrivateKey privateKey)
         {
-            _unsignedTx = unsignedTx is UnsignedTx u ? u : new UnsignedTx(unsignedTx);
+            _unsignedTx = unsignedTx as UnsignedTx ?? new UnsignedTx(unsignedTx);
             _signature = _unsignedTx.CreateSignature(privateKey).ToArray();
         }
 
@@ -146,6 +147,12 @@ namespace Libplanet.Tx
         /// </summary>
         [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions => _unsignedTx.Actions;
+
+        /// <inheritdoc cref="ITxInvoice.MaxGasPrice"/>
+        public FungibleAssetValue? MaxGasPrice => _unsignedTx.MaxGasPrice;
+
+        /// <inheritdoc cref="ITxInvoice.GasLimit"/>
+        public long? GasLimit => _unsignedTx.GasLimit;
 
         /// <inheritdoc cref="ITxInvoice.Timestamp"/>
         public DateTimeOffset Timestamp => _unsignedTx.Timestamp;
