@@ -95,7 +95,6 @@ namespace Libplanet.Tests.Action
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
                     blockChainStates: NullChainStates.Instance,
-                    trieGetter: null,
                     genesisHash: null,
                     nativeTokenPredicate: _ => true,
                     actionTypeLoader: StaticActionLoader.Create<RandomAction>(),
@@ -296,7 +295,6 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                trieGetter: null,
                 genesisHash: null,
                 nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
@@ -596,7 +594,6 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                trieGetter: null,
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
@@ -713,7 +710,6 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                trieGetter: null,
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true,
                 actionTypeLoader: StaticActionLoader.Create<ThrowException>(),

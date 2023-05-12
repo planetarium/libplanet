@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -470,7 +471,15 @@ namespace Libplanet.Net.Tests
                     new VolatileStagePolicy<DumbAction>(),
                     fxs[i].Store,
                     fxs[i].StateStore,
-                    fxs[i].GenesisBlock
+                    fxs[i].GenesisBlock,
+                    new ActionEvaluator(
+                        policyBlockActionGetter: _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fxs[i].Store, fxs[i].StateStore),
+                        genesisHash: fxs[i].GenesisBlock.Hash,
+                        nativeTokenPredicate: _ => false,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
                 );
                 swarms[i] = await CreateSwarm(blockChains[i]).ConfigureAwait(false);
             }

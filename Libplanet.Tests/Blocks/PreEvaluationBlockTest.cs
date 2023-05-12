@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -52,7 +53,15 @@ namespace Libplanet.Tests.Blocks
                     stagePolicy,
                     fx.Store,
                     fx.StateStore,
-                    genesis
+                    genesis,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        genesisHash: genesis.Hash,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
+                        feeCalculator: null
+                    )
                 );
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
@@ -112,7 +121,16 @@ namespace Libplanet.Tests.Blocks
                     stagePolicy,
                     fx.Store,
                     fx.StateStore,
-                    genesis);
+                    genesis,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        genesisHash: genesis.Hash,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
+                        feeCalculator: null
+                    )
+                );
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =

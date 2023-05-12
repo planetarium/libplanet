@@ -83,7 +83,6 @@ namespace Libplanet.Blockchain
             var actionEvaluator = new ActionEvaluator(
                 _ => blockAction,
                 blockChainStates: NullChainStates.Instance,
-                trieGetter: null,
                 genesisHash: null,
                 nativeTokenPredicate: nativeTokenPredicate,
                 actionTypeLoader: StaticActionLoader.Create<T>(),

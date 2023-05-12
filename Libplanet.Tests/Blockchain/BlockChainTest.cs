@@ -62,6 +62,14 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
+                new ActionEvaluator(
+                    _ => _policy.BlockAction,
+                    blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
+                    genesisHash: _fx.GenesisBlock.Hash,
+                    nativeTokenPredicate: _policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                ),
                 renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
             );
             _renderer.BlockChain = _blockChain;
@@ -586,6 +594,14 @@ namespace Libplanet.Tests.Blockchain
                     store,
                     stateStore,
                     genesis,
+                    new ActionEvaluator(
+                        _ => _policy.BlockAction,
+                        blockChainStates: new BlockChainStates(store, stateStore),
+                        genesisHash: genesis.Hash,
+                        nativeTokenPredicate: _policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    ),
                     renderers: new[] { renderer }
                 );
 
@@ -984,7 +1000,15 @@ namespace Libplanet.Tests.Blockchain
                     _stagePolicy,
                     fx2.Store,
                     fx2.StateStore,
-                    genesis2
+                    genesis2,
+                    new ActionEvaluator(
+                        _ => _policy.BlockAction,
+                        blockChainStates: new BlockChainStates(fx2.Store, fx2.StateStore),
+                        genesisHash: genesis2.Hash,
+                        nativeTokenPredicate: _policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
                 );
                 var key = new PrivateKey();
                 for (int i = 0; i < 5; i++)
@@ -1024,7 +1048,7 @@ namespace Libplanet.Tests.Blockchain
                     invoked = true;
                     // ReSharper restore AccessToModifiedClosure
                 });
-            var store = new MemoryStore();
+            IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             Block genesisWithTx = ProposeGenesisBlock<DumbAction>(
                 ProposeGenesis(
@@ -1046,7 +1070,15 @@ namespace Libplanet.Tests.Blockchain
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                genesisWithTx
+                genesisWithTx,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: new BlockChainStates(store, stateStore),
+                    genesisHash: genesisWithTx.Hash,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
             );
             Assert.False(invoked);
         }
@@ -1249,13 +1281,31 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     emptyFx.Store,
                     emptyFx.StateStore,
-                    emptyFx.GenesisBlock);
+                    emptyFx.GenesisBlock,
+                    new ActionEvaluator(
+                        _ => _blockChain.Policy.BlockAction,
+                        blockChainStates: new BlockChainStates(emptyFx.Store, emptyFx.StateStore),
+                        genesisHash: emptyFx.GenesisBlock.Hash,
+                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                );
                 var fork = BlockChain<DumbAction>.Create(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
                     forkFx.Store,
                     forkFx.StateStore,
-                    forkFx.GenesisBlock);
+                    forkFx.GenesisBlock,
+                    new ActionEvaluator(
+                        _ => _blockChain.Policy.BlockAction,
+                        blockChainStates: new BlockChainStates(forkFx.Store, forkFx.StateStore),
+                        genesisHash: forkFx.GenesisBlock.Hash,
+                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        feeCalculator: null
+                    )
+                );
                 fork.Append(b1, CreateBlockCommit(b1));
                 fork.Append(b2, CreateBlockCommit(b2));
                 Block b5 = fork.ProposeBlock(
@@ -1608,8 +1658,6 @@ namespace Libplanet.Tests.Blockchain
             var actionEvaluator = new ActionEvaluator(
                 _ => blockPolicy.BlockAction,
                 blockChainStates: chainStates,
-                trieGetter: hash =>
-                    stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                 genesisHash: genesisBlock.Hash,
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
@@ -1870,12 +1918,26 @@ namespace Libplanet.Tests.Blockchain
             };
             var txs = systemTxs.Concat(customTxs).ToImmutableList();
             BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(
-                    policy,
-                    new VolatileStagePolicy<DumbAction>(),
-                    storeFixture.Store,
-                    storeFixture.StateStore,
-                    BlockChain<DumbAction>.ProposeGenesisBlock(
-                        privateKey: privateKey, transactions: txs));
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                storeFixture.Store,
+                storeFixture.StateStore,
+                BlockChain<DumbAction>.ProposeGenesisBlock(
+                    privateKey: privateKey,
+                    transactions: txs
+                ),
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: new BlockChainStates(
+                        storeFixture.Store,
+                        storeFixture.StateStore
+                    ),
+                    genesisHash: storeFixture.GenesisBlock.Hash,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
 
             var validator = blockChain.GetValidatorSet()[0];
             Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
@@ -1899,7 +1961,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullBlockPolicy<DumbAction>();
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
-            var store = new MemoryStore();
+            IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock();
             var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock();
@@ -1909,7 +1971,16 @@ namespace Libplanet.Tests.Blockchain
                 stagePolicy,
                 store,
                 stateStore,
-                genesisBlockA);
+                genesisBlockA,
+                new ActionEvaluator(
+                    _ => _blockChain.Policy.BlockAction,
+                    blockChainStates: new BlockChainStates(store, stateStore),
+                    genesisHash: genesisBlockA.Hash,
+                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
 
             Assert.Throws<InvalidGenesisBlockException>(() =>
             {
@@ -1966,7 +2037,7 @@ namespace Libplanet.Tests.Blockchain
                     x?.GetState(default);
                     // ReSharper restore AccessToModifiedClosure
                 });
-            var store = new MemoryStore();
+            IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var genesisTx = Transaction.Create(
                 0,
@@ -1984,7 +2055,16 @@ namespace Libplanet.Tests.Blockchain
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                genesisWithTx);
+                genesisWithTx,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: new BlockChainStates(store, stateStore),
+                    genesisHash: genesisWithTx.Hash,
+                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
 
             var blockTx = Transaction.Create(
                 0,
@@ -2032,14 +2112,27 @@ namespace Libplanet.Tests.Blockchain
                     actions: new IAction[] { systemAction }))
                 .ToImmutableList();
 
-            BlockChain<SetValidator> blockChain =
-                BlockChain<SetValidator>.Create(
-                    policy,
-                    new VolatileStagePolicy<SetValidator>(),
-                    storeFixture.Store,
-                    storeFixture.StateStore,
-                    BlockChain<SetValidator>.ProposeGenesisBlock(
-                        privateKey: privateKey, transactions: txs));
+            Block genesis = BlockChain<SetValidator>.ProposeGenesisBlock(
+                privateKey: privateKey,
+                transactions: txs
+            );
+            BlockChain<SetValidator> blockChain = BlockChain<SetValidator>.Create(
+                policy,
+                new VolatileStagePolicy<SetValidator>(),
+                storeFixture.Store,
+                storeFixture.StateStore,
+                genesis,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: new BlockChainStates(
+                        storeFixture.Store,
+                        storeFixture.StateStore),
+                    genesisHash: genesis.Hash,
+                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<SetValidator>(),
+                    feeCalculator: null
+                )
+            );
 
             blockChain.MakeTransaction(
                 new PrivateKey(),

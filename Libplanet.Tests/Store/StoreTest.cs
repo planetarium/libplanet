@@ -1056,7 +1056,16 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<NullAction>(),
                     s1,
                     fx.StateStore,
-                    genesis);
+                    genesis,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates: new BlockChainStates(s1, fx.StateStore),
+                        genesisHash: genesis.Hash,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        actionTypeLoader: StaticActionLoader.Create<NullAction>(),
+                        feeCalculator: null
+                    )
+                );
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();

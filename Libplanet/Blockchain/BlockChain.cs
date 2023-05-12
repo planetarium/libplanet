@@ -16,6 +16,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
@@ -137,8 +138,6 @@ namespace Libplanet.Blockchain
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
-                    trieGetter: hash =>
-                        stateStore.GetStateRoot(store.GetBlockDigest(hash)?.StateRootHash),
                     genesisHash: genesisBlock.Hash,
                     nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<T>(),
@@ -409,9 +408,9 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
+            ActionEvaluator actionEvaluator,
             IEnumerable<IRenderer<T>> renderers = null,
-            IBlockChainStates blockChainStates = null,
-            ActionEvaluator actionEvaluator = null)
+            IBlockChainStates blockChainStates = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)
@@ -421,6 +420,10 @@ namespace Libplanet.Blockchain
             else if (stateStore is null)
             {
                 throw new ArgumentNullException(nameof(stateStore));
+            }
+            else if (actionEvaluator is null)
+            {
+                throw new ArgumentNullException(nameof(actionEvaluator));
             }
             else if (store.GetCanonicalChainId() is { } canonId)
             {
@@ -473,16 +476,6 @@ namespace Libplanet.Blockchain
             stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
-            actionEvaluator ??= new ActionEvaluator(
-                _ => policy.BlockAction,
-                blockChainStates: blockChainStates,
-                trieGetter: hash => stateStore.GetStateRoot(
-                    store.GetBlockDigest(hash)?.StateRootHash),
-                genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                actionTypeLoader: StaticActionLoader.Create<T>(),
-                feeCalculator: null
-            );
 
             return new BlockChain<T>(
                 policy,
@@ -663,6 +656,10 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
         public ValidatorSet GetValidatorSet(BlockHash offset) =>
             _blockChainStates.GetValidatorSet(offset);
+
+        /// <inheritdoc cref="IBlockChainStates.GetTrie" />
+        public ITrie GetTrie(BlockHash offset) =>
+            _blockChainStates.GetTrie(offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

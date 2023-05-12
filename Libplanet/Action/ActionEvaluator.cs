@@ -28,7 +28,6 @@ namespace Libplanet.Action
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
-        private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
         private readonly IActionLoader _actionLoader;
         private readonly IFeeCalculator? _feeCalculator;
@@ -42,8 +41,6 @@ namespace Libplanet.Action
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
-        /// <param name="trieGetter">The function to retrieve a trie for
-        /// a provided <see cref="BlockHash"/>.</param>
         /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
         /// </param>
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
@@ -54,7 +51,6 @@ namespace Libplanet.Action
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
-            Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate,
             IActionLoader actionTypeLoader,
@@ -67,7 +63,6 @@ namespace Libplanet.Action
                 .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
-            _trieGetter = trieGetter;
             _genesisHash = genesisHash;
             _nativeTokenPredicate = nativeTokenPredicate;
             _actionLoader = actionTypeLoader;
@@ -114,9 +109,8 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                ITrie? previousBlockStatesTrie =
-                    !(_trieGetter is null) && block.PreviousHash is { } h
-                    ? _trieGetter(h)
+                ITrie? previousBlockStatesTrie = block.PreviousHash is { } previousHash
+                    ? _blockChainStates.GetTrie(previousHash)
                     : null;
                 IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
 

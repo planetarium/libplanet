@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -27,7 +28,16 @@ namespace Libplanet.Tests.Blockchain.Policies
                 StagePolicy,
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock);
+                _fx.GenesisBlock,
+                new ActionEvaluator(
+                    _ => _policy.BlockAction,
+                    blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
+                    genesisHash: _fx.GenesisBlock.Hash,
+                    nativeTokenPredicate: _policy.NativeTokens.Contains,
+                    actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                    feeCalculator: null
+                )
+            );
             _key = new PrivateKey();
             _txs = Enumerable.Range(0, 5).Select(i =>
                 Transaction.Create(

@@ -4,6 +4,7 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Blockchain
 {
@@ -45,5 +46,7 @@ namespace Libplanet.Blockchain
         {
             return new ValidatorSet();
         }
+
+        public ITrie? GetTrie(BlockHash offset) => null;
     }
 }

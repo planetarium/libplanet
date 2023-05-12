@@ -7,6 +7,7 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
@@ -135,6 +136,12 @@ namespace Libplanet.Blockchain
             }
 
             throw new IncompleteBlockStatesException(offset);
+        }
+
+        /// <inheritdoc cref="IBlockChainStates.GetTrie"/>
+        public ITrie? GetTrie(BlockHash offset)
+        {
+            return _stateStore.GetStateRoot(_store.GetBlockDigest(offset)?.StateRootHash);
         }
     }
 }

@@ -3,6 +3,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Blockchain
 {
@@ -68,5 +69,13 @@ namespace Libplanet.Blockchain
         /// <paramref name="offset"/>.
         /// </returns>
         ValidatorSet GetValidatorSet(BlockHash offset);
+
+        /// <summary>
+        /// Returns the state trie for <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state.</param>
+        /// <returns>The merkle trie instance for given <paramref name="offset"/>.</returns>
+        ITrie? GetTrie(BlockHash offset);
     }
 }
