@@ -135,15 +135,15 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluator
   fullName: Libplanet.Action.ActionEvaluator
   nameWithType: ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionLoader,Libplanet.Action.IFeeCalculator)
-  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable<BlockHash>, Predicate<Currency>, IActionLoader, IFeeCalculator)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Nullable_Libplanet_Blocks_BlockHash__System_Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionLoader_Libplanet_Action_IFeeCalculator_
-  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Nullable{Libplanet.Blocks.BlockHash},System.Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionLoader,Libplanet.Action.IFeeCalculator)
-  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable(Of BlockHash), Predicate(Of Currency), IActionLoader, IFeeCalculator)
-  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Nullable<Libplanet.Blocks.BlockHash>, System.Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionLoader, Libplanet.Action.IFeeCalculator)
-  fullName.vb: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionLoader, Libplanet.Action.IFeeCalculator)
-  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable<BlockHash>, Predicate<Currency>, IActionLoader, IFeeCalculator)
-  nameWithType.vb: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable(Of BlockHash), Predicate(Of Currency), IActionLoader, IFeeCalculator)
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IActionLoader,Libplanet.Action.IFeeCalculator)
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable<BlockHash>, IActionLoader, IFeeCalculator)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Action_IActionLoader_Libplanet_Action_IFeeCalculator_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IActionLoader,Libplanet.Action.IFeeCalculator)
+  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable(Of BlockHash), IActionLoader, IFeeCalculator)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Action.IActionLoader, Libplanet.Action.IFeeCalculator)
+  fullName.vb: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Action.IActionLoader, Libplanet.Action.IFeeCalculator)
+  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable<BlockHash>, IActionLoader, IFeeCalculator)
+  nameWithType.vb: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable(Of BlockHash), IActionLoader, IFeeCalculator)
 - uid: Libplanet.Action.ActionEvaluator.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
@@ -630,19 +630,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.GetUnconsumedContext
   nameWithType: IActionContext.GetUnconsumedContext
-- uid: Libplanet.Action.IActionContext.IsNativeToken(Libplanet.Assets.Currency)
-  name: IsNativeToken(Currency)
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_IsNativeToken_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Action.IActionContext.IsNativeToken(Libplanet.Assets.Currency)
-  fullName: Libplanet.Action.IActionContext.IsNativeToken(Libplanet.Assets.Currency)
-  nameWithType: IActionContext.IsNativeToken(Currency)
-- uid: Libplanet.Action.IActionContext.IsNativeToken*
-  name: IsNativeToken
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_IsNativeToken_
-  commentId: Overload:Libplanet.Action.IActionContext.IsNativeToken
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.IsNativeToken
-  nameWithType: IActionContext.IsNativeToken
 - uid: Libplanet.Action.IActionContext.Miner
   name: Miner
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Miner
@@ -3013,51 +3000,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.FungibleAssetValue.ToString
   nameWithType: FungibleAssetValue.ToString
-- uid: Libplanet.Assets.NonNativeTokenException
-  name: NonNativeTokenException
-  href: api/Libplanet.Assets.NonNativeTokenException.html
-  commentId: T:Libplanet.Assets.NonNativeTokenException
-  fullName: Libplanet.Assets.NonNativeTokenException
-  nameWithType: NonNativeTokenException
-- uid: Libplanet.Assets.NonNativeTokenException.#ctor(Libplanet.Assets.Currency,System.String)
-  name: NonNativeTokenException(Currency, String)
-  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException__ctor_Libplanet_Assets_Currency_System_String_
-  commentId: M:Libplanet.Assets.NonNativeTokenException.#ctor(Libplanet.Assets.Currency,System.String)
-  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeTokenException(Libplanet.Assets.Currency, System.String)
-  nameWithType: NonNativeTokenException.NonNativeTokenException(Currency, String)
-- uid: Libplanet.Assets.NonNativeTokenException.#ctor*
-  name: NonNativeTokenException
-  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException__ctor_
-  commentId: Overload:Libplanet.Assets.NonNativeTokenException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeTokenException
-  nameWithType: NonNativeTokenException.NonNativeTokenException
-- uid: Libplanet.Assets.NonNativeTokenException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Assets.NonNativeTokenException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Assets.NonNativeTokenException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: NonNativeTokenException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Assets.NonNativeTokenException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_GetObjectData_
-  commentId: Overload:Libplanet.Assets.NonNativeTokenException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Assets.NonNativeTokenException.GetObjectData
-  nameWithType: NonNativeTokenException.GetObjectData
-- uid: Libplanet.Assets.NonNativeTokenException.NonNativeToken
-  name: NonNativeToken
-  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_NonNativeToken
-  commentId: P:Libplanet.Assets.NonNativeTokenException.NonNativeToken
-  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeToken
-  nameWithType: NonNativeTokenException.NonNativeToken
-- uid: Libplanet.Assets.NonNativeTokenException.NonNativeToken*
-  name: NonNativeToken
-  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_NonNativeToken_
-  commentId: Overload:Libplanet.Assets.NonNativeTokenException.NonNativeToken
-  isSpec: "True"
-  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeToken
-  nameWithType: NonNativeTokenException.NonNativeToken
 - uid: Libplanet.Blockchain
   name: Libplanet.Blockchain
   href: api/Libplanet.Blockchain.html
@@ -3230,15 +3172,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineBlockStateRootHash
   nameWithType: BlockChain<T>.DetermineBlockStateRootHash
   nameWithType.vb: BlockChain(Of T).DetermineBlockStateRootHash
-- uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate<Currency>, out IReadOnlyList<IActionEvaluation>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency},System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name.vb: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate(Of Currency), ByRef IReadOnlyList(Of IActionEvaluation))
-  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.IActionEvaluation>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency), ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.IActionEvaluation))
-  nameWithType: BlockChain<T>.DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate<Currency>, out IReadOnlyList<IActionEvaluation>)
-  nameWithType.vb: BlockChain(Of T).DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, Predicate(Of Currency), ByRef IReadOnlyList(Of IActionEvaluation))
+- uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
+  name: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, out IReadOnlyList<IActionEvaluation>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
+  name.vb: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, ByRef IReadOnlyList(Of IActionEvaluation))
+  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.IActionEvaluation>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.IActionEvaluation))
+  nameWithType: BlockChain<T>.DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, out IReadOnlyList<IActionEvaluation>)
+  nameWithType.vb: BlockChain(Of T).DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, ByRef IReadOnlyList(Of IActionEvaluation))
 - uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash*
   name: DetermineGenesisStateRootHash
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_
@@ -3265,15 +3207,14 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateBlock
   nameWithType: BlockChain<T>.EvaluateBlock
   nameWithType.vb: BlockChain(Of T).EvaluateBlock
-- uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})
-  name: EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate<Currency>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})
-  name.vb: EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate(Of Currency))
-  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency))
-  nameWithType: BlockChain<T>.EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate<Currency>)
-  nameWithType.vb: BlockChain(Of T).EvaluateGenesis(IPreEvaluationBlock, IAction, Predicate(Of Currency))
+- uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)
+  name: EvaluateGenesis(IPreEvaluationBlock, IAction)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)
+  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction)
+  nameWithType: BlockChain<T>.EvaluateGenesis(IPreEvaluationBlock, IAction)
+  nameWithType.vb: BlockChain(Of T).EvaluateGenesis(IPreEvaluationBlock, IAction)
 - uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis*
   name: EvaluateGenesis
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_
@@ -3708,15 +3649,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeBlock
   nameWithType: BlockChain<T>.ProposeBlock
   nameWithType.vb: BlockChain(Of T).ProposeBlock
-- uid: Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})
-  name: ProposeGenesisBlock(PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction, Predicate<Currency>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_System_Predicate_Libplanet_Assets_Currency__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction,System.Predicate{Libplanet.Assets.Currency})
-  name.vb: ProposeGenesisBlock(PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction, Predicate(Of Currency))
-  fullName: Libplanet.Blockchain.BlockChain<T>.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList<Libplanet.Tx.Transaction>, System.Nullable<System.DateTimeOffset>, Libplanet.Action.IAction, System.Predicate<Libplanet.Assets.Currency>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeGenesisBlock(Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList(Of Libplanet.Tx.Transaction), System.Nullable(Of System.DateTimeOffset), Libplanet.Action.IAction, System.Predicate(Of Libplanet.Assets.Currency))
-  nameWithType: BlockChain<T>.ProposeGenesisBlock(PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction, Predicate<Currency>)
-  nameWithType.vb: BlockChain(Of T).ProposeGenesisBlock(PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction, Predicate(Of Currency))
+- uid: Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)
+  name: ProposeGenesisBlock(PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)
+  name.vb: ProposeGenesisBlock(PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction)
+  fullName: Libplanet.Blockchain.BlockChain<T>.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList<Libplanet.Tx.Transaction>, System.Nullable<System.DateTimeOffset>, Libplanet.Action.IAction)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeGenesisBlock(Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList(Of Libplanet.Tx.Transaction), System.Nullable(Of System.DateTimeOffset), Libplanet.Action.IAction)
+  nameWithType: BlockChain<T>.ProposeGenesisBlock(PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction)
+  nameWithType.vb: BlockChain(Of T).ProposeGenesisBlock(PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction)
 - uid: Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock*
   name: ProposeGenesisBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_
@@ -4154,15 +4095,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction,Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block,Libplanet.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Collections.Immutable.IImmutableSet{Libplanet.Assets.Currency})
-  name: BlockPolicy(IAction, Nullable<TimeSpan>, Func<BlockChain<T>, Transaction, TxPolicyViolationException>, Func<BlockChain<T>, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, IImmutableSet<Currency>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction_Libplanet_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_Libplanet_Blocks_BlockPolicyViolationException__System_Func_System_Int64_System_Int64__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Collections_Immutable_IImmutableSet_Libplanet_Assets_Currency__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction,Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block,Libplanet.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Collections.Immutable.IImmutableSet{Libplanet.Assets.Currency})
-  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Func(Of BlockChain(Of T), Transaction, TxPolicyViolationException), Func(Of BlockChain(Of T), Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), IImmutableSet(Of Currency))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction, Libplanet.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block, Libplanet.Blocks.BlockPolicyViolationException>, System.Func<System.Int64, System.Int64>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Collections.Immutable.IImmutableSet<Libplanet.Assets.Currency>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction, Libplanet.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block, Libplanet.Blocks.BlockPolicyViolationException), System.Func(Of System.Int64, System.Int64), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Collections.Immutable.IImmutableSet(Of Libplanet.Assets.Currency))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Func<BlockChain<T>, Transaction, TxPolicyViolationException>, Func<BlockChain<T>, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>, IImmutableSet<Currency>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Func(Of BlockChain(Of T), Transaction, TxPolicyViolationException), Func(Of BlockChain(Of T), Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32), IImmutableSet(Of Currency))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction,Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block,Libplanet.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name: BlockPolicy(IAction, Nullable<TimeSpan>, Func<BlockChain<T>, Transaction, TxPolicyViolationException>, Func<BlockChain<T>, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction_Libplanet_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_Libplanet_Blocks_BlockPolicyViolationException__System_Func_System_Int64_System_Int64__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction,Libplanet.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block,Libplanet.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Func(Of BlockChain(Of T), Transaction, TxPolicyViolationException), Func(Of BlockChain(Of T), Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction, Libplanet.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block, Libplanet.Blocks.BlockPolicyViolationException>, System.Func<System.Int64, System.Int64>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction, Libplanet.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block, Libplanet.Blocks.BlockPolicyViolationException), System.Func(Of System.Int64, System.Int64), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Func<BlockChain<T>, Transaction, TxPolicyViolationException>, Func<BlockChain<T>, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Func(Of BlockChain(Of T), Transaction, TxPolicyViolationException), Func(Of BlockChain(Of T), Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -4299,23 +4240,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMinTransactionsPerBlock
   nameWithType: BlockPolicy<T>.GetMinTransactionsPerBlock
   nameWithType.vb: BlockPolicy(Of T).GetMinTransactionsPerBlock
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens
-  name: NativeTokens
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_NativeTokens
-  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.NativeTokens
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).NativeTokens
-  nameWithType: BlockPolicy<T>.NativeTokens
-  nameWithType.vb: BlockPolicy(Of T).NativeTokens
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens*
-  name: NativeTokens
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_NativeTokens_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.NativeTokens
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).NativeTokens
-  nameWithType: BlockPolicy<T>.NativeTokens
-  nameWithType.vb: BlockPolicy(Of T).NativeTokens
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block)
   name: ValidateNextBlock(BlockChain<T>, Block)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_
@@ -4463,23 +4387,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMinTransactionsPerBlock
   nameWithType: IBlockPolicy<T>.GetMinTransactionsPerBlock
   nameWithType.vb: IBlockPolicy(Of T).GetMinTransactionsPerBlock
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens
-  name: NativeTokens
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_NativeTokens
-  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.NativeTokens
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).NativeTokens
-  nameWithType: IBlockPolicy<T>.NativeTokens
-  nameWithType.vb: IBlockPolicy(Of T).NativeTokens
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens*
-  name: NativeTokens
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_NativeTokens_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.NativeTokens
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).NativeTokens
-  nameWithType: IBlockPolicy<T>.NativeTokens
-  nameWithType.vb: IBlockPolicy(Of T).NativeTokens
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block)
   name: ValidateNextBlock(BlockChain<T>, Block)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_
@@ -4796,23 +4703,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMinTransactionsPerBlock
   nameWithType: NullBlockPolicy<T>.GetMinTransactionsPerBlock
   nameWithType.vb: NullBlockPolicy(Of T).GetMinTransactionsPerBlock
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens
-  name: NativeTokens
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_NativeTokens
-  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.NativeTokens
-  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).NativeTokens
-  nameWithType: NullBlockPolicy<T>.NativeTokens
-  nameWithType.vb: NullBlockPolicy(Of T).NativeTokens
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens*
-  name: NativeTokens
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_NativeTokens_
-  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.NativeTokens
-  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).NativeTokens
-  nameWithType: NullBlockPolicy<T>.NativeTokens
-  nameWithType.vb: NullBlockPolicy(Of T).NativeTokens
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block)
   name: ValidateNextBlock(BlockChain<T>, Block)
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block_
@@ -11826,19 +11716,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy
   nameWithType: BlockPolicyParams.GetBlockPolicy
-- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
-  name: GetNativeTokens()
-  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetNativeTokens
-  commentId: M:Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
-  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens()
-  nameWithType: BlockPolicyParams.GetNativeTokens()
-- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens*
-  name: GetNativeTokens
-  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetNativeTokens_
-  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
-  isSpec: "True"
-  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetNativeTokens
-  nameWithType: BlockPolicyParams.GetNativeTokens
 - uid: Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies
   name: LoadAssemblies()
   href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_LoadAssemblies
