@@ -6,7 +6,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of downloading blocks.
     /// </summary>
-    public class BlockDownloadState : PreloadState, IEquatable<BlockDownloadState>
+    public class BlockDownloadState : BlockSyncState, IEquatable<BlockDownloadState>
     {
         /// <summary>
         /// Total number of blocks to receive in the current batch.

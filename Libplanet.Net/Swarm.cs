@@ -265,7 +265,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{BlockSyncState}, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
@@ -301,7 +301,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{BlockSyncState}, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
@@ -343,7 +343,7 @@ namespace Libplanet.Net
                         _cancellationToken
                     ),
                     () => ConsumeBlockCandidates(
-                        TimeSpan.FromMilliseconds(10), true, _cancellationToken),
+                        TimeSpan.FromMilliseconds(10), true, null, _cancellationToken),
                     () => RefreshTableAsync(
                         Options.RefreshPeriod,
                         Options.RefreshLifespan,
@@ -514,7 +514,7 @@ namespace Libplanet.Net
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed.</exception>
         public async Task PreloadAsync(
-            IProgress<PreloadState> progress = null,
+            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             await PreloadAsync(
@@ -554,7 +554,7 @@ namespace Libplanet.Net
         public async Task PreloadAsync(
             TimeSpan? dialTimeout,
             long tipDeltaThreshold,
-            IProgress<PreloadState> progress = null,
+            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
@@ -630,10 +630,12 @@ namespace Libplanet.Net
                 BlockCandidateTable.Cleanup((_) => true);
                 await PullBlocksAsync(
                     peersWithExcerpts,
+                    progress,
                     cancellationToken);
 
                 await ConsumeBlockCandidates(
                     render: false,
+                    progress: progress,
                     cancellationToken: cancellationToken);
             }
 
@@ -978,7 +980,7 @@ namespace Libplanet.Net
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
-            IProgress<PreloadState> progress,
+            IProgress<BlockSyncState> progress,
             [EnumeratorCancellation] CancellationToken cancellationToken
         )
         {

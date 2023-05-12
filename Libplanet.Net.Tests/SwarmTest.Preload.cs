@@ -140,8 +140,8 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            var actualStates = new List<PreloadState>();
-            var progress = new ActionProgress<PreloadState>(state =>
+            var actualStates = new List<BlockSyncState>();
+            var progress = new ActionProgress<BlockSyncState>(state =>
             {
                 _logger.Information("Received a progress event: {@State}", state);
                 lock (actualStates)
@@ -189,7 +189,7 @@ namespace Libplanet.Net.Tests
 
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
-                var expectedStates = new List<PreloadState>();
+                var expectedStates = new List<BlockSyncState>();
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
@@ -518,8 +518,8 @@ namespace Libplanet.Net.Tests
                 minerChain.Append(block, CreateBlockCommit(block));
             }
 
-            var actualStates = new List<PreloadState>();
-            var progress = new ActionProgress<PreloadState>(state =>
+            var actualStates = new List<BlockSyncState>();
+            var progress = new ActionProgress<BlockSyncState>(state =>
             {
                 lock (actualStates)
                 {
@@ -548,7 +548,7 @@ namespace Libplanet.Net.Tests
 
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
-                var expectedStates = new List<PreloadState>();
+                var expectedStates = new List<BlockSyncState>();
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
@@ -651,7 +651,7 @@ namespace Libplanet.Net.Tests
             var shouldStopSwarm =
                 swarm0.AsPeer.Equals(receiverSwarm.Peers.First()) ? swarm0 : swarm1;
 
-            async void Action(PreloadState state)
+            async void Action(BlockSyncState state)
             {
                 if (!startedStop && state is BlockDownloadState)
                 {
@@ -660,7 +660,7 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            await receiverSwarm.PreloadAsync(progress: new ActionProgress<PreloadState>(Action));
+            await receiverSwarm.PreloadAsync(progress: new ActionProgress<BlockSyncState>(Action));
 
             Assert.Equal(swarm1.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
@@ -885,7 +885,7 @@ namespace Libplanet.Net.Tests
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithBlockExcerpt,
-                progress: new ActionProgress<PreloadState>(state =>
+                progress: new ActionProgress<BlockSyncState>(state =>
                 {
                     if (state is BlockHashDownloadState s &&
                         s.ReceivedBlockHashCount > minerChain.Count / 2)
@@ -1080,7 +1080,7 @@ namespace Libplanet.Net.Tests
 
             var actionExecutionCount = 0;
 
-            var progress = new ActionProgress<PreloadState>(state =>
+            var progress = new ActionProgress<BlockSyncState>(state =>
             {
                 if (state is ActionExecutionState)
                 {

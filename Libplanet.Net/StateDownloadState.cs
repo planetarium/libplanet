@@ -3,7 +3,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of downloading states.
     /// </summary>
-    public class StateDownloadState : PreloadState
+    public class StateDownloadState : BlockSyncState
     {
         /// <summary>
         /// Total number of messages to receive in the current batch.

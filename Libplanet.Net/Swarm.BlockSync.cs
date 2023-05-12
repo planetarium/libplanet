@@ -1,16 +1,12 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using Libplanet.Store;
-using Libplanet.Tx;
 using Nito.AsyncEx;
-using BlockChainSlice = System.Collections.Generic.LinkedList<Libplanet.Blocks.BlockHash>;
 
 namespace Libplanet.Net
 {
@@ -44,6 +40,9 @@ namespace Libplanet.Net
         /// The timeout value for the request to get the tip of the block.
         /// </param>
         /// <param name="maximumPollPeers">The maximum targets to send request to.</param>
+        /// <param name="progress">
+        /// An instance that receives progress updates for block downloads.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
@@ -51,6 +50,7 @@ namespace Libplanet.Net
         internal async Task PullBlocksAsync(
             TimeSpan? timeout,
             int maximumPollPeers,
+            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
             if (maximumPollPeers <= 0)
@@ -63,11 +63,12 @@ namespace Libplanet.Net
                     timeout, maximumPollPeers, cancellationToken);
             peersWithBlockExcerpt = peersWithBlockExcerpt
                 .Where(pair => IsBlockNeeded(pair.Item2)).ToList();
-            await PullBlocksAsync(peersWithBlockExcerpt, cancellationToken);
+            await PullBlocksAsync(peersWithBlockExcerpt, progress, cancellationToken);
         }
 
         private async Task PullBlocksAsync(
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt,
+            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
             if (!peersWithBlockExcerpt.Any())
@@ -76,7 +77,8 @@ namespace Libplanet.Net
                 return;
             }
 
-            var totalBlocksToDownload = 0L;
+            long totalBlocksToDownload = 0L;
+            long receivedBlockCount = 0L;
             Block tempTip = BlockChain.Tip;
             var blocks = new List<(Block, BlockCommit)>();
 
@@ -89,7 +91,7 @@ namespace Libplanet.Net
                 var demandBlockHashes = GetDemandBlockHashes(
                     BlockChain,
                     peersWithBlockExcerpt,
-                    null,
+                    progress,
                     cancellationToken
                 ).WithCancellation(cancellationToken);
                 await foreach ((long index, BlockHash hash) in demandBlockHashes)
@@ -188,6 +190,16 @@ namespace Libplanet.Net
                     {
                         tempTip = block;
                     }
+
+                    progress?.Report(new BlockDownloadState
+                    {
+                        TotalBlockCount = Math.Max(
+                            totalBlocksToDownload,
+                            ++receivedBlockCount),
+                        ReceivedBlockCount = receivedBlockCount,
+                        ReceivedBlockHash = block.Hash,
+                        SourcePeer = sourcePeer,
+                    });
                 }
 
                 BlockHash? previousHash = blocks.First().Item1.PreviousHash;
@@ -293,7 +305,7 @@ namespace Libplanet.Net
                         lastTip.Hash,
                         lastUpdated
                     );
-                    await PullBlocksAsync(timeout, maximumPollPeers, cancellationToken);
+                    await PullBlocksAsync(timeout, maximumPollPeers, null, cancellationToken);
                 }
 
                 await Task.Delay(1000, cancellationToken);

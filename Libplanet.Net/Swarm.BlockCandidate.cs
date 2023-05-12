@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Net
 {
@@ -17,6 +19,7 @@ namespace Libplanet.Net
         private async Task ConsumeBlockCandidates(
             TimeSpan? checkInterval = null,
             bool render = true,
+            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -38,6 +41,7 @@ namespace Libplanet.Net
                         _ = BlockCandidateProcess(
                             branch,
                             render,
+                            progress,
                             cancellationToken);
                         BlockAppended.Set();
                     }
@@ -59,6 +63,7 @@ namespace Libplanet.Net
         private bool BlockCandidateProcess(
             Branch candidate,
             bool render,
+            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
@@ -73,7 +78,8 @@ namespace Libplanet.Net
                     BlockChain.Tip.Hash);
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
-                    candidate: candidate);
+                    candidate: candidate,
+                    progress: progress);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
                     "{MethodName}() finished appending blocks; synced tip is #{Index} {Hash}",
@@ -117,7 +123,8 @@ namespace Libplanet.Net
 
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
-            Branch candidate)
+            Branch candidate,
+            IProgress<BlockSyncState> progress)
         {
             BlockChain<T> workspace = blockChain;
             List<Guid> scope = new List<Guid>();
@@ -175,9 +182,32 @@ namespace Libplanet.Net
 
             try
             {
+                var actionExecutionState = new ActionExecutionState()
+                {
+                    TotalBlockCount = blocks.Count,
+                    ExecutedBlockCount = 0,
+                };
+                long txsCount = 0, actionsCount = 0;
+                long verifiedBlockCount = 0;
+
                 foreach (var (block, commit) in blocks)
                 {
                     workspace.Append(block, commit, render: false);
+                    actionExecutionState.ExecutedBlockCount += 1;
+                    actionExecutionState.ExecutedBlockHash = block.Hash;
+                    IEnumerable<Transaction>
+                        transactions = block.Transactions.ToImmutableArray();
+                    txsCount += transactions.Count();
+                    actionsCount += transactions.Sum(
+                        tx => tx.Actions is { } actions ? actions.Count : 1L);
+                    progress?.Report(actionExecutionState);
+                    progress?.Report(
+                        new BlockVerificationState
+                        {
+                            TotalBlockCount = blocks.Count,
+                            VerifiedBlockCount = ++verifiedBlockCount,
+                            VerifiedBlockHash = block.Hash,
+                        });
                 }
             }
             catch (Exception e)
