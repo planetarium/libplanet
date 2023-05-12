@@ -79,6 +79,7 @@ namespace Libplanet.Net
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
                     candidate: candidate,
+                    render: render,
                     progress: progress);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
@@ -124,10 +125,12 @@ namespace Libplanet.Net
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
             Branch candidate,
+            bool render,
             IProgress<BlockSyncState> progress)
         {
             BlockChain<T> workspace = blockChain;
             List<Guid> scope = new List<Guid>();
+            bool forked = false;
 
             Block oldTip = workspace.Tip;
             Block newTip = candidate.Blocks.Last().Item1;
@@ -167,6 +170,7 @@ namespace Libplanet.Net
                     nameof(AppendPreviousBlocks)
                 );
                 workspace = workspace.Fork(branchpoint.Hash);
+                forked = true;
                 scope.Add(workspace.Id);
                 _logger.Debug(
                     "Fork finished. at {MethodName}()",
@@ -192,7 +196,7 @@ namespace Libplanet.Net
 
                 foreach (var (block, commit) in blocks)
                 {
-                    workspace.Append(block, commit, render: false);
+                    workspace.Append(block, commit, render: render && !forked);
                     actionExecutionState.ExecutedBlockCount += 1;
                     actionExecutionState.ExecutedBlockHash = block.Hash;
                     IEnumerable<Transaction>
