@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -17,10 +16,7 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        protected StoreFixture(
-            IAction blockAction = null,
-            IImmutableSet<Currency> nativeTokens = null
-        )
+        protected StoreFixture(IAction blockAction = null)
         {
             Path = null;
 

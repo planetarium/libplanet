@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Threading;
-using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -19,7 +18,6 @@ namespace Libplanet.Action
 
         private readonly int _randomSeed;
         private readonly ITrie? _previousBlockStatesTrie;
-        private readonly Predicate<Currency>? _nativeTokenPredicate;
         private readonly long _gasLimit;
         private HashDigest<SHA256>? _previousStateRootHash;
 
@@ -35,7 +33,6 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
-            Predicate<Currency>? nativeTokenPredicate = null,
             List<string>? logs = null)
         {
             GenesisHash = genesisHash;
@@ -50,7 +47,6 @@ namespace Libplanet.Action
             _gasLimit = gasLimit;
             _previousBlockStatesTrie = previousBlockStatesTrie;
             BlockAction = blockAction;
-            _nativeTokenPredicate = nativeTokenPredicate;
             Logs = logs ?? new List<string>();
 
             GetStateTimer.Value = new Stopwatch();
@@ -92,9 +88,6 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.PutLog(string)"/>
         public void PutLog(string log) => Logs.Add(log);
 
-        public bool IsNativeToken(Currency currency) =>
-            _nativeTokenPredicate is { } && _nativeTokenPredicate(currency);
-
         [Pure]
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(
@@ -109,7 +102,6 @@ namespace Libplanet.Action
                 Rehearsal,
                 _previousBlockStatesTrie,
                 BlockAction,
-                _nativeTokenPredicate,
                 new List<string>());
 
         /// <summary>

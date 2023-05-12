@@ -19,7 +19,6 @@ using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -468,8 +467,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Block ProposeGenesisBlock<T>(
             PreEvaluationBlock preEval,
             PrivateKey privateKey,
-            IAction blockAction = null,
-            Predicate<Currency> nativeTokenPredicate = null)
+            IAction blockAction = null)
                 where T : IAction, new()
         {
             return preEval.Sign(

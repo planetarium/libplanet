@@ -89,8 +89,7 @@ namespace Libplanet.Tests.Action.Sys
                 rehearsal: false,
                 previousBlockStatesTrie: null,
                 blockAction: false,
-                genesisHash: genesisHash,
-                nativeTokenPredicate: FOO.Equals
+                genesisHash: genesisHash
             );
             Address recipient = random.NextAddress();
             var transferFoo = new Transfer(recipient, FOO * 125);
