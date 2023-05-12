@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -108,7 +109,7 @@ public class GeneratedBlockChainFixture
                 policyBlockActionGetter: _ => policy.BlockAction,
                 blockChainStates: new BlockChainStates(store, stateStore),
                 genesisHash: genesisBlock.Hash,
-                actionTypeLoader: StaticActionLoader.Create<SimpleAction>(),
+                actionTypeLoader: new SingleActionLoader(typeof(PolymorphicAction<SimpleAction>)),
                 feeCalculator: null
             )
         );

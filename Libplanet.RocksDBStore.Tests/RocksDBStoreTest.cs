@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Store;
@@ -87,7 +88,7 @@ namespace Libplanet.RocksDBStore.Tests
                         policyBlockActionGetter: _ => null,
                         blockChainStates: new BlockChainStates(store, stateStore),
                         genesisHash: Fx.GenesisBlock.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

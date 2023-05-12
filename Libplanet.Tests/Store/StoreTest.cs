@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -1061,7 +1062,7 @@ namespace Libplanet.Tests.Store
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(s1, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<NullAction>(),
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                         feeCalculator: null
                     )
                 );

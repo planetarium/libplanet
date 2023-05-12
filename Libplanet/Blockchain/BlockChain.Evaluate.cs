@@ -7,6 +7,7 @@ using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -74,7 +75,7 @@ namespace Libplanet.Blockchain
                 _ => blockAction,
                 blockChainStates: NullChainStates.Instance,
                 genesisHash: null,
-                actionTypeLoader: StaticActionLoader.Create<T>(),
+                actionTypeLoader: new SingleActionLoader(typeof(T)),
                 feeCalculator: null);
             return actionEvaluator.Evaluate(preEvaluationBlock);
         }

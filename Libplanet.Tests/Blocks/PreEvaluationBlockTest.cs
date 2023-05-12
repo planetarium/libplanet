@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -55,7 +56,7 @@ namespace Libplanet.Tests.Blocks
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
+                        actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
                         feeCalculator: null
                     )
                 );
@@ -122,7 +123,7 @@ namespace Libplanet.Tests.Blocks
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
+                        actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
                         feeCalculator: null
                     )
                 );

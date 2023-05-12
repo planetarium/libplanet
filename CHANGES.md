@@ -8,6 +8,9 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Removed `StaticActionLoader` class.  Use `SingleActionLoader` instead.
+    [[#3148]]
+
 ### Backward-incompatible API changes
 
  -  Removed type parameter `T` from `Transaction.Create<T>()` and
@@ -21,6 +24,8 @@ To be released.
        `RenderActionError(IAction, IActionContext, Exception)`
         method was changed to
         `RenderActionError(IValue, IActionContext, Exception)`.
+ -  Added `SingleActionLoader`, `TypedActionLoader`, and `IndexedActionLoader`
+    classes.  [[#3148]]
  -  Removed `trieGetter` parameter from `ActionEvaluator` constructor.
     [[#3149]]
  -  Added `IBlockChainStates.GetTrie()` interface method.  [[#3149]]
@@ -39,6 +44,7 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
  -  Added `IActionContext.GasUsed()` method.
     [[#3144]]
  -  Added `IActionContext.GasLimit()` method.
@@ -59,10 +65,10 @@ To be released.
 
 [#3117]: https://github.com/planetarium/libplanet/pull/3117
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
+[#3144]: https://github.com/planetarium/libplanet/pull/3144
+[#3148]: https://github.com/planetarium/libplanet/pull/3148
 [#3149]: https://github.com/planetarium/libplanet/pull/3149
 [#3153]: https://github.com/planetarium/libplanet/pull/3153
-
-[#3144]: https://github.com/planetarium/libplanet/pull/3144
 
 
 Version 1.1.0

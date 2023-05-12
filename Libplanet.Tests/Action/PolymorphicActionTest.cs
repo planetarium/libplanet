@@ -5,11 +5,19 @@ using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
     public class PolymorphicActionTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public PolymorphicActionTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void PlainValue()
         {
@@ -112,7 +120,6 @@ namespace Libplanet.Tests.Action
         {
             var a = new IntegerTypeIdAction("test string");
             var pv = new PolymorphicAction<BaseAction>(a).PlainValue;
-            IValue plainValue = Null.Value;
 #pragma warning disable 612
             var pa = new PolymorphicAction<BaseAction>();
 #pragma warning restore 612
@@ -126,21 +133,19 @@ namespace Libplanet.Tests.Action
         public void DuplicateTypeId()
         {
 #pragma warning disable CS0612
-            var pa = new PolymorphicAction<DupActionBase>();
+            TypeInitializationException e =
+                Assert.Throws<TypeInitializationException>(
+                    () => new PolymorphicAction<DupActionBase>());
 #pragma warning restore CS0612
             var dup = new Text("dup");
             Bencodex.Types.Dictionary plainValue = Bencodex.Types.Dictionary.Empty
                 .Add("type_id", dup)
                 .Add("values", Null.Value);
-            DuplicateActionTypeIdentifierException e =
-                Assert.Throws<DuplicateActionTypeIdentifierException>(
-                    () => pa.LoadPlainValue(plainValue)
-                );
-            Assert.Equal(dup.ToString(), e.TypeIdentifier);
+            var inner = Assert.IsType<DuplicateActionTypeIdentifierException>(e.InnerException);
+            Assert.Equal(dup.ToString(), inner.TypeIdentifier);
             Assert.Equal(
                 ImmutableHashSet.Create(typeof(DupActionA), typeof(DupActionB)),
-                e.DuplicateActionTypes
-            );
+                inner.DuplicateActionTypes);
         }
 
         [ActionType(2739)]
