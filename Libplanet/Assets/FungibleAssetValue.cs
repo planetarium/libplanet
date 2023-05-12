@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bencodex.Types;
 using Libplanet.Serialization;
 
 namespace Libplanet.Assets
@@ -41,6 +42,25 @@ namespace Libplanet.Assets
         /// </remarks>
         /// <seealso cref="FromRawValue(Assets.Currency, BigInteger)"/>
         public readonly BigInteger RawValue;
+
+        public FungibleAssetValue(IValue value)
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (!(value is Bencodex.Types.Dictionary dict))
+            {
+                throw new ArgumentException(
+                    $"The given value is not a dictionary: {value}",
+                    nameof(value)
+                );
+            }
+
+            Currency = new Currency(dict.GetValue<IValue>("c"));
+            RawValue = dict.GetValue<Bencodex.Types.Integer>("r");
+        }
 
         /// <summary>
         /// Creates a zero value of the <paramref name="currency"/>.
@@ -637,6 +657,10 @@ namespace Libplanet.Assets
         [Pure]
         public override string ToString() =>
             $"{GetQuantityString()} {Currency.Ticker}";
+
+        public IValue Serialize() => Dictionary.Empty
+                .Add("c", Currency.Serialize())
+                .Add("r", (Bencodex.Types.Integer)RawValue);
     }
 
     [SuppressMessage(
