@@ -2114,7 +2114,7 @@ namespace Libplanet.Tests.Blockchain
                         storeFixture.Store,
                         storeFixture.StateStore),
                     genesisHash: genesis.Hash,
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
+                    actionTypeLoader: new SingleActionLoader(typeof(SetValidator)),
                     feeCalculator: null
                 )
             );
