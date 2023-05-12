@@ -356,6 +356,89 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ExtractableException.ExtractMetadata
   nameWithType: ExtractableException.ExtractMetadata
+- uid: Libplanet.Action.GasLimitExceededException
+  name: GasLimitExceededException
+  href: api/Libplanet.Action.GasLimitExceededException.html
+  commentId: T:Libplanet.Action.GasLimitExceededException
+  fullName: Libplanet.Action.GasLimitExceededException
+  nameWithType: GasLimitExceededException
+- uid: Libplanet.Action.GasLimitExceededException.#ctor(System.Int64,System.Int64)
+  name: GasLimitExceededException(Int64, Int64)
+  href: api/Libplanet.Action.GasLimitExceededException.html#Libplanet_Action_GasLimitExceededException__ctor_System_Int64_System_Int64_
+  commentId: M:Libplanet.Action.GasLimitExceededException.#ctor(System.Int64,System.Int64)
+  fullName: Libplanet.Action.GasLimitExceededException.GasLimitExceededException(System.Int64, System.Int64)
+  nameWithType: GasLimitExceededException.GasLimitExceededException(Int64, Int64)
+- uid: Libplanet.Action.GasLimitExceededException.#ctor*
+  name: GasLimitExceededException
+  href: api/Libplanet.Action.GasLimitExceededException.html#Libplanet_Action_GasLimitExceededException__ctor_
+  commentId: Overload:Libplanet.Action.GasLimitExceededException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.GasLimitExceededException.GasLimitExceededException
+  nameWithType: GasLimitExceededException.GasLimitExceededException
+- uid: Libplanet.Action.GasLimitExceededException.Limit
+  name: Limit
+  href: api/Libplanet.Action.GasLimitExceededException.html#Libplanet_Action_GasLimitExceededException_Limit
+  commentId: P:Libplanet.Action.GasLimitExceededException.Limit
+  fullName: Libplanet.Action.GasLimitExceededException.Limit
+  nameWithType: GasLimitExceededException.Limit
+- uid: Libplanet.Action.GasLimitExceededException.Limit*
+  name: Limit
+  href: api/Libplanet.Action.GasLimitExceededException.html#Libplanet_Action_GasLimitExceededException_Limit_
+  commentId: Overload:Libplanet.Action.GasLimitExceededException.Limit
+  isSpec: "True"
+  fullName: Libplanet.Action.GasLimitExceededException.Limit
+  nameWithType: GasLimitExceededException.Limit
+- uid: Libplanet.Action.GasLimitExceededException.Used
+  name: Used
+  href: api/Libplanet.Action.GasLimitExceededException.html#Libplanet_Action_GasLimitExceededException_Used
+  commentId: P:Libplanet.Action.GasLimitExceededException.Used
+  fullName: Libplanet.Action.GasLimitExceededException.Used
+  nameWithType: GasLimitExceededException.Used
+- uid: Libplanet.Action.GasLimitExceededException.Used*
+  name: Used
+  href: api/Libplanet.Action.GasLimitExceededException.html#Libplanet_Action_GasLimitExceededException_Used_
+  commentId: Overload:Libplanet.Action.GasLimitExceededException.Used
+  isSpec: "True"
+  fullName: Libplanet.Action.GasLimitExceededException.Used
+  nameWithType: GasLimitExceededException.Used
+- uid: Libplanet.Action.GasLimitNegativeException
+  name: GasLimitNegativeException
+  href: api/Libplanet.Action.GasLimitNegativeException.html
+  commentId: T:Libplanet.Action.GasLimitNegativeException
+  fullName: Libplanet.Action.GasLimitNegativeException
+  nameWithType: GasLimitNegativeException
+- uid: Libplanet.Action.GasLimitNegativeException.#ctor
+  name: GasLimitNegativeException()
+  href: api/Libplanet.Action.GasLimitNegativeException.html#Libplanet_Action_GasLimitNegativeException__ctor
+  commentId: M:Libplanet.Action.GasLimitNegativeException.#ctor
+  fullName: Libplanet.Action.GasLimitNegativeException.GasLimitNegativeException()
+  nameWithType: GasLimitNegativeException.GasLimitNegativeException()
+- uid: Libplanet.Action.GasLimitNegativeException.#ctor*
+  name: GasLimitNegativeException
+  href: api/Libplanet.Action.GasLimitNegativeException.html#Libplanet_Action_GasLimitNegativeException__ctor_
+  commentId: Overload:Libplanet.Action.GasLimitNegativeException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.GasLimitNegativeException.GasLimitNegativeException
+  nameWithType: GasLimitNegativeException.GasLimitNegativeException
+- uid: Libplanet.Action.GasUseNegativeException
+  name: GasUseNegativeException
+  href: api/Libplanet.Action.GasUseNegativeException.html
+  commentId: T:Libplanet.Action.GasUseNegativeException
+  fullName: Libplanet.Action.GasUseNegativeException
+  nameWithType: GasUseNegativeException
+- uid: Libplanet.Action.GasUseNegativeException.#ctor
+  name: GasUseNegativeException()
+  href: api/Libplanet.Action.GasUseNegativeException.html#Libplanet_Action_GasUseNegativeException__ctor
+  commentId: M:Libplanet.Action.GasUseNegativeException.#ctor
+  fullName: Libplanet.Action.GasUseNegativeException.GasUseNegativeException()
+  nameWithType: GasUseNegativeException.GasUseNegativeException()
+- uid: Libplanet.Action.GasUseNegativeException.#ctor*
+  name: GasUseNegativeException
+  href: api/Libplanet.Action.GasUseNegativeException.html#Libplanet_Action_GasUseNegativeException__ctor_
+  commentId: Overload:Libplanet.Action.GasUseNegativeException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.GasUseNegativeException.GasUseNegativeException
+  nameWithType: GasUseNegativeException.GasUseNegativeException
 - uid: Libplanet.Action.IAccountStateDelta
   name: IAccountStateDelta
   href: api/Libplanet.Action.IAccountStateDelta.html
@@ -604,6 +687,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.BlockIndex
   nameWithType: IActionContext.BlockIndex
+- uid: Libplanet.Action.IActionContext.GasLimit
+  name: GasLimit()
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GasLimit
+  commentId: M:Libplanet.Action.IActionContext.GasLimit
+  fullName: Libplanet.Action.IActionContext.GasLimit()
+  nameWithType: IActionContext.GasLimit()
+- uid: Libplanet.Action.IActionContext.GasLimit*
+  name: GasLimit
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GasLimit_
+  commentId: Overload:Libplanet.Action.IActionContext.GasLimit
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.GasLimit
+  nameWithType: IActionContext.GasLimit
+- uid: Libplanet.Action.IActionContext.GasUsed
+  name: GasUsed()
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GasUsed
+  commentId: M:Libplanet.Action.IActionContext.GasUsed
+  fullName: Libplanet.Action.IActionContext.GasUsed()
+  nameWithType: IActionContext.GasUsed()
+- uid: Libplanet.Action.IActionContext.GasUsed*
+  name: GasUsed
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GasUsed_
+  commentId: Overload:Libplanet.Action.IActionContext.GasUsed
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.GasUsed
+  nameWithType: IActionContext.GasUsed
 - uid: Libplanet.Action.IActionContext.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GenesisHash

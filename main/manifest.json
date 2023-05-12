@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "Gl9XRbkvaoGhvQGfaC46HfXDOCyoQiIMw5POTiZEBqg="
+          "hash": "yQu8BUovxp43VLdiLff/gYfYI0eySQqHgSDqR5Pv0jk="
         }
       },
       "is_incremental": false,
@@ -209,6 +209,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.GasLimitExceededException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.GasLimitExceededException.html",
+          "hash": "b7LIW0WuYdNEBli06ACbgMQ1+pVSuVum90fgw9UY4SA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.GasLimitNegativeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.GasLimitNegativeException.html",
+          "hash": "sX/EEWcK/UwqxDU7jV/YeXYw1sOo+7YvZ1vj/ce+Mv4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.GasUseNegativeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.GasUseNegativeException.html",
+          "hash": "A8CGJI0B3KOD70hOvfggTZGbsbAkYgRuE+EMNmYTbSM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Action.IAccountStateDelta.yml",
       "output": {
         ".html": {
@@ -249,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IActionContext.html",
-          "hash": "M2W1aAwPdceD2JE8NlCIN38843/OKgfrTVy+RqWq4rQ="
+          "hash": "VDd0JTyERKFJgxT9uP/gS1nhrLiWUW3rtMfzPqecokc="
         }
       },
       "is_incremental": false,
@@ -573,7 +609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.html",
-          "hash": "iNtvVPV5kcjOi3lnXknY/BNb7EkO46kt2GB5RBIcsag="
+          "hash": "CdDLgUmFJnIzVXvNjPA0nULXnfAAFzVk4IJ2/dlP8NE="
         }
       },
       "is_incremental": false,
@@ -4557,7 +4593,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "m17Q+m/Gz8+rCHgbhzbtlBKLWtYRMXVpICwPi7IN+JY="
+          "hash": "Mgg/2u7ABnn1cBnlibyC5r+khTmqmUZ0KBuMVU1ozbk="
         }
       },
       "is_incremental": false,
@@ -4666,7 +4702,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 369,
+          "total_file_count": 372,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
