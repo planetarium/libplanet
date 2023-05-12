@@ -473,11 +473,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             return preEval.Sign(
                 privateKey,
-                BlockChain<T>.DetermineGenesisStateRootHash(
-                    preEval,
-                    blockAction,
-                    nativeTokenPredicate ?? (Predicate<Currency>)(_ => true),
-                    out _));
+                BlockChain<T>.DetermineGenesisStateRootHash(preEval, blockAction, out _));
         }
 
         public static PreEvaluationBlock ProposeNext(
@@ -621,7 +617,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(
                     preEval,
                     policy.BlockAction,
-                    policy.NativeTokens.Contains,
                     out _);
                 genesisBlock = protocolVersion < 2
                     ? new Block(
@@ -640,7 +635,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     genesisHash: genesisBlock.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<T>(),
                     feeCalculator: null
             );

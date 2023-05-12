@@ -395,7 +395,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: fx.GenesisBlock.Hash,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )

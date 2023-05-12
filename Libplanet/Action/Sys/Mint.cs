@@ -10,7 +10,6 @@ namespace Libplanet.Action.Sys
     /// A system action that mints specified <see cref="Amount"/> of tokens to a given
     /// <see cref="Recipient"/>.
     /// </summary>
-    /// <remarks>Only native tokens can be minted.</remarks>
     [JsonConverter(typeof(SysActionJsonConverter))]
     [ActionType(0)]
     public sealed class Mint : IAction, IEquatable<Mint>, IEquatable<IAction>
@@ -101,14 +100,6 @@ namespace Libplanet.Action.Sys
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
         public IAccountStateDelta Execute(IActionContext context)
         {
-            if (!context.IsNativeToken(Amount.Currency))
-            {
-                var message =
-                    $"System action {nameof(Mint)} only accepts native tokens, " +
-                    $"but {Amount.Currency} is not native.";
-                throw new NonNativeTokenException(Amount.Currency, message);
-            }
-
             return context.PreviousStates.MintAsset(Recipient, Amount);
         }
 

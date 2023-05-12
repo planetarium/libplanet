@@ -41,10 +41,7 @@ namespace Libplanet.Tests.Blocks
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
                     BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
-                        preEvalGenesis,
-                        blockAction,
-                        _ => true,
-                        out _));
+                        preEvalGenesis, blockAction, out _));
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -58,7 +55,6 @@ namespace Libplanet.Tests.Blocks
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
                         feeCalculator: null
                     )
@@ -110,7 +106,7 @@ namespace Libplanet.Tests.Blocks
             {
                 HashDigest<SHA256> genesisStateRootHash =
                     BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
-                        preEvalGenesis, blockAction, _ => true, out _);
+                        preEvalGenesis, blockAction, out _);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
@@ -126,7 +122,6 @@ namespace Libplanet.Tests.Blocks
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
                         feeCalculator: null
                     )

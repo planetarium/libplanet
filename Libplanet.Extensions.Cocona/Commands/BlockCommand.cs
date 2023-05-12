@@ -147,11 +147,7 @@ public class BlockCommand
         Block genesis = BlockChain<NullAction>.ProposeGenesisBlock(
             privateKey: key,
             transactions: txs,
-            blockAction: blockPolicyParams.GetBlockAction(),
-            nativeTokenPredicate: blockPolicyParams is { } p && p.GetNativeTokens() is { } tokens
-                ? tokens.Contains
-                : null
-        );
+            blockAction: blockPolicyParams.GetBlockAction());
         using Stream stream = file == "-"
             ? Console.OpenStandardOutput()
             : File.Open(file, FileMode.Create);

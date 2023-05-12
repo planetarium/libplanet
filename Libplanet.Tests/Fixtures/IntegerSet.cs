@@ -79,8 +79,7 @@ namespace Libplanet.Tests.Fixtures
                     DateTimeOffset.UtcNow,
                     Block.CurrentProtocolVersion),
                 Miner,
-                policy.BlockAction,
-                policy.NativeTokens.Contains);
+                policy.BlockAction);
             Chain = BlockChain<Arithmetic>.Create(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -91,7 +90,6 @@ namespace Libplanet.Tests.Fixtures
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(Store, StateStore),
                     genesisHash: Genesis.Hash,
-                    nativeTokenPredicate: policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<Arithmetic>(),
                     feeCalculator: null
                 ),

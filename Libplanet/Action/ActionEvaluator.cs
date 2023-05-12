@@ -28,7 +28,6 @@ namespace Libplanet.Action
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
-        private readonly Predicate<Currency> _nativeTokenPredicate;
         private readonly IActionLoader _actionLoader;
         private readonly IFeeCalculator? _feeCalculator;
 
@@ -43,16 +42,12 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
         /// </param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using action type lookup.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
             BlockHash? genesisHash,
-            Predicate<Currency> nativeTokenPredicate,
             IActionLoader actionTypeLoader,
             IFeeCalculator? feeCalculator
         )
@@ -64,7 +59,6 @@ namespace Libplanet.Action
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _genesisHash = genesisHash;
-            _nativeTokenPredicate = nativeTokenPredicate;
             _actionLoader = actionTypeLoader;
             _feeCalculator = feeCalculator;
         }
@@ -203,9 +197,6 @@ namespace Libplanet.Action
         /// <param name="signature"><see cref="ITransaction"/> signature used to generate random
         /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
@@ -243,7 +234,6 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
-            Predicate<Currency> nativeTokenPredicate,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
             IFeeCalculator? feeCalculator = null,
@@ -265,7 +255,6 @@ namespace Libplanet.Action
                     randomSeed: randomSeed,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
-                    nativeTokenPredicate: nativeTokenPredicate,
                     logs: logs);
             }
 
@@ -529,7 +518,6 @@ namespace Libplanet.Action
                 signature: tx.Signature,
                 actions: actions,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                nativeTokenPredicate: _nativeTokenPredicate,
                 feeCalculator: _feeCalculator,
                 logger: _logger);
         }
@@ -577,8 +565,7 @@ namespace Libplanet.Action
                 signature: Array.Empty<byte>(),
                 actions: new[] { policyBlockAction }.ToImmutableList(),
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                blockAction: true,
-                nativeTokenPredicate: _nativeTokenPredicate
+                blockAction: true
             ).Single();
         }
 

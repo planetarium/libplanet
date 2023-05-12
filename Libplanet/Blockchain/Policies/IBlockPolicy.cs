@@ -1,7 +1,5 @@
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -29,13 +27,6 @@ namespace Libplanet.Blockchain.Policies
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
         IAction? BlockAction { get; }
-
-        /// <summary>
-        /// A fixed set of <see cref="Currency"/> objects that are supported by the blockchain
-        /// as first-class assets.
-        /// </summary>
-        [Pure]
-        IImmutableSet<Currency> NativeTokens { get; }
 
         [Pure]
         IFeeCalculator? FeeCalculator { get; }

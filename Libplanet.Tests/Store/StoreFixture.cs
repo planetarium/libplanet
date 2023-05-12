@@ -111,7 +111,6 @@ namespace Libplanet.Tests.Store
                 BlockChain<DumbAction>.DetermineGenesisStateRootHash(
                     preEval,
                     blockAction,
-                    nativeTokens is null ? _ => true : (Predicate<Currency>)nativeTokens.Contains,
                     out IReadOnlyList<IActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));

@@ -26,6 +26,13 @@ To be released.
  -  Added `IBlockChainStates.GetTrie()` interface method.  [[#3149]]
  -  `BlockChain<T>.Create()` static method now requires `actionEvaluator`
     parameter explicitly.  [[#3149]]
+ -  Removed `IBlockPolicy.NativeTokens` property.  [[#3153]]
+     - Removed `NonNativeTokenException` class.
+     - Removed `IActionContext.IsNativeToken()` method.
+     - Removed `nativeTokenPredicate` parameter from `ActionEvaluator()`
+     - Removed `nativeTokenPredicate` parameter from all `BlockChain<T>`'s
+       methods.
+     - (Libplanet.Explorer) Removed `BlockPolicyType<T>` class.
 
 ### Backward-incompatible network protocol changes
 
@@ -37,6 +44,8 @@ To be released.
 
  -  `Transaction.Create()` method no more fills `Transaction.UpdatedAddresses`
     automatically.  [[#368], [#3122]]
+ -  `Mint` and `Transfer` `IAction`s no longer check for native tokens.
+    [[#3153]]
 
 ### Bug fixes
 
@@ -47,6 +56,7 @@ To be released.
 [#3117]: https://github.com/planetarium/libplanet/pull/3117
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
 [#3149]: https://github.com/planetarium/libplanet/pull/3149
+[#3153]: https://github.com/planetarium/libplanet/pull/3153
 
 
 Version 1.1.0

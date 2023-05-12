@@ -135,8 +135,7 @@ namespace Libplanet.Tests.Blockchain
                                 new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
                             }),
                     }.ToImmutableList(),
-                    blockAction: policy.BlockAction,
-                    nativeTokenPredicate: policy.NativeTokens.Contains);
+                    blockAction: policy.BlockAction);
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain<DumbAction>.Create(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -147,7 +146,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: genesis.Hash,
-                        nativeTokenPredicate: policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )
@@ -171,7 +169,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: fx.GenesisBlock.Hash,
-                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )
@@ -331,7 +328,6 @@ namespace Libplanet.Tests.Blockchain
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         genesisHash: fx.GenesisBlock.Hash,
-                        nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                         actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                         feeCalculator: null
                     )

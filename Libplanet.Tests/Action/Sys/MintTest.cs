@@ -103,12 +103,6 @@ namespace Libplanet.Tests.Action.Sys
             var mintSupplyOverflowFoo = new Mint(recipient, FOO.MaximumSupply.Value * 2);
             Assert.Throws<SupplyOverflowException>(() => mintSupplyOverflowFoo.Execute(context));
 
-            var mintBar = new Mint(recipient, BAR * 10);
-            NonNativeTokenException exc = Assert.Throws<NonNativeTokenException>(
-                () => mintBar.Execute(context)
-            );
-            Assert.Equal(BAR, exc.NonNativeToken);
-
             var mintDisallowedCurrency = new Mint(signer, bazCurrency * 1000);
             CurrencyPermissionException exc2 = Assert.Throws<CurrencyPermissionException>(
                 () => mintDisallowedCurrency.Execute(context)

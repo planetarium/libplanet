@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -38,20 +37,15 @@ namespace Libplanet.Blockchain
         /// <param name="blockAction">A block action to execute and be rendered for every block.
         /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
         /// </param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
-        /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>A genesis <see cref="Block"/> proposed with given parameters.</returns>
         /// <seealso cref="BlockChain{T}.Create"/>
-        // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction and
-        // nativeTokenPredicate.  (Or at least there should be such an overload.)
+        // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction
+        // (Or at least there should be such an overload).
         public static Block ProposeGenesisBlock(
             PrivateKey privateKey = null,
             ImmutableList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
-            IAction blockAction = null,
-            Predicate<Currency> nativeTokenPredicate = null)
+            IAction blockAction = null)
         {
             privateKey ??= new PrivateKey();
             transactions = transactions is { } txs
@@ -69,12 +63,10 @@ namespace Libplanet.Blockchain
                 transactions: transactions);
 
             PreEvaluationBlock preEval = content.Propose();
-            IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(
-                preEval, blockAction, nativeTokenPredicate);
+            IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(preEval, blockAction);
             return preEval.Sign(
                 privateKey,
-                DetermineGenesisStateRootHash(
-                    preEval, blockAction, nativeTokenPredicate, out _));
+                DetermineGenesisStateRootHash(preEval, blockAction, out _));
         }
 
         /// <summary>

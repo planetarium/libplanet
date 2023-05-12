@@ -9,16 +9,12 @@ using Xunit;
 
 public class BlockPolicyParamsTest
 {
-    private static readonly ImmutableHashSet<Currency> _nativeTokens =
-        ImmutableHashSet.Create(Currency.Uncapped("FOO", 2, minters: null));
-
     [Fact]
     public void DefaultState()
     {
         var blockPolicyParams = new BlockPolicyParams();
         Assert.Null(blockPolicyParams.GetBlockPolicy());
         Assert.Null(blockPolicyParams.GetBlockAction());
-        Assert.Null(blockPolicyParams.GetNativeTokens());
     }
 
     [Fact]
@@ -32,7 +28,6 @@ public class BlockPolicyParamsTest
             blockPolicyParams.GetBlockPolicy(new[] { GetType().Assembly })
         );
         Assert.IsType<NullAction>(blockPolicy.BlockAction);
-        Assert.Equal(_nativeTokens, blockPolicy.NativeTokens);
     }
 
     [Fact]
@@ -139,22 +134,8 @@ public class BlockPolicyParamsTest
         Assert.IsType<NullAction>(blockAction);
     }
 
-    [Fact]
-    public void GetNativeTokens()
-    {
-        var blockPolicyParams = new BlockPolicyParams
-        {
-            PolicyFactory = $"{GetType().FullName}.{nameof(BlockPolicyFactory)}",
-        };
-        var nativeTokens = blockPolicyParams.GetNativeTokens(new[] { GetType().Assembly });
-        Assert.Equal(_nativeTokens, nativeTokens);
-    }
-
     internal static BlockPolicy<NullAction> BlockPolicyFactory() =>
-        new BlockPolicy<NullAction>(
-            blockAction: new NullAction(),
-            nativeTokens: _nativeTokens
-        );
+        new BlockPolicy<NullAction>(blockAction: new NullAction());
 
     internal static BlockPolicy<NullAction> BlockPolicyFactoryWithParams(bool param) =>
         new BlockPolicy<NullAction>();

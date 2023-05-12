@@ -182,8 +182,7 @@ namespace Libplanet.Tests.Blockchain
             var genesisBlock = TestUtils.ProposeGenesisBlock<DumbAction>(
                 TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer,
-                policy.BlockAction,
-                policy.NativeTokens.Contains);
+                policy.BlockAction);
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 
@@ -197,7 +196,6 @@ namespace Libplanet.Tests.Blockchain
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
                     genesisHash: genesisBlock.Hash,
-                    nativeTokenPredicate: _blockChain.Policy.NativeTokens.Contains,
                     actionTypeLoader: StaticActionLoader.Create<DumbAction>(),
                     feeCalculator: null
                 )
