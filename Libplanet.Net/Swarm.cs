@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
@@ -97,6 +98,14 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
+            // Regulate heavy tasks. Treat negative value as 0.
+            var taskRegulationOptions = Options.TaskRegulationOptions;
+            _transferBlocksSemaphore =
+                new NullableSemaphore(taskRegulationOptions.MaxTransferBlocksTaskCount);
+            _transferTxsSemaphore =
+                new NullableSemaphore(taskRegulationOptions.MaxTransferTxsTaskCount);
+
+            // Initialize consensus reactor.
             if (consensusTransport is { } && consensusOption is { } consensusReactorOption)
             {
                 _consensusReactor = new ConsensusReactor<T>(

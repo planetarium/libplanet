@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Options
 {
     /// <summary>
     /// Various options for determining <see cref="Swarm{T}"/>'s <see cref="BoundPeer"/> identity.

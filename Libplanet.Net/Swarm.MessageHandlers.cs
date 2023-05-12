@@ -11,6 +11,9 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
+        private readonly NullableSemaphore _transferBlocksSemaphore;
+        private readonly NullableSemaphore _transferTxsSemaphore;
+
         private Task ProcessMessageHandlerAsync(Message message)
         {
             switch (message.Content)
@@ -186,24 +189,48 @@ namespace Libplanet.Net
 
         private async Task TransferTxsAsync(Message message)
         {
-            var getTxsMsg = (GetTxsMsg)message.Content;
-            foreach (TxId txid in getTxsMsg.TxIds)
+            if (!await _transferTxsSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
-                try
-                {
-                    Transaction tx = BlockChain.GetTransaction(txid);
+                _logger.Debug(
+                    "Message {Message} is dropped due to task limit {Limit}",
+                    message,
+                    Options.TaskRegulationOptions.MaxTransferTxsTaskCount);
+                return;
+            }
 
-                    if (tx is null)
+            try
+            {
+                var getTxsMsg = (GetTxsMsg)message.Content;
+                foreach (TxId txid in getTxsMsg.TxIds)
+                {
+                    try
                     {
-                        continue;
-                    }
+                        Transaction tx = BlockChain.GetTransaction(txid);
 
-                    MessageContent response = new TxMsg(tx.Serialize());
-                    await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        if (tx is null)
+                        {
+                            continue;
+                        }
+
+                        MessageContent response = new TxMsg(tx.Serialize());
+                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        _logger.Warning("Requested TxId {TxId} does not exist", txid);
+                    }
                 }
-                catch (KeyNotFoundException)
+            }
+            finally
+            {
+                int count = _transferTxsSemaphore.Release();
+                if (count >= 0)
                 {
-                    _logger.Warning("Requested TxId {TxId} does not exist", txid);
+                    _logger.Debug(
+                        "{Count}/{Limit} tasks are remaining for handling {FName}",
+                        count,
+                        Options.TaskRegulationOptions.MaxTransferTxsTaskCount,
+                        nameof(TransferTxsAsync));
                 }
             }
         }
@@ -222,73 +249,97 @@ namespace Libplanet.Net
 
         private async Task TransferBlocksAsync(Message message)
         {
-            var blocksMsg = (GetBlocksMsg)message.Content;
-            string reqId = !(message.Identity is null) && message.Identity.Length == 16
-                ? new Guid(message.Identity).ToString()
-                : "unknown";
-            _logger.Verbose(
-                "Preparing a {MessageType} message to reply to {Identity}...",
-                nameof(Messages.BlocksMsg),
-                reqId);
-
-            var payloads = new List<byte[]>();
-
-            List<BlockHash> hashes = blocksMsg.BlockHashes.ToList();
-            int count = 0;
-            int total = hashes.Count;
-            const string logMsg =
-                "Fetching block {Index}/{Total} {Hash} to include in " +
-                "a reply to {Identity}...";
-            foreach (BlockHash hash in hashes)
+            if (!await _transferBlocksSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
-                _logger.Verbose(logMsg, count, total, hash, reqId);
-                if (_store.GetBlock(hash) is { } block)
+                _logger.Debug(
+                    "Message {Message} is dropped due to task limit {Limit}",
+                    message,
+                    Options.TaskRegulationOptions.MaxTransferBlocksTaskCount);
+                return;
+            }
+
+            try
+            {
+                var blocksMsg = (GetBlocksMsg)message.Content;
+                string reqId = !(message.Identity is null) && message.Identity.Length == 16
+                    ? new Guid(message.Identity).ToString()
+                    : "unknown";
+                _logger.Verbose(
+                    "Preparing a {MessageType} message to reply to {Identity}...",
+                    nameof(Messages.BlocksMsg),
+                    reqId);
+
+                var payloads = new List<byte[]>();
+
+                List<BlockHash> hashes = blocksMsg.BlockHashes.ToList();
+                int count = 0;
+                int total = hashes.Count;
+                const string logMsg =
+                    "Fetching block {Index}/{Total} {Hash} to include in " +
+                    "a reply to {Identity}...";
+                foreach (BlockHash hash in hashes)
                 {
-                    byte[] blockPayload = Codec.Encode(block.MarshalBlock());
-                    payloads.Add(blockPayload);
-                    byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
-                        ? Codec.Encode(commit.Bencoded)
-                        : new byte[0];
-                    payloads.Add(commitPayload);
-                    count++;
+                    _logger.Verbose(logMsg, count, total, hash, reqId);
+                    if (_store.GetBlock(hash) is { } block)
+                    {
+                        byte[] blockPayload = Codec.Encode(block.MarshalBlock());
+                        payloads.Add(blockPayload);
+                        byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
+                            ? Codec.Encode(commit.Bencoded)
+                            : new byte[0];
+                        payloads.Add(commitPayload);
+                        count++;
+                    }
+
+                    if (payloads.Count / 2 == blocksMsg.ChunkSize)
+                    {
+                        var response = new BlocksMsg(payloads);
+                        _logger.Verbose(
+                            "Enqueuing a blocks reply (...{Count}/{Total})...",
+                            count,
+                            total
+                        );
+                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        payloads.Clear();
+                    }
                 }
 
-                if (payloads.Count / 2 == blocksMsg.ChunkSize)
+                if (payloads.Any())
                 {
                     var response = new BlocksMsg(payloads);
                     _logger.Verbose(
-                        "Enqueuing a blocks reply (...{Count}/{Total})...",
+                        "Enqueuing a blocks reply (...{Count}/{Total}) to {Identity}...",
                         count,
-                        total
-                    );
+                        total,
+                        reqId);
                     await Transport.ReplyMessageAsync(response, message.Identity, default);
-                    payloads.Clear();
+                }
+
+                if (count == 0)
+                {
+                    var response = new BlocksMsg(payloads);
+                    _logger.Verbose(
+                        "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
+                        count,
+                        total,
+                        reqId);
+                    await Transport.ReplyMessageAsync(response, message.Identity, default);
+                }
+
+                _logger.Debug("{Count} blocks were transferred to {Identity}", count, reqId);
+            }
+            finally
+            {
+                int count = _transferBlocksSemaphore.Release();
+                if (count >= 0)
+                {
+                    _logger.Debug(
+                        "{Count}/{Limit} tasks are remaining for handling {FName}",
+                        count,
+                        Options.TaskRegulationOptions.MaxTransferBlocksTaskCount,
+                        nameof(TransferBlocksAsync));
                 }
             }
-
-            if (payloads.Any())
-            {
-                var response = new BlocksMsg(payloads);
-                _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Count}/{Total}) to {Identity}...",
-                    count,
-                    total,
-                    reqId);
-                await Transport.ReplyMessageAsync(response, message.Identity, default);
-            }
-
-            if (count == 0)
-            {
-                var response = new BlocksMsg(payloads);
-                _logger.Verbose(
-                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
-                    count,
-                    total,
-                    reqId);
-                await Transport.ReplyMessageAsync(response, message.Identity, default);
-            }
-
-            _logger.Debug("{Count} blocks were transferred to {Identity}", count, reqId);
         }
     }
 }

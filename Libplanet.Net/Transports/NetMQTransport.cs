@@ -12,6 +12,7 @@ using AsyncIO;
 using Dasync.Collections;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Options;
 using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;

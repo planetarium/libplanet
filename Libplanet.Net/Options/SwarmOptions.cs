@@ -6,7 +6,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Tx;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Options
 {
     public class SwarmOptions
     {
@@ -60,7 +60,7 @@ namespace Libplanet.Net
         public int MinimumBroadcastTarget { get; set; } = 10;
 
         /// <summary>
-        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="BlockHeaderMsg"/>
+        /// Determines how often <see cref="Swarm{T}"/> broadcasts <see cref="BlockHeaderMsg"/>
         /// to its peers.
         /// </summary>
         /// <remarks>
@@ -71,7 +71,7 @@ namespace Libplanet.Net
             = TimeSpan.FromMilliseconds(15_000);
 
         /// <summary>
-        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="TxIdsMsg"/>
+        /// Determines how often <see cref="Swarm{T}"/> broadcasts <see cref="TxIdsMsg"/>
         /// to its peers.
         /// </summary>
         /// <remarks>
@@ -120,5 +120,12 @@ namespace Libplanet.Net
         /// an <see cref="ITransport"/>.
         /// </summary>
         public TimeoutOptions TimeoutOptions { get; set; } = new TimeoutOptions();
+
+        /// <summary>
+        /// Various task spawning regulations for handling received <see cref="Message"/>s
+        /// through an <see cref="ITransport"/>.
+        /// </summary>
+        public TaskRegulationOptions TaskRegulationOptions { get; set; } =
+            new TaskRegulationOptions();
     }
 }

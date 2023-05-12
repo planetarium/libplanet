@@ -16,6 +16,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
@@ -1789,6 +1790,129 @@ namespace Libplanet.Net.Tests
             {
                 await StopAsync(swarm1);
                 await StopAsync(swarm2);
+            }
+        }
+
+        [RetryFact(10, Timeout = Timeout)]
+        public async Task RegulateGetBlocksMsg()
+        {
+            var options = new SwarmOptions
+            {
+                TaskRegulationOptions =
+                {
+                    MaxTransferBlocksTaskCount = 3,
+                },
+            };
+            var apvOptions = new AppProtocolVersionOptions();
+
+            var key = new PrivateKey();
+            Swarm<DumbAction> swarm = await CreateSwarm(
+                    options: options,
+                    appProtocolVersionOptions: apvOptions)
+                .ConfigureAwait(false);
+            NetMQTransport transport = await NetMQTransport.Create(
+                key,
+                apvOptions,
+                new HostOptions("localhost", Enumerable.Empty<IceServer>()));
+
+            try
+            {
+                await StartAsync(swarm);
+                _ = transport.StartAsync();
+                await transport.WaitForRunningAsync();
+                var tasks = new List<Task>();
+                var content = new GetBlocksMsg(new[] { swarm.BlockChain.Genesis.Hash });
+                for (int i = 0; i < 5; i++)
+                {
+                    tasks.Add(
+                        Task.Run(async () => await transport.SendMessageAsync(
+                            swarm.AsPeer,
+                            content,
+                            TimeSpan.FromMilliseconds(1000),
+                            1,
+                            false,
+                            default)));
+                }
+
+                try
+                {
+                    await Task.WhenAll(tasks);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                Assert.Equal(
+                    options.TaskRegulationOptions.MaxTransferBlocksTaskCount,
+                    tasks.Count(t => t.IsCompletedSuccessfully));
+            }
+            finally
+            {
+                await StopAsync(swarm);
+                await transport.StopAsync(TimeSpan.Zero);
+            }
+        }
+
+        [RetryFact(10, Timeout = Timeout)]
+        public async Task RegulateGetTxsMsg()
+        {
+            var options = new SwarmOptions
+            {
+                TaskRegulationOptions =
+                {
+                    MaxTransferTxsTaskCount = 3,
+                },
+            };
+            var apvOptions = new AppProtocolVersionOptions();
+
+            var key = new PrivateKey();
+            Swarm<DumbAction> swarm = await CreateSwarm(
+                    options: options,
+                    appProtocolVersionOptions: apvOptions)
+                .ConfigureAwait(false);
+            NetMQTransport transport = await NetMQTransport.Create(
+                key,
+                apvOptions,
+                new HostOptions("localhost", Enumerable.Empty<IceServer>()));
+
+            try
+            {
+                await StartAsync(swarm);
+                var fx = new MemoryStoreFixture();
+                _ = transport.StartAsync();
+                await transport.WaitForRunningAsync();
+                var tasks = new List<Task>();
+                var content = new GetTxsMsg(new[] { fx.TxId1 });
+                for (int i = 0; i < 5; i++)
+                {
+                    tasks.Add(
+                        transport.SendMessageAsync(
+                            swarm.AsPeer,
+                            content,
+                            TimeSpan.FromMilliseconds(1000),
+                            1,
+                            false,
+                            default));
+                }
+
+                try
+                {
+                    await Task.WhenAll(tasks);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                Assert.Equal(
+                    options.TaskRegulationOptions.MaxTransferBlocksTaskCount,
+                    tasks.Count(t => t.IsCompletedSuccessfully));
+            }
+            finally
+            {
+                await StopAsync(swarm);
+                await transport.StopAsync(TimeSpan.Zero);
             }
         }
 
