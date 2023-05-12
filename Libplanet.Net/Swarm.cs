@@ -97,6 +97,8 @@ namespace Libplanet.Net
             _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
+            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+            BlockCandidateTable = new BlockCandidateTable<T>();
 
             // Regulate heavy tasks. Treat negative value as 0.
             var taskRegulationOptions = Options.TaskRegulationOptions;
@@ -316,8 +318,6 @@ namespace Libplanet.Net
                 _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-                BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-                BlockCandidateTable = new BlockCandidateTable<T>();
 
                 if (Transport.Running)
                 {
