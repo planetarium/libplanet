@@ -439,9 +439,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IAction BlockAction => _impl.BlockAction;
 
-            /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
-            public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
-
             public IFeeCalculator FeeCalculator => null;
 
             public int GetMinTransactionsPerBlock(long index) =>

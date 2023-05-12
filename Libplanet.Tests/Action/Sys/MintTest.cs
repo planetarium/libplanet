@@ -90,8 +90,7 @@ namespace Libplanet.Tests.Action.Sys
                 rehearsal: false,
                 previousBlockStatesTrie: null,
                 blockAction: false,
-                genesisHash: genesisHash,
-                nativeTokenPredicate: c => c.Equals(FOO) || c.Equals(bazCurrency)
+                genesisHash: genesisHash
             );
             Address recipient = random.NextAddress();
             var mintFoo = new Mint(recipient, FOO * 123456);
