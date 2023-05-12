@@ -113,6 +113,13 @@ To be released.
     [[#3144]]
  -  Added `IActionContext.GasLimit()` method.
     [[#3144]]
+ -  Added `PolymorphicAction<T>.ReloadLoader()` static method.  [[#3158]]
+ -  Added `ITransaction.MaxGasPrice` property.
+    [[#3156]]
+ -  Added `ITransaction.GasLimit` property.
+    [[#3156]]
+
+### Behavioral changes
 
  -  (@planetarium/cli) Fixed the installer bug that it had failed on Linux and
     macOS since version 1.0.2.  [[#3107], [#3160], [#3161]]
@@ -120,6 +127,11 @@ To be released.
 [#3161]: https://github.com/planetarium/libplanet/pull/3161
 
 [#3144]: https://github.com/planetarium/libplanet/pull/3144
+[#3148]: https://github.com/planetarium/libplanet/pull/3148
+[#3149]: https://github.com/planetarium/libplanet/pull/3149
+[#3153]: https://github.com/planetarium/libplanet/pull/3153
+[#3156]: https://github.com/planetarium/libplanet/pull/3156
+[#3158]: https://github.com/planetarium/libplanet/pull/3158
 
 
 Version 1.1.0
