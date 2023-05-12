@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -212,6 +213,10 @@ namespace Libplanet.Tests.Tx
             public byte[] Signature => Array.Empty<byte>();
 
             public TxActionList Actions => TxActionList.Empty;
+
+            public FungibleAssetValue? MaxGasPrice => null;
+
+            public long? GasLimit => null;
 
             bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
 
