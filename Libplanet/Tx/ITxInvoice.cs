@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 
 namespace Libplanet.Tx
@@ -30,7 +31,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A <see cref="HashDigest{SHA256}"/> value of the genesis which this transaction is made
-        /// from.  This can be <see langword="null"/> iff the transaction is contained in
+        /// from.  This can be <see langword="null"/> if the transaction is contained in
         /// the genesis block.
         /// </summary>
         BlockHash? GenesisHash { get; }
@@ -39,5 +40,20 @@ namespace Libplanet.Tx
         /// A list of actions in this transaction.
         /// </summary>
         TxActionList Actions { get; }
+
+        /// <summary>
+        /// The maximum amount of <see cref="FungibleAssetValue"/> that the transaction author is
+        /// willing to pay for the transaction.
+        /// This can be <see langword="null"/> if align the handling of that transaction
+        /// with the <see cref="IBlockMetadata.ProtocolVersion"/>.
+        /// </summary>
+        FungibleAssetValue? MaxGasPrice { get; }
+
+        /// <summary>
+        /// The limit of the total amount of gas that the transaction will use.
+        /// This can be <see langword="null"/> if align the handling of that transaction
+        /// with the <see cref="IBlockMetadata.ProtocolVersion"/>.
+        /// </summary>
+        long? GasLimit { get; }
     }
 }
