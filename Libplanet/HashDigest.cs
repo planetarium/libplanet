@@ -7,7 +7,9 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+#if NETSTANDARD2_0
 using System.Runtime.CompilerServices;
+#endif
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -178,10 +180,14 @@ namespace Libplanet
         [Pure]
         public static HashDigest<T> DeriveFrom(byte[] input)
         {
+#if NETSTANDARD2_0
             byte[] hash = Algorithm.Value!.ComputeHash(input);
             ImmutableArray<byte> movedImmutableArray =
                 Unsafe.As<byte[], ImmutableArray<byte>>(ref hash);
             return new HashDigest<T>(movedImmutableArray);
+#else
+            return DeriveFrom(input.AsSpan());
+#endif
         }
 
         /// <summary>
@@ -219,11 +225,15 @@ namespace Libplanet
 
             return DeriveFrom(array);
 #else
-            var neverReusedBuffer = new byte[Size];
-            Algorithm.Value!.TryComputeHash(input, neverReusedBuffer.AsSpan(), out _);
-            ImmutableArray<byte> movedImmutable =
-                Unsafe.As<byte[], ImmutableArray<byte>>(ref neverReusedBuffer);
-            return new HashDigest<T>(movedImmutable);
+            Span<byte> buffer = stackalloc byte[Size];
+            Algorithm.Value!.TryComputeHash(input, buffer, out _);
+            var builder = ImmutableArray.CreateBuilder<byte>(Size);
+            foreach (byte b in buffer)
+            {
+                builder.Add(b);
+            }
+
+            return new HashDigest<T>(builder.MoveToImmutable());
 #endif
         }
 
