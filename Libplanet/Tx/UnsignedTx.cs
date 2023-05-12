@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using Bencodex;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -76,6 +77,12 @@ namespace Libplanet.Tx
         /// <inheritdoc cref="ITxInvoice.Actions" />
         [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions => _invoice.Actions;
+
+        /// <inheritdoc cref="ITxInvoice.MaxGasPrice" />
+        public FungibleAssetValue? MaxGasPrice => _invoice.MaxGasPrice;
+
+        /// <inheritdoc cref="ITxInvoice.GasLimit" />
+        public long? GasLimit => _invoice.GasLimit;
 
         /// <inheritdoc cref="ITxSigningMetadata.Nonce" />
         public long Nonce => _signingMetadata.Nonce;
