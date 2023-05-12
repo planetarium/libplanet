@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -17,6 +18,8 @@ namespace Libplanet.Tx
         private static readonly Binary UpdatedAddressesKey = new byte[] { 0x75 }; // 'u'
         private static readonly Binary TimestampKey = new byte[] { 0x74 }; // 't'
         private static readonly Binary GenesisHashKey = new byte[] { 0x67 }; // 'g'
+        private static readonly Binary MaxGasPriceKey = new byte[] { 0x6d }; // 'm'
+        private static readonly Binary GasLimitKey = new byte[] { 0x6c }; // 'l'
         private static readonly Binary NonceKey = new byte[] { 0x6e }; // 'n'
         private static readonly Binary SignerKey = new byte[] { 0x73 }; // 's'
         private static readonly Binary PublicKeyKey = new byte[] { 0x70 }; // 'p'
@@ -47,6 +50,16 @@ namespace Libplanet.Tx
             if (invoice.GenesisHash is { } genesisHash)
             {
                 dict = dict.Add(GenesisHashKey, genesisHash.ByteArray);
+            }
+
+            if (invoice.MaxGasPrice is { } maxGasPrice)
+            {
+                dict = dict.Add(MaxGasPriceKey, maxGasPrice.Serialize());
+            }
+
+            if (invoice.GasLimit is { } gasLimit)
+            {
+                dict = dict.Add(GasLimitKey, gasLimit);
             }
 
             return dict;
@@ -82,22 +95,29 @@ namespace Libplanet.Tx
 
         [Pure]
         public static ITxInvoice UnmarshalTxInvoice(Bencodex.Types.Dictionary dictionary)
-        =>
-#pragma warning disable SA1118  // The parameter spans multiple lines
-            new TxInvoice(
-                genesisHash: dictionary.TryGetValue(GenesisHashKey, out IValue gv)
-                    ? new BlockHash(gv)
-                    : (BlockHash?)null,
-                updatedAddresses: new AddressSet(
-                    ((Bencodex.Types.List)dictionary[UpdatedAddressesKey])
+            =>
+#pragma warning disable SA1118 // The parameter spans multiple lines
+                new TxInvoice(
+                    genesisHash: dictionary.TryGetValue(GenesisHashKey, out IValue gv)
+                        ? new BlockHash(gv)
+                        : (BlockHash?)null,
+                    updatedAddresses: new AddressSet(
+                        ((Bencodex.Types.List)dictionary[UpdatedAddressesKey])
                         .Select(v => new Address(v))),
-                timestamp: DateTimeOffset.ParseExact(
-                    (Text)dictionary[TimestampKey],
-                    TimestampFormat,
-                    CultureInfo.InvariantCulture).ToUniversalTime(),
-                actions: dictionary.TryGetValue(ActionsKey, out IValue cav)
-                    ? new TxActionList(dictionary[ActionsKey])
-                    : TxActionList.Empty);
+                    timestamp: DateTimeOffset.ParseExact(
+                        (Text)dictionary[TimestampKey],
+                        TimestampFormat,
+                        CultureInfo.InvariantCulture).ToUniversalTime(),
+                    actions: dictionary.TryGetValue(ActionsKey, out IValue cav)
+                        ? new TxActionList(dictionary[ActionsKey])
+                        : TxActionList.Empty,
+                    maxGasPrice: dictionary.TryGetValue(MaxGasPriceKey, out IValue mgpv)
+                        ? new FungibleAssetValue(mgpv)
+                        : (FungibleAssetValue?)null,
+                    gasLimit: dictionary.TryGetValue(GasLimitKey, out IValue glv)
+                        ? (long)(Bencodex.Types.Integer)glv
+                        : (long?)null);
+
 #pragma warning restore SA1118
 
         [Pure]

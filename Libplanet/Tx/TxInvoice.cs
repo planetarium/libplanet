@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.Json.Serialization;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 
 namespace Libplanet.Tx
@@ -24,13 +25,17 @@ namespace Libplanet.Tx
         /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.</param>
         /// <param name="timestamp">The value for <see cref="Timestamp"/>.</param>
         /// <param name="actions">The value of <see cref="Actions"/>.</param>
+        /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
+        /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
         /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
         public TxInvoice(
             BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
-            TxActionList actions)
+            TxActionList actions,
+            FungibleAssetValue? maxGasPrice,
+            long? gasLimit)
         {
             if (updatedAddresses is null)
             {
@@ -43,6 +48,8 @@ namespace Libplanet.Tx
                 : new AddressSet(updatedAddresses);
             Timestamp = timestamp;
             Actions = actions ?? throw new ArgumentNullException(nameof(actions));
+            MaxGasPrice = maxGasPrice;
+            GasLimit = gasLimit;
         }
 
         /// <summary>
@@ -56,17 +63,23 @@ namespace Libplanet.Tx
         /// Time of creation by default.</param>
         /// <param name="actions">The value of <see cref="Actions"/>.
         /// <see cref="TxActionList"/> by default.</param>
+        /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
+        /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
         public TxInvoice(
             BlockHash? genesisHash = null,
             IEnumerable<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null,
-            TxActionList? actions = null
+            TxActionList? actions = null,
+            FungibleAssetValue? maxGasPrice = null,
+            long? gasLimit = null
         )
             : this(
                 genesisHash,
                 updatedAddresses?.ToImmutableHashSet() ?? ImmutableHashSet<Address>.Empty,
                 timestamp ?? DateTimeOffset.UtcNow,
-                actions ?? TxActionList.Empty
+                actions ?? TxActionList.Empty,
+                maxGasPrice,
+                gasLimit
             )
         {
         }
@@ -81,7 +94,9 @@ namespace Libplanet.Tx
                   genesisHash: invoice.GenesisHash,
                   updatedAddresses: invoice.UpdatedAddresses,
                   timestamp: invoice.Timestamp,
-                  actions: invoice.Actions)
+                  actions: invoice.Actions,
+                  maxGasPrice: invoice.MaxGasPrice,
+                  gasLimit: invoice.GasLimit)
         {
         }
 
@@ -98,6 +113,12 @@ namespace Libplanet.Tx
         [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions { get; }
 
+        /// <inheritdoc cref="ITxInvoice.MaxGasPrice" />
+        public FungibleAssetValue? MaxGasPrice { get; }
+
+        /// <inheritdoc cref="ITxInvoice.GasLimit" />
+        public long? GasLimit { get; }
+
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
         bool IEquatable<ITxInvoice>.Equals(ITxInvoice? other) =>
@@ -107,7 +128,9 @@ namespace Libplanet.Tx
                 : GenesisHash is null) &&
             o.UpdatedAddresses.SetEquals(UpdatedAddresses) &&
             o.Timestamp.Equals(Timestamp) &&
-            o.Actions.Equals(Actions);
+            o.Actions.Equals(Actions) &&
+            o.MaxGasPrice.Equals(MaxGasPrice) &&
+            o.GasLimit.Equals(GasLimit);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
@@ -126,7 +149,9 @@ namespace Libplanet.Tx
                 GenesisHash,
                 UpdatedAddresses,
                 Timestamp,
-                Actions
+                Actions,
+                MaxGasPrice,
+                GasLimit
             );
 
         /// <inheritdoc cref="object.ToString()"/>
