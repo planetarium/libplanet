@@ -50,6 +50,10 @@ To be released.
  -  Added `IActionContext.GasLimit()` method.
     [[#3144]]
  -  Added `PolymorphicAction<T>.ReloadLoader()` static method.  [[#3158]]
+ -  Added `ITransaction.MaxGasPrice` property.
+    [[#3156]]
+ -  Added `ITransaction.GasLimit` property.
+    [[#3156]]
 
 ### Behavioral changes
 
@@ -70,6 +74,7 @@ To be released.
 [#3148]: https://github.com/planetarium/libplanet/pull/3148
 [#3149]: https://github.com/planetarium/libplanet/pull/3149
 [#3153]: https://github.com/planetarium/libplanet/pull/3153
+[#3156]: https://github.com/planetarium/libplanet/pull/3156
 [#3158]: https://github.com/planetarium/libplanet/pull/3158
 
 
