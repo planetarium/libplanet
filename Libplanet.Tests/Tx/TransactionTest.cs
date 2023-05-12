@@ -448,7 +448,9 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
                       ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
-                      ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265""
+                      ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265"",
+                      ""maxGasPrice"": null,
+                      ""gasLimit"": null
                     }
                 ",
                 false);
