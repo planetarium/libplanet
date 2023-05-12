@@ -197,6 +197,9 @@ namespace Libplanet.Action
         /// <param name="signature"><see cref="ITransaction"/> signature used to generate random
         /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="gasLimit">
+        /// The maximum amount of gas that can be consumed by the transaction.
+        /// </param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
@@ -234,6 +237,7 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
+            long gasLimit = 0,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
             IFeeCalculator? feeCalculator = null,
@@ -255,6 +259,7 @@ namespace Libplanet.Action
                     randomSeed: randomSeed,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
+                    gasLimit: gasLimit,
                     logs: logs);
             }
 

@@ -42,7 +42,8 @@ namespace Libplanet.Tests.Action
                     miner: _address,
                     blockIndex: 1,
                     previousStates: new DumbAccountStateDelta(),
-                    randomSeed: seed
+                    randomSeed: seed,
+                    gasLimit: 0
                 );
                 IRandom random = context.Random;
                 Assert.Equal(expected, random.Next());
@@ -59,7 +60,8 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
-                randomSeed: 0
+                randomSeed: 0,
+                gasLimit: 0
             );
 
             var context2 = new ActionContext(
@@ -69,7 +71,8 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
-                randomSeed: 0
+                randomSeed: 0,
+                gasLimit: 0
             );
 
             var context3 = new ActionContext(
@@ -79,7 +82,8 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
-                randomSeed: 1
+                randomSeed: 1,
+                gasLimit: 0
             );
 
             (Guid Expected, Guid Diff)[] testCases =
@@ -114,7 +118,8 @@ namespace Libplanet.Tests.Action
                     miner: _address,
                     blockIndex: 1,
                     previousStates: new DumbAccountStateDelta(),
-                    randomSeed: i
+                    randomSeed: i,
+                    gasLimit: 0
                 );
                 var guid = context.Random.GenerateRandomGuid().ToString();
 
@@ -134,6 +139,7 @@ namespace Libplanet.Tests.Action
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: _random.Next(),
+                gasLimit: 0,
                 logs: new List<string>()
             );
 
@@ -168,6 +174,7 @@ namespace Libplanet.Tests.Action
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: _random.Next(),
+                gasLimit: 0,
                 previousBlockStatesTrie: previousBlockStatesTrie
             );
 
@@ -179,7 +186,9 @@ namespace Libplanet.Tests.Action
             Assert.Equal(callPreviousStateRootHash ? 1 : 0, keyValueStore.ListKeys().Count());
         }
 
-        private class DumbAccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
+        private class DumbAccountStateDelta :
+            IValidatorSupportStateDelta,
+            IAccountStateDelta
         {
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;

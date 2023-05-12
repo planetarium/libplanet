@@ -39,6 +39,10 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+ -  Added `IActionContext.GasUsed()` method.
+    [[#3144]]
+ -  Added `IActionContext.GasLimit()` method.
+    [[#3144]]
 
 ### Behavioral changes
 
@@ -57,6 +61,8 @@ To be released.
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
 [#3149]: https://github.com/planetarium/libplanet/pull/3149
 [#3153]: https://github.com/planetarium/libplanet/pull/3153
+
+[#3144]: https://github.com/planetarium/libplanet/pull/3144
 
 
 Version 1.1.0
