@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "yQu8BUovxp43VLdiLff/gYfYI0eySQqHgSDqR5Pv0jk="
+          "hash": "xwqolhswp/APaCTpjQkyByyY+RtYKyx9n3RDabkqQj8="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.ActionEvaluator.html",
-          "hash": "rCpcUm4jjsv2LgU1q7ZqRWl6fPJ7NlDugiC4aIrOju4="
+          "hash": "z8pzlXV5RnpddCIFQ3tQ0yRQMOrfeujIRc1K91Z87mg="
         }
       },
       "is_incremental": false,
@@ -309,19 +309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IActionEvaluator.html",
-          "hash": "tSInIUFn5S90lcsPnfip+dzrOOgDKAppeSB7diqzCN8="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Action.IActionLoader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Action.IActionLoader.html",
-          "hash": "JM163CjDXWVCALngmgqM7ZsLof7Ilqa9lkeoqz1Ipws="
+          "hash": "OnXfj+qMqquwZeJYqOQ/t8yTmLDkDSgh/s4KDG4euZo="
         }
       },
       "is_incremental": false,
@@ -405,7 +393,67 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.InvalidActionException.html",
-          "hash": "OkGY7YVLM/B00DCRUfQN1Aepgf9u9D4GqOQnjRv0S0c="
+          "hash": "ibL829tL/+nCbeMxn7Re2aqB6Iv5hYeecxCRq5rQ2iw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.Loader.IActionLoader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.Loader.IActionLoader.html",
+          "hash": "xAY3ZvhyT8+5LIHPetwBC+y1gNzppQ8d0HLgJYwReA0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.Loader.IndexedActionLoader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.Loader.IndexedActionLoader.html",
+          "hash": "fxCXZ6tkXsEYuSrmgNmQ3TKm0d+jMTt652J680Dq8ng="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.Loader.SingleActionLoader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.Loader.SingleActionLoader.html",
+          "hash": "ZYAkp6NsJv0KT6ogdo5fAk9zNwftX1q2bnvwhN0zex0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.Loader.TypedActionLoader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.Loader.TypedActionLoader.html",
+          "hash": "5rNyP4nFyCZ68iHW6ySwaGJIbTw+gQ0wA37KHXqG3x4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.Loader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.Loader.html",
+          "hash": "vkmiGAt6td/LEkT8Y5L4tbP1b2M+LSsWG00cOMzn0/k="
         }
       },
       "is_incremental": false,
@@ -453,7 +501,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.PolymorphicAction-1.html",
-          "hash": "Ff6k6JXQUvDFvHoNs2L4atb+SwN3HjZ4nra6wENLmv8="
+          "hash": "C5czaFHVzL9R5uWq1eJgyhDHHxCoEtvpWcZcetuFYn0="
         }
       },
       "is_incremental": false,
@@ -466,18 +514,6 @@
         ".html": {
           "relative_path": "api/Libplanet.Action.RandomExtensions.html",
           "hash": "wR1aSa/3SkF8dhxlwEccQF7RKLgvOLWhAKg4mmSmmT0="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Action.StaticActionLoader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Action.StaticActionLoader.html",
-          "hash": "cx30rYxqJLsvf/OBcipRmPwaA9+Y/JxhhRPZ5/YcyOI="
         }
       },
       "is_incremental": false,
@@ -609,7 +645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.html",
-          "hash": "CdDLgUmFJnIzVXvNjPA0nULXnfAAFzVk4IJ2/dlP8NE="
+          "hash": "8Mga14kiEBTfrRiD2fZXDkZhbA6Mz0Yb27fyW1lMXtw="
         }
       },
       "is_incremental": false,
@@ -681,7 +717,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "BnGtBckXSp1ybkGqv4IDThhWMpLrtK9Kr60sfFO6o68="
+          "hash": "G2c4MMZgov2VOSiFyAuNW6ygXzs3ZsRquiZWwjBkUNs="
         }
       },
       "is_incremental": false,
@@ -4593,7 +4629,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Mgg/2u7ABnn1cBnlibyC5r+khTmqmUZ0KBuMVU1ozbk="
+          "hash": "z739sW6we5Qcv3u6auzjuE1NTJOXGByqFi79tPKirEM="
         }
       },
       "is_incremental": false,
@@ -4702,7 +4738,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 372,
+          "total_file_count": 375,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

@@ -64,6 +64,10 @@
 <h2 id="version-120">Version 1.2.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>Removed <code>StaticActionLoader</code> class.  Use <code>SingleActionLoader</code> instead.
+[<a href="https://github.com/planetarium/libplanet/pull/3148">#3148</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed type parameter <code>T</code> from <code>Transaction.Create&lt;T&gt;()</code> and
@@ -80,6 +84,8 @@ method was changed to
 <code>RenderActionError(IValue, IActionContext, Exception)</code>.</li>
 </ul>
 </li>
+<li>Added <code>SingleActionLoader</code>, <code>TypedActionLoader</code>, and <code>IndexedActionLoader</code>
+classes.  [<a href="https://github.com/planetarium/libplanet/pull/3148">#3148</a>]</li>
 <li>Removed <code>trieGetter</code> parameter from <code>ActionEvaluator</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/pull/3149">#3149</a>]</li>
 <li>Added <code>IBlockChainStates.GetTrie()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3149">#3149</a>]</li>

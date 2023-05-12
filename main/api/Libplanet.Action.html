@@ -114,7 +114,7 @@ transfer or an owner has less <a class="xref" href="Libplanet.Action.Insufficien
       <h4><a class="xref" href="Libplanet.Action.InvalidActionException.html">InvalidActionException</a></h4>
       <section><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> that is thrown when an <span class="xref">Bencodex.Types.IValue</span> that is
 supposedly a serialized <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> cannot be deserialized via an
-<a class="xref" href="Libplanet.Action.IActionLoader.html">IActionLoader</a>.</p>
+<a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></h4>
       <section><p>The exception that is thrown when an action class without
@@ -137,10 +137,6 @@ compatibility issues on certain platforms, and is slightly slower.
       <h4><a class="xref" href="Libplanet.Action.RandomExtensions.html">RandomExtensions</a></h4>
       <section><p>This extension class provides some convenient methods
 to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.StaticActionLoader.html">StaticActionLoader</a></h4>
-      <section><p>An <a class="xref" href="Libplanet.Action.IActionLoader.html">IActionLoader</a> implementation to load action types
-without branching by block index.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.SupplyOverflowException.html">SupplyOverflowException</a></h4>
       <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
@@ -227,9 +223,6 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Action.IActionLoader.html">IActionLoader</a></h4>
-      <section><p>An interface to load actions branched by block index.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.IActionTypeLoaderContext.html">IActionTypeLoaderContext</a></h4>
       <section><p>An interface to provide contextual variables to load action types.</p>
 </section>
