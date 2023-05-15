@@ -271,7 +271,7 @@ namespace Libplanet.RocksDBStore
             var cfs = new ColumnFamilies();
             foreach (string name in cfns)
             {
-                cfs.Add(name, opt);
+                cfs.Add(name, new ColumnFamilyOptions());
             }
 
             RocksDb db = RocksDb.Open(opt, path, cfs);
@@ -1470,7 +1470,7 @@ namespace Libplanet.RocksDBStore
 
             foreach (string name in listColumnFamilies)
             {
-                columnFamilies.Add(name, _options);
+                columnFamilies.Add(name, new ColumnFamilyOptions());
             }
 
             return columnFamilies;

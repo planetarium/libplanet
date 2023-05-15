@@ -94,8 +94,15 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())
+        public byte[] Get(in KeyBytes key)
+        {
+#if NETSTANDARD2_0
+            return _keyValueDb.Get(key.ToByteArray())
+#else
+            return _keyValueDb.Get(key.ByteArray.AsSpan())
+#endif
             ?? throw new KeyNotFoundException($"No such key: ${key}.");
+        }
 
         /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
         public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
@@ -127,7 +134,11 @@ namespace Libplanet.RocksDBStore
 
             foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
+#if NETSTANDARD2_0
                 writeBatch.Put(kv.Key.ToByteArray(), kv.Value);
+#else
+                writeBatch.Put(kv.Key.ByteArray.AsSpan(), kv.Value.AsSpan());
+#endif
             }
 
             _keyValueDb.Write(writeBatch);
@@ -160,7 +171,11 @@ namespace Libplanet.RocksDBStore
 
         /// <inheritdoc/>
         public bool Exists(in KeyBytes key) =>
-            _keyValueDb.Get(key.ToByteArray()) is { };
+#if NETSTANDARD2_0
+            _keyValueDb.HasKey(key.ToByteArray(), key.Length);
+#else
+            _keyValueDb.HasKey(key.ByteArray.AsSpan(), key.Length);
+#endif
 
         /// <inheritdoc/>
         public IEnumerable<KeyBytes> ListKeys()
