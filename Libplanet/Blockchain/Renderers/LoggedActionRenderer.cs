@@ -8,32 +8,29 @@ using Serilog.Events;
 namespace Libplanet.Blockchain.Renderers
 {
     /// <summary>
-    /// Decorates an <see cref="IActionRenderer{T}"/> so that all event messages are logged.
-    /// In other words, this is an <see cref="IActionRenderer{T}"/> version of
-    /// <see cref="LoggedRenderer{T}"/>.
+    /// Decorates an <see cref="IActionRenderer"/> so that all event messages are logged.
+    /// In other words, this is an <see cref="IActionRenderer"/> version of
+    /// <see cref="LoggedRenderer"/>.
     /// <para>Every single event message causes two log messages: one is logged <em>before</em>
     /// rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
     /// it is also logged with the log level <see cref="LogEventLevel.Error"/> (regardless of
-    /// <see cref="LoggedRenderer{T}.Level"/> configuration).</para>
+    /// <see cref="LoggedRenderer.Level"/> configuration).</para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <example>
     /// <code><![CDATA[
-    /// IActionRenderer<ExampleAction> actionRenderer = new SomeActionRenderer();
+    /// IActionRenderer actionRenderer = new SomeActionRenderer();
     /// // Wraps the action renderer with LoggedActionRenderer:
-    /// actionRenderer = new LoggedActionRenderer<ExampleAction>(
+    /// actionRenderer = new LoggedActionRenderer(
     ///     actionRenderer,
     ///     Log.Logger,
     ///     LogEventLevel.Information,
     /// );
     /// ]]></code>
     /// </example>
-    public class LoggedActionRenderer<T> : LoggedRenderer<T>, IActionRenderer<T>
-        where T : IAction, new()
+    public class LoggedActionRenderer : LoggedRenderer, IActionRenderer
     {
         /// <summary>
-        /// Creates a new <see cref="LoggedActionRenderer{T}"/> instance which decorates the given
+        /// Creates a new <see cref="LoggedActionRenderer"/> instance which decorates the given
         /// action <paramref name="renderer"/>.
         /// </summary>
         /// <param name="renderer">The actual action renderer to forward all event messages to and
@@ -43,7 +40,7 @@ namespace Libplanet.Blockchain.Renderers
         /// type (with the context property <c>SourceContext</c>).</param>
         /// <param name="level">The log event level.  All log messages become this level.</param>
         public LoggedActionRenderer(
-            IActionRenderer<T> renderer,
+            IActionRenderer renderer,
             ILogger logger,
             LogEventLevel level = LogEventLevel.Debug
         )
@@ -55,9 +52,9 @@ namespace Libplanet.Blockchain.Renderers
         /// <summary>
         /// The inner action renderer to forward all event messages to and actually render things.
         /// </summary>
-        public IActionRenderer<T> ActionRenderer { get; }
+        public IActionRenderer ActionRenderer { get; }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderBlockEnd(Block, Block)"/>
         public void RenderBlockEnd(
             Block oldTip,
             Block newTip
@@ -70,7 +67,7 @@ namespace Libplanet.Blockchain.Renderers
             );
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(
             IValue action,
             IActionContext context,
@@ -84,7 +81,7 @@ namespace Libplanet.Blockchain.Renderers
             );
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
         public void RenderActionError(
             IValue action,
             IActionContext context,

@@ -40,8 +40,7 @@ namespace Libplanet.Tests.Fixtures
         public IntegerSet(
             IReadOnlyList<BigInteger?> initialStates,
             IBlockPolicy<Arithmetic> policy = null,
-            IEnumerable<IRenderer<Arithmetic>> renderers = null
-        )
+            IEnumerable<IRenderer> renderers = null)
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
             Addresses = PrivateKeys.Select(AddressExtensions.ToAddress).ToImmutableArray();
@@ -94,7 +93,7 @@ namespace Libplanet.Tests.Fixtures
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
                     feeCalculator: null
                 ),
-                renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
+                renderers: renderers ?? new[] { new ValidatingActionRenderer() }
             );
         }
 
@@ -102,7 +101,7 @@ namespace Libplanet.Tests.Fixtures
 
         public IBlockPolicy<Arithmetic> Policy => Chain.Policy;
 
-        public IReadOnlyList<IRenderer<Arithmetic>> Renderers => Chain.Renderers;
+        public IReadOnlyList<IRenderer> Renderers => Chain.Renderers;
 
         public Block Tip => Chain.Tip;
 

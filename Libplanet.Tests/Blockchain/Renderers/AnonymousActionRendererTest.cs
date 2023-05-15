@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void ActionRenderer()
         {
             (IValue, IActionContext, IAccountStateDelta)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
+            var renderer = new AnonymousActionRenderer
             {
                 ActionRenderer = (action, context, nextStates) =>
                     record = (action, context, nextStates),
@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void ActionErrorRenderer()
         {
             (IValue, IActionContext, Exception)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
+            var renderer = new AnonymousActionRenderer
             {
                 ActionErrorRenderer = (action, context, exception) =>
                     record = (action, context, exception),
@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void BlockRenderer()
         {
             (Block Old, Block New)? record = null;
-            var renderer = new AnonymousActionRenderer<DumbAction>
+            var renderer = new AnonymousActionRenderer
             {
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };

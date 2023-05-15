@@ -1,5 +1,4 @@
 using System;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Serilog;
 using Serilog.Events;
@@ -7,35 +6,32 @@ using Serilog.Events;
 namespace Libplanet.Blockchain.Renderers
 {
     /// <summary>
-    /// Decorates an <see cref="IRenderer{T}"/> so that all event messages are logged.
+    /// Decorates an <see cref="IRenderer"/> so that all event messages are logged.
     /// <para>Every single event message causes two log messages: one is logged <em>before</em>
     /// rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
     /// it is also logged with the log level <see cref="LogEventLevel.Error"/> (regardless of
     /// <see cref="Level"/> configuration).</para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <example>
     /// <code>
-    /// IRenderer&lt;ExampleAction&gt; renderer = new SomeRenderer();
+    /// IRenderer renderer = new SomeRenderer();
     /// // Wraps the renderer with LoggedRenderer:
-    /// renderer = new LoggedRenderer&lt;ExampleAction&gt;(
+    /// renderer = new LoggedRenderer(
     ///     renderer,
     ///     Log.Logger,
     ///     LogEventLevel.Information,
     /// );
     /// </code>
     /// </example>
-    /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
-    /// <see cref="LoggedRenderer{T}(IRenderer{T}, ILogger, LogEventLevel)"/> constructor can take
-    /// an <see cref="IActionRenderer{T}"/> instance as well.  However, even it takes an action
+    /// <remarks>Since <see cref="IActionRenderer"/> is a subtype of <see cref="IRenderer"/>,
+    /// <see cref="LoggedRenderer(IRenderer, ILogger, LogEventLevel)"/> constructor can take
+    /// an <see cref="IActionRenderer"/> instance as well.  However, even it takes an action
     /// renderer, action-level fine-grained events will not be logged.  For action renderers,
-    /// please use <see cref="LoggedActionRenderer{T}"/> instead.</remarks>
-    public class LoggedRenderer<T> : IRenderer<T>
-        where T : IAction, new()
+    /// please use <see cref="LoggedActionRenderer"/> instead.</remarks>
+    public class LoggedRenderer : IRenderer
     {
         /// <summary>
-        /// Creates a new <see cref="LoggedRenderer{T}"/> instance which decorates the given
+        /// Creates a new <see cref="LoggedRenderer"/> instance which decorates the given
         /// <paramref name="renderer"/>.
         /// </summary>
         /// <param name="renderer">The actual renderer to forward all event messages to and actually
@@ -45,15 +41,15 @@ namespace Libplanet.Blockchain.Renderers
         /// type (with the context property <c>SourceContext</c>).</param>
         /// <param name="level">The log event level.  All log messages become this level.</param>
         public LoggedRenderer(
-            IRenderer<T> renderer,
+            IRenderer renderer,
             ILogger logger,
             LogEventLevel level = LogEventLevel.Debug
         )
         {
             Renderer = renderer;
             Logger = logger
-                .ForContext<LoggedRenderer<T>>()
-                .ForContext("Source", nameof(LoggedRenderer<T>))
+                .ForContext<LoggedRenderer>()
+                .ForContext("Source", nameof(LoggedRenderer))
                 .ForContext(renderer.GetType());
             Level = level;
         }
@@ -61,7 +57,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <summary>
         /// The inner renderer to forward all event messages to and actually render things.
         /// </summary>
-        public IRenderer<T> Renderer { get; }
+        public IRenderer Renderer { get; }
 
         /// <summary>
         /// The log event level.  All log messages become this level.
@@ -75,7 +71,7 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         protected ILogger Logger { get; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        /// <inheritdoc cref="IRenderer.RenderBlock(Block, Block)"/>
         public void RenderBlock(
             Block oldTip,
             Block newTip

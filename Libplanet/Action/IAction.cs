@@ -200,7 +200,7 @@ namespace Libplanet.Action
         /// <see cref="Execute(IActionContext)"/> method can be called more
         /// than once, the time it's called is difficult to predict.
         /// <para>For changing in-memory game states or drawing graphics,
-        /// implement the <see cref="Blockchain.Renderers.IRenderer{T}"/> interface separately and
+        /// implement the <see cref="Blockchain.Renderers.IRenderer"/> interface separately and
         /// attach it to a <see cref="Blockchain.BlockChain{T}"/> instance.</para>
         /// <para>For randomness, <em>never</em> use <see cref="System.Random"/>
         /// nor any other PRNGs provided by other than Libplanet.

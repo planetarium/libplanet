@@ -39,6 +39,8 @@ To be released.
      - Removed `nativeTokenPredicate` parameter from all `BlockChain<T>`'s
        methods.
      - (Libplanet.Explorer) Removed `BlockPolicyType<T>` class.
+ -  Removed generic type parameter `T` from `IRenderer<T>` and all its
+    implementations.  [[#3163]]
 
 ### Backward-incompatible network protocol changes
 
@@ -73,6 +75,7 @@ To be released.
 [#3153]: https://github.com/planetarium/libplanet/pull/3153
 [#3158]: https://github.com/planetarium/libplanet/pull/3158
 [#3159]: https://github.com/planetarium/libplanet/pull/3159
+[#3163]: https://github.com/planetarium/libplanet/pull/3163
 
 
 Version 1.1.1

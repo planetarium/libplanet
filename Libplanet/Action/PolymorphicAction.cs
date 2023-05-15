@@ -116,11 +116,11 @@ namespace Libplanet.Action
     ///     }
     /// }
     /// ]]></code>
-    /// Note that when it's rendered through <see cref="Blockchain.Renderers.IRenderer{T}"/>,
+    /// Note that when it's rendered through <see cref="Blockchain.Renderers.IRenderer"/>,
     /// an instance of <see cref="PolymorphicAction{T}"/> is passed instead of its
     /// <see cref="InnerAction"/>:
     /// <code>
-    /// public class Renderer : IActionRenderer&lt;PolymorphicAction&lt;ActionBase&gt;&gt;
+    /// public class Renderer : IActionRenderer;
     /// {
     ///     public void RenderAction(IAction action,
     ///                              IActionContext context,
