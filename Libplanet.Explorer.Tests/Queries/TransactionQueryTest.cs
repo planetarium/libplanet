@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action;
@@ -10,6 +11,7 @@ using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
 using Libplanet.Store;
@@ -69,11 +71,16 @@ public class TransactionQueryTest
     public async Task BindSignatureWithSystemAction()
     {
         var foo = Currency.Uncapped("FOO", 2, ImmutableHashSet<Address>.Empty);
+        var action = new Initialize(
+            new ValidatorSet(new List<Validator>()
+                { new Validator(new PrivateKey().PublicKey, 1 )}),
+            new Dictionary<Address, IValue>
+                { [default] = (Text)"initial value" }.ToImmutableDictionary());
         var tx = Transaction.Create(
             0L,
             new PrivateKey(),
             Source.BlockChain.Genesis.Hash,
-            new IAction[] { new Transfer(default, foo * 10) }
+            new IAction[] { action }
         );
         ExecutionResult result = await ExecuteQueryAsync(@$"
         {{

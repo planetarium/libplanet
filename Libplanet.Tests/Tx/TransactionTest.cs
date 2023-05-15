@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
-using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -65,12 +66,16 @@ namespace Libplanet.Tests.Tx
             );
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            var foo = Currency.Uncapped("FOO", 2, minters: null);
+            var action = new Initialize(
+                new ValidatorSet(new List<Validator>()
+                    { new Validator(new PrivateKey().PublicKey, 1) }),
+                new Dictionary<Address, IValue>
+                    { [default] = (Text)"initial value" }.ToImmutableDictionary());
             Transaction tx = Transaction.Create(
                 0,
                 privateKey,
                 null,
-                actions: new IAction[] { new Transfer(privateKey.ToAddress(), foo * 10) },
+                actions: new IAction[] { action },
                 timestamp: timestamp
             );
 

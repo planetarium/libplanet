@@ -1484,7 +1484,11 @@ namespace Libplanet.Tests.Blockchain
             var foo = Currency.Uncapped("FOO", 2, minters: null);
             var privateKey = new PrivateKey();
             Address address = privateKey.ToAddress();
-            var action = new Transfer(address, foo * 10);
+            var action = new Initialize(
+                new ValidatorSet(
+                    new List<Validator>() { new Validator(new PrivateKey().PublicKey, 0) }),
+                new Dictionary<Address, IValue>
+                    { [default] = (Text)"initial value" }.ToImmutableDictionary());
 
             _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
             _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
