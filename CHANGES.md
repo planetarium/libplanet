@@ -65,8 +65,12 @@ To be released.
 
 ### Dependencies
 
+ -  (Libplanet.RocksDBStore) Replaced *Planetarium.RocksDbSharp* with
+    *[RocksDB]* [8.1.1.38647][RocksDB 8.1.1.38647].  [[#1848], [TBD]]
+
 ### CLI tools
 
+[#1848]: https://github.com/planetarium/libplanet/issue/1848
 [#3117]: https://github.com/planetarium/libplanet/pull/3117
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
 [#3144]: https://github.com/planetarium/libplanet/pull/3144
@@ -76,6 +80,9 @@ To be released.
 [#3158]: https://github.com/planetarium/libplanet/pull/3158
 [#3159]: https://github.com/planetarium/libplanet/pull/3159
 [#3163]: https://github.com/planetarium/libplanet/pull/3163
+
+[RocksDB]: https://www.nuget.org/packages/rocksdb/
+[RocksDB 8.1.1.38647]: https://www.nuget.org/packages/RocksDB/8.1.1.38647
 
 
 Version 1.1.1
