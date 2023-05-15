@@ -48,6 +48,10 @@ export interface FungibleAssetValue {
   currency: Currency;
 }
 
+export function encodeFungibleAssetValue(value: FungibleAssetValue): Value[] {
+    return [encodeCurrency(value.currency), value.rawValue];
+}
+
 function abs(value: bigint): bigint {
   return value < 0n ? -value : value;
 }
