@@ -31,7 +31,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A <see cref="HashDigest{SHA256}"/> value of the genesis which this transaction is made
-        /// from.  This can be <see langword="null"/> if the transaction is contained in
+        /// from.  This can be <see langword="null"/> iff the transaction is contained in
         /// the genesis block.
         /// </summary>
         BlockHash? GenesisHash { get; }
