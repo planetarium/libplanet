@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -149,15 +150,13 @@ namespace Libplanet.Action
     public sealed class PolymorphicAction<T> : IAction
         where T : IAction
     {
-        private static readonly PolymorphicActionLoader _innerActionLoader;
-        private static readonly IDictionary<IValue, Type> _types;
+        private static PolymorphicActionLoader _innerActionLoader;
 
         private T _innerAction;
 
         static PolymorphicAction()
         {
             _innerActionLoader = new PolymorphicActionLoader(typeof(T));
-            _types = _innerActionLoader.Types;
         }
 
         /// <summary>
@@ -224,6 +223,22 @@ namespace Libplanet.Action
         public static implicit operator PolymorphicAction<T>(T innerAction)
         {
             return new PolymorphicAction<T>(innerAction);
+        }
+
+        /// <summary>
+        /// <para>
+        /// Loads all action types from given <paramref name="assemblies"/>.
+        /// </para>
+        /// <para>
+        /// This is only for testing and development when one needs to include
+        /// additional actions for debugging.
+        /// </para>
+        /// </summary>
+        /// <param name="assemblies">The <see cref="Assembly"/>s to load
+        /// all actions from.</param>
+        public static void ReloadLoader(IEnumerable<Assembly> assemblies)
+        {
+            _innerActionLoader = new PolymorphicActionLoader(assemblies, typeof(T));
         }
 
         public string GetInnerActionTypeName()
