@@ -157,19 +157,19 @@ namespace Libplanet.Store.Trie
                 return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
-            var values = new ConcurrentDictionary<KeyBytes, byte[]>();
-            var newRoot = Commit(Root, values);
+            var writeBatch = new WriteBatch(KeyValueStore, 4096);
+            INode newRoot = Commit(Root, writeBatch);
 
             // It assumes embedded node if it's not HashNode.
             if (!(newRoot is HashNode))
             {
                 byte[] serialized = _codec.Encode(newRoot.ToBencodex());
-                values[new KeyBytes(SHA256.Create().ComputeHash(serialized))] = serialized;
+                writeBatch.Add(new KeyBytes(SHA256.Create().ComputeHash(serialized)), serialized);
             }
 
-            KeyValueStore.Set(values);
-            var rv = new MerkleTrie(KeyValueStore, newRoot);
-            return rv;
+            writeBatch.Flush();
+
+            return new MerkleTrie(KeyValueStore, newRoot);
         }
 
         internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
@@ -366,7 +366,7 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode Commit(INode node, IDictionary<KeyBytes, byte[]> values)
+        private INode Commit(INode node, WriteBatch writeBatch)
         {
             switch (node)
             {
@@ -374,23 +374,23 @@ namespace Libplanet.Store.Trie
                     return node;
 
                 case FullNode fullNode:
-                    return CommitFullNode(fullNode, values);
+                    return CommitFullNode(fullNode, writeBatch);
 
                 case ShortNode shortNode:
-                    return CommitShortNode(shortNode, values);
+                    return CommitShortNode(shortNode, writeBatch);
 
                 case ValueNode valueNode:
-                    return CommitValueNode(valueNode, values);
+                    return CommitValueNode(valueNode, writeBatch);
 
                 default:
                     throw new NotSupportedException("Not supported node came.");
             }
         }
 
-        private INode CommitFullNode(FullNode fullNode, IDictionary<KeyBytes, byte[]> values)
+        private INode CommitFullNode(FullNode fullNode, WriteBatch writeBatch)
         {
             var virtualChildren = fullNode.Children
-                .Select(c => c is null ? null : Commit(c, values))
+                .Select(c => c is null ? null : Commit(c, writeBatch))
                 .ToImmutableArray();
 
             fullNode = new FullNode(virtualChildren);
@@ -401,12 +401,12 @@ namespace Libplanet.Store.Trie
                 return fullNode;
             }
 
-            return Encode(fullNode.ToBencodex(), values);
+            return Encode(fullNode.ToBencodex(), writeBatch);
         }
 
-        private INode CommitShortNode(ShortNode shortNode, IDictionary<KeyBytes, byte[]> values)
+        private INode CommitShortNode(ShortNode shortNode, WriteBatch writeBatch)
         {
-            var committedValueNode = Commit(shortNode.Value!, values);
+            var committedValueNode = Commit(shortNode.Value!, writeBatch);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
             IValue encoded = shortNode.ToBencodex();
             if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
@@ -414,10 +414,10 @@ namespace Libplanet.Store.Trie
                 return shortNode;
             }
 
-            return Encode(encoded, values);
+            return Encode(encoded, writeBatch);
         }
 
-        private INode CommitValueNode(ValueNode valueNode, IDictionary<KeyBytes, byte[]> values)
+        private INode CommitValueNode(ValueNode valueNode, WriteBatch writeBatch)
         {
             IValue encoded = valueNode.ToBencodex();
             var nodeSize = encoded.EncodingLength;
@@ -426,18 +426,22 @@ namespace Libplanet.Store.Trie
                 return valueNode;
             }
 
-            return Encode(encoded, values);
+            return Encode(encoded, writeBatch);
         }
 
-        private HashNode Encode(IValue intermediateEncoding, IDictionary<KeyBytes, byte[]> values)
+        private HashNode Encode(IValue intermediateEncoding, WriteBatch writeBatch)
         {
-            var offloadOptions = new OffloadOptions(OffloadThresholdBytes, values, KeyValueStore);
+            var offloadOptions = new OffloadOptions(
+                OffloadThresholdBytes,
+                writeBatch,
+                KeyValueStore
+            );
             byte[] serialized = _codec.Encode(intermediateEncoding, offloadOptions);
             byte[] fullEncoding = offloadOptions.Offloaded
                 ? _codec.Encode(intermediateEncoding)
                 : serialized;
             var nodeHash = HashDigest<SHA256>.DeriveFrom(fullEncoding);
-            values[new KeyBytes(nodeHash.ByteArray)] = serialized;
+            writeBatch.Add(new KeyBytes(nodeHash.ByteArray), serialized);
             return new HashNode(nodeHash);
         }
 
@@ -604,6 +608,38 @@ namespace Libplanet.Store.Trie
             return value;
         }
 
+        private class WriteBatch
+        {
+            private readonly IKeyValueStore _store;
+            private readonly int _batchSize;
+            private readonly Dictionary<KeyBytes, byte[]> _batch;
+
+            public WriteBatch(IKeyValueStore store, int batchSize)
+            {
+                _store = store;
+                _batchSize = batchSize;
+                _batch = new Dictionary<KeyBytes, byte[]>(_batchSize);
+            }
+
+            public bool ContainsKey(KeyBytes key) => _batch.ContainsKey(key);
+
+            public void Add(KeyBytes key, byte[] value)
+            {
+                _batch[key] = value;
+
+                if (_batch.Count == _batchSize)
+                {
+                    Flush();
+                }
+            }
+
+            public void Flush()
+            {
+                _store.Set(_batch);
+                _batch.Clear();
+            }
+        }
+
         private sealed class OffloadOptions : IOffloadOptions
         {
             [SuppressMessage(
@@ -613,12 +649,12 @@ namespace Libplanet.Store.Trie
             public bool Offloaded;
 
             private readonly long _thresholdBytes;
-            private readonly IDictionary<KeyBytes, byte[]> _dirty;
+            private readonly WriteBatch _dirty;
             private readonly IKeyValueStore _store;
 
             public OffloadOptions(
                 long thresholdBytes,
-                IDictionary<KeyBytes, byte[]> dirty,
+                WriteBatch dirty,
                 IKeyValueStore store
             )
             {
@@ -690,7 +726,7 @@ namespace Libplanet.Store.Trie
                         repr = new List(valueGroups);
                     }
 
-                    _dirty[fp] = _codec.Encode(repr, this);
+                    _dirty.Add(fp, _codec.Encode(repr, this));
                     if (!_valueCache.ContainsKey(indirectValue.Fingerprint))
                     {
                         FreeValueCache();
