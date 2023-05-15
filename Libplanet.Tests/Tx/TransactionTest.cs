@@ -130,7 +130,9 @@ namespace Libplanet.Tests.Tx
                 privateKey,
                 null,
                 new[] { new DumbAction(stateStore, "RecordRehearsal", true) },
-                ImmutableHashSet.Create(stateStore),
+                null,
+                null,
+                ImmutableHashSet<Address>.Empty,
                 timestamp
             );
 
@@ -182,6 +184,8 @@ namespace Libplanet.Tests.Tx
                 _fx.PrivateKey1,
                 null,
                 _fx.TxWithActions.Actions,
+                null,
+                null,
                 new[] { updatedAddr }.ToImmutableHashSet()
             );
 
@@ -200,6 +204,8 @@ namespace Libplanet.Tests.Tx
                 _fx.PrivateKey1,
                 null,
                 new DumbAction[0],
+                null,
+                null,
                 ImmutableHashSet<Address>.Empty
             );
             DateTimeOffset rightAfter = DateTimeOffset.UtcNow;
@@ -217,6 +223,8 @@ namespace Libplanet.Tests.Tx
                     null,
                     null,
                     new DumbAction[0],
+                    null,
+                    null,
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
                 )

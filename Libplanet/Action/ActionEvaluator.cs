@@ -194,11 +194,13 @@ namespace Libplanet.Action
         /// <param name="gasLimit">
         /// The maximum amount of gas that can be consumed by the transaction.
         /// </param>
+        /// <param name="maxGasPrice">
+        /// The maximum gas price that can be used by the transaction.
+        /// </param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
-        /// <param name="feeCalculator">Fee calculator.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -231,14 +233,15 @@ namespace Libplanet.Action
             byte[] signature,
             IImmutableList<IAction> actions,
             long gasLimit = 0,
+            FungibleAssetValue? maxGasPrice = null,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
-            IFeeCalculator? feeCalculator = null,
             ILogger? logger = null)
         {
             ActionContext CreateActionContext(
                 IAccountStateDelta prevStates,
                 int randomSeed,
+                long actionGasLimit = 0,
                 List<string>? logs = null
             )
             {
@@ -251,7 +254,7 @@ namespace Libplanet.Action
                     randomSeed: randomSeed,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
-                    gasLimit: gasLimit,
+                    gasLimit: actionGasLimit,
                     logs: logs);
             }
 
@@ -269,33 +272,16 @@ namespace Libplanet.Action
             {
                 Exception? exc = null;
                 IAccountStateDelta nextStates = states;
-                ActionContext context = CreateActionContext(states, seed);
+                long nextGasLimit = gasLimit;
+                ActionContext context = CreateActionContext(nextStates, seed, nextGasLimit);
+                IFeeCollector feeCollector = new FeeCollector(context, maxGasPrice);
                 try
                 {
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
-
-                    if (blockIndex == 0)
-                    {
-                        logger?.Verbose("The actions in the genesis block don't be charged");
-                    }
-                    else if (blockAction)
-                    {
-                        logger?.Verbose("blockAction don't be charged");
-                    }
-                    else if (feeCalculator is null)
-                    {
-                        logger?.Verbose("No fee calculator given, skip charging");
-                    }
-                    else
-                    {
-                        logger?.Verbose($"Measuring fee of {action} started");
-                        FungibleAssetValue fee = feeCalculator.CalculateFee(action);
-                        logger?.Verbose($"Measured fee of {action} is {fee}");
-                        nextStates = states = states.TransferAsset(signer, miner, fee);
-                        context = CreateActionContext(states, seed);
-                    }
-
+                    nextStates = feeCollector.Mortgage(nextStates);
+                    context = CreateActionContext(nextStates, seed, nextGasLimit);
+                    feeCollector = feeCollector.Next(context);
                     nextStates = action.Execute(context);
                     logger?
                         .ForContext("Tag", "Metric")
@@ -308,6 +294,9 @@ namespace Libplanet.Action
                             stopwatch.ElapsedMilliseconds,
                             ActionContext.GetStateCount.Value,
                             ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
+                    nextStates = feeCollector.Refund(nextStates);
+                    nextStates = feeCollector.Reward(nextStates);
+                    nextGasLimit = context.GasLimit() - context.GasUsed();
                 }
                 catch (OutOfMemoryException e)
                 {
@@ -377,6 +366,7 @@ namespace Libplanet.Action
                 }
 
                 states = nextStates;
+                gasLimit = nextGasLimit;
                 unchecked
                 {
                     seed++;
@@ -513,8 +503,9 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
+                gasLimit: tx.GasLimit ?? 0,
+                maxGasPrice: tx.MaxGasPrice,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                feeCalculator: _feeCalculator,
                 logger: _logger);
         }
 

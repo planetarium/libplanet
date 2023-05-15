@@ -463,6 +463,8 @@ namespace Libplanet.Net.Tests
                     new PrivateKey(),
                     minerSwarm.BlockChain.Genesis.Hash,
                     new[] { action },
+                    null,
+                    null,
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
                 );

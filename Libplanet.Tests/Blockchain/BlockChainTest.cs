@@ -573,6 +573,8 @@ namespace Libplanet.Tests.Blockchain
                                 privateKey: new PrivateKey(),
                                 genesisHash: null,
                                 actions: new[] { action },
+                                maxGasPrice: null,
+                                gasLimit: null,
                                 updatedAddresses: ImmutableHashSet.Create(_fx.Address1),
                                 timestamp: DateTimeOffset.UtcNow
                             ),

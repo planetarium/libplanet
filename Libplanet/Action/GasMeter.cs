@@ -2,10 +2,10 @@ namespace Libplanet.Action
 {
     internal class GasMeter : IGasMeter
     {
-        public GasMeter(long gasLimit)
+        public GasMeter(long gasLimit, long gasUsed = 0)
         {
             SetGasLimit(gasLimit);
-            GasUsed = 0;
+            GasUsed = gasUsed;
         }
 
         public long GasAvailable => GasLimit - GasUsed;
