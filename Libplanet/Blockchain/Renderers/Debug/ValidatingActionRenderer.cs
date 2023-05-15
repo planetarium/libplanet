@@ -8,7 +8,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
 {
     /// <summary>
     /// Validates if rendering events are in the correct order according to the documented automata
-    /// (see also the docs for <see cref="IRenderer{T}"/> and <see cref="IActionRenderer{T}"/>)
+    /// (see also the docs for <see cref="IRenderer"/> and <see cref="IActionRenderer{T}"/>)
     /// using profiling-guided analysis.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
@@ -41,7 +41,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// </summary>
         public BlockChain<T>? BlockChain { get; set; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        /// <inheritdoc cref="IRenderer.RenderBlock(Block, Block)"/>
         public override void RenderBlock(Block oldTip, Block newTip)
         {
             base.RenderBlock(oldTip, newTip);
@@ -113,7 +113,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             }
                         }
 
-                        throw BadRenderExc($"Expected {nameof(IRenderer<T>.RenderBlock)}.");
+                        throw BadRenderExc($"Expected {nameof(IRenderer.RenderBlock)}.");
                     }
 
                     case RenderState.Block:
@@ -128,7 +128,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                                 block.NewTip != blockState.NewTip)
                             {
                                 throw BadRenderExc(
-                                    $"{nameof(IRenderer<T>.RenderBlock)} and " +
+                                    $"{nameof(IRenderer.RenderBlock)} and " +
                                     $"{nameof(IActionRenderer<T>.RenderBlockEnd)} which matches " +
                                     "to it should have the same oldTip and newTip."
                                 );

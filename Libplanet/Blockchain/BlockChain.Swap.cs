@@ -144,7 +144,7 @@ namespace Libplanet.Blockchain
         {
             if (render)
             {
-                foreach (IRenderer<T> renderer in Renderers)
+                foreach (IRenderer renderer in Renderers)
                 {
                     renderer.RenderBlock(
                         oldTip: oldTip,

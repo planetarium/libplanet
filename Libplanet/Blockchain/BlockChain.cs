@@ -30,9 +30,9 @@ namespace Libplanet.Blockchain
     /// information.
     /// </para>
     /// <para>
-    /// In order to watch its state changes, implement <see cref="IRenderer{T}"/> interface
+    /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
     /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T},
-    /// IStore, IStateStore, Block, IEnumerable{IRenderer{T}})"/> constructor.
+    /// IStore, IStateStore, Block, IEnumerable{IRenderer})"/> constructor.
     /// </para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
@@ -99,7 +99,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
-            IEnumerable<IRenderer<T>> renderers = null
+            IEnumerable<IRenderer> renderers = null
         )
             : this(
                 policy,
@@ -115,7 +115,7 @@ namespace Libplanet.Blockchain
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
-        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block, IEnumerable{IRenderer{T}})" />
+        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block, IEnumerable{IRenderer})" />
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> implementation to state lookup.</param>
         public BlockChain(
             IBlockPolicy<T> policy,
@@ -123,7 +123,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
-            IEnumerable<IRenderer<T>> renderers,
+            IEnumerable<IRenderer> renderers,
             IBlockChainStates blockChainStates
         )
 #pragma warning restore MEN002
@@ -149,7 +149,7 @@ namespace Libplanet.Blockchain
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
-        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block, IEnumerable{IRenderer{T}}, IBlockChainStates)" />
+        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block, IEnumerable{IRenderer}, IBlockChainStates)" />
         /// <param name="actionEvaluator">The <see cref="ActionEvaluator" /> implementation to calculate next states when append new blocks.</param>
         public BlockChain(
             IBlockPolicy<T> policy,
@@ -157,7 +157,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
-            IEnumerable<IRenderer<T>> renderers,
+            IEnumerable<IRenderer> renderers,
             IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator
         )
@@ -188,7 +188,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block genesisBlock,
-            IEnumerable<IRenderer<T>> renderers,
+            IEnumerable<IRenderer> renderers,
             IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator)
         {
@@ -215,9 +215,9 @@ namespace Libplanet.Blockchain
             _blockChainStates = blockChainStates;
 
             _blocks = new BlockSet(store);
-            Renderers = renderers is IEnumerable<IRenderer<T>> r
+            Renderers = renderers is IEnumerable<IRenderer> r
                 ? r.ToImmutableArray()
-                : ImmutableArray<IRenderer<T>>.Empty;
+                : ImmutableArray<IRenderer>.Empty;
             ActionRenderers = Renderers.OfType<IActionRenderer<T>>().ToImmutableArray();
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
@@ -252,7 +252,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// An event which is invoked when <see cref="Tip"/> is changed.
         /// </summary>
-        // FIXME: This should be completely replaced by IRenderer<T>.RenderBlock() or any other
+        // FIXME: This should be completely replaced by IRenderer.RenderBlock() or any other
         // alternatives.
         internal event EventHandler<(Block OldTip, Block NewTip)> TipChanged;
 
@@ -263,10 +263,10 @@ namespace Libplanet.Blockchain
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
         /// "BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block,
-        /// IEnumerable{IRenderer{T}})"/>
+        /// IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
-        public IImmutableList<IRenderer<T>> Renderers { get; }
+        public IImmutableList<IRenderer> Renderers { get; }
 
         /// <summary>
         /// A filtered list, from <see cref="Renderers"/>, which contains only <see
@@ -409,7 +409,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Block genesisBlock,
             ActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer<T>> renderers = null,
+            IEnumerable<IRenderer> renderers = null,
             IBlockChainStates blockChainStates = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
@@ -901,9 +901,9 @@ namespace Libplanet.Blockchain
             }
 
             var forkedId = Guid.NewGuid();
-            IEnumerable<IRenderer<T>> renderers = inheritRenderers
+            IEnumerable<IRenderer> renderers = inheritRenderers
                 ? Renderers
-                : Enumerable.Empty<IRenderer<T>>();
+                : Enumerable.Empty<IRenderer>();
             try
             {
                 _rwlock.EnterReadLock();
@@ -1199,7 +1199,7 @@ namespace Libplanet.Blockchain
                         ActionRenderers.Count,
                         block.Index,
                         block.Hash);
-                    foreach (IRenderer<T> renderer in Renderers)
+                    foreach (IRenderer renderer in Renderers)
                     {
                         renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
                     }

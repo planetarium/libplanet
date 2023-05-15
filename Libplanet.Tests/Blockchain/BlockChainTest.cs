@@ -1633,8 +1633,7 @@ namespace Libplanet.Tests.Blockchain
             MakeIncompleteBlockStates(
                 IStore store,
                 IStateStore stateStore,
-                IRenderer<DumbAction> renderer = null
-            )
+                IRenderer renderer = null)
         {
             List<int> presentIndices = new List<int>() { 4, 7 };
             List<Block> presentBlocks = new List<Block>();

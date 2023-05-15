@@ -8,7 +8,7 @@ namespace Libplanet.Blockchain.Renderers
     /// <summary>
     /// An <see cref="IActionRenderer{T}"/> that invokes its callbacks.
     /// In other words, this is an <see cref="IActionRenderer{T}"/> version of
-    /// <see cref="AnonymousRenderer{T}"/>.
+    /// <see cref="AnonymousRenderer"/>.
     /// <para>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
     /// anonymous class) of <see cref="IActionRenderer{T}"/> interface.</para>
     /// </summary>
@@ -26,7 +26,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </example>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public sealed class AnonymousActionRenderer<T> : AnonymousRenderer<T>, IActionRenderer<T>
+    public sealed class AnonymousActionRenderer<T> : AnonymousRenderer, IActionRenderer<T>
         where T : IAction, new()
     {
         /// <summary>

@@ -94,7 +94,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        /// <inheritdoc cref="IRenderer.RenderBlock(Block, Block)"/>
         public virtual void RenderBlock(Block oldTip, Block newTip) =>
             _records.Add(
                 new RenderRecord.BlockEvent(

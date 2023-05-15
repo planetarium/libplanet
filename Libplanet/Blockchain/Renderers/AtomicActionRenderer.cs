@@ -47,7 +47,7 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public IActionRenderer<T> ActionRenderer { get; }
 
-        /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
+        /// <inheritdoc cref="IRenderer.RenderBlock(Block, Block)"/>
         public void RenderBlock(Block oldTip, Block newTip)
         {
             ActionRenderer.RenderBlock(oldTip, newTip);

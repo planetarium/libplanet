@@ -1,6 +1,5 @@
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Renderers
@@ -20,7 +19,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void BlockRenderer()
         {
             (Block Old, Block New)? record = null;
-            var renderer = new AnonymousRenderer<DumbAction>
+            var renderer = new AnonymousRenderer
             {
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };

@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             bool called = false;
             LogEvent firstLog = null;
 
-            IRenderer<DumbAction> renderer = new AnonymousRenderer<DumbAction>
+            IRenderer renderer = new AnonymousRenderer
             {
                 BlockRenderer = (oldTip, newTip) =>
                 {
@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Equal($"\"{_genesis.Hash}\"", firstLog.Properties["OldHash"].ToString());
             Assert.Equal(
-                $"\"{typeof(AnonymousRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousRenderer).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);
