@@ -4,7 +4,7 @@ Libplanet changelog
 Version 1.0.3
 -------------
 
-To be released.
+Released on May 15, 2023.
 
  -  (@planetarium/cli) Fixed the installer bug that it had failed on Linux and
     macOS since version 1.0.2.  [[#3107], [#3160]]
