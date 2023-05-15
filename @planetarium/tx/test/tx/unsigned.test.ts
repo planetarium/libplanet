@@ -24,7 +24,18 @@ test("encodeUnsignedTxWithSystemAction", async () => {
         currency: FOO,
       },
     },
-  });
+    gasLimit: 1000000n,
+    maxGasPrice: {
+        rawValue: 12500n,
+        currency: {
+            ticker: "FOO",
+            decimalPlaces: 2,
+            totalSupplyTrackable: true,
+            minters: null,
+            maximumSupply: null,
+        },
+      },
+    });
   const payload = encode(encoded);
   const { stdout } = await execa(
     "dotnet",
@@ -64,6 +75,18 @@ test("encodeUnsignedTxWithSystemAction", async () => {
     publicKey:
       "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
     genesisHash: null,
+    gasLimit: 1000000,
+    maxGasPrice: {
+          "quantity": "125",
+          "currency": {
+            "decimalPlaces": 2,
+            "minters": null,
+            "ticker": "FOO",
+            "totalSupplyTrackable": true,
+            "hash": "946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25",
+            "maximumSupply": null,
+          },
+    }
   });
 }, 30_000);
 
@@ -75,6 +98,8 @@ test("encodeUnsignedTxWithCustomActions", async () => {
     timestamp: new Date("2022-05-23T01:02:00+00:00"),
     updatedAddresses: new Set(),
     genesisHash: null,
+    gasLimit: null,
+    maxGasPrice: null,
     customActions: [
       new RecordView(
         {
@@ -153,5 +178,7 @@ test("encodeUnsignedTxWithCustomActions", async () => {
     publicKey:
       "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
     genesisHash: null,
+    gasLimit: null,
+    maxGasPrice: null,
   });
 }, 30_000);

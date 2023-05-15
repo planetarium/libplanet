@@ -18,6 +18,8 @@ describe("signTx", () => {
       timestamp: new Date("2022-05-23T01:02:00+00:00"),
       updatedAddresses: new Set(),
       genesisHash: null,
+      maxGasPrice: null,
+      gasLimit: null,
       systemAction: {
         type: "transfer",
         recipient: address2.toBytes(),
@@ -69,6 +71,8 @@ describe("signTx", () => {
       publicKey:
         "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
       genesisHash: null,
+      gasLimit: null,
+      maxGasPrice: null,
     });
   }, 30_000);
 
@@ -80,6 +84,8 @@ describe("signTx", () => {
       timestamp: new Date("2022-05-23T01:02:00+00:00"),
       updatedAddresses: new Set(),
       genesisHash: null,
+      maxGasPrice: null,
+      gasLimit: null,
       customActions: [
         new RecordView(
           {
@@ -164,6 +170,8 @@ describe("signTx", () => {
       publicKey:
         "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
       genesisHash: null,
+      gasLimit: null,
+      maxGasPrice: null,
     });
   }, 30_000);
 });
