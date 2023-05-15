@@ -80,6 +80,7 @@ To be released.
 [#3158]: https://github.com/planetarium/libplanet/pull/3158
 [#3159]: https://github.com/planetarium/libplanet/pull/3159
 [#3163]: https://github.com/planetarium/libplanet/pull/3163
+[#3166]: https://github.com/planetarium/libplanet/pull/3166
 
 [RocksDB]: https://www.nuget.org/packages/rocksdb/
 [RocksDB 8.1.1.38647]: https://www.nuget.org/packages/RocksDB/8.1.1.38647
