@@ -10,6 +10,7 @@ To be released.
 
  -  Removed `StaticActionLoader` class.  Use `SingleActionLoader` instead.
     [[#3148]]
+ -  Removed `Mint` and `Transfer` class.  [[#3159]]
 
 ### Backward-incompatible API changes
 
@@ -71,6 +72,7 @@ To be released.
 [#3149]: https://github.com/planetarium/libplanet/pull/3149
 [#3153]: https://github.com/planetarium/libplanet/pull/3153
 [#3158]: https://github.com/planetarium/libplanet/pull/3158
+[#3159]: https://github.com/planetarium/libplanet/pull/3159
 
 
 Version 1.1.0

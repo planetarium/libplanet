@@ -190,28 +190,14 @@ public class GeneratedBlockChainFixture
         var random = new System.Random(seed);
         var addr = pk.ToAddress();
         var bal = (int)(Chain.GetBalance(addr, TestCurrency).MajorUnit & int.MaxValue);
-        return (random.Next() % 3) switch
-        {
-            0 => Transaction.Create(
-                nonce,
-                pk,
-                Chain.Genesis.Hash,
-                Chain.GetBalance(addr, TestCurrency).MajorUnit > 0 &&
-                random.Next() % 2 == 0
-                    ? new IAction[] { new Transfer(addr, TestCurrency * random.Next(1, bal)) }
-                    : new IAction[] { new Mint(addr, TestCurrency * random.Next(1, 100)) },
-                GetRandomAddresses(random.Next())
-            ),
-            _ => Transaction.Create(
-                nonce,
-                pk,
-                Chain.Genesis.Hash,
-                random.Next() % 2 == 0
-                    ? GetRandomActions(random.Next())
-                    : ImmutableHashSet<PolymorphicAction<SimpleAction>>.Empty,
-                GetRandomAddresses(random.Next())
-            ),
-        };
+        return Transaction.Create(
+            nonce,
+            pk,
+            Chain.Genesis.Hash,
+            random.Next() % 2 == 0
+                ? GetRandomActions(random.Next())
+                : ImmutableHashSet<PolymorphicAction<SimpleAction>>.Empty,
+            GetRandomAddresses(random.Next()));
     }
 
     private ImmutableArray<PolymorphicAction<SimpleAction>> GetRandomActions(int seed)

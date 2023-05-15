@@ -5,6 +5,8 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 
@@ -19,8 +21,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 new Dictionary<IValue, Type>
                 {
-                    [new Integer(0)] = typeof(Mint),
-                    [new Integer(1)] = typeof(Transfer),
                     [new Integer(2)] = typeof(Initialize),
                 },
                 loader.Types);
@@ -42,13 +42,16 @@ namespace Libplanet.Tests.Action
             var loader = TypedActionLoader.Create(typeof(Registry).Assembly, null);
             Currency currency = Currency.Uncapped("FOO", 0, null);
 
-            var plainValue = Dictionary.Empty
-                .Add("type_id", 0)
-                .Add("values", Dictionary.Empty
-                    .Add("recipient", TestUtils.GetRandomBytes(Address.Size))
-                    .Add("currency", currency.Serialize())
-                    .Add("amount", 5));
-            var action = new Mint();
+            Dictionary plainValue = Dictionary.Empty
+                .Add("type_id", 2)
+                .Add(
+                    "values",
+                    new List(
+                        new ValidatorSet(
+                            new List<Validator>()
+                                { new Validator(new PrivateKey().PublicKey, 1) }).Bencoded,
+                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+            var action = new Initialize();
             action.LoadPlainValue(plainValue);
 
             var loadedAction = loader.LoadAction(0, action.PlainValue);

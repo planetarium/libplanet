@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -68,9 +67,6 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Equality()
         {
-            var mint = new Mint(AddressA, FOO * 100);
-            var mint2 = new Mint(AddressA, FOO * 100);
-            var transfer = new Transfer(AddressA, FOO * 100);
             IAction[] actions1 =
             {
                 new DumbAction(default, "foo"),
@@ -87,22 +83,6 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(AddressA, "baz"),
             };
 
-            AssertEquality(
-                new TxActionList(new IAction[] { mint }),
-                new TxActionList(new IAction[] { mint }),
-                true);
-            AssertEquality(
-                new TxActionList(new IAction[] { mint }),
-                new TxActionList(new IAction[] { mint2 }),
-                true);
-            AssertEquality(
-                new TxActionList(new IAction[] { mint }),
-                new TxActionList(new IAction[] { transfer }),
-                false);
-            AssertEquality(
-                new TxActionList(new IAction[] { mint }),
-                new TxActionList(actions1),
-                false);
             AssertEquality(
                 new TxActionList(actions1),
                 new TxActionList(actions1),
@@ -160,36 +140,14 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void JsonSerialize()
         {
-            var systemActionList = new TxActionList(
-                new IAction[] { new Mint(AddressA, FOO * 100) });
-            var customActionList = new TxActionList(
+            var actionList = new TxActionList(
                 new IAction[]
                 {
                     new DumbAction(default, "foo"),
                     new DumbAction(AddressA, "bar"),
                 });
-            var emptyCustomActionList = new TxActionList(Array.Empty<IAction>());
-            var systemActonListJson = @"
-                [
-                  {
-                    ""\uFEFFtype_id"": ""0"",
-                    ""\uFEFFvalues"": {
-                      ""\uFEFFamount"": ""10000"",
-                      ""\uFEFFcurrency"": {
-                        ""\uFEFFdecimals"": ""2"",
-                        ""\uFEFFminters"": null,
-                        ""\uFEFFticker"": ""\uFEFFFOO"",
-                        ""\uFEFFtotalSupplyTrackable"": true
-                      },
-                      ""\uFEFFrecipient"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
-                    }
-                  }
-                ]";
-            TestUtils.AssertJsonSerializable<TxActionList>(
-                systemActionList,
-                systemActonListJson,
-                false);
-            const string customActionListJson = @"
+            var emptyActionList = new TxActionList(Array.Empty<IAction>());
+            const string actionListJson = @"
                 [
                   {
                     ""\uFEFFitem"": ""\uFEFFfoo"",
@@ -203,11 +161,11 @@ namespace Libplanet.Tests.Tx
                   }
                 ]";
             TestUtils.AssertJsonSerializable<TxActionList>(
-                customActionList,
-                customActionListJson,
+                actionList,
+                actionListJson,
                 false);
             TestUtils.AssertJsonSerializable<TxActionList>(
-                emptyCustomActionList,
+                emptyActionList,
                 "[]",
                 false);
         }
