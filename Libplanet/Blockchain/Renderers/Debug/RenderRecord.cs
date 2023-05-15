@@ -8,10 +8,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
     /// <summary>
     /// A render event represented by <see cref="RecordingActionRenderer{T}"/>.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="Libplanet.Blockchain.BlockChain{T}"/>'s type parameter.</typeparam>
-    public abstract class RenderRecord<T>
-        where T : IAction, new()
+    public abstract class RenderRecord
     {
         protected RenderRecord(long index, string stackTrace)
         {
@@ -35,7 +32,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <summary>
         /// Represents an action render/unrender event.
         /// </summary>
-        public abstract class ActionBase : RenderRecord<T>
+        public abstract class ActionBase : RenderRecord
         {
             protected ActionBase(
                 long index,
@@ -71,7 +68,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// </summary>
             public bool Unrender => !Render;
 
-            /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
+            /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() =>
                 $"{base.ToString()} #{Context.BlockIndex} " +
                 (Render ? "Render" : "Unrender") + "Action";
@@ -109,7 +106,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// </summary>
             public IAccountStateDelta NextStates { get; }
 
-            /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
+            /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() => $"{base.ToString()} [success]";
         }
 
@@ -145,14 +142,14 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// </summary>
             public Exception Exception { get; }
 
-            /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
+            /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() => $"{base.ToString()} [error]";
         }
 
         /// <summary>
         /// Represents a block event.
         /// </summary>
-        public abstract class BlockBase : RenderRecord<T>
+        public abstract class BlockBase : RenderRecord
         {
             protected BlockBase(
                 long index,
@@ -188,7 +185,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// </summary>
             public bool End => !Begin;
 
-            /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
+            /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() =>
                 $"{base.ToString()} " +
                 $"#{OldTip.Index} {OldTip.Hash} -> #{NewTip.Index} {NewTip.Hash} Render..." +
@@ -219,7 +216,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             {
             }
 
-            /// <inheritdoc cref="RenderRecord{T}.ToString()"/>
+            /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() =>
                 base.ToString().Replace("Render...", "RenderBlock");
         }

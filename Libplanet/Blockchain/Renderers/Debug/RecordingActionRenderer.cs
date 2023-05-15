@@ -17,7 +17,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
     public class RecordingActionRenderer<T> : IActionRenderer<T>
         where T : IAction, new()
     {
-        private readonly List<RenderRecord<T>> _records;
+        private readonly List<RenderRecord> _records;
         private long _nextIndex;
 
         /// <summary>
@@ -26,25 +26,25 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public RecordingActionRenderer()
         {
             _nextIndex = 0;
-            _records = new List<RenderRecord<T>>();
+            _records = new List<RenderRecord>();
         }
 
         /// <summary>
         /// The list of recorded render events.
         /// </summary>
-        public IReadOnlyList<RenderRecord<T>> Records => _records;
+        public IReadOnlyList<RenderRecord> Records => _records;
 
-        internal IReadOnlyList<RenderRecord<T>.ActionBase> ActionRecords =>
-            Records.OfType<RenderRecord<T>.ActionBase>().ToImmutableArray();
+        internal IReadOnlyList<RenderRecord.ActionBase> ActionRecords =>
+            Records.OfType<RenderRecord.ActionBase>().ToImmutableArray();
 
-        internal IReadOnlyList<RenderRecord<T>.ActionSuccess> ActionSuccessRecords =>
-            Records.OfType<RenderRecord<T>.ActionSuccess>().ToImmutableArray();
+        internal IReadOnlyList<RenderRecord.ActionSuccess> ActionSuccessRecords =>
+            Records.OfType<RenderRecord.ActionSuccess>().ToImmutableArray();
 
-        internal IReadOnlyList<RenderRecord<T>.ActionError> ActionErrorRecords =>
-            Records.OfType<RenderRecord<T>.ActionError>().ToImmutableArray();
+        internal IReadOnlyList<RenderRecord.ActionError> ActionErrorRecords =>
+            Records.OfType<RenderRecord.ActionError>().ToImmutableArray();
 
-        internal IReadOnlyList<RenderRecord<T>.BlockEvent> BlockRecords =>
-            Records.OfType<RenderRecord<T>.BlockEvent>().ToImmutableArray();
+        internal IReadOnlyList<RenderRecord.BlockEvent> BlockRecords =>
+            Records.OfType<RenderRecord.BlockEvent>().ToImmutableArray();
 
         internal EventHandler<IValue>? RenderEventHandler { get; set; }
 
@@ -66,7 +66,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         )
         {
             _records.Add(
-                new RenderRecord<T>.ActionSuccess(
+                new RenderRecord.ActionSuccess(
                     index: _nextIndex++,
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     action: action,
@@ -85,7 +85,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Exception exception
         ) =>
             _records.Add(
-                new RenderRecord<T>.ActionError(
+                new RenderRecord.ActionError(
                     index: _nextIndex++,
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     action: action,
@@ -97,7 +97,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <inheritdoc cref="IRenderer{T}.RenderBlock(Block, Block)"/>
         public virtual void RenderBlock(Block oldTip, Block newTip) =>
             _records.Add(
-                new RenderRecord<T>.BlockEvent(
+                new RenderRecord.BlockEvent(
                     index: _nextIndex++,
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     oldTip: oldTip,
@@ -108,7 +108,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
         public virtual void RenderBlockEnd(Block oldTip, Block newTip) =>
             _records.Add(
-                new RenderRecord<T>.BlockEvent(
+                new RenderRecord.BlockEvent(
                     index: _nextIndex++,
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     end: true,

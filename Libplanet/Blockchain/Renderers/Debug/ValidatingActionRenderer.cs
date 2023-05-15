@@ -16,14 +16,14 @@ namespace Libplanet.Blockchain.Renderers.Debug
     public class ValidatingActionRenderer<T> : RecordingActionRenderer<T>
         where T : IAction, new()
     {
-        private readonly Action<InvalidRenderException<T>>? _onError;
+        private readonly Action<InvalidRenderException>? _onError;
 
         /// <summary>
         /// Creates a new <see cref="ValidatingActionRenderer{T}"/> instance.
         /// </summary>
         /// <param name="onError">An optional event handler which is triggered when invalid
         /// render events occur.</param>
-        public ValidatingActionRenderer(Action<InvalidRenderException<T>>? onError = null)
+        public ValidatingActionRenderer(Action<InvalidRenderException>? onError = null)
         {
             _onError = onError;
         }
@@ -82,13 +82,13 @@ namespace Libplanet.Blockchain.Renderers.Debug
         private void Validate()
         {
             var state = RenderState.Ready;
-            RenderRecord<T>.BlockEvent? blockState = null;
+            RenderRecord.BlockEvent? blockState = null;
             long previousActionBlockIndex = -1L;
-            var records = new List<RenderRecord<T>>(Records.Count);
+            var records = new List<RenderRecord>(Records.Count);
 
             Exception BadRenderExc(string msg) => Error(records, msg);
 
-            foreach (RenderRecord<T> record in Records)
+            foreach (RenderRecord record in Records)
             {
                 records.Add(record);
                 switch (state)
@@ -101,10 +101,10 @@ namespace Libplanet.Blockchain.Renderers.Debug
                         {
                             throw BadRenderExc($"Unexpected block state: {blockState}.");
                         }
-                        else if (record is RenderRecord<T>.BlockBase blockBase && blockBase.Begin)
+                        else if (record is RenderRecord.BlockBase blockBase && blockBase.Begin)
                         {
 #pragma warning disable S1066
-                            if (blockBase is RenderRecord<T>.BlockEvent block)
+                            if (blockBase is RenderRecord.BlockEvent block)
 #pragma warning restore S1066
                             {
                                 blockState = block;
@@ -122,7 +122,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                         {
                             throw BadRenderExc("Unexpected block state: null.");
                         }
-                        else if (record is RenderRecord<T>.BlockEvent block && block.End)
+                        else if (record is RenderRecord.BlockEvent block && block.End)
                         {
                             if (block.OldTip != blockState.OldTip ||
                                 block.NewTip != blockState.NewTip)
@@ -140,7 +140,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             blockState = null;
                             break;
                         }
-                        else if (record is RenderRecord<T>.ActionBase actionBase &&
+                        else if (record is RenderRecord.ActionBase actionBase &&
                                  actionBase.Render)
                         {
                             long idx = actionBase.Context.BlockIndex;
@@ -178,9 +178,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
             }
         }
 
-        private InvalidRenderException<T> Error(IReadOnlyList<RenderRecord<T>> records, string msg)
+        private InvalidRenderException Error(IReadOnlyList<RenderRecord> records, string msg)
         {
-            var exception = new InvalidRenderException<T>(msg, records);
+            var exception = new InvalidRenderException(msg, records);
             _onError?.Invoke(exception);
             return exception;
         }

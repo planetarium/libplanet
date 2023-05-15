@@ -331,11 +331,9 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(block, CreateBlockCommit(block));
 
             Assert.Equal(2, blockChain.Count);
-            IReadOnlyList<RenderRecord<DumbAction>.BlockEvent> blockLogs =
-                recordingRenderer.BlockRecords;
+            IReadOnlyList<RenderRecord.BlockEvent> blockLogs = recordingRenderer.BlockRecords;
             Assert.Equal(2, blockLogs.Count);
-            IReadOnlyList<RenderRecord<DumbAction>.ActionBase> actionLogs =
-                recordingRenderer.ActionRecords;
+            IReadOnlyList<RenderRecord.ActionBase> actionLogs = recordingRenderer.ActionRecords;
             Assert.Single(actions);
             Assert.Equal(prevBlock, blockLogs[0].OldTip);
             Assert.Equal(block, blockLogs[0].NewTip);
@@ -843,11 +841,11 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
             Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 
-            RenderRecord<DumbAction>.BlockBase[] blockLevelRenders = _renderer.Records
-                .OfType<RenderRecord<DumbAction>.BlockBase>()
+            RenderRecord.BlockBase[] blockLevelRenders = _renderer.Records
+                .OfType<RenderRecord.BlockBase>()
                 .ToArray();
 
-            RenderRecord<DumbAction>.ActionBase[] actionRenders = _renderer.ActionRecords
+            RenderRecord.ActionBase[] actionRenders = _renderer.ActionRecords
                 .Where(r => IsDumbAction(r.Action))
                 .ToArray();
             DumbAction[] actions = actionRenders.Select(r => ToDumbAction(r.Action)).ToArray();
@@ -862,9 +860,9 @@ namespace Libplanet.Tests.Blockchain
             if (render)
             {
                 Assert.Equal(2, blockLevelRenders.Length);
-                Assert.IsType<RenderRecord<DumbAction>.BlockEvent>(blockLevelRenders[0]);
+                Assert.IsType<RenderRecord.BlockEvent>(blockLevelRenders[0]);
                 Assert.True(blockLevelRenders[0].Begin);
-                Assert.IsType<RenderRecord<DumbAction>.BlockEvent>(blockLevelRenders[1]);
+                Assert.IsType<RenderRecord.BlockEvent>(blockLevelRenders[1]);
                 Assert.True(blockLevelRenders[1].End);
 
                 Assert.True(blockLevelRenders[0].Index < actionRenders[0].Index);
@@ -879,7 +877,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal("fork-bar", actions[1].Item);
                 Assert.Equal("fork-baz", actions[2].Item);
 
-                RenderRecord<DumbAction>.ActionBase[] blockActionRenders = _renderer.ActionRecords
+                RenderRecord.ActionBase[] blockActionRenders = _renderer.ActionRecords
                     .Where(r => IsMinerReward(r.Action))
                     .ToArray();
 
@@ -972,7 +970,7 @@ namespace Libplanet.Tests.Blockchain
         public void SwapForSameTip(bool render)
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
-            IReadOnlyList<RenderRecord<DumbAction>> prevRecords = _renderer.Records;
+            IReadOnlyList<RenderRecord> prevRecords = _renderer.Records;
             _blockChain.Swap(fork, render: render)();
 
             // Render methods should be invoked if and only if the tip changes
@@ -1481,7 +1479,6 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void MakeTransactionWithSystemAction()
         {
-            var foo = Currency.Uncapped("FOO", 2, minters: null);
             var privateKey = new PrivateKey();
             Address address = privateKey.ToAddress();
             var action = new Initialize(
@@ -1846,9 +1843,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.BlockRecords);
             Block block = _blockChain.ProposeBlock(new PrivateKey());
             _blockChain.Append(block, CreateBlockCommit(block));
-            IReadOnlyList<RenderRecord<DumbAction>.BlockEvent> records = _renderer.BlockRecords;
+            IReadOnlyList<RenderRecord.BlockEvent> records = _renderer.BlockRecords;
             Assert.Equal(2, records.Count);
-            foreach (RenderRecord<DumbAction>.BlockEvent record in records)
+            foreach (RenderRecord.BlockEvent record in records)
             {
                 Assert.Equal(genesis, record.OldTip);
                 Assert.Equal(block, record.NewTip);

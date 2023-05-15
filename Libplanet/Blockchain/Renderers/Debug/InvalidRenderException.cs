@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Action;
 
 namespace Libplanet.Blockchain.Renderers.Debug
 {
     /// <summary>
     /// Exception thrown by <see cref="ValidatingActionRenderer{T}"/>.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="ValidatingActionRenderer{T}"/>'s type parameter.</typeparam>
-    public class InvalidRenderException<T> : Exception
-        where T : IAction, new()
+    public class InvalidRenderException : Exception
     {
         /// <summary>
         /// Creates a new <see cref="ValidatingActionRenderer{T}"/> instance.
@@ -20,7 +16,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <param name="records">Recorded render events.</param>
         public InvalidRenderException(
             string message,
-            IReadOnlyList<RenderRecord<T>> records
+            IReadOnlyList<RenderRecord> records
         )
             : base(message)
         {
@@ -30,7 +26,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <summary>
         /// Recorded render events.
         /// </summary>
-        public IReadOnlyList<RenderRecord<T>> Records { get; }
+        public IReadOnlyList<RenderRecord> Records { get; }
 
         /// <inheritdoc cref="Exception.Message"/>
         public override string Message
@@ -56,7 +52,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     return pre + "\n(0 records.)";
                 }
 
-                RenderRecord<T> first = Records[Records.Count - 1];
+                RenderRecord first = Records[Records.Count - 1];
                 var firstLine = $"{pre}\n{first}";
                 if (Records.Count < 2)
                 {
@@ -86,8 +82,8 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 firstTrace =
                     MakeCompact(firstTrace.Substring(0, firstTrace.Length - commonPostfix));
                 firstLine += $"\n{firstTrace}";
-                RenderRecord<T> second = Records[Records.Count - 2];
-                IEnumerable<RenderRecord<T>> rest = Records.Reverse().Skip(2);
+                RenderRecord second = Records[Records.Count - 2];
+                IEnumerable<RenderRecord> rest = Records.Reverse().Skip(2);
                 string secondTrace = second.StackTrace;
                 string secondCompactTrace =
                     MakeCompact(secondTrace.Substring(0, secondTrace.Length - commonPostfix));
