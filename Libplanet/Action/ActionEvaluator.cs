@@ -25,7 +25,6 @@ namespace Libplanet.Action
     /// </summary>
     public class ActionEvaluator : IActionEvaluator
     {
-        private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
@@ -41,14 +40,11 @@ namespace Libplanet.Action
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
-        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
-        /// </param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using action type lookup.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
-            BlockHash? genesisHash,
             IActionLoader actionTypeLoader,
             IFeeCalculator? feeCalculator
         )
@@ -59,7 +55,6 @@ namespace Libplanet.Action
                 .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
-            _genesisHash = genesisHash;
             _actionLoader = actionTypeLoader;
             _feeCalculator = feeCalculator;
         }
@@ -182,8 +177,6 @@ namespace Libplanet.Action
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
-        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
-        /// </param>
         /// <param name="preEvaluationHash">The
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> of
         /// the <see cref="IPreEvaluationBlock"/> that <paramref name="actions"/> belong to.</param>
@@ -229,7 +222,6 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
-            BlockHash? genesisHash,
             HashDigest<SHA256> preEvaluationHash,
             long blockIndex,
             TxId? txid,
@@ -251,7 +243,6 @@ namespace Libplanet.Action
             )
             {
                 return new ActionContext(
-                    genesisHash: genesisHash,
                     signer: signer,
                     txid: txid,
                     miner: miner,
@@ -514,7 +505,6 @@ namespace Libplanet.Action
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
             return EvaluateActions(
-                genesisHash: _genesisHash,
                 preEvaluationHash: blockHeader.PreEvaluationHash,
                 blockIndex: blockHeader.Index,
                 txid: tx.Id,
@@ -561,7 +551,6 @@ namespace Libplanet.Action
                 $"{ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray)}");
 
             return EvaluateActions(
-                genesisHash: _genesisHash,
                 preEvaluationHash: blockHeader.PreEvaluationHash,
                 blockIndex: blockHeader.Index,
                 txid: null,

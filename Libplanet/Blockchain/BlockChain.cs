@@ -139,11 +139,8 @@ namespace Libplanet.Blockchain
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
-                    genesisHash: genesisBlock.Hash,
                     actionTypeLoader: new SingleActionLoader(typeof(T)),
-                    feeCalculator: null
-                )
-            )
+                    feeCalculator: null))
         {
         }
 

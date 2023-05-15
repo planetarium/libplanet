@@ -1061,11 +1061,8 @@ namespace Libplanet.Tests.Store
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(s1, fx.StateStore),
-                        genesisHash: genesis.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null
-                    )
-                );
+                        feeCalculator: null));
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();

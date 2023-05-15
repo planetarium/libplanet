@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Threading;
-using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
@@ -22,7 +21,6 @@ namespace Libplanet.Action
         private HashDigest<SHA256>? _previousStateRootHash;
 
         public ActionContext(
-            BlockHash? genesisHash,
             Address signer,
             TxId? txid,
             Address miner,
@@ -35,7 +33,6 @@ namespace Libplanet.Action
             bool blockAction = false,
             List<string>? logs = null)
         {
-            GenesisHash = genesisHash;
             Signer = signer;
             TxId = txid;
             Miner = miner;
@@ -53,8 +50,6 @@ namespace Libplanet.Action
             GetStateCount.Value = 0;
             GetGasMeter.Value = new GasMeter(_gasLimit);
         }
-
-        public BlockHash? GenesisHash { get; }
 
         public Address Signer { get; }
 
@@ -91,7 +86,6 @@ namespace Libplanet.Action
         [Pure]
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(
-                GenesisHash,
                 Signer,
                 TxId,
                 Miner,

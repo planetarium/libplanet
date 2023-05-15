@@ -63,8 +63,7 @@ namespace Libplanet.Tests.Action.Sys
                 gasLimit: 0,
                 rehearsal: false,
                 previousBlockStatesTrie: null,
-                blockAction: false,
-                genesisHash: genesisHash
+                blockAction: false
             );
             var initialize = new Initialize(
                 states: _states,
@@ -100,8 +99,7 @@ namespace Libplanet.Tests.Action.Sys
                 gasLimit: long.MaxValue,
                 rehearsal: false,
                 previousBlockStatesTrie: null,
-                blockAction: false,
-                genesisHash: genesisHash
+                blockAction: false
             );
             var initialize = new Initialize(
                 states: _states,

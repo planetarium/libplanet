@@ -34,7 +34,6 @@ namespace Libplanet.Tests.Action
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
-                    null,
                     address,
                     txid,
                     address,
