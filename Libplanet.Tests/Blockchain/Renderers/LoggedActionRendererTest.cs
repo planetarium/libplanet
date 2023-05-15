@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 };
             }
 
-            actionRenderer = new LoggedActionRenderer<DumbAction>(
+            actionRenderer = new LoggedActionRenderer(
                 actionRenderer,
                 _logger,
                 LogEventLevel.Information
@@ -281,7 +281,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 BlockRenderer = end ? (Action<DumbBlock, DumbBlock>)null : Callback,
                 BlockEndRenderer = end ? Callback : (Action<DumbBlock, DumbBlock>)null,
             };
-            actionRenderer = new LoggedActionRenderer<DumbAction>(actionRenderer, _logger);
+            actionRenderer = new LoggedActionRenderer(actionRenderer, _logger);
             var invoke = end
                 ? (Action<DumbBlock, DumbBlock>)actionRenderer.RenderBlockEnd
                 : actionRenderer.RenderBlock;

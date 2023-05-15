@@ -10,30 +10,27 @@ namespace Libplanet.Blockchain.Renderers
     /// <summary>
     /// Decorates an <see cref="IActionRenderer"/> so that all event messages are logged.
     /// In other words, this is an <see cref="IActionRenderer"/> version of
-    /// <see cref="LoggedRenderer{T}"/>.
+    /// <see cref="LoggedRenderer"/>.
     /// <para>Every single event message causes two log messages: one is logged <em>before</em>
     /// rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
     /// it is also logged with the log level <see cref="LogEventLevel.Error"/> (regardless of
-    /// <see cref="LoggedRenderer{T}.Level"/> configuration).</para>
+    /// <see cref="LoggedRenderer.Level"/> configuration).</para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <example>
     /// <code><![CDATA[
     /// IActionRenderer actionRenderer = new SomeActionRenderer();
     /// // Wraps the action renderer with LoggedActionRenderer:
-    /// actionRenderer = new LoggedActionRenderer<ExampleAction>(
+    /// actionRenderer = new LoggedActionRenderer(
     ///     actionRenderer,
     ///     Log.Logger,
     ///     LogEventLevel.Information,
     /// );
     /// ]]></code>
     /// </example>
-    public class LoggedActionRenderer<T> : LoggedRenderer<T>, IActionRenderer
-        where T : IAction, new()
+    public class LoggedActionRenderer : LoggedRenderer, IActionRenderer
     {
         /// <summary>
-        /// Creates a new <see cref="LoggedActionRenderer{T}"/> instance which decorates the given
+        /// Creates a new <see cref="LoggedActionRenderer"/> instance which decorates the given
         /// action <paramref name="renderer"/>.
         /// </summary>
         /// <param name="renderer">The actual action renderer to forward all event messages to and

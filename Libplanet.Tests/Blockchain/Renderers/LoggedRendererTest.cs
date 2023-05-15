@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     }
                 },
             };
-            renderer = new LoggedRenderer<DumbAction>(renderer, _logger);
+            renderer = new LoggedRenderer(renderer, _logger);
 
             Assert.False(called);
             Assert.Empty(LogEvents);

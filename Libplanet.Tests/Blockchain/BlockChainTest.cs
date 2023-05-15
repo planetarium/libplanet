@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Blockchain
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                     feeCalculator: null
                 ),
-                renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
+                renderers: new[] { new LoggedActionRenderer(_renderer, Log.Logger) }
             );
             _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
@@ -280,7 +280,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
             IActionRenderer[] renderers = Enumerable.Range(0, 2).Select(i =>
-                new LoggedActionRenderer<DumbAction>(
+                new LoggedActionRenderer(
                     new AnonymousActionRenderer
                     {
                         ActionRenderer = (act, context, nextStates) =>
@@ -317,7 +317,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer();
-            var renderer = new LoggedActionRenderer<DumbAction>(recordingRenderer, Log.Logger);
+            var renderer = new LoggedActionRenderer(recordingRenderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
@@ -364,7 +364,7 @@ namespace Libplanet.Tests.Blockchain
                     }
                 },
             };
-            renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
+            renderer = new LoggedActionRenderer(renderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();

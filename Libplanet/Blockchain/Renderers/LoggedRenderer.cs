@@ -1,5 +1,4 @@
 using System;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Serilog;
 using Serilog.Events;
@@ -13,13 +12,11 @@ namespace Libplanet.Blockchain.Renderers
     /// it is also logged with the log level <see cref="LogEventLevel.Error"/> (regardless of
     /// <see cref="Level"/> configuration).</para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <example>
     /// <code>
-    /// IRenderer&lt;ExampleAction&gt; renderer = new SomeRenderer();
+    /// IRenderer renderer = new SomeRenderer();
     /// // Wraps the renderer with LoggedRenderer:
-    /// renderer = new LoggedRenderer&lt;ExampleAction&gt;(
+    /// renderer = new LoggedRenderer(
     ///     renderer,
     ///     Log.Logger,
     ///     LogEventLevel.Information,
@@ -27,15 +24,14 @@ namespace Libplanet.Blockchain.Renderers
     /// </code>
     /// </example>
     /// <remarks>Since <see cref="IActionRenderer"/> is a subtype of <see cref="IRenderer"/>,
-    /// <see cref="LoggedRenderer{T}(IRenderer, ILogger, LogEventLevel)"/> constructor can take
+    /// <see cref="LoggedRenderer(IRenderer, ILogger, LogEventLevel)"/> constructor can take
     /// an <see cref="IActionRenderer"/> instance as well.  However, even it takes an action
     /// renderer, action-level fine-grained events will not be logged.  For action renderers,
-    /// please use <see cref="LoggedActionRenderer{T}"/> instead.</remarks>
-    public class LoggedRenderer<T> : IRenderer
-        where T : IAction, new()
+    /// please use <see cref="LoggedActionRenderer"/> instead.</remarks>
+    public class LoggedRenderer : IRenderer
     {
         /// <summary>
-        /// Creates a new <see cref="LoggedRenderer{T}"/> instance which decorates the given
+        /// Creates a new <see cref="LoggedRenderer"/> instance which decorates the given
         /// <paramref name="renderer"/>.
         /// </summary>
         /// <param name="renderer">The actual renderer to forward all event messages to and actually
@@ -52,8 +48,8 @@ namespace Libplanet.Blockchain.Renderers
         {
             Renderer = renderer;
             Logger = logger
-                .ForContext<LoggedRenderer<T>>()
-                .ForContext("Source", nameof(LoggedRenderer<T>))
+                .ForContext<LoggedRenderer>()
+                .ForContext("Source", nameof(LoggedRenderer))
                 .ForContext(renderer.GetType());
             Level = level;
         }
