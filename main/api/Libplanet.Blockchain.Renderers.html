@@ -76,60 +76,60 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
 </h3>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer-1.html">AnonymousActionRenderer&lt;T&gt;</a></h4>
-      <section><p>An <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> that invokes its callbacks.
-In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of
-<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html">AnonymousRenderer&lt;T&gt;</a>.</p>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html">AnonymousActionRenderer</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> that invokes its callbacks.
+In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> version of
+<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer.html">AnonymousRenderer</a>.</p>
 <p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
-anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> interface.</p>
+anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> interface.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer-1.html">AnonymousRenderer&lt;T&gt;</a></h4>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer.html">AnonymousRenderer</a></h4>
       <section><p>A renderer that invokes its callbacks.</p>
 <p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
-anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface.</p>
+anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html">AtomicActionRenderer&lt;T&gt;</a></h4>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer.html">AtomicActionRenderer</a></h4>
       <section><p>A middleware to make action render events to satisfy transactions' atomicity.</p>
-<p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instance and filters out render events
+<p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance and filters out render events
 made by unsuccessful transactions (i.e., transactions with one or more exception-throwing
 actions).</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer-1.html">LoggedActionRenderer&lt;T&gt;</a></h4>
-      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> so that all event messages are logged.
-In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> version of
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html">LoggedRenderer&lt;T&gt;</a>.</p>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a></h4>
+      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> so that all event messages are logged.
+In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> version of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a>.</p>
 <p>Every single event message causes two log messages: one is logged <em>before</em>
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
 it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level">Level</a> configuration).</p>
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html">LoggedRenderer&lt;T&gt;</a></h4>
-      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> so that all event messages are logged.</p>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a></h4>
+      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
 <p>Every single event message causes two log messages: one is logged <em>before</em>
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
 it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer-1.html#Libplanet_Blockchain_Renderers_LoggedRenderer_1_Level">Level</a> configuration).</p>
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
 </section>
     <h3 id="interfaces">Interfaces
 </h3>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a></h4>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a></h4>
       <section><p>Listens state changes of every step of actions, besides blocks,
 on a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.
-If you need more fine-grained events than <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
+If you need more fine-grained events than <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
 implement this interface instead.</p>
 <p>The invocation order of methods for each <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> are:</p>
-<ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)
-</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>
-&amp; <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IValue, IActionContext, Exception)</a> (zero or more
-times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html#Libplanet_Blockchain_Renderers_IActionRenderer_1_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlockEnd(Block, Block)</a> (one time)</li></ol>
+<ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)
+</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>
+&amp; <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IValue, IActionContext, Exception)</a> (zero or more
+times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlockEnd(Block, Block)</a> (one time)</li></ol>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a></h4>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></h4>
       <section><p>Listens state changes on a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
 <p>Usually, implementations of this interface purpose to update the in-memory game states
 (if exist), or send a signal to the UI thread (usually the main thread) so that the graphics
 on the display is redrawn.</p>
 <p>The invocation order of methods for each <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> are:</p>
-<ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)</li></ol>
+<ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)</li></ol>
 </section>
 </article>
           </div>

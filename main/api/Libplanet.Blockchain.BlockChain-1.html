@@ -77,8 +77,8 @@ A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a c
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -146,26 +146,26 @@ block when it's instantiated.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7B%600%7D%7D%2CLibplanet.Blockchain.IBlockChainStates%2CLibplanet.Action.IActionEvaluator)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D%2CLibplanet.Blockchain.IBlockChainStates%2CLibplanet.Action.IActionEvaluator)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L154">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator)">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;, IBlockChainStates, IActionEvaluator)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator)">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;, IBlockChainStates, IActionEvaluator)</h4>
   <div class="markdown level1 summary"><p>
 A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s, and the chain
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&lt;T&gt;&gt; renderers, IBlockChainStates blockChainStates, IActionEvaluator actionEvaluator)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&gt; renderers, IBlockChainStates blockChainStates, IActionEvaluator actionEvaluator)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -203,7 +203,7 @@ and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
         <td><span class="parametername">renderers</span></td>
         <td></td>
       </tr>
@@ -220,32 +220,32 @@ and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7B%600%7D%7D%2CLibplanet.Blockchain.IBlockChainStates)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D%2CLibplanet.Blockchain.IBlockChainStates)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L120">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates)">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;, IBlockChainStates)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates)">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</h4>
   <div class="markdown level1 summary"><p>
 A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s, and the chain
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&lt;T&gt;&gt; renderers, IBlockChainStates blockChainStates)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&gt; renderers, IBlockChainStates blockChainStates)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -283,7 +283,7 @@ and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
         <td><span class="parametername">renderers</span></td>
         <td></td>
       </tr>
@@ -295,26 +295,26 @@ and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7B%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}})">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> class by loading
 the canonical chain from given <code data-dev-comment-type="paramref" class="paramref">store</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&lt;T&gt;&gt; renderers = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&gt; renderers = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -364,17 +364,17 @@ be used for that.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
         <td><span class="parametername">renderers</span></td>
         <td><p>Listens state changes on the created chain.  Listens nothing
 by default or if it is <span class="xref">null</span>.  Note that action renderers receive
 events made by unsuccessful transactions too; see also
-<a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer-1.html">AtomicActionRenderer&lt;T&gt;</a> for workaround.</p>
+<a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer.html">AtomicActionRenderer</a> for workaround.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0____remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -420,12 +420,12 @@ has a genesis block and it does not match to what the network expects
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ActionRenderers_" data-uid="Libplanet.Blockchain.BlockChain`1.ActionRenderers*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_ActionRenderers" data-uid="Libplanet.Blockchain.BlockChain`1.ActionRenderers">ActionRenderers</h4>
-  <div class="markdown level1 summary"><p>A filtered list, from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Renderers">Renderers</a>, which contains only <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer&lt;T&gt;</a> instances.</p>
+  <div class="markdown level1 summary"><p>A filtered list, from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Renderers">Renderers</a>, which contains only <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instances.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IImmutableList&lt;IActionRenderer&lt;T&gt;&gt; ActionRenderers { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IImmutableList&lt;IActionRenderer&gt; ActionRenderers { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -437,7 +437,7 @@ has a genesis block and it does not match to what the network expects
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer-1.html">IActionRenderer</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -572,8 +572,8 @@ A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a c
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -860,7 +860,7 @@ block when it's instantiated.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IImmutableList&lt;IRenderer&lt;T&gt;&gt; Renderers { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IImmutableList&lt;IRenderer&gt; Renderers { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -872,13 +872,13 @@ block when it's instantiated.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutablelist-1">IImmutableList</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_BlockChain_1_Renderers_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Since this value is immutable, renderers cannot be registered after once a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> object is instantiated; use <code>renderers</code> option of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a>
+  <div class="markdown level1 remarks"><p>Since this value is immutable, renderers cannot be registered after once a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> object is instantiated; use <code>renderers</code> option of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a>
 constructor instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
@@ -1107,20 +1107,20 @@ block when it's instantiated.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Create(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CLibplanet.Action.ActionEvaluator%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7B%600%7D%7D%2CLibplanet.Blockchain.IBlockChainStates)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Create(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CLibplanet.Action.ActionEvaluator%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D%2CLibplanet.Blockchain.IBlockChainStates)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L405">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Create_" data-uid="Libplanet.Blockchain.BlockChain`1.Create*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_" data-uid="Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,Libplanet.Action.ActionEvaluator,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates)">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&lt;T&gt;&gt;, IBlockChainStates)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_" data-uid="Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,Libplanet.Action.ActionEvaluator,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates)">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</h4>
   <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> from an empty
 <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BlockChain&lt;T&gt; Create(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, ActionEvaluator actionEvaluator, IEnumerable&lt;IRenderer&lt;T&gt;&gt; renderers = null, IBlockChainStates blockChainStates = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static BlockChain&lt;T&gt; Create(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, ActionEvaluator actionEvaluator, IEnumerable&lt;IRenderer&gt; renderers = null, IBlockChainStates blockChainStates = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1163,7 +1163,7 @@ block when it's instantiated.</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
         <td><span class="parametername">renderers</span></td>
         <td></td>
       </tr>
@@ -1190,7 +1190,7 @@ block when it's instantiated.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -1565,8 +1565,8 @@ A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a c
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2243,8 +2243,8 @@ A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a c
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2744,8 +2744,8 @@ A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a c
 information.
 </p>
 <p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&lt;T&gt;&gt;)</a> constructor.
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2971,7 +2971,7 @@ Propose a genesis block for creating a <a class="xref" href="Libplanet.Blockchai
 </p>
 <p>
 Note that a genesis <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> produced may not be suitable as
-a genesis for <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&lt;T&gt;&gt;, IBlockChainStates)</a> if given
+a genesis for <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</a> if given
 <code data-dev-comment-type="paramref" class="paramref">transactions</code> is invalid.
 </p>
 <p>
@@ -3046,7 +3046,7 @@ block when it's instantiated.</p>
 </div>
   <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates_">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&lt;T&gt;&gt;, IBlockChainStates)</a></div>
+      <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>

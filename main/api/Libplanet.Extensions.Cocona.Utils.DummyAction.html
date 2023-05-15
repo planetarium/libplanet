@@ -244,7 +244,7 @@ Side effects should be avoided, because an action's
 <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method can be called more
 than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
-implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface separately and
+implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface separately and
 attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance.</p>
 <p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
