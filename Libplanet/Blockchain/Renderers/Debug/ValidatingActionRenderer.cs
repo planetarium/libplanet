@@ -11,15 +11,12 @@ namespace Libplanet.Blockchain.Renderers.Debug
     /// (see also the docs for <see cref="IRenderer"/> and <see cref="IActionRenderer"/>)
     /// using profiling-guided analysis.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="Libplanet.Blockchain.BlockChain{T}"/>'s type parameter.</typeparam>
-    public class ValidatingActionRenderer<T> : RecordingActionRenderer
-        where T : IAction, new()
+    public class ValidatingActionRenderer : RecordingActionRenderer
     {
         private readonly Action<InvalidRenderException>? _onError;
 
         /// <summary>
-        /// Creates a new <see cref="ValidatingActionRenderer{T}"/> instance.
+        /// Creates a new <see cref="ValidatingActionRenderer"/> instance.
         /// </summary>
         /// <param name="onError">An optional event handler which is triggered when invalid
         /// render events occur.</param>
@@ -34,12 +31,6 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Block,
             BlockEnd,
         }
-
-        /// <summary>
-        /// The chain that publishes the render events.  More stricter validations are conducted
-        /// if it's configured.
-        /// </summary>
-        public BlockChain<T>? BlockChain { get; set; }
 
         /// <inheritdoc cref="IRenderer.RenderBlock(Block, Block)"/>
         public override void RenderBlock(Block oldTip, Block newTip)

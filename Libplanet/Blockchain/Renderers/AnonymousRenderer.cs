@@ -11,7 +11,7 @@ namespace Libplanet.Blockchain.Renderers
     /// <example>
     /// With object initializers, you can easily make an one-use renderer:
     /// <code>
-    /// var renderer = new AnonymousRenderer&lt;ExampleAction&gt;
+    /// var renderer = new AnonymousRenderer;
     /// {
     ///     BlockRenderer = (oldTip, newTip) =>
     ///     {

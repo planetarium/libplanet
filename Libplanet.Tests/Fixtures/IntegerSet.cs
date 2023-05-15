@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Fixtures
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
                     feeCalculator: null
                 ),
-                renderers: renderers ?? new[] { new ValidatingActionRenderer<Arithmetic>() }
+                renderers: renderers ?? new[] { new ValidatingActionRenderer() }
             );
         }
 

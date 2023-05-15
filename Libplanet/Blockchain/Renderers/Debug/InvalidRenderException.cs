@@ -5,12 +5,12 @@ using System.Linq;
 namespace Libplanet.Blockchain.Renderers.Debug
 {
     /// <summary>
-    /// Exception thrown by <see cref="ValidatingActionRenderer{T}"/>.
+    /// Exception thrown by <see cref="ValidatingActionRenderer"/>.
     /// </summary>
     public class InvalidRenderException : Exception
     {
         /// <summary>
-        /// Creates a new <see cref="ValidatingActionRenderer{T}"/> instance.
+        /// Creates a new <see cref="ValidatingActionRenderer"/> instance.
         /// </summary>
         /// <param name="message">The exception message string.</param>
         /// <param name="records">Recorded render events.</param>

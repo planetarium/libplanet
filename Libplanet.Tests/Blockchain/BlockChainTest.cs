@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blockchain
         private StoreFixture _fx;
         private BlockPolicy<DumbAction> _policy;
         private BlockChain<DumbAction> _blockChain;
-        private ValidatingActionRenderer<DumbAction> _renderer;
+        private ValidatingActionRenderer _renderer;
         private Block _validNext;
         private IStagePolicy<DumbAction> _stagePolicy;
 
@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Blockchain
                 getMaxTransactionsBytes: _ => 50 * 1024);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = GetStoreFixture(_policy.BlockAction);
-            _renderer = new ValidatingActionRenderer<DumbAction>();
+            _renderer = new ValidatingActionRenderer();
             _blockChain = BlockChain<DumbAction>.Create(
                 _policy,
                 _stagePolicy,
@@ -72,7 +72,6 @@ namespace Libplanet.Tests.Blockchain
                 ),
                 renderers: new[] { new LoggedActionRenderer(_renderer, Log.Logger) }
             );
-            _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
 
             _validNext = _blockChain.EvaluateAndSign(

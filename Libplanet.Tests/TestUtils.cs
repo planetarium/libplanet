@@ -628,7 +628,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     : preEval.Sign(GenesisProposer, stateRootHash);
             }
 
-            ValidatingActionRenderer<T> validator = null;
+            ValidatingActionRenderer validator = null;
             var blockChainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
@@ -644,16 +644,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 store,
                 stateStore,
                 genesisBlock,
-                renderers: renderers ?? new[] { validator = new ValidatingActionRenderer<T>() },
+                renderers: renderers ?? new[] { validator = new ValidatingActionRenderer() },
                 blockChainStates: blockChainStates,
                 actionEvaluator: actionEvaluator
             );
 #pragma warning restore S1121
-
-            if (validator != null)
-            {
-                validator.BlockChain = chain;
-            }
 
             return (chain, actionEvaluator);
         }
