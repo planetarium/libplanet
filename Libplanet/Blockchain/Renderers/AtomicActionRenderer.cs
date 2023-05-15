@@ -9,31 +9,28 @@ namespace Libplanet.Blockchain.Renderers
 {
     /// <summary>
     /// A middleware to make action render events to satisfy transactions' atomicity.
-    /// <para>Decorates an <see cref="IActionRenderer{T}"/> instance and filters out render events
+    /// <para>Decorates an <see cref="IActionRenderer"/> instance and filters out render events
     /// made by unsuccessful transactions (i.e., transactions with one or more exception-throwing
     /// actions).</para>
     /// </summary>
     /// <remarks>The wrapped <see cref="ActionRenderer"/> will not receive any
-    /// <see cref="IActionRenderer{T}.RenderActionError"/> events except for block actions,
+    /// <see cref="IActionRenderer.RenderActionError"/> events except for block actions,
     /// which do not belong to any transactions.
     /// </remarks>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public sealed class AtomicActionRenderer<T> : IActionRenderer<T>
-        where T : IAction, new()
+    public sealed class AtomicActionRenderer : IActionRenderer
     {
         private readonly List<(IValue, IActionContext, IAccountStateDelta)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
         /// <summary>
-        /// Creates a new <see cref="AtomicActionRenderer{T}"/> instance decorating the given
+        /// Creates a new <see cref="AtomicActionRenderer"/> instance decorating the given
         /// <paramref name="actionRenderer"/>.
         /// </summary>
         /// <param name="actionRenderer">The inner action renderer which has the <em>actual</em>
         /// implementations and expects to receive no <see cref="RenderActionError"/> events.
         /// </param>
-        public AtomicActionRenderer(IActionRenderer<T> actionRenderer)
+        public AtomicActionRenderer(IActionRenderer actionRenderer)
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
@@ -45,7 +42,7 @@ namespace Libplanet.Blockchain.Renderers
         /// The inner action renderer which has the <em>actual</em> implementations and expects to
         /// receive no <see cref="RenderActionError"/> events.
         /// </summary>
-        public IActionRenderer<T> ActionRenderer { get; }
+        public IActionRenderer ActionRenderer { get; }
 
         /// <inheritdoc cref="IRenderer.RenderBlock(Block, Block)"/>
         public void RenderBlock(Block oldTip, Block newTip)
@@ -53,7 +50,7 @@ namespace Libplanet.Blockchain.Renderers
             ActionRenderer.RenderBlock(oldTip, newTip);
         }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderBlockEnd(Block, Block)"/>
         public void RenderBlockEnd(Block oldTip, Block newTip)
         {
             FlushBuffer(null, ActionRenderer.RenderAction);
@@ -61,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
         public void RenderAction(
             IValue action,
             IActionContext context,
@@ -84,7 +81,7 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
         public void RenderActionError(IValue action, IActionContext context, Exception exception)
         {
             if (!context.TxId.Equals(_lastTxId))

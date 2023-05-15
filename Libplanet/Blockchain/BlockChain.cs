@@ -83,7 +83,7 @@ namespace Libplanet.Blockchain
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
         /// by default or if it is <see langword="null"/>.  Note that action renderers receive
         /// events made by unsuccessful transactions too; see also
-        /// <see cref="AtomicActionRenderer{T}"/> for workaround.</param>
+        /// <see cref="AtomicActionRenderer"/> for workaround.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> does not
         /// have canonical chain id set, i.e. <see cref="IStore.GetCanonicalChainId()"/> is
@@ -218,7 +218,7 @@ namespace Libplanet.Blockchain
             Renderers = renderers is IEnumerable<IRenderer> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer>.Empty;
-            ActionRenderers = Renderers.OfType<IActionRenderer<T>>().ToImmutableArray();
+            ActionRenderers = Renderers.OfType<IActionRenderer>().ToImmutableArray();
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -270,9 +270,9 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// A filtered list, from <see cref="Renderers"/>, which contains only <see
-        /// cref="IActionRenderer{T}"/> instances.
+        /// cref="IActionRenderer"/> instances.
         /// </summary>
-        public IImmutableList<IActionRenderer<T>> ActionRenderers { get; }
+        public IImmutableList<IActionRenderer> ActionRenderers { get; }
 
         /// <summary>
         /// The block and blockchain policy.
@@ -1207,7 +1207,7 @@ namespace Libplanet.Blockchain
                     if (ActionRenderers.Any())
                     {
                         RenderActions(evaluations: actionEvaluations, block: block);
-                        foreach (IActionRenderer<T> renderer in ActionRenderers)
+                        foreach (IActionRenderer renderer in ActionRenderers)
                         {
                             renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
                         }

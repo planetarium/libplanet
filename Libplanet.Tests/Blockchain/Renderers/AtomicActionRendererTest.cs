@@ -13,14 +13,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
     public class AtomicActionRendererTest
     {
         private readonly RecordingActionRenderer<Arithmetic> _record;
-        private readonly AtomicActionRenderer<Arithmetic> _renderer;
+        private readonly AtomicActionRenderer _renderer;
         private readonly IntegerSet _fx;
         private Transaction _successTx;
 
         public AtomicActionRendererTest()
         {
             _record = new RecordingActionRenderer<Arithmetic>();
-            _renderer = new AtomicActionRenderer<Arithmetic>(_record);
+            _renderer = new AtomicActionRenderer(_record);
             _fx = new IntegerSet(new BigInteger?[] { 0 }, null, new[] { _renderer });
             (_successTx, _) = _fx.Sign(
                 0,

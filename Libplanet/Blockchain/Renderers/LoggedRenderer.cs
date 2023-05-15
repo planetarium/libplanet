@@ -26,9 +26,9 @@ namespace Libplanet.Blockchain.Renderers
     /// );
     /// </code>
     /// </example>
-    /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer"/>,
+    /// <remarks>Since <see cref="IActionRenderer"/> is a subtype of <see cref="IRenderer"/>,
     /// <see cref="LoggedRenderer{T}(IRenderer, ILogger, LogEventLevel)"/> constructor can take
-    /// an <see cref="IActionRenderer{T}"/> instance as well.  However, even it takes an action
+    /// an <see cref="IActionRenderer"/> instance as well.  However, even it takes an action
     /// renderer, action-level fine-grained events will not be logged.  For action renderers,
     /// please use <see cref="LoggedActionRenderer{T}"/> instead.</remarks>
     public class LoggedRenderer<T> : IRenderer

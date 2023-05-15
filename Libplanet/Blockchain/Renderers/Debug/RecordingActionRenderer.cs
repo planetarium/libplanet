@@ -14,7 +14,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="Libplanet.Blockchain.BlockChain{T}"/>'s type parameter.</typeparam>
-    public class RecordingActionRenderer<T> : IActionRenderer<T>
+    public class RecordingActionRenderer<T> : IActionRenderer
         where T : IAction, new()
     {
         private readonly List<RenderRecord> _records;
@@ -58,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Log.Logger.ForContext<RecordingActionRenderer<T>>().Debug("Reset records");
         }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderAction"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public virtual void RenderAction(
             IValue action,
             IActionContext context,
@@ -78,7 +78,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             RenderEventHandler?.Invoke(action, action);
         }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderActionError"/>
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public virtual void RenderActionError(
             IValue action,
             IActionContext context,
@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 )
             );
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderBlockEnd(Block, Block)"/>
         public virtual void RenderBlockEnd(Block oldTip, Block newTip) =>
             _records.Add(
                 new RenderRecord.BlockEvent(

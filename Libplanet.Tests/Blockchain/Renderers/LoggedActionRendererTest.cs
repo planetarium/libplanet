@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     rehearsal
                 );
             Exception actionError = new Exception();
-            IActionRenderer<DumbAction> actionRenderer;
+            IActionRenderer actionRenderer;
             if (error)
             {
                 Action<IValue, IActionContext, Exception> render = (action, cxt, e) =>
@@ -103,7 +103,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                         throw new ThrowException.SomeException(string.Empty);
                     }
                 };
-                actionRenderer = new AnonymousActionRenderer<DumbAction>
+                actionRenderer = new AnonymousActionRenderer
                 {
                     ActionErrorRenderer = render,
                 };
@@ -124,7 +124,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                         throw new ThrowException.SomeException(string.Empty);
                     }
                 };
-                actionRenderer = new AnonymousActionRenderer<DumbAction>
+                actionRenderer = new AnonymousActionRenderer
                 {
                     ActionRenderer = render,
                 };
@@ -189,7 +189,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 firstLog.Properties["BlockIndex"].ToString()
             );
             Assert.Equal(
-                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousActionRenderer).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);
@@ -276,7 +276,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 }
             }
 
-            IActionRenderer<DumbAction> actionRenderer = new AnonymousActionRenderer<DumbAction>
+            IActionRenderer actionRenderer = new AnonymousActionRenderer
             {
                 BlockRenderer = end ? (Action<DumbBlock, DumbBlock>)null : Callback,
                 BlockEndRenderer = end ? Callback : (Action<DumbBlock, DumbBlock>)null,
@@ -330,7 +330,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
             Assert.Equal($"\"{_genesis.Hash}\"", firstLog.Properties["OldHash"].ToString());
             Assert.Equal(
-                $"\"{typeof(AnonymousActionRenderer<DumbAction>).FullName}\"",
+                $"\"{typeof(AnonymousActionRenderer).FullName}\"",
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);

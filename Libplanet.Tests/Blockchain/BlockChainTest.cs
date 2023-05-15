@@ -279,9 +279,9 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
-            IActionRenderer<DumbAction>[] renderers = Enumerable.Range(0, 2).Select(i =>
+            IActionRenderer[] renderers = Enumerable.Range(0, 2).Select(i =>
                 new LoggedActionRenderer<DumbAction>(
-                    new AnonymousActionRenderer<DumbAction>
+                    new AnonymousActionRenderer
                     {
                         ActionRenderer = (act, context, nextStates) =>
                             // Consuming the random state through IRandom.Next() should not
@@ -352,7 +352,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
 
-            IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
+            IActionRenderer renderer = new AnonymousActionRenderer
             {
                 ActionRenderer = (a, __, nextStates) =>
                 {

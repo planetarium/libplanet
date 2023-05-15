@@ -8,7 +8,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
 {
     /// <summary>
     /// Validates if rendering events are in the correct order according to the documented automata
-    /// (see also the docs for <see cref="IRenderer"/> and <see cref="IActionRenderer{T}"/>)
+    /// (see also the docs for <see cref="IRenderer"/> and <see cref="IActionRenderer"/>)
     /// using profiling-guided analysis.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
@@ -49,7 +49,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
         public override void RenderAction(
             IValue action,
             IActionContext context,
@@ -61,7 +61,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer{T}.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
         public override void RenderActionError(
             IValue action,
             IActionContext context,
@@ -72,7 +72,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc cref="IActionRenderer{T}.RenderBlockEnd(Block, Block)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderBlockEnd(Block, Block)"/>
         public override void RenderBlockEnd(Block oldTip, Block newTip)
         {
             base.RenderBlockEnd(oldTip, newTip);
@@ -129,7 +129,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                             {
                                 throw BadRenderExc(
                                     $"{nameof(IRenderer.RenderBlock)} and " +
-                                    $"{nameof(IActionRenderer<T>.RenderBlockEnd)} which matches " +
+                                    $"{nameof(IActionRenderer.RenderBlockEnd)} which matches " +
                                     "to it should have the same oldTip and newTip."
                                 );
                             }
@@ -157,9 +157,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
                         }
 
                         throw BadRenderExc(
-                            $"Expected {nameof(IActionRenderer<T>.RenderBlockEnd)} or " +
-                            $"{nameof(IActionRenderer<T>.RenderAction)} or " +
-                            $"{nameof(IActionRenderer<T>.RenderActionError)}"
+                            $"Expected {nameof(IActionRenderer.RenderBlockEnd)} or " +
+                            $"{nameof(IActionRenderer.RenderAction)} or " +
+                            $"{nameof(IActionRenderer.RenderActionError)}"
                         );
                     }
 

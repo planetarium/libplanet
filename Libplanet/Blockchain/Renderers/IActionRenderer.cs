@@ -26,20 +26,17 @@ namespace Libplanet.Blockchain.Renderers
     /// </summary>
     /// <remarks>Although <see cref="Transaction"/>s affect the states in
     /// the <see cref="IStateStore"/> all or nothing at all (i.e., atomically),
-    /// <see cref="IActionRenderer{T}"/> receives all action-related events
+    /// <see cref="IActionRenderer"/> receives all action-related events
     /// (<see cref="RenderAction"/>/<see cref="RenderActionError"/>) <em>immediately</em>
     /// without buffering, which means actions are rendered <em>even before</em> whether there are
     /// any actions throwing an exception in the same transaction is determined.  In other words,
-    /// for <see cref="IActionRenderer{T}"/>s, it is not guaranteed that actions in a transaction
+    /// for <see cref="IActionRenderer"/>s, it is not guaranteed that actions in a transaction
     /// are atomic.
     /// <para>If your action renderer expects to receive only render events about actions belonging
     /// successful transactions, wrap your action renderer with
-    /// <see cref="AtomicActionRenderer{T}"/>.</para>
+    /// <see cref="AtomicActionRenderer"/>.</para>
     /// </remarks>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public interface IActionRenderer<T> : IRenderer
-        where T : IAction, new()
+    public interface IActionRenderer : IRenderer
     {
         /// <summary>
         /// Does things that should be done right after an <paramref name="action"/>
@@ -64,10 +61,6 @@ namespace Libplanet.Blockchain.Renderers
         /// cref="IRenderer.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).</para>
-        /// <para>The reason why the parameter <paramref name="action"/> takes
-        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
-        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction.Actions"/>).</para>
         /// </remarks>
         void RenderAction(IValue action, IActionContext context, IAccountStateDelta nextStates);
 
@@ -88,10 +81,6 @@ namespace Libplanet.Blockchain.Renderers
         /// cref="IRenderer.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).
-        /// <para>The reason why the parameter <paramref name="action"/> takes
-        /// <see cref="IAction"/> instead of <typeparamref name="T"/> is because it can take
-        /// block actions (<see cref="Policies.IBlockPolicy{T}.BlockAction"/>) besides transaction
-        /// actions (<see cref="Tx.Transaction.Actions"/>).</para>
         /// </remarks>
         void RenderActionError(IValue action, IActionContext context, Exception exception);
 
