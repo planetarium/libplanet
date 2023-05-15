@@ -144,6 +144,17 @@ Released on May 9, 2023.
 [Bencodex.Json 0.10.0]: https://www.nuget.org/packages/Bencodex.Json/0.10.0
 
 
+Version 1.0.3
+-------------
+
+Released on May 15, 2023.
+
+ -  (@planetarium/cli) Fixed the installer bug that it had failed on Linux and
+    macOS since version 1.0.2.  [[#3107], [#3160]]
+
+[#3160]: https://github.com/planetarium/libplanet/pull/3160
+
+
 Version 1.0.2
 -------------
 
