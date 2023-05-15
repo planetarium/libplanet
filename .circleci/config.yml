@@ -260,9 +260,9 @@ commands:
         default: true
     steps:
       - run:
-          name: Install lib6c-dev (for RocksDBSharp)
+          name: Install lib6c-dev and libsnappy-dev (for RocksDB)
           shell: bash
-          command: apt update -y && apt install -y libc6-dev
+          command: apt update -y && apt install -y libc6-dev libsnappy-dev
       - netcore_test_base:
           collect_tests_from: "<<parameters.collect_tests_from>>"
           locale: "<<parameters.locale>>"

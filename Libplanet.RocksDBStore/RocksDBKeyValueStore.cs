@@ -124,7 +124,11 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value)
         {
+#if NETSTANDARD2_0
             _keyValueDb.Put(key.ToByteArray(), value);
+#else
+            _keyValueDb.Put(key.ByteArray.AsSpan(), value.AsSpan());
+#endif
         }
 
         /// <inheritdoc/>
@@ -155,7 +159,11 @@ namespace Libplanet.RocksDBStore
         {
             foreach (KeyBytes key in keys)
             {
+#if NETSTANDARD2_0
                 _keyValueDb.Remove(key.ToByteArray());
+#else
+                _keyValueDb.Remove(key.ByteArray.AsSpan());
+#endif
             }
         }
 
