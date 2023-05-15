@@ -6,7 +6,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Blockchain.Renderers.Debug
 {
     /// <summary>
-    /// A render event represented by <see cref="RecordingActionRenderer{T}"/>.
+    /// A render event represented by <see cref="RecordingActionRenderer"/>.
     /// </summary>
     public abstract class RenderRecord
     {

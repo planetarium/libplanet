@@ -13,7 +13,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
     /// <see cref="Libplanet.Blockchain.BlockChain{T}"/>'s type parameter.</typeparam>
-    public class ValidatingActionRenderer<T> : RecordingActionRenderer<T>
+    public class ValidatingActionRenderer<T> : RecordingActionRenderer
         where T : IAction, new()
     {
         private readonly Action<InvalidRenderException>? _onError;

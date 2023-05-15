@@ -347,7 +347,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
-            var renderer = new RecordingActionRenderer<ThrowException>();
+            var renderer = new RecordingActionRenderer();
             BlockChain<ThrowException> blockChain =
                 TestUtils.MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();

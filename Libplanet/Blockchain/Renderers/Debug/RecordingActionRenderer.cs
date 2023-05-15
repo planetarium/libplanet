@@ -12,16 +12,13 @@ namespace Libplanet.Blockchain.Renderers.Debug
     /// <summary>
     /// Records every render events.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match to
-    /// <see cref="Libplanet.Blockchain.BlockChain{T}"/>'s type parameter.</typeparam>
-    public class RecordingActionRenderer<T> : IActionRenderer
-        where T : IAction, new()
+    public class RecordingActionRenderer : IActionRenderer
     {
         private readonly List<RenderRecord> _records;
         private long _nextIndex;
 
         /// <summary>
-        /// Creates a new <see cref="RecordingActionRenderer{T}"/> instance.
+        /// Creates a new <see cref="RecordingActionRenderer"/> instance.
         /// </summary>
         public RecordingActionRenderer()
         {
@@ -55,7 +52,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         {
             _nextIndex = 0;
             _records.Clear();
-            Log.Logger.ForContext<RecordingActionRenderer<T>>().Debug("Reset records");
+            Log.Logger.ForContext<RecordingActionRenderer>().Debug("Reset records");
         }
 
         /// <inheritdoc cref="IActionRenderer.RenderAction"/>

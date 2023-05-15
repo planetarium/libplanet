@@ -316,7 +316,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var recordingRenderer = new RecordingActionRenderer<DumbAction>();
+            var recordingRenderer = new RecordingActionRenderer();
             var renderer = new LoggedActionRenderer<DumbAction>(recordingRenderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
                 MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
@@ -584,7 +584,7 @@ namespace Libplanet.Tests.Blockchain
                     blockAction: _policy.BlockAction);
 
                 store.PutBlock(genesis);
-                var renderer = new RecordingActionRenderer<DumbAction>();
+                var renderer = new RecordingActionRenderer();
                 var blockChain = BlockChain<DumbAction>.Create(
                     _policy,
                     new VolatileStagePolicy<DumbAction>(),
