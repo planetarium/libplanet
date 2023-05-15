@@ -5,6 +5,7 @@ import {
   Value,
 } from "@planetarium/bencodex";
 import { Address, encodeAddress, encodeAddressSet } from "../address.js";
+import { FungibleAssetValue, encodeFungibleAssetValue } from "../assets.js";
 import { BlockHash, encodeBlockHash } from "../blockhash.js";
 import { encodePublicKey, PublicKey } from "../key.js";
 
@@ -19,6 +20,8 @@ export interface TxMetadata {
   timestamp: Date;
   updatedAddresses: Set<Address>;
   genesisHash: BlockHash | null;
+  gasLimit: bigint | null;
+  maxGasPrice: FungibleAssetValue | null;
 }
 
 const NONCE_KEY = new Uint8Array([0x6e]); // 'n'
@@ -27,6 +30,8 @@ const GENESIS_HASH_KEY = new Uint8Array([0x67]); // 'g'
 const UPDATED_ADDRESSES_KEY = new Uint8Array([0x75]); // 'u'
 const PUBLIC_KEY_KEY = new Uint8Array([0x70]); // 'p'
 const TIMESTAMP_KEY = new Uint8Array([0x74]); // 't'
+const GAS_LIMIT_KEY = new Uint8Array([0x6c]); // 'l'
+const MAX_GAS_PRICE_KEY = new Uint8Array([0x6d]); // 'm'
 
 export function encodeTxMetadata(metadata: TxMetadata): Dictionary {
   const updatedAddresses = encodeAddressSet(metadata.updatedAddresses);
@@ -41,5 +46,12 @@ export function encodeTxMetadata(metadata: TxMetadata): Dictionary {
   if (metadata.genesisHash !== null) {
     pairs.push([GENESIS_HASH_KEY, encodeBlockHash(metadata.genesisHash)]);
   }
+  if (metadata.gasLimit !== null) {
+    pairs.push([GAS_LIMIT_KEY, metadata.gasLimit]);
+  }
+  if (metadata.maxGasPrice !== null) {
+    pairs.push([MAX_GAS_PRICE_KEY, encodeFungibleAssetValue(metadata.maxGasPrice)]);
+  }
+
   return new BencodexDictionary(pairs);
 }
