@@ -49,6 +49,7 @@ To be released.
     [[#3144]]
  -  Added `IActionContext.GasLimit()` method.
     [[#3144]]
+ -  Added `PolymorphicAction<T>.ReloadLoader()` static method.  [[#3158]]
 
 ### Behavioral changes
 
@@ -69,6 +70,7 @@ To be released.
 [#3148]: https://github.com/planetarium/libplanet/pull/3148
 [#3149]: https://github.com/planetarium/libplanet/pull/3149
 [#3153]: https://github.com/planetarium/libplanet/pull/3153
+[#3158]: https://github.com/planetarium/libplanet/pull/3158
 
 
 Version 1.1.0

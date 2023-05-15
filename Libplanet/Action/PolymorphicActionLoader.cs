@@ -29,7 +29,13 @@ namespace Libplanet.Action
         public PolymorphicActionLoader(Type baseType)
         {
             _baseType = baseType;
-            _types = LoadTypes(baseType.Assembly, _baseType);
+            _types = LoadTypes(new[] { baseType.Assembly }, _baseType);
+        }
+
+        public PolymorphicActionLoader(IEnumerable<Assembly> assemblies, Type baseType)
+        {
+            _baseType = baseType;
+            _types = LoadTypes(assemblies, _baseType);
         }
 
         internal Type BaseType => _baseType;
@@ -68,33 +74,36 @@ namespace Libplanet.Action
         }
 
         private static IDictionary<IValue, Type> LoadTypes(
-            Assembly assembly, Type baseType)
+            IEnumerable<Assembly> assemblies, Type baseType)
         {
             var types = new Dictionary<IValue, Type>();
             var actionType = typeof(IAction);
-            foreach (Type t in LoadAllActionTypes(assembly))
+            foreach (Assembly assembly in assemblies)
             {
-                if (!baseType.IsAssignableFrom(t))
+                foreach (Type t in LoadAllActionTypes(assembly))
                 {
-                    continue;
-                }
-
-                if (ActionTypeAttribute.ValueOf(t) is IValue typeId)
-                {
-                    if (types.TryGetValue(typeId, out Type? existing))
+                    if (!baseType.IsAssignableFrom(t))
                     {
-                        if (existing != t)
-                        {
-                            throw new DuplicateActionTypeIdentifierException(
-                                "Multiple action types are associated with the same type ID.",
-                                typeId.ToString() ?? "null",
-                                ImmutableHashSet.Create(existing, t));
-                        }
-
                         continue;
                     }
 
-                    types[typeId] = t;
+                    if (ActionTypeAttribute.ValueOf(t) is IValue typeId)
+                    {
+                        if (types.TryGetValue(typeId, out Type? existing))
+                        {
+                            if (existing != t)
+                            {
+                                throw new DuplicateActionTypeIdentifierException(
+                                    "Multiple action types are associated with the same type ID.",
+                                    typeId.ToString() ?? "null",
+                                    ImmutableHashSet.Create(existing, t));
+                            }
+
+                            continue;
+                        }
+
+                        types[typeId] = t;
+                    }
                 }
             }
 
