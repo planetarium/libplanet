@@ -6,6 +6,11 @@ Version 1.0.3
 
 To be released.
 
+ -  (@planetarium/cli) Fixed the installer bug that it had failed on Linux and
+    macOS since version 1.0.2.  [[#3107], [#3160]]
+
+[#3160]: https://github.com/planetarium/libplanet/pull/3160
+
 
 Version 1.0.2
 -------------

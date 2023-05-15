@@ -56,7 +56,7 @@ export async function download(options = {}) {
       return extractZip(archivePath, { dir: dirPath });
     } else {
       return new Promise((resolve, reject) => {
-        const subproc = child_process.spawn("tar", ["xvJ", archivePath], {
+        const subproc = child_process.spawn("tar", ["xvfJ", archivePath], {
           cwd: dirPath,
           stdio: ["ignore", "ignore", "ignore"]
         });
