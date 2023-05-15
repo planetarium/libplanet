@@ -220,6 +220,8 @@ namespace Libplanet.Tests.Store
                 privateKey,
                 GenesisBlock.Hash,
                 actions ?? new DumbAction[0],
+                null,
+                null,
                 updatedAddresses,
                 timestamp
             );
