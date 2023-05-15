@@ -944,7 +944,8 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
-                await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, null, default);
+                await swarmC.PullBlocksAsync(
+                    TimeSpan.FromSeconds(5), int.MaxValue, int.MaxValue, null, default);
                 await swarmC.BlockAppended.WaitAsync();
                 Assert.Equal(chainC.Tip, chainATip);
             }

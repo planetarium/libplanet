@@ -784,6 +784,7 @@ namespace Libplanet.Net.Tests
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
+                chunkSize: int.MaxValue,
                 progress: null,
                 cancellationToken: CancellationToken.None
             ).ToArrayAsync();
@@ -885,6 +886,7 @@ namespace Libplanet.Net.Tests
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithBlockExcerpt,
+                chunkSize: int.MaxValue,
                 progress: new ActionProgress<BlockSyncState>(state =>
                 {
                     if (state is BlockHashDownloadState s &&

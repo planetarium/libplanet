@@ -630,6 +630,7 @@ namespace Libplanet.Net
                 BlockCandidateTable.Cleanup((_) => true);
                 await PullBlocksAsync(
                     peersWithExcerpts,
+                    100,
                     progress,
                     cancellationToken);
 
@@ -951,6 +952,7 @@ namespace Libplanet.Net
         /// by this <see cref="Swarm{T}"/> instance.</param>
         /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
         /// to query with their tips known.</param>
+        /// <param name="chunkSize">The chunk size of returned <see cref="BlockHash"/>es.</param>
         /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
         /// <param name="cancellationToken">The cancellation token that should be used to propagate
         /// a notification that this operation should be canceled.</param>
@@ -980,8 +982,9 @@ namespace Libplanet.Net
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
-            IProgress<BlockSyncState> progress,
-            [EnumeratorCancellation] CancellationToken cancellationToken
+            int chunkSize = int.MaxValue,
+            IProgress<BlockSyncState> progress = null,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
@@ -1000,7 +1003,8 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                long totalBlockHashesToDownload = -1;
+                int totalBlockHashesToDownload = -1;
+                int chunkBlockHashesToDownload = -1;
                 var pairsToYield = new List<Tuple<long, BlockHash>>();
                 Exception error = null;
                 try
@@ -1053,7 +1057,18 @@ namespace Libplanet.Net
                             blockHashes.FirstOrDefault() is { } t)
                         {
                             t.Deconstruct(out branchingIndex, out branchingBlock);
-                            totalBlockHashesToDownload = peerIndex - branchingIndex;
+                            try
+                            {
+                                totalBlockHashesToDownload = Convert.ToInt32(
+                                    peerIndex - branchingIndex);
+                            }
+                            catch (OverflowException)
+                            {
+                                totalBlockHashesToDownload = int.MaxValue;
+                            }
+
+                            chunkBlockHashesToDownload = Math.Min(
+                                totalBlockHashesToDownload, chunkSize);
                         }
 
                         foreach (Tuple<long, BlockHash> pair in blockHashes)
@@ -1118,7 +1133,7 @@ namespace Libplanet.Net
                                 }
                             });
                     }
-                    while (downloaded.Count < totalBlockHashesToDownload);
+                    while (downloaded.Count < chunkBlockHashesToDownload);
                 }
                 catch (Exception e)
                 {
