@@ -225,21 +225,19 @@ To be released.
      - Removed `nativeTokenPredicate` parameter from all `BlockChain<T>`'s
        methods.
      - (Libplanet.Explorer) Removed `BlockPolicyType<T>` class.
+ -  Added `ITransaction.MaxGasPrice` property.  [[#3156]]
+ -  Added `ITransaction.GasLimit` property.  [[#3156]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
- -  Added `IActionContext.GasUsed()` method.
-    [[#3144]]
- -  Added `IActionContext.GasLimit()` method.
-    [[#3144]]
+
+ -  Added `IActionContext.GasUsed()` method.  [[#3144]]
+ -  Added `IActionContext.GasLimit()` method.  [[#3144]]
+ -  Added `FungibleAssetValue.Serialize()` method.  [[#3156]]
  -  Added `PolymorphicAction<T>.ReloadLoader()` static method.  [[#3158]]
- -  Added `ITransaction.MaxGasPrice` property.
-    [[#3156]]
- -  Added `ITransaction.GasLimit` property.
-    [[#3156]]
 
 ### Behavioral changes
 
