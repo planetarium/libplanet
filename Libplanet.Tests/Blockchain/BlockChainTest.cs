@@ -1486,7 +1486,7 @@ namespace Libplanet.Tests.Blockchain
             Address address = privateKey.ToAddress();
             var action = new Initialize(
                 new ValidatorSet(
-                    new List<Validator>() { new Validator(new PrivateKey().PublicKey, 0) }),
+                    new List<Validator>() { new Validator(new PrivateKey().PublicKey, 1) }),
                 new Dictionary<Address, IValue>
                     { [default] = (Text)"initial value" }.ToImmutableDictionary());
 
