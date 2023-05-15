@@ -45,21 +45,16 @@ namespace Libplanet.Assets
 
         public FungibleAssetValue(IValue value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            if (!(value is Bencodex.Types.Dictionary dict))
+            if (!(value is Bencodex.Types.List list))
             {
                 throw new ArgumentException(
-                    $"The given value is not a dictionary: {value}",
+                    $"The given value is not a list: {value}",
                     nameof(value)
                 );
             }
 
-            Currency = new Currency(dict.GetValue<IValue>("c"));
-            RawValue = dict.GetValue<Bencodex.Types.Integer>("r");
+            Currency = new Currency(list[0]);
+            RawValue = (Bencodex.Types.Integer)list[1];
         }
 
         /// <summary>
@@ -658,9 +653,9 @@ namespace Libplanet.Assets
         public override string ToString() =>
             $"{GetQuantityString()} {Currency.Ticker}";
 
-        public IValue Serialize() => Dictionary.Empty
-                .Add("c", Currency.Serialize())
-                .Add("r", (Bencodex.Types.Integer)RawValue);
+        public IValue Serialize() => Bencodex.Types.List.Empty
+                .Add(Currency.Serialize())
+                .Add((Bencodex.Types.Integer)RawValue);
     }
 
     [SuppressMessage(
