@@ -1593,6 +1593,24 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PlainValue
   nameWithType: PolymorphicAction<T>.PlainValue
   nameWithType.vb: PolymorphicAction(Of T).PlainValue
+- uid: Libplanet.Action.PolymorphicAction`1.ReloadLoader(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})
+  name: ReloadLoader(IEnumerable<Assembly>)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ReloadLoader_System_Collections_Generic_IEnumerable_System_Reflection_Assembly__
+  commentId: M:Libplanet.Action.PolymorphicAction`1.ReloadLoader(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})
+  name.vb: ReloadLoader(IEnumerable(Of Assembly))
+  fullName: Libplanet.Action.PolymorphicAction<T>.ReloadLoader(System.Collections.Generic.IEnumerable<System.Reflection.Assembly>)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).ReloadLoader(System.Collections.Generic.IEnumerable(Of System.Reflection.Assembly))
+  nameWithType: PolymorphicAction<T>.ReloadLoader(IEnumerable<Assembly>)
+  nameWithType.vb: PolymorphicAction(Of T).ReloadLoader(IEnumerable(Of Assembly))
+- uid: Libplanet.Action.PolymorphicAction`1.ReloadLoader*
+  name: ReloadLoader
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ReloadLoader_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.ReloadLoader
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.ReloadLoader
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).ReloadLoader
+  nameWithType: PolymorphicAction<T>.ReloadLoader
+  nameWithType.vb: PolymorphicAction(Of T).ReloadLoader
 - uid: Libplanet.Action.PolymorphicAction`1.ToString
   name: ToString()
   href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ToString
