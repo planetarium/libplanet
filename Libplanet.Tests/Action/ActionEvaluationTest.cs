@@ -46,9 +46,7 @@ namespace Libplanet.Tests.Action
                         address
                     ),
                     123,
-                    0,
-                    false
-                ),
+                    0),
                 new AccountStateDeltaImpl(
                     addrs => addrs
                         .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)

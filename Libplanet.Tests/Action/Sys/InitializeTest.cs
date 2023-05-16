@@ -61,7 +61,6 @@ namespace Libplanet.Tests.Action.Sys
                 previousStates: prevStates,
                 randomSeed: 123,
                 gasLimit: 0,
-                rehearsal: false,
                 previousBlockStatesTrie: null,
                 blockAction: false
             );
@@ -97,7 +96,6 @@ namespace Libplanet.Tests.Action.Sys
                 previousStates: prevStates,
                 randomSeed: 123,
                 gasLimit: long.MaxValue,
-                rehearsal: false,
                 previousBlockStatesTrie: null,
                 blockAction: false
             );

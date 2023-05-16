@@ -28,7 +28,6 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             int randomSeed,
             long gasLimit,
-            bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
             List<string>? logs = null)
@@ -92,7 +91,6 @@ namespace Libplanet.Action
                 PreviousStates,
                 _randomSeed,
                 _gasLimit,
-                Rehearsal,
                 _previousBlockStatesTrie,
                 BlockAction,
                 new List<string>());
