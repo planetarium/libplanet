@@ -216,13 +216,19 @@ namespace Libplanet.Tests.Blockchain
                 new SetStatesAtBlock(default, (Text)"foo", 1),
                 policy.BlockInterval
             );
+            var blockChainStates = new BlockChainStates(store, stateStore);
             var chain2 = new BlockChain<DumbAction>(
                 policyWithBlockAction,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                genesisBlock
-            );
+                genesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policyWithBlockAction.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
         }

@@ -130,13 +130,20 @@ namespace Libplanet.Tests.Blockchain
             chain2.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
 
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var z = new BlockChain<DumbAction>(
-                new BlockPolicy<DumbAction>(new MinerReward(1)),
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Assert.Equal(chain1.Id, z.Id);
         }
@@ -1072,13 +1079,19 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
+            var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 tracker,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Block b = chain.Genesis;
             Address[] addresses = new Address[30];
@@ -1119,15 +1132,21 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
-            var blockPolicy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
+            var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
-                blockPolicy,
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 tracker,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Block b = chain.Genesis;
             for (int i = 0; i < 20; ++i)
@@ -1190,12 +1209,20 @@ namespace Libplanet.Tests.Blockchain
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
+            var policy = new NullBlockPolicy<DumbAction>();
+            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
-                new NullBlockPolicy<DumbAction>(),
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock);
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Assert.All(chain.GetStates(addresses), Assert.Null);
             foreach (var address in addresses)
@@ -1947,12 +1974,19 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Throws<InvalidGenesisBlockException>(() =>
             {
+                var blockChainStates = new BlockChainStates(store, stateStore);
                 var blockchain = new BlockChain<DumbAction>(
                     policy,
                     stagePolicy,
                     store,
                     stateStore,
-                    genesisBlockB);
+                    genesisBlockB,
+                    blockChainStates,
+                    new ActionEvaluator(
+                        _ => policy.BlockAction,
+                        blockChainStates,
+                        new SingleActionLoader(typeof(DumbAction)),
+                        null));
             });
         }
 

@@ -32,7 +32,8 @@ namespace Libplanet.Blockchain
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
     /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T},
-    /// IStore, IStateStore, Block, IEnumerable{IRenderer})"/> constructor.
+    /// IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
+    /// constructor.
     /// </para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
@@ -80,6 +81,10 @@ namespace Libplanet.Blockchain
         /// it checks if the existing genesis block and this argument is the same.
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> implementation for
+        /// state lookup.</param>
+        /// <param name="actionEvaluator">The <see cref="ActionEvaluator" /> implementation to
+        /// calculate next states when append new blocks.</param>
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
         /// by default or if it is <see langword="null"/>.  Note that action renderers receive
         /// events made by unsuccessful transactions too; see also
@@ -99,67 +104,9 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
-            IEnumerable<IRenderer> renderers = null
-        )
-            : this(
-                policy,
-                stagePolicy,
-                store,
-                stateStore,
-                genesisBlock,
-                renderers,
-                new BlockChainStates(store, stateStore)
-            )
-        {
-        }
-
-#pragma warning disable MEN002
-#pragma warning disable CS1573
-        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block, IEnumerable{IRenderer})" />
-        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> implementation to state lookup.</param>
-        public BlockChain(
-            IBlockPolicy<T> policy,
-            IStagePolicy<T> stagePolicy,
-            IStore store,
-            IStateStore stateStore,
-            Block genesisBlock,
-            IEnumerable<IRenderer> renderers,
-            IBlockChainStates blockChainStates
-        )
-#pragma warning restore MEN002
-#pragma warning restore CS1573
-            : this(
-                policy,
-                stagePolicy,
-                store,
-                stateStore,
-                genesisBlock,
-                renderers,
-                blockChainStates,
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: blockChainStates,
-                    actionTypeLoader: new SingleActionLoader(typeof(T)),
-                    feeCalculator: null))
-        {
-        }
-
-#pragma warning disable MEN002
-#pragma warning disable CS1573
-        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block, IEnumerable{IRenderer}, IBlockChainStates)" />
-        /// <param name="actionEvaluator">The <see cref="ActionEvaluator" /> implementation to calculate next states when append new blocks.</param>
-        public BlockChain(
-            IBlockPolicy<T> policy,
-            IStagePolicy<T> stagePolicy,
-            IStore store,
-            IStateStore stateStore,
-            Block genesisBlock,
-            IEnumerable<IRenderer> renderers,
             IBlockChainStates blockChainStates,
-            IActionEvaluator actionEvaluator
-        )
-#pragma warning restore MEN002
-#pragma warning restore CS1573
+            IActionEvaluator actionEvaluator,
+            IEnumerable<IRenderer> renderers = null)
 #pragma warning disable SA1118  // The parameter spans multiple lines
             : this(
                 policy,
@@ -171,10 +118,9 @@ namespace Libplanet.Blockchain
                         $"Given {nameof(store)} does not have canonical chain id set.",
                         nameof(store)),
                 genesisBlock,
-                renderers,
                 blockChainStates,
-                actionEvaluator
-            )
+                actionEvaluator,
+                renderers)
         {
         }
 
@@ -185,9 +131,9 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block genesisBlock,
-            IEnumerable<IRenderer> renderers,
             IBlockChainStates blockChainStates,
-            IActionEvaluator actionEvaluator)
+            IActionEvaluator actionEvaluator,
+            IEnumerable<IRenderer> renderers)
         {
             if (store is null)
             {
@@ -260,7 +206,7 @@ namespace Libplanet.Blockchain
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
         /// "BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block,
-        /// IEnumerable{IRenderer})"/>
+        /// IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
         public IImmutableList<IRenderer> Renderers { get; }
@@ -480,9 +426,9 @@ namespace Libplanet.Blockchain
                 stateStore,
                 id,
                 genesisBlock,
-                renderers,
                 blockChainStates,
-                actionEvaluator);
+                actionEvaluator,
+                renderers);
         }
 
         /// <summary>
@@ -913,9 +859,9 @@ namespace Libplanet.Blockchain
                     StateStore,
                     forkedId,
                     Genesis,
-                    renderers,
                     _blockChainStates,
-                    ActionEvaluator);
+                    ActionEvaluator,
+                    renderers);
                 Store.ForkBlockIndexes(Id, forkedId, point);
                 if (GetBlockCommit(point) is { } p)
                 {

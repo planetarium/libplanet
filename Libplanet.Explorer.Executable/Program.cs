@@ -9,6 +9,7 @@ using Cocona;
 using GraphQL.Server;
 using GraphQL.Utilities;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -215,13 +216,20 @@ If omitted (default) explorer only the local blockchain store.")]
                     new DumbBlockPolicy(LoadBlockPolicy<NullAction>(options));
                 IStagePolicy<NullAction> stagePolicy =
                     new VolatileStagePolicy<NullAction>();
+                var blockChainStates = new BlockChainStates(store, stateStore);
                 var blockChain =
                     new BlockChain<NullAction>(
                         policy,
                         stagePolicy,
                         store,
                         stateStore,
-                        options.GetGenesisBlock(policy));
+                        options.GetGenesisBlock(policy),
+                        blockChainStates,
+                        new ActionEvaluator(
+                            _ => policy.BlockAction,
+                            blockChainStates,
+                            new SingleActionLoader(typeof(NullAction)),
+                            null));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;
