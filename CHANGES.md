@@ -43,6 +43,8 @@ To be released.
     implementations.  [[#3163]]
  -  Removed `IActionContext.GenesisHash` property.  [[#3164]]
  -  Removed `genesisHash` parameter from `ActionEvaluator()`.  [[#3164]]
+ -  Removed `IActionContext.Rehearsal` property.  [[#3169]]
+     -  Removed `rehearsal` parameter from `ActionContext()`.  [[#3169]]
 
 ### Backward-incompatible network protocol changes
 
@@ -79,6 +81,7 @@ To be released.
 [#3159]: https://github.com/planetarium/libplanet/pull/3159
 [#3163]: https://github.com/planetarium/libplanet/pull/3163
 [#3164]: https://github.com/planetarium/libplanet/pull/3164
+[#3169]: https://github.com/planetarium/libplanet/pull/3169
 
 
 Version 1.1.1
