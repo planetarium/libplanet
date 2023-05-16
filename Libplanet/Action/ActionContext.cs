@@ -37,7 +37,6 @@ namespace Libplanet.Action
             TxId = txid;
             Miner = miner;
             BlockIndex = blockIndex;
-            Rehearsal = rehearsal;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
@@ -59,7 +58,7 @@ namespace Libplanet.Action
 
         public long BlockIndex { get; }
 
-        public bool Rehearsal { get; }
+        public bool Rehearsal => false;
 
         public IAccountStateDelta PreviousStates { get; }
 

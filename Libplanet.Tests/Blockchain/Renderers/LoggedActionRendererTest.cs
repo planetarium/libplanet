@@ -61,15 +61,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Theory]
-        [InlineData(false, false, false)]
-        [InlineData(true, false, false)]
-        [InlineData(false, true, false)]
-        [InlineData(true, true, false)]
-        [InlineData(false, false, true)]
-        [InlineData(true, false, true)]
-        [InlineData(false, true, true)]
-        [InlineData(true, true, true)]
-        public void ActionRenderings(bool error, bool rehearsal, bool exception)
+        [InlineData(false, false)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(true, true)]
+        public void ActionRenderings(bool error, bool exception)
         {
             bool called = false;
             LogEvent firstLog = null;
@@ -82,8 +78,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     _stateDelta,
                     default,
                     0,
-                    rehearsal
-                );
+                    false);
             Exception actionError = new Exception();
             IActionRenderer actionRenderer;
             if (error)
@@ -177,7 +172,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             const string expected1stLog =
                 "Invoking {MethodName}() for an action {ActionType} at block #{BlockIndex}...";
             Assert.Equal(
-                expected1stLog + (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty),
+                expected1stLog,
                 firstLog.MessageTemplate.Text
             );
             string methodName =
@@ -192,14 +187,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);
-            if (rehearsal)
-            {
-                Assert.Equal("True", firstLog.Properties["Rehearsal"].ToString());
-            }
-            else
-            {
-                Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
-            }
+            Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
 
             LogEvent secondLog = logEvents[1];
             Assert.Equal(
@@ -211,14 +199,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 expected2ndLog =
                     "An exception was thrown during {MethodName}() for an action {ActionType} at " +
-                    "block #{BlockIndex}" +
-                    (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty);
+                    "block #{BlockIndex}";
             }
             else
             {
                 expected2ndLog =
-                    "Invoked {MethodName}() for an action {ActionType} at block #{BlockIndex}" +
-                    (rehearsal ? " (rehearsal: {Rehearsal})" : string.Empty);
+                    "Invoked {MethodName}() for an action {ActionType} at block #{BlockIndex}";
             }
 
             Assert.Equal(
@@ -241,14 +227,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 Assert.Null(secondLog.Exception);
             }
 
-            if (rehearsal)
-            {
-                Assert.Equal("True", firstLog.Properties["Rehearsal"].ToString());
-            }
-            else
-            {
-                Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
-            }
+            Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
         }
 
         [Theory]
