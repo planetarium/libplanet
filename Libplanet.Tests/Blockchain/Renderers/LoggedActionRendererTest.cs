@@ -186,7 +186,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 firstLog.Properties[Constants.SourceContextPropertyName].ToString()
             );
             Assert.Null(firstLog.Exception);
-            Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
 
             LogEvent secondLog = logEvents[1];
             Assert.Equal(
@@ -225,8 +224,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 Assert.Null(secondLog.Exception);
             }
-
-            Assert.False(firstLog.Properties.ContainsKey("Rehearsal"));
         }
 
         [Theory]

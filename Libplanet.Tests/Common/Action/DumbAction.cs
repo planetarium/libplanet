@@ -220,7 +220,6 @@ namespace Libplanet.Tests.Common.Action
             {
                 Action = this,
                 NextState = nextState,
-                Rehearsal = context.Rehearsal,
             });
 
             return nextState;
