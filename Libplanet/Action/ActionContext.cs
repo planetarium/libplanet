@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.State;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Action
@@ -17,9 +15,7 @@ namespace Libplanet.Action
         public static readonly AsyncLocal<GasMeter> GetGasMeter = new AsyncLocal<GasMeter>();
 
         private readonly int _randomSeed;
-        private readonly ITrie? _previousBlockStatesTrie;
         private readonly long _gasLimit;
-        private HashDigest<SHA256>? _previousStateRootHash;
 
         public ActionContext(
             Address signer,
@@ -30,7 +26,6 @@ namespace Libplanet.Action
             int randomSeed,
             long gasLimit,
             bool rehearsal = false,
-            ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
             List<string>? logs = null)
         {
@@ -43,7 +38,6 @@ namespace Libplanet.Action
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
             _gasLimit = gasLimit;
-            _previousBlockStatesTrie = previousBlockStatesTrie;
             BlockAction = blockAction;
             Logs = logs ?? new List<string>();
 
@@ -66,17 +60,6 @@ namespace Libplanet.Action
 
         public IRandom Random { get; }
 
-        public HashDigest<SHA256>? PreviousStateRootHash
-        {
-            get
-            {
-                return _previousStateRootHash ??= _previousBlockStatesTrie?
-                    .Set(PreviousStates.GetUpdatedRawStates())
-                    .Commit()
-                    .Hash;
-            }
-        }
-
         public bool BlockAction { get; }
 
         internal List<string> Logs { get; }
@@ -95,7 +78,6 @@ namespace Libplanet.Action
                 _randomSeed,
                 _gasLimit,
                 Rehearsal,
-                _previousBlockStatesTrie,
                 BlockAction,
                 new List<string>());
 

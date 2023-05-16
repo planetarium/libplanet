@@ -17,7 +17,6 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
@@ -596,10 +595,6 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
         public ValidatorSet GetValidatorSet(BlockHash offset) =>
             _blockChainStates.GetValidatorSet(offset);
-
-        /// <inheritdoc cref="IBlockChainStates.GetTrie" />
-        public ITrie GetTrie(BlockHash offset) =>
-            _blockChainStates.GetTrie(offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

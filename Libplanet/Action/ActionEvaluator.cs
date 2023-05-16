@@ -14,7 +14,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.State;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;
 
@@ -99,15 +98,11 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                ITrie? previousBlockStatesTrie = block.PreviousHash is { } previousHash
-                    ? _blockChainStates.GetTrie(previousHash)
-                    : null;
                 IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
 
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
-                    previousStates: previousStates,
-                    previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
+                    previousStates: previousStates).ToImmutableList();
 
                 var policyBlockAction = _policyBlockActionGetter(block);
                 if (policyBlockAction is null)
@@ -122,9 +117,7 @@ namespace Libplanet.Action
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(
                             blockHeader: block,
-                            previousStates: previousStates,
-                            previousBlockStatesTrie: previousBlockStatesTrie
-                        )
+                            previousStates: previousStates)
                     );
                 }
             }
@@ -194,8 +187,6 @@ namespace Libplanet.Action
         /// <param name="gasLimit">
         /// The maximum amount of gas that can be consumed by the transaction.
         /// </param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
         /// <see cref="IBlockPolicy.BlockAction"/>.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
@@ -231,7 +222,6 @@ namespace Libplanet.Action
             byte[] signature,
             IImmutableList<IAction> actions,
             long gasLimit = 0,
-            ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
             IFeeCalculator? feeCalculator = null,
             ILogger? logger = null)
@@ -249,7 +239,6 @@ namespace Libplanet.Action
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
-                    previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
                     gasLimit: gasLimit,
                     logs: logs);
@@ -330,23 +319,19 @@ namespace Libplanet.Action
                 {
                     var message =
                         "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
-                        "pre-evaluation hash {PreEvaluationHash} and previous " +
-                        "state root hash {StateRootHash} threw an exception " +
+                        "pre-evaluation hash {PreEvaluationHash} threw an exception " +
                         "during execution";
-                    HashDigest<SHA256>? stateRootHash = context.PreviousStateRootHash;
                     logger?.Error(
                         e,
                         message,
                         action,
                         txid,
                         blockIndex,
-                        ByteUtil.Hex(preEvaluationHash.ByteArray),
-                        stateRootHash);
+                        ByteUtil.Hex(preEvaluationHash.ByteArray));
                     var innerMessage =
                         $"The action {action} (block #{blockIndex}, " +
                         $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash.ByteArray)}, " +
-                        $"tx {txid}, previous state root hash {stateRootHash}) threw " +
-                        "an exception during execution.  " +
+                        $"tx {txid} threw an exception during execution.  " +
                         "See also this exception's InnerException property";
                     logger?.Error(
                         "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
@@ -355,7 +340,7 @@ namespace Libplanet.Action
                         preEvaluationHash,
                         blockIndex,
                         txid,
-                        stateRootHash,
+                        null,
                         action,
                         e);
                 }
@@ -426,16 +411,13 @@ namespace Libplanet.Action
         /// <param name="block">The block to evaluate.</param>
         /// <param name="previousStates">The states immediately before an execution of any
         /// <see cref="IAction"/>s.</param>
-        /// <param name="previousBlockStatesTrie">The <see cref="ITrie"/> containing the states
-        /// at the previous block of <paramref name="block"/>.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s
         /// where each <see cref="ActionEvaluation"/> is the evaluation of an <see cref="IAction"/>.
         /// </returns>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock block,
-            IAccountStateDelta previousStates,
-            ITrie? previousBlockStatesTrie = null)
+            IAccountStateDelta previousStates)
         {
             IAccountStateDelta delta = previousStates;
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
@@ -464,9 +446,7 @@ namespace Libplanet.Action
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
                     tx: tx,
-                    previousStates: delta,
-                    previousBlockStatesTrie: previousBlockStatesTrie
-                );
+                    previousStates: delta);
 
                 var actions = new List<IAction>();
                 foreach (ActionEvaluation evaluation in evaluations)
@@ -499,8 +479,7 @@ namespace Libplanet.Action
         internal IEnumerable<ActionEvaluation> EvaluateTx(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction tx,
-            IAccountStateDelta previousStates,
-            ITrie? previousBlockStatesTrie = null)
+            IAccountStateDelta previousStates)
         {
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
@@ -513,7 +492,6 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
-                previousBlockStatesTrie: previousBlockStatesTrie,
                 feeCalculator: _feeCalculator,
                 logger: _logger);
         }
@@ -526,16 +504,13 @@ namespace Libplanet.Action
         /// <param name="blockHeader">The header of the block to evaluate.</param>
         /// <param name="previousStates">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
         /// for the <paramref name="blockHeader"/>.</returns>
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             IPreEvaluationBlockHeader blockHeader,
-            IAccountStateDelta previousStates,
-            ITrie? previousBlockStatesTrie)
+            IAccountStateDelta previousStates)
         {
             var policyBlockAction = _policyBlockActionGetter(blockHeader);
             if (policyBlockAction is null)
@@ -559,7 +534,6 @@ namespace Libplanet.Action
                 signer: blockHeader.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { policyBlockAction }.ToImmutableList(),
-                previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true
             ).Single();
         }
