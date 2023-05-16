@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -102,9 +103,15 @@ namespace Libplanet.Tests.Store
             var preEval = TestUtils.ProposeGenesis(
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
+            var actionEvaluator = new ActionEvaluator(
+                _ => blockAction,
+                new BlockChainStates(new MemoryStore(), stateStore),
+                new SingleActionLoader(typeof(DumbAction)),
+                null);
             GenesisBlock = preEval.Sign(
                 Proposer,
                 BlockChain<DumbAction>.DetermineGenesisStateRootHash(
+                    actionEvaluator,
                     preEval,
                     blockAction,
                     out IReadOnlyList<IActionEvaluation> evals));

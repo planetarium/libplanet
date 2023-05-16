@@ -381,6 +381,7 @@ namespace Libplanet.Blockchain
             var preEval = new PreEvaluationBlock(
                 genesisBlock.Header, genesisBlock.Transactions);
             var computedStateRootHash = DetermineGenesisStateRootHash(
+                actionEvaluator,
                 preEval,
                 policy.BlockAction,
                 out IReadOnlyList<IActionEvaluation> evals);

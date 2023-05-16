@@ -84,20 +84,20 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
+            var actionEvaluator = new ActionEvaluator(
+                _ => null,
+                NullChainStates.Instance,
+                new SingleActionLoader(typeof(RandomAction)),
+                null);
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
                 BlockChain<RandomAction>.DetermineGenesisStateRootHash(
+                    actionEvaluator,
                     noStateRootBlock,
                     null,
                     out IReadOnlyList<IActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
-            var actionEvaluator =
-                new ActionEvaluator(
-                    policyBlockActionGetter: _ => null,
-                    blockChainStates: NullChainStates.Instance,
-                    actionTypeLoader: new SingleActionLoader(typeof(RandomAction)),
-                    feeCalculator: null);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);

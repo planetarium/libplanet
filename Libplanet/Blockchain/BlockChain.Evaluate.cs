@@ -23,6 +23,8 @@ namespace Libplanet.Blockchain
         /// Determines the state root hash of <paramref name="preEvaluationBlock"/>
         /// by evaluating on top of empty states.
         /// </summary>
+        /// <param name="actionEvaluator">The <see cref="IActionEvaluator"/> to use to
+        /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> for which
         /// to determine the state root hash.</param>
         /// <param name="blockAction">The <see cref="IBlockPolicy{T}.BlockAction"/> to use.</param>
@@ -37,11 +39,12 @@ namespace Libplanet.Blockchain
         /// <seealso cref="EvaluateGenesis"/>
         [Pure]
         public static HashDigest<SHA256> DetermineGenesisStateRootHash(
+            IActionEvaluator actionEvaluator,
             IPreEvaluationBlock preEvaluationBlock,
             IAction blockAction,
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
-            evaluations = EvaluateGenesis(preEvaluationBlock, blockAction);
+            evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock, blockAction);
             ImmutableDictionary<string, IValue> delta = evaluations.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
@@ -52,6 +55,8 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Evaluates <paramref name="preEvaluationBlock"/> on top of empty states.
         /// </summary>
+        /// <param name="actionEvaluator">The <see cref="IActionEvaluator"/> to use to
+        /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to
         /// evaluate.</param>
         /// <param name="blockAction">The <see cref="IBlockPolicy{T}.BlockAction"/> to use.</param>
@@ -62,7 +67,9 @@ namespace Libplanet.Blockchain
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         [Pure]
         public static IReadOnlyList<IActionEvaluation> EvaluateGenesis(
-            IPreEvaluationBlock preEvaluationBlock, IAction blockAction)
+            IActionEvaluator actionEvaluator,
+            IPreEvaluationBlock preEvaluationBlock,
+            IAction blockAction)
         {
             if (preEvaluationBlock.Index > 0)
             {
@@ -71,11 +78,6 @@ namespace Libplanet.Blockchain
                     nameof(preEvaluationBlock));
             }
 
-            var actionEvaluator = new ActionEvaluator(
-                _ => blockAction,
-                blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(T)),
-                feeCalculator: null);
             return actionEvaluator.Evaluate(preEvaluationBlock);
         }
 

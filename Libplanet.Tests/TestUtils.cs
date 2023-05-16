@@ -465,6 +465,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block ProposeGenesisBlock<T>(
+            IActionEvaluator actionEvaluator,
             PreEvaluationBlock preEval,
             PrivateKey privateKey,
             IAction blockAction = null)
@@ -472,7 +473,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             return preEval.Sign(
                 privateKey,
-                BlockChain<T>.DetermineGenesisStateRootHash(preEval, blockAction, out _));
+                BlockChain<T>.DetermineGenesisStateRootHash(
+                    actionEvaluator, preEval, blockAction, out _));
         }
 
         public static PreEvaluationBlock ProposeNext(
@@ -605,6 +607,13 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     timestamp: timestamp ?? DateTimeOffset.MinValue),
             };
 
+            var blockChainStates = new BlockChainStates(store, stateStore);
+            var actionEvaluator = new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates: blockChainStates,
+                    actionTypeLoader: new SingleActionLoader(typeof(T)),
+                    feeCalculator: null);
+
             if (genesisBlock is null)
             {
                 var preEval = ProposeGenesis(
@@ -614,6 +623,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     timestamp,
                     protocolVersion);
                 var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(
+                    actionEvaluator,
                     preEval,
                     policy.BlockAction,
                     out _);
@@ -629,12 +639,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             ValidatingActionRenderer validator = null;
-            var blockChainStates = new BlockChainStates(store, stateStore);
-            var actionEvaluator = new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: blockChainStates,
-                    actionTypeLoader: new SingleActionLoader(typeof(T)),
-                    feeCalculator: null);
 #pragma warning disable S1121
             var chain = BlockChain<T>.Create(
                 policy,

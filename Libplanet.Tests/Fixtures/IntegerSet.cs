@@ -71,8 +71,13 @@ namespace Libplanet.Tests.Fixtures
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            var preEval =
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                new BlockChainStates(Store, StateStore),
+                new SingleActionLoader(typeof(Arithmetic)),
+                null);
             Genesis = TestUtils.ProposeGenesisBlock<Arithmetic>(
+                actionEvaluator,
                 TestUtils.ProposeGenesis(
                     Miner.PublicKey,
                     Txs,
@@ -87,11 +92,7 @@ namespace Libplanet.Tests.Fixtures
                 Store,
                 StateStore,
                 Genesis,
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(Store, StateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
-                    feeCalculator: null),
+                actionEvaluator,
                 renderers: renderers ?? new[] { new ValidatingActionRenderer() });
         }
 

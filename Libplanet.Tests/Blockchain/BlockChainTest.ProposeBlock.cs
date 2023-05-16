@@ -123,7 +123,13 @@ namespace Libplanet.Tests.Blockchain
             using (var fx = new MemoryStoreFixture())
             {
                 var policy = new BlockPolicy<DumbAction>();
+                var actionEvaluator = new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    new BlockChainStates(fx.Store, fx.StateStore),
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null);
                 var genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
+                    actionEvaluator,
                     new PrivateKey(),
                     new[]
                     {
@@ -143,11 +149,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.Store,
                     fx.StateStore,
                     genesis,
-                    new ActionEvaluator(
-                        _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null)));
+                    actionEvaluator));
             }
         }
 
