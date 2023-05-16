@@ -214,7 +214,6 @@ namespace Libplanet.Tests.Action
                     store: store,
                     stateStore: stateStore);
             var genesis = chain.Genesis;
-            // Evaluation is run with rehearsal true to get updated addresses on tx creation.
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -255,7 +254,6 @@ namespace Libplanet.Tests.Action
                 return new DumbAction(
                     targetAddress: address,
                     item: identifier.ToString(),
-                    recordRehearsal: false,
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
@@ -441,11 +439,10 @@ namespace Libplanet.Tests.Action
                     {
                         new DumbAction(
                             addresses[4],
-                            "RecordRehearsal",
+                            "Foo",
                             transferFrom: addresses[0],
                             transferTo: addresses[4],
                             transferAmount: 8,
-                            recordRehearsal: true,
                             recordRandom: true),
                     },
                     updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
@@ -487,8 +484,8 @@ namespace Libplanet.Tests.Action
             expectations = new[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (2, 0, new[] { "A,D", "B", "C", null, "Foo" }, _txFx.Address3),
+                (1, 0, new[] { "A,D", "B", "C", "E", "Foo" }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -536,7 +533,7 @@ namespace Libplanet.Tests.Action
                 {
                     [addresses[0]] = (Text)"A,D",
                     [addresses[3]] = (Text)"E",
-                    [addresses[4]] = (Text)"RecordRehearsal:False",
+                    [addresses[4]] = (Text)"Foo",
                     [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
                 dirty2);
@@ -570,7 +567,7 @@ namespace Libplanet.Tests.Action
                     transferTo: addresses[0],
                     transferAmount: 10,
                     recordRandom: true),
-                new DumbAction(addresses[2], "R", true, recordRandom: true),
+                new DumbAction(addresses[2], "R", recordRandom: true),
             };
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions);
@@ -590,8 +587,6 @@ namespace Libplanet.Tests.Action
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                 feeCalculator: null);
 
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             var evaluations = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
@@ -610,7 +605,7 @@ namespace Libplanet.Tests.Action
                 new[] { "0", null, null },
                 new[] { "0", "1", null },
                 new[] { "0,2", "1", null },
-                new[] { "0,2", "1", "R:False" },
+                new[] { "0,2", "1", "R" },
             };
             BigInteger[][] expectedBalances =
             {
@@ -658,12 +653,6 @@ namespace Libplanet.Tests.Action
                     addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue));
             }
 
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
-
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             IAccountStateDelta delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
@@ -678,10 +667,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 evaluations[3].OutputStates.GetUpdatedStates(),
                 delta.GetUpdatedStates());
-
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
         }
 
         [Fact]

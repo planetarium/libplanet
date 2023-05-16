@@ -25,15 +25,13 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="preEvaluationHash">The <see cref="Block.PreEvaluationHash"/> of the
-        /// <see cref="Block"/> that <paramref name="action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode.</param>
+        /// <see cref="Block"/> that <paramref name="action"/> belongs to.</param>
         /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// that <paramref name="action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode.
         /// </param>
         /// <param name="txid">The <see cref="Transaction.Id"/> of
         /// the <see cref="Transaction"/> that <paramref name="action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode or if <paramref name="action"/> is
+        /// This can be <see langword="null"/> if <paramref name="action"/> is
         /// a <see cref="IBlockPolicy{T}.BlockAction"/>.
         /// </param>
         /// <param name="action">The <see cref="IAction"/> object which threw an exception.</param>
@@ -124,21 +122,21 @@ namespace Libplanet.Action
 
         /// <summary>
         /// The <see cref="Block.PreEvaluationHash"/> of the <see cref="Block"/> that
-        /// <see cref="Action"/> belongs to.  This can be <see langword="null"/> on rehearsal mode.
+        /// <see cref="Action"/> belongs to.
         /// </summary>
         public HashDigest<SHA256>? PreEvaluationHash { get; }
 
         /// <summary>
         /// The <see cref="Block.Index"/> of the <see cref="Block"/> that <see cref="Action"/>
-        /// belongs to.  This can be <see langword="null"/> on rehearsal mode.
+        /// belongs to.
         /// </summary>
         public long? BlockIndex { get; }
 
         /// <summary>
         /// The <see cref="Transaction.Id"/> of the <see cref="Transaction"/> that
         /// <see cref="Action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode or
-        /// if <see cref="Action"/> is a <see cref="IBlockPolicy{T}.BlockAction"/>.
+        /// This can be <see langword="null"/> if <see cref="Action"/> is a
+        /// <see cref="IBlockPolicy{T}.BlockAction"/>.
         /// </summary>
         public TxId? TxId { get; }
 

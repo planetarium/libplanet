@@ -34,7 +34,6 @@ namespace Libplanet.Tests.Common.Action
         public DumbAction(
             Address targetAddress,
             string item,
-            bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false,
             Tuple<Address, Address, BigInteger> transfer = null)
@@ -42,7 +41,6 @@ namespace Libplanet.Tests.Common.Action
             Idempotent = idempotent;
             TargetAddress = targetAddress;
             Item = item;
-            RecordRehearsal = recordRehearsal;
             RecordRandom = recordRandom;
             Transfer = transfer;
         }
@@ -53,14 +51,12 @@ namespace Libplanet.Tests.Common.Action
             Address transferFrom,
             Address transferTo,
             BigInteger transferAmount,
-            bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false
         )
             : this(
                 targetAddress,
                 item,
-                recordRehearsal,
                 recordRandom,
                 idempotent,
                 Tuple.Create(transferFrom, transferTo, transferAmount)
@@ -71,15 +67,11 @@ namespace Libplanet.Tests.Common.Action
         public static AsyncLocal<ImmutableList<ExecuteRecord>>
             ExecuteRecords { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
 
-        public static AsyncLocal<ImmutableList<(Address, string)>>
-            RehearsalRecords { get; } =
-                new AsyncLocal<ImmutableList<(Address, string)>>();
-
         public Address TargetAddress { get; private set; }
 
         public string Item { get; private set; }
 
-        public bool RecordRehearsal { get; private set; }
+        public bool RecordRehearsal => false;
 
         public bool RecordRandom { get; private set; }
 
@@ -101,6 +93,7 @@ namespace Libplanet.Tests.Common.Action
                         {
                             ["item"] = (Text)Item,
                             ["target_address"] = new Binary(TargetAddress.ByteArray),
+                            // FIXME: This is left intact for fixtures.
                             ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                         });
                 }
@@ -137,17 +130,6 @@ namespace Libplanet.Tests.Common.Action
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            if (RehearsalRecords.Value is null)
-            {
-                RehearsalRecords.Value = ImmutableList<(Address, string)>.Empty;
-            }
-
-            if (context.Rehearsal)
-            {
-                RehearsalRecords.Value =
-                    RehearsalRecords.Value.Add((TargetAddress, Item));
-            }
-
             IAccountStateDelta states = context.PreviousStates;
             if (Item is null)
             {
@@ -155,9 +137,7 @@ namespace Libplanet.Tests.Common.Action
             }
 
             string items = (Text?)states.GetState(TargetAddress);
-            string item = RecordRehearsal
-                ? $"{Item}:{context.Rehearsal}"
-                : Item;
+            string item = Item;
 
             if (Idempotent)
             {
@@ -186,7 +166,7 @@ namespace Libplanet.Tests.Common.Action
                 );
             }
 
-            if (Item.Equals("D") && !context.Rehearsal)
+            if (Item.Equals("D"))
             {
                 Item = Item.ToUpperInvariant();
             }
@@ -234,7 +214,6 @@ namespace Libplanet.Tests.Common.Action
         {
             Item = plainValue.GetValue<Text>("item");
             TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
-            RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
