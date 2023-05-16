@@ -4,7 +4,7 @@ Libplanet changelog
 Version 1.2.0
 -------------
 
-To be released.
+Released on May 16, 2023.
 
 ### Deprecated APIs
 
@@ -44,10 +44,6 @@ To be released.
  -  Removed `IActionContext.GenesisHash` property.  [[#3164]]
  -  Removed `genesisHash` parameter from `ActionEvaluator()`.  [[#3164]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `IActionContext.GasUsed()` method.
@@ -62,12 +58,6 @@ To be released.
     automatically.  [[#368], [#3122]]
  -  `Mint` and `Transfer` `IAction`s no longer check for native tokens.
     [[#3153]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3117]: https://github.com/planetarium/libplanet/pull/3117
 [#3122]: https://github.com/planetarium/libplanet/pull/3122
