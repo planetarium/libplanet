@@ -40,17 +40,6 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
-        /// This feature is no longer supported.  Any implementation of this property
-        /// should return a fixed value of <see langword="false"/>.
-        /// </summary>
-        /// <remarks>
-        /// The original purpose was to mark whether an <see cref="IAction"/> is being executed
-        /// during rehearsal mode, i.e. there is nothing in <see cref="PreviousStates"/>.
-        /// </remarks>
-        [Pure]
-        bool Rehearsal { get; }
-
-        /// <summary>
         /// A null delta of states, which means it represents the states
         /// before <see cref="IAction"/> executes.
         /// <para>Although a <see cref="IAccountStateDelta"/> instance is

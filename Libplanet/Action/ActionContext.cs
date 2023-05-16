@@ -57,8 +57,6 @@ namespace Libplanet.Action
 
         public long BlockIndex { get; }
 
-        public bool Rehearsal => false;
-
         public IAccountStateDelta PreviousStates { get; }
 
         public IRandom Random { get; }
