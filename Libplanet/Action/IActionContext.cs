@@ -40,10 +40,13 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
-        /// Whether an <see cref="IAction"/> is being executed during
-        /// &#x201c;rehearsal mode&#x201d;, that there is nothing
-        /// in <see cref="PreviousStates"/>.
+        /// This feature is no longer supported.  Any implementation of this property
+        /// should return a fixed value of <see langword="false"/>.
         /// </summary>
+        /// <remarks>
+        /// The original purpose was to mark whether an <see cref="IAction"/> is being executed
+        /// during rehearsal mode, i.e. there is nothing in <see cref="PreviousStates"/>.
+        /// </remarks>
         [Pure]
         bool Rehearsal { get; }
 

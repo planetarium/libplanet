@@ -505,7 +505,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
-                Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
