@@ -95,10 +95,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 "Libplanet.Action.PolymorphicAction<Libplanet.Tests.Common.Action.Attack>",
                 new PolymorphicAction<BaseAction>(new Attack()).ToString());
-            Assert.Equal(
-                "Libplanet.Action.PolymorphicAction" +
-                "<Libplanet.Tests.Common.Action.DetectRehearsal>",
-                new PolymorphicAction<BaseAction>(new DetectRehearsal()).ToString());
         }
 
         [Fact]

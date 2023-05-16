@@ -18,7 +18,6 @@ namespace Libplanet.Tests.Action
                 {
                     [new Text("attack")] = typeof(Attack),
                     [new Text("sleep")] = typeof(Sleep),
-                    [new Text("detect_rehearsal")] = typeof(DetectRehearsal),
                     [new Integer(2739)] =
                         Type.GetType("Libplanet.Tests.Action." +
                             "PolymorphicActionTest+IntegerTypeIdAction"),
