@@ -87,11 +87,8 @@ namespace Libplanet.RocksDBStore.Tests
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => null,
                         blockChainStates: new BlockChainStates(store, stateStore),
-                        genesisHash: Fx.GenesisBlock.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null
-                    )
-                );
+                        feeCalculator: null));
                 store.Dispose();
 
                 store = new RocksDBStore(path);

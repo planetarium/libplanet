@@ -108,11 +108,8 @@ public class GeneratedBlockChainFixture
             new ActionEvaluator(
                 policyBlockActionGetter: _ => policy.BlockAction,
                 blockChainStates: new BlockChainStates(store, stateStore),
-                genesisHash: genesisBlock.Hash,
                 actionTypeLoader: new SingleActionLoader(typeof(PolymorphicAction<SimpleAction>)),
-                feeCalculator: null
-            )
-        );
+                feeCalculator: null));
 
         MinedBlocks = MinedBlocks.SetItem(
             Chain.Genesis.Miner,

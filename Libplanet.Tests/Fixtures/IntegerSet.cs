@@ -89,12 +89,9 @@ namespace Libplanet.Tests.Fixtures
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(Store, StateStore),
-                    genesisHash: Genesis.Hash,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
-                    feeCalculator: null
-                ),
-                renderers: renderers ?? new[] { new ValidatingActionRenderer() }
-            );
+                    feeCalculator: null),
+                renderers: renderers ?? new[] { new ValidatingActionRenderer() });
         }
 
         public int Count => Addresses.Count;

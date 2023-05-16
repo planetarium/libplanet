@@ -55,11 +55,8 @@ namespace Libplanet.Tests.Blocks
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        genesisHash: genesis.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
-                        feeCalculator: null
-                    )
-                );
+                        feeCalculator: null));
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =
@@ -122,11 +119,8 @@ namespace Libplanet.Tests.Blocks
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        genesisHash: genesis.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
-                        feeCalculator: null
-                    )
-                );
+                        feeCalculator: null));
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =

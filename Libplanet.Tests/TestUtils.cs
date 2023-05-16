@@ -633,10 +633,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
-                    genesisHash: genesisBlock.Hash,
                     actionTypeLoader: new SingleActionLoader(typeof(T)),
-                    feeCalculator: null
-            );
+                    feeCalculator: null);
 #pragma warning disable S1121
             var chain = BlockChain<T>.Create(
                 policy,

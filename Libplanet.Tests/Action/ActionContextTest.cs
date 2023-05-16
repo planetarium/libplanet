@@ -36,7 +36,6 @@ namespace Libplanet.Tests.Action
             foreach (var (seed, expected) in testCases)
             {
                 var context = new ActionContext(
-                    genesisHash: null,
                     signer: _address,
                     txid: _txid,
                     miner: _address,
@@ -54,7 +53,6 @@ namespace Libplanet.Tests.Action
         public void GuidShouldBeDeterministic()
         {
             var context1 = new ActionContext(
-                genesisHash: null,
                 signer: _address,
                 txid: _txid,
                 miner: _address,
@@ -65,7 +63,6 @@ namespace Libplanet.Tests.Action
             );
 
             var context2 = new ActionContext(
-                genesisHash: null,
                 signer: _address,
                 txid: _txid,
                 miner: _address,
@@ -76,7 +73,6 @@ namespace Libplanet.Tests.Action
             );
 
             var context3 = new ActionContext(
-                genesisHash: null,
                 signer: _address,
                 txid: _txid,
                 miner: _address,
@@ -112,7 +108,6 @@ namespace Libplanet.Tests.Action
             for (var i = 0; i < 100; i++)
             {
                 var context = new ActionContext(
-                    genesisHash: null,
                     signer: _address,
                     txid: _txid,
                     miner: _address,
@@ -132,7 +127,6 @@ namespace Libplanet.Tests.Action
         public void GetUnconsumedContext()
         {
             var original = new ActionContext(
-                genesisHash: null,
                 signer: _address,
                 txid: _txid,
                 miner: _address,
@@ -167,7 +161,6 @@ namespace Libplanet.Tests.Action
             ITrie previousBlockStatesTrie = new MerkleTrie(keyValueStore);
             previousBlockStatesTrie = previousBlockStatesTrie.Set(new KeyBytes(0x01), Null.Value);
             var actionContext = new ActionContext(
-                genesisHash: null,
                 signer: _address,
                 txid: _txid,
                 miner: _address,

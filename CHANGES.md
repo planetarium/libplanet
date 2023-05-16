@@ -41,6 +41,8 @@ To be released.
      - (Libplanet.Explorer) Removed `BlockPolicyType<T>` class.
  -  Removed generic type parameter `T` from `IRenderer<T>` and all its
     implementations.  [[#3163]]
+ -  Removed `IActionContext.GenesisHash` property.  [[#3164]]
+ -  Removed `genesisHash` parameter from `ActionEvaluator()`.  [[#3164]]
 
 ### Backward-incompatible network protocol changes
 
@@ -76,6 +78,7 @@ To be released.
 [#3158]: https://github.com/planetarium/libplanet/pull/3158
 [#3159]: https://github.com/planetarium/libplanet/pull/3159
 [#3163]: https://github.com/planetarium/libplanet/pull/3163
+[#3164]: https://github.com/planetarium/libplanet/pull/3164
 
 
 Version 1.1.1

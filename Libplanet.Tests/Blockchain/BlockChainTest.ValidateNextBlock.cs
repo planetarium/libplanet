@@ -196,11 +196,8 @@ namespace Libplanet.Tests.Blockchain
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(store, stateStore),
-                    genesisHash: genesisBlock.Hash,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null
-                )
-            );
+                    feeCalculator: null));
 
             Block block1 = chain1.EvaluateAndSign(
                 new BlockContent(

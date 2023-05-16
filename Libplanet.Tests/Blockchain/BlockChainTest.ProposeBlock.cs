@@ -146,11 +146,8 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        genesisHash: genesis.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null
-                    )
-                ));
+                        feeCalculator: null)));
             }
         }
 
@@ -169,11 +166,8 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        genesisHash: fx.GenesisBlock.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null
-                    )
-                );
+                        feeCalculator: null));
                 var txs = new[]
                 {
                     Transaction.Create(
@@ -328,11 +322,8 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        genesisHash: fx.GenesisBlock.Hash,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null
-                    )
-                );
+                        feeCalculator: null));
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });

@@ -95,10 +95,8 @@ namespace Libplanet.Tests.Action
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
                     blockChainStates: NullChainStates.Instance,
-                    genesisHash: null,
                     actionTypeLoader: new SingleActionLoader(typeof(RandomAction)),
-                    feeCalculator: null
-                );
+                    feeCalculator: null);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
@@ -294,7 +292,6 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                genesisHash: null,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                 feeCalculator: null);
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
@@ -592,10 +589,8 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                genesisHash: tx.GenesisHash,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                feeCalculator: null
-            );
+                feeCalculator: null);
 
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
@@ -707,7 +702,6 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                genesisHash: tx.GenesisHash,
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException)),
                 feeCalculator: null
             );
@@ -750,7 +744,6 @@ namespace Libplanet.Tests.Action
             Block blockA = fx.Propose();
             fx.Append(blockA);
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                txA.GenesisHash,
                 blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
                 txid: txA.Id,
@@ -802,7 +795,6 @@ namespace Libplanet.Tests.Action
             Block blockB = fx.Propose();
             fx.Append(blockB);
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
-                txB.GenesisHash,
                 blockB.PreEvaluationHash,
                 blockIndex: blockB.Index,
                 txid: txB.Id,
@@ -1075,34 +1067,6 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        private void CheckGenesisHashInAction()
-        {
-            var chain = MakeBlockChain<EvaluateTestAction>(
-                    policy: new BlockPolicy<EvaluateTestAction>(),
-                    store: _storeFx.Store,
-                    stateStore: _storeFx.StateStore);
-            var privateKey = new PrivateKey();
-            var action = new EvaluateTestAction()
-            {
-                BlockIndexKey = new PrivateKey().ToAddress(),
-                MinerKey = new PrivateKey().ToAddress(),
-                SignerKey = new PrivateKey().ToAddress(),
-            };
-
-            var tx = Transaction.Create(
-                nonce: 0,
-                privateKey: privateKey,
-                genesisHash: chain.Genesis.Hash,
-                actions: new[] { action });
-            chain.StageTransaction(tx);
-            var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
-            chain.Append(block, CreateBlockCommit(block));
-            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
-            Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
-        }
-
-        [Fact]
         private void GenerateRandomSeed()
         {
             byte[] preEvaluationHashBytes =
@@ -1146,7 +1110,6 @@ namespace Libplanet.Tests.Action
 
             Block blockA = fx.Propose();
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                txA.GenesisHash,
                 blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
                 txid: txA.Id,
