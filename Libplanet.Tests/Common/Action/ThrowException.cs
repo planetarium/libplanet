@@ -12,8 +12,6 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
-        public bool ThrowOnRehearsal { get; set; }
-
         public bool ThrowOnExecution { get; set; }
 
         public bool Deterministic { get; set; } = true;
@@ -21,7 +19,6 @@ namespace Libplanet.Tests.Common.Action
         public IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<string, bool>
             {
-                ["throw_on_rehearsal"] = ThrowOnRehearsal,
                 ["throw_on_execution"] = ThrowOnExecution,
                 ["deterministic"] = Deterministic,
             });
@@ -33,14 +30,13 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal");
             ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution");
             Deterministic = plainValue.GetValue<Boolean>("deterministic");
         }
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            if (context.Rehearsal ? ThrowOnRehearsal : ThrowOnExecution)
+            if (ThrowOnExecution)
             {
                 if (Deterministic)
                 {

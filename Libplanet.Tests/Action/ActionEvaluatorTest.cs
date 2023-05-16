@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Action
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
 
-            var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
+            var action = new ThrowException { ThrowOnExecution = true };
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -201,7 +201,6 @@ namespace Libplanet.Tests.Action
 
             var action = new ThrowException
             {
-                ThrowOnRehearsal = false,
                 ThrowOnExecution = true,
                 Deterministic = false,
             };
@@ -689,7 +688,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluateTxResultThrowingException()
         {
-            var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
+            var action = new ThrowException { ThrowOnExecution = true };
             var tx = Transaction.Create(
                 0,
                 _txFx.PrivateKey1,
