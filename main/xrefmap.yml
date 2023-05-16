@@ -135,15 +135,12 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluator
   fullName: Libplanet.Action.ActionEvaluator
   nameWithType: ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.Loader.IActionLoader,Libplanet.Action.IFeeCalculator)
-  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable<BlockHash>, IActionLoader, IFeeCalculator)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Action_Loader_IActionLoader_Libplanet_Action_IFeeCalculator_
-  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.Loader.IActionLoader,Libplanet.Action.IFeeCalculator)
-  name.vb: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable(Of BlockHash), IActionLoader, IFeeCalculator)
-  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Action.Loader.IActionLoader, Libplanet.Action.IFeeCalculator)
-  fullName.vb: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Action.Loader.IActionLoader, Libplanet.Action.IFeeCalculator)
-  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable<BlockHash>, IActionLoader, IFeeCalculator)
-  nameWithType.vb: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, Nullable(Of BlockHash), IActionLoader, IFeeCalculator)
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.Loader.IActionLoader,Libplanet.Action.IFeeCalculator)
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, IActionLoader, IFeeCalculator)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_Loader_IActionLoader_Libplanet_Action_IFeeCalculator_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.Loader.IActionLoader,Libplanet.Action.IFeeCalculator)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.Loader.IActionLoader, Libplanet.Action.IFeeCalculator)
+  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, IActionLoader, IFeeCalculator)
 - uid: Libplanet.Action.ActionEvaluator.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
@@ -713,19 +710,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.GasUsed
   nameWithType: IActionContext.GasUsed
-- uid: Libplanet.Action.IActionContext.GenesisHash
-  name: GenesisHash
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GenesisHash
-  commentId: P:Libplanet.Action.IActionContext.GenesisHash
-  fullName: Libplanet.Action.IActionContext.GenesisHash
-  nameWithType: IActionContext.GenesisHash
-- uid: Libplanet.Action.IActionContext.GenesisHash*
-  name: GenesisHash
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GenesisHash_
-  commentId: Overload:Libplanet.Action.IActionContext.GenesisHash
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.GenesisHash
-  nameWithType: IActionContext.GenesisHash
 - uid: Libplanet.Action.IActionContext.GetUnconsumedContext
   name: GetUnconsumedContext()
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GetUnconsumedContext
