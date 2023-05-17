@@ -230,16 +230,32 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(
                 Dictionary.Empty
                     .Add("ticker", "FOO")
+                    .Add("decimalPlaces", new byte[] { 2 })
+                    .Add("minters", Null.Value),
+                foo.Serialize());
+            Assert.Equal(
+                Dictionary.Empty
+                    .Add("ticker", "FOO")
                     .Add("decimals", 2)
                     .Add("minters", Null.Value),
-                foo.Serialize()
-            );
+                foo.Serialize(hash: true));
 
             Assert.Equal(foo, new Currency(foo.Serialize()));
 
             var bar =
                 Currency.Capped("BAR", 0, (100, 0), ImmutableHashSet.Create(AddressA, AddressB));
 
+            Assert.Equal(
+                Dictionary.Empty
+                    .Add("ticker", "BAR")
+                    .Add("decimalPlaces", new byte[] { 0 })
+                    .Add("maximumSupplyMajor", 100)
+                    .Add("maximumSupplyMinor", 0)
+                    .Add(
+                        "minters",
+                        List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray()))
+                    .Add("totalSupplyTrackable", true),
+                bar.Serialize());
             Assert.Equal(
                 Dictionary.Empty
                     .Add("ticker", "BAR")
@@ -250,8 +266,7 @@ namespace Libplanet.Tests.Assets
                         "minters",
                         List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray()))
                     .Add("totalSupplyTrackable", true),
-                bar.Serialize()
-            );
+                bar.Serialize(hash: true));
 
             Assert.Equal(bar, new Currency(bar.Serialize()));
         }
