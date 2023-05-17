@@ -262,15 +262,17 @@ namespace Libplanet.Action
                 Exception? exc = null;
                 IAccountStateDelta nextStates = states;
                 long nextGasLimit = gasLimit;
+
                 ActionContext context = CreateActionContext(nextStates, seed, nextGasLimit);
                 IFeeCollector feeCollector = new FeeCollector(context, maxGasPrice);
+
+                nextStates = feeCollector.Mortgage(nextStates);
+                context = CreateActionContext(nextStates, seed, nextGasLimit);
+                feeCollector = feeCollector.Next(context);
                 try
                 {
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
-                    nextStates = feeCollector.Mortgage(nextStates);
-                    context = CreateActionContext(nextStates, seed, nextGasLimit);
-                    feeCollector = feeCollector.Next(context);
                     nextStates = action.Execute(context);
                     logger?
                         .ForContext("Tag", "Metric")
@@ -283,9 +285,6 @@ namespace Libplanet.Action
                             stopwatch.ElapsedMilliseconds,
                             ActionContext.GetStateCount.Value,
                             ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
-                    nextStates = feeCollector.Refund(nextStates);
-                    nextStates = feeCollector.Reward(nextStates);
-                    nextGasLimit = context.GasLimit() - context.GasUsed();
                 }
                 catch (OutOfMemoryException e)
                 {
@@ -333,6 +332,10 @@ namespace Libplanet.Action
                         action,
                         e);
                 }
+
+                nextStates = feeCollector.Refund(nextStates);
+                nextStates = feeCollector.Reward(nextStates);
+                nextGasLimit = context.GasLimit() - context.GasUsed();
 
                 // As IActionContext.Random is stateful, we cannot reuse
                 // the context which is once consumed by Execute().
