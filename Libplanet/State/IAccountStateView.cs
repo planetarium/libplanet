@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Assets;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     /// <summary>
     /// An interface to fetch account states.

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.State;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Threading;
+using Libplanet.State;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 

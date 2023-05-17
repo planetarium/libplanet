@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Libplanet.Assets;
 using Libplanet.Serialization;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     /// <summary>
     /// The exception thrown when <see cref="IAccountStateView.GetTotalSupply"/> was called on a

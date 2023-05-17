@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Bencodex.Types;
+using Libplanet.State;
 
 namespace Libplanet.Action
 {

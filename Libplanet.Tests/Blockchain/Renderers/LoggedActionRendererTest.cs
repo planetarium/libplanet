@@ -6,6 +6,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Consensus;
+using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Serilog;
 using Serilog.Events;

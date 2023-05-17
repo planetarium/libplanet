@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.State;
 
 namespace Libplanet.Tests.Common.Action
 {

@@ -5,7 +5,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using static Libplanet.Blockchain.KeyConverters;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     internal static class AccountStateDeltaExtensions
     {

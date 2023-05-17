@@ -1,6 +1,6 @@
-using System;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.State;
 
 namespace Libplanet.Explorer.Tests;
 

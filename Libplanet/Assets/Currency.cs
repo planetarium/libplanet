@@ -12,8 +12,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Serialization;
+using Libplanet.State;
 
 namespace Libplanet.Assets
 {

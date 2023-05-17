@@ -14,6 +14,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.State;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Serilog;

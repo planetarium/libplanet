@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.State;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Blockchain

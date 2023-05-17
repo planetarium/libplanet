@@ -2,6 +2,7 @@ using System;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Consensus;
+using Libplanet.State;
 
 namespace Libplanet.Tests.Common.Action
 {

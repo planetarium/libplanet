@@ -4,6 +4,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 

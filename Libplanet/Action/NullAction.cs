@@ -1,4 +1,5 @@
 using Bencodex.Types;
+using Libplanet.State;
 
 namespace Libplanet.Action
 {

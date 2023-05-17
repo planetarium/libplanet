@@ -8,6 +8,7 @@ using Libplanet.Action.Sys;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 using Random = System.Random;

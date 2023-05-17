@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Bencodex.Types;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     /// <summary>
     /// An delegate to provide read-only view of account states.
