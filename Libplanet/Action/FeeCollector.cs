@@ -104,6 +104,12 @@ namespace Libplanet.Action
                 return state;
             }
 
+            if (_context.GasLimit() - _context.GasUsed() <= 0)
+            {
+                _state = FeeCollectState.Refund;
+                return state;
+            }
+
             IAccountStateDelta nextState = state.MintAsset(
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
@@ -122,7 +128,13 @@ namespace Libplanet.Action
 
             if (!(_gasPrice is { } realGasPrice))
             {
-                _state = FeeCollectState.Refund;
+                _state = FeeCollectState.Reward;
+                return state;
+            }
+
+            if (_context.GasUsed() <= 0)
+            {
+                _state = FeeCollectState.Reward;
                 return state;
             }
 
