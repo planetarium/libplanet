@@ -1,7 +1,7 @@
 using System.Diagnostics.Contracts;
 using Libplanet.Consensus;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     public interface IValidatorSupportStateDelta
     {

@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.State;
 
 namespace Libplanet.Tests.Common.Action
 {

@@ -5,7 +5,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     /// <summary>
     /// Equivalent to <see cref="AccountStateDeltaImpl"/> except that it maintains its old (v0)

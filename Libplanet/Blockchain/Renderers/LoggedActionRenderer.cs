@@ -2,6 +2,7 @@ using System;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.State;
 using Serilog;
 using Serilog.Events;
 

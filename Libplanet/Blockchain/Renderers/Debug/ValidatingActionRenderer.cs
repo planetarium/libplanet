@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.State;
 
 namespace Libplanet.Blockchain.Renderers.Debug
 {

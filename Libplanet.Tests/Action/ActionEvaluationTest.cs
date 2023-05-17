@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Serilog;
 using Xunit;

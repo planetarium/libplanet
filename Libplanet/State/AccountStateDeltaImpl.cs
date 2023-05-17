@@ -5,10 +5,11 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     /// <summary>
     /// An internal implementation of <see cref="IAccountStateDelta"/>.

@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Libplanet.Assets;
 using Libplanet.Serialization;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     /// <summary>
     /// The exception that is thrown when a sender has less <see cref="Balance"/> than amount to

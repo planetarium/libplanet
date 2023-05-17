@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 using Xunit.Abstractions;

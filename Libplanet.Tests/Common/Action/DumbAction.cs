@@ -10,6 +10,7 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action

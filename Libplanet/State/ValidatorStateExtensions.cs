@@ -1,7 +1,7 @@
 using System;
 using Libplanet.Consensus;
 
-namespace Libplanet.Action
+namespace Libplanet.State
 {
     public static class ValidatorStateExtensions
     {

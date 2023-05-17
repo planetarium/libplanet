@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Consensus;
+using Libplanet.State;
 
 namespace Libplanet.Action.Sys
 {

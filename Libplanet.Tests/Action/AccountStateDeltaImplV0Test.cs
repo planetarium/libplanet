@@ -1,6 +1,6 @@
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
