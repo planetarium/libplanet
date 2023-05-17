@@ -9,6 +9,9 @@ To be released.
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
+ -  Moved `IAccountStateDelta` and relations interface to 
+    `Libplanet.State` namespace (from `Libplanet.Action` namespace).
+    [[#3173]]
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +33,7 @@ To be released.
 ### CLI tools
 
 [#3152]: https://github.com/planetarium/libplanet/pull/3152
+[#3173]: https://github.com/planetarium/libplanet/pull/3173
 
 
 Version 1.2.0

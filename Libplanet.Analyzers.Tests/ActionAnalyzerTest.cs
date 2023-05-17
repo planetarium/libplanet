@@ -25,6 +25,7 @@ namespace Libplanet.Analyzers.Tests
                 using System;
                 using Bencodex.Types;
                 using Libplanet.Action;
+                using Libplanet.State;
                 namespace SampleGame {
                     public class SampleAction : IAction {
                         public SampleAction() {}
@@ -44,7 +45,7 @@ namespace Libplanet.Analyzers.Tests
                 Message = "The System.Random makes an IAction indeterministic; " +
                     "use IActionContext.Random property instead.",
                 Severity = DiagnosticSeverity.Warning,
-                Locations = new[] { new DiagnosticResultLocation(11, 29) },
+                Locations = new[] { new DiagnosticResultLocation(12, 29) },
             };
 
             VerifyDiagnostic(test, expected);
@@ -123,6 +124,7 @@ namespace Libplanet.Analyzers.Tests
                 using Bencodex.Types;
                 using Libplanet;
                 using Libplanet.Action;
+                using Libplanet.State;
                 namespace SampleGame {
                     public class SampleAction : IAction {
                         public SampleAction() {}
@@ -184,7 +186,7 @@ namespace Libplanet.Analyzers.Tests
                         $"{message} passing to SampleGame.SampleAction.ConsumeEnumerable(" +
                         $"System.Collections.Generic.IEnumerable<{elemType}>) method.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation(18, 47) },
+                    Locations = new[] { new DiagnosticResultLocation(19, 47) },
                 },
                 new DiagnosticResult
                 {
@@ -192,7 +194,7 @@ namespace Libplanet.Analyzers.Tests
                     Message = $"{message} passing to System.Linq.Enumerable.ToArray<{elemType}>(" +
                         $"System.Collections.Generic.IEnumerable<{elemType}>) method.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation(19, 37) },
+                    Locations = new[] { new DiagnosticResultLocation(20, 37) },
                 },
                 new DiagnosticResult
                 {
@@ -201,14 +203,14 @@ namespace Libplanet.Analyzers.Tests
                         $"{message} passing to System.Collections.Generic.List<{elemType}>." +
                         $"List(System.Collections.Generic.IEnumerable<{elemType}>) constructor.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation(20, 61 + elemType.Length) },
+                    Locations = new[] { new DiagnosticResultLocation(21, 61 + elemType.Length) },
                 },
                 new DiagnosticResult
                 {
                     Id = "LAA1002",
                     Message = $"{message} iterating via foreach.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation(21, 47) },
+                    Locations = new[] { new DiagnosticResultLocation(22, 47) },
                 },
             };
 

@@ -70,7 +70,7 @@ public class TransactionQueryGeneratedTest
         Assert.Equal(failBlock.Index, queryResult.BlockIndex);
         Assert.Equal(failBlock.Hash.ToString(), queryResult.BlockHash);
         Assert.Equal(
-            "Libplanet.Action.CurrencyPermissionException",
+            "Libplanet.State.CurrencyPermissionException",
             queryResult.ExceptionName);
         queryResult = await ExecuteTransactionResultQueryAsync(new TxId());
         Assert.Equal("INVALID", queryResult.TxStatus);
