@@ -267,6 +267,10 @@ namespace Libplanet.Net
                 {
                     newTip = BlockChain[bPrev];
                 }
+                catch (InvalidOperationException)
+                {
+                    newTip = BlockChain[bPrev];
+                }
             }
 
             if (oldTip is null || newTip is null || oldTip.Index != newTip.Index)
