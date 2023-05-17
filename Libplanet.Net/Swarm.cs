@@ -630,7 +630,7 @@ namespace Libplanet.Net
                 BlockCandidateTable.Cleanup((_) => true);
                 await PullBlocksAsync(
                     peersWithExcerpts,
-                    100,
+                    500,
                     progress,
                     cancellationToken);
 
