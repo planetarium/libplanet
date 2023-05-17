@@ -6,6 +6,11 @@ Version 1.2.1
 
 To be released.
 
+ -  (Libplanet.Explorer) Fixed a bug where a `TransactionQuery` could not
+    properly retrieve actions.  [[#3174]]
+
+[#3174]: https://github.com/planetarium/libplanet/pull/3174
+
 
 Version 1.2.0
 -------------
