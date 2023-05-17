@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class TotalSupplyNotTrackableException
+    <title>Class CurrencyPermissionException
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class TotalSupplyNotTrackableException
+    <meta name="title" content="Class CurrencyPermissionException
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,21 +67,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Action.TotalSupplyNotTrackableException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.State.CurrencyPermissionException">
 
 
-  <h1 id="Libplanet_Action_TotalSupplyNotTrackableException" data-uid="Libplanet.Action.TotalSupplyNotTrackableException" class="text-break">Class TotalSupplyNotTrackableException
+  <h1 id="Libplanet_State_CurrencyPermissionException" data-uid="Libplanet.State.CurrencyPermissionException" class="text-break">Class CurrencyPermissionException
 </h1>
-  <div class="markdown level0 summary"><p>The exception thrown when <a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
-legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a> set to
-<span class="xref">false</span>.</p>
+  <div class="markdown level0 summary"><p>The exception that is thrown when a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
+to mint a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency">Currency</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></div>
-    <div class="level2"><span class="xref">TotalSupplyNotTrackableException</span></div>
+    <div class="level2"><span class="xref">CurrencyPermissionException</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -91,6 +90,9 @@ legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.h
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getbaseexception#system-exception-getbaseexception">Exception.GetBaseException()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getobjectdata#system-exception-getobjectdata(system-runtime-serialization-serializationinfo-system-runtime-serialization-streamingcontext)">Exception.GetObjectData(SerializationInfo, StreamingContext)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.gettype#system-exception-gettype">Exception.GetType()</a>
@@ -141,30 +143,30 @@ legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.h
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.State.html">Libplanet.State</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Action_TotalSupplyNotTrackableException_syntax">Syntax</h5>
+  <h5 id="Libplanet_State_CurrencyPermissionException_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class TotalSupplyNotTrackableException : Exception, ISerializable</code></pre>
+public sealed class CurrencyPermissionException : Exception, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_TotalSupplyNotTrackableException__ctor_System_String_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.TotalSupplyNotTrackableException.%23ctor(System.String%2CLibplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.State.CurrencyPermissionException.%23ctor(System.String%2CLibplanet.Address%2CLibplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/TotalSupplyNotTrackableException.cs/#L24">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/CurrencyPermissionException.cs/#L25">View Source</a>
   </span>
-  <a id="Libplanet_Action_TotalSupplyNotTrackableException__ctor_" data-uid="Libplanet.Action.TotalSupplyNotTrackableException.#ctor*"></a>
-  <h4 id="Libplanet_Action_TotalSupplyNotTrackableException__ctor_System_String_Libplanet_Assets_Currency_" data-uid="Libplanet.Action.TotalSupplyNotTrackableException.#ctor(System.String,Libplanet.Assets.Currency)">TotalSupplyNotTrackableException(String, Currency)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a> object.</p>
+  <a id="Libplanet_State_CurrencyPermissionException__ctor_" data-uid="Libplanet.State.CurrencyPermissionException.#ctor*"></a>
+  <h4 id="Libplanet_State_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency_" data-uid="Libplanet.State.CurrencyPermissionException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.Currency)">CurrencyPermissionException(String, Address, Currency)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.State.CurrencyPermissionException.html">CurrencyPermissionException</a> object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TotalSupplyNotTrackableException(string message, Currency currency)</code></pre>
+    <pre><code class="lang-csharp hljs">public CurrencyPermissionException(string message, Address transactionSigner, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -183,30 +185,41 @@ public sealed class TotalSupplyNotTrackableException : Exception, ISerializable<
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">transactionSigner</span></td>
+        <td><p>The address of the account who tried to mint or burn
+assets of a <code data-dev-comment-type="paramref" class="paramref">currency</code>.  Corresponds to
+the <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> property.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
         <td><span class="parametername">currency</span></td>
-        <td><p>The currency queried for the total supply.
-Corresponds to the <a class="xref" href="Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_Currency">Currency</a> property.</p>
+        <td><p>The <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a> to be tried to be minted
+or burned by the <code data-dev-comment-type="paramref" class="paramref">transactionSigner</code>.  Corresponds to
+the <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency">Currency</a> property.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_TotalSupplyNotTrackableException__ctor_System_String_Libplanet_Assets_Currency__seealso">See Also</h5>
+  <h5 id="Libplanet_State_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply</a>(<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>)</div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
   </div>
   <h3 id="properties">Properties
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_TotalSupplyNotTrackableException_Currency.md&amp;value=---%0Auid%3A%20Libplanet.Action.TotalSupplyNotTrackableException.Currency%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_CurrencyPermissionException_Currency.md&amp;value=---%0Auid%3A%20Libplanet.State.CurrencyPermissionException.Currency%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/TotalSupplyNotTrackableException.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/CurrencyPermissionException.cs/#L45">View Source</a>
   </span>
-  <a id="Libplanet_Action_TotalSupplyNotTrackableException_Currency_" data-uid="Libplanet.Action.TotalSupplyNotTrackableException.Currency*"></a>
-  <h4 id="Libplanet_Action_TotalSupplyNotTrackableException_Currency" data-uid="Libplanet.Action.TotalSupplyNotTrackableException.Currency">Currency</h4>
-  <div class="markdown level1 summary"><p>The currency queried for the total supply.</p>
+  <a id="Libplanet_State_CurrencyPermissionException_Currency_" data-uid="Libplanet.State.CurrencyPermissionException.Currency*"></a>
+  <h4 id="Libplanet_State_CurrencyPermissionException_Currency" data-uid="Libplanet.State.CurrencyPermissionException.Currency">Currency</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a> to be tried to be minted or burned by
+the <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -228,57 +241,46 @@ Corresponds to the <a class="xref" href="Libplanet.Action.TotalSupplyNotTrackabl
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_TotalSupplyNotTrackableException_Currency_seealso">See Also</h5>
+  <h5 id="Libplanet_State_CurrencyPermissionException_Currency_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply</a>(<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>)</div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
   </div>
-  <h3 id="methods">Methods
-</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_CurrencyPermissionException_TransactionSigner.md&amp;value=---%0Auid%3A%20Libplanet.State.CurrencyPermissionException.TransactionSigner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/TotalSupplyNotTrackableException.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/CurrencyPermissionException.cs/#L39">View Source</a>
   </span>
-  <a id="Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_" data-uid="Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData*"></a>
-  <h4 id="Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>The exception thrown when <a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
-legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a> set to
-<span class="xref">false</span>.</p>
+  <a id="Libplanet_State_CurrencyPermissionException_TransactionSigner_" data-uid="Libplanet.State.CurrencyPermissionException.TransactionSigner*"></a>
+  <h4 id="Libplanet_State_CurrencyPermissionException_TransactionSigner" data-uid="Libplanet.State.CurrencyPermissionException.TransactionSigner">TransactionSigner</h4>
+  <div class="markdown level1 summary"><p>The address of the account who tried to mint or burn assets of a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency">Currency</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public Address TransactionSigner { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
-        <td><span class="parametername">context</span></td>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getobjectdata#system-exception-getobjectdata(system-runtime-serialization-serializationinfo-system-runtime-serialization-streamingcontext)">Exception.GetObjectData(SerializationInfo, StreamingContext)</a></div>
-  <h5 id="Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
+  <h5 id="Libplanet_State_CurrencyPermissionException_TransactionSigner_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply</a>(<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>)</div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
@@ -290,7 +292,8 @@ legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.h
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply</a>(<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>)</div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
   </div>
 </article>
           </div>
@@ -300,10 +303,10 @@ legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.h
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_TotalSupplyNotTrackableException.md&amp;value=---%0Auid%3A%20Libplanet.Action.TotalSupplyNotTrackableException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_CurrencyPermissionException.md&amp;value=---%0Auid%3A%20Libplanet.State.CurrencyPermissionException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/TotalSupplyNotTrackableException.cs/#L14" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/CurrencyPermissionException.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

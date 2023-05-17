@@ -119,7 +119,7 @@ If you need more fine-grained events than <a class="xref" href="Libplanet.Blockc
 implement this interface instead.</p>
 <p>The invocation order of methods for each <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> are:</p>
 <ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)
-</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>
+</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>
 &amp; <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IValue, IActionContext, Exception)</a> (zero or more
 times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlockEnd(Block, Block)</a> (one time)</li></ol>
 </section>

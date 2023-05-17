@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class CurrencyPermissionException
+    <title>Class SupplyOverflowException
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class CurrencyPermissionException
+    <meta name="title" content="Class SupplyOverflowException
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,20 +67,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Action.CurrencyPermissionException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.State.SupplyOverflowException">
 
 
-  <h1 id="Libplanet_Action_CurrencyPermissionException" data-uid="Libplanet.Action.CurrencyPermissionException" class="text-break">Class CurrencyPermissionException
+  <h1 id="Libplanet_State_SupplyOverflowException" data-uid="Libplanet.State.SupplyOverflowException" class="text-break">Class SupplyOverflowException
 </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
-to mint a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a>.</p>
+  <div class="markdown level0 summary"><p>The exception thrown when a minter tries to mint a currency such that the resulting total
+supply exceed the maximum amount.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></div>
-    <div class="level2"><span class="xref">CurrencyPermissionException</span></div>
+    <div class="level2"><span class="xref">SupplyOverflowException</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -90,9 +90,6 @@ to mint a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.htm
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getbaseexception#system-exception-getbaseexception">Exception.GetBaseException()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getobjectdata#system-exception-getobjectdata(system-runtime-serialization-serializationinfo-system-runtime-serialization-streamingcontext)">Exception.GetObjectData(SerializationInfo, StreamingContext)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.gettype#system-exception-gettype">Exception.GetType()</a>
@@ -143,30 +140,30 @@ to mint a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.htm
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.State.html">Libplanet.State</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Action_CurrencyPermissionException_syntax">Syntax</h5>
+  <h5 id="Libplanet_State_SupplyOverflowException_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class CurrencyPermissionException : Exception, ISerializable</code></pre>
+public sealed class SupplyOverflowException : Exception, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.CurrencyPermissionException.%23ctor(System.String%2CLibplanet.Address%2CLibplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_SupplyOverflowException__ctor_System_String_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.State.SupplyOverflowException.%23ctor(System.String%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/CurrencyPermissionException.cs/#L25">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/SupplyOverflowException.cs/#L22">View Source</a>
   </span>
-  <a id="Libplanet_Action_CurrencyPermissionException__ctor_" data-uid="Libplanet.Action.CurrencyPermissionException.#ctor*"></a>
-  <h4 id="Libplanet_Action_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency_" data-uid="Libplanet.Action.CurrencyPermissionException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.Currency)">CurrencyPermissionException(String, Address, Currency)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html">CurrencyPermissionException</a> object.</p>
+  <a id="Libplanet_State_SupplyOverflowException__ctor_" data-uid="Libplanet.State.SupplyOverflowException.#ctor*"></a>
+  <h4 id="Libplanet_State_SupplyOverflowException__ctor_System_String_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.State.SupplyOverflowException.#ctor(System.String,Libplanet.Assets.FungibleAssetValue)">SupplyOverflowException(String, FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.State.SupplyOverflowException.html">SupplyOverflowException</a> object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CurrencyPermissionException(string message, Address transactionSigner, Currency currency)</code></pre>
+    <pre><code class="lang-csharp hljs">public SupplyOverflowException(string message, FungibleAssetValue amount)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -185,46 +182,35 @@ public sealed class CurrencyPermissionException : Exception, ISerializable</code
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">transactionSigner</span></td>
-        <td><p>The address of the account who tried to mint or burn
-assets of a <code data-dev-comment-type="paramref" class="paramref">currency</code>.  Corresponds to
-the <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> property.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a> to be tried to be minted
-or burned by the <code data-dev-comment-type="paramref" class="paramref">transactionSigner</code>.  Corresponds to
-the <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a> property.</p>
+        <td><a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">amount</span></td>
+        <td><p>The attempted amount to be minted.
+Corresponds to the <a class="xref" href="Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException_Amount">Amount</a> property.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency__seealso">See Also</h5>
+  <h5 id="Libplanet_State_SupplyOverflowException__ctor_System_String_Libplanet_Assets_FungibleAssetValue__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
   </div>
   <h3 id="properties">Properties
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CurrencyPermissionException_Currency.md&amp;value=---%0Auid%3A%20Libplanet.Action.CurrencyPermissionException.Currency%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_SupplyOverflowException_Amount.md&amp;value=---%0Auid%3A%20Libplanet.State.SupplyOverflowException.Amount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/CurrencyPermissionException.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/SupplyOverflowException.cs/#L40">View Source</a>
   </span>
-  <a id="Libplanet_Action_CurrencyPermissionException_Currency_" data-uid="Libplanet.Action.CurrencyPermissionException.Currency*"></a>
-  <h4 id="Libplanet_Action_CurrencyPermissionException_Currency" data-uid="Libplanet.Action.CurrencyPermissionException.Currency">Currency</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a> to be tried to be minted or burned by
-the <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner">TransactionSigner</a>.</p>
+  <a id="Libplanet_State_SupplyOverflowException_Amount_" data-uid="Libplanet.State.SupplyOverflowException.Amount*"></a>
+  <h4 id="Libplanet_State_SupplyOverflowException_Amount" data-uid="Libplanet.State.SupplyOverflowException.Amount">Amount</h4>
+  <div class="markdown level1 summary"><p>The attempted amount to be minted.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Currency Currency { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue Amount { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -236,51 +222,61 @@ the <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libp
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
+        <td><a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_CurrencyPermissionException_Currency_seealso">See Also</h5>
+  <h5 id="Libplanet_State_SupplyOverflowException_Amount_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
   </div>
+  <h3 id="methods">Methods
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CurrencyPermissionException_TransactionSigner.md&amp;value=---%0Auid%3A%20Libplanet.Action.CurrencyPermissionException.TransactionSigner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_SupplyOverflowException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.State.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/CurrencyPermissionException.cs/#L39">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/SupplyOverflowException.cs/#L42">View Source</a>
   </span>
-  <a id="Libplanet_Action_CurrencyPermissionException_TransactionSigner_" data-uid="Libplanet.Action.CurrencyPermissionException.TransactionSigner*"></a>
-  <h4 id="Libplanet_Action_CurrencyPermissionException_TransactionSigner" data-uid="Libplanet.Action.CurrencyPermissionException.TransactionSigner">TransactionSigner</h4>
-  <div class="markdown level1 summary"><p>The address of the account who tried to mint or burn assets of a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a>.</p>
+  <a id="Libplanet_State_SupplyOverflowException_GetObjectData_" data-uid="Libplanet.State.SupplyOverflowException.GetObjectData*"></a>
+  <h4 id="Libplanet_State_SupplyOverflowException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.State.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p>The exception thrown when a minter tries to mint a currency such that the resulting total
+supply exceed the maximum amount.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Address TransactionSigner { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_CurrencyPermissionException_TransactionSigner_seealso">See Also</h5>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getobjectdata#system-exception-getobjectdata(system-runtime-serialization-serializationinfo-system-runtime-serialization-streamingcontext)">Exception.GetObjectData(SerializationInfo, StreamingContext)</a></div>
+  <h5 id="Libplanet_State_SupplyOverflowException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
@@ -292,8 +288,7 @@ the <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libp
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
-      <div><a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">BurnAsset(Address, FungibleAssetValue)</a></div>
+      <div><a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_">MintAsset(Address, FungibleAssetValue)</a></div>
   </div>
 </article>
           </div>
@@ -303,10 +298,10 @@ the <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libp
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CurrencyPermissionException.md&amp;value=---%0Auid%3A%20Libplanet.Action.CurrencyPermissionException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_SupplyOverflowException.md&amp;value=---%0Auid%3A%20Libplanet.State.SupplyOverflowException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/CurrencyPermissionException.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/SupplyOverflowException.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

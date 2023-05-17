@@ -131,7 +131,7 @@ using profiling-guided analysis.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer__ctor_System_Action_Libplanet_Blockchain_Renderers_Debug_InvalidRenderException__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.%23ctor(System.Action%7BLibplanet.Blockchain.Renderers.Debug.InvalidRenderException%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L23">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer__ctor_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.#ctor*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer__ctor_System_Action_Libplanet_Blockchain_Renderers_Debug_InvalidRenderException__" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.#ctor(System.Action{Libplanet.Blockchain.Renderers.Debug.InvalidRenderException})">ValidatingActionRenderer(Action&lt;InvalidRenderException&gt;)</h4>
@@ -165,13 +165,13 @@ render events occur.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue%2CLibplanet.Action.IActionContext%2CLibplanet.State.IAccountStateDelta)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">RenderAction(IValue, IActionContext, IAccountStateDelta)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)">RenderAction(IValue, IActionContext, IAccountStateDelta)</h4>
   <div class="markdown level1 summary"><p>Does things that should be done right after an <code data-dev-comment-type="paramref" class="paramref">action</code>
 is executed and applied to the blockchain.</p>
 </div>
@@ -207,7 +207,7 @@ use the <code data-dev-comment-type="paramref" class="paramref">nextStates</code
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
         <td><span class="parametername">nextStates</span></td>
         <td><p>The states right <em>after</em> this action executed,
 which means it is equivalent to the states <code data-dev-comment-type="paramref" class="paramref">action</code>'s
@@ -217,8 +217,8 @@ which means it is equivalent to the states <code data-dev-comment-type="paramref
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RecordingActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)</a></div>
-  <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta__remarks">Remarks</h5>
+  <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_">RecordingActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)</a></div>
+  <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for an <code data-dev-comment-type="paramref" class="paramref">action</code>,
 and only after applied to the blockchain, unless an exception is thrown during executing
 the <code data-dev-comment-type="paramref" class="paramref">action</code> (in that case <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IValue, IActionContext, Exception)</a> is called instead) or
@@ -231,11 +231,11 @@ once the <code data-dev-comment-type="paramref" class="paramref">action</code> h
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue%2CLibplanet.Action.IActionContext%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L56">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)">RenderActionError(IValue, IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>, except that this method
+  <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>, except that this method
 is invoked when <code data-dev-comment-type="paramref" class="paramref">action</code> has terminated with an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -287,7 +287,7 @@ That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock(Libplanet.Blocks.Block%2CLibplanet.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L36">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock(Libplanet.Blocks.Block,Libplanet.Blocks.Block)">RenderBlock(Block, Block)</h4>
@@ -334,7 +334,7 @@ the blockchain, unless it has been stale due to reorg.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd(Libplanet.Blocks.Block%2CLibplanet.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L67">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd(Libplanet.Blocks.Block,Libplanet.Blocks.Block)">RenderBlockEnd(Block, Block)</h4>
@@ -393,7 +393,7 @@ rendered.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L14" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L15" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -89,10 +89,6 @@ a single action.</p>
 It also gives an action class a <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> for
 serialization and deserialization.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
-      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
-to mint a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a>.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.DuplicateActionTypeIdentifierException.html">DuplicateActionTypeIdentifierException</a></h4>
       <section><p>An exception that is thrown when multiple action types are associated with the same
 <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a>.</p>
@@ -107,10 +103,6 @@ that do not implement <a class="xref" href="Libplanet.Action.IExtractableExcepti
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.GasUseNegativeException.html">GasUseNegativeException</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Action.InsufficientBalanceException.html">InsufficientBalanceException</a></h4>
-      <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance">Balance</a> than amount to
-transfer or an owner has less <a class="xref" href="Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.InvalidActionException.html">InvalidActionException</a></h4>
       <section><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> that is thrown when an <span class="xref">Bencodex.Types.IValue</span> that is
 supposedly a serialized <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> cannot be deserialized via an
@@ -138,49 +130,13 @@ compatibility issues on certain platforms, and is slightly slower.
       <section><p>This extension class provides some convenient methods
 to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.SupplyOverflowException.html">SupplyOverflowException</a></h4>
-      <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
-supply exceed the maximum amount.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></h4>
-      <section><p>The exception thrown when <a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
-legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a> set to
-<span class="xref">false</span>.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a></h4>
       <section><p>The exception that is thrown during an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is being evaluated.</p>
 <p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw
 is stored in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.innerexception#system-exception-innerexception">InnerException</a> property.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.ValidatorStateExtensions.html">ValidatorStateExtensions</a></h4>
-      <section></section>
     <h3 id="interfaces">Interfaces
 </h3>
-      <h4><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></h4>
-      <section><p>An interface to manipulate account states with
-maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a>.</p>
-<p>It is like a map which is virtually initialized such
-that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
-is mapped to <span class="xref">null</span>.  That means that:</p>
-<ul><li>it does not have length,</li><li>its index getter never throws
-<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
-but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
-<span class="xref">null</span> state cannot be distinguished from
-the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
-any state.</li></ul>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.IAccountStateView.html">IAccountStateView</a></h4>
-      <section><p>An interface to fetch account states.</p>
-<p>It is like a readonly map which is virtually initialized such
-that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
-is mapped to <span class="xref">null</span>.  That means that:</p>
-<ul><li>it does not have length,</li><li>its index getter never throws
-<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
-but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
-<span class="xref">null</span> state cannot be distinguished from
-the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
-any state.</li></ul>
-</section>
       <h4><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></h4>
       <section><p>An in-game action.  Every action should be replayable, because
 multiple nodes in a network should execute an action and get the same
@@ -238,31 +194,10 @@ stored as a part of <a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.IValidatorSupportStateDelta.html">IValidatorSupportStateDelta</a></h4>
-      <section></section>
     <h3 id="delegates">Delegates
 </h3>
-      <h4><a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a></h4>
-      <section><p>An delegate to provide read-only view of account balances.</p>
-<p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>&apos; balance of the given <code data-dev-comment-type="paramref" class="paramref">currency</code>.
-</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></h4>
-      <section><p>An delegate to provide read-only view of account states.</p>
-<p>Gets states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code>.</p>
-<p>If some states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code> have
-never been set these absent states are represented as <span class="xref">null</span>.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.PolicyBlockActionGetter.html">PolicyBlockActionGetter</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Action.TotalSupplyGetter.html">TotalSupplyGetter</a></h4>
-      <section><p>An delegate to provide a view of total supply of a currency.</p>
-<p>Gets the total supply of the given <code data-dev-comment-type="paramref" class="paramref">currency</code>.
-</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.ValidatorSetGetter.html">ValidatorSetGetter</a></h4>
-      <section><p>An delegate to provide a view of the <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a>.</p>
-</section>
 </article>
           </div>
 

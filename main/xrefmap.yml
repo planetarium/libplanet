@@ -13,31 +13,19 @@ references:
   commentId: N:Libplanet.Action
   fullName: Libplanet.Action
   nameWithType: Libplanet.Action
-- uid: Libplanet.Action.AccountBalanceGetter
-  name: AccountBalanceGetter
-  href: api/Libplanet.Action.AccountBalanceGetter.html
-  commentId: T:Libplanet.Action.AccountBalanceGetter
-  fullName: Libplanet.Action.AccountBalanceGetter
-  nameWithType: AccountBalanceGetter
-- uid: Libplanet.Action.AccountStateGetter
-  name: AccountStateGetter
-  href: api/Libplanet.Action.AccountStateGetter.html
-  commentId: T:Libplanet.Action.AccountStateGetter
-  fullName: Libplanet.Action.AccountStateGetter
-  nameWithType: AccountStateGetter
 - uid: Libplanet.Action.ActionEvaluation
   name: ActionEvaluation
   href: api/Libplanet.Action.ActionEvaluation.html
   commentId: T:Libplanet.Action.ActionEvaluation
   fullName: Libplanet.Action.ActionEvaluation
   nameWithType: ActionEvaluation
-- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Exception,System.Collections.Generic.List{System.String})
+- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception,System.Collections.Generic.List{System.String})
   name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, List<String>)
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Exception_System_Collections_Generic_List_System_String__
-  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Exception,System.Collections.Generic.List{System.String})
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_System_Collections_Generic_List_System_String__
+  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception,System.Collections.Generic.List{System.String})
   name.vb: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, List(Of String))
-  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Exception, System.Collections.Generic.List<System.String>)
-  fullName.vb: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Exception, System.Collections.Generic.List(Of System.String))
+  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta, System.Exception, System.Collections.Generic.List<System.String>)
+  fullName.vb: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta, System.Exception, System.Collections.Generic.List(Of System.String))
   nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, List<String>)
   nameWithType.vb: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, List(Of String))
 - uid: Libplanet.Action.ActionEvaluation.#ctor*
@@ -241,51 +229,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.ValueOf
   nameWithType: ActionTypeAttribute.ValueOf
-- uid: Libplanet.Action.CurrencyPermissionException
-  name: CurrencyPermissionException
-  href: api/Libplanet.Action.CurrencyPermissionException.html
-  commentId: T:Libplanet.Action.CurrencyPermissionException
-  fullName: Libplanet.Action.CurrencyPermissionException
-  nameWithType: CurrencyPermissionException
-- uid: Libplanet.Action.CurrencyPermissionException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.Currency)
-  name: CurrencyPermissionException(String, Address, Currency)
-  href: api/Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Action.CurrencyPermissionException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.Currency)
-  fullName: Libplanet.Action.CurrencyPermissionException.CurrencyPermissionException(System.String, Libplanet.Address, Libplanet.Assets.Currency)
-  nameWithType: CurrencyPermissionException.CurrencyPermissionException(String, Address, Currency)
-- uid: Libplanet.Action.CurrencyPermissionException.#ctor*
-  name: CurrencyPermissionException
-  href: api/Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException__ctor_
-  commentId: Overload:Libplanet.Action.CurrencyPermissionException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.CurrencyPermissionException.CurrencyPermissionException
-  nameWithType: CurrencyPermissionException.CurrencyPermissionException
-- uid: Libplanet.Action.CurrencyPermissionException.Currency
-  name: Currency
-  href: api/Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency
-  commentId: P:Libplanet.Action.CurrencyPermissionException.Currency
-  fullName: Libplanet.Action.CurrencyPermissionException.Currency
-  nameWithType: CurrencyPermissionException.Currency
-- uid: Libplanet.Action.CurrencyPermissionException.Currency*
-  name: Currency
-  href: api/Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency_
-  commentId: Overload:Libplanet.Action.CurrencyPermissionException.Currency
-  isSpec: "True"
-  fullName: Libplanet.Action.CurrencyPermissionException.Currency
-  nameWithType: CurrencyPermissionException.Currency
-- uid: Libplanet.Action.CurrencyPermissionException.TransactionSigner
-  name: TransactionSigner
-  href: api/Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner
-  commentId: P:Libplanet.Action.CurrencyPermissionException.TransactionSigner
-  fullName: Libplanet.Action.CurrencyPermissionException.TransactionSigner
-  nameWithType: CurrencyPermissionException.TransactionSigner
-- uid: Libplanet.Action.CurrencyPermissionException.TransactionSigner*
-  name: TransactionSigner
-  href: api/Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner_
-  commentId: Overload:Libplanet.Action.CurrencyPermissionException.TransactionSigner
-  isSpec: "True"
-  fullName: Libplanet.Action.CurrencyPermissionException.TransactionSigner
-  nameWithType: CurrencyPermissionException.TransactionSigner
 - uid: Libplanet.Action.DuplicateActionTypeIdentifierException
   name: DuplicateActionTypeIdentifierException
   href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html
@@ -436,177 +379,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.GasUseNegativeException.GasUseNegativeException
   nameWithType: GasUseNegativeException.GasUseNegativeException
-- uid: Libplanet.Action.IAccountStateDelta
-  name: IAccountStateDelta
-  href: api/Libplanet.Action.IAccountStateDelta.html
-  commentId: T:Libplanet.Action.IAccountStateDelta
-  fullName: Libplanet.Action.IAccountStateDelta
-  nameWithType: IAccountStateDelta
-- uid: Libplanet.Action.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  name: BurnAsset(Address, FungibleAssetValue)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.IAccountStateDelta.BurnAsset(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
-  nameWithType: IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)
-- uid: Libplanet.Action.IAccountStateDelta.BurnAsset*
-  name: BurnAsset
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_BurnAsset_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.BurnAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.BurnAsset
-  nameWithType: IAccountStateDelta.BurnAsset
-- uid: Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  name: MintAsset(Address, FungibleAssetValue)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
-  nameWithType: IAccountStateDelta.MintAsset(Address, FungibleAssetValue)
-- uid: Libplanet.Action.IAccountStateDelta.MintAsset*
-  name: MintAsset
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.MintAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.MintAsset
-  nameWithType: IAccountStateDelta.MintAsset
-- uid: Libplanet.Action.IAccountStateDelta.SetState(Libplanet.Address,Bencodex.Types.IValue)
-  name: SetState(Address, IValue)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_SetState_Libplanet_Address_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Action.IAccountStateDelta.SetState(Libplanet.Address,Bencodex.Types.IValue)
-  fullName: Libplanet.Action.IAccountStateDelta.SetState(Libplanet.Address, Bencodex.Types.IValue)
-  nameWithType: IAccountStateDelta.SetState(Address, IValue)
-- uid: Libplanet.Action.IAccountStateDelta.SetState*
-  name: SetState
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_SetState_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.SetState
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.SetState
-  nameWithType: IAccountStateDelta.SetState
-- uid: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
-  name: StateUpdatedAddresses
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_StateUpdatedAddresses
-  commentId: P:Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
-  fullName: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
-  nameWithType: IAccountStateDelta.StateUpdatedAddresses
-- uid: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses*
-  name: StateUpdatedAddresses
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_StateUpdatedAddresses_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
-  nameWithType: IAccountStateDelta.StateUpdatedAddresses
-- uid: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  name: TotalSupplyUpdatedCurrencies
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TotalSupplyUpdatedCurrencies
-  commentId: P:Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  fullName: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
-- uid: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies*
-  name: TotalSupplyUpdatedCurrencies
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TotalSupplyUpdatedCurrencies_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
-- uid: Libplanet.Action.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
-  name: TransferAsset(Address, Address, FungibleAssetValue, Boolean)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TransferAsset_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_
-  commentId: M:Libplanet.Action.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
-  fullName: Libplanet.Action.IAccountStateDelta.TransferAsset(Libplanet.Address, Libplanet.Address, Libplanet.Assets.FungibleAssetValue, System.Boolean)
-  nameWithType: IAccountStateDelta.TransferAsset(Address, Address, FungibleAssetValue, Boolean)
-- uid: Libplanet.Action.IAccountStateDelta.TransferAsset*
-  name: TransferAsset
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TransferAsset_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.TransferAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.TransferAsset
-  nameWithType: IAccountStateDelta.TransferAsset
-- uid: Libplanet.Action.IAccountStateDelta.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses
-  commentId: P:Libplanet.Action.IAccountStateDelta.UpdatedAddresses
-  fullName: Libplanet.Action.IAccountStateDelta.UpdatedAddresses
-  nameWithType: IAccountStateDelta.UpdatedAddresses
-- uid: Libplanet.Action.IAccountStateDelta.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.UpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.UpdatedAddresses
-  nameWithType: IAccountStateDelta.UpdatedAddresses
-- uid: Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedFungibleAssets
-  commentId: P:Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets
-  fullName: Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets
-  nameWithType: IAccountStateDelta.UpdatedFungibleAssets
-- uid: Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets*
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets
-  nameWithType: IAccountStateDelta.UpdatedFungibleAssets
-- uid: Libplanet.Action.IAccountStateView
-  name: IAccountStateView
-  href: api/Libplanet.Action.IAccountStateView.html
-  commentId: T:Libplanet.Action.IAccountStateView
-  fullName: Libplanet.Action.IAccountStateView
-  nameWithType: IAccountStateView
-- uid: Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
-  fullName: Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
-  nameWithType: IAccountStateView.GetBalance(Address, Currency)
-- uid: Libplanet.Action.IAccountStateView.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetBalance_
-  commentId: Overload:Libplanet.Action.IAccountStateView.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateView.GetBalance
-  nameWithType: IAccountStateView.GetBalance
-- uid: Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)
-  name: GetState(Address)
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetState_Libplanet_Address_
-  commentId: M:Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)
-  fullName: Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)
-  nameWithType: IAccountStateView.GetState(Address)
-- uid: Libplanet.Action.IAccountStateView.GetState*
-  name: GetState
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetState_
-  commentId: Overload:Libplanet.Action.IAccountStateView.GetState
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateView.GetState
-  nameWithType: IAccountStateView.GetState
-- uid: Libplanet.Action.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
-  name: GetStates(IReadOnlyList<Address>)
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__
-  commentId: M:Libplanet.Action.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
-  name.vb: GetStates(IReadOnlyList(Of Address))
-  fullName: Libplanet.Action.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>)
-  fullName.vb: Libplanet.Action.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address))
-  nameWithType: IAccountStateView.GetStates(IReadOnlyList<Address>)
-  nameWithType.vb: IAccountStateView.GetStates(IReadOnlyList(Of Address))
-- uid: Libplanet.Action.IAccountStateView.GetStates*
-  name: GetStates
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetStates_
-  commentId: Overload:Libplanet.Action.IAccountStateView.GetStates
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateView.GetStates
-  nameWithType: IAccountStateView.GetStates
-- uid: Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
-  name: GetTotalSupply(Currency)
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
-  fullName: Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
-  nameWithType: IAccountStateView.GetTotalSupply(Currency)
-- uid: Libplanet.Action.IAccountStateView.GetTotalSupply*
-  name: GetTotalSupply
-  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_
-  commentId: Overload:Libplanet.Action.IAccountStateView.GetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateView.GetTotalSupply
-  nameWithType: IAccountStateView.GetTotalSupply
 - uid: Libplanet.Action.IAction
   name: IAction
   href: api/Libplanet.Action.IAction.html
@@ -987,64 +759,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IFeeCalculator.CalculateFee
   nameWithType: IFeeCalculator.CalculateFee
-- uid: Libplanet.Action.InsufficientBalanceException
-  name: InsufficientBalanceException
-  href: api/Libplanet.Action.InsufficientBalanceException.html
-  commentId: T:Libplanet.Action.InsufficientBalanceException
-  fullName: Libplanet.Action.InsufficientBalanceException
-  nameWithType: InsufficientBalanceException
-- uid: Libplanet.Action.InsufficientBalanceException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  name: InsufficientBalanceException(String, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException__ctor_System_String_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.InsufficientBalanceException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.InsufficientBalanceException.InsufficientBalanceException(System.String, Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
-  nameWithType: InsufficientBalanceException.InsufficientBalanceException(String, Address, FungibleAssetValue)
-- uid: Libplanet.Action.InsufficientBalanceException.#ctor*
-  name: InsufficientBalanceException
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException__ctor_
-  commentId: Overload:Libplanet.Action.InsufficientBalanceException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.InsufficientBalanceException.InsufficientBalanceException
-  nameWithType: InsufficientBalanceException.InsufficientBalanceException
-- uid: Libplanet.Action.InsufficientBalanceException.Address
-  name: Address
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Address
-  commentId: P:Libplanet.Action.InsufficientBalanceException.Address
-  fullName: Libplanet.Action.InsufficientBalanceException.Address
-  nameWithType: InsufficientBalanceException.Address
-- uid: Libplanet.Action.InsufficientBalanceException.Address*
-  name: Address
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Address_
-  commentId: Overload:Libplanet.Action.InsufficientBalanceException.Address
-  isSpec: "True"
-  fullName: Libplanet.Action.InsufficientBalanceException.Address
-  nameWithType: InsufficientBalanceException.Address
-- uid: Libplanet.Action.InsufficientBalanceException.Balance
-  name: Balance
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance
-  commentId: P:Libplanet.Action.InsufficientBalanceException.Balance
-  fullName: Libplanet.Action.InsufficientBalanceException.Balance
-  nameWithType: InsufficientBalanceException.Balance
-- uid: Libplanet.Action.InsufficientBalanceException.Balance*
-  name: Balance
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance_
-  commentId: Overload:Libplanet.Action.InsufficientBalanceException.Balance
-  isSpec: "True"
-  fullName: Libplanet.Action.InsufficientBalanceException.Balance
-  nameWithType: InsufficientBalanceException.Balance
-- uid: Libplanet.Action.InsufficientBalanceException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Action.InsufficientBalanceException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Action.InsufficientBalanceException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: InsufficientBalanceException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.InsufficientBalanceException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_GetObjectData_
-  commentId: Overload:Libplanet.Action.InsufficientBalanceException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.InsufficientBalanceException.GetObjectData
-  nameWithType: InsufficientBalanceException.GetObjectData
 - uid: Libplanet.Action.InvalidActionException
   name: InvalidActionException
   href: api/Libplanet.Action.InvalidActionException.html
@@ -1137,38 +851,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IRandom.Seed
   nameWithType: IRandom.Seed
-- uid: Libplanet.Action.IValidatorSupportStateDelta
-  name: IValidatorSupportStateDelta
-  href: api/Libplanet.Action.IValidatorSupportStateDelta.html
-  commentId: T:Libplanet.Action.IValidatorSupportStateDelta
-  fullName: Libplanet.Action.IValidatorSupportStateDelta
-  nameWithType: IValidatorSupportStateDelta
-- uid: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_GetValidatorSet
-  commentId: M:Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
-  fullName: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet()
-  nameWithType: IValidatorSupportStateDelta.GetValidatorSet()
-- uid: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.IValidatorSupportStateDelta.GetValidatorSet
-  nameWithType: IValidatorSupportStateDelta.GetValidatorSet
-- uid: Libplanet.Action.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_SetValidator_Libplanet_Consensus_Validator_
-  commentId: M:Libplanet.Action.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  fullName: Libplanet.Action.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  nameWithType: IValidatorSupportStateDelta.SetValidator(Validator)
-- uid: Libplanet.Action.IValidatorSupportStateDelta.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.IValidatorSupportStateDelta.html#Libplanet_Action_IValidatorSupportStateDelta_SetValidator_
-  commentId: Overload:Libplanet.Action.IValidatorSupportStateDelta.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.IValidatorSupportStateDelta.SetValidator
-  nameWithType: IValidatorSupportStateDelta.SetValidator
 - uid: Libplanet.Action.Loader
   name: Libplanet.Action.Loader
   href: api/Libplanet.Action.Loader.html
@@ -1631,51 +1313,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
-- uid: Libplanet.Action.SupplyOverflowException
-  name: SupplyOverflowException
-  href: api/Libplanet.Action.SupplyOverflowException.html
-  commentId: T:Libplanet.Action.SupplyOverflowException
-  fullName: Libplanet.Action.SupplyOverflowException
-  nameWithType: SupplyOverflowException
-- uid: Libplanet.Action.SupplyOverflowException.#ctor(System.String,Libplanet.Assets.FungibleAssetValue)
-  name: SupplyOverflowException(String, FungibleAssetValue)
-  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException__ctor_System_String_Libplanet_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.SupplyOverflowException.#ctor(System.String,Libplanet.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.SupplyOverflowException.SupplyOverflowException(System.String, Libplanet.Assets.FungibleAssetValue)
-  nameWithType: SupplyOverflowException.SupplyOverflowException(String, FungibleAssetValue)
-- uid: Libplanet.Action.SupplyOverflowException.#ctor*
-  name: SupplyOverflowException
-  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException__ctor_
-  commentId: Overload:Libplanet.Action.SupplyOverflowException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.SupplyOverflowException.SupplyOverflowException
-  nameWithType: SupplyOverflowException.SupplyOverflowException
-- uid: Libplanet.Action.SupplyOverflowException.Amount
-  name: Amount
-  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_Amount
-  commentId: P:Libplanet.Action.SupplyOverflowException.Amount
-  fullName: Libplanet.Action.SupplyOverflowException.Amount
-  nameWithType: SupplyOverflowException.Amount
-- uid: Libplanet.Action.SupplyOverflowException.Amount*
-  name: Amount
-  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_Amount_
-  commentId: Overload:Libplanet.Action.SupplyOverflowException.Amount
-  isSpec: "True"
-  fullName: Libplanet.Action.SupplyOverflowException.Amount
-  nameWithType: SupplyOverflowException.Amount
-- uid: Libplanet.Action.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Action.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Action.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: SupplyOverflowException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.SupplyOverflowException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_GetObjectData_
-  commentId: Overload:Libplanet.Action.SupplyOverflowException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.SupplyOverflowException.GetObjectData
-  nameWithType: SupplyOverflowException.GetObjectData
 - uid: Libplanet.Action.Sys
   name: Libplanet.Action.Sys
   href: api/Libplanet.Action.Sys.html
@@ -1788,57 +1425,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Initialize.ValidatorSet
   nameWithType: Initialize.ValidatorSet
-- uid: Libplanet.Action.TotalSupplyGetter
-  name: TotalSupplyGetter
-  href: api/Libplanet.Action.TotalSupplyGetter.html
-  commentId: T:Libplanet.Action.TotalSupplyGetter
-  fullName: Libplanet.Action.TotalSupplyGetter
-  nameWithType: TotalSupplyGetter
-- uid: Libplanet.Action.TotalSupplyNotTrackableException
-  name: TotalSupplyNotTrackableException
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html
-  commentId: T:Libplanet.Action.TotalSupplyNotTrackableException
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException
-  nameWithType: TotalSupplyNotTrackableException
-- uid: Libplanet.Action.TotalSupplyNotTrackableException.#ctor(System.String,Libplanet.Assets.Currency)
-  name: TotalSupplyNotTrackableException(String, Currency)
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException__ctor_System_String_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Action.TotalSupplyNotTrackableException.#ctor(System.String,Libplanet.Assets.Currency)
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(System.String, Libplanet.Assets.Currency)
-  nameWithType: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(String, Currency)
-- uid: Libplanet.Action.TotalSupplyNotTrackableException.#ctor*
-  name: TotalSupplyNotTrackableException
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException__ctor_
-  commentId: Overload:Libplanet.Action.TotalSupplyNotTrackableException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException
-  nameWithType: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException
-- uid: Libplanet.Action.TotalSupplyNotTrackableException.Currency
-  name: Currency
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_Currency
-  commentId: P:Libplanet.Action.TotalSupplyNotTrackableException.Currency
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException.Currency
-  nameWithType: TotalSupplyNotTrackableException.Currency
-- uid: Libplanet.Action.TotalSupplyNotTrackableException.Currency*
-  name: Currency
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_Currency_
-  commentId: Overload:Libplanet.Action.TotalSupplyNotTrackableException.Currency
-  isSpec: "True"
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException.Currency
-  nameWithType: TotalSupplyNotTrackableException.Currency
-- uid: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: TotalSupplyNotTrackableException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_
-  commentId: Overload:Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData
-  nameWithType: TotalSupplyNotTrackableException.GetObjectData
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -1939,44 +1525,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.TxId
   nameWithType: UnexpectedlyTerminatedActionException.TxId
-- uid: Libplanet.Action.ValidatorSetGetter
-  name: ValidatorSetGetter
-  href: api/Libplanet.Action.ValidatorSetGetter.html
-  commentId: T:Libplanet.Action.ValidatorSetGetter
-  fullName: Libplanet.Action.ValidatorSetGetter
-  nameWithType: ValidatorSetGetter
-- uid: Libplanet.Action.ValidatorStateExtensions
-  name: ValidatorStateExtensions
-  href: api/Libplanet.Action.ValidatorStateExtensions.html
-  commentId: T:Libplanet.Action.ValidatorStateExtensions
-  fullName: Libplanet.Action.ValidatorStateExtensions
-  nameWithType: ValidatorStateExtensions
-- uid: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet(Libplanet.Action.IAccountStateDelta)
-  name: GetValidatorSet(IAccountStateDelta)
-  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_GetValidatorSet_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Action.ValidatorStateExtensions.GetValidatorSet(Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet(Libplanet.Action.IAccountStateDelta)
-  nameWithType: ValidatorStateExtensions.GetValidatorSet(IAccountStateDelta)
-- uid: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.ValidatorStateExtensions.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.ValidatorStateExtensions.GetValidatorSet
-  nameWithType: ValidatorStateExtensions.GetValidatorSet
-- uid: Libplanet.Action.ValidatorStateExtensions.SetValidator(Libplanet.Action.IAccountStateDelta,Libplanet.Consensus.Validator)
-  name: SetValidator(IAccountStateDelta, Validator)
-  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_SetValidator_Libplanet_Action_IAccountStateDelta_Libplanet_Consensus_Validator_
-  commentId: M:Libplanet.Action.ValidatorStateExtensions.SetValidator(Libplanet.Action.IAccountStateDelta,Libplanet.Consensus.Validator)
-  fullName: Libplanet.Action.ValidatorStateExtensions.SetValidator(Libplanet.Action.IAccountStateDelta, Libplanet.Consensus.Validator)
-  nameWithType: ValidatorStateExtensions.SetValidator(IAccountStateDelta, Validator)
-- uid: Libplanet.Action.ValidatorStateExtensions.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.ValidatorStateExtensions.html#Libplanet_Action_ValidatorStateExtensions_SetValidator_
-  commentId: Overload:Libplanet.Action.ValidatorStateExtensions.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.ValidatorStateExtensions.SetValidator
-  nameWithType: ValidatorStateExtensions.SetValidator
 - uid: Libplanet.Address
   name: Address
   href: api/Libplanet.Address.html
@@ -4839,11 +4387,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.BlockEndRenderer
   nameWithType: AnonymousActionRenderer.BlockEndRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
   name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta)
   nameWithType: AnonymousActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction*
   name: RenderAction
@@ -4942,11 +4490,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.ActionRenderer
   nameWithType: AtomicActionRenderer.ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
   name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta)
   nameWithType: AtomicActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction*
   name: RenderAction
@@ -5080,11 +4628,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.Records
   nameWithType: RecordingActionRenderer.Records
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
   name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta)
   nameWithType: RecordingActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction*
   name: RenderAction
@@ -5299,11 +4847,11 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess
   fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess
   nameWithType: RenderRecord.ActionSuccess
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Boolean)
   name: ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, System.Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta, System.Boolean)
   nameWithType: RenderRecord.ActionSuccess.ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor*
   name: ActionSuccess
@@ -5515,11 +5063,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.ValidatingActionRenderer
   nameWithType: ValidatingActionRenderer.ValidatingActionRenderer
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
   name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta)
   nameWithType: ValidatingActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction*
   name: RenderAction
@@ -5573,11 +5121,11 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.IActionRenderer
   fullName: Libplanet.Blockchain.Renderers.IActionRenderer
   nameWithType: IActionRenderer
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
   name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta)
   nameWithType: IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction*
   name: RenderAction
@@ -5663,11 +5211,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.ActionRenderer
   nameWithType: LoggedActionRenderer.ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
   name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta)
   nameWithType: LoggedActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction*
   name: RenderAction
@@ -21364,6 +20912,464 @@ references:
   fullName.vb: Libplanet.Serialization.SerializationInfoExtensions.TryGetValue(Of T)(System.Runtime.Serialization.SerializationInfo, System.String, ByRef T)
   nameWithType: SerializationInfoExtensions.TryGetValue<T>(SerializationInfo, String, out T)
   nameWithType.vb: SerializationInfoExtensions.TryGetValue(Of T)(SerializationInfo, String, ByRef T)
+- uid: Libplanet.State
+  name: Libplanet.State
+  href: api/Libplanet.State.html
+  commentId: N:Libplanet.State
+  fullName: Libplanet.State
+  nameWithType: Libplanet.State
+- uid: Libplanet.State.AccountBalanceGetter
+  name: AccountBalanceGetter
+  href: api/Libplanet.State.AccountBalanceGetter.html
+  commentId: T:Libplanet.State.AccountBalanceGetter
+  fullName: Libplanet.State.AccountBalanceGetter
+  nameWithType: AccountBalanceGetter
+- uid: Libplanet.State.AccountStateGetter
+  name: AccountStateGetter
+  href: api/Libplanet.State.AccountStateGetter.html
+  commentId: T:Libplanet.State.AccountStateGetter
+  fullName: Libplanet.State.AccountStateGetter
+  nameWithType: AccountStateGetter
+- uid: Libplanet.State.CurrencyPermissionException
+  name: CurrencyPermissionException
+  href: api/Libplanet.State.CurrencyPermissionException.html
+  commentId: T:Libplanet.State.CurrencyPermissionException
+  fullName: Libplanet.State.CurrencyPermissionException
+  nameWithType: CurrencyPermissionException
+- uid: Libplanet.State.CurrencyPermissionException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.Currency)
+  name: CurrencyPermissionException(String, Address, Currency)
+  href: api/Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException__ctor_System_String_Libplanet_Address_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.State.CurrencyPermissionException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.Currency)
+  fullName: Libplanet.State.CurrencyPermissionException.CurrencyPermissionException(System.String, Libplanet.Address, Libplanet.Assets.Currency)
+  nameWithType: CurrencyPermissionException.CurrencyPermissionException(String, Address, Currency)
+- uid: Libplanet.State.CurrencyPermissionException.#ctor*
+  name: CurrencyPermissionException
+  href: api/Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException__ctor_
+  commentId: Overload:Libplanet.State.CurrencyPermissionException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.State.CurrencyPermissionException.CurrencyPermissionException
+  nameWithType: CurrencyPermissionException.CurrencyPermissionException
+- uid: Libplanet.State.CurrencyPermissionException.Currency
+  name: Currency
+  href: api/Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency
+  commentId: P:Libplanet.State.CurrencyPermissionException.Currency
+  fullName: Libplanet.State.CurrencyPermissionException.Currency
+  nameWithType: CurrencyPermissionException.Currency
+- uid: Libplanet.State.CurrencyPermissionException.Currency*
+  name: Currency
+  href: api/Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency_
+  commentId: Overload:Libplanet.State.CurrencyPermissionException.Currency
+  isSpec: "True"
+  fullName: Libplanet.State.CurrencyPermissionException.Currency
+  nameWithType: CurrencyPermissionException.Currency
+- uid: Libplanet.State.CurrencyPermissionException.TransactionSigner
+  name: TransactionSigner
+  href: api/Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_TransactionSigner
+  commentId: P:Libplanet.State.CurrencyPermissionException.TransactionSigner
+  fullName: Libplanet.State.CurrencyPermissionException.TransactionSigner
+  nameWithType: CurrencyPermissionException.TransactionSigner
+- uid: Libplanet.State.CurrencyPermissionException.TransactionSigner*
+  name: TransactionSigner
+  href: api/Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_TransactionSigner_
+  commentId: Overload:Libplanet.State.CurrencyPermissionException.TransactionSigner
+  isSpec: "True"
+  fullName: Libplanet.State.CurrencyPermissionException.TransactionSigner
+  nameWithType: CurrencyPermissionException.TransactionSigner
+- uid: Libplanet.State.IAccountStateDelta
+  name: IAccountStateDelta
+  href: api/Libplanet.State.IAccountStateDelta.html
+  commentId: T:Libplanet.State.IAccountStateDelta
+  fullName: Libplanet.State.IAccountStateDelta
+  nameWithType: IAccountStateDelta
+- uid: Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: BurnAsset(Address, FungibleAssetValue)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)
+- uid: Libplanet.State.IAccountStateDelta.BurnAsset*
+  name: BurnAsset
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.BurnAsset
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.BurnAsset
+  nameWithType: IAccountStateDelta.BurnAsset
+- uid: Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: MintAsset(Address, FungibleAssetValue)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: IAccountStateDelta.MintAsset(Address, FungibleAssetValue)
+- uid: Libplanet.State.IAccountStateDelta.MintAsset*
+  name: MintAsset
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.MintAsset
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.MintAsset
+  nameWithType: IAccountStateDelta.MintAsset
+- uid: Libplanet.State.IAccountStateDelta.SetState(Libplanet.Address,Bencodex.Types.IValue)
+  name: SetState(Address, IValue)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_SetState_Libplanet_Address_Bencodex_Types_IValue_
+  commentId: M:Libplanet.State.IAccountStateDelta.SetState(Libplanet.Address,Bencodex.Types.IValue)
+  fullName: Libplanet.State.IAccountStateDelta.SetState(Libplanet.Address, Bencodex.Types.IValue)
+  nameWithType: IAccountStateDelta.SetState(Address, IValue)
+- uid: Libplanet.State.IAccountStateDelta.SetState*
+  name: SetState
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_SetState_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.SetState
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.SetState
+  nameWithType: IAccountStateDelta.SetState
+- uid: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
+  name: StateUpdatedAddresses
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_StateUpdatedAddresses
+  commentId: P:Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
+  fullName: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
+  nameWithType: IAccountStateDelta.StateUpdatedAddresses
+- uid: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses*
+  name: StateUpdatedAddresses
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_StateUpdatedAddresses_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
+  nameWithType: IAccountStateDelta.StateUpdatedAddresses
+- uid: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  name: TotalSupplyUpdatedCurrencies
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TotalSupplyUpdatedCurrencies
+  commentId: P:Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  fullName: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
+- uid: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies*
+  name: TotalSupplyUpdatedCurrencies
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TotalSupplyUpdatedCurrencies_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
+- uid: Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
+  name: TransferAsset(Address, Address, FungibleAssetValue, Boolean)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TransferAsset_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_
+  commentId: M:Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
+  fullName: Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Address, Libplanet.Address, Libplanet.Assets.FungibleAssetValue, System.Boolean)
+  nameWithType: IAccountStateDelta.TransferAsset(Address, Address, FungibleAssetValue, Boolean)
+- uid: Libplanet.State.IAccountStateDelta.TransferAsset*
+  name: TransferAsset
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TransferAsset_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.TransferAsset
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.TransferAsset
+  nameWithType: IAccountStateDelta.TransferAsset
+- uid: Libplanet.State.IAccountStateDelta.UpdatedAddresses
+  name: UpdatedAddresses
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedAddresses
+  commentId: P:Libplanet.State.IAccountStateDelta.UpdatedAddresses
+  fullName: Libplanet.State.IAccountStateDelta.UpdatedAddresses
+  nameWithType: IAccountStateDelta.UpdatedAddresses
+- uid: Libplanet.State.IAccountStateDelta.UpdatedAddresses*
+  name: UpdatedAddresses
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedAddresses_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.UpdatedAddresses
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.UpdatedAddresses
+  nameWithType: IAccountStateDelta.UpdatedAddresses
+- uid: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
+  name: UpdatedFungibleAssets
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedFungibleAssets
+  commentId: P:Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
+  fullName: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
+  nameWithType: IAccountStateDelta.UpdatedFungibleAssets
+- uid: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets*
+  name: UpdatedFungibleAssets
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedFungibleAssets_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
+  nameWithType: IAccountStateDelta.UpdatedFungibleAssets
+- uid: Libplanet.State.IAccountStateView
+  name: IAccountStateView
+  href: api/Libplanet.State.IAccountStateView.html
+  commentId: T:Libplanet.State.IAccountStateView
+  fullName: Libplanet.State.IAccountStateView
+  nameWithType: IAccountStateView
+- uid: Libplanet.State.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  name: GetBalance(Address, Currency)
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.State.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  fullName: Libplanet.State.IAccountStateView.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
+  nameWithType: IAccountStateView.GetBalance(Address, Currency)
+- uid: Libplanet.State.IAccountStateView.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetBalance_
+  commentId: Overload:Libplanet.State.IAccountStateView.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateView.GetBalance
+  nameWithType: IAccountStateView.GetBalance
+- uid: Libplanet.State.IAccountStateView.GetState(Libplanet.Address)
+  name: GetState(Address)
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetState_Libplanet_Address_
+  commentId: M:Libplanet.State.IAccountStateView.GetState(Libplanet.Address)
+  fullName: Libplanet.State.IAccountStateView.GetState(Libplanet.Address)
+  nameWithType: IAccountStateView.GetState(Address)
+- uid: Libplanet.State.IAccountStateView.GetState*
+  name: GetState
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetState_
+  commentId: Overload:Libplanet.State.IAccountStateView.GetState
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateView.GetState
+  nameWithType: IAccountStateView.GetState
+- uid: Libplanet.State.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
+  name: GetStates(IReadOnlyList<Address>)
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__
+  commentId: M:Libplanet.State.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
+  name.vb: GetStates(IReadOnlyList(Of Address))
+  fullName: Libplanet.State.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>)
+  fullName.vb: Libplanet.State.IAccountStateView.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address))
+  nameWithType: IAccountStateView.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: IAccountStateView.GetStates(IReadOnlyList(Of Address))
+- uid: Libplanet.State.IAccountStateView.GetStates*
+  name: GetStates
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetStates_
+  commentId: Overload:Libplanet.State.IAccountStateView.GetStates
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateView.GetStates
+  nameWithType: IAccountStateView.GetStates
+- uid: Libplanet.State.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
+  name: GetTotalSupply(Currency)
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.State.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
+  fullName: Libplanet.State.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
+  nameWithType: IAccountStateView.GetTotalSupply(Currency)
+- uid: Libplanet.State.IAccountStateView.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetTotalSupply_
+  commentId: Overload:Libplanet.State.IAccountStateView.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateView.GetTotalSupply
+  nameWithType: IAccountStateView.GetTotalSupply
+- uid: Libplanet.State.InsufficientBalanceException
+  name: InsufficientBalanceException
+  href: api/Libplanet.State.InsufficientBalanceException.html
+  commentId: T:Libplanet.State.InsufficientBalanceException
+  fullName: Libplanet.State.InsufficientBalanceException
+  nameWithType: InsufficientBalanceException
+- uid: Libplanet.State.InsufficientBalanceException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: InsufficientBalanceException(String, Address, FungibleAssetValue)
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException__ctor_System_String_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.State.InsufficientBalanceException.#ctor(System.String,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.State.InsufficientBalanceException.InsufficientBalanceException(System.String, Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: InsufficientBalanceException.InsufficientBalanceException(String, Address, FungibleAssetValue)
+- uid: Libplanet.State.InsufficientBalanceException.#ctor*
+  name: InsufficientBalanceException
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException__ctor_
+  commentId: Overload:Libplanet.State.InsufficientBalanceException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.State.InsufficientBalanceException.InsufficientBalanceException
+  nameWithType: InsufficientBalanceException.InsufficientBalanceException
+- uid: Libplanet.State.InsufficientBalanceException.Address
+  name: Address
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_Address
+  commentId: P:Libplanet.State.InsufficientBalanceException.Address
+  fullName: Libplanet.State.InsufficientBalanceException.Address
+  nameWithType: InsufficientBalanceException.Address
+- uid: Libplanet.State.InsufficientBalanceException.Address*
+  name: Address
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_Address_
+  commentId: Overload:Libplanet.State.InsufficientBalanceException.Address
+  isSpec: "True"
+  fullName: Libplanet.State.InsufficientBalanceException.Address
+  nameWithType: InsufficientBalanceException.Address
+- uid: Libplanet.State.InsufficientBalanceException.Balance
+  name: Balance
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_Balance
+  commentId: P:Libplanet.State.InsufficientBalanceException.Balance
+  fullName: Libplanet.State.InsufficientBalanceException.Balance
+  nameWithType: InsufficientBalanceException.Balance
+- uid: Libplanet.State.InsufficientBalanceException.Balance*
+  name: Balance
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_Balance_
+  commentId: Overload:Libplanet.State.InsufficientBalanceException.Balance
+  isSpec: "True"
+  fullName: Libplanet.State.InsufficientBalanceException.Balance
+  nameWithType: InsufficientBalanceException.Balance
+- uid: Libplanet.State.InsufficientBalanceException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.State.InsufficientBalanceException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.State.InsufficientBalanceException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InsufficientBalanceException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.State.InsufficientBalanceException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_GetObjectData_
+  commentId: Overload:Libplanet.State.InsufficientBalanceException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.State.InsufficientBalanceException.GetObjectData
+  nameWithType: InsufficientBalanceException.GetObjectData
+- uid: Libplanet.State.IValidatorSupportStateDelta
+  name: IValidatorSupportStateDelta
+  href: api/Libplanet.State.IValidatorSupportStateDelta.html
+  commentId: T:Libplanet.State.IValidatorSupportStateDelta
+  fullName: Libplanet.State.IValidatorSupportStateDelta
+  nameWithType: IValidatorSupportStateDelta
+- uid: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_GetValidatorSet
+  commentId: M:Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
+  fullName: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet()
+  nameWithType: IValidatorSupportStateDelta.GetValidatorSet()
+- uid: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_GetValidatorSet_
+  commentId: Overload:Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
+  nameWithType: IValidatorSupportStateDelta.GetValidatorSet
+- uid: Libplanet.State.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_SetValidator_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.State.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  fullName: Libplanet.State.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  nameWithType: IValidatorSupportStateDelta.SetValidator(Validator)
+- uid: Libplanet.State.IValidatorSupportStateDelta.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_SetValidator_
+  commentId: Overload:Libplanet.State.IValidatorSupportStateDelta.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.State.IValidatorSupportStateDelta.SetValidator
+  nameWithType: IValidatorSupportStateDelta.SetValidator
+- uid: Libplanet.State.SupplyOverflowException
+  name: SupplyOverflowException
+  href: api/Libplanet.State.SupplyOverflowException.html
+  commentId: T:Libplanet.State.SupplyOverflowException
+  fullName: Libplanet.State.SupplyOverflowException
+  nameWithType: SupplyOverflowException
+- uid: Libplanet.State.SupplyOverflowException.#ctor(System.String,Libplanet.Assets.FungibleAssetValue)
+  name: SupplyOverflowException(String, FungibleAssetValue)
+  href: api/Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException__ctor_System_String_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.State.SupplyOverflowException.#ctor(System.String,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.State.SupplyOverflowException.SupplyOverflowException(System.String, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: SupplyOverflowException.SupplyOverflowException(String, FungibleAssetValue)
+- uid: Libplanet.State.SupplyOverflowException.#ctor*
+  name: SupplyOverflowException
+  href: api/Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException__ctor_
+  commentId: Overload:Libplanet.State.SupplyOverflowException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.State.SupplyOverflowException.SupplyOverflowException
+  nameWithType: SupplyOverflowException.SupplyOverflowException
+- uid: Libplanet.State.SupplyOverflowException.Amount
+  name: Amount
+  href: api/Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException_Amount
+  commentId: P:Libplanet.State.SupplyOverflowException.Amount
+  fullName: Libplanet.State.SupplyOverflowException.Amount
+  nameWithType: SupplyOverflowException.Amount
+- uid: Libplanet.State.SupplyOverflowException.Amount*
+  name: Amount
+  href: api/Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException_Amount_
+  commentId: Overload:Libplanet.State.SupplyOverflowException.Amount
+  isSpec: "True"
+  fullName: Libplanet.State.SupplyOverflowException.Amount
+  nameWithType: SupplyOverflowException.Amount
+- uid: Libplanet.State.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.State.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.State.SupplyOverflowException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: SupplyOverflowException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.State.SupplyOverflowException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.State.SupplyOverflowException.html#Libplanet_State_SupplyOverflowException_GetObjectData_
+  commentId: Overload:Libplanet.State.SupplyOverflowException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.State.SupplyOverflowException.GetObjectData
+  nameWithType: SupplyOverflowException.GetObjectData
+- uid: Libplanet.State.TotalSupplyGetter
+  name: TotalSupplyGetter
+  href: api/Libplanet.State.TotalSupplyGetter.html
+  commentId: T:Libplanet.State.TotalSupplyGetter
+  fullName: Libplanet.State.TotalSupplyGetter
+  nameWithType: TotalSupplyGetter
+- uid: Libplanet.State.TotalSupplyNotTrackableException
+  name: TotalSupplyNotTrackableException
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html
+  commentId: T:Libplanet.State.TotalSupplyNotTrackableException
+  fullName: Libplanet.State.TotalSupplyNotTrackableException
+  nameWithType: TotalSupplyNotTrackableException
+- uid: Libplanet.State.TotalSupplyNotTrackableException.#ctor(System.String,Libplanet.Assets.Currency)
+  name: TotalSupplyNotTrackableException(String, Currency)
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html#Libplanet_State_TotalSupplyNotTrackableException__ctor_System_String_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.State.TotalSupplyNotTrackableException.#ctor(System.String,Libplanet.Assets.Currency)
+  fullName: Libplanet.State.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(System.String, Libplanet.Assets.Currency)
+  nameWithType: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(String, Currency)
+- uid: Libplanet.State.TotalSupplyNotTrackableException.#ctor*
+  name: TotalSupplyNotTrackableException
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html#Libplanet_State_TotalSupplyNotTrackableException__ctor_
+  commentId: Overload:Libplanet.State.TotalSupplyNotTrackableException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.State.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException
+  nameWithType: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException
+- uid: Libplanet.State.TotalSupplyNotTrackableException.Currency
+  name: Currency
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html#Libplanet_State_TotalSupplyNotTrackableException_Currency
+  commentId: P:Libplanet.State.TotalSupplyNotTrackableException.Currency
+  fullName: Libplanet.State.TotalSupplyNotTrackableException.Currency
+  nameWithType: TotalSupplyNotTrackableException.Currency
+- uid: Libplanet.State.TotalSupplyNotTrackableException.Currency*
+  name: Currency
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html#Libplanet_State_TotalSupplyNotTrackableException_Currency_
+  commentId: Overload:Libplanet.State.TotalSupplyNotTrackableException.Currency
+  isSpec: "True"
+  fullName: Libplanet.State.TotalSupplyNotTrackableException.Currency
+  nameWithType: TotalSupplyNotTrackableException.Currency
+- uid: Libplanet.State.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html#Libplanet_State_TotalSupplyNotTrackableException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.State.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.State.TotalSupplyNotTrackableException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TotalSupplyNotTrackableException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.State.TotalSupplyNotTrackableException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.State.TotalSupplyNotTrackableException.html#Libplanet_State_TotalSupplyNotTrackableException_GetObjectData_
+  commentId: Overload:Libplanet.State.TotalSupplyNotTrackableException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.State.TotalSupplyNotTrackableException.GetObjectData
+  nameWithType: TotalSupplyNotTrackableException.GetObjectData
+- uid: Libplanet.State.ValidatorSetGetter
+  name: ValidatorSetGetter
+  href: api/Libplanet.State.ValidatorSetGetter.html
+  commentId: T:Libplanet.State.ValidatorSetGetter
+  fullName: Libplanet.State.ValidatorSetGetter
+  nameWithType: ValidatorSetGetter
+- uid: Libplanet.State.ValidatorStateExtensions
+  name: ValidatorStateExtensions
+  href: api/Libplanet.State.ValidatorStateExtensions.html
+  commentId: T:Libplanet.State.ValidatorStateExtensions
+  fullName: Libplanet.State.ValidatorStateExtensions
+  nameWithType: ValidatorStateExtensions
+- uid: Libplanet.State.ValidatorStateExtensions.GetValidatorSet(Libplanet.State.IAccountStateDelta)
+  name: GetValidatorSet(IAccountStateDelta)
+  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_GetValidatorSet_Libplanet_State_IAccountStateDelta_
+  commentId: M:Libplanet.State.ValidatorStateExtensions.GetValidatorSet(Libplanet.State.IAccountStateDelta)
+  fullName: Libplanet.State.ValidatorStateExtensions.GetValidatorSet(Libplanet.State.IAccountStateDelta)
+  nameWithType: ValidatorStateExtensions.GetValidatorSet(IAccountStateDelta)
+- uid: Libplanet.State.ValidatorStateExtensions.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_GetValidatorSet_
+  commentId: Overload:Libplanet.State.ValidatorStateExtensions.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.State.ValidatorStateExtensions.GetValidatorSet
+  nameWithType: ValidatorStateExtensions.GetValidatorSet
+- uid: Libplanet.State.ValidatorStateExtensions.SetValidator(Libplanet.State.IAccountStateDelta,Libplanet.Consensus.Validator)
+  name: SetValidator(IAccountStateDelta, Validator)
+  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_SetValidator_Libplanet_State_IAccountStateDelta_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.State.ValidatorStateExtensions.SetValidator(Libplanet.State.IAccountStateDelta,Libplanet.Consensus.Validator)
+  fullName: Libplanet.State.ValidatorStateExtensions.SetValidator(Libplanet.State.IAccountStateDelta, Libplanet.Consensus.Validator)
+  nameWithType: ValidatorStateExtensions.SetValidator(IAccountStateDelta, Validator)
+- uid: Libplanet.State.ValidatorStateExtensions.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_SetValidator_
+  commentId: Overload:Libplanet.State.ValidatorStateExtensions.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.State.ValidatorStateExtensions.SetValidator
+  nameWithType: ValidatorStateExtensions.SetValidator
 - uid: Libplanet.Store
   name: Libplanet.Store
   href: api/Libplanet.Store.html
