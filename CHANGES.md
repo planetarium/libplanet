@@ -4,7 +4,7 @@ Libplanet changelog
 Version 1.2.1
 -------------
 
-To be released.
+Released on May 17, 2023.
 
  -  (Libplanet.Explorer) Fixed a bug where a `TransactionQuery` could not
     properly retrieve actions.  [[#3174]]
