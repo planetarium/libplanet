@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "5trc7FpqcZVK9ZYOw+ByazCiTesmkaXBOXKa6VHmyVo="
+          "hash": "IFkY005qCzwQYpoS8vFadkSuMfCz2wbdP6/koYdGqf8="
         }
       },
       "is_incremental": false,
@@ -2565,7 +2565,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.Gossip.html",
-          "hash": "rGfgKRuJGaT2jQxtKgwZPdwILCkUys47PD4H3u17c6U="
+          "hash": "7j+N2cB6mueYi/c0PpcG2uxCzLdCb+bYsZ8CpKcIT2U="
         }
       },
       "is_incremental": false,
