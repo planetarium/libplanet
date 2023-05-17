@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace Libplanet.Net.Consensus
         private CancellationTokenSource? _cancellationTokenSource;
         private RoutingTable _table;
         private IProtocol _protocol;
+        private ConcurrentDictionary<BoundPeer, HashSet<MessageId>> _haveDict;
 
         /// <summary>
         /// Creates a <see cref="Gossip"/> instance.
@@ -76,6 +78,7 @@ namespace Libplanet.Net.Consensus
             _seeds = seeds;
 
             _runningEvent = new TaskCompletionSource<object?>();
+            _haveDict = new ConcurrentDictionary<BoundPeer, HashSet<MessageId>>();
             Running = false;
 
             _logger = Log
@@ -306,6 +309,7 @@ namespace Libplanet.Net.Consensus
 
                 _cache.Shift();
 
+                _ = SendWantAsync(ctx);
                 await Task.Delay(_heartbeatInterval, ctx);
             }
         }
@@ -335,21 +339,70 @@ namespace Libplanet.Net.Consensus
             }
 
             _logger.Verbose("Ids to receive: {Ids}", idsToGet);
-            var want = new WantMessage(idsToGet);
-            Message[] replies = (await _transport.SendMessageAsync(
-                msg.Remote,
-                want,
-                TimeSpan.FromSeconds(1),
-                idsToGet.Length,
-                true,
-                ctx)).ToArray();
-            _logger.Verbose(
-                "Received {Expected}/{Count} messages. Messages: {@Messages}, Ids: {Ids}",
-                idsToGet.Length,
-                replies.Length,
-                replies,
-                replies.Select(m => m.Content.Id).ToArray());
-            AddMessages(replies.Select(m => m.Content));
+            if (!_haveDict.ContainsKey(msg.Remote))
+            {
+                _haveDict.TryAdd(msg.Remote, new HashSet<MessageId>(idsToGet));
+            }
+            else
+            {
+                List<MessageId> list = _haveDict[msg.Remote].ToList();
+                list.AddRange(idsToGet.Where(id => !list.Contains(id)));
+                _haveDict[msg.Remote] = new HashSet<MessageId>(list);
+            }
+        }
+
+        private async Task SendWantAsync(CancellationToken ctx)
+        {
+            // TODO: To optimize WantMessage count to minimum, should remove duplications.
+            var copy = _haveDict.ToDictionary(pair => pair.Key, pair => pair.Value.ToArray());
+            _haveDict = new ConcurrentDictionary<BoundPeer, HashSet<MessageId>>();
+            var optimized = new Dictionary<BoundPeer, MessageId[]>();
+            while (copy.Any())
+            {
+                var longest = copy.OrderBy(pair => pair.Value.Length).Last();
+                optimized.Add(longest.Key, longest.Value);
+                copy.Remove(longest.Key);
+                var removeCandidate = new List<BoundPeer>();
+                foreach (var pair in copy)
+                {
+                    var clean = pair.Value.Where(id => !longest.Value.Contains(id)).ToArray();
+                    if (clean.Any())
+                    {
+                        copy[pair.Key] = clean;
+                    }
+                    else
+                    {
+                        removeCandidate.Add(pair.Key);
+                    }
+                }
+
+                foreach (var peer in removeCandidate)
+                {
+                    copy.Remove(peer);
+                }
+            }
+
+            await optimized.ParallelForEachAsync(
+                async pair =>
+                {
+                    MessageId[] idsToGet = pair.Value;
+                    var want = new WantMessage(idsToGet);
+                    Message[] replies = (await _transport.SendMessageAsync(
+                        pair.Key,
+                        want,
+                        TimeSpan.FromSeconds(1),
+                        idsToGet.Length,
+                        true,
+                        ctx)).ToArray();
+                    _logger.Verbose(
+                        "Received {Expected}/{Count} messages. Messages: {@Messages}, Ids: {Ids}",
+                        idsToGet.Length,
+                        replies.Length,
+                        replies,
+                        replies.Select(m => m.Content.Id).ToArray());
+                    AddMessages(replies.Select(m => m.Content));
+                },
+                ctx);
         }
 
         /// <summary>

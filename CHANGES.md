@@ -18,11 +18,18 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Gossip` became to store the `MessageId`s received through the
+    `HaveMessage` instead of immediately replying to them, and send the
+    `WantMessage` requests all at once during each `HeartbeatTask`.
+    [#3152]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3152]: https://github.com/planetarium/libplanet/pull/3152
 
 
 Version 1.2.0
