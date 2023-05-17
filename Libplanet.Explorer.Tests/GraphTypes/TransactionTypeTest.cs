@@ -36,6 +36,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     updatedAddresses
                     signature
                     timestamp
+                    actions {
+                      inspection
+                    }
                 }";
 
             ExecutionResult result =
@@ -56,6 +59,11 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 new DateTimeOffsetGraphType().Serialize(transaction.Timestamp),
                 resultData["timestamp"]);
+            var actions = Assert.IsType<Dictionary<string, object>>(
+                ((object[])resultData["actions"])[0]);
+            Assert.Equal(
+                transaction.Actions[0].Inspect(true),
+                actions["inspection"]);
         }
     }
 }
