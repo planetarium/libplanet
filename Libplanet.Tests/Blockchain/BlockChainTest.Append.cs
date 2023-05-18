@@ -515,13 +515,21 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void AppendValidatesBlock()
         {
+            var policy = new NullBlockPolicy<DumbAction>(
+                    new BlockPolicyViolationException(string.Empty));
+            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var blockChain = new BlockChain<DumbAction>(
-                new NullBlockPolicy<DumbAction>(
-                    new BlockPolicyViolationException(string.Empty)),
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock);
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
             Assert.Throws<BlockPolicyViolationException>(
                 () => blockChain.Append(_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)));
         }

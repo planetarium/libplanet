@@ -12,11 +12,14 @@ using Bencodex.Types;
 using ImmutableTrie;
 using global::Cocona;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
+using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Action.Sys;
 using Libplanet.Consensus;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 public class BlockCommand
@@ -144,10 +147,18 @@ public class BlockCommand
                 }))
             .ToImmutableList();
 
+        var blockAction = blockPolicyParams.GetBlockAction();
+        var actionEvaluator = new ActionEvaluator(
+            _ => blockAction,
+            new BlockChainStates(
+                new MemoryStore(), new TrieStateStore(new DefaultKeyValueStore(null))),
+            new SingleActionLoader(typeof(NullAction)),
+            null);
         Block genesis = BlockChain<NullAction>.ProposeGenesisBlock(
+            actionEvaluator,
             privateKey: key,
             transactions: txs,
-            blockAction: blockPolicyParams.GetBlockAction());
+            blockAction: blockAction);
         using Stream stream = file == "-"
             ? Console.OpenStandardOutput()
             : File.Open(file, FileMode.Create);

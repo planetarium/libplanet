@@ -130,13 +130,20 @@ namespace Libplanet.Tests.Blockchain
             chain2.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
 
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var z = new BlockChain<DumbAction>(
-                new BlockPolicy<DumbAction>(new MinerReward(1)),
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Assert.Equal(chain1.Id, z.Id);
         }
@@ -564,7 +571,13 @@ namespace Libplanet.Tests.Blockchain
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
+                var actionEvaluator = new ActionEvaluator(
+                    _ => _policy.BlockAction,
+                    new BlockChainStates(store, stateStore),
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null);
                 var genesis = ProposeGenesisBlock<DumbAction>(
+                    actionEvaluator,
                     ProposeGenesis(
                         GenesisProposer.PublicKey,
                         transactions: new[]
@@ -980,7 +993,13 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
+                var actionEvaluator = new ActionEvaluator(
+                    _ => _policy.BlockAction,
+                    blockChainStates: new BlockChainStates(fx2.Store, fx2.StateStore),
+                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
+                    feeCalculator: null);
                 Block genesis2 = ProposeGenesisBlock<DumbAction>(
+                    actionEvaluator,
                     ProposeGenesis(
                         timestamp: DateTimeOffset.UtcNow,
                         proposer: GenesisProposer.PublicKey),
@@ -992,11 +1011,7 @@ namespace Libplanet.Tests.Blockchain
                     fx2.Store,
                     fx2.StateStore,
                     genesis2,
-                    new ActionEvaluator(
-                        _ => _policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx2.Store, fx2.StateStore),
-                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null));
+                    actionEvaluator);
                 var key = new PrivateKey();
                 for (int i = 0; i < 5; i++)
                 {
@@ -1037,7 +1052,13 @@ namespace Libplanet.Tests.Blockchain
                 });
             IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                new BlockChainStates(store, stateStore),
+                new SingleActionLoader(typeof(DumbAction)),
+                null);
             Block genesisWithTx = ProposeGenesisBlock<DumbAction>(
+                actionEvaluator,
                 ProposeGenesis(
                     GenesisProposer.PublicKey,
                     new[]
@@ -1057,11 +1078,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 genesisWithTx,
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(store, stateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                actionEvaluator);
             Assert.False(invoked);
         }
 
@@ -1072,13 +1089,19 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
+            var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 tracker,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Block b = chain.Genesis;
             Address[] addresses = new Address[30];
@@ -1119,15 +1142,21 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
-            var blockPolicy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
+            var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
-                blockPolicy,
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 tracker,
                 _fx.StateStore,
-                _fx.GenesisBlock
-            );
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Block b = chain.Genesis;
             for (int i = 0; i < 20; ++i)
@@ -1190,12 +1219,20 @@ namespace Libplanet.Tests.Blockchain
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
+            var policy = new NullBlockPolicy<DumbAction>();
+            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
-                new NullBlockPolicy<DumbAction>(),
+                policy,
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
-                _fx.GenesisBlock);
+                _fx.GenesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policy.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
 
             Assert.All(chain.GetStates(addresses), Assert.Null);
             foreach (var address in addresses)
@@ -1625,16 +1662,17 @@ namespace Libplanet.Tests.Blockchain
             IBlockPolicy<DumbAction> blockPolicy = new NullBlockPolicy<DumbAction>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            Block genesisBlock = ProposeGenesisBlock<DumbAction>(
-                ProposeGenesis(GenesisProposer.PublicKey),
-                GenesisProposer,
-                blockPolicy.BlockAction);
             var chainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                 _ => blockPolicy.BlockAction,
                 blockChainStates: chainStates,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
                 feeCalculator: null);
+            Block genesisBlock = ProposeGenesisBlock<DumbAction>(
+                actionEvaluator,
+                ProposeGenesis(GenesisProposer.PublicKey),
+                GenesisProposer,
+                blockPolicy.BlockAction);
             var chain = BlockChain<DumbAction>.Create(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1889,22 +1927,23 @@ namespace Libplanet.Tests.Blockchain
                 ),
             };
             var txs = systemTxs.Concat(customTxs).ToImmutableList();
+            var blockChainStates = new BlockChainStates(
+                storeFixture.Store, storeFixture.StateStore);
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                blockChainStates,
+                new SingleActionLoader(typeof(DumbAction)),
+                null);
             BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
                 storeFixture.Store,
                 storeFixture.StateStore,
                 BlockChain<DumbAction>.ProposeGenesisBlock(
+                    actionEvaluator,
                     privateKey: privateKey,
-                    transactions: txs
-                ),
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(
-                        storeFixture.Store,
-                        storeFixture.StateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                    transactions: txs),
+                actionEvaluator);
 
             var validator = blockChain.GetValidatorSet()[0];
             Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
@@ -1930,8 +1969,14 @@ namespace Libplanet.Tests.Blockchain
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
             IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock();
-            var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock();
+            var blockChainStates = new BlockChainStates(store, stateStore);
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                blockChainStates,
+                new SingleActionLoader(typeof(DumbAction)),
+                null);
+            var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock(actionEvaluator);
+            var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock(actionEvaluator);
 
             var blockChain = BlockChain<DumbAction>.Create(
                 policy,
@@ -1939,11 +1984,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 genesisBlockA,
-                new ActionEvaluator(
-                    _ => _blockChain.Policy.BlockAction,
-                    blockChainStates: new BlockChainStates(store, stateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                actionEvaluator);
 
             Assert.Throws<InvalidGenesisBlockException>(() =>
             {
@@ -1952,7 +1993,9 @@ namespace Libplanet.Tests.Blockchain
                     stagePolicy,
                     store,
                     stateStore,
-                    genesisBlockB);
+                    genesisBlockB,
+                    blockChainStates,
+                    actionEvaluator);
             });
         }
 
@@ -2007,7 +2050,13 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(),
                 null,
                 List.Empty);
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                new BlockChainStates(store, stateStore),
+                new SingleActionLoader(typeof(DumbAction)),
+                null);
             var genesisWithTx = ProposeGenesisBlock<DumbAction>(
+                actionEvaluator,
                 ProposeGenesis(GenesisProposer.PublicKey, new[] { genesisTx }),
                 privateKey: GenesisProposer,
                 blockAction: policy.BlockAction);
@@ -2018,11 +2067,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 genesisWithTx,
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(store, stateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                actionEvaluator);
 
             var blockTx = Transaction.Create(
                 0,
@@ -2070,23 +2115,22 @@ namespace Libplanet.Tests.Blockchain
                     actions: new IAction[] { systemAction }))
                 .ToImmutableList();
 
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                new BlockChainStates(storeFixture.Store, storeFixture.StateStore),
+                new SingleActionLoader(typeof(SetValidator)),
+                null);
             Block genesis = BlockChain<SetValidator>.ProposeGenesisBlock(
+                actionEvaluator,
                 privateKey: privateKey,
-                transactions: txs
-            );
+                transactions: txs);
             BlockChain<SetValidator> blockChain = BlockChain<SetValidator>.Create(
                 policy,
                 new VolatileStagePolicy<SetValidator>(),
                 storeFixture.Store,
                 storeFixture.StateStore,
                 genesis,
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(
-                        storeFixture.Store,
-                        storeFixture.StateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(SetValidator)),
-                    feeCalculator: null));
+                actionEvaluator);
 
             blockChain.MakeTransaction(
                 new PrivateKey(),

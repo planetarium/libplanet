@@ -28,6 +28,8 @@ namespace Libplanet.Blockchain
         /// each <see cref="Transaction.GenesisHash"/> is set to <see langword="null"/>.
         /// </para>
         /// </summary>
+        /// <param name="actionEvaluator">The <see cref="IActionEvaluator"/> to use to
+        /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
         /// <param name="transactions">A list of <see cref="Transaction"/>s to include
@@ -42,6 +44,7 @@ namespace Libplanet.Blockchain
         // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction
         // (Or at least there should be such an overload).
         public static Block ProposeGenesisBlock(
+            IActionEvaluator actionEvaluator,
             PrivateKey privateKey = null,
             ImmutableList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -63,10 +66,9 @@ namespace Libplanet.Blockchain
                 transactions: transactions);
 
             PreEvaluationBlock preEval = content.Propose();
-            IReadOnlyList<IActionEvaluation> evals = EvaluateGenesis(preEval, blockAction);
             return preEval.Sign(
                 privateKey,
-                DetermineGenesisStateRootHash(preEval, blockAction, out _));
+                DetermineGenesisStateRootHash(actionEvaluator, preEval, blockAction, out _));
         }
 
         /// <summary>

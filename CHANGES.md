@@ -9,6 +9,7 @@ To be released.
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
+
  -  Renamed `PreloadState` as `BlockSyncState`.  [[#3154]]
  -  Replaced `Swarm<T>.PreloadAsync`'s parameter
     `IProgress<PreloadState> progress`
@@ -16,6 +17,11 @@ To be released.
  -  Moved `IAccountStateDelta` and relations interface to
     `Libplanet.State` namespace (from `Libplanet.Action` namespace).
     [[#3173]]
+ -  Changed `BlockChain<T>()` constructors to explicitly require an
+    `IBlockChainStates` and an `IActionEvaluator`.  [[#3172]]
+ -  Changed `BlockChain<T>.DetermineGenesisStateRootHash()`,
+    `BlockChain<T>.EvaluateGenesis()`, and `BlockChain<T>.ProposeGenesisBlock()`
+    to explicitly require `IActionEvaluator`.  [[#3172]]
 
 ### Backward-incompatible network protocol changes
 
@@ -54,6 +60,7 @@ To be released.
 
 [#3152]: https://github.com/planetarium/libplanet/pull/3152
 [#3154]: https://github.com/planetarium/libplanet/pull/3154
+[#3172]: https://github.com/planetarium/libplanet/pull/3172
 [#3173]: https://github.com/planetarium/libplanet/pull/3173
 
 

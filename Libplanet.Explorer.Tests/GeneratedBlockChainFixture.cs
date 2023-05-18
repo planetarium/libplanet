@@ -82,7 +82,13 @@ public class GeneratedBlockChainFixture
             getMaxTransactionsPerBlock: _ => int.MaxValue,
             getMaxTransactionsBytes: _ => long.MaxValue);
         IStore store = new MemoryStore();
+        var actionEvaluator = new ActionEvaluator(
+            _ => policy.BlockAction,
+            new BlockChainStates(store, stateStore),
+            new SingleActionLoader(typeof(PolymorphicAction<SimpleAction>)),
+            null);
         Block genesisBlock = BlockChain<PolymorphicAction<SimpleAction>>.ProposeGenesisBlock(
+            actionEvaluator,
             transactions: PrivateKeys
                 .OrderBy(pk => pk.ToAddress().ToHex())
                 .Select(
@@ -105,11 +111,7 @@ public class GeneratedBlockChainFixture
             store,
             stateStore,
             genesisBlock,
-            new ActionEvaluator(
-                policyBlockActionGetter: _ => policy.BlockAction,
-                blockChainStates: new BlockChainStates(store, stateStore),
-                actionTypeLoader: new SingleActionLoader(typeof(PolymorphicAction<SimpleAction>)),
-                feeCalculator: null));
+            actionEvaluator);
 
         MinedBlocks = MinedBlocks.SetItem(
             Chain.Genesis.Miner,

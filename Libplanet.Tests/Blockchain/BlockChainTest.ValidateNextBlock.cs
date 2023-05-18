@@ -180,7 +180,13 @@ namespace Libplanet.Tests.Blockchain
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                new BlockChainStates(store, stateStore),
+                new SingleActionLoader(typeof(DumbAction)),
+                null);
             var genesisBlock = TestUtils.ProposeGenesisBlock<DumbAction>(
+                actionEvaluator,
                 TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer,
                 policy.BlockAction);
@@ -193,11 +199,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 genesisBlock,
-                new ActionEvaluator(
-                    _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(store, stateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                actionEvaluator);
 
             Block block1 = chain1.EvaluateAndSign(
                 new BlockContent(
@@ -216,13 +218,19 @@ namespace Libplanet.Tests.Blockchain
                 new SetStatesAtBlock(default, (Text)"foo", 1),
                 policy.BlockInterval
             );
+            var blockChainStates = new BlockChainStates(store, stateStore);
             var chain2 = new BlockChain<DumbAction>(
                 policyWithBlockAction,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
                 stateStore,
-                genesisBlock
-            );
+                genesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policyWithBlockAction.BlockAction,
+                    blockChainStates,
+                    new SingleActionLoader(typeof(DumbAction)),
+                    null));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
         }
