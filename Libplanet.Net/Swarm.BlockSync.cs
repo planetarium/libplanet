@@ -22,9 +22,9 @@ namespace Libplanet.Net
         /// <summary>
         /// This is a table of waiting <see cref="Block"/>s
         /// to enter the <see cref="BlockChain"/>.
-        /// <seealso cref="BlockCandidateTable{T}"/>
+        /// <seealso cref="BlockCandidateTable"/>
         /// </summary>
-        public BlockCandidateTable<T> BlockCandidateTable { get; private set; }
+        public BlockCandidateTable BlockCandidateTable { get; private set; }
 
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 

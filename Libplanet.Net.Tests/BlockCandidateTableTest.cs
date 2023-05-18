@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Xunit;
 
@@ -20,7 +19,7 @@ namespace Libplanet.Net.Tests
         [Fact]
         public void Add()
         {
-            var table = new BlockCandidateTable<DumbAction>();
+            var table = new BlockCandidateTable();
             var header = _fx.GenesisBlock.Header;
 
             // Ignore existing key

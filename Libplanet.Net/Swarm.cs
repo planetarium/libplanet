@@ -98,7 +98,7 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
             BlockDemandTable = new BlockDemandTable(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
+            BlockCandidateTable = new BlockCandidateTable();
 
             // Regulate heavy tasks. Treat negative value as 0.
             var taskRegulationOptions = Options.TaskRegulationOptions;
@@ -247,7 +247,7 @@ namespace Libplanet.Net
             }
 
             BlockDemandTable = new BlockDemandTable(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
+            BlockCandidateTable = new BlockCandidateTable();
             _logger.Debug($"{nameof(Swarm<T>)} stopped");
         }
 
