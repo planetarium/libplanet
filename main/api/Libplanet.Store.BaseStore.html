@@ -694,14 +694,14 @@ block indexes.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">sourceChainId</span></td>
-        <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of
+        <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Id">Id</a> of
 <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce">Nonce</a>s to fork.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">destinationChainId</span></td>
-        <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of destination
+        <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Id">Id</a> of destination
 <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce">Nonce</a>s.</p>
 </td>
       </tr>
@@ -997,8 +997,8 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
   </span>
   <a id="Libplanet_Store_BaseStore_GetChainBlockCommit_" data-uid="Libplanet.Store.BaseStore.GetChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetChainBlockCommit_System_Guid_" data-uid="Libplanet.Store.BaseStore.GetChainBlockCommit(System.Guid)">GetChainBlockCommit(Guid)</h4>
-  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> associated with a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>
-with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as its <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a>.</p>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> associated with a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>
+with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as its <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Id">Id</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1018,8 +1018,8 @@ with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as i
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of
-the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> to retrieve <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Id">Id</a> of
+the <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> to retrieve <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -1744,10 +1744,10 @@ If the same block already exists in the store it does nothing.</p>
   </span>
   <a id="Libplanet_Store_BaseStore_PutChainBlockCommit_" data-uid="Libplanet.Store.BaseStore.PutChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_BaseStore_PutChainBlockCommit_System_Guid_Libplanet_Blocks_BlockCommit_" data-uid="Libplanet.Store.BaseStore.PutChainBlockCommit(System.Guid,Libplanet.Blocks.BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
-  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> associated with a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>
-with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as its <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a>.
+  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> associated with a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>
+with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as its <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Id">Id</a>.
 The given <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a> should have the same <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>
-as the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a>.</p>
+as the <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1767,8 +1767,8 @@ as the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Bl
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of
-the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> to store <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>.</p>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Id">Id</a> of
+the <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> to store <a class="xref" href="Libplanet.Blocks.BlockCommit.html">BlockCommit</a>.</p>
 </td>
       </tr>
       <tr>

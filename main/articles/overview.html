@@ -175,7 +175,7 @@
 <li>Block's Transactions are evaluated in the order of execution calculated by deterministic random number to transition the state.</li>
 </ul>
 <h2 id="blockchain">BlockChain</h2>
-<p>To manage these Blocks, Libplanet offers a class called <a class="xref" href="../api/Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>. This class allows game developers to:</p>
+<p>To manage these Blocks, Libplanet offers a class called @&quot;Libplanet.Blockchain.BlockChain`1&quot;. This class allows game developers to:</p>
 <ul>
 <li>Create and register Transactions that contain desired Actions.</li>
 <li>Mine Blocks with registered Transactions.</li>
@@ -200,7 +200,7 @@
     }
 }
 </code></pre>
-<p>State transition occurs after a Block containing an Action is added and confirmed to the chain. The code above is suboptimal because you are polling the <a class="xref" href="../api/Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> object to see if a specific Action has been reflected.</p>
+<p>State transition occurs after a Block containing an Action is added and confirmed to the chain. The code above is suboptimal because you are polling the @&quot;Libplanet.Blockchain.BlockChain`1&quot; object to see if a specific Action has been reflected.</p>
 <pre><code class="lang-csharp">public class Game : MonoBehaviour
 {
     // ...

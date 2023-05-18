@@ -163,7 +163,7 @@ Validators are bonding/bonded nodes that participate in the consensus.
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type of <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -176,19 +176,19 @@ rounds.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain__0__System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Context%601.%23ctor(Libplanet.Net.Consensus.ConsensusContext%7B%600%7D%2CLibplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Int64%2CLibplanet.Crypto.PrivateKey%2CLibplanet.Consensus.ValidatorSet%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Context%601.%23ctor(Libplanet.Net.Consensus.ConsensusContext%7B%600%7D%2CLibplanet.Blockchain.BlockChain%2CSystem.Int64%2CLibplanet.Crypto.PrivateKey%2CLibplanet.Consensus.ValidatorSet%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Context.cs/#L131">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Context_1__ctor_" data-uid="Libplanet.Net.Consensus.Context`1.#ctor*"></a>
-  <h4 id="Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain__0__System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.Context`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0},Libplanet.Blockchain.BlockChain{`0},System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)">Context(ConsensusContext&lt;T&gt;, BlockChain&lt;T&gt;, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)</h4>
+  <h4 id="Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.Context`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0},Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)">Context(ConsensusContext&lt;T&gt;, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Context(ConsensusContext&lt;T&gt; consensusContext, BlockChain&lt;T&gt; blockChain, long height, PrivateKey privateKey, ValidatorSet validators, ContextTimeoutOption contextTimeoutOptions)</code></pre>
+    <pre><code class="lang-csharp hljs">public Context(ConsensusContext&lt;T&gt; consensusContext, BlockChain blockChain, long height, PrivateKey privateKey, ValidatorSet validators, ContextTimeoutOption contextTimeoutOptions)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,7 +208,7 @@ rounds.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a></td>
         <td><span class="parametername">blockChain</span></td>
         <td><p>A blockchain that will be committed, which
 will be voted by consensus, and used for proposing a block.</p>
@@ -245,7 +245,7 @@ configuring a timeout for each <a class="xref" href="Libplanet.Net.Consensus.Con
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain__0__System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption__remarks">Remarks</h5>
+  <h5 id="Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A <a class="xref" href="Libplanet.Net.Consensus.Context-1.html">Context&lt;T&gt;</a> represents a consensus of a single height and its multiple
 rounds.</p>
 </div>
