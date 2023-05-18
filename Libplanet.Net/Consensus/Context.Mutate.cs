@@ -10,7 +10,7 @@ namespace Libplanet.Net.Consensus
     // or as a part of another mutation.  All methods are made intentionally private and
     // Exception free, i.e. any exception that is not thrown explicitly is unintentional and
     // unexpected.
-    public partial class Context<T>
+    public partial class Context
     {
         /// <summary>
         /// Starts a new round.

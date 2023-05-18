@@ -10,7 +10,7 @@ using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Net.Tests.Consensus.Context
+namespace Libplanet.Net.Tests.Consensus
 {
     public class ContextProposerTest
     {

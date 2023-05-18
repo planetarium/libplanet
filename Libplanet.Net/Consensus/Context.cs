@@ -71,14 +71,11 @@ namespace Libplanet.Net.Consensus
     /// </list>
     /// Validators are bonding/bonded nodes that participate in the consensus.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
-    /// </typeparam>
     /// <remarks>
-    /// A <see cref="Context{T}"/> represents a consensus of a single height and its multiple
+    /// A <see cref="Context"/> represents a consensus of a single height and its multiple
     /// rounds.
     /// </remarks>
-    public partial class Context<T> : IDisposable
-        where T : IAction, new()
+    public partial class Context : IDisposable
     {
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
@@ -110,14 +107,14 @@ namespace Libplanet.Net.Consensus
         private BlockCommit? _lastCommit;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Context{T}"/> class.
+        /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
         /// <param name="consensusContext">A command class for receiving
         /// <see cref="ConsensusMsg"/> from or broadcasts to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
-        /// <param name="height">A target <see cref="Context{T}.Height"/> of the consensus state.
+        /// <param name="height">A target <see cref="Context.Height"/> of the consensus state.
         /// </param>
         /// <param name="privateKey">A private key for signing a block and message.
         /// <seealso cref="GetValue"/>
@@ -129,7 +126,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public Context(
-            ConsensusContext<T> consensusContext,
+            ConsensusContext consensusContext,
             BlockChain blockChain,
             long height,
             PrivateKey privateKey,
@@ -149,7 +146,7 @@ namespace Libplanet.Net.Consensus
         }
 
         private Context(
-            ConsensusContext<T> consensusContext,
+            ConsensusContext consensusContext,
             BlockChain blockChain,
             long height,
             PrivateKey privateKey,
@@ -168,8 +165,8 @@ namespace Libplanet.Net.Consensus
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "Context")
-                .ForContext<Context<T>>()
-                .ForContext("Source", nameof(Context<T>));
+                .ForContext<Context>()
+                .ForContext("Source", nameof(Context));
 
             _privateKey = privateKey;
             Height = height;
@@ -215,7 +212,7 @@ namespace Libplanet.Net.Consensus
         public int Round { get; private set; }
 
         /// <summary>
-        /// A step represents of this consensus state. See <see cref="Context{T}"/> for more detail.
+        /// A step represents of this consensus state. See <see cref="Context"/> for more detail.
         /// </summary>
         public Step Step { get; private set; }
 
@@ -223,7 +220,7 @@ namespace Libplanet.Net.Consensus
         /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
         /// validators.
         /// </summary>
-        private ConsensusContext<T> ConsensusContext { get; }
+        private ConsensusContext ConsensusContext { get; }
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -344,7 +341,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>
         /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself. See
-        /// <see cref="ConsensusContext{T}.BroadcastMessage"/>.</remarks>
+        /// <see cref="ConsensusContext.BroadcastMessage"/>.</remarks>
         private void BroadcastMessage(ConsensusMsg message)
         {
             ConsensusContext.BroadcastMessage(message);

@@ -7,7 +7,7 @@ namespace Libplanet.Net.Consensus
     /// <summary>
     /// An exception thrown when a received <see cref="ConsensusMsg"/> is invalid.  In particular,
     /// this is thrown pre-emptively before a <see cref="ConsensusMsg"/> is processed, i.e.
-    /// does not change the state of a <see cref="Context{T}"/> in a meaningful way.
+    /// does not change the state of a <see cref="Context"/> in a meaningful way.
     /// </summary>
     [Serializable]
     public class InvalidConsensusMessageException : InvalidMessageContentException

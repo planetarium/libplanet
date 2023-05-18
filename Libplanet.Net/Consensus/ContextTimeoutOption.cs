@@ -3,7 +3,7 @@ using System;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// A options class to configure <see cref="Context{T}"/> timeout for each <see cref="Step"/>.
+    /// A options class to configure <see cref="Context"/> timeout for each <see cref="Step"/>.
     /// </summary>
     public class ContextTimeoutOption
     {

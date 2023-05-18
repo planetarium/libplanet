@@ -119,7 +119,7 @@ namespace Libplanet.Net.Tests
             Libplanet.Tests.TestUtils.CreateBlockCommit(blockHash, height, round);
 
         public static void HandleFourPeersPreCommitMessages(
-            ConsensusContext<DumbAction> consensusContext,
+            ConsensusContext consensusContext,
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
@@ -144,7 +144,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static void HandleFourPeersPreCommitMessages(
-            Context<DumbAction> context,
+            Context context,
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
@@ -169,7 +169,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static void HandleFourPeersPreVoteMessages(
-            Context<DumbAction> context,
+            Context context,
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
@@ -194,7 +194,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static void HandleFourPeersPreVoteMessages(
-            ConsensusContext<DumbAction> consensusContext,
+            ConsensusContext consensusContext,
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
@@ -217,21 +217,19 @@ namespace Libplanet.Net.Tests
             }
         }
 
-        public static (
-            BlockChain BlockChain,
-            ConsensusContext<DumbAction> ConsensusContext)
+        public static (BlockChain BlockChain, ConsensusContext ConsensusContext)
             CreateDummyConsensusContext(
                 TimeSpan newHeightDelay,
                 IBlockPolicy? policy = null,
                 PrivateKey? privateKey = null,
-                ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
+                ConsensusContext.DelegateBroadcastMessage? broadcastMessage = null,
                 long blockCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockChain = CreateDummyBlockChain(fx, policy);
-            ConsensusContext<DumbAction>? consensusContext = null;
+            ConsensusContext? consensusContext = null;
 
             privateKey ??= PrivateKeys[1];
 
@@ -244,7 +242,7 @@ namespace Libplanet.Net.Tests
 
             broadcastMessage ??= BroadcastMessage;
 
-            consensusContext = new ConsensusContext<DumbAction>(
+            consensusContext = new ConsensusContext(
                 broadcastMessage,
                 blockChain,
                 privateKey,
@@ -254,9 +252,7 @@ namespace Libplanet.Net.Tests
             return (blockChain, consensusContext);
         }
 
-        public static (
-            BlockChain BlockChain,
-            Context<DumbAction> Context)
+        public static (BlockChain BlockChain, Context Context)
             CreateDummyContext(
                 long height = 1,
                 IBlockPolicy? policy = null,
@@ -264,7 +260,7 @@ namespace Libplanet.Net.Tests
                 ContextTimeoutOption? contextTimeoutOptions = null,
                 ValidatorSet? validatorSet = null)
         {
-            Context<DumbAction>? context = null;
+            Context? context = null;
             privateKey ??= PrivateKeys[1];
             policy ??= Policy;
 
@@ -280,7 +276,7 @@ namespace Libplanet.Net.Tests
                 PrivateKeys[1],
                 broadcastMessage: BroadcastMessage);
 
-            context = new Context<DumbAction>(
+            context = new Context(
                 consensusContext,
                 blockChain,
                 height,

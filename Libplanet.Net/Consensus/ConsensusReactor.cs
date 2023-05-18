@@ -16,7 +16,7 @@ namespace Libplanet.Net.Consensus
 {
     /// <summary>
     /// A manager class for starting network and joining into consensus.
-    /// <seealso cref="ConsensusContext{T}"/>
+    /// <seealso cref="ConsensusContext"/>
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
     /// </typeparam>
@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
         where T : IAction, new()
     {
         private readonly Gossip _gossip;
-        private readonly ConsensusContext<T> _consensusContext;
+        private readonly ConsensusContext _consensusContext;
         private readonly BlockChain _blockChain;
         private readonly ILogger _logger;
 
@@ -68,7 +68,7 @@ namespace Libplanet.Net.Consensus
                 TimeSpan.FromMinutes(2));
             _blockChain = blockChain;
 
-            _consensusContext = new ConsensusContext<T>(
+            _consensusContext = new ConsensusContext(
                 PublishMessage,
                 blockChain,
                 privateKey,
@@ -87,7 +87,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public bool Running => _gossip.Running;
 
-        /// <inheritdoc cref="ConsensusContext{T}.Height"/>
+        /// <inheritdoc cref="ConsensusContext.Height"/>
         public long Height => _consensusContext.Height;
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Libplanet.Net.Consensus
         public IReadOnlyList<BoundPeer> Validators => _gossip.Peers.ToList().AsReadOnly();
 
         // FIXME: This should be exposed in a better way.
-        internal ConsensusContext<T> ConsensusContext => _consensusContext;
+        internal ConsensusContext ConsensusContext => _consensusContext;
 
         /// <summary>
         /// <inheritdoc cref="IDisposable.Dispose()"/>

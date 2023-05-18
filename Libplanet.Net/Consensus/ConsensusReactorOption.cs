@@ -42,7 +42,7 @@ namespace Libplanet.Net.Consensus
         public TimeSpan TargetBlockInterval { get; set; }
 
         /// <summary>
-        /// A timeout second and multiplier value for used in <see cref="Context{T}"/>.
+        /// A timeout second and multiplier value for used in <see cref="Context"/>.
         /// </summary>
         public ContextTimeoutOption ContextTimeoutOptions { get; set; }
     }

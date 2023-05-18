@@ -13,14 +13,14 @@ namespace Libplanet.Net.Consensus
     /// <summary>
     /// <para>
     /// An <see cref="Exception"/> free concurrent <see cref="Dictionary{TKey, TValue}"/> wrapper
-    /// to be used for <see cref="Context{T}"/> with well-defined default behaviors.
+    /// to be used for <see cref="Context"/> with well-defined default behaviors.
     /// </para>
     /// <para>
-    /// This is <see cref="Context{T}"/> aware in the sense that it knows the height, the list of
+    /// This is <see cref="Context"/> aware in the sense that it knows the height, the list of
     /// validators for the given height, and the valid proposer selection mechanism.
     /// Using this info, <see cref="MessageLog"/> prevents adding an invalid
     /// <see cref="ConsensusMsg"/> to an internal collection, such as adding multiple
-    /// <see cref="ConsensusMsg"/>s for the same <see cref="Context{T}.Round"/> and
+    /// <see cref="ConsensusMsg"/>s for the same <see cref="Context.Round"/> and
     /// the same validator.  See <see cref="MessageLog.Add"/> for more detail.
     /// </para>
     /// </summary>

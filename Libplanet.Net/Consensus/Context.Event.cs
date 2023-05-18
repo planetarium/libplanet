@@ -3,7 +3,7 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public partial class Context<T>
+    public partial class Context
     {
         /// <summary>
         /// An event that is invoked when an <see cref="Exception"/> is thrown.
