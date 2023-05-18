@@ -88,7 +88,7 @@ namespace Libplanet.Net
 
             try
             {
-                var blockCompletion = new BlockCompletion<BoundPeer, T>(
+                var blockCompletion = new BlockCompletion<BoundPeer>(
                     completionPredicate: BlockChain.Store.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );

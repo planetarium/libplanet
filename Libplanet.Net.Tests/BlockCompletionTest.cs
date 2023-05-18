@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Dasync.Collections;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using xRetry;
@@ -52,7 +51,7 @@ namespace Libplanet.Net.Tests
             );
             var concurrentWorkersLogs = new ConcurrentBag<int>();
             long done = 0;
-            var pool = new BlockCompletion<int, DumbAction>.PeerPool(peers.Keys);
+            var pool = new BlockCompletion<int>.PeerPool(peers.Keys);
             var random = new System.Random();
             Task[] spawns = Enumerable.Range(0, tasks).Select(i =>
             {
@@ -117,7 +116,7 @@ namespace Libplanet.Net.Tests
             ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
             const int initialHeight = 2;
             const int window = 5;
-            var bc = new BlockCompletion<int, DumbAction>(
+            var bc = new BlockCompletion<int>(
                 fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
                 window
             );
@@ -248,7 +247,7 @@ namespace Libplanet.Net.Tests
 
             const int initialHeight = 2;
             const int window = 5;
-            var bc = new BlockCompletion<char, DumbAction>(
+            var bc = new BlockCompletion<char>(
                 fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
                 window
             );
@@ -304,14 +303,14 @@ namespace Libplanet.Net.Tests
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
-            var bc = new BlockCompletion<char, DumbAction>(
+            var bc = new BlockCompletion<char>(
                 ((IEquatable<BlockHash>)genesis.Hash).Equals,
                 5
             );
             bc.Demand(demand.Hash);
 
             long counter = 0;
-            BlockCompletion<char, DumbAction>.BlockFetcher wrongBlockFetcher =
+            BlockCompletion<char>.BlockFetcher wrongBlockFetcher =
                 (peer, blockHashes, token) =>
                     new AsyncEnumerable<(Block, BlockCommit)>(async yield =>
                     {
@@ -335,10 +334,10 @@ namespace Libplanet.Net.Tests
         public async Task CompleteWithNonRespondingPeers()
         {
             ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
-            var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
+            var bc = new BlockCompletion<char>(_ => false, 5);
             bc.Demand(fixture.Select(b => b.Hash));
 
-            BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
+            BlockCompletion<char>.BlockFetcher blockFetcher =
                 (peer, blockHashes, token) =>
                     new AsyncEnumerable<(Block, BlockCommit)>(async yield =>
                     {
@@ -374,10 +373,10 @@ namespace Libplanet.Net.Tests
         public async Task CompleteWithCrashingPeers()
         {
             ImmutableArray<Block> fixture = GenerateBlocks(15).ToImmutableArray();
-            var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
+            var bc = new BlockCompletion<char>(_ => false, 5);
             bc.Demand(fixture.Select(b => b.Hash));
 
-            BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
+            BlockCompletion<char>.BlockFetcher blockFetcher =
                 (peer, blockHashes, token) =>
                     new AsyncEnumerable<(Block, BlockCommit)>(async yield =>
                     {
