@@ -6,7 +6,7 @@ namespace Libplanet.Blocks
 {
     /// <summary>
     /// An exception thrown when the count of <see cref="Block.Transactions"/>
-    /// does not follow the constraint provided by <see cref="IBlockPolicy{T}"/>.
+    /// does not follow the constraint provided by <see cref="IBlockPolicy"/>.
     /// </summary>
     [Serializable]
     public sealed class InvalidBlockTxCountException : BlockPolicyViolationException
@@ -16,7 +16,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="txCount">The invalid count of <see cref="Block.Transactions"/>
-        /// according to <see cref="IBlockPolicy{T}"/>.</param>
+        /// according to <see cref="IBlockPolicy"/>.</param>
         public InvalidBlockTxCountException(string message, int txCount)
             : base(message)
         {

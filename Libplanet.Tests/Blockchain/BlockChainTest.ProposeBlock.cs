@@ -122,7 +122,7 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx = new MemoryStoreFixture())
             {
-                var policy = new BlockPolicy<DumbAction>();
+                var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     new BlockChainStates(fx.Store, fx.StateStore),
@@ -158,7 +158,7 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx = new MemoryStoreFixture())
             {
-                var policy = new BlockPolicy<DumbAction>();
+                var policy = new BlockPolicy();
                 var blockChain = BlockChain<DumbAction>.Create(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -312,7 +312,7 @@ namespace Libplanet.Tests.Blockchain
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = BlockChain<DumbAction>.Create(
@@ -424,7 +424,7 @@ namespace Libplanet.Tests.Blockchain
             var address2 = privateKey2.ToAddress();
 
             var blockAction = new DumbAction(address1, "foo");
-            var policy = new BlockPolicy<DumbAction>(blockAction);
+            var policy = new BlockPolicy(blockAction);
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
             var blockChain = new BlockChain<DumbAction>(

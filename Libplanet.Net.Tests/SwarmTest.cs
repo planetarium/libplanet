@@ -398,7 +398,7 @@ namespace Libplanet.Net.Tests
             var roundChangedToOnes = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
@@ -683,7 +683,7 @@ namespace Libplanet.Net.Tests
         public async Task ThrowArgumentExceptionInConstructor()
         {
             var fx = new MemoryStoreFixture();
-            var policy = new BlockPolicy<DumbAction>();
+            var policy = new BlockPolicy();
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
             var apv = AppProtocolVersion.Sign(key, 1);
@@ -888,7 +888,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             var renderer = new RecordingActionRenderer();
             var chain = MakeBlockChain(
                 policy,
@@ -952,7 +952,7 @@ namespace Libplanet.Net.Tests
         [Fact(Skip = "This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {
-            var policy = new BlockPolicy<Sleep>(new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
 
             async Task<Swarm<Sleep>> MakeSwarm(PrivateKey key = null) =>
                 await CreateSwarm(
@@ -1126,7 +1126,7 @@ namespace Libplanet.Net.Tests
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
 
@@ -1188,7 +1188,7 @@ namespace Libplanet.Net.Tests
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
 
@@ -1248,9 +1248,9 @@ namespace Libplanet.Net.Tests
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var policy = new NullBlockPolicy<DumbAction>();
-            var policyA = new NullBlockPolicy<DumbAction>();
-            var policyB = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy();
+            var policyA = new NullBlockPolicy();
+            var policyB = new NullBlockPolicy();
             var fx = new DefaultStoreFixture();
             var genesis = fx.GenesisBlock;
             Block aBlock1 = ProposeNextBlock(
@@ -1369,7 +1369,7 @@ namespace Libplanet.Net.Tests
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
             var genesisChainA = MakeBlockChain(
-                new BlockPolicy<DumbAction>(),
+                new BlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 actionsA,
@@ -1377,14 +1377,14 @@ namespace Libplanet.Net.Tests
                 privateKeyA);
             var genesisBlockA = genesisChainA.Genesis;
             var genesisChainB = MakeBlockChain(
-                new BlockPolicy<DumbAction>(),
+                new BlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 actionsB,
                 null,
                 privateKeyB);
             var genesisChainC = MakeBlockChain(
-                new BlockPolicy<DumbAction>(),
+                new BlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlock: genesisBlockA);

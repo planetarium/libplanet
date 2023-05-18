@@ -33,7 +33,7 @@ namespace Libplanet.Benchmarks
         {
             _fx = new DefaultStoreFixture();
             _blockChain = BlockChain<DumbAction>.Create(
-                new NullBlockPolicy<DumbAction>(),
+                new NullBlockPolicy(),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,

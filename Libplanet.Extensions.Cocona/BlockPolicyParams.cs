@@ -38,7 +38,7 @@ public class BlockPolicyParams : ICommandParameterSet
     [Option(
         'F',
         Description = "The qualified name of the factory method to instantiate a " +
-            nameof(IBlockPolicy<NullAction>) + "<T>.  The factory method must be static and " +
+            nameof(IBlockPolicy) + "<T>.  The factory method must be static and " +
             "has no parameters.  An assembly that the factory method and " +
             "the policy type belong to has to be loaded using -A/--load-assembly option.")]
     [HasDefaultValue]
@@ -112,14 +112,11 @@ public class BlockPolicyParams : ICommandParameterSet
                 }
 
                 Type returnType = method.ReturnType;
-                if (!returnType.IsGenericType ||
-                    typeof(IBlockPolicy<>).IsAssignableFrom(
-                        returnType.GetGenericTypeDefinition()) ||
-                    returnType.GenericTypeArguments.Length != 1)
+                if (!typeof(IBlockPolicy).IsAssignableFrom(returnType))
                 {
                     throw new TypeLoadException(
                         $"The return type of {PolicyFactory}() must be " +
-                        $"{nameof(IBlockPolicy<NullAction>)}<T>."
+                        $"{nameof(IBlockPolicy)}."
                     );
                 }
 
@@ -146,7 +143,7 @@ public class BlockPolicyParams : ICommandParameterSet
 
         PropertyInfo? prop = policy
             .GetType()
-            .GetProperty(nameof(IBlockPolicy<NullAction>.BlockAction));
+            .GetProperty(nameof(IBlockPolicy.BlockAction));
         return (IAction?)prop!.GetValue(policy);
     }
 }

@@ -9,7 +9,7 @@ namespace Libplanet.Blocks
 {
     /// <summary>
     /// A block candidate without evaluating actions (in its <see cref="Transactions"/> and
-    /// a possible <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>) and state root
+    /// a possible <see cref="Blockchain.Policies.IBlockPolicy.BlockAction"/>) and state root
     /// hash.
     /// </summary>
     public sealed class PreEvaluationBlock : IPreEvaluationBlock

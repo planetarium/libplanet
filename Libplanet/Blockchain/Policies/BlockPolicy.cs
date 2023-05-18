@@ -8,12 +8,9 @@ using Libplanet.Tx;
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// A default implementation of <see cref="IBlockPolicy{T}"/> interface.
+    /// A default implementation of <see cref="IBlockPolicy"/> interface.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block"/>'s type parameter.</typeparam>
-    public class BlockPolicy<T> : IBlockPolicy<T>
-        where T : IAction, new()
+    public class BlockPolicy : IBlockPolicy
     {
         public static readonly TimeSpan DefaultTargetBlockInterval = TimeSpan.FromSeconds(5);
 
@@ -30,7 +27,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// <para>
-        /// Creates a default <see cref="BlockPolicy{T}"/> instance.
+        /// Creates a default <see cref="BlockPolicy"/> instance.
         /// </para>
         /// <para>
         /// Each unprovided argument will be assigned a default value.  See each parameter

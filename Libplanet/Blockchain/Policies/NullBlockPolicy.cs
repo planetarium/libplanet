@@ -6,8 +6,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {
-    public class NullBlockPolicy<T> : IBlockPolicy<T>
-        where T : IAction, new()
+    public class NullBlockPolicy : IBlockPolicy
     {
         private readonly BlockPolicyViolationException _exceptionToThrow;
         private readonly long _difficulty;

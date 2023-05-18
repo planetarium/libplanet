@@ -255,7 +255,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var timeoutProcessed = false;
             var nilPreVoteSent = new AsyncAutoResetEvent();
             var invalidKey = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024,
                 validateNextBlockTx: IsSignerValid);
@@ -327,7 +327,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var nilPreVoteSent = new AsyncAutoResetEvent();
             var nilPreCommitSent = new AsyncAutoResetEvent();
             var txSigner = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
 

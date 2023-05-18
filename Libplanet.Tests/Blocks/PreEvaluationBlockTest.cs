@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Blocks
         {
             Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
-            var policy = new BlockPolicy<Arithmetic>(
+            var policy = new BlockPolicy(
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Blocks
         {
             Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
-            var policy = new BlockPolicy<Arithmetic>(
+            var policy = new BlockPolicy(
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();

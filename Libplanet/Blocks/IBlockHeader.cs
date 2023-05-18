@@ -13,7 +13,7 @@ namespace Libplanet.Blocks
     {
         /// <summary>
         /// The <see cref="ITrie.Hash"/> of the resulting states after evaluating transactions and
-        /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
+        /// a <see cref="Blockchain.Policies.IBlockPolicy.BlockAction"/> (if exists).
         /// </summary>
         /// <seealso cref="ITrie.Hash"/>
         HashDigest<SHA256> StateRootHash { get; }

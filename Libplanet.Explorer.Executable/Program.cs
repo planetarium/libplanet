@@ -212,8 +212,8 @@ If omitted (default) explorer only the local blockchain store.")]
                 IRichStore store = LoadStore(options);
                 IStateStore stateStore = new NoOpStateStore();
 
-                IBlockPolicy<NullAction> policy =
-                    new DumbBlockPolicy(LoadBlockPolicy<NullAction>(options));
+                IBlockPolicy policy =
+                    new DumbBlockPolicy(LoadBlockPolicy(options));
                 IStagePolicy<NullAction> stagePolicy =
                     new VolatileStagePolicy<NullAction>();
                 var blockChainStates = new BlockChainStates(store, stateStore);
@@ -396,10 +396,10 @@ If omitted (default) explorer only the local blockchain store.")]
             }
         }
 
-        private static BlockPolicy<T> LoadBlockPolicy<T>(Options options)
+        private static BlockPolicy LoadBlockPolicy(Options options)
             where T : IAction, new()
         {
-            return new BlockPolicy<T>(
+            return new BlockPolicy(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 getMaxTransactionsBytes: i => i > 0
@@ -436,11 +436,11 @@ If omitted (default) explorer only the local blockchain store.")]
             await swarm.StartAsync(cancellationToken: cancellationToken);
         }
 
-        internal class DumbBlockPolicy : IBlockPolicy<NullAction>
+        internal class DumbBlockPolicy : IBlockPolicy
         {
-            private readonly IBlockPolicy<NullAction> _impl;
+            private readonly IBlockPolicy _impl;
 
-            public DumbBlockPolicy(BlockPolicy<NullAction> blockPolicy)
+            public DumbBlockPolicy(BlockPolicy blockPolicy)
             {
                 _impl = blockPolicy;
             }

@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
     /// </para>
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
-    /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T},
+    /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy, IStagePolicy{T},
     /// IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
     /// constructor.
     /// </para>
@@ -70,7 +70,7 @@ namespace Libplanet.Blockchain
         /// Initializes a new instance of the <see cref="BlockChain{T}"/> class by loading
         /// the canonical chain from given <paramref name="store"/>.
         /// </summary>
-        /// <param name="policy"><see cref="IBlockPolicy{T}"/> to use in the
+        /// <param name="policy"><see cref="IBlockPolicy"/> to use in the
         /// <see cref="BlockChain{T}"/>.</param>
         /// <param name="stagePolicy">The staging policy to follow.</param>
         /// <param name="store"><see cref="IStore"/> to store <see cref="Block"/>s,
@@ -99,7 +99,7 @@ namespace Libplanet.Blockchain
         /// has a genesis block and it does not match to what the network expects
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
         public BlockChain(
-            IBlockPolicy<T> policy,
+            IBlockPolicy policy,
             IStagePolicy<T> stagePolicy,
             IStore store,
             IStateStore stateStore,
@@ -125,7 +125,7 @@ namespace Libplanet.Blockchain
         }
 
         private BlockChain(
-            IBlockPolicy<T> policy,
+            IBlockPolicy policy,
             IStagePolicy<T> stagePolicy,
             IStore store,
             IStateStore stateStore,
@@ -205,7 +205,7 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block,
+        /// "BlockChain{T}(IBlockPolicy, IStagePolicy{T}, IStore, IStateStore, Block,
         /// IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
@@ -220,7 +220,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// The block and blockchain policy.
         /// </summary>
-        public IBlockPolicy<T> Policy { get; }
+        public IBlockPolicy Policy { get; }
 
         /// <summary>
         /// The staging policy.
@@ -346,7 +346,7 @@ namespace Libplanet.Blockchain
         /// <exception cref="InvalidTxException">Thrown when <paramref name="genesisBlock"/>
         /// contains an invalid <see cref="Transaction"/>.</exception>
         public static BlockChain<T> Create(
-            IBlockPolicy<T> policy,
+            IBlockPolicy policy,
             IStagePolicy<T> stagePolicy,
             IStore store,
             IStateStore stateStore,
@@ -632,7 +632,7 @@ namespace Libplanet.Blockchain
         /// given block.</param>
         /// <exception cref="BlockPolicyViolationException">Thrown when given
         /// <paramref name="block"/> does not satisfy any of the constraints
-        /// validated by <see cref="IBlockPolicy{T}.ValidateNextBlock"/> of <see cref="Policy"/>.
+        /// validated by <see cref="IBlockPolicy.ValidateNextBlock"/> of <see cref="Policy"/>.
         /// </exception>
         /// <exception cref="InvalidBlockException">Thrown when the given <paramref name="block"/>
         /// is invalid, in itself or according to the <see cref="Policy"/>.</exception>

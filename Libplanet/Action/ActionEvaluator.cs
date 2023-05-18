@@ -198,7 +198,7 @@ namespace Libplanet.Action
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
-        /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <see cref="IBlockPolicy.BlockAction"/>.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
@@ -520,17 +520,17 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy when
+        /// Evaluates the <see cref="IBlockPolicy.BlockAction"/> set by the policy when
         /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
         /// <param name="previousStates">The states immediately before the evaluation of
-        /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance.</param>
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
         /// for the <paramref name="blockHeader"/>.</returns>
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(

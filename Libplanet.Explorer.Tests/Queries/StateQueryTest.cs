@@ -26,8 +26,8 @@ public class StateQueryTest
     public async Task States()
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
-        (IBlockChainStates, IBlockPolicy<NullAction>) source = (
-            new MockChainStates(), new BlockPolicy<NullAction>()
+        (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
@@ -50,9 +50,9 @@ public class StateQueryTest
     [Fact]
     public async Task Balance()
     {
-        (IBlockChainStates, IBlockPolicy<NullAction>) source = (
+        (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(),
-            new BlockPolicy<NullAction>()
+            new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
@@ -95,8 +95,8 @@ public class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-         (IBlockChainStates, IBlockPolicy<NullAction>) source = (
-            new MockChainStates(), new BlockPolicy<NullAction>());
+         (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy());
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {
             totalSupply(
@@ -147,9 +147,9 @@ public class StateQueryTest
     [Fact]
     public async Task Validators()
     {
-         (IBlockChainStates, IBlockPolicy<NullAction>) source = (
+         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(),
-            new BlockPolicy<NullAction>()
+            new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
         {

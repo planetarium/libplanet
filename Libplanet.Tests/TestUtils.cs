@@ -533,7 +533,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// <summary>
         /// Creates a <see cref="BlockChain{T}"/> instance.
         /// </summary>
-        /// <param name="policy">A <see cref="BlockPolicy{T}"/> of the chain.</param>
+        /// <param name="policy">A <see cref="BlockPolicy"/> of the chain.</param>
         /// <param name="store">An <see cref="IStore"/> instance to store blocks and txs.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> instance to store states.</param>
         /// <param name="actions"><see cref="Action{T}"/>s to be included in genesis block.
@@ -552,7 +552,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
         /// <returns>A <see cref="BlockChain{T}"/> instance.</returns>
         public static BlockChain<T> MakeBlockChain<T>(
-            IBlockPolicy<T> policy,
+            IBlockPolicy policy,
             IStore store,
             IStateStore stateStore,
             IEnumerable<IAction> actions = null,
@@ -581,7 +581,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static (BlockChain<T> BlockChain, ActionEvaluator ActionEvaluator)
             MakeBlockChainAndActionEvaluator<T>(
-            IBlockPolicy<T> policy,
+            IBlockPolicy policy,
             IStore store,
             IStateStore stateStore,
             IEnumerable<IAction> actions = null,

@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Fixtures
 
         public IntegerSet(
             IReadOnlyList<BigInteger?> initialStates,
-            IBlockPolicy<Arithmetic> policy = null,
+            IBlockPolicy policy = null,
             IEnumerable<IRenderer> renderers = null)
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Fixtures
                 .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
-            policy = policy ?? new NullBlockPolicy<Arithmetic>();
+            policy = policy ?? new NullBlockPolicy();
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
@@ -98,7 +98,7 @@ namespace Libplanet.Tests.Fixtures
 
         public int Count => Addresses.Count;
 
-        public IBlockPolicy<Arithmetic> Policy => Chain.Policy;
+        public IBlockPolicy Policy => Chain.Policy;
 
         public IReadOnlyList<IRenderer> Renderers => Chain.Renderers;
 

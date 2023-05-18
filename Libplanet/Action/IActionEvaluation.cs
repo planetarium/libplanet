@@ -11,7 +11,7 @@ namespace Libplanet.Action
         /// <summary>
         /// An action data to evaluate. When the
         /// <see cref="InputContext"/>.<see cref="IActionContext.BlockAction"/> is true,
-        /// use <see cref="IBlockPolicy{T}.BlockAction"/> instead of trying deserialization.
+        /// use <see cref="IBlockPolicy.BlockAction"/> instead of trying deserialization.
         /// </summary>
         public IValue Action { get; }
 

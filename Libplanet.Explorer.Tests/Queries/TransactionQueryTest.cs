@@ -32,7 +32,7 @@ public class TransactionQueryTest
     public TransactionQueryTest()
     {
         Chain = Libplanet.Tests.TestUtils.MakeBlockChain(
-            new BlockPolicy<NullAction>(),
+            new BlockPolicy(),
             new MemoryStore(),
             new TrieStateStore(new MemoryKeyValueStore()),
             privateKey: new PrivateKey(),

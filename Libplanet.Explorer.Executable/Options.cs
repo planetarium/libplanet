@@ -129,7 +129,7 @@ namespace Libplanet.Explorer.Executable
 
         public string GenesisBlockPath { get; set; }
 
-        internal Block GetGenesisBlock(IBlockPolicy<NullAction> policy)
+        internal Block GetGenesisBlock(IBlockPolicy policy)
         {
             var uri = new Uri(GenesisBlockPath);
             using (var client = new WebClient())

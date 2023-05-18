@@ -285,7 +285,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
 
-            var policy = new BlockPolicy<DelayAction>(
+            var policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var fx = new MemoryStoreFixture(policy.BlockAction);

@@ -42,7 +42,7 @@ namespace Libplanet.Net.Tests
 
         public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
 
-        public static readonly IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
+        public static readonly IBlockPolicy Policy = new BlockPolicy(
             blockAction: new MinerReward(1),
             getMaxTransactionsBytes: _ => 50 * 1024);
 
@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests
 
         public static BlockChain<DumbAction> CreateDummyBlockChain(
             MemoryStoreFixture fx,
-            IBlockPolicy<DumbAction>? policy = null,
+            IBlockPolicy? policy = null,
             Block? genesisBlock = null)
         {
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
@@ -222,7 +222,7 @@ namespace Libplanet.Net.Tests
             ConsensusContext<DumbAction> ConsensusContext)
             CreateDummyConsensusContext(
                 TimeSpan newHeightDelay,
-                IBlockPolicy<DumbAction>? policy = null,
+                IBlockPolicy? policy = null,
                 PrivateKey? privateKey = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
                 long blockCommitClearThreshold = 30,
@@ -259,7 +259,7 @@ namespace Libplanet.Net.Tests
             Context<DumbAction> Context)
             CreateDummyContext(
                 long height = 1,
-                IBlockPolicy<DumbAction>? policy = null,
+                IBlockPolicy? policy = null,
                 PrivateKey? privateKey = null,
                 ContextTimeoutOption? contextTimeoutOptions = null,
                 ValidatorSet? validatorSet = null)

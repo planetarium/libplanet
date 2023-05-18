@@ -14,7 +14,7 @@ using Libplanet.Explorer.GraphTypes;
 namespace Libplanet.Explorer.Queries;
 
 public class StateQuery<T>
-    : ObjectGraphType<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)>
+    : ObjectGraphType<(IBlockChainStates ChainStates, IBlockPolicy Policy)>
     where T : IAction, new()
 {
     public StateQuery()
@@ -56,7 +56,7 @@ public class StateQuery<T>
     }
 
     private static object ResolveStates(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address[] addresses = context.GetArgument<Address[]>("addresses");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
@@ -81,7 +81,7 @@ public class StateQuery<T>
     }
 
     private static object ResolveBalance(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = context.GetArgument<Currency>("currency");
@@ -108,7 +108,7 @@ public class StateQuery<T>
     }
 
     private static object? ResolveTotalSupply(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Currency currency = context.GetArgument<Currency>("currency");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
@@ -142,7 +142,7 @@ public class StateQuery<T>
     }
 
     private static object? ResolveValidatorSet(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy<T> Policy)> context)
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
         BlockHash offset;

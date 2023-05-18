@@ -24,7 +24,7 @@ public class BlockPolicyParamsTest
         {
             PolicyFactory = $"{GetType().FullName}.{nameof(BlockPolicyFactory)}",
         };
-        BlockPolicy<NullAction> blockPolicy = Assert.IsType<BlockPolicy<NullAction>>(
+        BlockPolicy blockPolicy = Assert.IsType<BlockPolicy>(
             blockPolicyParams.GetBlockPolicy(new[] { GetType().Assembly })
         );
         Assert.IsType<NullAction>(blockPolicy.BlockAction);
@@ -134,17 +134,17 @@ public class BlockPolicyParamsTest
         Assert.IsType<NullAction>(blockAction);
     }
 
-    internal static BlockPolicy<NullAction> BlockPolicyFactory() =>
-        new BlockPolicy<NullAction>(blockAction: new NullAction());
+    internal static BlockPolicy BlockPolicyFactory() =>
+        new BlockPolicy(blockAction: new NullAction());
 
-    internal static BlockPolicy<NullAction> BlockPolicyFactoryWithParams(bool param) =>
-        new BlockPolicy<NullAction>();
+    internal static BlockPolicy BlockPolicyFactoryWithParams(bool param) =>
+        new BlockPolicy();
 
     internal static int BlockPolicyFactoryWithWrongReturnType() => 0;
 
-    internal static BlockPolicy<NullAction> BlockPolicyFactoryReturningNull() =>
+    internal static BlockPolicy BlockPolicyFactoryReturningNull() =>
         null!;
 
-    internal BlockPolicy<NullAction> BlockPolicyFactoryInstanceMethod() =>
-        new BlockPolicy<NullAction>();
+    internal BlockPolicy BlockPolicyFactoryInstanceMethod() =>
+        new BlockPolicy();
 }

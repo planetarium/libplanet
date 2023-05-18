@@ -77,7 +77,7 @@ public class GeneratedBlockChainFixture
                     ImmutableArray<Transaction>.Empty));
 
         var privateKey = new PrivateKey();
-        var policy = new BlockPolicy<PolymorphicAction<SimpleAction>>(
+        var policy = new BlockPolicy(
             blockInterval: TimeSpan.FromMilliseconds(1),
             getMaxTransactionsPerBlock: _ => int.MaxValue,
             getMaxTransactionsBytes: _ => long.MaxValue);

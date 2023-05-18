@@ -9,7 +9,7 @@ namespace Libplanet.Blocks
 {
     /// <summary>
     /// A block candidate without evaluating actions (in its transactions and a possible
-    /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>) and state root hash.
+    /// <see cref="Blockchain.Policies.IBlockPolicy.BlockAction"/>) and state root hash.
     /// </summary>
     public class PreEvaluationBlockHeader : IPreEvaluationBlockHeader
     {
@@ -106,7 +106,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="stateRootHash">The <see cref="Libplanet.Store.Trie.ITrie.Hash"/> of
         /// the resulting states after evaluating transactions and
-        /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).</param>
+        /// a <see cref="Blockchain.Policies.IBlockPolicy.BlockAction"/> (if exists).</param>
         /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
         /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/>
         /// for blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>

@@ -175,7 +175,7 @@ namespace Libplanet.Tests.Blockchain
         public void ValidateNextBlockInvalidStateRootHash()
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
@@ -214,7 +214,7 @@ namespace Libplanet.Tests.Blockchain
                         lastCommit: null)).Propose(),
                 TestUtils.GenesisProposer);
 
-            var policyWithBlockAction = new BlockPolicy<DumbAction>(
+            var policyWithBlockAction = new BlockPolicy(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
                 policy.BlockInterval
             );
@@ -493,7 +493,7 @@ namespace Libplanet.Tests.Blockchain
             var validatorSet = new ValidatorSet(
                 new[] { validator1, validator2, validator3, validator4 }.ToList());
             BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
-                new NullBlockPolicy<DumbAction>(),
+                new NullBlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 validatorSet: validatorSet);

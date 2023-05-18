@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlock()
         {
             const int numBlocks = 5;
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var swarmA = await CreateSwarm(
@@ -95,7 +95,7 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy();
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var minerChain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
@@ -189,7 +189,7 @@ namespace Libplanet.Net.Tests
             Swarm<DumbAction> receiverSwarm = await CreateSwarm(receiverKey).ConfigureAwait(false);
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
-            IBlockPolicy<DumbAction> policy = receiverChain.Policy;
+            IBlockPolicy policy = receiverChain.Policy;
             BlockChain<DumbAction> seedChain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
@@ -459,7 +459,7 @@ namespace Libplanet.Net.Tests
         {
             int size = 5;
 
-            var policy = new BlockPolicy<DumbAction>();
+            var policy = new BlockPolicy();
             StoreFixture[] fxs = new StoreFixture[size];
             BlockChain<DumbAction>[] blockChains = new BlockChain<DumbAction>[size];
             Swarm<DumbAction>[] swarms = new Swarm<DumbAction>[size];
@@ -718,7 +718,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             var fx1 = new MemoryStoreFixture();
             var blockChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var privateKey = new PrivateKey();

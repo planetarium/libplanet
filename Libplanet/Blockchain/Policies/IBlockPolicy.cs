@@ -18,10 +18,7 @@ namespace Libplanet.Blockchain.Policies
     /// Note that all index dependent sub-policies are ignored for genesis <see cref="Block"/>s.
     /// </para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// <see cref="Block"/>'s type parameter.</typeparam>
-    public interface IBlockPolicy<T>
-        where T : IAction, new()
+    public interface IBlockPolicy
     {
         /// <summary>
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.

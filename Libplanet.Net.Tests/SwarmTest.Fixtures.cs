@@ -33,7 +33,7 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+                var policy = new BlockPolicy(new MinerReward(1));
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
@@ -80,7 +80,7 @@ namespace Libplanet.Net.Tests
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
             SwarmOptions options = null,
-            IBlockPolicy<DumbAction> policy = null,
+            IBlockPolicy policy = null,
             Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
@@ -107,11 +107,11 @@ namespace Libplanet.Net.Tests
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
             SwarmOptions options = null,
-            IBlockPolicy<DumbAction> policy = null,
+            IBlockPolicy policy = null,
             Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
+            policy = policy ?? new BlockPolicy(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockchain = MakeBlockChain(
                 policy,
