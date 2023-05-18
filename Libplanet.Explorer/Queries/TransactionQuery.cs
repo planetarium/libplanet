@@ -141,7 +141,7 @@ namespace Libplanet.Explorer.Queries
                 ),
                 resolve: context =>
                 {
-                    BlockChain<T> chain = _context.BlockChain;
+                    BlockChain chain = _context.BlockChain;
                     string plainValueString = context.GetArgument<string>("plainValue");
                     IValue plainValue = _codec.Decode(ByteUtil.ParseHex(plainValueString));
                     var action = new T();

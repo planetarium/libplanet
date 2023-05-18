@@ -15,12 +15,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
     public class MessageLogTest
     {
         private static Bencodex.Codec _codec = new Bencodex.Codec();
-        private BlockChain<DumbAction> _blockChain;
+        private BlockChain _blockChain;
         private BlockCommit _lastCommit;
         private MessageLog _messageLog;
 
         /// <summary>
-        /// Sets up a <see cref="BlockChain{T}"/> with tip index of 1, i.e. two blocks.
+        /// Sets up a <see cref="BlockChain"/> with tip index of 1, i.e. two blocks.
         /// </summary>
         public MessageLogTest()
         {

@@ -10,7 +10,7 @@ namespace Libplanet.Blockchain.Renderers
 {
     /// <summary>
     /// Listens state changes of every step of actions, besides blocks,
-    /// on a <see cref="BlockChain{T}"/>.
+    /// on a <see cref="BlockChain"/>.
     /// If you need more fine-grained events than <see cref="IRenderer"/>,
     /// implement this interface instead.
     /// <para>The invocation order of methods for each <see cref="Block"/> are:</para>
@@ -90,8 +90,8 @@ namespace Libplanet.Blockchain.Renderers
         /// rendered.
         /// </summary>
         /// <remarks>It is guaranteed to be called only once for a block.</remarks>
-        /// <param name="oldTip">The previous <see cref="BlockChain{T}.Tip"/>.</param>
-        /// <param name="newTip">The current <see cref="BlockChain{T}.Tip"/>.</param>
+        /// <param name="oldTip">The previous <see cref="BlockChain.Tip"/>.</param>
+        /// <param name="newTip">The current <see cref="BlockChain.Tip"/>.</param>
         void RenderBlockEnd(Block oldTip, Block newTip);
     }
 }

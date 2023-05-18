@@ -36,7 +36,7 @@ namespace Libplanet.Blocks
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
         /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
+        /// by <see cref="Blockchain.BlockChain"/>.</exception>
         /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
         /// inconsistent genesis hashes.</exception>
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given
@@ -77,7 +77,7 @@ namespace Libplanet.Blocks
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
         /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
+        /// by <see cref="Blockchain.BlockChain"/>.</exception>
         /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
         /// inconsistent genesis hashes.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="transactions"/> is

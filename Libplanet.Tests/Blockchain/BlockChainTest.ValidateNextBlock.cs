@@ -185,7 +185,7 @@ namespace Libplanet.Tests.Blockchain
                 new BlockChainStates(store, stateStore),
                 new SingleActionLoader(typeof(DumbAction)),
                 null);
-            var genesisBlock = TestUtils.ProposeGenesisBlock<DumbAction>(
+            var genesisBlock = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
                 TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer,
@@ -193,7 +193,7 @@ namespace Libplanet.Tests.Blockchain
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 
-            var chain1 = BlockChain<DumbAction>.Create(
+            var chain1 = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
                 store,
@@ -219,7 +219,7 @@ namespace Libplanet.Tests.Blockchain
                 policy.BlockInterval
             );
             var blockChainStates = new BlockChainStates(store, stateStore);
-            var chain2 = new BlockChain<DumbAction>(
+            var chain2 = new BlockChain(
                 policyWithBlockAction,
                 new VolatileStagePolicy(),
                 store,
@@ -492,7 +492,7 @@ namespace Libplanet.Tests.Blockchain
             var validator4 = new Validator(privateKey4.PublicKey, 1);
             var validatorSet = new ValidatorSet(
                 new[] { validator1, validator2, validator3, validator4 }.ToList());
-            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
+            BlockChain blockChain = TestUtils.MakeBlockChain<DumbAction>(
                 new NullBlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),

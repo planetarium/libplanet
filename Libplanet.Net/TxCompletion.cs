@@ -19,7 +19,7 @@ namespace Libplanet.Net
     where TAction : IAction, new()
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly BlockChain<TAction> _blockChain;
+        private readonly BlockChain _blockChain;
         private readonly TxFetcher _txFetcher;
         private readonly TxBroadcaster _txBroadcaster;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Libplanet.Net
         private bool _disposed;
 
         public TxCompletion(
-            BlockChain<TAction> blockChain,
+            BlockChain blockChain,
             TxFetcher txFetcher,
             TxBroadcaster txBroadcaster)
         {

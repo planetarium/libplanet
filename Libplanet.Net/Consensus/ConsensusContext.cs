@@ -15,7 +15,7 @@ namespace Libplanet.Net.Consensus
     /// A class that maintains the states of a <see cref="Context{T}"/> for block
     /// indices now in consensus.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain{T}"/>.
+    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
     /// </typeparam>
     public partial class ConsensusContext<T> : IDisposable
         where T : IAction, new()
@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
-        private readonly BlockChain<T> _blockChain;
+        private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
@@ -51,7 +51,7 @@ namespace Libplanet.Net.Consensus
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             ContextTimeoutOption contextTimeoutOption)
@@ -158,7 +158,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">The height of a new <see cref="Context{T}"/> to start.</param>
         /// <exception cref="InvalidHeightIncreasingException">Thrown if given
         /// <paramref name="height"/> is less than or equal to <see cref="Height"/>.</exception>
-        /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
+        /// <remarks>The method is also called when the tip of the <see cref="BlockChain"/> is
         /// changed (i.e., committed, synchronized).
         /// </remarks>
         public void NewHeight(long height)
@@ -308,14 +308,14 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls
+        /// A handler for <see cref="BlockChain.TipChanged"/> event that calls
         /// <see cref="NewHeight"/>.  Starting a new height will be delayed for
         /// <see cref="_newHeightDelay"/> in order to collect remaining delayed votes
         /// and stabilize the consensus process by waiting for Global Stabilization Time.
         /// </summary>
         /// <param name="sender">The source object instance for <see cref="EventHandler"/>.
         /// </param>
-        /// <param name="e">The event arguments given by <see cref="BlockChain{T}.TipChanged"/>
+        /// <param name="e">The event arguments given by <see cref="BlockChain.TipChanged"/>
         /// as a tuple of the old tip and the new tip.
         /// </param>
         private void OnTipChanged(object? sender, (Block OldTip, Block NewTip) e)

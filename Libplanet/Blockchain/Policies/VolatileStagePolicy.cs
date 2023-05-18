@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain.Policies
     /// </para>
     /// <para>
     /// Additionally, any <see cref="Transaction"/> with a lower nonce than that of returned by
-    /// the <see cref="BlockChain{T}"/> is masked and filtered by default.
+    /// the <see cref="BlockChain"/> is masked and filtered by default.
     /// </para>
     /// </summary>
     public class VolatileStagePolicy : IStagePolicy
@@ -75,7 +75,7 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan Lifetime { get; }
 
         /// <inheritdoc/>
-        public bool Stage(BlockChain<T> blockChain, Transaction transaction)
+        public bool Stage(BlockChain blockChain, Transaction transaction)
         {
             if (Expired(transaction))
             {
@@ -134,7 +134,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public bool Unstage(BlockChain<T> blockChain, TxId id)
+        public bool Unstage(BlockChain blockChain, TxId id)
         {
             bool result;
             _lock.EnterWriteLock();
@@ -151,7 +151,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public void Ignore(BlockChain<T> blockChain, TxId id)
+        public void Ignore(BlockChain blockChain, TxId id)
         {
             _lock.EnterUpgradeableReadLock();
             try
@@ -181,7 +181,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public bool Ignores(BlockChain<T> blockChain, TxId id)
+        public bool Ignores(BlockChain blockChain, TxId id)
         {
             _lock.EnterReadLock();
             try
@@ -195,7 +195,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public Transaction? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
+        public Transaction? Get(BlockChain blockChain, TxId id, bool filtered = true)
         {
             _lock.EnterReadLock();
             try
@@ -209,7 +209,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Transaction> Iterate(BlockChain<T> blockChain, bool filtered = true)
+        public IEnumerable<Transaction> Iterate(BlockChain blockChain, bool filtered = true)
         {
             List<Transaction> transactions = new List<Transaction>();
 
@@ -234,7 +234,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
+        public long GetNextTxNonce(BlockChain blockChain, Address address)
         {
             long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
             IEnumerable<Transaction> orderedTxs = Iterate(blockChain, filtered: true)
@@ -263,7 +263,7 @@ namespace Libplanet.Blockchain.Policies
         /// It has been intended to avoid recursive lock, hence doesn't hold any synchronous scope.
         /// Therefore, we should manage the lock from its caller side.
         /// </remarks>
-        private Transaction? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
+        private Transaction? GetInner(BlockChain blockChain, TxId id, bool filtered)
         {
             if (_staged.TryGetValue(id, out Transaction? tx) && tx is { })
             {

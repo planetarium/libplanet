@@ -19,7 +19,7 @@ namespace Libplanet.Action.Loader
         /// for system <see cref="IAction"/>s.
         /// </summary>
         /// <param name="type">The type of <see cref="IAction"/> to load.  It should match
-        /// the <see cref="BlockChain{T}"/>'s type parameter.</param>
+        /// the <see cref="BlockChain"/>'s type parameter.</param>
         /// <exception cref="ArgumentException">Thrown when given type <paramref name="type"/>
         /// is not a <see langword="class"/> or cannot be assigned to <see cref="IAction"/>.
         /// </exception>

@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var consensusReactors = new ConsensusReactor<DumbAction>[4];
             var stores = new IStore[4];
-            var blockChains = new BlockChain<DumbAction>[4];
+            var blockChains = new BlockChain[4];
             var fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
             var validatorPeers = new List<BoundPeer>();
             var cancellationTokenSource = new CancellationTokenSource();
@@ -59,7 +59,7 @@ namespace Libplanet.Net.Tests.Consensus
                         new DnsEndPoint("127.0.0.1", 6000 + i)));
                 stores[i] = new MemoryStore();
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-                blockChains[i] = BlockChain<DumbAction>.Create(
+                blockChains[i] = BlockChain.Create(
                     TestUtils.Policy,
                     new VolatileStagePolicy(),
                     stores[i],

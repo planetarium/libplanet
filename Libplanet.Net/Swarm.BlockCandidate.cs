@@ -66,7 +66,7 @@ namespace Libplanet.Net
             IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
-            BlockChain<T> synced = null;
+            BlockChain synced = null;
             System.Action renderSwap = () => { };
             try
             {
@@ -122,13 +122,13 @@ namespace Libplanet.Net
             return true;
         }
 
-        private BlockChain<T> AppendPreviousBlocks(
+        private BlockChain AppendPreviousBlocks(
             BlockChain<T> blockChain,
             Branch candidate,
             bool render,
             IProgress<BlockSyncState> progress)
         {
-            BlockChain<T> workspace = blockChain;
+            BlockChain workspace = blockChain;
             List<Guid> scope = new List<Guid>();
             bool forked = false;
 
@@ -404,7 +404,7 @@ namespace Libplanet.Net
 
         private async Task<bool> BlockCandidateDownload(
             BoundPeer peer,
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             BlockHeader stop,
             int logSessionId,
             CancellationToken cancellationToken)

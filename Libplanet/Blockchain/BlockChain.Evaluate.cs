@@ -17,7 +17,7 @@ using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         /// <summary>
         /// Determines the state root hash of <paramref name="preEvaluationBlock"/>

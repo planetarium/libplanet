@@ -464,16 +464,15 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval.Sign(miner, stateRootHash);
         }
 
-        public static Block ProposeGenesisBlock<T>(
+        public static Block ProposeGenesisBlock(
             IActionEvaluator actionEvaluator,
             PreEvaluationBlock preEval,
             PrivateKey privateKey,
             IAction blockAction = null)
-                where T : IAction, new()
         {
             return preEval.Sign(
                 privateKey,
-                BlockChain<T>.DetermineGenesisStateRootHash(
+                BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator, preEval, blockAction, out _));
         }
 
@@ -531,7 +530,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         /// <summary>
-        /// Creates a <see cref="BlockChain{T}"/> instance.
+        /// Creates a <see cref="BlockChain"/> instance.
         /// </summary>
         /// <param name="policy">A <see cref="BlockPolicy"/> of the chain.</param>
         /// <param name="store">An <see cref="IStore"/> instance to store blocks and txs.</param>
@@ -550,8 +549,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// If null is given, a genesis will be generated.</param>
         /// <param name="protocolVersion">Block protocol version of genesis block.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
-        /// <returns>A <see cref="BlockChain{T}"/> instance.</returns>
-        public static BlockChain<T> MakeBlockChain<T>(
+        /// <returns>A <see cref="BlockChain"/> instance.</returns>
+        public static BlockChain MakeBlockChain<T>(
             IBlockPolicy policy,
             IStore store,
             IStateStore stateStore,
@@ -565,7 +564,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            return MakeBlockChainAndActionEvaluator(
+            return MakeBlockChainAndActionEvaluator<T>(
                 policy,
                 store,
                 stateStore,
@@ -579,7 +578,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             ).BlockChain;
         }
 
-        public static (BlockChain<T> BlockChain, ActionEvaluator ActionEvaluator)
+        public static (BlockChain BlockChain, ActionEvaluator ActionEvaluator)
             MakeBlockChainAndActionEvaluator<T>(
             IBlockPolicy policy,
             IStore store,
@@ -622,7 +621,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     validatorSet,
                     timestamp,
                     protocolVersion);
-                var stateRootHash = BlockChain<T>.DetermineGenesisStateRootHash(
+                var stateRootHash = BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     preEval,
                     policy.BlockAction,
@@ -640,7 +639,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             ValidatingActionRenderer validator = null;
 #pragma warning disable S1121
-            var chain = BlockChain<T>.Create(
+            var chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
                 store,

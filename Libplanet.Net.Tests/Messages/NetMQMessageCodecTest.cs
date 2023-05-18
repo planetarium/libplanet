@@ -68,7 +68,7 @@ namespace Libplanet.Net.Tests.Messages
             var privateKey = new PrivateKey();
             var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("127.0.0.1", 1000));
             IBlockPolicy policy = new BlockPolicy();
-            BlockChain<DumbAction> chain = MakeBlockChain(
+            BlockChain chain = MakeBlockChain<DumbAction>(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())

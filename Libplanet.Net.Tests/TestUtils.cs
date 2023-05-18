@@ -80,12 +80,12 @@ namespace Libplanet.Net.Tests
             return privateKey;
         }
 
-        public static BlockChain<DumbAction> CreateDummyBlockChain(
+        public static BlockChain CreateDummyBlockChain(
             MemoryStoreFixture fx,
             IBlockPolicy? policy = null,
             Block? genesisBlock = null)
         {
-            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain<DumbAction>(
                 policy ?? Policy,
                 fx.Store,
                 new TrieStateStore(new MemoryKeyValueStore()),
@@ -218,7 +218,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static (
-            BlockChain<DumbAction> BlockChain,
+            BlockChain BlockChain,
             ConsensusContext<DumbAction> ConsensusContext)
             CreateDummyConsensusContext(
                 TimeSpan newHeightDelay,
@@ -255,7 +255,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static (
-            BlockChain<DumbAction> BlockChain,
+            BlockChain BlockChain,
             Context<DumbAction> Context)
             CreateDummyContext(
                 long height = 1,
@@ -292,7 +292,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static ConsensusReactor<DumbAction> CreateDummyConsensusReactor(
-            BlockChain<DumbAction> blockChain,
+            BlockChain blockChain,
             PrivateKey? key = null,
             string host = "127.0.0.1",
             int consensusPort = 5101,

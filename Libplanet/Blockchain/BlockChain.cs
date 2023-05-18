@@ -31,17 +31,14 @@ namespace Libplanet.Blockchain
     /// </para>
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
-    /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy, IStagePolicy,
+    /// and pass it to the <see cref="BlockChain(IBlockPolicy, IStagePolicy,
     /// IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
     /// constructor.
     /// </para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block"/>'s type parameter.</typeparam>
-    public partial class BlockChain<T> : IBlockChainStates
-        where T : IAction, new()
+    public partial class BlockChain : IBlockChainStates
     {
         // FIXME: The _rwlock field should be private.
         [SuppressMessage(
@@ -54,7 +51,7 @@ namespace Libplanet.Blockchain
         private readonly IBlockChainStates _blockChainStates;
 
         /// <summary>
-        /// All <see cref="Block"/>s in the <see cref="BlockChain{T}"/>
+        /// All <see cref="Block"/>s in the <see cref="BlockChain"/>
         /// storage, including orphan <see cref="Block"/>s.
         /// Keys are <see cref="Block.Hash"/>es and values are
         /// their corresponding <see cref="Block"/>s.
@@ -67,16 +64,16 @@ namespace Libplanet.Blockchain
         private Block _genesis;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BlockChain{T}"/> class by loading
+        /// Initializes a new instance of the <see cref="BlockChain"/> class by loading
         /// the canonical chain from given <paramref name="store"/>.
         /// </summary>
         /// <param name="policy"><see cref="IBlockPolicy"/> to use in the
-        /// <see cref="BlockChain{T}"/>.</param>
+        /// <see cref="BlockChain"/>.</param>
         /// <param name="stagePolicy">The staging policy to follow.</param>
         /// <param name="store"><see cref="IStore"/> to store <see cref="Block"/>s,
-        /// <see cref="Transaction"/>s, and <see cref="BlockChain{T}"/> information.</param>
+        /// <see cref="Transaction"/>s, and <see cref="BlockChain"/> information.</param>
         /// <param name="genesisBlock">The genesis <see cref="Block"/> of
-        /// the <see cref="BlockChain{T}"/>, which is a part of the consensus.
+        /// the <see cref="BlockChain"/>, which is a part of the consensus.
         /// If the given <paramref name="store"/> already contains the genesis block
         /// it checks if the existing genesis block and this argument is the same.
         /// If the <paramref name="store"/> has no genesis block yet this argument will
@@ -166,8 +163,8 @@ namespace Libplanet.Blockchain
             _txLock = new object();
 
             _logger = Log
-                .ForContext<BlockChain<T>>()
-                .ForContext("Source", nameof(BlockChain<T>))
+                .ForContext<BlockChain>()
+                .ForContext("Source", nameof(BlockChain))
                 .ForContext("ChainId", Id);
             ActionEvaluator = actionEvaluator;
 
@@ -204,8 +201,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
-        /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain{T}(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block,
+        /// cref="BlockChain"/> object is instantiated; use <c>renderers</c> option of <see cref=
+        /// "BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block,
         /// IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
@@ -233,7 +230,7 @@ namespace Libplanet.Blockchain
         public Block Tip => this[-1];
 
         /// <summary>
-        /// The first <see cref="Block"/> in the <see cref="BlockChain{T}"/>.
+        /// The first <see cref="Block"/> in the <see cref="BlockChain"/>.
         /// </summary>
         public Block Genesis => _genesis ??= this[0];
 
@@ -243,17 +240,17 @@ namespace Libplanet.Blockchain
         /// All <see cref="Block.Hash"/>es in the current index.  The genesis block's hash goes
         /// first, and the tip goes last.
         /// Returns a <see cref="long"/> integer that represents the number of elements in the
-        /// <see cref="BlockChain{T}"/>.
+        /// <see cref="BlockChain"/>.
         /// </summary>
         public IEnumerable<BlockHash> BlockHashes => IterateBlockHashes();
 
         /// <summary>
         /// Returns a <see cref="long"/> that represents the number of <see cref="Block"/>s in a
-        /// <see cref="BlockChain{T}"/>.  This is guaranteed to be greater than or equal to 1,
-        /// as <see cref="BlockChain{T}"/> always contains at least
+        /// <see cref="BlockChain"/>.  This is guaranteed to be greater than or equal to 1,
+        /// as <see cref="BlockChain"/> always contains at least
         /// its genesis <see cref="Block"/>.
         /// </summary>
-        /// <returns>The number of <see cref="Block"/>s in the <see cref="BlockChain{T}"/>.
+        /// <returns>The number of <see cref="Block"/>s in the <see cref="BlockChain"/>.
         /// </returns>
         public long Count => Store.CountIndex(Id);
 
@@ -333,10 +330,10 @@ namespace Libplanet.Blockchain
 
 #pragma warning disable SA1611
         /// <summary>
-        /// Creates a new instance of <see cref="BlockChain{T}"/> from an empty
+        /// Creates a new instance of <see cref="BlockChain"/> from an empty
         /// <see cref="IStore"/>.
         /// </summary>
-        /// <returns>A newly created <see cref="BlockChain{T}"/>.</returns>
+        /// <returns>A newly created <see cref="BlockChain"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when either <paramref name="store"/>
         /// or <paramref name="stateStore"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> already has a
@@ -345,7 +342,7 @@ namespace Libplanet.Blockchain
         /// is invalid.</exception>
         /// <exception cref="InvalidTxException">Thrown when <paramref name="genesisBlock"/>
         /// contains an invalid <see cref="Transaction"/>.</exception>
-        public static BlockChain<T> Create(
+        public static BlockChain Create(
             IBlockPolicy policy,
             IStagePolicy stagePolicy,
             IStore store,
@@ -420,7 +417,7 @@ namespace Libplanet.Blockchain
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
 
-            return new BlockChain<T>(
+            return new BlockChain(
                 policy,
                 stagePolicy,
                 store,
@@ -433,13 +430,13 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Block"/>
+        /// Determines whether the <see cref="BlockChain"/> contains <see cref="Block"/>
         /// the specified <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block"/> to
-        /// check if it is in the <see cref="BlockChain{T}"/>.</param>
+        /// check if it is in the <see cref="BlockChain"/>.</param>
         /// <returns>
-        /// <see langword="true"/> if the <see cref="BlockChain{T}"/> contains
+        /// <see langword="true"/> if the <see cref="BlockChain"/> contains
         /// <see cref="Block"/> with the specified <paramref name="blockHash"/>; otherwise,
         /// <see langword="false"/>.
         /// </returns>
@@ -493,11 +490,11 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Gets the state of the given <paramref name="address"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
         /// </summary>
         /// <param name="address">An <see cref="Address"/> to get the states of.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
-        /// the state.  It will be The tip of the <see cref="BlockChain{T}"/> if it is
+        /// the state.  It will be The tip of the <see cref="BlockChain"/> if it is
         /// <see langword="null"/>.</param>
         /// <returns>The current state of given <paramref name="address"/>.  This can be
         /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
@@ -540,13 +537,13 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
         /// </summary>
         /// <param name="address">The owner <see cref="Address"/> to query.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be the tip of the
-        /// <see cref="BlockChain{T}"/> if it is <see langword="null"/>.</param>
+        /// <see cref="BlockChain"/> if it is <see langword="null"/>.</param>
         /// <returns>The <paramref name="address"/>'s current balance (or balance as of the given
         /// <paramref name="offset"/>) of the <paramref name="currency"/>.
         /// </returns>
@@ -570,7 +567,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Gets the total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>, and if not found, derive
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>, and if not found, derive
         /// from the sum of all balances.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
@@ -666,7 +663,7 @@ namespace Libplanet.Blockchain
             if (!transaction.GenesisHash.Equals(Genesis.Hash))
             {
                 var msg = "GenesisHash of the transaction is not compatible " +
-                          "with the BlockChain<T>.Genesis.Hash.";
+                          "with the BlockChain.Genesis.Hash.";
                 throw new InvalidTxGenesisHashException(
                     msg,
                     transaction.Id,
@@ -745,7 +742,7 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Finds the branch point <see cref="BlockHash"/> between this <see cref="BlockChain{T}"/>
+        /// Finds the branch point <see cref="BlockHash"/> between this <see cref="BlockChain"/>
         /// and <paramref name="locator"/> and returns the list of <see cref="BlockHash"/>es of
         /// successive <see cref="Block"/>s starting from the branch point
         /// <see cref="BlockHash"/>.</summary>
@@ -826,7 +823,7 @@ namespace Libplanet.Blockchain
         /// <returns>An instance of the newly forked chain.</returns>
         /// <exception cref="ArgumentException">Throws when the provided <paramref name="point"/>
         /// does not exist in the current chain.</exception>
-        public BlockChain<T> Fork(BlockHash point, bool inheritRenderers = true)
+        public BlockChain Fork(BlockHash point, bool inheritRenderers = true)
         {
             if (!ContainsBlock(point))
             {
@@ -853,7 +850,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.AppendIndex(forkedId, Genesis.Hash);
-                var forked = new BlockChain<T>(
+                var forked = new BlockChain(
                     Policy,
                     StagePolicy,
                     Store,
@@ -948,13 +945,13 @@ namespace Libplanet.Blockchain
         ///         Proof-of-Work.
         ///     </item>
         ///     <item>
-        ///         Given <see cref="Block"/> is <see cref="BlockChain{T}.Genesis"/> block.
+        ///         Given <see cref="Block"/> is <see cref="BlockChain.Genesis"/> block.
         ///     </item>
         /// </list>
         /// </returns>
         /// <exception cref="KeyNotFoundException">Thrown if given index does not exist in the
         /// blockchain.</exception>
-        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <remarks>The <see cref="BlockChain.Genesis"/> block does not have
         /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
         /// </remarks>
         public BlockCommit GetBlockCommit(long index)
@@ -977,11 +974,11 @@ namespace Libplanet.Blockchain
         /// <param name="blockHash">A hash value of <see cref="Block"/> to retrieve.
         /// </param>
         /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block"/> hash, if
-        /// the <see cref="BlockCommit"/> of <see cref="BlockChain{T}.Genesis"/> block is requested,
+        /// the <see cref="BlockCommit"/> of <see cref="BlockChain.Genesis"/> block is requested,
         /// then returns <see langword="null"/>.</returns>
         /// <exception cref="KeyNotFoundException">Thrown if given hash does not exist in the
         /// blockchain.</exception>
-        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <remarks>The <see cref="BlockChain.Genesis"/> block does not have
         /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
         /// </remarks>
         public BlockCommit GetBlockCommit(BlockHash blockHash) =>
@@ -1175,7 +1172,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Find an approximate to the topmost common ancestor between this
-        /// <see cref="BlockChain{T}"/> and a given <see cref="BlockLocator"/>.
+        /// <see cref="BlockChain"/> and a given <see cref="BlockLocator"/>.
         /// </summary>
         /// <param name="locator">A block locator that contains candidate common ancestors.</param>
         /// <returns>An approximate to the topmost common ancestor.  If it failed to find anything

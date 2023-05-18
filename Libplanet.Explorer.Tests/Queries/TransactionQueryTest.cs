@@ -25,13 +25,13 @@ namespace Libplanet.Explorer.Tests.Queries;
 
 public class TransactionQueryTest
 {
-    protected readonly BlockChain<NullAction> Chain;
+    protected readonly BlockChain Chain;
     protected MockBlockChainContext<NullAction> Source;
     protected TransactionQuery<NullAction> QueryGraph;
 
     public TransactionQueryTest()
     {
-        Chain = Libplanet.Tests.TestUtils.MakeBlockChain(
+        Chain = Libplanet.Tests.TestUtils.MakeBlockChain<NullAction>(
             new BlockPolicy(),
             new MemoryStore(),
             new TrieStateStore(new MemoryKeyValueStore()),

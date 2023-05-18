@@ -78,7 +78,7 @@ namespace Libplanet.RocksDBStore.Tests
             {
                 var store = new RocksDBStore(path);
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-                var blocks = BlockChain<DumbAction>.Create(
+                var blocks = BlockChain.Create(
                     new NullBlockPolicy(),
                     new VolatileStagePolicy(),
                     store,

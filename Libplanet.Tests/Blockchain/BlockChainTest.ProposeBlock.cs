@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Blockchain
                     new BlockChainStates(fx.Store, fx.StateStore),
                     new SingleActionLoader(typeof(DumbAction)),
                     null);
-                var genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
+                var genesis = BlockChain.ProposeGenesisBlock(
                     actionEvaluator,
                     new PrivateKey(),
                     new[]
@@ -143,7 +143,7 @@ namespace Libplanet.Tests.Blockchain
                             }),
                     }.ToImmutableList(),
                     blockAction: policy.BlockAction);
-                Assert.Throws<InvalidTxNonceException>(() => BlockChain<DumbAction>.Create(
+                Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),
                     fx.Store,
@@ -159,7 +159,7 @@ namespace Libplanet.Tests.Blockchain
             using (var fx = new MemoryStoreFixture())
             {
                 var policy = new BlockPolicy();
-                var blockChain = BlockChain<DumbAction>.Create(
+                var blockChain = BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),
                     fx.Store,
@@ -304,7 +304,7 @@ namespace Libplanet.Tests.Blockchain
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
@@ -315,7 +315,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
-                var blockChain = BlockChain<DumbAction>.Create(
+                var blockChain = BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),
                     fx.Store,
@@ -427,7 +427,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new BlockPolicy(blockAction);
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
-            var blockChain = new BlockChain<DumbAction>(
+            var blockChain = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
                 _fx.Store,

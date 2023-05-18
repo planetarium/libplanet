@@ -5,7 +5,7 @@ namespace Libplanet.Explorer.Indexing;
 
 /// <summary>
 /// An exception raised when the indexed blocks do not match the blocks in the provided
-/// <see cref="Blockchain.BlockChain{T}"/> object at the same height.
+/// <see cref="Blockchain.BlockChain"/> object at the same height.
 /// </summary>
 public class IndexMismatchException : Exception
 {
@@ -32,7 +32,7 @@ public class IndexMismatchException : Exception
     public BlockHash IndexHash { get; }
 
     /// <summary>
-    /// The hash of the block inside the <see cref="Blockchain.BlockChain{T}"/> object.
+    /// The hash of the block inside the <see cref="Blockchain.BlockChain"/> object.
     /// </summary>
     public BlockHash? ChainHash { get; }
 }

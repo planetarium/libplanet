@@ -12,15 +12,15 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         /// <summary>
         /// <para>
-        /// Propose a genesis block for creating a <see cref="BlockChain{T}"/>.
+        /// Propose a genesis block for creating a <see cref="BlockChain"/>.
         /// </para>
         /// <para>
         /// Note that a genesis <see cref="Block"/> produced may not be suitable as
-        /// a genesis for <see cref="BlockChain{T}.Create"/> if given
+        /// a genesis for <see cref="BlockChain.Create"/> if given
         /// <paramref name="transactions"/> is invalid.
         /// </para>
         /// <para>
@@ -40,7 +40,7 @@ namespace Libplanet.Blockchain
         /// It must match to <see cref="BlockPolicy.BlockAction"/> of <see cref="Policy"/>.
         /// </param>
         /// <returns>A genesis <see cref="Block"/> proposed with given parameters.</returns>
-        /// <seealso cref="BlockChain{T}.Create"/>
+        /// <seealso cref="BlockChain.Create"/>
         // FIXME: This method should take a IBlockPolicy instead of params blockAction
         // (Or at least there should be such an overload).
         public static Block ProposeGenesisBlock(
@@ -88,7 +88,7 @@ namespace Libplanet.Blockchain
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
+        /// <see cref="BlockChain.Tip"/> is changed while proposing.</exception>
         public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,

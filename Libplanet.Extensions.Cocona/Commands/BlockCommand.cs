@@ -154,7 +154,7 @@ public class BlockCommand
                 new MemoryStore(), new TrieStateStore(new DefaultKeyValueStore(null))),
             new SingleActionLoader(typeof(NullAction)),
             null);
-        Block genesis = BlockChain<NullAction>.ProposeGenesisBlock(
+        Block genesis = BlockChain.ProposeGenesisBlock(
             actionEvaluator,
             privateKey: key,
             transactions: txs,

@@ -30,9 +30,9 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Checks if a <see cref="Transaction"/> can be included in a yet to be mined
-        /// <see cref="Block"/> that can be appended to the given <see cref="BlockChain{T}"/>.
+        /// <see cref="Block"/> that can be appended to the given <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to include
+        /// <param name="blockChain">The target <see cref="BlockChain"/> to include
         /// given <paramref name="transaction"/>.</param>
         /// <param name="transaction">The <see cref="Transaction"/> to consider.</param>
         /// <returns>A <see cref="TxPolicyViolationException"/> with a description
@@ -47,20 +47,20 @@ namespace Libplanet.Blockchain.Policies
         /// </item>
         /// <item>
         ///     <description>When appending a <see cref="Block"/>
-        ///     with <paramref name="transaction"/> to a <see cref="BlockChain{T}"/>.</description>
+        ///     with <paramref name="transaction"/> to a <see cref="BlockChain"/>.</description>
         /// </item>
         /// </list>
         /// This is called separately from <see cref="ValidateNextBlock"/> from
-        /// a <see cref="BlockChain{T}"/>.
+        /// a <see cref="BlockChain"/>.
         /// </remarks>
         TxPolicyViolationException? ValidateNextBlockTx(
-            BlockChain<T> blockChain, Transaction transaction);
+            BlockChain blockChain, Transaction transaction);
 
         /// <summary>
         /// Checks if a <see cref="Block"/> can be appended to
-        /// the given <see cref="BlockChain{T}"/>.
+        /// the given <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="blockChain">The target <see cref="BlockChain{T}"/> to
+        /// <param name="blockChain">The target <see cref="BlockChain"/> to
         /// append <paramref name="nextBlock"/>.</param>
         /// <param name="nextBlock">The next block to append to
         /// <paramref name="blockChain"/>.</param>
@@ -69,12 +69,12 @@ namespace Libplanet.Blockchain.Policies
         /// or <see langword="null"/> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// Note that <see cref="ValidateNextBlockTx"/> will be called separately from
-        /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block"/>.
+        /// a <see cref="BlockChain"/> when appending a <see cref="Block"/>.
         /// Hence, to reduce redundancy, an implementation of this interface should not
         /// call <see cref="ValidateNextBlockTx"/>.
         /// </remarks>
         BlockPolicyViolationException? ValidateNextBlock(
-            BlockChain<T> blockChain, Block nextBlock);
+            BlockChain blockChain, Block nextBlock);
 
         /// <summary>
         /// Gets the maximum length of <see cref="Block.Transactions"/> in bytes.

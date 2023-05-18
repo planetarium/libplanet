@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly IReadOnlyList<Transaction> Txs;
         public readonly PrivateKey Miner;
         public readonly Block Genesis;
-        public readonly BlockChain<Arithmetic> Chain;
+        public readonly BlockChain Chain;
         public readonly IStore Store;
         public readonly IKeyValueStore KVStore;
         public readonly TrieStateStore StateStore;
@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Fixtures
                 new BlockChainStates(Store, StateStore),
                 new SingleActionLoader(typeof(Arithmetic)),
                 null);
-            Genesis = TestUtils.ProposeGenesisBlock<Arithmetic>(
+            Genesis = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
                 TestUtils.ProposeGenesis(
                     Miner.PublicKey,
@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Fixtures
                     Block.CurrentProtocolVersion),
                 Miner,
                 policy.BlockAction);
-            Chain = BlockChain<Arithmetic>.Create(
+            Chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
                 Store,

@@ -29,7 +29,7 @@ namespace Libplanet.Net.Tests.Transports
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy();
-            var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
+            var blockchain = MakeBlockChain<DumbAction>(policy, fx.Store, fx.StateStore);
             var swarmKey = new PrivateKey();
             var consensusKey = new PrivateKey();
             var validators = new List<PublicKey>()

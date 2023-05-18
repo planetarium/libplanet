@@ -289,7 +289,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain<DelayAction>(
                 policy,
                 fx.Store,
                 new TrieStateStore(new MemoryKeyValueStore()));

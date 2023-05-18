@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void Reorg()
         {
-            BlockChain<Arithmetic> @base = _fx.Chain.Fork(_fx.Genesis.Hash);
+            BlockChain @base = _fx.Chain.Fork(_fx.Genesis.Hash);
             _fx.Append(_fx.Propose());
             _record.ResetRecords();
             _fx.Chain.Swap(@base, true)();

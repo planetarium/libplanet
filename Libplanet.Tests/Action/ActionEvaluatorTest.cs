@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Action
                 null);
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
-                BlockChain<RandomAction>.DetermineGenesisStateRootHash(
+                BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     noStateRootBlock,
                     null,
@@ -850,7 +850,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluatePolicyBlockAction()
         {
-            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator<DumbAction>(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,

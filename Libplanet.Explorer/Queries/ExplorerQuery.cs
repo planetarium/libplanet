@@ -36,7 +36,7 @@ namespace Libplanet.Explorer.Queries
 
         private static IBlockChainContext<T> ChainContext { get; set; }
 
-        private static BlockChain<T> Chain => ChainContext.BlockChain;
+        private static BlockChain Chain => ChainContext.BlockChain;
 
         private static IStore Store => ChainContext.Store;
 

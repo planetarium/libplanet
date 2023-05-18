@@ -11,7 +11,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         internal static Dictionary<Address, long> ValidateGenesisNonces(
             Block block)

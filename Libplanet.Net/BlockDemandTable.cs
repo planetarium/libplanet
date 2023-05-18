@@ -27,7 +27,7 @@ namespace Libplanet.Net
         public bool Any() => _blockDemands.Any();
 
         public void Add(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             Func<IBlockExcerpt, bool> predicate,
             BlockDemand demand)
         {
@@ -56,7 +56,7 @@ namespace Libplanet.Net
         }
 
         public void Cleanup(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             Func<IBlockExcerpt, bool> predicate)
         {
             foreach (var demand in _blockDemands.Values)
@@ -71,7 +71,7 @@ namespace Libplanet.Net
         }
 
         private bool IsDemandNeeded(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             Func<IBlockExcerpt, bool> predicate,
             BlockDemand demand)
         {

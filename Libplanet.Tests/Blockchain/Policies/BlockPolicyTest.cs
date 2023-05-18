@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         private readonly ITestOutputHelper _output;
 
         private StoreFixture _fx;
-        private BlockChain<DumbAction> _chain;
+        private BlockChain _chain;
         private IBlockPolicy _policy;
         private IStagePolicy _stagePolicy;
 
@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             _stagePolicy = new VolatileStagePolicy();
-            _chain = BlockChain<DumbAction>.Create(
+            _chain = BlockChain.Create(
                 _policy,
                 _stagePolicy,
                 _fx.Store,
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var validKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             //Invalid Transaction with inner-exception
             TxPolicyViolationException IsSignerValidWithInnerException(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -161,7 +161,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 blockAction: new MinerReward(1),
                 getMinTransactionsPerBlock: index => index == 0 ? 0 : policyLimit);
             var privateKey = new PrivateKey();
-            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
 
             _ = chain.MakeTransaction(privateKey, new DumbAction[] { });
             Assert.Single(chain.ListStagedTransactions());
@@ -183,7 +183,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var policy = new BlockPolicy(
                 getMaxTransactionsPerBlock: _ => policyLimit);
             var privateKey = new PrivateKey();
-            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
 
             _ = Enumerable
                     .Range(0, generatedTxCount)
@@ -208,7 +208,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 getMaxTransactionsPerSignerPerBlock: _ => policyLimit);
             var privateKeys = Enumerable.Range(0, keyCount).Select(_ => new PrivateKey()).ToList();
             var minerKey = privateKeys.First();
-            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
 
             privateKeys.ForEach(
                 key => _ = Enumerable

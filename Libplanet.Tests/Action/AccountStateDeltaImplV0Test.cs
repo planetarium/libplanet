@@ -51,9 +51,9 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public override BlockChain<DumbAction> TransferAssetInBlock()
+        public override BlockChain TransferAssetInBlock()
         {
-            BlockChain<DumbAction> chain = base.TransferAssetInBlock();
+            BlockChain chain = base.TransferAssetInBlock();
 
             DumbAction action = new DumbAction(_addr[0], "a", _addr[0], _addr[0], 1);
             Transaction tx = Transaction.Create(

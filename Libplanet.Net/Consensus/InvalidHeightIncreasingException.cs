@@ -6,7 +6,7 @@ namespace Libplanet.Net.Consensus
 {
     /// <summary>
     /// An exception thrown when a <see cref="ConsensusContext{T}.NewHeight"/> has called with
-    /// height is not the index of <see cref="BlockChain{T}.Tip"/> + 1.
+    /// height is not the index of <see cref="BlockChain.Tip"/> + 1.
     /// </summary>
     [Serializable]
     public class InvalidHeightIncreasingException : Exception

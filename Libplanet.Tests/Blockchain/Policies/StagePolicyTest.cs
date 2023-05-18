@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blockchain.Policies
     {
         protected readonly BlockPolicy _policy;
         protected readonly MemoryStoreFixture _fx;
-        protected readonly BlockChain<DumbAction> _chain;
+        protected readonly BlockChain _chain;
         protected readonly PrivateKey _key;
         protected readonly Transaction[] _txs;
 
@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             _policy = new BlockPolicy();
             _fx = new MemoryStoreFixture();
-            _chain = BlockChain<DumbAction>.Create(
+            _chain = BlockChain.Create(
                 _policy,
                 StagePolicy,
                 _fx.Store,

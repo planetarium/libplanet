@@ -8,7 +8,7 @@ namespace Libplanet.Tx
     /// <summary>
     /// The exception that is thrown when the <see cref="Transaction.GenesisHash"/>
     /// is different from the <see cref="HashDigest{SHA256}"/> of
-    /// <see cref="BlockChain{T}.Genesis"/>.
+    /// <see cref="BlockChain.Genesis"/>.
     /// </summary>
     [Serializable]
     public sealed class InvalidTxGenesisHashException : InvalidTxException
@@ -22,7 +22,7 @@ namespace Libplanet.Tx
         /// <see cref="Transaction.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="expectedGenesisHash">The <see cref="HashDigest{SHA256}"/>
-        /// value of <see cref="BlockChain{T}.Genesis"/>.</param>
+        /// value of <see cref="BlockChain.Genesis"/>.</param>
         /// <param name="improperGenesisHash">The actual
         /// <see cref="Transaction.GenesisHash"/>.  This can be <see langword="null"/>.</param>
         [SuppressMessage(
@@ -46,7 +46,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// The <see cref="HashDigest{SHA256}"/> value of
-        /// <see cref="BlockChain{T}.Genesis"/>.
+        /// <see cref="BlockChain.Genesis"/>.
         /// </summary>
         public BlockHash ExpectedGenesisHash { get; }
 
