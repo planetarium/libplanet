@@ -1060,7 +1060,7 @@ namespace Libplanet.Tests.Store
                         actionEvaluator, preEval, policy.BlockAction, out _));
                 var blocks = BlockChain<NullAction>.Create(
                     policy,
-                    new VolatileStagePolicy<NullAction>(),
+                    new VolatileStagePolicy(),
                     s1,
                     fx.StateStore,
                     genesis,

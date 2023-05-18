@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
     /// </para>
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
-    /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy, IStagePolicy{T},
+    /// and pass it to the <see cref="BlockChain{T}(IBlockPolicy, IStagePolicy,
     /// IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
     /// constructor.
     /// </para>
@@ -100,7 +100,7 @@ namespace Libplanet.Blockchain
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
         public BlockChain(
             IBlockPolicy policy,
-            IStagePolicy<T> stagePolicy,
+            IStagePolicy stagePolicy,
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
@@ -126,7 +126,7 @@ namespace Libplanet.Blockchain
 
         private BlockChain(
             IBlockPolicy policy,
-            IStagePolicy<T> stagePolicy,
+            IStagePolicy stagePolicy,
             IStore store,
             IStateStore stateStore,
             Guid id,
@@ -205,7 +205,7 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain{T}"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain{T}(IBlockPolicy, IStagePolicy{T}, IStore, IStateStore, Block,
+        /// "BlockChain{T}(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block,
         /// IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
@@ -225,7 +225,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// The staging policy.
         /// </summary>
-        public IStagePolicy<T> StagePolicy { get; set; }
+        public IStagePolicy StagePolicy { get; set; }
 
         /// <summary>
         /// The topmost <see cref="Block"/> of the current blockchain.
@@ -347,7 +347,7 @@ namespace Libplanet.Blockchain
         /// contains an invalid <see cref="Transaction"/>.</exception>
         public static BlockChain<T> Create(
             IBlockPolicy policy,
-            IStagePolicy<T> stagePolicy,
+            IStagePolicy stagePolicy,
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,

@@ -195,7 +195,7 @@ namespace Libplanet.Tests.Blockchain
 
             var chain1 = BlockChain<DumbAction>.Create(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,
@@ -221,7 +221,7 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(store, stateStore);
             var chain2 = new BlockChain<DumbAction>(
                 policyWithBlockAction,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,

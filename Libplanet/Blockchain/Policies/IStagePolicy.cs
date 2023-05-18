@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Libplanet.Action;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -8,13 +7,10 @@ namespace Libplanet.Blockchain.Policies
     /// An interface to configure a <see cref="BlockChain{T}"/>'s strategy to deal with staged
     /// transactions.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <remarks>
     /// Every operation of an implementation of this <c>interface</c> must be thread-safe.
     /// </remarks>
-    public interface IStagePolicy<T>
-        where T : IAction, new()
+    public interface IStagePolicy
     {
         /// <summary>
         /// Stages a <paramref name="transaction"/>.

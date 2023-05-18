@@ -34,7 +34,7 @@ namespace Libplanet.Benchmarks
             _fx = new DefaultStoreFixture();
             _blockChain = BlockChain<DumbAction>.Create(
                 new NullBlockPolicy(),
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,

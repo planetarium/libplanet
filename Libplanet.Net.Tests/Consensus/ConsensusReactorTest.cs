@@ -61,7 +61,7 @@ namespace Libplanet.Net.Tests.Consensus
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 blockChains[i] = BlockChain<DumbAction>.Create(
                     TestUtils.Policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     stores[i],
                     stateStore,
                     fx.GenesisBlock,

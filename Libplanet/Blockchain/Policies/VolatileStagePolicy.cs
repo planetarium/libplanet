@@ -12,7 +12,7 @@ namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
     /// <para>
-    /// An in memory implementation of the <see cref="IStagePolicy{T}"/>.
+    /// An in memory implementation of the <see cref="IStagePolicy"/>.
     /// </para>
     /// <para>
     /// This implementation holds on to every unconfirmed <see cref="Transaction"/> except
@@ -33,10 +33,7 @@ namespace Libplanet.Blockchain.Policies
     /// the <see cref="BlockChain{T}"/> is masked and filtered by default.
     /// </para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public class VolatileStagePolicy<T> : IStagePolicy<T>
-        where T : IAction, new()
+    public class VolatileStagePolicy : IStagePolicy
     {
         private readonly ConcurrentDictionary<TxId, Transaction> _staged;
         private readonly HashSet<TxId> _ignored;
@@ -44,7 +41,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
+        /// Creates a new <see cref="VolatileStagePolicy"/> instance.
         /// By default, <see cref="Lifetime"/> is set to 10 minutes.
         /// </summary>
         public VolatileStagePolicy()
@@ -53,15 +50,15 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <summary>
-        /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
+        /// Creates a new <see cref="VolatileStagePolicy"/> instance.
         /// </summary>
         /// <param name="lifetime">Volatilizes staged transactions older than this
         /// <see cref="TimeSpan"/>.  See also <see cref="Lifetime"/>.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
             _logger = Log
-                .ForContext<VolatileStagePolicy<T>>()
-                .ForContext("Source", nameof(VolatileStagePolicy<T>));
+                .ForContext<VolatileStagePolicy>()
+                .ForContext("Source", nameof(VolatileStagePolicy));
             Lifetime = lifetime;
             _staged = new ConcurrentDictionary<TxId, Transaction>();
             _ignored = new HashSet<TxId>();

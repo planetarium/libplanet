@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Blockchain
                     blockAction: policy.BlockAction);
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain<DumbAction>.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     genesis,
@@ -161,7 +161,7 @@ namespace Libplanet.Tests.Blockchain
                 var policy = new BlockPolicy();
                 var blockChain = BlockChain<DumbAction>.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     fx.GenesisBlock,
@@ -317,7 +317,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 var blockChain = BlockChain<DumbAction>.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     fx.GenesisBlock,
@@ -429,7 +429,7 @@ namespace Libplanet.Tests.Blockchain
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,

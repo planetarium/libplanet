@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Blocks
             var policy = new BlockPolicy(
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
-            var stagePolicy = new VolatileStagePolicy<Arithmetic>();
+            var stagePolicy = new VolatileStagePolicy();
 
             PreEvaluationBlock preEvalGenesis =
                 _contents.GenesisContent.Propose();
@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Blocks
             var policy = new BlockPolicy(
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
-            var stagePolicy = new VolatileStagePolicy<Arithmetic>();
+            var stagePolicy = new VolatileStagePolicy();
 
             PreEvaluationBlock preEvalGenesis = _contents.GenesisContent.Propose();
 

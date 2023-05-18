@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Blockchain
         private BlockChain<DumbAction> _blockChain;
         private ValidatingActionRenderer _renderer;
         private Block _validNext;
-        private IStagePolicy<DumbAction> _stagePolicy;
+        private IStagePolicy _stagePolicy;
 
         public BlockChainTest(ITestOutputHelper output)
         {
@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Blockchain
             _policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
-            _stagePolicy = new VolatileStagePolicy<DumbAction>();
+            _stagePolicy = new VolatileStagePolicy();
             _fx = GetStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer();
             _blockChain = BlockChain<DumbAction>.Create(
@@ -134,7 +134,7 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var z = new BlockChain<DumbAction>(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
@@ -598,7 +598,7 @@ namespace Libplanet.Tests.Blockchain
                 var renderer = new RecordingActionRenderer();
                 var blockChain = BlockChain<DumbAction>.Create(
                     _policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     store,
                     stateStore,
                     genesis,
@@ -1074,7 +1074,7 @@ namespace Libplanet.Tests.Blockchain
                 policy.BlockAction);
             var chain = BlockChain<DumbAction>.Create(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisWithTx,
@@ -1092,7 +1092,7 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 tracker,
                 _fx.StateStore,
                 _fx.GenesisBlock,
@@ -1147,7 +1147,7 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 tracker,
                 _fx.StateStore,
                 _fx.GenesisBlock,
@@ -1223,7 +1223,7 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var chain = new BlockChain<DumbAction>(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
@@ -1297,7 +1297,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 var emptyChain = BlockChain<DumbAction>.Create(
                     _blockChain.Policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     emptyFx.Store,
                     emptyFx.StateStore,
                     emptyFx.GenesisBlock,
@@ -1308,7 +1308,7 @@ namespace Libplanet.Tests.Blockchain
                         feeCalculator: null));
                 var fork = BlockChain<DumbAction>.Create(
                     _blockChain.Policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     forkFx.Store,
                     forkFx.StateStore,
                     forkFx.GenesisBlock,
@@ -1675,7 +1675,7 @@ namespace Libplanet.Tests.Blockchain
                 blockPolicy.BlockAction);
             var chain = BlockChain<DumbAction>.Create(
                 blockPolicy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,
@@ -1936,7 +1936,7 @@ namespace Libplanet.Tests.Blockchain
                 null);
             BlockChain<DumbAction> blockChain = BlockChain<DumbAction>.Create(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 storeFixture.Store,
                 storeFixture.StateStore,
                 BlockChain<DumbAction>.ProposeGenesisBlock(
@@ -1966,7 +1966,7 @@ namespace Libplanet.Tests.Blockchain
         private void ConstructWithUnexpectedGenesisBlock()
         {
             var policy = new NullBlockPolicy();
-            var stagePolicy = new VolatileStagePolicy<DumbAction>();
+            var stagePolicy = new VolatileStagePolicy();
             IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var blockChainStates = new BlockChainStates(store, stateStore);
@@ -2063,7 +2063,7 @@ namespace Libplanet.Tests.Blockchain
 
             var chain = BlockChain<DumbAction>.Create(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisWithTx,
@@ -2126,7 +2126,7 @@ namespace Libplanet.Tests.Blockchain
                 transactions: txs);
             BlockChain<SetValidator> blockChain = BlockChain<SetValidator>.Create(
                 policy,
-                new VolatileStagePolicy<SetValidator>(),
+                new VolatileStagePolicy(),
                 storeFixture.Store,
                 storeFixture.StateStore,
                 genesis,

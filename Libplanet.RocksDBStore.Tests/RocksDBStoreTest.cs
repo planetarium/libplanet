@@ -80,7 +80,7 @@ namespace Libplanet.RocksDBStore.Tests
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 var blocks = BlockChain<DumbAction>.Create(
                     new NullBlockPolicy(),
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     store,
                     stateStore,
                     Fx.GenesisBlock,

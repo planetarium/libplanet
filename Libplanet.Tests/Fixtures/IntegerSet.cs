@@ -88,7 +88,7 @@ namespace Libplanet.Tests.Fixtures
                 policy.BlockAction);
             Chain = BlockChain<Arithmetic>.Create(
                 policy,
-                new VolatileStagePolicy<Arithmetic>(),
+                new VolatileStagePolicy(),
                 Store,
                 StateStore,
                 Genesis,

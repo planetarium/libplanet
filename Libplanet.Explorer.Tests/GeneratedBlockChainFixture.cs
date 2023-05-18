@@ -107,7 +107,7 @@ public class GeneratedBlockChainFixture
                 .ToImmutableList());
         Chain = BlockChain<PolymorphicAction<SimpleAction>>.Create(
             policy,
-            new VolatileStagePolicy<PolymorphicAction<SimpleAction>>(),
+            new VolatileStagePolicy(),
             store,
             stateStore,
             genesisBlock,

@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             ).ToArray();
         }
 
-        protected abstract IStagePolicy<DumbAction> StagePolicy { get; }
+        protected abstract IStagePolicy StagePolicy { get; }
 
         [Fact]
         public void Stage()
