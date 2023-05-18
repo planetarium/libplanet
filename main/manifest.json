@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "csYeAiH8OeH/AV6cZyJsU/DwpDS7RsNPPf72csKnGQ8="
+          "hash": "FuO06Flaeush7cTyk/AwcV09qolQfTtvakLH8aSjd2Q="
         }
       },
       "is_incremental": false,
@@ -2217,7 +2217,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.ActionExecutionState.html",
-          "hash": "WMayQvIPGFpBZXMYcFkxYX4nw5eIx5t9/ll86SP5Fa8="
+          "hash": "6MaIoiAQ3QHTtY1rAJuQQlggun07ohdGMzOjYzKpw7g="
         }
       },
       "is_incremental": false,
@@ -2301,7 +2301,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BlockDownloadState.html",
-          "hash": "JGQD1Ry10Er4Ga+xAZedxjS+93X7CmblLlUNxEKkb3U="
+          "hash": "RINd7Z0F75gKMUL2cxqDKJDhOxgezQ6B55MEeTTtvtI="
         }
       },
       "is_incremental": false,
@@ -2313,7 +2313,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BlockHashDownloadState.html",
-          "hash": "km6a2Sftg+aI+hT0TgXoddCciga05zcbXtMIgOrFNU8="
+          "hash": "a4BfAwkjmDDnjTjvOLvCtG1tdt0+JatJpRBbIho6CzU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.BlockSyncState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.BlockSyncState.html",
+          "hash": "kMJFcJUqHrVtwdy5kWoeSFusby3+ZlfASie4UoojhnM="
         }
       },
       "is_incremental": false,
@@ -2325,7 +2337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BlockVerificationState.html",
-          "hash": "5GiYpOo1uKAgSpj2kBWhJnALoYna11kVWZlULkqJDHY="
+          "hash": "fHC7a8i27GY1JTopDhVAaxZ3ABPxLp5f4jdxIF1x98E="
         }
       },
       "is_incremental": false,
@@ -2921,18 +2933,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.PreloadState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Net.PreloadState.html",
-          "hash": "EtD+xqVHkcw6uTaoJh1hmUfmkmel+7fb7zwBQ0hPBCs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Protocols.IProtocol.yml",
       "output": {
         ".html": {
@@ -3033,7 +3033,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.StateDownloadState.html",
-          "hash": "EC7RbMdbQq4d5F5LvucZ9MX9F0SJLQqencWzXQdKlZ4="
+          "hash": "4rYPzm3MQ++/cEd3HHYNE6Orz7y/n14UAOdc0zE4Q/I="
         }
       },
       "is_incremental": false,
@@ -3045,7 +3045,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "cfQVzcWN/ASrf7FSU+RZkdgllIkvwCUad9gY01adAoo="
+          "hash": "8AJ1AYe3bOfliqY4YwG2EWjf16poDuNG+qXG7VJPzFQ="
         }
       },
       "is_incremental": false,
@@ -3237,7 +3237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "MvoJmULpShS37lFHbHumKncwOTF4M0g7IkDx6Lz0FTw="
+          "hash": "D4s4MAlDbJ3z0JYRD4zvz3w3UmcJG6HuskKd9Qv2CWA="
         }
       },
       "is_incremental": false,
@@ -4617,7 +4617,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "X3HLpNDvLzLN4l6cao6kAW3WB0ntwAvXo5l/8BvRWCw="
+          "hash": "SpWAFgkg+QY0OCoJvpZVlR/BXyGfXxBbSBfKcig2oWg="
         }
       },
       "is_incremental": false,

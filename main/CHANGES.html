@@ -66,6 +66,10 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Renamed <code>PreloadState</code> as <code>BlockSyncState</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li>Replaced <code>Swarm&lt;T&gt;.PreloadAsync</code>'s parameter
+<code>IProgress&lt;PreloadState&gt; progress</code>
+as <code>IProgress&lt;BlockSyncState&gt; progress</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
 <li>Moved <code>IAccountStateDelta</code> and relations interface to
 <code>Libplanet.State</code> namespace (from <code>Libplanet.Action</code> namespace).
 [<a href="https://github.com/planetarium/libplanet/pull/3173">#3173</a>]</li>
@@ -79,6 +83,22 @@
 <code>HaveMessage</code> instead of immediately replying to them, and send the
 <code>WantMessage</code> requests all at once during each <code>HeartbeatTask</code>.
 <a href="https://github.com/planetarium/libplanet/pull/3152">#3152</a></li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> use <code>PullBlocksAsync()</code> and
+<code>ConsumeBlockCandidates()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> uses <code>BlockCandidateTable&lt;T&gt;</code> to cache
+downloaded <code>Block</code>s, instead of storing them on forked <code>BlockChain&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.PullBlocksAsync()</code> and <code>Swarm&lt;T&gt;.GetDemandBlockHashes()</code> iterates
+using new parameter <code>chunkSize</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.ConsumeBlockCandidates()</code> repeats iff new parameter
+<code>checkInterval</code> is not null.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.ConsumeBlockCandidates()</code> does not renders if new parameter
+<code>render</code> is <code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.PullBlocksAsync()</code> and <code>Swarm&lt;T&gt;.GetDemandBlockHashes()</code>
+receives new parameter <code>IProgress&lt;BlockSyncState&gt; progress</code> and will
+report progress to it, if it's given.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li>Moved creation of <code>BlockDemandTable</code> and <code>BlockCandidateTable</code>
+to constructor of <code>Swarm&lt;T&gt;</code> from <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>

@@ -14125,6 +14125,89 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockHashDownloadState.SourcePeer
   nameWithType: BlockHashDownloadState.SourcePeer
+- uid: Libplanet.Net.BlockSyncState
+  name: BlockSyncState
+  href: api/Libplanet.Net.BlockSyncState.html
+  commentId: T:Libplanet.Net.BlockSyncState
+  fullName: Libplanet.Net.BlockSyncState
+  nameWithType: BlockSyncState
+- uid: Libplanet.Net.BlockSyncState.CurrentPhase
+  name: CurrentPhase
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_CurrentPhase
+  commentId: P:Libplanet.Net.BlockSyncState.CurrentPhase
+  fullName: Libplanet.Net.BlockSyncState.CurrentPhase
+  nameWithType: BlockSyncState.CurrentPhase
+- uid: Libplanet.Net.BlockSyncState.CurrentPhase*
+  name: CurrentPhase
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_CurrentPhase_
+  commentId: Overload:Libplanet.Net.BlockSyncState.CurrentPhase
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockSyncState.CurrentPhase
+  nameWithType: BlockSyncState.CurrentPhase
+- uid: Libplanet.Net.BlockSyncState.Equals(Libplanet.Net.BlockSyncState)
+  name: Equals(BlockSyncState)
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_Equals_Libplanet_Net_BlockSyncState_
+  commentId: M:Libplanet.Net.BlockSyncState.Equals(Libplanet.Net.BlockSyncState)
+  fullName: Libplanet.Net.BlockSyncState.Equals(Libplanet.Net.BlockSyncState)
+  nameWithType: BlockSyncState.Equals(BlockSyncState)
+- uid: Libplanet.Net.BlockSyncState.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_Equals_System_Object_
+  commentId: M:Libplanet.Net.BlockSyncState.Equals(System.Object)
+  fullName: Libplanet.Net.BlockSyncState.Equals(System.Object)
+  nameWithType: BlockSyncState.Equals(Object)
+- uid: Libplanet.Net.BlockSyncState.Equals*
+  name: Equals
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_Equals_
+  commentId: Overload:Libplanet.Net.BlockSyncState.Equals
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockSyncState.Equals
+  nameWithType: BlockSyncState.Equals
+- uid: Libplanet.Net.BlockSyncState.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_GetHashCode
+  commentId: M:Libplanet.Net.BlockSyncState.GetHashCode
+  fullName: Libplanet.Net.BlockSyncState.GetHashCode()
+  nameWithType: BlockSyncState.GetHashCode()
+- uid: Libplanet.Net.BlockSyncState.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_GetHashCode_
+  commentId: Overload:Libplanet.Net.BlockSyncState.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockSyncState.GetHashCode
+  nameWithType: BlockSyncState.GetHashCode
+- uid: Libplanet.Net.BlockSyncState.op_Equality(Libplanet.Net.BlockSyncState,Libplanet.Net.BlockSyncState)
+  name: Equality(BlockSyncState, BlockSyncState)
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_op_Equality_Libplanet_Net_BlockSyncState_Libplanet_Net_BlockSyncState_
+  commentId: M:Libplanet.Net.BlockSyncState.op_Equality(Libplanet.Net.BlockSyncState,Libplanet.Net.BlockSyncState)
+  fullName: Libplanet.Net.BlockSyncState.Equality(Libplanet.Net.BlockSyncState, Libplanet.Net.BlockSyncState)
+  nameWithType: BlockSyncState.Equality(BlockSyncState, BlockSyncState)
+- uid: Libplanet.Net.BlockSyncState.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_op_Equality_
+  commentId: Overload:Libplanet.Net.BlockSyncState.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockSyncState.Equality
+  nameWithType: BlockSyncState.Equality
+- uid: Libplanet.Net.BlockSyncState.op_Inequality(Libplanet.Net.BlockSyncState,Libplanet.Net.BlockSyncState)
+  name: Inequality(BlockSyncState, BlockSyncState)
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_op_Inequality_Libplanet_Net_BlockSyncState_Libplanet_Net_BlockSyncState_
+  commentId: M:Libplanet.Net.BlockSyncState.op_Inequality(Libplanet.Net.BlockSyncState,Libplanet.Net.BlockSyncState)
+  fullName: Libplanet.Net.BlockSyncState.Inequality(Libplanet.Net.BlockSyncState, Libplanet.Net.BlockSyncState)
+  nameWithType: BlockSyncState.Inequality(BlockSyncState, BlockSyncState)
+- uid: Libplanet.Net.BlockSyncState.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_op_Inequality_
+  commentId: Overload:Libplanet.Net.BlockSyncState.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockSyncState.Inequality
+  nameWithType: BlockSyncState.Inequality
+- uid: Libplanet.Net.BlockSyncState.TotalPhase
+  name: TotalPhase
+  href: api/Libplanet.Net.BlockSyncState.html#Libplanet_Net_BlockSyncState_TotalPhase
+  commentId: F:Libplanet.Net.BlockSyncState.TotalPhase
+  fullName: Libplanet.Net.BlockSyncState.TotalPhase
+  nameWithType: BlockSyncState.TotalPhase
 - uid: Libplanet.Net.BlockVerificationState
   name: BlockVerificationState
   href: api/Libplanet.Net.BlockVerificationState.html
@@ -17829,89 +17912,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PeerState.Peer
   nameWithType: PeerState.Peer
-- uid: Libplanet.Net.PreloadState
-  name: PreloadState
-  href: api/Libplanet.Net.PreloadState.html
-  commentId: T:Libplanet.Net.PreloadState
-  fullName: Libplanet.Net.PreloadState
-  nameWithType: PreloadState
-- uid: Libplanet.Net.PreloadState.CurrentPhase
-  name: CurrentPhase
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_CurrentPhase
-  commentId: P:Libplanet.Net.PreloadState.CurrentPhase
-  fullName: Libplanet.Net.PreloadState.CurrentPhase
-  nameWithType: PreloadState.CurrentPhase
-- uid: Libplanet.Net.PreloadState.CurrentPhase*
-  name: CurrentPhase
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_CurrentPhase_
-  commentId: Overload:Libplanet.Net.PreloadState.CurrentPhase
-  isSpec: "True"
-  fullName: Libplanet.Net.PreloadState.CurrentPhase
-  nameWithType: PreloadState.CurrentPhase
-- uid: Libplanet.Net.PreloadState.Equals(Libplanet.Net.PreloadState)
-  name: Equals(PreloadState)
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_Equals_Libplanet_Net_PreloadState_
-  commentId: M:Libplanet.Net.PreloadState.Equals(Libplanet.Net.PreloadState)
-  fullName: Libplanet.Net.PreloadState.Equals(Libplanet.Net.PreloadState)
-  nameWithType: PreloadState.Equals(PreloadState)
-- uid: Libplanet.Net.PreloadState.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_Equals_System_Object_
-  commentId: M:Libplanet.Net.PreloadState.Equals(System.Object)
-  fullName: Libplanet.Net.PreloadState.Equals(System.Object)
-  nameWithType: PreloadState.Equals(Object)
-- uid: Libplanet.Net.PreloadState.Equals*
-  name: Equals
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_Equals_
-  commentId: Overload:Libplanet.Net.PreloadState.Equals
-  isSpec: "True"
-  fullName: Libplanet.Net.PreloadState.Equals
-  nameWithType: PreloadState.Equals
-- uid: Libplanet.Net.PreloadState.GetHashCode
-  name: GetHashCode()
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_GetHashCode
-  commentId: M:Libplanet.Net.PreloadState.GetHashCode
-  fullName: Libplanet.Net.PreloadState.GetHashCode()
-  nameWithType: PreloadState.GetHashCode()
-- uid: Libplanet.Net.PreloadState.GetHashCode*
-  name: GetHashCode
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_GetHashCode_
-  commentId: Overload:Libplanet.Net.PreloadState.GetHashCode
-  isSpec: "True"
-  fullName: Libplanet.Net.PreloadState.GetHashCode
-  nameWithType: PreloadState.GetHashCode
-- uid: Libplanet.Net.PreloadState.op_Equality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
-  name: Equality(PreloadState, PreloadState)
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Equality_Libplanet_Net_PreloadState_Libplanet_Net_PreloadState_
-  commentId: M:Libplanet.Net.PreloadState.op_Equality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
-  fullName: Libplanet.Net.PreloadState.Equality(Libplanet.Net.PreloadState, Libplanet.Net.PreloadState)
-  nameWithType: PreloadState.Equality(PreloadState, PreloadState)
-- uid: Libplanet.Net.PreloadState.op_Equality*
-  name: Equality
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Equality_
-  commentId: Overload:Libplanet.Net.PreloadState.op_Equality
-  isSpec: "True"
-  fullName: Libplanet.Net.PreloadState.Equality
-  nameWithType: PreloadState.Equality
-- uid: Libplanet.Net.PreloadState.op_Inequality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
-  name: Inequality(PreloadState, PreloadState)
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Inequality_Libplanet_Net_PreloadState_Libplanet_Net_PreloadState_
-  commentId: M:Libplanet.Net.PreloadState.op_Inequality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
-  fullName: Libplanet.Net.PreloadState.Inequality(Libplanet.Net.PreloadState, Libplanet.Net.PreloadState)
-  nameWithType: PreloadState.Inequality(PreloadState, PreloadState)
-- uid: Libplanet.Net.PreloadState.op_Inequality*
-  name: Inequality
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Inequality_
-  commentId: Overload:Libplanet.Net.PreloadState.op_Inequality
-  isSpec: "True"
-  fullName: Libplanet.Net.PreloadState.Inequality
-  nameWithType: PreloadState.Inequality
-- uid: Libplanet.Net.PreloadState.TotalPhase
-  name: TotalPhase
-  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_TotalPhase
-  commentId: F:Libplanet.Net.PreloadState.TotalPhase
-  fullName: Libplanet.Net.PreloadState.TotalPhase
-  nameWithType: PreloadState.TotalPhase
 - uid: Libplanet.Net.Protocols
   name: Libplanet.Net.Protocols
   href: api/Libplanet.Net.Protocols.html
@@ -18983,24 +18983,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Peers
   nameWithType: Swarm<T>.Peers
   nameWithType.vb: Swarm(Of T).Peers
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
-  name: PreloadAsync(IProgress<PreloadState>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_PreloadState__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
-  name.vb: PreloadAsync(IProgress(Of PreloadState), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.IProgress<Libplanet.Net.PreloadState>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.IProgress(Of Libplanet.Net.PreloadState), System.Threading.CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(IProgress<PreloadState>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of PreloadState), CancellationToken)
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
-  name: PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_Int64_System_IProgress_Libplanet_Net_PreloadState__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.PreloadState},System.Threading.CancellationToken)
-  name.vb: PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<System.TimeSpan>, System.Int64, System.IProgress<Libplanet.Net.PreloadState>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of System.TimeSpan), System.Int64, System.IProgress(Of Libplanet.Net.PreloadState), System.Threading.CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.BlockSyncState},System.Threading.CancellationToken)
+  name: PreloadAsync(IProgress<BlockSyncState>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_BlockSyncState__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.BlockSyncState},System.Threading.CancellationToken)
+  name.vb: PreloadAsync(IProgress(Of BlockSyncState), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.IProgress<Libplanet.Net.BlockSyncState>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.IProgress(Of Libplanet.Net.BlockSyncState), System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(IProgress<BlockSyncState>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of BlockSyncState), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.BlockSyncState},System.Threading.CancellationToken)
+  name: PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<BlockSyncState>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_System_TimeSpan__System_Int64_System_IProgress_Libplanet_Net_BlockSyncState__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{System.TimeSpan},System.Int64,System.IProgress{Libplanet.Net.BlockSyncState},System.Threading.CancellationToken)
+  name.vb: PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of BlockSyncState), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<System.TimeSpan>, System.Int64, System.IProgress<Libplanet.Net.BlockSyncState>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of System.TimeSpan), System.Int64, System.IProgress(Of Libplanet.Net.BlockSyncState), System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<BlockSyncState>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of BlockSyncState), CancellationToken)
 - uid: Libplanet.Net.Swarm`1.PreloadAsync*
   name: PreloadAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_
