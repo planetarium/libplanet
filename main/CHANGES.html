@@ -73,6 +73,11 @@ as <code>IProgress&lt;BlockSyncState&gt; progress</code>.  [<a href="https://git
 <li>Moved <code>IAccountStateDelta</code> and relations interface to
 <code>Libplanet.State</code> namespace (from <code>Libplanet.Action</code> namespace).
 [<a href="https://github.com/planetarium/libplanet/pull/3173">#3173</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;()</code> constructors to explicitly require an
+<code>IBlockChainStates</code> and an <code>IActionEvaluator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3172">#3172</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;.DetermineGenesisStateRootHash()</code>,
+<code>BlockChain&lt;T&gt;.EvaluateGenesis()</code>, and <code>BlockChain&lt;T&gt;.ProposeGenesisBlock()</code>
+to explicitly require <code>IActionEvaluator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3172">#3172</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

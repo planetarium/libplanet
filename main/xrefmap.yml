@@ -2435,33 +2435,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T)
   nameWithType: BlockChain<T>
   nameWithType.vb: BlockChain(Of T)
-- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator)
-  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IEnumerable<IRenderer>, IBlockChainStates, IActionEvaluator)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator)
-  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IEnumerable(Of IRenderer), IBlockChainStates, IActionEvaluator)
-  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer>, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.IActionEvaluator)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer), Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.IActionEvaluator)
-  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IEnumerable<IRenderer>, IBlockChainStates, IActionEvaluator)
-  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IEnumerable(Of IRenderer), IBlockChainStates, IActionEvaluator)
-- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates)
-  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IEnumerable<IRenderer>, IBlockChainStates)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates)
-  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IEnumerable(Of IRenderer), IBlockChainStates)
-  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer>, Libplanet.Blockchain.IBlockChainStates)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer), Libplanet.Blockchain.IBlockChainStates)
-  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IEnumerable<IRenderer>, IBlockChainStates)
-  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IEnumerable(Of IRenderer), IBlockChainStates)
-- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})
-  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IEnumerable<IRenderer>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})
-  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IEnumerable(Of IRenderer))
-  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer))
-  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IEnumerable<IRenderer>)
-  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IEnumerable(Of IRenderer))
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})
+  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable<IRenderer>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})
+  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable(Of IRenderer))
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.IActionEvaluator, System.Collections.Generic.IEnumerable<Libplanet.Blockchain.Renderers.IRenderer>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.IActionEvaluator, System.Collections.Generic.IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer))
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable<IRenderer>)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable(Of IRenderer))
 - uid: Libplanet.Blockchain.BlockChain`1.#ctor*
   name: BlockChain
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_
@@ -2592,15 +2574,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineBlockStateRootHash
   nameWithType: BlockChain<T>.DetermineBlockStateRootHash
   nameWithType.vb: BlockChain(Of T).DetermineBlockStateRootHash
-- uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, out IReadOnlyList<IActionEvaluation>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name.vb: DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, ByRef IReadOnlyList(Of IActionEvaluation))
-  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.IActionEvaluation>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.IActionEvaluation))
-  nameWithType: BlockChain<T>.DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, out IReadOnlyList<IActionEvaluation>)
-  nameWithType.vb: BlockChain(Of T).DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, ByRef IReadOnlyList(Of IActionEvaluation))
+- uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
+  name: DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, IAction, out IReadOnlyList<IActionEvaluation>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
+  name.vb: DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, IAction, ByRef IReadOnlyList(Of IActionEvaluation))
+  fullName: Libplanet.Blockchain.BlockChain<T>.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator, Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.IActionEvaluation>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator, Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.IActionEvaluation))
+  nameWithType: BlockChain<T>.DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, IAction, out IReadOnlyList<IActionEvaluation>)
+  nameWithType.vb: BlockChain(Of T).DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, IAction, ByRef IReadOnlyList(Of IActionEvaluation))
 - uid: Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash*
   name: DetermineGenesisStateRootHash
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_
@@ -2627,14 +2609,14 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateBlock
   nameWithType: BlockChain<T>.EvaluateBlock
   nameWithType.vb: BlockChain(Of T).EvaluateBlock
-- uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)
-  name: EvaluateGenesis(IPreEvaluationBlock, IAction)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)
-  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction)
-  nameWithType: BlockChain<T>.EvaluateGenesis(IPreEvaluationBlock, IAction)
-  nameWithType.vb: BlockChain(Of T).EvaluateGenesis(IPreEvaluationBlock, IAction)
+- uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Action.IActionEvaluator,Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)
+  name: EvaluateGenesis(IActionEvaluator, IPreEvaluationBlock, IAction)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Action.IActionEvaluator,Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)
+  fullName: Libplanet.Blockchain.BlockChain<T>.EvaluateGenesis(Libplanet.Action.IActionEvaluator, Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).EvaluateGenesis(Libplanet.Action.IActionEvaluator, Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Action.IAction)
+  nameWithType: BlockChain<T>.EvaluateGenesis(IActionEvaluator, IPreEvaluationBlock, IAction)
+  nameWithType.vb: BlockChain(Of T).EvaluateGenesis(IActionEvaluator, IPreEvaluationBlock, IAction)
 - uid: Libplanet.Blockchain.BlockChain`1.EvaluateGenesis*
   name: EvaluateGenesis
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_
@@ -3069,15 +3051,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeBlock
   nameWithType: BlockChain<T>.ProposeBlock
   nameWithType.vb: BlockChain(Of T).ProposeBlock
-- uid: Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)
-  name: ProposeGenesisBlock(PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)
-  name.vb: ProposeGenesisBlock(PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction)
-  fullName: Libplanet.Blockchain.BlockChain<T>.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList<Libplanet.Tx.Transaction>, System.Nullable<System.DateTimeOffset>, Libplanet.Action.IAction)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeGenesisBlock(Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList(Of Libplanet.Tx.Transaction), System.Nullable(Of System.DateTimeOffset), Libplanet.Action.IAction)
-  nameWithType: BlockChain<T>.ProposeGenesisBlock(PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction)
-  nameWithType.vb: BlockChain(Of T).ProposeGenesisBlock(PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction)
+- uid: Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Action.IActionEvaluator,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)
+  name: ProposeGenesisBlock(IActionEvaluator, PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Action_IActionEvaluator_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Action.IActionEvaluator,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)
+  name.vb: ProposeGenesisBlock(IActionEvaluator, PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction)
+  fullName: Libplanet.Blockchain.BlockChain<T>.ProposeGenesisBlock(Libplanet.Action.IActionEvaluator, Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList<Libplanet.Tx.Transaction>, System.Nullable<System.DateTimeOffset>, Libplanet.Action.IAction)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ProposeGenesisBlock(Libplanet.Action.IActionEvaluator, Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList(Of Libplanet.Tx.Transaction), System.Nullable(Of System.DateTimeOffset), Libplanet.Action.IAction)
+  nameWithType: BlockChain<T>.ProposeGenesisBlock(IActionEvaluator, PrivateKey, ImmutableList<Transaction>, Nullable<DateTimeOffset>, IAction)
+  nameWithType.vb: BlockChain(Of T).ProposeGenesisBlock(IActionEvaluator, PrivateKey, ImmutableList(Of Transaction), Nullable(Of DateTimeOffset), IAction)
 - uid: Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock*
   name: ProposeGenesisBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_

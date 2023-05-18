@@ -78,7 +78,8 @@ information.
 </p>
 <p>
 In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
+constructor.
 </p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -146,175 +147,20 @@ block when it's instantiated.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D%2CLibplanet.Blockchain.IBlockChainStates%2CLibplanet.Action.IActionEvaluator)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CLibplanet.Blockchain.IBlockChainStates%2CLibplanet.Action.IActionEvaluator%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L151">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L101">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator)">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;, IBlockChainStates, IActionEvaluator)</h4>
-  <div class="markdown level1 summary"><p>
-A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s, and the chain
-information.
-</p>
-<p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&gt; renderers, IBlockChainStates blockChainStates, IActionEvaluator actionEvaluator)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
-        <td><span class="parametername">policy</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy</a>&lt;T&gt;</td>
-        <td><span class="parametername">stagePolicy</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
-        <td><span class="parametername">store</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></td>
-        <td><span class="parametername">stateStore</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
-        <td><span class="parametername">genesisBlock</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
-        <td><span class="parametername">renderers</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html">IBlockChainStates</a></td>
-        <td><span class="parametername">blockChainStates</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></td>
-        <td><span class="parametername">actionEvaluator</span></td>
-        <td><p>The <span class="xref">Libplanet.Blockchain.BlockChain`1.ActionEvaluator</span> implementation to calculate next states when append new blocks.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
-block when it's instantiated.</p>
-</div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D%2CLibplanet.Blockchain.IBlockChainStates)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L120">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates)">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</h4>
-  <div class="markdown level1 summary"><p>
-A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s, and the chain
-information.
-</p>
-<p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&gt; renderers, IBlockChainStates blockChainStates)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
-        <td><span class="parametername">policy</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.Policies.IStagePolicy-1.html">IStagePolicy</a>&lt;T&gt;</td>
-        <td><span class="parametername">stagePolicy</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
-        <td><span class="parametername">store</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></td>
-        <td><span class="parametername">stateStore</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
-        <td><span class="parametername">genesisBlock</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
-        <td><span class="parametername">renderers</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html">IBlockChainStates</a></td>
-        <td><span class="parametername">blockChainStates</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html">IBlockChainStates</a> implementation to state lookup.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
-block when it's instantiated.</p>
-</div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L96">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.IActionEvaluator,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer})">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> class by loading
 the canonical chain from given <code data-dev-comment-type="paramref" class="paramref">store</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IEnumerable&lt;IRenderer&gt; renderers = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStagePolicy&lt;T&gt; stagePolicy, IStore store, IStateStore stateStore, Block genesisBlock, IBlockChainStates blockChainStates, IActionEvaluator actionEvaluator, IEnumerable&lt;IRenderer&gt; renderers = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -364,6 +210,20 @@ be used for that.</p>
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html">IBlockChainStates</a></td>
+        <td><span class="parametername">blockChainStates</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html">IBlockChainStates</a> implementation for
+state lookup.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></td>
+        <td><span class="parametername">actionEvaluator</span></td>
+        <td><p>The <span class="xref">Libplanet.Blockchain.BlockChain`1.ActionEvaluator</span> implementation to
+calculate next states when append new blocks.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>&gt;</td>
         <td><span class="parametername">renderers</span></td>
         <td><p>Listens state changes on the created chain.  Listens nothing
@@ -374,7 +234,7 @@ events made by unsuccessful transactions too; see also
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer___remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -416,7 +276,7 @@ has a genesis block and it does not match to what the network expects
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ActionRenderers.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ActionRenderers%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L272">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L218">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ActionRenderers_" data-uid="Libplanet.Blockchain.BlockChain`1.ActionRenderers*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_ActionRenderers" data-uid="Libplanet.Blockchain.BlockChain`1.ActionRenderers">ActionRenderers</h4>
@@ -451,7 +311,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_BlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.BlockHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L302">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L248">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_BlockHashes_" data-uid="Libplanet.Blockchain.BlockChain`1.BlockHashes*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_BlockHashes" data-uid="Libplanet.Blockchain.BlockChain`1.BlockHashes">BlockHashes</h4>
@@ -489,7 +349,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Count.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L312">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L258">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Count_" data-uid="Libplanet.Blockchain.BlockChain`1.Count*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Count" data-uid="Libplanet.Blockchain.BlockChain`1.Count">Count</h4>
@@ -528,7 +388,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Genesis.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Genesis%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L292">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L238">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Genesis_" data-uid="Libplanet.Blockchain.BlockChain`1.Genesis*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Genesis" data-uid="Libplanet.Blockchain.BlockChain`1.Genesis">Genesis</h4>
@@ -563,7 +423,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Id.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Id%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L294">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L240">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Id_" data-uid="Libplanet.Blockchain.BlockChain`1.Id*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Id" data-uid="Libplanet.Blockchain.BlockChain`1.Id">Id</h4>
@@ -573,7 +433,8 @@ information.
 </p>
 <p>
 In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
+constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -605,7 +466,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Item_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Item(Libplanet.Blocks.BlockHash%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L365">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L311">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Item_" data-uid="Libplanet.Blockchain.BlockChain`1.Item*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Item_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.Item(Libplanet.Blocks.BlockHash@)">Item[in BlockHash]</h4>
@@ -676,7 +537,7 @@ with a given <code data-dev-comment-type="paramref" class="paramref">blockHash</
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L331">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L277">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Item_" data-uid="Libplanet.Blockchain.BlockChain`1.Item*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Item_System_Int32_" data-uid="Libplanet.Blockchain.BlockChain`1.Item(System.Int32)">Item[Int32]</h4>
@@ -746,7 +607,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Item_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Item(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L339">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L285">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Item_" data-uid="Libplanet.Blockchain.BlockChain`1.Item*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Item_System_Int64_" data-uid="Libplanet.Blockchain.BlockChain`1.Item(System.Int64)">Item[Int64]</h4>
@@ -816,7 +677,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Policy.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Policy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L277">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L223">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Policy_" data-uid="Libplanet.Blockchain.BlockChain`1.Policy*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Policy" data-uid="Libplanet.Blockchain.BlockChain`1.Policy">Policy</h4>
@@ -851,7 +712,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Renderers.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Renderers%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L266">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L212">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Renderers_" data-uid="Libplanet.Blockchain.BlockChain`1.Renderers*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Renderers" data-uid="Libplanet.Blockchain.BlockChain`1.Renderers">Renderers</h4>
@@ -878,7 +739,7 @@ block when it's instantiated.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_BlockChain_1_Renderers_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Since this value is immutable, renderers cannot be registered after once a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> object is instantiated; use <code>renderers</code> option of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a>
+  <div class="markdown level1 remarks"><p>Since this value is immutable, renderers cannot be registered after once a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> object is instantiated; use <code>renderers</code> option of <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
 constructor instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
@@ -886,7 +747,7 @@ constructor instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_StagePolicy.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.StagePolicy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L282">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L228">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_StagePolicy_" data-uid="Libplanet.Blockchain.BlockChain`1.StagePolicy*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_StagePolicy" data-uid="Libplanet.Blockchain.BlockChain`1.StagePolicy">StagePolicy</h4>
@@ -921,7 +782,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Tip.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Tip%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L287">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L233">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Tip_" data-uid="Libplanet.Blockchain.BlockChain`1.Tip*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Tip" data-uid="Libplanet.Blockchain.BlockChain`1.Tip">Tip</h4>
@@ -958,7 +819,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block_Libplanet_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Append(Libplanet.Blocks.Block%2CLibplanet.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L700">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L647">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Append_" data-uid="Libplanet.Blockchain.BlockChain`1.Append*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block_Libplanet_Blocks_BlockCommit_" data-uid="Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block,Libplanet.Blocks.BlockCommit)">Append(Block, BlockCommit)</h4>
@@ -1052,7 +913,7 @@ contains an action that cannot be loaded with <a class="xref" href="Libplanet.Ac
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ContainsBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ContainsBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L499">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L446">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ContainsBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.ContainsBlock*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_ContainsBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.Blocks.BlockHash)">ContainsBlock(BlockHash)</h4>
@@ -1110,7 +971,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Create(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Blockchain.Policies.IStagePolicy%7B%600%7D%2CLibplanet.Store.IStore%2CLibplanet.Store.IStateStore%2CLibplanet.Blocks.Block%2CLibplanet.Action.ActionEvaluator%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Blockchain.Renderers.IRenderer%7D%2CLibplanet.Blockchain.IBlockChainStates)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L402">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L348">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Create_" data-uid="Libplanet.Blockchain.BlockChain`1.Create*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_" data-uid="Libplanet.Blockchain.BlockChain`1.Create(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block,Libplanet.Action.ActionEvaluator,System.Collections.Generic.IEnumerable{Libplanet.Blockchain.Renderers.IRenderer},Libplanet.Blockchain.IBlockChainStates)">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</h4>
@@ -1234,7 +1095,7 @@ contains an invalid <a class="xref" href="Libplanet.Tx.Transaction.html">Transac
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_DetermineBlockStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.DetermineBlockStateRootHash(Libplanet.Blocks.IPreEvaluationBlock%2CSystem.Collections.Generic.IReadOnlyList%7BLibplanet.Action.IActionEvaluation%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L104">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L106">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_DetermineBlockStateRootHash_" data-uid="Libplanet.Blockchain.BlockChain`1.DetermineBlockStateRootHash*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_DetermineBlockStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___" data-uid="Libplanet.Blockchain.BlockChain`1.DetermineBlockStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)">DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList&lt;IActionEvaluation&gt;)</h4>
@@ -1320,13 +1181,13 @@ contains an action that cannot be loaded with <a class="xref" href="Libplanet.Ac
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock%2CLibplanet.Action.IAction%2CSystem.Collections.Generic.IReadOnlyList%7BLibplanet.Action.IActionEvaluation%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator%2CLibplanet.Blocks.IPreEvaluationBlock%2CLibplanet.Action.IAction%2CSystem.Collections.Generic.IReadOnlyList%7BLibplanet.Action.IActionEvaluation%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L38">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L40">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_" data-uid="Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___" data-uid="Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)">DetermineGenesisStateRootHash(IPreEvaluationBlock, IAction, out IReadOnlyList&lt;IActionEvaluation&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___" data-uid="Libplanet.Blockchain.BlockChain`1.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)">DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, IAction, out IReadOnlyList&lt;IActionEvaluation&gt;)</h4>
   <div class="markdown level1 summary"><p>Determines the state root hash of <code data-dev-comment-type="paramref" class="paramref">preEvaluationBlock</code>
 by evaluating on top of empty states.</p>
 </div>
@@ -1334,7 +1195,7 @@ by evaluating on top of empty states.</p>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public static HashDigest&lt;SHA256&gt; DetermineGenesisStateRootHash(IPreEvaluationBlock preEvaluationBlock, IAction blockAction, out IReadOnlyList&lt;IActionEvaluation&gt; evaluations)</code></pre>
+public static HashDigest&lt;SHA256&gt; DetermineGenesisStateRootHash(IActionEvaluator actionEvaluator, IPreEvaluationBlock preEvaluationBlock, IAction blockAction, out IReadOnlyList&lt;IActionEvaluation&gt; evaluations)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1346,6 +1207,13 @@ public static HashDigest&lt;SHA256&gt; DetermineGenesisStateRootHash(IPreEvaluat
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></td>
+        <td><span class="parametername">actionEvaluator</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a> to use to
+evaluate the proposed <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></td>
         <td><span class="parametername">preEvaluationBlock</span></td>
@@ -1362,7 +1230,7 @@ to determine the state root hash.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Action.IActionEvaluation.html">IActionEvaluation</a>&gt;</td>
         <td><span class="parametername">evaluations</span></td>
-        <td><p>The evaluation result from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_">EvaluateGenesis(IPreEvaluationBlock, IAction)</a>
+        <td><p>The evaluation result from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_">EvaluateGenesis(IActionEvaluator, IPreEvaluationBlock, IAction)</a>
 for <code data-dev-comment-type="paramref" class="paramref">preEvaluationBlock</code>.</p>
 </td>
       </tr>
@@ -1385,20 +1253,20 @@ an empty <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation____remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method computes the state root hash by commiting <code data-dev-comment-type="paramref" class="paramref">evaluations</code>
 to an ephemeral empty <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
 </div>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation____seealso">See Also</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation____seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_">EvaluateGenesis(IPreEvaluationBlock, IAction)</a></div>
+      <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_">EvaluateGenesis(IActionEvaluator, IPreEvaluationBlock, IAction)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_EvaluateBlock_Libplanet_Blocks_IPreEvaluationBlock_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.EvaluateBlock(Libplanet.Blocks.IPreEvaluationBlock)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L160">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_EvaluateBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.EvaluateBlock*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_EvaluateBlock_Libplanet_Blocks_IPreEvaluationBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.EvaluateBlock(Libplanet.Blocks.IPreEvaluationBlock)">EvaluateBlock(IPreEvaluationBlock)</h4>
@@ -1472,20 +1340,20 @@ contains an action that cannot be loaded with <a class="xref" href="Libplanet.Ac
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock%2CLibplanet.Action.IAction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.EvaluateGenesis(Libplanet.Action.IActionEvaluator%2CLibplanet.Blocks.IPreEvaluationBlock%2CLibplanet.Action.IAction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L63">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.Evaluate.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_" data-uid="Libplanet.Blockchain.BlockChain`1.EvaluateGenesis*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_" data-uid="Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)">EvaluateGenesis(IPreEvaluationBlock, IAction)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction_" data-uid="Libplanet.Blockchain.BlockChain`1.EvaluateGenesis(Libplanet.Action.IActionEvaluator,Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Action.IAction)">EvaluateGenesis(IActionEvaluator, IPreEvaluationBlock, IAction)</h4>
   <div class="markdown level1 summary"><p>Evaluates <code data-dev-comment-type="paramref" class="paramref">preEvaluationBlock</code> on top of empty states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public static IReadOnlyList&lt;IActionEvaluation&gt; EvaluateGenesis(IPreEvaluationBlock preEvaluationBlock, IAction blockAction)</code></pre>
+public static IReadOnlyList&lt;IActionEvaluation&gt; EvaluateGenesis(IActionEvaluator actionEvaluator, IPreEvaluationBlock preEvaluationBlock, IAction blockAction)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1497,6 +1365,13 @@ public static IReadOnlyList&lt;IActionEvaluation&gt; EvaluateGenesis(IPreEvaluat
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></td>
+        <td><span class="parametername">actionEvaluator</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a> to use to
+evaluate the proposed <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></td>
         <td><span class="parametername">preEvaluationBlock</span></td>
@@ -1530,7 +1405,7 @@ resulting from evaluating <code data-dev-comment-type="paramref" class="paramref
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_EvaluateGenesis_Libplanet_Action_IActionEvaluator_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Action_IAction__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -1556,7 +1431,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Finalize.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Finalize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L244">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L190">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Finalize_" data-uid="Libplanet.Blockchain.BlockChain`1.Finalize*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Finalize" data-uid="Libplanet.Blockchain.BlockChain`1.Finalize">Finalize()</h4>
@@ -1566,7 +1441,8 @@ information.
 </p>
 <p>
 In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
+constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1583,7 +1459,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Nullable_Libplanet_Blocks_BlockHash__System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.FindNextHashes(Libplanet.Blockchain.BlockLocator%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L815">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L762">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_FindNextHashes_" data-uid="Libplanet.Blockchain.BlockChain`1.FindNextHashes*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Nullable_Libplanet_Blocks_BlockHash__System_Int32_" data-uid="Libplanet.Blockchain.BlockChain`1.FindNextHashes(Libplanet.Blockchain.BlockLocator,System.Nullable{Libplanet.Blocks.BlockHash},System.Int32)">FindNextHashes(BlockLocator, Nullable&lt;BlockHash&gt;, Int32)</h4>
@@ -1657,7 +1533,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Fork_Libplanet_Blocks_BlockHash_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Fork(Libplanet.Blocks.BlockHash%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L882">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L829">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_Fork_" data-uid="Libplanet.Blockchain.BlockChain`1.Fork*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_Fork_Libplanet_Blocks_BlockHash_System_Boolean_" data-uid="Libplanet.Blockchain.BlockChain`1.Fork(Libplanet.Blocks.BlockHash,System.Boolean)">Fork(BlockHash, Boolean)</h4>
@@ -1734,7 +1610,7 @@ does not exist in the current chain.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetBalance(Libplanet.Address%2CLibplanet.Assets.Currency%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L618">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L565">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetBalance_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBalance*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)">GetBalance(Address, Currency, BlockHash)</h4>
@@ -1803,7 +1679,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetBalance(Libplanet.Address%2CLibplanet.Assets.Currency%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L606">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L553">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetBalance_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBalance*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})">GetBalance(Address, Currency, Nullable&lt;BlockHash&gt;)</h4>
@@ -1873,7 +1749,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetBlockCommit_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetBlockCommit(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L1040">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L987">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetBlockCommit_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBlockCommit*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetBlockCommit_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBlockCommit(Libplanet.Blocks.BlockHash)">GetBlockCommit(BlockHash)</h4>
@@ -1946,7 +1822,7 @@ blockchain.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetBlockCommit_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetBlockCommit(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L1013">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L960">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetBlockCommit_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBlockCommit*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetBlockCommit_System_Int64_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBlockCommit(System.Int64)">GetBlockCommit(Int64)</h4>
@@ -2024,7 +1900,7 @@ blockchain.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetBlockLocator_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetBlockLocator(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L970">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L917">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetBlockLocator_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBlockLocator*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetBlockLocator_System_Int32_" data-uid="Libplanet.Blockchain.BlockChain`1.GetBlockLocator(System.Int32)">GetBlockLocator(Int32)</h4>
@@ -2078,7 +1954,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetNextTxNonce(Libplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L751">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L698">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNextTxNonce*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNextTxNonce(Libplanet.Address)">GetNextTxNonce(Address)</h4>
@@ -2134,7 +2010,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetStagedTransactionIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L794">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L741">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetStagedTransactionIds_" data-uid="Libplanet.Blockchain.BlockChain`1.GetStagedTransactionIds*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetStagedTransactionIds" data-uid="Libplanet.Blockchain.BlockChain`1.GetStagedTransactionIds">GetStagedTransactionIds()</h4>
@@ -2170,7 +2046,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetState(Libplanet.Address%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L557">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L504">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetState_" data-uid="Libplanet.Blockchain.BlockChain`1.GetState*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})">GetState(Address, Nullable&lt;BlockHash&gt;)</h4>
@@ -2234,7 +2110,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetStates(System.Collections.Generic.IReadOnlyList%7BLibplanet.Address%7D%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L589">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L536">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetStates_" data-uid="Libplanet.Blockchain.BlockChain`1.GetStates*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)">GetStates(IReadOnlyList&lt;Address&gt;, BlockHash)</h4>
@@ -2244,7 +2120,8 @@ information.
 </p>
 <p>
 In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
+constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2298,7 +2175,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetStates(System.Collections.Generic.IReadOnlyList%7BLibplanet.Address%7D%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L578">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L525">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetStates_" data-uid="Libplanet.Blockchain.BlockChain`1.GetStates*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})">GetStates(IReadOnlyList&lt;Address&gt;, Nullable&lt;BlockHash&gt;)</h4>
@@ -2361,7 +2238,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetTotalSupply(Libplanet.Assets.Currency%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L644">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L591">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetTotalSupply_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTotalSupply*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)">GetTotalSupply(Currency, BlockHash)</h4>
@@ -2424,7 +2301,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetTotalSupply(Libplanet.Assets.Currency%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L634">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L581">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetTotalSupply_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTotalSupply*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})">GetTotalSupply(Currency, Nullable&lt;BlockHash&gt;)</h4>
@@ -2488,7 +2365,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L524">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L471">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetTransaction_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTransaction*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTransaction(Libplanet.Tx.TxId)">GetTransaction(TxId)</h4>
@@ -2559,7 +2436,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetTrie_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetTrie(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L657">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L604">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetTrie_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTrie*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetTrie_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTrie(Libplanet.Blocks.BlockHash)">GetTrie(BlockHash)</h4>
@@ -2614,7 +2491,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetTxExecution(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L670">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L617">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetTxExecution_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTxExecution*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.BlockChain`1.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)">GetTxExecution(BlockHash, TxId)</h4>
@@ -2678,7 +2555,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetValidatorSet_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetValidatorSet(Libplanet.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L653">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L600">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetValidatorSet_" data-uid="Libplanet.Blockchain.BlockChain`1.GetValidatorSet*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetValidatorSet_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain`1.GetValidatorSet(Libplanet.Blocks.BlockHash)">GetValidatorSet(BlockHash)</h4>
@@ -2735,7 +2612,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetValidatorSet(System.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L649">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L596">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetValidatorSet_" data-uid="Libplanet.Blockchain.BlockChain`1.GetValidatorSet*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain`1.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})">GetValidatorSet(Nullable&lt;BlockHash&gt;)</h4>
@@ -2745,7 +2622,8 @@ information.
 </p>
 <p>
 In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IEnumerable&lt;IRenderer&gt;)</a> constructor.
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
+constructor.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2794,7 +2672,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MakeTransaction(Libplanet.Crypto.PrivateKey%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Action.IAction%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L768">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L715">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_MakeTransaction_" data-uid="Libplanet.Blockchain.BlockChain`1.MakeTransaction*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__" data-uid="Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})">MakeTransaction(PrivateKey, IEnumerable&lt;IAction&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
@@ -2871,7 +2749,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blocks_BlockCommit_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ProposeBlock(Libplanet.Crypto.PrivateKey%2CLibplanet.Blocks.BlockCommit%2CSystem.Collections.Generic.IComparer%7BLibplanet.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L90">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L92">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeBlock*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_ProposeBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blocks_BlockCommit_System_Collections_Generic_IComparer_Libplanet_Tx_Transaction__" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blocks.BlockCommit,System.Collections.Generic.IComparer{Libplanet.Tx.Transaction})">ProposeBlock(PrivateKey, BlockCommit, IComparer&lt;Transaction&gt;)</h4>
@@ -2959,13 +2837,13 @@ block when it's instantiated.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey%2CSystem.Collections.Immutable.ImmutableList%7BLibplanet.Tx.Transaction%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CLibplanet.Action.IAction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Action_IActionEvaluator_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.ProposeGenesisBlock(Libplanet.Action.IActionEvaluator%2CLibplanet.Crypto.PrivateKey%2CSystem.Collections.Immutable.ImmutableList%7BLibplanet.Tx.Transaction%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CLibplanet.Action.IAction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.ProposeBlock.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)">ProposeGenesisBlock(PrivateKey, ImmutableList&lt;Transaction&gt;, Nullable&lt;DateTimeOffset&gt;, IAction)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Action_IActionEvaluator_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction_" data-uid="Libplanet.Blockchain.BlockChain`1.ProposeGenesisBlock(Libplanet.Action.IActionEvaluator,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Tx.Transaction},System.Nullable{System.DateTimeOffset},Libplanet.Action.IAction)">ProposeGenesisBlock(IActionEvaluator, PrivateKey, ImmutableList&lt;Transaction&gt;, Nullable&lt;DateTimeOffset&gt;, IAction)</h4>
   <div class="markdown level1 summary"><p>
 Propose a genesis block for creating a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.
 </p>
@@ -2982,7 +2860,7 @@ each <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transactio
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Block ProposeGenesisBlock(PrivateKey privateKey = null, ImmutableList&lt;Transaction&gt; transactions = null, DateTimeOffset? timestamp = null, IAction blockAction = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Block ProposeGenesisBlock(IActionEvaluator actionEvaluator, PrivateKey privateKey = null, ImmutableList&lt;Transaction&gt; transactions = null, DateTimeOffset? timestamp = null, IAction blockAction = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2994,6 +2872,13 @@ each <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transactio
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></td>
+        <td><span class="parametername">actionEvaluator</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a> to use to
+evaluate the proposed <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
         <td><span class="parametername">privateKey</span></td>
@@ -3040,11 +2925,11 @@ It must match to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Action_IActionEvaluator_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
-  <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction__seealso">See Also</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_ProposeGenesisBlock_Libplanet_Action_IActionEvaluator_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Tx_Transaction__System_Nullable_System_DateTimeOffset__Libplanet_Action_IAction__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Create_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Action_ActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__Libplanet_Blockchain_IBlockChainStates_">Create(IBlockPolicy&lt;T&gt;, IStagePolicy&lt;T&gt;, IStore, IStateStore, Block, ActionEvaluator, IEnumerable&lt;IRenderer&gt;, IBlockChainStates)</a></div>
   </div>
@@ -3053,7 +2938,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_StageTransaction_Libplanet_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.StageTransaction(Libplanet.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L717">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L664">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_StageTransaction_" data-uid="Libplanet.Blockchain.BlockChain`1.StageTransaction*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_StageTransaction_Libplanet_Tx_Transaction_" data-uid="Libplanet.Blockchain.BlockChain`1.StageTransaction(Libplanet.Tx.Transaction)">StageTransaction(Transaction)</h4>
@@ -3126,7 +3011,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_UnstageTransaction_Libplanet_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.UnstageTransaction(Libplanet.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L741">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L688">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_UnstageTransaction_" data-uid="Libplanet.Blockchain.BlockChain`1.UnstageTransaction*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_UnstageTransaction_Libplanet_Tx_Transaction_" data-uid="Libplanet.Blockchain.BlockChain`1.UnstageTransaction(Libplanet.Tx.Transaction)">UnstageTransaction(Transaction)</h4>
