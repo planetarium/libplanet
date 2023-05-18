@@ -13,7 +13,7 @@ namespace Libplanet.Benchmarks
 {
     public class AppendBlock
     {
-        private BlockChain<DumbAction> _blockChain;
+        private Libplanet.Blockchain.BlockChain _blockChain;
         private PrivateKey _privateKey;
         private BlockCommit _lastCommit;
         private Block _block;
@@ -22,7 +22,7 @@ namespace Libplanet.Benchmarks
         public AppendBlock()
         {
             var fx = new DefaultStoreFixture();
-            _blockChain = BlockChain<DumbAction>.Create(
+            _blockChain = Libplanet.Blockchain.BlockChain.Create(
                 new NullBlockPolicy(),
                 new VolatileStagePolicy(),
                 fx.Store,

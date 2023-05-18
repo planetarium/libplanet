@@ -6,7 +6,6 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Xunit;
 

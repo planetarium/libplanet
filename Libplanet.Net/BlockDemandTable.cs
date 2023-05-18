@@ -2,15 +2,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Serilog;
 
 namespace Libplanet.Net
 {
-    public class BlockDemandTable<T>
-        where T : IAction, new()
+    public class BlockDemandTable
     {
         private readonly TimeSpan _blockDemandLifespan;
         private readonly ConcurrentDictionary<BoundPeer, BlockDemand> _blockDemands;

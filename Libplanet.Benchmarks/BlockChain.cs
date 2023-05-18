@@ -16,7 +16,7 @@ namespace Libplanet.Benchmarks
     public class BlockChain
     {
         private StoreFixture _fx;
-        private BlockChain<DumbAction> _blockChain;
+        private Libplanet.Blockchain.BlockChain _blockChain;
 
         public BlockChain()
         {
@@ -32,7 +32,7 @@ namespace Libplanet.Benchmarks
         public void SetupChain()
         {
             _fx = new DefaultStoreFixture();
-            _blockChain = BlockChain<DumbAction>.Create(
+            _blockChain = Libplanet.Blockchain.BlockChain.Create(
                 new NullBlockPolicy(),
                 new VolatileStagePolicy(),
                 _fx.Store,

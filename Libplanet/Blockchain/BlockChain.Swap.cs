@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;

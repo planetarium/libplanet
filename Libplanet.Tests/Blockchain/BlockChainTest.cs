@@ -323,8 +323,8 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer();
             var renderer = new LoggedActionRenderer(recordingRenderer, Log.Logger);
-            BlockChain blockChain =
-                MakeBlockChain<DumbAction>(policy, store, stateStore, renderers: new[] { renderer });
+            BlockChain blockChain = MakeBlockChain<DumbAction>(
+                policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
             var action = new DumbAction(default, string.Empty);

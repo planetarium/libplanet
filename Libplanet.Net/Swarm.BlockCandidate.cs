@@ -123,7 +123,7 @@ namespace Libplanet.Net
         }
 
         private BlockChain AppendPreviousBlocks(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             Branch candidate,
             bool render,
             IProgress<BlockSyncState> progress)
