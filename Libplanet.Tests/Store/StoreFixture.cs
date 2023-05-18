@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Store
                 null);
             GenesisBlock = preEval.Sign(
                 Proposer,
-                BlockChain<DumbAction>.DetermineGenesisStateRootHash(
+                BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     preEval,
                     blockAction,

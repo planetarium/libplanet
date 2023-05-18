@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Action
     {
         private readonly ILogger _logger;
         private readonly ITestOutputHelper _output;
-        private readonly BlockPolicy<DumbAction> _policy;
+        private readonly BlockPolicy _policy;
         private readonly StoreFixture _storeFx;
         private readonly TxFixture _txFx;
 
@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Action
                 .ForContext<ActionEvaluatorTest>();
 
             _output = output;
-            _policy = new BlockPolicy<DumbAction>(
+            _policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             _storeFx = new MemoryStoreFixture(_policy.BlockAction);
@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Action
                 null);
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
-                BlockChain<RandomAction>.DetermineGenesisStateRootHash(
+                BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     noStateRootBlock,
                     null,
@@ -135,7 +135,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
-                policy: new BlockPolicy<EvaluateTestAction>(),
+                policy: new BlockPolicy(),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction.Create(
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
-                policy: new BlockPolicy<ThrowException>(),
+                policy: new BlockPolicy(),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction.Create(
@@ -212,7 +212,7 @@ namespace Libplanet.Tests.Action
                 new TrieStateStore(new MemoryKeyValueStore());
             var (chain, actionEvaluator) =
                 TestUtils.MakeBlockChainAndActionEvaluator<ThrowException>(
-                    policy: new BlockPolicy<ThrowException>(),
+                    policy: new BlockPolicy(),
                     store: store,
                     stateStore: stateStore);
             var genesis = chain.Genesis;
@@ -850,7 +850,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluatePolicyBlockAction()
         {
-            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator<DumbAction>(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,

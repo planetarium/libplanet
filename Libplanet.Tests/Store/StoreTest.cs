@@ -1047,7 +1047,7 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullBlockPolicy<NullAction>();
+                var policy = new NullBlockPolicy();
                 var preEval = ProposeGenesis(proposer: GenesisProposer.PublicKey);
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
@@ -1056,11 +1056,11 @@ namespace Libplanet.Tests.Store
                     null);
                 var genesis = preEval.Sign(
                     GenesisProposer,
-                    BlockChain<NullAction>.DetermineGenesisStateRootHash(
+                    BlockChain.DetermineGenesisStateRootHash(
                         actionEvaluator, preEval, policy.BlockAction, out _));
-                var blocks = BlockChain<NullAction>.Create(
+                var blocks = BlockChain.Create(
                     policy,
-                    new VolatileStagePolicy<NullAction>(),
+                    new VolatileStagePolicy(),
                     s1,
                     fx.StateStore,
                     genesis,

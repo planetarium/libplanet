@@ -18,14 +18,14 @@ namespace Libplanet.Net.Consensus
     /// A manager class for starting network and joining into consensus.
     /// <seealso cref="ConsensusContext{T}"/>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain{T}"/>.
+    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
     /// </typeparam>
     public class ConsensusReactor<T> : IReactor
         where T : IAction, new()
     {
         private readonly Gossip _gossip;
         private readonly ConsensusContext<T> _consensusContext;
-        private readonly BlockChain<T> _blockChain;
+        private readonly BlockChain _blockChain;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Libplanet.Net.Consensus
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusReactor(
             ITransport consensusTransport,
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             PrivateKey privateKey,
             ImmutableList<BoundPeer> validatorPeers,
             ImmutableList<BoundPeer> seedPeers,

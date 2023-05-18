@@ -33,10 +33,11 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+                var policy = new BlockPolicy(new MinerReward(1));
                 using (var storeFx = new MemoryStoreFixture())
                 {
-                    var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
+                    var chain =
+                        MakeBlockChain<DumbAction>(policy, storeFx.Store, storeFx.StateStore);
                     var miner = new PrivateKey();
                     var signer = new PrivateKey();
                     Address address = signer.ToAddress();
@@ -80,7 +81,7 @@ namespace Libplanet.Net.Tests
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
             SwarmOptions options = null,
-            IBlockPolicy<DumbAction> policy = null,
+            IBlockPolicy policy = null,
             Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
@@ -107,13 +108,13 @@ namespace Libplanet.Net.Tests
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
             SwarmOptions options = null,
-            IBlockPolicy<DumbAction> policy = null,
+            IBlockPolicy policy = null,
             Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
+            policy = policy ?? new BlockPolicy(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockchain = MakeBlockChain(
+            var blockchain = MakeBlockChain<DumbAction>(
                 policy,
                 fx.Store,
                 fx.StateStore,
@@ -122,7 +123,7 @@ namespace Libplanet.Net.Tests
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
-            return await CreateSwarm(
+            return await CreateSwarm<DumbAction>(
                 blockchain,
                 privateKey,
                 appProtocolVersionOptions,
@@ -132,7 +133,7 @@ namespace Libplanet.Net.Tests
         }
 
         private async Task<Swarm<T>> CreateSwarm<T>(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,

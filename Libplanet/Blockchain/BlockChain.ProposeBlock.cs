@@ -12,15 +12,15 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         /// <summary>
         /// <para>
-        /// Propose a genesis block for creating a <see cref="BlockChain{T}"/>.
+        /// Propose a genesis block for creating a <see cref="BlockChain"/>.
         /// </para>
         /// <para>
         /// Note that a genesis <see cref="Block"/> produced may not be suitable as
-        /// a genesis for <see cref="BlockChain{T}.Create"/> if given
+        /// a genesis for <see cref="BlockChain.Create"/> if given
         /// <paramref name="transactions"/> is invalid.
         /// </para>
         /// <para>
@@ -37,11 +37,11 @@ namespace Libplanet.Blockchain
         /// <param name="timestamp">The timestamp of the genesis block.  If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
         /// <param name="blockAction">A block action to execute and be rendered for every block.
-        /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
+        /// It must match to <see cref="BlockPolicy.BlockAction"/> of <see cref="Policy"/>.
         /// </param>
         /// <returns>A genesis <see cref="Block"/> proposed with given parameters.</returns>
-        /// <seealso cref="BlockChain{T}.Create"/>
-        // FIXME: This method should take a IBlockPolicy<T> instead of params blockAction
+        /// <seealso cref="BlockChain.Create"/>
+        // FIXME: This method should take a IBlockPolicy instead of params blockAction
         // (Or at least there should be such an overload).
         public static Block ProposeGenesisBlock(
             IActionEvaluator actionEvaluator,
@@ -88,7 +88,7 @@ namespace Libplanet.Blockchain
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
-        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
+        /// <see cref="BlockChain.Tip"/> is changed while proposing.</exception>
         public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
@@ -183,16 +183,16 @@ namespace Libplanet.Blockchain
         /// policies:
         /// <list type="bullet">
         ///     <item><description>
-        ///         <see cref="BlockPolicy{T}.GetMaxTransactionsBytes"/>
+        ///         <see cref="BlockPolicy.GetMaxTransactionsBytes"/>
         ///     </description></item>
         ///     <item><description>
-        ///         <see cref="BlockPolicy{T}.GetMaxTransactionsPerBlock"/>
+        ///         <see cref="BlockPolicy.GetMaxTransactionsPerBlock"/>
         ///     </description></item>
         ///     <item><description>
-        ///         <see cref="BlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock"/>
+        ///         <see cref="BlockPolicy.GetMaxTransactionsPerSignerPerBlock"/>
         ///     </description></item>
         ///     <item><description>
-        ///         <see cref="BlockPolicy{T}.GetMinTransactionsPerBlock"/>
+        ///         <see cref="BlockPolicy.GetMinTransactionsPerBlock"/>
         ///     </description></item>
         /// </list>
         /// </summary>

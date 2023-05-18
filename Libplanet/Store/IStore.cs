@@ -289,9 +289,9 @@ namespace Libplanet.Store
         /// <paramref name="sourceChainId"/> to
         /// <paramref name="destinationChainId"/>.
         /// </summary>
-        /// <param name="sourceChainId">The chain <see cref="BlockChain{T}.Id"/> of
+        /// <param name="sourceChainId">The chain <see cref="BlockChain.Id"/> of
         /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s to fork.</param>
-        /// <param name="destinationChainId">The chain <see cref="BlockChain{T}.Id"/> of destination
+        /// <param name="destinationChainId">The chain <see cref="BlockChain.Id"/> of destination
         /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s.</param>
         void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
 
@@ -313,23 +313,23 @@ namespace Libplanet.Store
         void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <summary>
-        /// Gets a <see cref="BlockCommit"/> associated with a <see cref="BlockChain{T}"/>
-        /// with <paramref name="chainId"/> as its <see cref="BlockChain{T}.Id"/>.
+        /// Gets a <see cref="BlockCommit"/> associated with a <see cref="BlockChain"/>
+        /// with <paramref name="chainId"/> as its <see cref="BlockChain.Id"/>.
         /// </summary>
-        /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of
-        /// the <see cref="BlockChain{T}"/> to retrieve <see cref="BlockCommit"/>.</param>
+        /// <param name="chainId">The <see cref="BlockChain.Id"/> of
+        /// the <see cref="BlockChain"/> to retrieve <see cref="BlockCommit"/>.</param>
         /// <returns>Returns <see cref="BlockCommit"/> if given <paramref name="chainId"/> is
         /// stored and available, otherwise returns <see langword="null"/>.</returns>
         BlockCommit GetChainBlockCommit(Guid chainId);
 
         /// <summary>
-        /// Puts a <see cref="BlockCommit"/> associated with a <see cref="BlockChain{T}"/>
-        /// with <paramref name="chainId"/> as its <see cref="BlockChain{T}.Id"/>.
+        /// Puts a <see cref="BlockCommit"/> associated with a <see cref="BlockChain"/>
+        /// with <paramref name="chainId"/> as its <see cref="BlockChain.Id"/>.
         /// The given <see cref="BlockCommit"/> should have the same <see cref="BlockHash"/>
-        /// as the <see cref="BlockChain{T}.Tip"/>.
+        /// as the <see cref="BlockChain.Tip"/>.
         /// </summary>
-        /// <param name="chainId">The <see cref="BlockChain{T}.Id"/> of
-        /// the <see cref="BlockChain{T}"/> to store <see cref="BlockCommit"/>.</param>
+        /// <param name="chainId">The <see cref="BlockChain.Id"/> of
+        /// the <see cref="BlockChain"/> to store <see cref="BlockCommit"/>.</param>
         /// <param name="blockCommit">The <see cref="BlockCommit"/> to store.</param>
         void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit);
 

@@ -5,7 +5,7 @@ namespace Libplanet.Tx
 {
     /// <summary>
     /// An exception <em>returned</em> when a <see cref="Transaction"/> violates
-    /// a <see cref="IBlockPolicy{T}"/>.
+    /// a <see cref="IBlockPolicy"/>.
     /// </summary>
     [Serializable]
     public class TxPolicyViolationException : InvalidTxException
@@ -16,10 +16,10 @@ namespace Libplanet.Tx
         /// is required.
         /// </summary>
         /// <param name="message">A description for the reason of violation
-        /// given by an implementation of <see cref="IBlockPolicy{T}"/>.
+        /// given by an implementation of <see cref="IBlockPolicy"/>.
         /// </param>
         /// <param name="txid">The <see cref="Transaction.Id"/> of the
-        /// <see cref="Transaction"/> violating a <see cref="IBlockPolicy{T}"/>.
+        /// <see cref="Transaction"/> violating a <see cref="IBlockPolicy"/>.
         /// Gets prepended to <paramref name="message"/>.</param>
         public TxPolicyViolationException(string message, TxId txid)
             : base(message, txid)
@@ -28,9 +28,9 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="TxPolicyViolationException(string, TxId)"/>
         /// <param name="message">A description for the reason of violation
-        /// given by an implementation of <see cref="IBlockPolicy{T}"/>. </param>
+        /// given by an implementation of <see cref="IBlockPolicy"/>. </param>
         /// <param name="txid">The <see cref="Transaction.Id"/> of the
-        /// <see cref="Transaction"/> violating a <see cref="IBlockPolicy{T}"/>.
+        /// <see cref="Transaction"/> violating a <see cref="IBlockPolicy"/>.
         /// Gets prepended to <paramref name="message"/>.</param>
         /// <param name="innerException">The <see cref="Exception"/> for
         /// <see cref="Exception.InnerException"/>.</param>

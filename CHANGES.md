@@ -22,6 +22,9 @@ To be released.
  -  Changed `BlockChain<T>.DetermineGenesisStateRootHash()`,
     `BlockChain<T>.EvaluateGenesis()`, and `BlockChain<T>.ProposeGenesisBlock()`
     to explicitly require `IActionEvaluator`.  [[#3172]]
+ -  Removed type parameter `T` from `BlockChain<T>` class.  [[#3182]]
+ -  Removed type parameter `T` from `IBlockPolicy<T>` interface.  [[#3182]]
+ -  Removed type parameter `T` from `IStagePolicy<T>` interface.  [[#3182]]
 
 ### Backward-incompatible network protocol changes
 
@@ -62,6 +65,7 @@ To be released.
 [#3154]: https://github.com/planetarium/libplanet/pull/3154
 [#3172]: https://github.com/planetarium/libplanet/pull/3172
 [#3173]: https://github.com/planetarium/libplanet/pull/3173
+[#3182]: https://github.com/planetarium/libplanet/pull/3182
 
 
 Version 1.2.1

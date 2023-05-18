@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using Libplanet.Action;
 using Libplanet.Tx;
 using Serilog;
 
@@ -12,7 +11,7 @@ namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
     /// <para>
-    /// An in memory implementation of the <see cref="IStagePolicy{T}"/>.
+    /// An in memory implementation of the <see cref="IStagePolicy"/>.
     /// </para>
     /// <para>
     /// This implementation holds on to every unconfirmed <see cref="Transaction"/> except
@@ -30,13 +29,10 @@ namespace Libplanet.Blockchain.Policies
     /// </para>
     /// <para>
     /// Additionally, any <see cref="Transaction"/> with a lower nonce than that of returned by
-    /// the <see cref="BlockChain{T}"/> is masked and filtered by default.
+    /// the <see cref="BlockChain"/> is masked and filtered by default.
     /// </para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// the <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
-    public class VolatileStagePolicy<T> : IStagePolicy<T>
-        where T : IAction, new()
+    public class VolatileStagePolicy : IStagePolicy
     {
         private readonly ConcurrentDictionary<TxId, Transaction> _staged;
         private readonly HashSet<TxId> _ignored;
@@ -44,7 +40,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
+        /// Creates a new <see cref="VolatileStagePolicy"/> instance.
         /// By default, <see cref="Lifetime"/> is set to 10 minutes.
         /// </summary>
         public VolatileStagePolicy()
@@ -53,15 +49,15 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <summary>
-        /// Creates a new <see cref="VolatileStagePolicy{T}"/> instance.
+        /// Creates a new <see cref="VolatileStagePolicy"/> instance.
         /// </summary>
         /// <param name="lifetime">Volatilizes staged transactions older than this
         /// <see cref="TimeSpan"/>.  See also <see cref="Lifetime"/>.</param>
         public VolatileStagePolicy(TimeSpan lifetime)
         {
             _logger = Log
-                .ForContext<VolatileStagePolicy<T>>()
-                .ForContext("Source", nameof(VolatileStagePolicy<T>));
+                .ForContext<VolatileStagePolicy>()
+                .ForContext("Source", nameof(VolatileStagePolicy));
             Lifetime = lifetime;
             _staged = new ConcurrentDictionary<TxId, Transaction>();
             _ignored = new HashSet<TxId>();
@@ -78,7 +74,7 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan Lifetime { get; }
 
         /// <inheritdoc/>
-        public bool Stage(BlockChain<T> blockChain, Transaction transaction)
+        public bool Stage(BlockChain blockChain, Transaction transaction)
         {
             if (Expired(transaction))
             {
@@ -137,7 +133,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public bool Unstage(BlockChain<T> blockChain, TxId id)
+        public bool Unstage(BlockChain blockChain, TxId id)
         {
             bool result;
             _lock.EnterWriteLock();
@@ -154,7 +150,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public void Ignore(BlockChain<T> blockChain, TxId id)
+        public void Ignore(BlockChain blockChain, TxId id)
         {
             _lock.EnterUpgradeableReadLock();
             try
@@ -184,7 +180,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public bool Ignores(BlockChain<T> blockChain, TxId id)
+        public bool Ignores(BlockChain blockChain, TxId id)
         {
             _lock.EnterReadLock();
             try
@@ -198,7 +194,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public Transaction? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
+        public Transaction? Get(BlockChain blockChain, TxId id, bool filtered = true)
         {
             _lock.EnterReadLock();
             try
@@ -212,7 +208,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Transaction> Iterate(BlockChain<T> blockChain, bool filtered = true)
+        public IEnumerable<Transaction> Iterate(BlockChain blockChain, bool filtered = true)
         {
             List<Transaction> transactions = new List<Transaction>();
 
@@ -237,7 +233,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public long GetNextTxNonce(BlockChain<T> blockChain, Address address)
+        public long GetNextTxNonce(BlockChain blockChain, Address address)
         {
             long nonce = blockChain.Store.GetTxNonce(blockChain.Id, address);
             IEnumerable<Transaction> orderedTxs = Iterate(blockChain, filtered: true)
@@ -266,7 +262,7 @@ namespace Libplanet.Blockchain.Policies
         /// It has been intended to avoid recursive lock, hence doesn't hold any synchronous scope.
         /// Therefore, we should manage the lock from its caller side.
         /// </remarks>
-        private Transaction? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
+        private Transaction? GetInner(BlockChain blockChain, TxId id, bool filtered)
         {
             if (_staged.TryGetValue(id, out Transaction? tx) && tx is { })
             {

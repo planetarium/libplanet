@@ -48,7 +48,7 @@ namespace Libplanet.Net
         /// <paramref name="blockHeader"/> as its key.
         /// </para>
         /// </summary>
-        /// <param name="blockHeader">The header of the <see cref="BlockChain{T}"/>'s
+        /// <param name="blockHeader">The header of the <see cref="BlockChain"/>'s
         /// tip at the time of downloading the blocks.</param>
         /// <param name="branch">The list of downloaded <see cref="Block"/>s and
         /// its <see cref="BlockCommit"/>s.</param>
@@ -84,7 +84,7 @@ namespace Libplanet.Net
         /// <summary>
         /// Get the <see cref="Block"/>s which are in the table by <see cref="BlockHeader"/>.
         /// </summary>
-        /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
+        /// <param name="thisRoundTip">Canonical <see cref="BlockChain"/>'s
         /// tip of this round.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="Block"/>s with associated
         /// <see cref="BlockCommit"/>s by

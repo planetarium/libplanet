@@ -29,10 +29,10 @@ namespace Libplanet.Tests.Blocks
         {
             Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
-            var policy = new BlockPolicy<Arithmetic>(
+            var policy = new BlockPolicy(
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
-            var stagePolicy = new VolatileStagePolicy<Arithmetic>();
+            var stagePolicy = new VolatileStagePolicy();
 
             PreEvaluationBlock preEvalGenesis =
                 _contents.GenesisContent.Propose();
@@ -46,12 +46,12 @@ namespace Libplanet.Tests.Blocks
                     null);
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
-                    BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
+                    BlockChain.DetermineGenesisStateRootHash(
                         actionEvaluator, preEvalGenesis, blockAction, out _));
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
-                var blockChain = BlockChain<Arithmetic>.Create(
+                var blockChain = BlockChain.Create(
                     policy,
                     stagePolicy,
                     fx.Store,
@@ -94,10 +94,10 @@ namespace Libplanet.Tests.Blocks
         {
             Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
-            var policy = new BlockPolicy<Arithmetic>(
+            var policy = new BlockPolicy(
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
-            var stagePolicy = new VolatileStagePolicy<Arithmetic>();
+            var stagePolicy = new VolatileStagePolicy();
 
             PreEvaluationBlock preEvalGenesis = _contents.GenesisContent.Propose();
 
@@ -109,14 +109,14 @@ namespace Libplanet.Tests.Blocks
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)),
                     feeCalculator: null);
                 HashDigest<SHA256> genesisStateRootHash =
-                    BlockChain<Arithmetic>.DetermineGenesisStateRootHash(
+                    BlockChain.DetermineGenesisStateRootHash(
                         actionEvaluator, preEvalGenesis, blockAction, out _);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);
                 _output.WriteLine("#1: {0}", genesis);
 
-                var blockChain = BlockChain<Arithmetic>.Create(
+                var blockChain = BlockChain.Create(
                     policy,
                     stagePolicy,
                     fx.Store,

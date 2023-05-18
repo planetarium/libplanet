@@ -12,7 +12,7 @@ public class MockBlockChainContext<T> : IBlockChainContext<T>
 {
     public bool Preloaded => true;
 
-    public BlockChain<T> BlockChain { get; }
+    public BlockChain BlockChain { get; }
 
     public IStore Store { get; }
 
@@ -20,7 +20,7 @@ public class MockBlockChainContext<T> : IBlockChainContext<T>
 
     public IBlockChainIndex Index { get; protected init; }
 
-    public MockBlockChainContext(BlockChain<T> chain)
+    public MockBlockChainContext(BlockChain chain)
     {
         BlockChain = chain;
         Store = BlockChain.Store;

@@ -61,7 +61,7 @@ namespace Libplanet.Net
         /// <param name="consensusOption"><see cref="ConsensusReactorOption"/> for
         /// initialize <see cref="ConsensusReactor{T}"/>.</param>
         public Swarm(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             PrivateKey privateKey,
             ITransport transport,
             SwarmOptions options = null,
@@ -97,7 +97,7 @@ namespace Libplanet.Net
             _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
-            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+            BlockDemandTable = new BlockDemandTable(Options.BlockDemandLifespan);
             BlockCandidateTable = new BlockCandidateTable<T>();
 
             // Regulate heavy tasks. Treat negative value as 0.
@@ -160,10 +160,10 @@ namespace Libplanet.Net
         public IReadOnlyList<BoundPeer> Validators => _consensusReactor?.Validators;
 
         /// <summary>
-        /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
+        /// The <see cref="BlockChain"/> instance this <see cref="Swarm{T}"/> instance
         /// synchronizes with.
         /// </summary>
-        public BlockChain<T> BlockChain { get; private set; }
+        public BlockChain BlockChain { get; private set; }
 
         /// <inheritdoc cref="AppProtocolVersionOptions.TrustedAppProtocolVersionSigners"/>
         public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners =>
@@ -246,7 +246,7 @@ namespace Libplanet.Net
                 }
             }
 
-            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+            BlockDemandTable = new BlockDemandTable(Options.BlockDemandLifespan);
             BlockCandidateTable = new BlockCandidateTable<T>();
             _logger.Debug($"{nameof(Swarm<T>)} stopped");
         }
@@ -264,7 +264,7 @@ namespace Libplanet.Net
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
         /// blocks to caught in the network this method could lead to unexpected behaviors, because
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
-        /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
+        /// a lot of calls to methods of <see cref="BlockChain.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
         /// <see cref="PreloadAsync(IProgress{BlockSyncState}, CancellationToken)"/>
@@ -300,7 +300,7 @@ namespace Libplanet.Net
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
         /// blocks to caught in the network this method could lead to unexpected behaviors, because
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
-        /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
+        /// a lot of calls to methods of <see cref="BlockChain.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
         /// <see cref="PreloadAsync(IProgress{BlockSyncState}, CancellationToken)"/>
@@ -457,7 +457,7 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="block">The block to broadcast to peers.</param>
         /// <remarks>It does not have to be called manually, because <see cref="Swarm{T}"/> in
-        /// itself watches <see cref="BlockChain"/> for <see cref="BlockChain{T}.Tip"/> changes and
+        /// itself watches <see cref="BlockChain"/> for <see cref="BlockChain.Tip"/> changes and
         /// immediately broadcasts updates if anything changes.</remarks>
         public void BroadcastBlock(Block block)
         {
@@ -946,9 +946,9 @@ namespace Libplanet.Net
         /// Gets all <see cref="BlockHash"/>es for <see cref="Block"/>s needed to be downloaded
         /// by querying <see cref="BoundPeer"/>s.
         /// </summary>
-        /// <param name="blockChain">The <see cref="BlockChain{T}"/> to use as a reference
+        /// <param name="blockChain">The <see cref="BlockChain"/> to use as a reference
         /// for generating a <see cref="BlockLocator"/> when querying.  This may not necessarily
-        /// be <see cref="BlockChain"/>, the canonical <see cref="BlockChain{T}"/> instance held
+        /// be <see cref="BlockChain"/>, the canonical <see cref="BlockChain"/> instance held
         /// by this <see cref="Swarm{T}"/> instance.</param>
         /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
         /// to query with their tips known.</param>
@@ -980,7 +980,7 @@ namespace Libplanet.Net
         /// </para>
         /// </remarks>
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
             int chunkSize = int.MaxValue,
             IProgress<BlockSyncState> progress = null,
@@ -1387,7 +1387,7 @@ namespace Libplanet.Net
         /// <see cref="IBlockExcerpt"/> is needed for <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="target">The <see cref="IBlockExcerpt"/> to compare to the current
-        /// <see cref="BlockChain{T}.Tip"/> of <see cref="BlockChain"/>.</param>
+        /// <see cref="BlockChain.Tip"/> of <see cref="BlockChain"/>.</param>
         /// <returns><see langword="true"/> if the corresponding <see cref="Block"/> to
         /// <paramref name="target"/> is needed, otherwise, <see langword="false"/>.</returns>
         private bool IsBlockNeeded(IBlockExcerpt target)

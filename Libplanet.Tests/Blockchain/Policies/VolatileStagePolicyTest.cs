@@ -10,10 +10,10 @@ namespace Libplanet.Tests.Blockchain.Policies
 {
     public class VolatileStagePolicyTest : StagePolicyTest
     {
-        private readonly VolatileStagePolicy<DumbAction> _stagePolicy =
-            new VolatileStagePolicy<DumbAction>();
+        private readonly VolatileStagePolicy _stagePolicy =
+            new VolatileStagePolicy();
 
-        protected override IStagePolicy<DumbAction> StagePolicy => _stagePolicy;
+        protected override IStagePolicy StagePolicy => _stagePolicy;
 
         [Fact]
         public void Lifetime()
@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void MaxLifetime()
         {
-            var stagePolicy = new VolatileStagePolicy<DumbAction>(TimeSpan.MaxValue);
+            var stagePolicy = new VolatileStagePolicy(TimeSpan.MaxValue);
             Transaction tx = Transaction.Create(
                 0,
                 _key,

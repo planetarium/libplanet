@@ -15,9 +15,9 @@ namespace Libplanet.Net
         /// <summary>
         /// Information of <see cref="Swarm{T}"/>'s demand for new blocks.
         /// It is empty when the <see cref="Swarm{T}"/> does not have any block to demand.
-        /// <seealso cref="BlockDemandTable{T}"/>
+        /// <seealso cref="BlockDemandTable"/>
         /// </summary>
-        public BlockDemandTable<T> BlockDemandTable { get; private set; }
+        public BlockDemandTable BlockDemandTable { get; private set; }
 
         /// <summary>
         /// This is a table of waiting <see cref="Block"/>s

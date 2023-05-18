@@ -175,7 +175,7 @@ namespace Libplanet.Tests.Blockchain
         public void ValidateNextBlockInvalidStateRootHash()
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
@@ -185,7 +185,7 @@ namespace Libplanet.Tests.Blockchain
                 new BlockChainStates(store, stateStore),
                 new SingleActionLoader(typeof(DumbAction)),
                 null);
-            var genesisBlock = TestUtils.ProposeGenesisBlock<DumbAction>(
+            var genesisBlock = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
                 TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer,
@@ -193,9 +193,9 @@ namespace Libplanet.Tests.Blockchain
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 
-            var chain1 = BlockChain<DumbAction>.Create(
+            var chain1 = BlockChain.Create(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,
@@ -214,14 +214,14 @@ namespace Libplanet.Tests.Blockchain
                         lastCommit: null)).Propose(),
                 TestUtils.GenesisProposer);
 
-            var policyWithBlockAction = new BlockPolicy<DumbAction>(
+            var policyWithBlockAction = new BlockPolicy(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
                 policy.BlockInterval
             );
             var blockChainStates = new BlockChainStates(store, stateStore);
-            var chain2 = new BlockChain<DumbAction>(
+            var chain2 = new BlockChain(
                 policyWithBlockAction,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,
@@ -492,8 +492,8 @@ namespace Libplanet.Tests.Blockchain
             var validator4 = new Validator(privateKey4.PublicKey, 1);
             var validatorSet = new ValidatorSet(
                 new[] { validator1, validator2, validator3, validator4 }.ToList());
-            BlockChain<DumbAction> blockChain = TestUtils.MakeBlockChain(
-                new NullBlockPolicy<DumbAction>(),
+            BlockChain blockChain = TestUtils.MakeBlockChain<DumbAction>(
+                new NullBlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 validatorSet: validatorSet);

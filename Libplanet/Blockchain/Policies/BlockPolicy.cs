@@ -8,19 +8,16 @@ using Libplanet.Tx;
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// A default implementation of <see cref="IBlockPolicy{T}"/> interface.
+    /// A default implementation of <see cref="IBlockPolicy"/> interface.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block"/>'s type parameter.</typeparam>
-    public class BlockPolicy<T> : IBlockPolicy<T>
-        where T : IAction, new()
+    public class BlockPolicy : IBlockPolicy
     {
         public static readonly TimeSpan DefaultTargetBlockInterval = TimeSpan.FromSeconds(5);
 
-        private readonly Func<BlockChain<T>, Transaction, TxPolicyViolationException?>
+        private readonly Func<BlockChain, Transaction, TxPolicyViolationException?>
             _validateNextBlockTx;
 
-        private readonly Func<BlockChain<T>, Block, BlockPolicyViolationException?>
+        private readonly Func<BlockChain, Block, BlockPolicyViolationException?>
             _validateNextBlock;
 
         private readonly Func<long, long> _getMaxTransactionsBytes;
@@ -30,7 +27,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// <para>
-        /// Creates a default <see cref="BlockPolicy{T}"/> instance.
+        /// Creates a default <see cref="BlockPolicy"/> instance.
         /// </para>
         /// <para>
         /// Each unprovided argument will be assigned a default value.  See each parameter
@@ -71,9 +68,9 @@ namespace Libplanet.Blockchain.Policies
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
-            Func<BlockChain<T>, Transaction, TxPolicyViolationException?>?
+            Func<BlockChain, Transaction, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
-            Func<BlockChain<T>, Block, BlockPolicyViolationException?>?
+            Func<BlockChain, Block, BlockPolicyViolationException?>?
                 validateNextBlock = null,
             Func<long, long>? getMaxTransactionsBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
@@ -167,14 +164,14 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(
-            BlockChain<T> blockChain, Transaction transaction)
+            BlockChain blockChain, Transaction transaction)
         {
             return _validateNextBlockTx(blockChain, transaction);
         }
 
         /// <inheritdoc/>
         public virtual BlockPolicyViolationException? ValidateNextBlock(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             Block nextBlock)
         {
             return _validateNextBlock(blockChain, nextBlock);

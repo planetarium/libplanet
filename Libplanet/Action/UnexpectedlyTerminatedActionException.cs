@@ -34,7 +34,7 @@ namespace Libplanet.Action
         /// <param name="txid">The <see cref="Transaction.Id"/> of
         /// the <see cref="Transaction"/> that <paramref name="action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode or if <paramref name="action"/> is
-        /// a <see cref="IBlockPolicy{T}.BlockAction"/>.
+        /// a <see cref="IBlockPolicy.BlockAction"/>.
         /// </param>
         /// <param name="action">The <see cref="IAction"/> object which threw an exception.</param>
         /// <param name="previousStateRootHash">The <see cref="ITrie.Hash"/> of states until
@@ -138,7 +138,7 @@ namespace Libplanet.Action
         /// The <see cref="Transaction.Id"/> of the <see cref="Transaction"/> that
         /// <see cref="Action"/> belongs to.
         /// This can be <see langword="null"/> on rehearsal mode or
-        /// if <see cref="Action"/> is a <see cref="IBlockPolicy{T}.BlockAction"/>.
+        /// if <see cref="Action"/> is a <see cref="IBlockPolicy.BlockAction"/>.
         /// </summary>
         public TxId? TxId { get; }
 

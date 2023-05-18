@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Serilog;
@@ -11,15 +10,13 @@ namespace Libplanet.Tests
 {
     public static class LoggerExtensions
     {
-        public static void CompareBothChains<T>(
+        public static void CompareBothChains(
             this ILogger logger,
             LogEventLevel logLevel,
             string labelA,
-            BlockChain<T> chainA,
+            BlockChain chainA,
             string labelB,
-            BlockChain<T> chainB
-        )
-            where T : IAction, new()
+            BlockChain chainB)
         =>
             logger.CompareBothChains(
                 logLevel,

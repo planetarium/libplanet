@@ -343,13 +343,14 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void AppendWhenActionEvaluationFailed()
         {
-            var policy = new NullBlockPolicy<ThrowException>();
+            var policy = new NullBlockPolicy();
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
             var renderer = new RecordingActionRenderer();
-            BlockChain<ThrowException> blockChain =
-                TestUtils.MakeBlockChain(policy, store, stateStore, renderers: new[] { renderer });
+            BlockChain blockChain =
+                TestUtils.MakeBlockChain<ThrowException>(
+                    policy, store, stateStore, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
             var action = new ThrowException { ThrowOnExecution = true };
@@ -375,7 +376,7 @@ namespace Libplanet.Tests.Blockchain
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
@@ -383,12 +384,12 @@ namespace Libplanet.Tests.Blockchain
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
-                var blockChain = BlockChain<DumbAction>.Create(
+                var blockChain = BlockChain.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     fx.GenesisBlock,
@@ -515,12 +516,12 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void AppendValidatesBlock()
         {
-            var policy = new NullBlockPolicy<DumbAction>(
+            var policy = new NullBlockPolicy(
                     new BlockPolicyViolationException(string.Empty));
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
-            var blockChain = new BlockChain<DumbAction>(
+            var blockChain = new BlockChain(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,

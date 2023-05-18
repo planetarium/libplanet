@@ -221,7 +221,7 @@ namespace Libplanet.Consensus
         public Validator GetProposer(long height, int round)
         {
             // FIXME: Empty Validators should not be allowed.  Preventing during construction
-            // would require heavier refactoring of BlockPolicy<T>.
+            // would require heavier refactoring of BlockPolicy.
             return Validators.IsEmpty
                 ? throw new InvalidOperationException(
                     "Cannot select a proposer from an empty list of validators.")

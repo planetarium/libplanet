@@ -71,7 +71,7 @@ namespace Libplanet.Net.Consensus
     /// </list>
     /// Validators are bonding/bonded nodes that participate in the consensus.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain{T}"/>.
+    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
     /// </typeparam>
     /// <remarks>
     /// A <see cref="Context{T}"/> represents a consensus of a single height and its multiple
@@ -82,7 +82,7 @@ namespace Libplanet.Net.Consensus
     {
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
-        private readonly BlockChain<T> _blockChain;
+        private readonly BlockChain _blockChain;
         private readonly Codec _codec;
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
@@ -130,7 +130,7 @@ namespace Libplanet.Net.Consensus
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public Context(
             ConsensusContext<T> consensusContext,
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,
@@ -150,7 +150,7 @@ namespace Libplanet.Net.Consensus
 
         private Context(
             ConsensusContext<T> consensusContext,
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,

@@ -13,7 +13,7 @@ namespace Libplanet.Explorer.Tests.Queries;
 public class MockBlockChainContextWithIndex<T> : MockBlockChainContext<T>
     where T : IAction, new()
 {
-    public MockBlockChainContextWithIndex(BlockChain<T> chain)
+    public MockBlockChainContextWithIndex(BlockChain chain)
         : base(chain)
     {
         var indexPath = Path.GetTempFileName();

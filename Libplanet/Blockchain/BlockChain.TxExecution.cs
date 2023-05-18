@@ -11,7 +11,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         /// <summary>
         /// Makes <see cref="TxExecution"/> instances from the given <paramref name="evaluations"/>.

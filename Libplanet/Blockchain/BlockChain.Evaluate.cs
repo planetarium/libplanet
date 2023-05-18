@@ -17,7 +17,7 @@ using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         /// <summary>
         /// Determines the state root hash of <paramref name="preEvaluationBlock"/>
@@ -27,7 +27,7 @@ namespace Libplanet.Blockchain
         /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> for which
         /// to determine the state root hash.</param>
-        /// <param name="blockAction">The <see cref="IBlockPolicy{T}.BlockAction"/> to use.</param>
+        /// <param name="blockAction">The <see cref="IBlockPolicy.BlockAction"/> to use.</param>
         /// <param name="evaluations">The evaluation result from <see cref="EvaluateGenesis"/>
         /// for <paramref name="preEvaluationBlock"/>.</param>
         /// <returns>The state root hash calculated by committing <paramref name="evaluations"/> to
@@ -59,7 +59,7 @@ namespace Libplanet.Blockchain
         /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to
         /// evaluate.</param>
-        /// <param name="blockAction">The <see cref="IBlockPolicy{T}.BlockAction"/> to use.</param>
+        /// <param name="blockAction">The <see cref="IBlockPolicy.BlockAction"/> to use.</param>
         /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="IActionEvaluation"/>s
         /// resulting from evaluating <paramref name="preEvaluationBlock"/> using
         /// <paramref name="blockAction"/>.</returns>
@@ -165,7 +165,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Evaluates all actions in the <see cref="PreEvaluationBlock.Transactions"/> and
-        /// an optional <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>, and returns
+        /// an optional <see cref="Blockchain.Policies.IBlockPolicy.BlockAction"/>, and returns
         /// a <see cref="Block"/> instance combined with the <see cref="Block.StateRootHash"/>
         /// The returned <see cref="Block"/> is signed by the given <paramref name="privateKey"/>.
         /// </summary>

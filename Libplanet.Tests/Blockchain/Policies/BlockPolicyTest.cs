@@ -24,19 +24,19 @@ namespace Libplanet.Tests.Blockchain.Policies
         private readonly ITestOutputHelper _output;
 
         private StoreFixture _fx;
-        private BlockChain<DumbAction> _chain;
-        private IBlockPolicy<DumbAction> _policy;
-        private IStagePolicy<DumbAction> _stagePolicy;
+        private BlockChain _chain;
+        private IBlockPolicy _policy;
+        private IStagePolicy _stagePolicy;
 
         public BlockPolicyTest(ITestOutputHelper output)
         {
             _fx = new MemoryStoreFixture();
             _output = output;
-            _policy = new BlockPolicy<DumbAction>(
+            _policy = new BlockPolicy(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
-            _stagePolicy = new VolatileStagePolicy<DumbAction>();
-            _chain = BlockChain<DumbAction>.Create(
+            _stagePolicy = new VolatileStagePolicy();
+            _chain = BlockChain.Create(
                 _policy,
                 _stagePolicy,
                 _fx.Store,
@@ -58,18 +58,18 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<DumbAction>(
+            var a = new BlockPolicy(
                 blockAction: null,
                 blockInterval: tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<DumbAction>(
+            var b = new BlockPolicy(
                 blockInterval: TimeSpan.FromMilliseconds(65000));
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
 
-            var c = new BlockPolicy<DumbAction>();
+            var c = new BlockPolicy();
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval);
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var validKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             //Invalid Transaction with inner-exception
             TxPolicyViolationException IsSignerValidWithInnerException(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
@@ -132,7 +132,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             }
 
             // Invalid Transaction without Inner-exception
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 validateNextBlockTx: IsSignerValid);
 
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(expected.InnerException);
 
             // Invalid Transaction with Inner-exception.
-            policy = new BlockPolicy<DumbAction>(
+            policy = new BlockPolicy(
                 validateNextBlockTx: IsSignerValidWithInnerException);
 
             invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
@@ -157,11 +157,11 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMinTransactionsPerBlock: index => index == 0 ? 0 : policyLimit);
             var privateKey = new PrivateKey();
-            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
 
             _ = chain.MakeTransaction(privateKey, new DumbAction[] { });
             Assert.Single(chain.ListStagedTransactions());
@@ -180,10 +180,10 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 getMaxTransactionsPerBlock: _ => policyLimit);
             var privateKey = new PrivateKey();
-            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
 
             _ = Enumerable
                     .Range(0, generatedTxCount)
@@ -204,11 +204,11 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var policy = new BlockPolicy<DumbAction>(
+            var policy = new BlockPolicy(
                 getMaxTransactionsPerSignerPerBlock: _ => policyLimit);
             var privateKeys = Enumerable.Range(0, keyCount).Select(_ => new PrivateKey()).ToList();
             var minerKey = privateKeys.First();
-            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
 
             privateKeys.ForEach(
                 key => _ = Enumerable

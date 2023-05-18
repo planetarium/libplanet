@@ -21,7 +21,7 @@ public class GeneratedBlockChainFixture
 {
     public static Currency TestCurrency => Currency.Uncapped("TEST", 0, null);
 
-    public BlockChain<PolymorphicAction<SimpleAction>> Chain { get; }
+    public BlockChain Chain { get; }
 
     public ImmutableArray<PrivateKey> PrivateKeys { get; }
 
@@ -77,7 +77,7 @@ public class GeneratedBlockChainFixture
                     ImmutableArray<Transaction>.Empty));
 
         var privateKey = new PrivateKey();
-        var policy = new BlockPolicy<PolymorphicAction<SimpleAction>>(
+        var policy = new BlockPolicy(
             blockInterval: TimeSpan.FromMilliseconds(1),
             getMaxTransactionsPerBlock: _ => int.MaxValue,
             getMaxTransactionsBytes: _ => long.MaxValue);
@@ -87,7 +87,7 @@ public class GeneratedBlockChainFixture
             new BlockChainStates(store, stateStore),
             new SingleActionLoader(typeof(PolymorphicAction<SimpleAction>)),
             null);
-        Block genesisBlock = BlockChain<PolymorphicAction<SimpleAction>>.ProposeGenesisBlock(
+        Block genesisBlock = BlockChain.ProposeGenesisBlock(
             actionEvaluator,
             transactions: PrivateKeys
                 .OrderBy(pk => pk.ToAddress().ToHex())
@@ -105,9 +105,9 @@ public class GeneratedBlockChainFixture
                                     ImmutableDictionary<Address, IValue>.Empty),
                             }))
                 .ToImmutableList());
-        Chain = BlockChain<PolymorphicAction<SimpleAction>>.Create(
+        Chain = BlockChain.Create(
             policy,
-            new VolatileStagePolicy<PolymorphicAction<SimpleAction>>(),
+            new VolatileStagePolicy(),
             store,
             stateStore,
             genesisBlock,

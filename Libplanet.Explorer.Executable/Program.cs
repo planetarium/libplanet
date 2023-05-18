@@ -212,13 +212,13 @@ If omitted (default) explorer only the local blockchain store.")]
                 IRichStore store = LoadStore(options);
                 IStateStore stateStore = new NoOpStateStore();
 
-                IBlockPolicy<NullAction> policy =
-                    new DumbBlockPolicy(LoadBlockPolicy<NullAction>(options));
-                IStagePolicy<NullAction> stagePolicy =
-                    new VolatileStagePolicy<NullAction>();
+                IBlockPolicy policy =
+                    new DumbBlockPolicy(LoadBlockPolicy(options));
+                IStagePolicy stagePolicy =
+                    new VolatileStagePolicy();
                 var blockChainStates = new BlockChainStates(store, stateStore);
                 var blockChain =
-                    new BlockChain<NullAction>(
+                    new BlockChain(
                         policy,
                         stagePolicy,
                         store,
@@ -396,10 +396,9 @@ If omitted (default) explorer only the local blockchain store.")]
             }
         }
 
-        private static BlockPolicy<T> LoadBlockPolicy<T>(Options options)
-            where T : IAction, new()
+        private static BlockPolicy LoadBlockPolicy(Options options)
         {
-            return new BlockPolicy<T>(
+            return new BlockPolicy(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 getMaxTransactionsBytes: i => i > 0
@@ -436,11 +435,11 @@ If omitted (default) explorer only the local blockchain store.")]
             await swarm.StartAsync(cancellationToken: cancellationToken);
         }
 
-        internal class DumbBlockPolicy : IBlockPolicy<NullAction>
+        internal class DumbBlockPolicy : IBlockPolicy
         {
-            private readonly IBlockPolicy<NullAction> _impl;
+            private readonly IBlockPolicy _impl;
 
-            public DumbBlockPolicy(BlockPolicy<NullAction> blockPolicy)
+            public DumbBlockPolicy(BlockPolicy blockPolicy)
             {
                 _impl = blockPolicy;
             }
@@ -458,15 +457,15 @@ If omitted (default) explorer only the local blockchain store.")]
             public long GetMaxTransactionsBytes(long index) =>
                 _impl.GetMaxTransactionsBytes(index);
 
-            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks) => 0;
+            public long GetNextBlockDifficulty(BlockChain blocks) => 0;
 
             public TxPolicyViolationException ValidateNextBlockTx(
-                BlockChain<NullAction> blockChain,
+                BlockChain blockChain,
                 Transaction transaction) =>
                 _impl.ValidateNextBlockTx(blockChain, transaction);
 
             public BlockPolicyViolationException ValidateNextBlock(
-                BlockChain<NullAction> blockChain,
+                BlockChain blockChain,
                 Block nextBlock
             ) => _impl.ValidateNextBlock(blockChain, nextBlock);
 
@@ -478,7 +477,7 @@ If omitted (default) explorer only the local blockchain store.")]
         {
             public bool Preloaded => PreloadedSingleton;
 
-            public BlockChain<NullAction> BlockChain => BlockChainSingleton;
+            public BlockChain BlockChain => BlockChainSingleton;
 
             public IStore Store => StoreSingleton;
 
@@ -492,7 +491,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             internal static bool PreloadedSingleton { get; set; }
 
-            internal static BlockChain<NullAction> BlockChainSingleton { get; set; }
+            internal static BlockChain BlockChainSingleton { get; set; }
 
             internal static IStore StoreSingleton { get; set; }
 

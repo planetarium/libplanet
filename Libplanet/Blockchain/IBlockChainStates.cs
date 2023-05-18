@@ -9,7 +9,7 @@ namespace Libplanet.Blockchain
 {
     /// <summary>
     /// A minimal interface to get states from a blockchain.
-    /// <para>Note that <see cref="BlockChain{T}"/> implements this interface.</para>
+    /// <para>Note that <see cref="BlockChain"/> implements this interface.</para>
     /// </summary>
     public interface IBlockChainStates
     {
@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
         /// </summary>
         /// <param name="address">The owner <see cref="Address"/> to query.</param>
         /// <param name="currency">The currency type to query.</param>
@@ -47,7 +47,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Gets the total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>, and if not found, return 0.
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>, and if not found, return 0.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
@@ -61,7 +61,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Returns the validator set in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state.</param>

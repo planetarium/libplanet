@@ -6,8 +6,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {
-    public class NullBlockPolicy<T> : IBlockPolicy<T>
-        where T : IAction, new()
+    public class NullBlockPolicy : IBlockPolicy
     {
         private readonly BlockPolicyViolationException _exceptionToThrow;
         private readonly long _difficulty;
@@ -31,10 +30,10 @@ namespace Libplanet.Blockchain.Policies
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
         public virtual TxPolicyViolationException ValidateNextBlockTx(
-            BlockChain<T> blockChain, Transaction transaction) => null;
+            BlockChain blockChain, Transaction transaction) => null;
 
         public virtual BlockPolicyViolationException ValidateNextBlock(
-            BlockChain<T> blockChain,
+            BlockChain blockChain,
             Block nextBlock
         )
         {

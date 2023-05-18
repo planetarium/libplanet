@@ -15,7 +15,7 @@ namespace Libplanet.Explorer.Interfaces
     {
         bool Preloaded { get; }
 
-        BlockChain<T> BlockChain { get; }
+        BlockChain BlockChain { get; }
 
         IStore Store { get; }
 

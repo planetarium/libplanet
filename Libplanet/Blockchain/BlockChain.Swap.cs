@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -13,12 +12,12 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {
-    public partial class BlockChain<T>
+    public partial class BlockChain
     {
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         internal System.Action Swap(
-            BlockChain<T> other,
+            BlockChain other,
             bool render)
         {
             if (!IsCanonical)
@@ -87,7 +86,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     HashSet<TxId> GetTxIdsWithRange(
-                        BlockChain<T> chain, IReadOnlyList<BlockHash> hashes) =>
+                        BlockChain chain, IReadOnlyList<BlockHash> hashes) =>
                             new HashSet<TxId>(hashes.SelectMany(
                                 hash => chain[hash].Transactions.Select(tx => tx.Id)));
 
@@ -265,7 +264,7 @@ namespace Libplanet.Blockchain
         /// Generates a list of <see cref="BlockHash"/>es to traverse starting from
         /// the tip of <paramref name="chain"/> to reach <paramref name="targetHash"/>.
         /// </summary>
-        /// <param name="chain">The <see cref="BlockChain{T}"/> to traverse.</param>
+        /// <param name="chain">The <see cref="BlockChain"/> to traverse.</param>
         /// <param name="targetHash">The target <see cref="BlockHash"/> to reach.</param>
         /// <returns>
         /// An <see cref="IReadOnlyList{T}"/> of <see cref="BlockHash"/>es to traverse from
@@ -281,7 +280,7 @@ namespace Libplanet.Blockchain
         /// </para>
         /// </remarks>
         private static IReadOnlyList<BlockHash> GetRewindPath(
-            BlockChain<T> chain,
+            BlockChain chain,
             BlockHash targetHash)
         {
             if (!chain.ContainsBlock(targetHash))
@@ -306,7 +305,7 @@ namespace Libplanet.Blockchain
         /// Generates a list of <see cref="BlockHash"/>es to traverse starting from
         /// <paramref name="originHash"/> to reach the tip of <paramref name="chain"/>.
         /// </summary>
-        /// <param name="chain">The <see cref="BlockChain{T}"/> to traverse.</param>
+        /// <param name="chain">The <see cref="BlockChain"/> to traverse.</param>
         /// <param name="originHash">The <see cref="BlockHash"/> to start from.</param>
         /// <returns>
         /// An <see cref="IReadOnlyList{T}"/> of <see cref="BlockHash"/>es to traverse
@@ -317,7 +316,7 @@ namespace Libplanet.Blockchain
         /// This is a reverse of <see cref="GetRewindPath"/>.
         /// </remarks>
         private static IReadOnlyList<BlockHash> GetFastForwardPath(
-            BlockChain<T> chain,
+            BlockChain chain,
             BlockHash originHash)
         {
             if (!chain.ContainsBlock(originHash))
@@ -333,14 +332,14 @@ namespace Libplanet.Blockchain
         /// Finds the top most common <see cref="Block"/> between chains <paramref name="c1"/>
         /// and <paramref name="c2"/>.
         /// </summary>
-        /// <param name="c1">The first <see cref="BlockChain{T}"/> to compare.</param>
-        /// <param name="c2">The second <see cref="BlockChain{T}"/> to compare.</param>
+        /// <param name="c1">The first <see cref="BlockChain"/> to compare.</param>
+        /// <param name="c2">The second <see cref="BlockChain"/> to compare.</param>
         /// <returns>
         /// The top most common <see cref="Block"/> between chains <paramref name="c1"/>
         /// and <paramref name="c2"/>. If there is no such <see cref="Block"/>,
         /// returns <see langword="null"/> instead.
         /// </returns>
-        private static Block FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
+        private static Block FindTopCommon(BlockChain c1, BlockChain c2)
         {
             long shorterHeight = Math.Min(c1.Count, c2.Count) - 1;
             Block b1 = c1[shorterHeight], b2 = c2[shorterHeight];
@@ -364,13 +363,6 @@ namespace Libplanet.Blockchain
             }
 
             return null;
-        }
-
-        private static IAction ToAction(IValue plainValue)
-        {
-            var action = new T();
-            action.LoadPlainValue(plainValue);
-            return action;
         }
     }
 }

@@ -122,13 +122,13 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx = new MemoryStoreFixture())
             {
-                var policy = new BlockPolicy<DumbAction>();
+                var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     new BlockChainStates(fx.Store, fx.StateStore),
                     new SingleActionLoader(typeof(DumbAction)),
                     null);
-                var genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
+                var genesis = BlockChain.ProposeGenesisBlock(
                     actionEvaluator,
                     new PrivateKey(),
                     new[]
@@ -143,9 +143,9 @@ namespace Libplanet.Tests.Blockchain
                             }),
                     }.ToImmutableList(),
                     blockAction: policy.BlockAction);
-                Assert.Throws<InvalidTxNonceException>(() => BlockChain<DumbAction>.Create(
+                Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     genesis,
@@ -158,10 +158,10 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx = new MemoryStoreFixture())
             {
-                var policy = new BlockPolicy<DumbAction>();
-                var blockChain = BlockChain<DumbAction>.Create(
+                var policy = new BlockPolicy();
+                var blockChain = BlockChain.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     fx.GenesisBlock,
@@ -304,7 +304,7 @@ namespace Libplanet.Tests.Blockchain
             var invalidKey = new PrivateKey();
 
             TxPolicyViolationException IsSignerValid(
-                BlockChain<DumbAction> chain, Transaction tx)
+                BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
@@ -312,12 +312,12 @@ namespace Libplanet.Tests.Blockchain
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
-                var blockChain = BlockChain<DumbAction>.Create(
+                var blockChain = BlockChain.Create(
                     policy,
-                    new VolatileStagePolicy<DumbAction>(),
+                    new VolatileStagePolicy(),
                     fx.Store,
                     fx.StateStore,
                     fx.GenesisBlock,
@@ -424,12 +424,12 @@ namespace Libplanet.Tests.Blockchain
             var address2 = privateKey2.ToAddress();
 
             var blockAction = new DumbAction(address1, "foo");
-            var policy = new BlockPolicy<DumbAction>(blockAction);
+            var policy = new BlockPolicy(blockAction);
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
-            var blockChain = new BlockChain<DumbAction>(
+            var blockChain = new BlockChain(
                 policy,
-                new VolatileStagePolicy<DumbAction>(),
+                new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,

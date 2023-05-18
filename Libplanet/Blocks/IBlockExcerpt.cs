@@ -24,7 +24,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The hash digest derived from the whole contents of the block including
         /// <see cref="IBlockHeader.StateRootHash"/>, which is determined by evaluating transactions
-        /// and a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).
+        /// and a <see cref="Blockchain.Policies.IBlockPolicy.BlockAction"/> (if exists).
         /// <para>This is used for block's unique identifier.</para>
         /// </summary>
         /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
