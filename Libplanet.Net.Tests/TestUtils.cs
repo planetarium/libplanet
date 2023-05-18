@@ -287,7 +287,7 @@ namespace Libplanet.Net.Tests
             return (blockChain, context);
         }
 
-        public static ConsensusReactor<DumbAction> CreateDummyConsensusReactor(
+        public static ConsensusReactor CreateDummyConsensusReactor(
             BlockChain blockChain,
             PrivateKey? key = null,
             string host = "127.0.0.1",
@@ -307,7 +307,7 @@ namespace Libplanet.Net.Tests
                 apvOption,
                 hostOption).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            return new ConsensusReactor<DumbAction>(
+            return new ConsensusReactor(
                 consensusTransport,
                 blockChain,
                 key,

@@ -37,7 +37,7 @@ namespace Libplanet.Net
 
         private readonly ILogger _logger;
         private readonly IStore _store;
-        private readonly ConsensusReactor<T> _consensusReactor;
+        private readonly ConsensusReactor _consensusReactor;
 
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
@@ -59,7 +59,7 @@ namespace Libplanet.Net
         /// If null is given, the node cannot join block consensus.
         /// </param>
         /// <param name="consensusOption"><see cref="ConsensusReactorOption"/> for
-        /// initialize <see cref="ConsensusReactor{T}"/>.</param>
+        /// initialize <see cref="ConsensusReactor"/>.</param>
         public Swarm(
             BlockChain blockChain,
             PrivateKey privateKey,
@@ -110,7 +110,7 @@ namespace Libplanet.Net
             // Initialize consensus reactor.
             if (consensusTransport is { } && consensusOption is { } consensusReactorOption)
             {
-                _consensusReactor = new ConsensusReactor<T>(
+                _consensusReactor = new ConsensusReactor(
                     consensusTransport,
                     BlockChain,
                     consensusReactorOption.ConsensusPrivateKey,
@@ -198,7 +198,7 @@ namespace Libplanet.Net
         internal SwarmOptions Options { get; }
 
         // FIXME: This should be exposed in a better way.
-        internal ConsensusReactor<T> ConsensusReactor => _consensusReactor;
+        internal ConsensusReactor ConsensusReactor => _consensusReactor;
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.

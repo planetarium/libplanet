@@ -7,7 +7,7 @@ using Libplanet.Net.Transports;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// A option struct for initializing <see cref="ConsensusReactor{T}"/>.
+    /// A option struct for initializing <see cref="ConsensusReactor"/>.
     /// </summary>
     public struct ConsensusReactorOption
     {
