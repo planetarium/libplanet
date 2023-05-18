@@ -9,6 +9,10 @@ To be released.
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
+ -  Renamed `PreloadState` as `BlockSyncState`.  [[#3154]]
+ -  Replaced `Swarm<T>.PreloadAsync`'s parameter
+    `IProgress<PreloadState> progress`
+    as `IProgress<BlockSyncState> progress`.  [[#3154]]
  -  Moved `IAccountStateDelta` and relations interface to 
     `Libplanet.State` namespace (from `Libplanet.Action` namespace).
     [[#3173]]
@@ -25,6 +29,22 @@ To be released.
     `HaveMessage` instead of immediately replying to them, and send the
     `WantMessage` requests all at once during each `HeartbeatTask`.
     [#3152]
+ -  `Swarm<T>.PreloadAsync()` use `PullBlocksAsync()` and
+    `ConsumeBlockCandidates()`.  [[#3154]]
+ -  `Swarm<T>.PreloadAsync()` uses `BlockCandidateTable<T>` to cache
+    downloaded `Block`s, instead of storing them on forked `BlockChain<T>`.
+    [[#3154]]
+ -  `Swarm<T>.PullBlocksAsync()` and `Swarm<T>.GetDemandBlockHashes()` iterates
+    using new parameter `chunkSize`.  [[#3154]]
+ -  `Swarm<T>.ConsumeBlockCandidates()` repeats iff new parameter
+    `checkInterval` is not null.  [[#3154]]
+ -  `Swarm<T>.ConsumeBlockCandidates()` does not renders if new parameter
+    `render` is `false`.  [[#3154]]
+ -  `Swarm<T>.PullBlocksAsync()` and `Swarm<T>.GetDemandBlockHashes()`
+    receives new parameter `IProgress<BlockSyncState> progress` and will
+    report progress to it, if it's given.  [[#3154]]
+ -  Moved creation of `BlockDemandTable` and `BlockCandidateTable`
+    to constructor of `Swarm<T>` from `Swarm<T>.StartAsync()`.  [[#3154]]
 
 ### Bug fixes
 
@@ -33,6 +53,7 @@ To be released.
 ### CLI tools
 
 [#3152]: https://github.com/planetarium/libplanet/pull/3152
+[#3154]: https://github.com/planetarium/libplanet/pull/3154
 [#3173]: https://github.com/planetarium/libplanet/pull/3173
 
 

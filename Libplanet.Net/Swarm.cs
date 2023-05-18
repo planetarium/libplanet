@@ -97,6 +97,8 @@ namespace Libplanet.Net
             _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
+            BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+            BlockCandidateTable = new BlockCandidateTable<T>();
 
             // Regulate heavy tasks. Treat negative value as 0.
             var taskRegulationOptions = Options.TaskRegulationOptions;
@@ -265,7 +267,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{BlockSyncState}, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
@@ -301,7 +303,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{BlockSyncState}, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
@@ -316,8 +318,6 @@ namespace Libplanet.Net
                 _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-                BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-                BlockCandidateTable = new BlockCandidateTable<T>();
 
                 if (Transport.Running)
                 {
@@ -342,7 +342,8 @@ namespace Libplanet.Net
                         Options.MaximumPollPeers,
                         _cancellationToken
                     ),
-                    () => ConsumeBlockCandidates(_cancellationToken),
+                    () => ConsumeBlockCandidates(
+                        TimeSpan.FromMilliseconds(10), true, null, _cancellationToken),
                     () => RefreshTableAsync(
                         Options.RefreshPeriod,
                         Options.RefreshLifespan,
@@ -513,7 +514,7 @@ namespace Libplanet.Net
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed.</exception>
         public async Task PreloadAsync(
-            IProgress<PreloadState> progress = null,
+            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             await PreloadAsync(
@@ -553,7 +554,7 @@ namespace Libplanet.Net
         public async Task PreloadAsync(
             TimeSpan? dialTimeout,
             long tipDeltaThreshold,
-            IProgress<PreloadState> progress = null,
+            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
@@ -625,11 +626,17 @@ namespace Libplanet.Net
                 }
 
                 _logger.Information("Preloading (trial #{Trial}) started...", i + 1);
-                BlockChain<T> workspace = BlockChain.Fork(localTip.Hash, inheritRenderers: false);
-                await CompleteBlocksAsync(
+
+                BlockCandidateTable.Cleanup((_) => true);
+                await PullBlocksAsync(
                     peersWithExcerpts,
-                    workspace,
+                    500,
                     progress,
+                    cancellationToken);
+
+                await ConsumeBlockCandidates(
+                    render: false,
+                    progress: progress,
                     cancellationToken: cancellationToken);
             }
 
@@ -945,6 +952,7 @@ namespace Libplanet.Net
         /// by this <see cref="Swarm{T}"/> instance.</param>
         /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
         /// to query with their tips known.</param>
+        /// <param name="chunkSize">The chunk size of returned <see cref="BlockHash"/>es.</param>
         /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
         /// <param name="cancellationToken">The cancellation token that should be used to propagate
         /// a notification that this operation should be canceled.</param>
@@ -974,8 +982,9 @@ namespace Libplanet.Net
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
-            IProgress<PreloadState> progress,
-            [EnumeratorCancellation] CancellationToken cancellationToken
+            int chunkSize = int.MaxValue,
+            IProgress<BlockSyncState> progress = null,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
@@ -994,7 +1003,8 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                long totalBlockHashesToDownload = -1;
+                int totalBlockHashesToDownload = -1;
+                int chunkBlockHashesToDownload = -1;
                 var pairsToYield = new List<Tuple<long, BlockHash>>();
                 Exception error = null;
                 try
@@ -1047,7 +1057,18 @@ namespace Libplanet.Net
                             blockHashes.FirstOrDefault() is { } t)
                         {
                             t.Deconstruct(out branchingIndex, out branchingBlock);
-                            totalBlockHashesToDownload = peerIndex - branchingIndex;
+                            try
+                            {
+                                totalBlockHashesToDownload = Convert.ToInt32(
+                                    peerIndex - branchingIndex);
+                            }
+                            catch (OverflowException)
+                            {
+                                totalBlockHashesToDownload = int.MaxValue;
+                            }
+
+                            chunkBlockHashesToDownload = Math.Min(
+                                totalBlockHashesToDownload, chunkSize);
                         }
 
                         foreach (Tuple<long, BlockHash> pair in blockHashes)
@@ -1112,7 +1133,7 @@ namespace Libplanet.Net
                                 }
                             });
                     }
-                    while (downloaded.Count < totalBlockHashesToDownload);
+                    while (downloaded.Count < chunkBlockHashesToDownload);
                 }
                 catch (Exception e)
                 {

@@ -5,7 +5,7 @@ namespace Libplanet.Net
     // <summary>
     // Indicates a progress of preloading things from the network.
     // </summary>
-    public abstract class PreloadState : IEquatable<PreloadState>
+    public abstract class BlockSyncState : IEquatable<BlockSyncState>
     {
         /// <summary>
         /// The number of total phases.
@@ -17,12 +17,13 @@ namespace Libplanet.Net
         /// </summary>
         public abstract int CurrentPhase { get; }
 
-        public static bool operator ==(PreloadState left, PreloadState right) => left.Equals(right);
+        public static bool operator ==(BlockSyncState left, BlockSyncState right) =>
+            left.Equals(right);
 
-        public static bool operator !=(PreloadState left, PreloadState right) =>
+        public static bool operator !=(BlockSyncState left, BlockSyncState right) =>
             !left.Equals(right);
 
-        public bool Equals(PreloadState? other)
+        public bool Equals(BlockSyncState? other)
         {
             if (other is null)
             {
@@ -37,7 +38,7 @@ namespace Libplanet.Net
             return CurrentPhase == other.CurrentPhase;
         }
 
-        public override bool Equals(object? obj) => obj is PreloadState other && Equals(other);
+        public override bool Equals(object? obj) => obj is BlockSyncState other && Equals(other);
 
         public override int GetHashCode() => CurrentPhase;
     }

@@ -5,7 +5,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of downloading block hashes.
     /// </summary>
-    public class BlockHashDownloadState : PreloadState, IEquatable<BlockHashDownloadState>
+    public class BlockHashDownloadState : BlockSyncState, IEquatable<BlockHashDownloadState>
     {
         /// <summary>
         /// The estimated number of block hashes to receive in the current batch.

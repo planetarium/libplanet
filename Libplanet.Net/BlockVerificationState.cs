@@ -6,7 +6,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of verifying blocks.
     /// </summary>
-    public class BlockVerificationState : PreloadState, IEquatable<BlockVerificationState>
+    public class BlockVerificationState : BlockSyncState, IEquatable<BlockVerificationState>
     {
         /// <summary>
         /// Total number of blocks to verify in the current batch.

@@ -6,7 +6,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of executing block actions.
     /// </summary>
-    public class ActionExecutionState : PreloadState, IEquatable<ActionExecutionState>
+    public class ActionExecutionState : BlockSyncState, IEquatable<ActionExecutionState>
     {
         /// <summary>
         /// Total number of blocks to execute in the current batch.
