@@ -7,6 +7,7 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -231,7 +232,7 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
-            long gasLimit = 0,
+            long gasLimit = long.MaxValue,
             FungibleAssetValue? maxGasPrice = null,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
@@ -240,7 +241,7 @@ namespace Libplanet.Action
             ActionContext CreateActionContext(
                 IAccountStateDelta prevStates,
                 int randomSeed,
-                long actionGasLimit = 0,
+                long actionGasLimit = long.MaxValue,
                 List<string>? logs = null
             )
             {
@@ -275,14 +276,13 @@ namespace Libplanet.Action
 
                 ActionContext context = CreateActionContext(nextStates, seed, nextGasLimit);
                 IFeeCollector feeCollector = new FeeCollector(context, maxGasPrice);
-
-                nextStates = feeCollector.Mortgage(nextStates);
-                context = CreateActionContext(nextStates, seed, nextGasLimit);
-                feeCollector = feeCollector.Next(context);
                 try
                 {
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
+                    nextStates = feeCollector.Mortgage(nextStates);
+                    context = CreateActionContext(nextStates, seed, nextGasLimit);
+                    feeCollector = feeCollector.Next(context);
                     nextStates = action.Execute(context);
                     logger?
                         .ForContext("Tag", "Metric")

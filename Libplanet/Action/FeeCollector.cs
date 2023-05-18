@@ -41,7 +41,7 @@ namespace Libplanet.Action
         {
             _context = context;
             _gasPrice = gasPrice;
-            if (_context.BlockIndex == 0 || _context.BlockAction)
+            if (_context.BlockIndex == 0 || _context.BlockAction || _gasPrice is null)
             {
                 _state = FeeCollectState.CannotCollectible;
             }
@@ -59,16 +59,14 @@ namespace Libplanet.Action
 
         public IAccountStateDelta Mortgage(IAccountStateDelta state)
         {
-            if (_state == FeeCollectState.CannotCollectible)
+            if (_state == FeeCollectState.CannotCollectible ||
+                !CheckState(FeeCollectState.Mortgage))
             {
                 return state;
             }
 
-            CheckState(FeeCollectState.Mortgage);
-
             if (!(_gasPrice is { } realGasPrice))
             {
-                _state = FeeCollectState.Mortgage;
                 return state;
             }
 
@@ -91,22 +89,19 @@ namespace Libplanet.Action
 
         public IAccountStateDelta Refund(IAccountStateDelta state)
         {
-            if (_state == FeeCollectState.CannotCollectible)
+            if (_state == FeeCollectState.CannotCollectible ||
+                !CheckState(FeeCollectState.Refund))
             {
                 return state;
             }
 
-            CheckState(FeeCollectState.Refund);
-
-            if (!(_gasPrice is { } realGasPrice))
+            if (!(_gasPrice is { } realGasPrice) || realGasPrice.Sign <= 0)
             {
-                _state = FeeCollectState.Refund;
                 return state;
             }
 
             if (_context.GasLimit() - _context.GasUsed() <= 0)
             {
-                _state = FeeCollectState.Refund;
                 return state;
             }
 
@@ -119,22 +114,19 @@ namespace Libplanet.Action
 
         public IAccountStateDelta Reward(IAccountStateDelta state)
         {
-            if (_state == FeeCollectState.CannotCollectible)
+            if (_state == FeeCollectState.CannotCollectible ||
+                !CheckState(FeeCollectState.Reward))
             {
                 return state;
             }
 
-            CheckState(FeeCollectState.Reward);
-
-            if (!(_gasPrice is { } realGasPrice))
+            if (!(_gasPrice is { } realGasPrice) || realGasPrice.Sign <= 0)
             {
-                _state = FeeCollectState.Reward;
                 return state;
             }
 
             if (_context.GasUsed() <= 0)
             {
-                _state = FeeCollectState.Reward;
                 return state;
             }
 
@@ -150,12 +142,9 @@ namespace Libplanet.Action
             return new FeeCollector(context, _gasPrice, _state);
         }
 
-        private void CheckState(FeeCollectState state)
+        private bool CheckState(FeeCollectState state)
         {
-            if (_state + 1 != state)
-            {
-                throw new InvalidOperationException();
-            }
+            return _state + 1 == state;
         }
     }
 }
