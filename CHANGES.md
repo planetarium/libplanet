@@ -13,7 +13,7 @@ To be released.
  -  Replaced `Swarm<T>.PreloadAsync`'s parameter
     `IProgress<PreloadState> progress`
     as `IProgress<BlockSyncState> progress`.  [[#3154]]
- -  Moved `IAccountStateDelta` and relations interface to 
+ -  Moved `IAccountStateDelta` and relations interface to
     `Libplanet.State` namespace (from `Libplanet.Action` namespace).
     [[#3173]]
 
@@ -55,6 +55,17 @@ To be released.
 [#3152]: https://github.com/planetarium/libplanet/pull/3152
 [#3154]: https://github.com/planetarium/libplanet/pull/3154
 [#3173]: https://github.com/planetarium/libplanet/pull/3173
+
+
+Version 1.2.1
+-------------
+
+Released on May 17, 2023.
+
+ -  (Libplanet.Explorer) Fixed a bug where a `TransactionQuery` could not
+    properly retrieve actions.  [[#3174]]
+
+[#3174]: https://github.com/planetarium/libplanet/pull/3174
 
 
 Version 1.2.0

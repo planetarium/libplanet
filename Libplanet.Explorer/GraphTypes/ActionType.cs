@@ -14,7 +14,7 @@ using Libplanet.Action;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class ActionType<T> : ObjectGraphType<IAction>
+    public class ActionType<T> : ObjectGraphType<IValue>
         where T : IAction, new()
     {
         public ActionType()
@@ -31,7 +31,7 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: ctx =>
                 {
                     var codec = new Codec();
-                    var encoded = codec.Encode(ctx.Source.PlainValue);
+                    var encoded = codec.Encode(ctx.Source);
 
                     var encode = ctx.GetArgument<string>("encode");
                     switch (encode)
@@ -54,7 +54,7 @@ namespace Libplanet.Explorer.GraphTypes
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Inspection",
                 description: "A readable representation for debugging.",
-                resolve: ctx => ctx.Source.PlainValue.Inspect(loadAll: true)
+                resolve: ctx => ctx.Source.Inspect(true)
             );
 
             Field<NonNullGraphType<StringGraphType>>(
@@ -65,7 +65,7 @@ namespace Libplanet.Explorer.GraphTypes
                     var converter = new Bencodex.Json.BencodexJsonConverter();
                     var buffer = new MemoryStream();
                     var writer = new Utf8JsonWriter(buffer);
-                    converter.Write(writer, ctx.Source.PlainValue, new JsonSerializerOptions());
+                    converter.Write(writer, ctx.Source, new JsonSerializerOptions());
                     return Encoding.UTF8.GetString(buffer.ToArray());
                 }
             );
