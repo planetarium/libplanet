@@ -49,7 +49,7 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The time this transaction was created and signed.",
                 resolve: x => x.Source.Timestamp
             );
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType<T>>>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType>>>>(
                 name: "Actions",
                 description: "A list of actions in this transaction."
             );
