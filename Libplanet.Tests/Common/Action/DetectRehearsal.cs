@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.State;
@@ -8,25 +7,19 @@ namespace Libplanet.Tests.Common.Action
     [ActionType("detect_rehearsal")]
     public class DetectRehearsal : BaseAction
     {
-        public override IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
-            {
-                { "target_address", new Binary(TargetAddress.ByteArray) },
-            });
+        public override IValue PlainValue => Dictionary.Empty
+            .Add("type_id", TypeId)
+            .Add("values", Dictionary.Empty
+                .Add("target_address", TargetAddress.ByteArray));
 
         public bool ResultState { get; set; }
 
         public Address TargetAddress { get; set; }
 
-        public override void LoadPlainValue(
-            IValue plainValue)
+        public override void LoadPlainValue(IValue plainValue)
         {
-            LoadPlainValue((Bencodex.Types.Dictionary)plainValue);
-        }
-
-        public void LoadPlainValue(Bencodex.Types.Dictionary plainValue)
-        {
-            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
+            Dictionary values = (Dictionary)GetValues(plainValue);
+            TargetAddress = new Address(values["target_address"]);
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

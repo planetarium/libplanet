@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.State;
@@ -10,11 +9,10 @@ namespace Libplanet.Tests.Common.Action
     {
         public int ZoneId { get; set; }
 
-        public override IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<string, Integer>
-            {
-                { "zone_id", ZoneId },
-            });
+        public override IValue PlainValue => Dictionary.Empty
+            .Add("type_id", TypeId)
+            .Add("values", Dictionary.Empty
+                .Add("zone_id", ZoneId));
 
         public override IAccountStateDelta Execute(IActionContext context)
         {
@@ -24,13 +22,8 @@ namespace Libplanet.Tests.Common.Action
 
         public override void LoadPlainValue(IValue plainValue)
         {
-            LoadPlainValue((Dictionary)plainValue);
-        }
-
-        public void LoadPlainValue(
-            Dictionary plainValue)
-        {
-            ZoneId = plainValue.GetValue<Integer>("zone_id");
+            Dictionary values = (Dictionary)GetValues(plainValue);
+            ZoneId = (Integer)values["zone_id"];
         }
     }
 }
