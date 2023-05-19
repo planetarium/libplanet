@@ -27,7 +27,7 @@ public class TransactionQueryTest
 {
     protected readonly BlockChain Chain;
     protected MockBlockChainContext Source;
-    protected TransactionQuery<NullAction> QueryGraph;
+    protected TransactionQuery QueryGraph;
 
     public TransactionQueryTest()
     {
@@ -39,7 +39,7 @@ public class TransactionQueryTest
             timestamp: DateTimeOffset.UtcNow
         );
         Source = new MockBlockChainContext(Chain);
-        QueryGraph = new TransactionQuery<NullAction>(Source);
+        QueryGraph = new TransactionQuery(Source);
     }
 
     [Fact]

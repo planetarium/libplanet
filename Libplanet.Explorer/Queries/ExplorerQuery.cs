@@ -15,14 +15,13 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
 {
-    public class ExplorerQuery<T> : ObjectGraphType
-        where T : IAction, new()
+    public class ExplorerQuery : ObjectGraphType
     {
         public ExplorerQuery(IBlockChainContext chainContext)
         {
             ChainContext = chainContext;
-            Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
-            Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
+            Field<BlockQuery>("blockQuery", resolve: context => new { });
+            Field<TransactionQuery>("transactionQuery", resolve: context => new { });
             Field<StateQuery>("stateQuery", resolve: context => (
                 (IBlockChainStates)chainContext.BlockChain,
                 chainContext.BlockChain.Policy));

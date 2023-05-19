@@ -20,7 +20,7 @@ public class TransactionQueryGeneratedTest
 {
     protected readonly GeneratedBlockChainFixture Fx;
     protected MockBlockChainContext Source;
-    protected TransactionQuery<PolymorphicAction<SimpleAction>> QueryGraph;
+    protected TransactionQuery QueryGraph;
 
     public TransactionQueryGeneratedTest()
     {
@@ -40,8 +40,8 @@ public class TransactionQueryGeneratedTest
                         .Empty
                         .Add(new SimpleAction0Fail()))));
         Source = new MockBlockChainContext(Fx.Chain);
-        var _ = new ExplorerQuery<PolymorphicAction<SimpleAction>>(Source);
-        QueryGraph = new TransactionQuery<PolymorphicAction<SimpleAction>>(Source);
+        var _ = new ExplorerQuery(Source);
+        QueryGraph = new TransactionQuery(Source);
     }
 
     [Fact]

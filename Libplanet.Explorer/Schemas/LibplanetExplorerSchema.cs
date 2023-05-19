@@ -12,7 +12,7 @@ namespace Libplanet.Explorer.Schemas
         public LibplanetExplorerSchema(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
-            Query = serviceProvider.GetRequiredService<ExplorerQuery<T>>();
+            Query = serviceProvider.GetRequiredService<ExplorerQuery>();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Libplanet.Explorer.Interfaces
                 context,
                 (_) =>
                 {
-                    var s = new Schema { Query = new ExplorerQuery<T>(context) };
+                    var s = new Schema { Query = new ExplorerQuery(context) };
                     return s;
                 }
             );

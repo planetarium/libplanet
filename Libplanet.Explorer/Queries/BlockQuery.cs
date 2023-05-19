@@ -1,14 +1,12 @@
 #nullable disable
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Queries
 {
-    public class BlockQuery<T> : ObjectGraphType
-        where T : IAction, new()
+    public class BlockQuery : ObjectGraphType
     {
         public BlockQuery()
         {
@@ -40,7 +38,7 @@ namespace Libplanet.Explorer.Queries
                     int? limit = context.GetArgument<int?>("limit", null);
                     bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
                     Address? miner = context.GetArgument<Address?>("miner", null);
-                    return ExplorerQuery<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
+                    return ExplorerQuery.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
                 }
             );
 
@@ -64,12 +62,12 @@ namespace Libplanet.Explorer.Queries
 
                     if (hash is string hashNotNull)
                     {
-                        return ExplorerQuery<T>.GetBlockByHash(BlockHash.FromString(hashNotNull));
+                        return ExplorerQuery.GetBlockByHash(BlockHash.FromString(hashNotNull));
                     }
 
                     if (index is long indexNotNull)
                     {
-                        return ExplorerQuery<T>.GetBlockByIndex(indexNotNull);
+                        return ExplorerQuery.GetBlockByIndex(indexNotNull);
                     }
 
                     throw new GraphQL.ExecutionError("Unexpected block query");

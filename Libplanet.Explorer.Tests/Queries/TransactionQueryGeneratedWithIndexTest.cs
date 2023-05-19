@@ -10,8 +10,8 @@ public class TransactionQueryGeneratedWithIndexTest : TransactionQueryGeneratedT
     public TransactionQueryGeneratedWithIndexTest()
     {
         Source = new MockBlockChainContextWithIndex(Fx.Chain);
-        var _ = new ExplorerQuery<PolymorphicAction<SimpleAction>>(Source);
-        QueryGraph = new TransactionQuery<PolymorphicAction<SimpleAction>>(Source);
+        var _ = new ExplorerQuery(Source);
+        QueryGraph = new TransactionQuery(Source);
     }
 
     [SkippableFact(Skip = "transactionQuery.transactions does not support indexing.")]

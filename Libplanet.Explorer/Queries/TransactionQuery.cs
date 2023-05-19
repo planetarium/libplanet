@@ -15,8 +15,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
 {
-    public class TransactionQuery<T> : ObjectGraphType
-        where T : IAction, new()
+    public class TransactionQuery : ObjectGraphType
     {
         private static readonly Codec _codec = new Codec();
         private readonly IBlockChainContext _context;
@@ -61,7 +60,7 @@ namespace Libplanet.Explorer.Queries
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit");
 
-                    return ExplorerQuery<T>.ListTransactions(signer, involved, desc, offset, limit);
+                    return ExplorerQuery.ListTransactions(signer, involved, desc, offset, limit);
                 }
             );
 
@@ -98,7 +97,7 @@ namespace Libplanet.Explorer.Queries
                     int offset = context.GetArgument<int>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
-                    return ExplorerQuery<T>.ListStagedTransactions(
+                    return ExplorerQuery.ListStagedTransactions(
                         signer,
                         involved,
                         desc,
@@ -116,7 +115,7 @@ namespace Libplanet.Explorer.Queries
                 resolve: context =>
                 {
                     var id = TxId.FromHex(context.GetArgument<string>("id"));
-                    return ExplorerQuery<T>.GetTransaction(id);
+                    return ExplorerQuery.GetTransaction(id);
                 }
             );
 
@@ -144,9 +143,6 @@ namespace Libplanet.Explorer.Queries
                     BlockChain chain = _context.BlockChain;
                     string plainValueString = context.GetArgument<string>("plainValue");
                     IValue plainValue = _codec.Decode(ByteUtil.ParseHex(plainValueString));
-                    var action = new T();
-                    action.LoadPlainValue(plainValue);
-
                     var publicKey = new PublicKey(
                         ByteUtil.ParseHex(context.GetArgument<string>("publicKey"))
                     );
@@ -156,7 +152,7 @@ namespace Libplanet.Explorer.Queries
                     var sigMeta = new TxSigningMetadata(publicKey, nonce);
                     var invoice = new TxInvoice(
                         chain.Genesis.Hash,
-                        actions: new TxActionList(new IAction[] { action }));
+                        actions: new TxActionList(List.Empty.Add(plainValue)));
                     var unsignedTx = new UnsignedTx(invoice, sigMeta);
                     return unsignedTx.SerializeUnsignedTx();
                 }

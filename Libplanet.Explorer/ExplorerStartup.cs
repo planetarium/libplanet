@@ -49,9 +49,9 @@ namespace Libplanet.Explorer
             services.TryAddSingleton<BlockType>();
             services.TryAddSingleton<TransactionType>();
             services.TryAddSingleton<NodeStateType>();
-            services.TryAddSingleton<BlockQuery<T>>();
-            services.TryAddSingleton<TransactionQuery<T>>();
-            services.TryAddSingleton<ExplorerQuery<T>>();
+            services.TryAddSingleton<BlockQuery>();
+            services.TryAddSingleton<TransactionQuery>();
+            services.TryAddSingleton<ExplorerQuery>();
             services.TryAddSingleton<LibplanetExplorerSchema<T>>();
 
             services.AddGraphQL()
