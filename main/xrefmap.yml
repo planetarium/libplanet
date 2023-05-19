@@ -10325,66 +10325,51 @@ references:
   commentId: N:Libplanet.Explorer.Cocona.Commands
   fullName: Libplanet.Explorer.Cocona.Commands
   nameWithType: Libplanet.Explorer.Cocona.Commands
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1
-  name: IndexCommand<T>
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html
-  commentId: T:Libplanet.Explorer.Cocona.Commands.IndexCommand`1
-  name.vb: IndexCommand(Of T)
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T)
-  nameWithType: IndexCommand<T>
-  nameWithType.vb: IndexCommand(Of T)
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1.#ctor
-  name: IndexCommand()
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_1__ctor
-  commentId: M:Libplanet.Explorer.Cocona.Commands.IndexCommand`1.#ctor
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>.IndexCommand()
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T).IndexCommand()
-  nameWithType: IndexCommand<T>.IndexCommand()
-  nameWithType.vb: IndexCommand(Of T).IndexCommand()
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1.#ctor*
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand
   name: IndexCommand
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_1__ctor_
-  commentId: Overload:Libplanet.Explorer.Cocona.Commands.IndexCommand`1.#ctor
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html
+  commentId: T:Libplanet.Explorer.Cocona.Commands.IndexCommand
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand
+  nameWithType: IndexCommand
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand.#ctor
+  name: IndexCommand()
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html#Libplanet_Explorer_Cocona_Commands_IndexCommand__ctor
+  commentId: M:Libplanet.Explorer.Cocona.Commands.IndexCommand.#ctor
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand.IndexCommand()
+  nameWithType: IndexCommand.IndexCommand()
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand.#ctor*
+  name: IndexCommand
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html#Libplanet_Explorer_Cocona_Commands_IndexCommand__ctor_
+  commentId: Overload:Libplanet.Explorer.Cocona.Commands.IndexCommand.#ctor
   isSpec: "True"
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>.IndexCommand
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T).IndexCommand
-  nameWithType: IndexCommand<T>.IndexCommand
-  nameWithType.vb: IndexCommand(Of T).IndexCommand
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Help(ICoconaHelpMessageBuilder)
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand.IndexCommand
+  nameWithType: IndexCommand.IndexCommand
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand.Help(ICoconaHelpMessageBuilder)
   name: Help(ICoconaHelpMessageBuilder)
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_1_Help_ICoconaHelpMessageBuilder_
-  commentId: M:Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Help(ICoconaHelpMessageBuilder)
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>.Help(ICoconaHelpMessageBuilder)
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T).Help(ICoconaHelpMessageBuilder)
-  nameWithType: IndexCommand<T>.Help(ICoconaHelpMessageBuilder)
-  nameWithType.vb: IndexCommand(Of T).Help(ICoconaHelpMessageBuilder)
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Help*
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_Help_ICoconaHelpMessageBuilder_
+  commentId: M:Libplanet.Explorer.Cocona.Commands.IndexCommand.Help(ICoconaHelpMessageBuilder)
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand.Help(ICoconaHelpMessageBuilder)
+  nameWithType: IndexCommand.Help(ICoconaHelpMessageBuilder)
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand.Help*
   name: Help
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_1_Help_
-  commentId: Overload:Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Help
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_Help_
+  commentId: Overload:Libplanet.Explorer.Cocona.Commands.IndexCommand.Help
   isSpec: "True"
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>.Help
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T).Help
-  nameWithType: IndexCommand<T>.Help
-  nameWithType.vb: IndexCommand(Of T).Help
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Sync(System.String,System.String)
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand.Help
+  nameWithType: IndexCommand.Help
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand.Sync(System.String,System.String)
   name: Sync(String, String)
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_1_Sync_System_String_System_String_
-  commentId: M:Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Sync(System.String,System.String)
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>.Sync(System.String, System.String)
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T).Sync(System.String, System.String)
-  nameWithType: IndexCommand<T>.Sync(String, String)
-  nameWithType.vb: IndexCommand(Of T).Sync(String, String)
-- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Sync*
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_Sync_System_String_System_String_
+  commentId: M:Libplanet.Explorer.Cocona.Commands.IndexCommand.Sync(System.String,System.String)
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand.Sync(System.String, System.String)
+  nameWithType: IndexCommand.Sync(String, String)
+- uid: Libplanet.Explorer.Cocona.Commands.IndexCommand.Sync*
   name: Sync
-  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_1_Sync_
-  commentId: Overload:Libplanet.Explorer.Cocona.Commands.IndexCommand`1.Sync
+  href: api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html#Libplanet_Explorer_Cocona_Commands_IndexCommand_Sync_
+  commentId: Overload:Libplanet.Explorer.Cocona.Commands.IndexCommand.Sync
   isSpec: "True"
-  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand<T>.Sync
-  fullName.vb: Libplanet.Explorer.Cocona.Commands.IndexCommand(Of T).Sync
-  nameWithType: IndexCommand<T>.Sync
-  nameWithType.vb: IndexCommand(Of T).Sync
+  fullName: Libplanet.Explorer.Cocona.Commands.IndexCommand.Sync
+  nameWithType: IndexCommand.Sync
 - uid: Libplanet.Extensions.Cocona
   name: Libplanet.Extensions.Cocona
   href: api/Libplanet.Extensions.Cocona.html

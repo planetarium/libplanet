@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "7jkOBOh3pF5rwdUmQ+/8T3h6VGtmZEWOmJJhExFk5CQ="
+          "hash": "DRTCrIuVG7PdCjDBRc4dNFqnHM2Db28qt26q7/aNIzE="
         }
       },
       "is_incremental": false,
@@ -1637,11 +1637,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.yml",
+      "source_relative_path": "api/Libplanet.Explorer.Cocona.Commands.IndexCommand.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Explorer.Cocona.Commands.IndexCommand-1.html",
-          "hash": "YDVhqRnXzJggZijlshmTfOKopNG2vA57nuFs2bimPPg="
+          "relative_path": "api/Libplanet.Explorer.Cocona.Commands.IndexCommand.html",
+          "hash": "5hYcv72UbgsBBB7g4LtIkjPmfcwlZG6jXD5aASXCVCU="
         }
       },
       "is_incremental": false,
@@ -1653,7 +1653,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Explorer.Cocona.Commands.html",
-          "hash": "xEALtRy0dFHCWTFoGMmJqzBbnHDLmNPTEj7WcLT4Qa4="
+          "hash": "Q9XxW6dmW0h164TKGx/dwjUlx6KdsRzmrBXZ5NKwB+g="
         }
       },
       "is_incremental": false,
@@ -4617,7 +4617,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "54qDGNQm7jmt4eK/Hu8wFgsFLvPFvqduvnHeg9OLm8E="
+          "hash": "1rs5UWeoD4R6PcXkvePOmZ/2+YjHI0l+EUizg4wj/k8="
         }
       },
       "is_incremental": false,
