@@ -1,17 +1,15 @@
 using System;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class TransactionType<T> : ObjectGraphType<Transaction>
-        where T : IAction, new()
+    public class TransactionType : ObjectGraphType<Transaction>
     {
-        public TransactionType(IBlockChainContext<T> context)
+        public TransactionType(IBlockChainContext context)
         {
             Field<NonNullGraphType<IdGraphType>>(
                 name: "Id",
@@ -49,7 +47,7 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The time this transaction was created and signed.",
                 resolve: x => x.Source.Timestamp
             );
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType<T>>>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType>>>>(
                 name: "Actions",
                 description: "A list of actions in this transaction."
             );
@@ -64,7 +62,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             // The block including the transaction, only available when IBlockChainIndex is
             // provided.
-            Field<NonNullGraphType<BlockType<T>>>(
+            Field<NonNullGraphType<BlockType>>(
                 name: "BlockRef",
                 description: "The block including the transaction.",
                 resolve: ctx =>
@@ -77,7 +75,7 @@ namespace Libplanet.Explorer.GraphTypes
                     var exceptionMessage =
                         "To resolve the field 'BlockRef', an instance of"
                         + $" {nameof(IBlockChainIndex)} must be provided to the"
-                        + $" {nameof(IBlockChainContext<T>)}.";
+                        + $" {nameof(IBlockChainContext)}.";
                     ctx.Errors.Add(new ExecutionError(exceptionMessage));
                     return null;
                 });

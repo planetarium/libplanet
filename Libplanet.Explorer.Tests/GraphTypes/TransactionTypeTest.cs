@@ -44,7 +44,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             ExecutionResult result =
                 await ExecuteQueryAsync(
                     query,
-                    new TransactionType<NullAction>(new MockBlockChainContext<NullAction>()),
+                    new TransactionType(new MockBlockChainContext()),
                     source: transaction);
             Dictionary<string, object> resultData =
                 (Dictionary<string, object>)((ExecutionNode) result.Data!)?.ToValue()!;

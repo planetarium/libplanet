@@ -26,8 +26,8 @@ namespace Libplanet.Explorer.Tests.Queries;
 public class TransactionQueryTest
 {
     protected readonly BlockChain Chain;
-    protected MockBlockChainContext<NullAction> Source;
-    protected TransactionQuery<NullAction> QueryGraph;
+    protected MockBlockChainContext Source;
+    protected TransactionQuery QueryGraph;
 
     public TransactionQueryTest()
     {
@@ -38,8 +38,8 @@ public class TransactionQueryTest
             privateKey: new PrivateKey(),
             timestamp: DateTimeOffset.UtcNow
         );
-        Source = new MockBlockChainContext<NullAction>(Chain);
-        QueryGraph = new TransactionQuery<NullAction>(Source);
+        Source = new MockBlockChainContext(Chain);
+        QueryGraph = new TransactionQuery(Source);
     }
 
     [Fact]

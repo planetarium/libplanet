@@ -1,5 +1,4 @@
 using GraphQL.Server;
-using Libplanet.Action;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
@@ -15,9 +14,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace Libplanet.Explorer
 {
-    public class ExplorerStartup<T, TU>
-        where T : IAction, new()
-        where TU : class, IBlockChainContext<T>
+    public class ExplorerStartup<TU>
+        where TU : class, IBlockChainContext
     {
         public ExplorerStartup(IConfiguration configuration)
         {
@@ -39,24 +37,24 @@ namespace Libplanet.Explorer
             );
             services.AddControllers();
 
-            services.AddSingleton<IBlockChainContext<T>, TU>();
+            services.AddSingleton<IBlockChainContext, TU>();
             services.AddSingleton<IStore>(
-                provider => provider.GetRequiredService<IBlockChainContext<T>>().Store);
+                provider => provider.GetRequiredService<IBlockChainContext>().Store);
             services.AddSingleton<IBlockChainIndex>(
-                provider => provider.GetRequiredService<IBlockChainContext<T>>().Index);
+                provider => provider.GetRequiredService<IBlockChainContext>().Index);
 
-            services.TryAddSingleton<ActionType<T>>();
-            services.TryAddSingleton<BlockType<T>>();
-            services.TryAddSingleton<TransactionType<T>>();
-            services.TryAddSingleton<NodeStateType<T>>();
-            services.TryAddSingleton<BlockQuery<T>>();
-            services.TryAddSingleton<TransactionQuery<T>>();
-            services.TryAddSingleton<ExplorerQuery<T>>();
-            services.TryAddSingleton<LibplanetExplorerSchema<T>>();
+            services.TryAddSingleton<ActionType>();
+            services.TryAddSingleton<BlockType>();
+            services.TryAddSingleton<TransactionType>();
+            services.TryAddSingleton<NodeStateType>();
+            services.TryAddSingleton<BlockQuery>();
+            services.TryAddSingleton<TransactionQuery>();
+            services.TryAddSingleton<ExplorerQuery>();
+            services.TryAddSingleton<LibplanetExplorerSchema>();
 
             services.AddGraphQL()
                     .AddSystemTextJson()
-                    .AddGraphTypes(typeof(LibplanetExplorerSchema<T>));
+                    .AddGraphTypes(typeof(LibplanetExplorerSchema));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -76,8 +74,8 @@ namespace Libplanet.Explorer
 
             // FIXME: '/graphql' endpoint will be deprecated after
             //        libplanet-explorer-frontend migration.
-            app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql");
-            app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql/explorer");
+            app.UseGraphQL<LibplanetExplorerSchema>("/graphql");
+            app.UseGraphQL<LibplanetExplorerSchema>("/graphql/explorer");
             app.UseGraphQLPlayground();
         }
     }

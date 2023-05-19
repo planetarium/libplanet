@@ -1,8 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
-using Libplanet.Blockchain;
 using Libplanet.Store;
 using Microsoft.Extensions.Hosting;
 
@@ -12,10 +10,7 @@ namespace Libplanet.Explorer.Indexing;
 /// An ASP.NET Core service that indexes blocks added to the given <see cref="IStore"/>
 /// instance to the provided <see cref="IBlockChainIndex"/> instance.
 /// </summary>
-/// <typeparam name="T">The <see cref="IAction"/> type of the blocks that will be indexed.
-/// </typeparam>
-public class IndexingService<T> : BackgroundService
-    where T : IAction, new()
+public class IndexingService : BackgroundService
 {
     private readonly IBlockChainIndex _index;
     private readonly IStore _store;
@@ -41,7 +36,7 @@ public class IndexingService<T> : BackgroundService
     {
         try
         {
-            await _index.SynchronizeForeverAsync<T>(_store, _pollInterval, stoppingToken);
+            await _index.SynchronizeForeverAsync(_store, _pollInterval, stoppingToken);
         }
         catch (OperationCanceledException)
         {

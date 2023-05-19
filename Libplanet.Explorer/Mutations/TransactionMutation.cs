@@ -1,7 +1,6 @@
 using System;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
@@ -9,16 +8,15 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Mutations
 {
-    public class TransactionMutation<T> : ObjectGraphType
-        where T : IAction, new()
+    public class TransactionMutation : ObjectGraphType
     {
-        private readonly IBlockChainContext<T> _context;
+        private readonly IBlockChainContext _context;
 
-        public TransactionMutation(IBlockChainContext<T> context)
+        public TransactionMutation(IBlockChainContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
-            Field<TransactionType<T>>(
+            Field<TransactionType>(
                 "stage",
                 description: "Stage transaction to current chain",
                 arguments: new QueryArguments(

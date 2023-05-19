@@ -1,21 +1,16 @@
 #nullable disable
 using System;
-using System.Buffers;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class ActionType<T> : ObjectGraphType<IValue>
-        where T : IAction, new()
+    public class ActionType : ObjectGraphType<IValue>
     {
         public ActionType()
         {

@@ -19,7 +19,7 @@ public abstract class BlockChainIndexTest
 
     protected const int MaxTxCount = 20;
 
-    protected abstract IBlockChainIndexFixture<PolymorphicAction<SimpleAction>> Fx { get; set; }
+    protected abstract IBlockChainIndexFixture Fx { get; set; }
 
     protected GeneratedBlockChainFixture ChainFx { get; set; }
 
@@ -36,7 +36,7 @@ public abstract class BlockChainIndexTest
     public async Task Synchronize()
     {
         var index = Fx.CreateEphemeralIndexInstance();
-        await index.SynchronizeAsync<PolymorphicAction<SimpleAction>>(
+        await index.SynchronizeAsync(
             ChainFx.Chain.Store, CancellationToken.None);
 
         var forkedChain = ChainFx.Chain.Fork(ChainFx.Chain.Tip.PreviousHash!.Value);

@@ -29,7 +29,7 @@ public class StateQueryTest
         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(), new BlockPolicy()
         );
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             states(
                  addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
@@ -54,7 +54,7 @@ public class StateQueryTest
             new MockChainStates(),
             new BlockPolicy()
         );
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             balance(
                  owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
@@ -97,7 +97,7 @@ public class StateQueryTest
 #pragma warning restore CS0618
          (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(), new BlockPolicy());
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
@@ -129,7 +129,7 @@ public class StateQueryTest
         Assert.Equal("10000", totalSupplyDict["quantity"]);
         Assert.Equal("10000 ABC", totalSupplyDict["string"]);
 
-        result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
                  currency: { ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false },
@@ -151,7 +151,7 @@ public class StateQueryTest
             new MockChainStates(),
             new BlockPolicy()
         );
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
                  offsetBlockHash:

@@ -62,13 +62,13 @@ namespace Libplanet.Explorer.Executable
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddGraphQL()
-                .AddGraphTypes(typeof(LibplanetExplorerSchema<NullAction>));
+                .AddGraphTypes(typeof(LibplanetExplorerSchema));
 
-            serviceCollection.AddSingleton<IBlockChainContext<NullAction>, Startup>();
+            serviceCollection.AddSingleton<IBlockChainContext, Startup>();
             serviceCollection.AddSingleton<IStore, MemoryStore>();
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-            var schema = new LibplanetExplorerSchema<NullAction>(serviceProvider);
+            var schema = new LibplanetExplorerSchema(serviceProvider);
             var printer = new SchemaPrinter(schema);
 
             Console.WriteLine(printer.Print());
@@ -235,7 +235,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 Startup.StoreSingleton = store;
 
                 IWebHost webHost = WebHost.CreateDefaultBuilder()
-                    .UseStartup<ExplorerStartup<NullAction, Startup>>()
+                    .UseStartup<ExplorerStartup<Startup>>()
                     .UseSerilog()
                     .UseUrls($"http://{options.Host}:{options.Port}/")
                     .Build();
@@ -471,7 +471,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
         }
 
-        internal class Startup : IBlockChainContext<NullAction>
+        internal class Startup : IBlockChainContext
         {
             public bool Preloaded => PreloadedSingleton;
 

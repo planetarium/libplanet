@@ -41,19 +41,16 @@ namespace Libplanet.Explorer.Tests
             var services = new ServiceCollection();
             System.Action addContext = source switch
             {
-                IBlockChainContext<NullAction> context => () => { services.AddSingleton(context); },
-                IBlockChainContext<PolymorphicAction<SimpleAction>> context => () => { services.AddSingleton(context); },
+                IBlockChainContext context => () => { services.AddSingleton(context); },
                 _ => () =>
                 {
-                    services.AddSingleton<IBlockChainContext<NullAction>>(
-                        new MockBlockChainContext<NullAction>());
+                    services.AddSingleton<IBlockChainContext>(
+                        new MockBlockChainContext());
                 }
             };
             addContext();
-            services.AddSingleton<BlockType<NullAction>>();
-            services.AddSingleton<BlockType<PolymorphicAction<SimpleAction>>>();
-            services.AddSingleton<TransactionType<NullAction>>();
-            services.AddSingleton<TransactionType<PolymorphicAction<SimpleAction>>>();
+            services.AddSingleton<BlockType>();
+            services.AddSingleton<TransactionType>();
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             var failSafeServiceProvider = new FuncServiceProvider(type =>
                 {

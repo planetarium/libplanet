@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -190,10 +189,8 @@ public interface IBlockChainIndex
     internal Task IndexAsync(
         BlockDigest blockDigest, IEnumerable<ITransaction> txs, CancellationToken token);
 
-    internal Task SynchronizeForeverAsync<T>(
-        IStore store, TimeSpan pollInterval, CancellationToken stoppingToken)
-        where T : IAction, new();
+    internal Task SynchronizeForeverAsync(
+        IStore store, TimeSpan pollInterval, CancellationToken stoppingToken);
 
-    internal Task SynchronizeAsync<T>(IStore store, CancellationToken stoppingToken)
-        where T : IAction, new();
+    internal Task SynchronizeAsync(IStore store, CancellationToken stoppingToken);
 }
