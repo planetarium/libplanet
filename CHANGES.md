@@ -4,9 +4,7 @@ Libplanet changelog
 Version 1.3.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on May 19, 2023.
 
 ### Backward-incompatible API changes
 
@@ -34,12 +32,6 @@ To be released.
  -  (Libplanet.Explorer) Removed type parameter `T` requiring `T` as
     `IAction` from all classes.  [[#3185]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
 ### Behavioral changes
 
  -  `Gossip` became to store the `MessageId`s received through the
@@ -62,12 +54,6 @@ To be released.
     report progress to it, if it's given.  [[#3154]]
  -  Moved creation of `BlockDemandTable` and `BlockCandidateTable`
     to constructor of `Swarm<T>` from `Swarm<T>.StartAsync()`.  [[#3154]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3152]: https://github.com/planetarium/libplanet/pull/3152
 [#3154]: https://github.com/planetarium/libplanet/pull/3154
