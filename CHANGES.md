@@ -28,6 +28,7 @@ To be released.
  -  Removed type parameter `T` from `Context<T>` class.  [[#3183]]
  -  Removed type parameter `T` from `ConsensusContext<T>` class.  [[#3183]]
  -  Removed type parameter `T` from `ConsensusReactor<T>` class.  [[#3183]]
+ -  Removed type parameter `T` from `BlockCandidateTable<T>` class.  [[#3184]]
 
 ### Backward-incompatible network protocol changes
 
@@ -70,6 +71,7 @@ To be released.
 [#3173]: https://github.com/planetarium/libplanet/pull/3173
 [#3182]: https://github.com/planetarium/libplanet/pull/3182
 [#3183]: https://github.com/planetarium/libplanet/pull/3183
+[#3184]: https://github.com/planetarium/libplanet/pull/3184
 
 
 Version 1.2.1
