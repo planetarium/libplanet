@@ -10,11 +10,11 @@ using Nito.AsyncEx;
 
 namespace Libplanet.Net
 {
-    public partial class Swarm<T>
+    public partial class Swarm
     {
         /// <summary>
-        /// Information of <see cref="Swarm{T}"/>'s demand for new blocks.
-        /// It is empty when the <see cref="Swarm{T}"/> does not have any block to demand.
+        /// Information of <see cref="Swarm"/>'s demand for new blocks.
+        /// It is empty when the <see cref="Swarm"/> does not have any block to demand.
         /// <seealso cref="BlockDemandTable"/>
         /// </summary>
         public BlockDemandTable BlockDemandTable { get; private set; }
@@ -34,7 +34,7 @@ namespace Libplanet.Net
 
         /// <summary>
         /// Fill blocks from the <see cref="BoundPeer"/>s in the
-        /// <see cref="Swarm{T}.RoutingTable"/>.
+        /// <see cref="Swarm.RoutingTable"/>.
         /// </summary>
         /// <param name="timeout">
         /// The timeout value for the request to get the tip of the block.

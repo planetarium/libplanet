@@ -12,7 +12,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Net
 {
-    public partial class Swarm<T>
+    public partial class Swarm
     {
         private readonly ConcurrentDictionary<BoundPeer, int> _processBlockDemandSessions;
 

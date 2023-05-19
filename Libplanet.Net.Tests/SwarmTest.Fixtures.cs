@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -76,7 +75,7 @@ namespace Libplanet.Net.Tests
             return (action.TargetAddress, blocks);
         }
 
-        private Task<Swarm<DumbAction>> CreateConsensusSwarm(
+        private Task<Swarm> CreateConsensusSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
@@ -103,7 +102,7 @@ namespace Libplanet.Net.Tests
             });
         }
 
-        private async Task<Swarm<DumbAction>> CreateSwarm(
+        private async Task<Swarm> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
             HostOptions hostOptions = null,
@@ -123,7 +122,7 @@ namespace Libplanet.Net.Tests
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
-            return await CreateSwarm<DumbAction>(
+            return await CreateSwarm(
                 blockchain,
                 privateKey,
                 appProtocolVersionOptions,
@@ -132,7 +131,7 @@ namespace Libplanet.Net.Tests
                 consensusReactorOption: consensusReactorOption);
         }
 
-        private async Task<Swarm<T>> CreateSwarm<T>(
+        private async Task<Swarm> CreateSwarm(
             BlockChain blockChain,
             PrivateKey privateKey = null,
             AppProtocolVersionOptions appProtocolVersionOptions = null,
@@ -140,7 +139,6 @@ namespace Libplanet.Net.Tests
             SwarmOptions options = null,
             ConsensusReactorOption? consensusReactorOption = null
         )
-            where T : IAction, new()
         {
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
             hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
@@ -165,7 +163,7 @@ namespace Libplanet.Net.Tests
                     options.MessageTimestampBuffer);
             }
 
-            var swarm = new Swarm<T>(
+            var swarm = new Swarm(
                 blockChain,
                 privateKey,
                 transport,

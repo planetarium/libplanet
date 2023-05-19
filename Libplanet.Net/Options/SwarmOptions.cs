@@ -60,7 +60,7 @@ namespace Libplanet.Net.Options
         public int MinimumBroadcastTarget { get; set; } = 10;
 
         /// <summary>
-        /// Determines how often <see cref="Swarm{T}"/> broadcasts <see cref="BlockHeaderMsg"/>
+        /// Determines how often <see cref="Swarm"/> broadcasts <see cref="BlockHeaderMsg"/>
         /// to its peers.
         /// </summary>
         /// <remarks>
@@ -71,7 +71,7 @@ namespace Libplanet.Net.Options
             = TimeSpan.FromMilliseconds(15_000);
 
         /// <summary>
-        /// Determines how often <see cref="Swarm{T}"/> broadcasts <see cref="TxIdsMsg"/>
+        /// Determines how often <see cref="Swarm"/> broadcasts <see cref="TxIdsMsg"/>
         /// to its peers.
         /// </summary>
         /// <remarks>
@@ -100,18 +100,18 @@ namespace Libplanet.Net.Options
 
         /// <summary>
         /// The lifespan of the <see cref="BlockChain.Tip"/>.  When the tip has not been updated
-        /// for the configured lifespan, <see cref="Swarm{T}"/> pulls new blocks from neighbor
+        /// for the configured lifespan, <see cref="Swarm"/> pulls new blocks from neighbor
         /// peers.
         /// </summary>
         public TimeSpan TipLifespan { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
-        /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.
+        /// Various options for the default bootstrap behavior of <see cref="Swarm"/>.
         /// </summary>
         public BootstrapOptions BootstrapOptions { get; set; } = new BootstrapOptions();
 
         /// <summary>
-        /// Various options for the default preload behavior of <see cref="Swarm{T}"/>.
+        /// Various options for the default preload behavior of <see cref="Swarm"/>.
         /// </summary>
         public PreloadOptions PreloadOptions { get; set; } = new PreloadOptions();
 

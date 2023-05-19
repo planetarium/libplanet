@@ -9,7 +9,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Net
 {
-    public partial class Swarm<T>
+    public partial class Swarm
     {
         private readonly NullableSemaphore _transferBlocksSemaphore;
         private readonly NullableSemaphore _transferTxsSemaphore;

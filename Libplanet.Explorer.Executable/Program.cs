@@ -240,7 +240,7 @@ If omitted (default) explorer only the local blockchain store.")]
                     .UseUrls($"http://{options.Host}:{options.Port}/")
                     .Build();
 
-                Swarm<NullAction> swarm = null;
+                Swarm swarm = null;
                 if (!(options.Seeds is null))
                 {
                     string aggregatedSeedStrings =
@@ -294,7 +294,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         hostOptions,
                         swarmOptions.MessageTimestampBuffer);
 
-                    swarm = new Swarm<NullAction>(
+                    swarm = new Swarm(
                         blockChain,
                         privateKey,
                         transport,
@@ -407,9 +407,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
 
-        private static async Task StartSwarmAsync(
-            Swarm<NullAction> swarm,
-            CancellationToken cancellationToken)
+        private static async Task StartSwarmAsync(Swarm swarm, CancellationToken cancellationToken)
         {
             if (swarm is null)
             {
@@ -481,7 +479,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IStore Store => StoreSingleton;
 
-            public Swarm<NullAction> Swarm => SwarmSingleton;
+            public Swarm Swarm => SwarmSingleton;
 
             // XXX workaround for build; we decided to decommission Libplanet.Explorer.Executable
             // project, but it will be removed after we move the schema command. As this project
@@ -495,7 +493,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             internal static IStore StoreSingleton { get; set; }
 
-            internal static Swarm<NullAction> SwarmSingleton { get; set; }
+            internal static Swarm SwarmSingleton { get; set; }
         }
 
         private class NoOpStateStore : IStateStore

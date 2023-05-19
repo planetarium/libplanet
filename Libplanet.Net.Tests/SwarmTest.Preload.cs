@@ -34,8 +34,8 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
 
-            Swarm<DumbAction> minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
 
             BlockChain minerChain = minerSwarm.BlockChain;
             BlockChain receiverChain = receiverSwarm.BlockChain;
@@ -68,8 +68,8 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
 
-            Swarm<DumbAction> minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
 
             BlockChain minerChain = minerSwarm.BlockChain;
             BlockChain receiverChain = receiverSwarm.BlockChain;
@@ -118,8 +118,8 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task Preload()
         {
-            Swarm<DumbAction> minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
 
             BlockChain minerChain = minerSwarm.BlockChain;
             BlockChain receiverChain = receiverSwarm.BlockChain;
@@ -386,8 +386,8 @@ namespace Libplanet.Net.Tests
 
             var senderKey = new PrivateKey();
 
-            var receiver = await CreateSwarm<DumbAction>(chain).ConfigureAwait(false);
-            var sender = await CreateSwarm<DumbAction>(
+            var receiver = await CreateSwarm(chain).ConfigureAwait(false);
+            var sender = await CreateSwarm(
                 MakeBlockChain<DumbAction>(
                     policy,
                     new MemoryStore(),
@@ -436,10 +436,10 @@ namespace Libplanet.Net.Tests
 
             var minerKey = new PrivateKey();
 
-            Swarm<ThrowException> minerSwarm =
-                await CreateSwarm<ThrowException>(minerChain, minerKey).ConfigureAwait(false);
-            Swarm<ThrowException> receiverSwarm =
-                await CreateSwarm<ThrowException>(receiverChain).ConfigureAwait(false);
+            Swarm minerSwarm =
+                await CreateSwarm(minerChain, minerKey).ConfigureAwait(false);
+            Swarm receiverSwarm =
+                await CreateSwarm(receiverChain).ConfigureAwait(false);
 
             foreach (var unused in Enumerable.Range(0, 10))
             {
@@ -488,8 +488,8 @@ namespace Libplanet.Net.Tests
         public async Task PreloadFromNominer()
         {
             var minerKey = new PrivateKey();
-            Swarm<DumbAction> minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             var fxForNominers = new StoreFixture[2];
             var policy = new BlockPolicy(new MinerReward(1));
             fxForNominers[0] = new MemoryStoreFixture(policy.BlockAction);
@@ -506,9 +506,9 @@ namespace Libplanet.Net.Tests
                     fxForNominers[1].StateStore),
             };
             var nominerSwarm0 =
-                await CreateSwarm<DumbAction>(blockChainsForNominers[0]).ConfigureAwait(false);
+                await CreateSwarm(blockChainsForNominers[0]).ConfigureAwait(false);
             var nominerSwarm1 =
-                await CreateSwarm<DumbAction>(blockChainsForNominers[1]).ConfigureAwait(false);
+                await CreateSwarm(blockChainsForNominers[1]).ConfigureAwait(false);
 
             BlockChain minerChain = minerSwarm.BlockChain;
             BlockChain receiverChain = receiverSwarm.BlockChain;
@@ -621,9 +621,9 @@ namespace Libplanet.Net.Tests
         {
             var key0 = new PrivateKey();
 
-            Swarm<DumbAction> swarm0 = await CreateSwarm(key0).ConfigureAwait(false);
-            Swarm<DumbAction> swarm1 = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm swarm0 = await CreateSwarm(key0).ConfigureAwait(false);
+            Swarm swarm1 = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
 
             receiverSwarm.Options.TimeoutOptions.GetBlockHashesTimeout
                 = TimeSpan.FromMilliseconds(1000);
@@ -678,8 +678,8 @@ namespace Libplanet.Net.Tests
         [InlineData(5000)]
         public async Task PreloadAsyncCancellation(int cancelAfter)
         {
-            Swarm<DumbAction> minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
             Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
@@ -759,8 +759,8 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task GetDemandBlockHashes()
         {
-            Swarm<DumbAction> minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
             Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
@@ -802,8 +802,8 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
 
-            Swarm<DumbAction> minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
 
             BlockChain minerChain = minerSwarm.BlockChain;
             BlockChain receiverChain = receiverSwarm.BlockChain;
@@ -852,8 +852,8 @@ namespace Libplanet.Net.Tests
         public async Task GetDemandBlockHashesDuringReorg()
         {
             var minerKey = new PrivateKey();
-            Swarm<DumbAction> minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
             Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
@@ -907,8 +907,8 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task PreloadDeleteOnlyTempChain()
         {
-            Swarm<DumbAction> minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             BlockChain minerChain = minerSwarm.BlockChain;
             BlockChain receiverChain = minerSwarm.BlockChain;
 
@@ -940,9 +940,9 @@ namespace Libplanet.Net.Tests
         public async Task PreloadFromTheHighestTipIndexChain()
         {
             var minerKey1 = new PrivateKey();
-            Swarm<DumbAction> minerSwarm1 = await CreateSwarm(minerKey1).ConfigureAwait(false);
-            Swarm<DumbAction> minerSwarm2 = await CreateSwarm().ConfigureAwait(false);
-            Swarm<DumbAction> receiverSwarm = await CreateSwarm().ConfigureAwait(false);
+            Swarm minerSwarm1 = await CreateSwarm(minerKey1).ConfigureAwait(false);
+            Swarm minerSwarm2 = await CreateSwarm().ConfigureAwait(false);
+            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             BlockChain minerChain1 = minerSwarm1.BlockChain;
             BlockChain minerChain2 = minerSwarm2.BlockChain;
             BlockChain receiverChain = receiverSwarm.BlockChain;
@@ -1003,12 +1003,12 @@ namespace Libplanet.Net.Tests
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 privateKey: key2);
-            Swarm<DumbAction> receiverSwarm =
-                await CreateSwarm<DumbAction>(receiverChain).ConfigureAwait(false);
-            Swarm<DumbAction> validSeedSwarm =
-                await CreateSwarm<DumbAction>(validSeedChain).ConfigureAwait(false);
-            Swarm<DumbAction> invalidSeedSwarm =
-                await CreateSwarm<DumbAction>(invalidSeedChain).ConfigureAwait(false);
+            Swarm receiverSwarm =
+                await CreateSwarm(receiverChain).ConfigureAwait(false);
+            Swarm validSeedSwarm =
+                await CreateSwarm(validSeedChain).ConfigureAwait(false);
+            Swarm invalidSeedSwarm =
+                await CreateSwarm(invalidSeedChain).ConfigureAwait(false);
 
             Assert.Equal(receiverSwarm.BlockChain.Genesis, validSeedSwarm.BlockChain.Genesis);
             Assert.NotEqual(receiverSwarm.BlockChain.Genesis, invalidSeedSwarm.BlockChain.Genesis);
@@ -1062,10 +1062,10 @@ namespace Libplanet.Net.Tests
 
             var seedKey = new PrivateKey();
 
-            Swarm<DumbAction> seed =
-                await CreateSwarm<DumbAction>(seedChain, seedKey).ConfigureAwait(false);
-            Swarm<DumbAction> receiver =
-                await CreateSwarm<DumbAction>(receiverChain).ConfigureAwait(false);
+            Swarm seed =
+                await CreateSwarm(seedChain, seedKey).ConfigureAwait(false);
+            Swarm receiver =
+                await CreateSwarm(receiverChain).ConfigureAwait(false);
 
             for (int i = 0; i < 10; i++)
             {
@@ -1120,10 +1120,10 @@ namespace Libplanet.Net.Tests
             var seedChain = MakeBlockChain<DumbAction>(policy, fx1.Store, fx1.StateStore);
             var receiverChain = MakeBlockChain<DumbAction>(policy, fx2.Store, fx2.StateStore);
 
-            Swarm<DumbAction> seed =
-                await CreateSwarm<DumbAction>(seedChain).ConfigureAwait(false);
-            Swarm<DumbAction> receiver =
-                await CreateSwarm<DumbAction>(receiverChain).ConfigureAwait(false);
+            Swarm seed =
+                await CreateSwarm(seedChain).ConfigureAwait(false);
+            Swarm receiver =
+                await CreateSwarm(receiverChain).ConfigureAwait(false);
 
             List<Transaction> transactions = new List<Transaction>();
             for (int i = 0; i < 10; i++)

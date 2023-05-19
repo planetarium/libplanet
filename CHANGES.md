@@ -30,6 +30,7 @@ To be released.
  -  Removed type parameter `T` from `ConsensusReactor<T>` class.  [[#3183]]
  -  Removed type parameter `T` from `BlockCandidateTable<T>` class.  [[#3184]]
  -  Removed type parameter `T` from `TxCompletion<T>` class.  [[#3184]]
+ -  Removed type parameter `T` from `Swarm<T>` class.  [[#3184]]
 
 ### Backward-incompatible network protocol changes
 

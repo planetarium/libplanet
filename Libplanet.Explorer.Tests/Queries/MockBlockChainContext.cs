@@ -16,7 +16,7 @@ public class MockBlockChainContext<T> : IBlockChainContext<T>
 
     public IStore Store { get; }
 
-    public Swarm<T> Swarm { get; }
+    public Swarm Swarm { get; }
 
     public IBlockChainIndex Index { get; protected init; }
 
