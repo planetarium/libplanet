@@ -26,7 +26,7 @@ namespace Libplanet.Explorer.Queries
             Field<StateQuery>("stateQuery", resolve: context => (
                 (IBlockChainStates)chainContext.BlockChain,
                 chainContext.BlockChain.Policy));
-            Field<NonNullGraphType<NodeStateType<T>>>(
+            Field<NonNullGraphType<NodeStateType>>(
                 "nodeState",
                 resolve: context => chainContext
             );

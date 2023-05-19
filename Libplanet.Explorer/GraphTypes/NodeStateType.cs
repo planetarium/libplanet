@@ -1,14 +1,12 @@
 #nullable disable
 using System.Collections.Generic;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Net;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class NodeStateType<T> : ObjectGraphType<IBlockChainContext>
-        where T : IAction, new()
+    public class NodeStateType : ObjectGraphType<IBlockChainContext>
     {
         public NodeStateType()
         {
