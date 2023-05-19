@@ -8,7 +8,6 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.Loader;
-using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -563,23 +562,6 @@ namespace Libplanet.Action
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true
             ).Single();
-        }
-
-        // FIXME: Should be changed to use ActionTypeLoader and this should
-        // be removed at some point.
-        private static IAction ToAction<T>(IValue plainValue)
-            where T : IAction, new()
-        {
-            if (Registry.IsSystemAction(plainValue))
-            {
-                return Registry.Deserialize(plainValue);
-            }
-            else
-            {
-                var action = new T();
-                action.LoadPlainValue(plainValue);
-                return action;
-            }
         }
 
         [Pure]
