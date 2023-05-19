@@ -14141,324 +14141,248 @@ references:
   commentId: N:Libplanet.Net.Consensus
   fullName: Libplanet.Net.Consensus
   nameWithType: Libplanet.Net.Consensus
-- uid: Libplanet.Net.Consensus.ConsensusContext`1
-  name: ConsensusContext<T>
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html
-  commentId: T:Libplanet.Net.Consensus.ConsensusContext`1
-  name.vb: ConsensusContext(Of T)
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T)
-  nameWithType: ConsensusContext<T>
-  nameWithType.vb: ConsensusContext(Of T)
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0}.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: ConsensusContext(ConsensusContext<T>.DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__DelegateBroadcastMessage_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0}.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name.vb: ConsensusContext(ConsensusContext(Of T).DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.ConsensusContext(Libplanet.Net.Consensus.ConsensusContext<T>.DelegateBroadcastMessage, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).ConsensusContext(Libplanet.Net.Consensus.ConsensusContext(Of T).DelegateBroadcastMessage, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: ConsensusContext<T>.ConsensusContext(ConsensusContext<T>.DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
-  nameWithType.vb: ConsensusContext(Of T).ConsensusContext(ConsensusContext(Of T).DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.#ctor*
+- uid: Libplanet.Net.Consensus.ConsensusContext
   name: ConsensusContext
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1__ctor_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.#ctor
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html
+  commentId: T:Libplanet.Net.Consensus.ConsensusContext
+  fullName: Libplanet.Net.Consensus.ConsensusContext
+  nameWithType: ConsensusContext
+- uid: Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name: ConsensusContext(ConsensusContext.DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_ConsensusContext_DelegateBroadcastMessage_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext(Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
+  nameWithType: ConsensusContext.ConsensusContext(ConsensusContext.DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.ConsensusContext.#ctor*
+  name: ConsensusContext
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.ConsensusContext
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).ConsensusContext
-  nameWithType: ConsensusContext<T>.ConsensusContext
-  nameWithType.vb: ConsensusContext(Of T).ConsensusContext
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.BroadcastMessage
+  fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext
+  nameWithType: ConsensusContext.ConsensusContext
+- uid: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
   name: BroadcastMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_BroadcastMessage
-  commentId: P:Libplanet.Net.Consensus.ConsensusContext`1.BroadcastMessage
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.BroadcastMessage
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).BroadcastMessage
-  nameWithType: ConsensusContext<T>.BroadcastMessage
-  nameWithType.vb: ConsensusContext(Of T).BroadcastMessage
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.BroadcastMessage*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_BroadcastMessage
+  commentId: P:Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
+  fullName: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
+  nameWithType: ConsensusContext.BroadcastMessage
+- uid: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage*
   name: BroadcastMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_BroadcastMessage_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.BroadcastMessage
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_BroadcastMessage_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.BroadcastMessage
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).BroadcastMessage
-  nameWithType: ConsensusContext<T>.BroadcastMessage
-  nameWithType.vb: ConsensusContext(Of T).BroadcastMessage
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.DelegateBroadcastMessage
-  name: ConsensusContext<T>.DelegateBroadcastMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.DelegateBroadcastMessage.html
-  commentId: T:Libplanet.Net.Consensus.ConsensusContext`1.DelegateBroadcastMessage
-  name.vb: ConsensusContext(Of T).DelegateBroadcastMessage
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.DelegateBroadcastMessage
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).DelegateBroadcastMessage
-  nameWithType: ConsensusContext<T>.DelegateBroadcastMessage
-  nameWithType.vb: ConsensusContext(Of T).DelegateBroadcastMessage
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Dispose
+  fullName: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
+  nameWithType: ConsensusContext.BroadcastMessage
+- uid: Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage
+  name: ConsensusContext.DelegateBroadcastMessage
+  href: api/Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage.html
+  commentId: T:Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage
+  fullName: Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage
+  nameWithType: ConsensusContext.DelegateBroadcastMessage
+- uid: Libplanet.Net.Consensus.ConsensusContext.Dispose
   name: Dispose()
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Dispose
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext`1.Dispose
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Dispose()
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Dispose()
-  nameWithType: ConsensusContext<T>.Dispose()
-  nameWithType.vb: ConsensusContext(Of T).Dispose()
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Dispose*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Dispose
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.Dispose
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Dispose()
+  nameWithType: ConsensusContext.Dispose()
+- uid: Libplanet.Net.Consensus.ConsensusContext.Dispose*
   name: Dispose
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Dispose_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.Dispose
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Dispose_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.Dispose
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Dispose
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Dispose
-  nameWithType: ConsensusContext<T>.Dispose
-  nameWithType.vb: ConsensusContext(Of T).Dispose
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Dispose
+  nameWithType: ConsensusContext.Dispose
+- uid: Libplanet.Net.Consensus.ConsensusContext.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
   name: HandleMessage(ConsensusMsg)
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_HandleMessage_Libplanet_Net_Messages_ConsensusMsg_
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext`1.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
-  nameWithType: ConsensusContext<T>.HandleMessage(ConsensusMsg)
-  nameWithType.vb: ConsensusContext(Of T).HandleMessage(ConsensusMsg)
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.HandleMessage*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_HandleMessage_Libplanet_Net_Messages_ConsensusMsg_
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.HandleMessage(Libplanet.Net.Messages.ConsensusMsg)
+  nameWithType: ConsensusContext.HandleMessage(ConsensusMsg)
+- uid: Libplanet.Net.Consensus.ConsensusContext.HandleMessage*
   name: HandleMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_HandleMessage_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.HandleMessage
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_HandleMessage_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.HandleMessage
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.HandleMessage
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).HandleMessage
-  nameWithType: ConsensusContext<T>.HandleMessage
-  nameWithType.vb: ConsensusContext(Of T).HandleMessage
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Height
+  fullName: Libplanet.Net.Consensus.ConsensusContext.HandleMessage
+  nameWithType: ConsensusContext.HandleMessage
+- uid: Libplanet.Net.Consensus.ConsensusContext.Height
   name: Height
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height
-  commentId: P:Libplanet.Net.Consensus.ConsensusContext`1.Height
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Height
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Height
-  nameWithType: ConsensusContext<T>.Height
-  nameWithType.vb: ConsensusContext(Of T).Height
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Height*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height
+  commentId: P:Libplanet.Net.Consensus.ConsensusContext.Height
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Height
+  nameWithType: ConsensusContext.Height
+- uid: Libplanet.Net.Consensus.ConsensusContext.Height*
   name: Height
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Height_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.Height
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.Height
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Height
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Height
-  nameWithType: ConsensusContext<T>.Height
-  nameWithType.vb: ConsensusContext(Of T).Height
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.NewHeight(System.Int64)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Height
+  nameWithType: ConsensusContext.Height
+- uid: Libplanet.Net.Consensus.ConsensusContext.NewHeight(System.Int64)
   name: NewHeight(Int64)
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_System_Int64_
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext`1.NewHeight(System.Int64)
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.NewHeight(System.Int64)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).NewHeight(System.Int64)
-  nameWithType: ConsensusContext<T>.NewHeight(Int64)
-  nameWithType.vb: ConsensusContext(Of T).NewHeight(Int64)
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.NewHeight*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_NewHeight_System_Int64_
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.NewHeight(System.Int64)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.NewHeight(System.Int64)
+  nameWithType: ConsensusContext.NewHeight(Int64)
+- uid: Libplanet.Net.Consensus.ConsensusContext.NewHeight*
   name: NewHeight
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_NewHeight_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.NewHeight
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_NewHeight_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.NewHeight
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.NewHeight
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).NewHeight
-  nameWithType: ConsensusContext<T>.NewHeight
-  nameWithType.vb: ConsensusContext(Of T).NewHeight
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Round
+  fullName: Libplanet.Net.Consensus.ConsensusContext.NewHeight
+  nameWithType: ConsensusContext.NewHeight
+- uid: Libplanet.Net.Consensus.ConsensusContext.Round
   name: Round
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Round
-  commentId: P:Libplanet.Net.Consensus.ConsensusContext`1.Round
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Round
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Round
-  nameWithType: ConsensusContext<T>.Round
-  nameWithType.vb: ConsensusContext(Of T).Round
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Round*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Round
+  commentId: P:Libplanet.Net.Consensus.ConsensusContext.Round
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Round
+  nameWithType: ConsensusContext.Round
+- uid: Libplanet.Net.Consensus.ConsensusContext.Round*
   name: Round
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Round_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.Round
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Round_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.Round
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Round
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Round
-  nameWithType: ConsensusContext<T>.Round
-  nameWithType.vb: ConsensusContext(Of T).Round
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Step
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Round
+  nameWithType: ConsensusContext.Round
+- uid: Libplanet.Net.Consensus.ConsensusContext.Step
   name: Step
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Step
-  commentId: P:Libplanet.Net.Consensus.ConsensusContext`1.Step
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Step
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Step
-  nameWithType: ConsensusContext<T>.Step
-  nameWithType.vb: ConsensusContext(Of T).Step
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.Step*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Step
+  commentId: P:Libplanet.Net.Consensus.ConsensusContext.Step
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Step
+  nameWithType: ConsensusContext.Step
+- uid: Libplanet.Net.Consensus.ConsensusContext.Step*
   name: Step
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_Step_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.Step
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Step_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.Step
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.Step
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).Step
-  nameWithType: ConsensusContext<T>.Step
-  nameWithType.vb: ConsensusContext(Of T).Step
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.ToString
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Step
+  nameWithType: ConsensusContext.Step
+- uid: Libplanet.Net.Consensus.ConsensusContext.ToString
   name: ToString()
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_ToString
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext`1.ToString
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.ToString()
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).ToString()
-  nameWithType: ConsensusContext<T>.ToString()
-  nameWithType.vb: ConsensusContext(Of T).ToString()
-- uid: Libplanet.Net.Consensus.ConsensusContext`1.ToString*
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_ToString
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.ToString
+  fullName: Libplanet.Net.Consensus.ConsensusContext.ToString()
+  nameWithType: ConsensusContext.ToString()
+- uid: Libplanet.Net.Consensus.ConsensusContext.ToString*
   name: ToString
-  href: api/Libplanet.Net.Consensus.ConsensusContext-1.html#Libplanet_Net_Consensus_ConsensusContext_1_ToString_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext`1.ToString
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_ToString_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.ToString
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext<T>.ToString
-  fullName.vb: Libplanet.Net.Consensus.ConsensusContext(Of T).ToString
-  nameWithType: ConsensusContext<T>.ToString
-  nameWithType.vb: ConsensusContext(Of T).ToString
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1
-  name: ConsensusReactor<T>
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html
-  commentId: T:Libplanet.Net.Consensus.ConsensusReactor`1
-  name.vb: ConsensusReactor(Of T)
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T)
-  nameWithType: ConsensusReactor<T>
-  nameWithType.vb: ConsensusReactor(Of T)
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.ConsensusReactor`1.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name.vb: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableList<Libplanet.Net.BoundPeer>, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableList(Of Libplanet.Net.BoundPeer), System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: ConsensusReactor<T>.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextTimeoutOption)
-  nameWithType.vb: ConsensusReactor(Of T).ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextTimeoutOption)
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.#ctor*
+  fullName: Libplanet.Net.Consensus.ConsensusContext.ToString
+  nameWithType: ConsensusContext.ToString
+- uid: Libplanet.Net.Consensus.ConsensusReactor
   name: ConsensusReactor
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1__ctor_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.#ctor
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html
+  commentId: T:Libplanet.Net.Consensus.ConsensusReactor
+  fullName: Libplanet.Net.Consensus.ConsensusReactor
+  nameWithType: ConsensusReactor
+- uid: Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextTimeoutOption)
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
+  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name.vb: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextTimeoutOption)
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableList<Libplanet.Net.BoundPeer>, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
+  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.Collections.Immutable.ImmutableList(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableList(Of Libplanet.Net.BoundPeer), System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
+  nameWithType: ConsensusReactor.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextTimeoutOption)
+  nameWithType.vb: ConsensusReactor.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.ConsensusReactor.#ctor*
+  name: ConsensusReactor
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.ConsensusReactor
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).ConsensusReactor
-  nameWithType: ConsensusReactor<T>.ConsensusReactor
-  nameWithType.vb: ConsensusReactor(Of T).ConsensusReactor
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Dispose
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor
+  nameWithType: ConsensusReactor.ConsensusReactor
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Dispose
   name: Dispose()
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Dispose
-  commentId: M:Libplanet.Net.Consensus.ConsensusReactor`1.Dispose
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Dispose()
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Dispose()
-  nameWithType: ConsensusReactor<T>.Dispose()
-  nameWithType.vb: ConsensusReactor(Of T).Dispose()
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Dispose*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Dispose
+  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.Dispose
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Dispose()
+  nameWithType: ConsensusReactor.Dispose()
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Dispose*
   name: Dispose
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Dispose_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.Dispose
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Dispose_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.Dispose
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Dispose
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Dispose
-  nameWithType: ConsensusReactor<T>.Dispose
-  nameWithType.vb: ConsensusReactor(Of T).Dispose
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Height
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Dispose
+  nameWithType: ConsensusReactor.Dispose
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Height
   name: Height
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Height
-  commentId: P:Libplanet.Net.Consensus.ConsensusReactor`1.Height
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Height
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Height
-  nameWithType: ConsensusReactor<T>.Height
-  nameWithType.vb: ConsensusReactor(Of T).Height
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Height*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Height
+  commentId: P:Libplanet.Net.Consensus.ConsensusReactor.Height
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Height
+  nameWithType: ConsensusReactor.Height
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Height*
   name: Height
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Height_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.Height
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Height_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.Height
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Height
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Height
-  nameWithType: ConsensusReactor<T>.Height
-  nameWithType.vb: ConsensusReactor(Of T).Height
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Running
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Height
+  nameWithType: ConsensusReactor.Height
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Running
   name: Running
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Running
-  commentId: P:Libplanet.Net.Consensus.ConsensusReactor`1.Running
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Running
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Running
-  nameWithType: ConsensusReactor<T>.Running
-  nameWithType.vb: ConsensusReactor(Of T).Running
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Running*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Running
+  commentId: P:Libplanet.Net.Consensus.ConsensusReactor.Running
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Running
+  nameWithType: ConsensusReactor.Running
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Running*
   name: Running
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Running_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.Running
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Running_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.Running
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Running
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Running
-  nameWithType: ConsensusReactor<T>.Running
-  nameWithType.vb: ConsensusReactor(Of T).Running
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.StartAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Running
+  nameWithType: ConsensusReactor.Running
+- uid: Libplanet.Net.Consensus.ConsensusReactor.StartAsync(System.Threading.CancellationToken)
   name: StartAsync(CancellationToken)
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_StartAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Consensus.ConsensusReactor`1.StartAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.StartAsync(System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).StartAsync(System.Threading.CancellationToken)
-  nameWithType: ConsensusReactor<T>.StartAsync(CancellationToken)
-  nameWithType.vb: ConsensusReactor(Of T).StartAsync(CancellationToken)
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.StartAsync*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_StartAsync_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.StartAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.StartAsync(System.Threading.CancellationToken)
+  nameWithType: ConsensusReactor.StartAsync(CancellationToken)
+- uid: Libplanet.Net.Consensus.ConsensusReactor.StartAsync*
   name: StartAsync
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_StartAsync_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.StartAsync
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_StartAsync_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.StartAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.StartAsync
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).StartAsync
-  nameWithType: ConsensusReactor<T>.StartAsync
-  nameWithType.vb: ConsensusReactor(Of T).StartAsync
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.StopAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.StartAsync
+  nameWithType: ConsensusReactor.StartAsync
+- uid: Libplanet.Net.Consensus.ConsensusReactor.StopAsync(System.Threading.CancellationToken)
   name: StopAsync(CancellationToken)
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_StopAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Consensus.ConsensusReactor`1.StopAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.StopAsync(System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).StopAsync(System.Threading.CancellationToken)
-  nameWithType: ConsensusReactor<T>.StopAsync(CancellationToken)
-  nameWithType.vb: ConsensusReactor(Of T).StopAsync(CancellationToken)
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.StopAsync*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_StopAsync_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.StopAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.StopAsync(System.Threading.CancellationToken)
+  nameWithType: ConsensusReactor.StopAsync(CancellationToken)
+- uid: Libplanet.Net.Consensus.ConsensusReactor.StopAsync*
   name: StopAsync
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_StopAsync_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.StopAsync
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_StopAsync_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.StopAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.StopAsync
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).StopAsync
-  nameWithType: ConsensusReactor<T>.StopAsync
-  nameWithType.vb: ConsensusReactor(Of T).StopAsync
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.ToString
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.StopAsync
+  nameWithType: ConsensusReactor.StopAsync
+- uid: Libplanet.Net.Consensus.ConsensusReactor.ToString
   name: ToString()
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_ToString
-  commentId: M:Libplanet.Net.Consensus.ConsensusReactor`1.ToString
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.ToString()
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).ToString()
-  nameWithType: ConsensusReactor<T>.ToString()
-  nameWithType.vb: ConsensusReactor(Of T).ToString()
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.ToString*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_ToString
+  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.ToString
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.ToString()
+  nameWithType: ConsensusReactor.ToString()
+- uid: Libplanet.Net.Consensus.ConsensusReactor.ToString*
   name: ToString
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_ToString_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.ToString
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_ToString_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.ToString
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.ToString
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).ToString
-  nameWithType: ConsensusReactor<T>.ToString
-  nameWithType.vb: ConsensusReactor(Of T).ToString
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Validators
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.ToString
+  nameWithType: ConsensusReactor.ToString
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Validators
   name: Validators
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Validators
-  commentId: P:Libplanet.Net.Consensus.ConsensusReactor`1.Validators
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Validators
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Validators
-  nameWithType: ConsensusReactor<T>.Validators
-  nameWithType.vb: ConsensusReactor(Of T).Validators
-- uid: Libplanet.Net.Consensus.ConsensusReactor`1.Validators*
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Validators
+  commentId: P:Libplanet.Net.Consensus.ConsensusReactor.Validators
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Validators
+  nameWithType: ConsensusReactor.Validators
+- uid: Libplanet.Net.Consensus.ConsensusReactor.Validators*
   name: Validators
-  href: api/Libplanet.Net.Consensus.ConsensusReactor-1.html#Libplanet_Net_Consensus_ConsensusReactor_1_Validators_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor`1.Validators
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor_Validators_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactor.Validators
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactor<T>.Validators
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor(Of T).Validators
-  nameWithType: ConsensusReactor<T>.Validators
-  nameWithType.vb: ConsensusReactor(Of T).Validators
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.Validators
+  nameWithType: ConsensusReactor.Validators
 - uid: Libplanet.Net.Consensus.ConsensusReactorOption
   name: ConsensusReactorOption
   href: api/Libplanet.Net.Consensus.ConsensusReactorOption.html
@@ -14556,152 +14480,116 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.ConsensusReactorOption.TargetBlockInterval
   nameWithType: ConsensusReactorOption.TargetBlockInterval
-- uid: Libplanet.Net.Consensus.Context`1
-  name: Context<T>
-  href: api/Libplanet.Net.Consensus.Context-1.html
-  commentId: T:Libplanet.Net.Consensus.Context`1
-  name.vb: Context(Of T)
-  fullName: Libplanet.Net.Consensus.Context<T>
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T)
-  nameWithType: Context<T>
-  nameWithType.vb: Context(Of T)
-- uid: Libplanet.Net.Consensus.Context`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0},Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: Context(ConsensusContext<T>, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1__ctor_Libplanet_Net_Consensus_ConsensusContext__0__Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.Context`1.#ctor(Libplanet.Net.Consensus.ConsensusContext{`0},Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name.vb: Context(ConsensusContext(Of T), BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.Context<T>.Context(Libplanet.Net.Consensus.ConsensusContext<T>, Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Crypto.PrivateKey, Libplanet.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Context(Libplanet.Net.Consensus.ConsensusContext(Of T), Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Crypto.PrivateKey, Libplanet.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: Context<T>.Context(ConsensusContext<T>, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  nameWithType.vb: Context(Of T).Context(ConsensusContext(Of T), BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
-- uid: Libplanet.Net.Consensus.Context`1.#ctor*
+- uid: Libplanet.Net.Consensus.Context
   name: Context
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1__ctor_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.#ctor
+  href: api/Libplanet.Net.Consensus.Context.html
+  commentId: T:Libplanet.Net.Consensus.Context
+  fullName: Libplanet.Net.Consensus.Context
+  nameWithType: Context
+- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.ConsensusContext,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name: Context(ConsensusContext, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Net_Consensus_ConsensusContext_Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
+  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.ConsensusContext,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
+  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Net.Consensus.ConsensusContext, Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Crypto.PrivateKey, Libplanet.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
+  nameWithType: Context.Context(ConsensusContext, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.Context.#ctor*
+  name: Context
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.Context.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.Context
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Context
-  nameWithType: Context<T>.Context
-  nameWithType.vb: Context(Of T).Context
-- uid: Libplanet.Net.Consensus.Context`1.Dispose
+  fullName: Libplanet.Net.Consensus.Context.Context
+  nameWithType: Context.Context
+- uid: Libplanet.Net.Consensus.Context.Dispose
   name: Dispose()
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Dispose
-  commentId: M:Libplanet.Net.Consensus.Context`1.Dispose
-  fullName: Libplanet.Net.Consensus.Context<T>.Dispose()
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Dispose()
-  nameWithType: Context<T>.Dispose()
-  nameWithType.vb: Context(Of T).Dispose()
-- uid: Libplanet.Net.Consensus.Context`1.Dispose*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Dispose
+  commentId: M:Libplanet.Net.Consensus.Context.Dispose
+  fullName: Libplanet.Net.Consensus.Context.Dispose()
+  nameWithType: Context.Dispose()
+- uid: Libplanet.Net.Consensus.Context.Dispose*
   name: Dispose
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Dispose_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.Dispose
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Dispose_
+  commentId: Overload:Libplanet.Net.Consensus.Context.Dispose
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.Dispose
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Dispose
-  nameWithType: Context<T>.Dispose
-  nameWithType.vb: Context(Of T).Dispose
-- uid: Libplanet.Net.Consensus.Context`1.GetBlockCommit
+  fullName: Libplanet.Net.Consensus.Context.Dispose
+  nameWithType: Context.Dispose
+- uid: Libplanet.Net.Consensus.Context.GetBlockCommit
   name: GetBlockCommit()
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_GetBlockCommit
-  commentId: M:Libplanet.Net.Consensus.Context`1.GetBlockCommit
-  fullName: Libplanet.Net.Consensus.Context<T>.GetBlockCommit()
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).GetBlockCommit()
-  nameWithType: Context<T>.GetBlockCommit()
-  nameWithType.vb: Context(Of T).GetBlockCommit()
-- uid: Libplanet.Net.Consensus.Context`1.GetBlockCommit*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_GetBlockCommit
+  commentId: M:Libplanet.Net.Consensus.Context.GetBlockCommit
+  fullName: Libplanet.Net.Consensus.Context.GetBlockCommit()
+  nameWithType: Context.GetBlockCommit()
+- uid: Libplanet.Net.Consensus.Context.GetBlockCommit*
   name: GetBlockCommit
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_GetBlockCommit_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.GetBlockCommit
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_GetBlockCommit_
+  commentId: Overload:Libplanet.Net.Consensus.Context.GetBlockCommit
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.GetBlockCommit
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).GetBlockCommit
-  nameWithType: Context<T>.GetBlockCommit
-  nameWithType.vb: Context(Of T).GetBlockCommit
-- uid: Libplanet.Net.Consensus.Context`1.Height
+  fullName: Libplanet.Net.Consensus.Context.GetBlockCommit
+  nameWithType: Context.GetBlockCommit
+- uid: Libplanet.Net.Consensus.Context.Height
   name: Height
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Height
-  commentId: P:Libplanet.Net.Consensus.Context`1.Height
-  fullName: Libplanet.Net.Consensus.Context<T>.Height
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Height
-  nameWithType: Context<T>.Height
-  nameWithType.vb: Context(Of T).Height
-- uid: Libplanet.Net.Consensus.Context`1.Height*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Height
+  commentId: P:Libplanet.Net.Consensus.Context.Height
+  fullName: Libplanet.Net.Consensus.Context.Height
+  nameWithType: Context.Height
+- uid: Libplanet.Net.Consensus.Context.Height*
   name: Height
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Height_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.Height
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Height_
+  commentId: Overload:Libplanet.Net.Consensus.Context.Height
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.Height
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Height
-  nameWithType: Context<T>.Height
-  nameWithType.vb: Context(Of T).Height
-- uid: Libplanet.Net.Consensus.Context`1.Round
+  fullName: Libplanet.Net.Consensus.Context.Height
+  nameWithType: Context.Height
+- uid: Libplanet.Net.Consensus.Context.Round
   name: Round
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Round
-  commentId: P:Libplanet.Net.Consensus.Context`1.Round
-  fullName: Libplanet.Net.Consensus.Context<T>.Round
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Round
-  nameWithType: Context<T>.Round
-  nameWithType.vb: Context(Of T).Round
-- uid: Libplanet.Net.Consensus.Context`1.Round*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Round
+  commentId: P:Libplanet.Net.Consensus.Context.Round
+  fullName: Libplanet.Net.Consensus.Context.Round
+  nameWithType: Context.Round
+- uid: Libplanet.Net.Consensus.Context.Round*
   name: Round
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Round_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.Round
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Round_
+  commentId: Overload:Libplanet.Net.Consensus.Context.Round
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.Round
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Round
-  nameWithType: Context<T>.Round
-  nameWithType.vb: Context(Of T).Round
-- uid: Libplanet.Net.Consensus.Context`1.Start(Libplanet.Blocks.BlockCommit,System.Boolean)
+  fullName: Libplanet.Net.Consensus.Context.Round
+  nameWithType: Context.Round
+- uid: Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit,System.Boolean)
   name: Start(BlockCommit, Boolean)
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Start_Libplanet_Blocks_BlockCommit_System_Boolean_
-  commentId: M:Libplanet.Net.Consensus.Context`1.Start(Libplanet.Blocks.BlockCommit,System.Boolean)
-  fullName: Libplanet.Net.Consensus.Context<T>.Start(Libplanet.Blocks.BlockCommit, System.Boolean)
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Start(Libplanet.Blocks.BlockCommit, System.Boolean)
-  nameWithType: Context<T>.Start(BlockCommit, Boolean)
-  nameWithType.vb: Context(Of T).Start(BlockCommit, Boolean)
-- uid: Libplanet.Net.Consensus.Context`1.Start*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_
+  commentId: M:Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit,System.Boolean)
+  fullName: Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit, System.Boolean)
+  nameWithType: Context.Start(BlockCommit, Boolean)
+- uid: Libplanet.Net.Consensus.Context.Start*
   name: Start
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Start_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.Start
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_
+  commentId: Overload:Libplanet.Net.Consensus.Context.Start
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.Start
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Start
-  nameWithType: Context<T>.Start
-  nameWithType.vb: Context(Of T).Start
-- uid: Libplanet.Net.Consensus.Context`1.Step
+  fullName: Libplanet.Net.Consensus.Context.Start
+  nameWithType: Context.Start
+- uid: Libplanet.Net.Consensus.Context.Step
   name: Step
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Step
-  commentId: P:Libplanet.Net.Consensus.Context`1.Step
-  fullName: Libplanet.Net.Consensus.Context<T>.Step
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Step
-  nameWithType: Context<T>.Step
-  nameWithType.vb: Context(Of T).Step
-- uid: Libplanet.Net.Consensus.Context`1.Step*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Step
+  commentId: P:Libplanet.Net.Consensus.Context.Step
+  fullName: Libplanet.Net.Consensus.Context.Step
+  nameWithType: Context.Step
+- uid: Libplanet.Net.Consensus.Context.Step*
   name: Step
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_Step_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.Step
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Step_
+  commentId: Overload:Libplanet.Net.Consensus.Context.Step
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.Step
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).Step
-  nameWithType: Context<T>.Step
-  nameWithType.vb: Context(Of T).Step
-- uid: Libplanet.Net.Consensus.Context`1.ToString
+  fullName: Libplanet.Net.Consensus.Context.Step
+  nameWithType: Context.Step
+- uid: Libplanet.Net.Consensus.Context.ToString
   name: ToString()
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_ToString
-  commentId: M:Libplanet.Net.Consensus.Context`1.ToString
-  fullName: Libplanet.Net.Consensus.Context<T>.ToString()
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).ToString()
-  nameWithType: Context<T>.ToString()
-  nameWithType.vb: Context(Of T).ToString()
-- uid: Libplanet.Net.Consensus.Context`1.ToString*
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_ToString
+  commentId: M:Libplanet.Net.Consensus.Context.ToString
+  fullName: Libplanet.Net.Consensus.Context.ToString()
+  nameWithType: Context.ToString()
+- uid: Libplanet.Net.Consensus.Context.ToString*
   name: ToString
-  href: api/Libplanet.Net.Consensus.Context-1.html#Libplanet_Net_Consensus_Context_1_ToString_
-  commentId: Overload:Libplanet.Net.Consensus.Context`1.ToString
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_ToString_
+  commentId: Overload:Libplanet.Net.Consensus.Context.ToString
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.Context<T>.ToString
-  fullName.vb: Libplanet.Net.Consensus.Context(Of T).ToString
-  nameWithType: Context<T>.ToString
-  nameWithType.vb: Context(Of T).ToString
+  fullName: Libplanet.Net.Consensus.Context.ToString
+  nameWithType: Context.ToString
 - uid: Libplanet.Net.Consensus.ContextTimeoutOption
   name: ContextTimeoutOption
   href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html
