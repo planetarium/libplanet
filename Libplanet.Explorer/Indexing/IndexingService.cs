@@ -41,7 +41,7 @@ public class IndexingService<T> : BackgroundService
     {
         try
         {
-            await _index.SynchronizeForeverAsync<T>(_store, _pollInterval, stoppingToken);
+            await _index.SynchronizeForeverAsync(_store, _pollInterval, stoppingToken);
         }
         catch (OperationCanceledException)
         {

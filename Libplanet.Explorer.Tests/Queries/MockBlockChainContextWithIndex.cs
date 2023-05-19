@@ -22,7 +22,7 @@ public class MockBlockChainContextWithIndex<T> : MockBlockChainContext<T>
         Index = new RocksDbBlockChainIndex(indexPath);
         Task.Run(
                 async () =>
-                    await Index.SynchronizeAsync<T>(
+                    await Index.SynchronizeAsync(
                         Store,
                         CancellationToken.None))
             .ConfigureAwait(false)

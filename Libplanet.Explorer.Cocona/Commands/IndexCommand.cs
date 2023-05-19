@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Cocona;
 using Cocona.Help;
-using Libplanet.Action;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Extensions.Cocona;
 using Libplanet.Store;
@@ -14,24 +13,7 @@ namespace Libplanet.Explorer.Cocona.Commands
     /// A class that provides <see cref="Cocona"/> commands related to
     /// <see cref="IBlockChainIndex"/>.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
-    /// <remarks>Due to a limitation in the current version (v2.0.3) of <see cref="Cocona"/>, the
-    /// generic class cannot be used as follows:
-    /// <code><![CDATA[
-    /// [HasSubCommands(typeof(IndexCommand<PolymorphicAction<ActionBase>>), "index")]
-    /// ]]></code>
-    /// Instead, you would have to subclass this class with the desired <see cref="IAction"/> type
-    /// and use the new class with <see cref="Cocona"/>:
-    /// <code><![CDATA[
-    /// public class IndexCommand : IndexCommand<PolymorphicAction<ActionBase>>;
-    /// {
-    /// }
-    /// ]]></code>
-    /// <code><![CDATA[
-    /// [HasSubCommands(typeof(IndexCommand), "index")]
-    /// ]]></code></remarks>
-    public class IndexCommand<T> : CoconaLiteConsoleAppBase
-        where T : IAction, new()
+    public class IndexCommand : CoconaLiteConsoleAppBase
     {
         private const string StoreArgumentDescription =
             "The URI that represents the backend of an " + nameof(IStore) + " object."
@@ -60,7 +42,7 @@ namespace Libplanet.Explorer.Cocona.Commands
         {
             try
             {
-                await LoadIndexFromUri(indexUri).SynchronizeAsync<T>(
+                await LoadIndexFromUri(indexUri).SynchronizeAsync(
                         Utils.LoadStoreFromUri(storeUri), Context.CancellationToken)
                     .ConfigureAwait(false);
             }

@@ -123,24 +123,24 @@ public abstract class BlockChainIndexBase : IBlockChainIndex
         BlockDigest blockDigest, IEnumerable<ITransaction> txs, CancellationToken stoppingToken) =>
         await IndexAsyncImpl(blockDigest, txs, null, stoppingToken).ConfigureAwait(false);
 
-    async Task IBlockChainIndex.SynchronizeForeverAsync<T>(
+    async Task IBlockChainIndex.SynchronizeForeverAsync(
         IStore store, TimeSpan pollInterval, CancellationToken stoppingToken)
     {
         var syncMetadata = await GetSyncMetadata(store).ConfigureAwait(false);
         await CheckIntegrity(store, syncMetadata).ConfigureAwait(false);
         while (true)
         {
-            await SynchronizeAsyncImpl<T>(store, syncMetadata, false, stoppingToken)
+            await SynchronizeAsyncImpl(store, syncMetadata, false, stoppingToken)
                 .ConfigureAwait(false);
             await Task.Delay(pollInterval, stoppingToken).ConfigureAwait(false);
         }
     }
 
-    async Task IBlockChainIndex.SynchronizeAsync<T>(IStore store, CancellationToken stoppingToken)
+    async Task IBlockChainIndex.SynchronizeAsync(IStore store, CancellationToken stoppingToken)
     {
         var syncMetadata = await GetSyncMetadata(store).ConfigureAwait(false);
         await CheckIntegrity(store, syncMetadata).ConfigureAwait(false);
-        await SynchronizeAsyncImpl<T>(store, syncMetadata, true, stoppingToken)
+        await SynchronizeAsyncImpl(store, syncMetadata, true, stoppingToken)
             .ConfigureAwait(false);
     }
 
@@ -240,7 +240,7 @@ public abstract class BlockChainIndexBase : IBlockChainIndex
         }
     }
 
-    private async Task SynchronizeAsyncImpl<T>(
+    private async Task SynchronizeAsyncImpl(
         IStore store,
         (
             Guid ChainId,
@@ -250,7 +250,6 @@ public abstract class BlockChainIndexBase : IBlockChainIndex
         bool log,
         CancellationToken stoppingToken
     )
-        where T : IAction, new()
     {
         var chainId = syncMetadata.ChainId;
         var indexTipIndex = syncMetadata.IndexTipIndex;
