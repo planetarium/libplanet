@@ -1,5 +1,4 @@
 using GraphQL.Server;
-using Libplanet.Action;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
@@ -15,8 +14,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Libplanet.Explorer
 {
-    public class ExplorerStartup<T, TU>
-        where T : IAction, new()
+    public class ExplorerStartup<TU>
         where TU : class, IBlockChainContext
     {
         public ExplorerStartup(IConfiguration configuration)
@@ -52,11 +50,11 @@ namespace Libplanet.Explorer
             services.TryAddSingleton<BlockQuery>();
             services.TryAddSingleton<TransactionQuery>();
             services.TryAddSingleton<ExplorerQuery>();
-            services.TryAddSingleton<LibplanetExplorerSchema<T>>();
+            services.TryAddSingleton<LibplanetExplorerSchema>();
 
             services.AddGraphQL()
                     .AddSystemTextJson()
-                    .AddGraphTypes(typeof(LibplanetExplorerSchema<T>));
+                    .AddGraphTypes(typeof(LibplanetExplorerSchema));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -76,8 +74,8 @@ namespace Libplanet.Explorer
 
             // FIXME: '/graphql' endpoint will be deprecated after
             //        libplanet-explorer-frontend migration.
-            app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql");
-            app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql/explorer");
+            app.UseGraphQL<LibplanetExplorerSchema>("/graphql");
+            app.UseGraphQL<LibplanetExplorerSchema>("/graphql/explorer");
             app.UseGraphQLPlayground();
         }
     }

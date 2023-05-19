@@ -28,8 +28,7 @@ namespace Libplanet.Explorer.Interfaces
         private static ConditionalWeakTable<object, Schema> _schemaObjects =
             new ConditionalWeakTable<object, Schema>();
 
-        public static Schema GetSchema<T>(this IBlockChainContext context)
-            where T : IAction, new()
+        public static Schema GetSchema(this IBlockChainContext context)
         {
             return _schemaObjects.GetValue(
                 context,
