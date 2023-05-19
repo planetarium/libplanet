@@ -1,15 +1,13 @@
 using System;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class TransactionType<T> : ObjectGraphType<Transaction>
-        where T : IAction, new()
+    public class TransactionType : ObjectGraphType<Transaction>
     {
         public TransactionType(IBlockChainContext context)
         {
@@ -64,7 +62,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             // The block including the transaction, only available when IBlockChainIndex is
             // provided.
-            Field<NonNullGraphType<BlockType<T>>>(
+            Field<NonNullGraphType<BlockType>>(
                 name: "BlockRef",
                 description: "The block including the transaction.",
                 resolve: ctx =>

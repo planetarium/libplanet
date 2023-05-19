@@ -12,7 +12,7 @@ namespace Libplanet.Explorer.Queries
     {
         public BlockQuery()
         {
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType<T>>>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType>>>>(
                 "blocks",
                 arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType>
@@ -44,7 +44,7 @@ namespace Libplanet.Explorer.Queries
                 }
             );
 
-            Field<BlockType<T>>(
+            Field<BlockType>(
                 "block",
                 arguments: new QueryArguments(
                     new QueryArgument<IdGraphType> { Name = "hash" },

@@ -49,10 +49,8 @@ namespace Libplanet.Explorer.Tests
                 }
             };
             addContext();
-            services.AddSingleton<BlockType<NullAction>>();
-            services.AddSingleton<BlockType<PolymorphicAction<SimpleAction>>>();
-            services.AddSingleton<TransactionType<NullAction>>();
-            services.AddSingleton<TransactionType<PolymorphicAction<SimpleAction>>>();
+            services.AddSingleton<BlockType>();
+            services.AddSingleton<TransactionType>();
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             var failSafeServiceProvider = new FuncServiceProvider(type =>
                 {

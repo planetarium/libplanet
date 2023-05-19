@@ -28,7 +28,7 @@ namespace Libplanet.Explorer.Queries
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType>>>>(
                 "transactions",
                 arguments: new QueryArguments(
                     new QueryArgument<AddressType>
@@ -65,7 +65,7 @@ namespace Libplanet.Explorer.Queries
                 }
             );
 
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType>>>>(
                 "stagedTransactions",
                 arguments: new QueryArguments(
                     new QueryArgument<AddressType>
@@ -108,7 +108,7 @@ namespace Libplanet.Explorer.Queries
                 }
             );
 
-            Field<TransactionType<T>>(
+            Field<TransactionType>(
                 "transaction",
                 arguments: new QueryArguments(
                     new QueryArgument<IdGraphType> { Name = "id" }

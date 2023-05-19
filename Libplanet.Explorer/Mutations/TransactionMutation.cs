@@ -18,7 +18,7 @@ namespace Libplanet.Explorer.Mutations
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
-            Field<TransactionType<T>>(
+            Field<TransactionType>(
                 "stage",
                 description: "Stage transaction to current chain",
                 arguments: new QueryArguments(

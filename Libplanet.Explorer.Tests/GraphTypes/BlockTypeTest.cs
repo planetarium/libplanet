@@ -76,7 +76,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 }";
 
             var store = new MemoryStore();
-            var blockType = new BlockType<NullAction>(new MockBlockChainContext(store));
+            var blockType = new BlockType(new MockBlockChainContext(store));
             ExecutionResult result = await ExecuteQueryAsync(
                 query,
                 blockType,

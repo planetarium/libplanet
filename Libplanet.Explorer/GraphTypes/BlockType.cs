@@ -1,12 +1,10 @@
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
 
 namespace Libplanet.Explorer.GraphTypes;
 
-public class BlockType<T> : ObjectGraphType<Block>
-    where T : IAction, new()
+public class BlockType : ObjectGraphType<Block>
 {
     public BlockType(IBlockChainContext context)
     {
@@ -31,7 +29,7 @@ public class BlockType<T> : ObjectGraphType<Block>
             description: "The public key of the Miner.",
             resolve: x => x.Source.PublicKey
         );
-        Field<BlockType<T>>(
+        Field<BlockType>(
             name: "PreviousBlock",
             description: "The previous block.  If it's a genesis block (i.e., its index is " +
                          "0) this must be null.",
@@ -56,7 +54,7 @@ public class BlockType<T> : ObjectGraphType<Block>
             description: "The digital signature of the whole block content (except for hash, " +
                          "which is derived from the signature and other contents)",
             resolve: ctx => ctx.Source.Signature?.ToBuilder().ToArray());
-        Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+        Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType>>>>(
             name: "transactions",
             description: "Transactions belonging to the block."
         );
