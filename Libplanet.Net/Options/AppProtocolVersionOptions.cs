@@ -5,7 +5,7 @@ using Libplanet.Net.Messages;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// Various options for a <see cref="Swarm{T}"/>'s
+    /// Various options for a <see cref="Swarm"/>'s
     /// <see cref="Net.AppProtocolVersion"/>.
     /// </summary>
     public class AppProtocolVersionOptions

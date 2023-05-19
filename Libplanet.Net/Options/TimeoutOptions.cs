@@ -23,7 +23,7 @@ namespace Libplanet.Net.Options
         public const int DefaultGetTxsPerTxIdTimeout = 1;
 
         /// <summary>
-        /// The maximum timeout used in <see cref="Swarm{T}"/>. This is a hard limit for
+        /// The maximum timeout used in <see cref="Swarm"/>. This is a hard limit for
         /// all <see cref="Message"/>s.  Set to <see cref="DefaultMaxTimeout"/> seconds
         /// by default.
         /// </summary>

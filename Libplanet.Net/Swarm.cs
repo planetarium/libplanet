@@ -25,8 +25,7 @@ using Serilog;
 
 namespace Libplanet.Net
 {
-    public partial class Swarm<T> : IDisposable
-        where T : IAction, new()
+    public partial class Swarm : IDisposable
     {
         private const int InitialBlockDownloadWindow = 100;
         private static readonly Codec Codec = new Codec();
@@ -45,7 +44,7 @@ namespace Libplanet.Net
         private bool _disposed;
 
         /// <summary>
-        /// Creates a <see cref="Swarm{T}"/>.  This constructor in only itself does not start
+        /// Creates a <see cref="Swarm"/>.  This constructor in only itself does not start
         /// any communication with the network.
         /// </summary>
         /// <param name="blockChain">A blockchain to publicize on the network.</param>
@@ -53,7 +52,7 @@ namespace Libplanet.Net
         /// this key become a part of its end address for being pointed by peers.</param>
         /// <param name="transport">The <see cref="ITransport"/> to use for
         /// network communication in block synchronization.</param>
-        /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
+        /// <param name="options">Options for <see cref="Swarm"/>.</param>
         /// <param name="consensusTransport">The <see cref="ITransport"/> to use for
         /// network communication in consensus.
         /// If null is given, the node cannot join block consensus.
@@ -81,12 +80,12 @@ namespace Libplanet.Net
 
             string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log
-                .ForContext<Swarm<T>>()
-                .ForContext("Source", nameof(Swarm<T>))
+                .ForContext<Swarm>()
+                .ForContext("Source", nameof(Swarm))
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
-            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
+            TxCompletion = new TxCompletion<BoundPeer>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
 
             // FIXME: after the initialization of NetMQTransport is fully converted to asynchronous
@@ -98,7 +97,7 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
             BlockDemandTable = new BlockDemandTable(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
+            BlockCandidateTable = new BlockCandidateTable();
 
             // Regulate heavy tasks. Treat negative value as 0.
             var taskRegulationOptions = Options.TaskRegulationOptions;
@@ -160,7 +159,7 @@ namespace Libplanet.Net
         public IReadOnlyList<BoundPeer> Validators => _consensusReactor?.Validators;
 
         /// <summary>
-        /// The <see cref="BlockChain"/> instance this <see cref="Swarm{T}"/> instance
+        /// The <see cref="BlockChain"/> instance this <see cref="Swarm"/> instance
         /// synchronizes with.
         /// </summary>
         public BlockChain BlockChain { get; private set; }
@@ -179,7 +178,7 @@ namespace Libplanet.Net
 
         internal ITransport Transport { get; }
 
-        internal TxCompletion<BoundPeer, T> TxCompletion { get; }
+        internal TxCompletion<BoundPeer> TxCompletion { get; }
 
         internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
 
@@ -201,7 +200,7 @@ namespace Libplanet.Net
         internal ConsensusReactor ConsensusReactor => _consensusReactor;
 
         /// <summary>
-        /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
+        /// Waits until this <see cref="Swarm"/> instance gets started to run.
         /// </summary>
         /// <seealso cref="ITransport.WaitForRunningAsync()"/>
         /// <returns>A <see cref="Task"/> completed when <see cref="ITransport.Running"/>
@@ -236,7 +235,7 @@ namespace Libplanet.Net
             _logger.Debug("Stopping watching " + nameof(BlockChain) + " for tip changes...");
             BlockChain.TipChanged -= OnBlockChainTipChanged;
 
-            _logger.Debug($"Stopping {nameof(Swarm<T>)}...");
+            _logger.Debug($"Stopping {nameof(Swarm)}...");
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
@@ -247,8 +246,8 @@ namespace Libplanet.Net
             }
 
             BlockDemandTable = new BlockDemandTable(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
-            _logger.Debug($"{nameof(Swarm<T>)} stopped");
+            BlockCandidateTable = new BlockCandidateTable();
+            _logger.Debug($"{nameof(Swarm)} stopped");
         }
 
         /// <summary>
@@ -259,7 +258,7 @@ namespace Libplanet.Net
         /// operation should be canceled.
         /// </param>
         /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm"/> instance is
         /// already <see cref="Running"/>.</exception>
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
         /// blocks to caught in the network this method could lead to unexpected behaviors, because
@@ -282,7 +281,7 @@ namespace Libplanet.Net
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="dialTimeout">
-        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// When the <see cref="Swarm"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <see langword="null"/> is given it never gives up dial-ups.
         /// </param>
@@ -295,7 +294,7 @@ namespace Libplanet.Net
         /// operation should be canceled.
         /// </param>
         /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm"/> instance is
         /// already <see cref="Running"/>.</exception>
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
         /// blocks to caught in the network this method could lead to unexpected behaviors, because
@@ -396,7 +395,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm"/> instance is
         /// not <see cref="Running"/>.</exception>
         public async Task BootstrapAsync(CancellationToken cancellationToken = default)
         {
@@ -418,7 +417,7 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm"/> instance is
         /// not <see cref="Running"/>.</exception>
         public async Task BootstrapAsync(
             IEnumerable<BoundPeer> seedPeers,
@@ -456,7 +455,7 @@ namespace Libplanet.Net
         /// already been broadcasted before.</para>
         /// </summary>
         /// <param name="block">The block to broadcast to peers.</param>
-        /// <remarks>It does not have to be called manually, because <see cref="Swarm{T}"/> in
+        /// <remarks>It does not have to be called manually, because <see cref="Swarm"/> in
         /// itself watches <see cref="BlockChain"/> for <see cref="BlockChain.Tip"/> changes and
         /// immediately broadcasts updates if anything changes.</remarks>
         public void BroadcastBlock(Block block)
@@ -473,7 +472,7 @@ namespace Libplanet.Net
         /// Gets the <see cref="PeerChainState"/> of the connected <see cref="Peers"/>.
         /// </summary>
         /// <param name="dialTimeout">
-        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// When the <see cref="Swarm"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <see langword="null"/> is given it never gives up dial-ups.
         /// </param>
@@ -528,7 +527,7 @@ namespace Libplanet.Net
         /// Preemptively downloads blocks from registered <see cref="BoundPeer"/>s.
         /// </summary>
         /// <param name="dialTimeout">
-        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
+        /// When the <see cref="Swarm"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <see langword="null"/> is given it never gives up dial-ups.
         /// </param>
@@ -949,7 +948,7 @@ namespace Libplanet.Net
         /// <param name="blockChain">The <see cref="BlockChain"/> to use as a reference
         /// for generating a <see cref="BlockLocator"/> when querying.  This may not necessarily
         /// be <see cref="BlockChain"/>, the canonical <see cref="BlockChain"/> instance held
-        /// by this <see cref="Swarm{T}"/> instance.</param>
+        /// by this <see cref="Swarm"/> instance.</param>
         /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
         /// to query with their tips known.</param>
         /// <param name="chunkSize">The chunk size of returned <see cref="BlockHash"/>es.</param>

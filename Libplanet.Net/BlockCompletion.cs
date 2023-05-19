@@ -8,7 +8,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Nito.AsyncEx;
 using Serilog;
@@ -16,8 +15,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    internal class BlockCompletion<TPeer, TAction>
-        where TAction : IAction, new()
+    internal class BlockCompletion<TPeer>
     {
         private readonly ILogger _logger;
         private readonly Func<BlockHash, bool> _completionPredicate;
@@ -29,7 +27,7 @@ namespace Libplanet.Net
 
         public BlockCompletion(Func<BlockHash, bool> completionPredicate = null, int window = 100)
         {
-            _logger = Log.ForContext<BlockCompletion<TPeer, TAction>>();
+            _logger = Log.ForContext<BlockCompletion<TPeer>>();
             _completionPredicate = completionPredicate;
             _window = window;
             _satisfiedBlocks = new ConcurrentDictionary<BlockHash, bool>();

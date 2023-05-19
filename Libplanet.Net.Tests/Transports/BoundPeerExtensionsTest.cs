@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Transports
                 swarmKey,
                 apvOptions,
                 hostOptions);
-            using (var swarm = new Swarm<DumbAction>(
+            using (var swarm = new Swarm(
                 blockchain,
                 swarmKey,
                 transport,

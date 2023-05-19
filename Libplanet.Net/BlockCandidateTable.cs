@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Serilog;
@@ -18,10 +17,7 @@ namespace Libplanet.Net
     /// This is designed to be exception free.
     /// </para>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block"/>'s type parameter.</typeparam>
-    public class BlockCandidateTable<T>
-        where T : IAction, new()
+    public class BlockCandidateTable
     {
         private readonly ILogger _logger;
         private readonly ConcurrentDictionary<BlockHeader, Branch> _table;
@@ -29,8 +25,8 @@ namespace Libplanet.Net
         public BlockCandidateTable()
         {
             _logger = Log
-                .ForContext<BlockCandidateTable<T>>()
-                .ForContext("Source", nameof(BlockCandidateTable<T>));
+                .ForContext<BlockCandidateTable>()
+                .ForContext("Source", nameof(BlockCandidateTable));
             _table = new ConcurrentDictionary<BlockHeader, Branch>();
         }
 
@@ -78,7 +74,7 @@ namespace Libplanet.Net
                 .Information(
                     "There are {Count} branches in {ClassName}",
                     _table.Count,
-                    nameof(BlockCandidateTable<T>));
+                    nameof(BlockCandidateTable));
         }
 
         /// <summary>
@@ -122,7 +118,7 @@ namespace Libplanet.Net
                 .Information(
                     "There are {Count} branches in {ClassName}",
                     _table.Count,
-                    nameof(BlockCandidateTable<T>));
+                    nameof(BlockCandidateTable));
         }
     }
 }

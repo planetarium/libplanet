@@ -6,7 +6,7 @@ using System.Linq;
 namespace Libplanet.Net.Options
 {
     /// <summary>
-    /// Various options for determining <see cref="Swarm{T}"/>'s <see cref="BoundPeer"/> identity.
+    /// Various options for determining <see cref="Swarm"/>'s <see cref="BoundPeer"/> identity.
     /// </summary>
     public class HostOptions
     {

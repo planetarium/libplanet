@@ -19,7 +19,7 @@ namespace Libplanet.Explorer.Interfaces
 
         IStore Store { get; }
 
-        Swarm<T> Swarm { get; }
+        Swarm Swarm { get; }
 
         IBlockChainIndex Index { get; }
     }
