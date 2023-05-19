@@ -31,6 +31,8 @@ To be released.
  -  Removed type parameter `T` from `BlockCandidateTable<T>` class.  [[#3184]]
  -  Removed type parameter `T` from `TxCompletion<T>` class.  [[#3184]]
  -  Removed type parameter `T` from `Swarm<T>` class.  [[#3184]]
+ -  (Libplanet.Explorer) Removed type parameter `T` requiring `T` as
+    `IAction` from all classes.  [[#3185]]
 
 ### Backward-incompatible network protocol changes
 
@@ -74,6 +76,7 @@ To be released.
 [#3182]: https://github.com/planetarium/libplanet/pull/3182
 [#3183]: https://github.com/planetarium/libplanet/pull/3183
 [#3184]: https://github.com/planetarium/libplanet/pull/3184
+[#3185]: https://github.com/planetarium/libplanet/pull/3185
 
 
 Version 1.2.1
