@@ -19,7 +19,7 @@ using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Net.Tests.Consensus.Context
+namespace Libplanet.Net.Tests.Consensus
 {
     public class ContextTest
     {
@@ -294,7 +294,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 fx.Store,
                 new TrieStateStore(new MemoryKeyValueStore()));
 
-            Context<DelayAction>? context = null;
+            Context? context = null;
 
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
@@ -302,14 +302,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     context!.ProduceMessage(message);
                 });
 
-            var consensusContext = new ConsensusContext<DelayAction>(
+            var consensusContext = new ConsensusContext(
                 BroadcastMessage,
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
                 new ContextTimeoutOption());
 
-            context = new Context<DelayAction>(
+            context = new Context(
                 consensusContext,
                 blockChain,
                 1L,

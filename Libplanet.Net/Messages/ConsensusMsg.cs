@@ -17,8 +17,8 @@ namespace Libplanet.Net.Messages
         /// </summary>
         /// <param name="validatorPublicKey">
         /// A <see cref="PublicKey"/> of the validator who made this message.</param>
-        /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
-        /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
+        /// <param name="height">A <see cref="Context.Height"/> the message is for.</param>
+        /// <param name="round">A <see cref="Context.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
         protected ConsensusMsg(
             PublicKey validatorPublicKey,
@@ -38,12 +38,12 @@ namespace Libplanet.Net.Messages
         public PublicKey ValidatorPublicKey { get; }
 
         /// <summary>
-        /// A <see cref="Context{T}.Height"/> the message is written for.
+        /// A <see cref="Context.Height"/> the message is written for.
         /// </summary>
         public long Height { get; }
 
         /// <summary>
-        /// A <see cref="Context{T}.Round"/> the message is written for.
+        /// A <see cref="Context.Round"/> the message is written for.
         /// </summary>
         public int Round { get; }
 

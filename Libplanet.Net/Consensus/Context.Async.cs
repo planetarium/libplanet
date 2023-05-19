@@ -6,7 +6,7 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public partial class Context<T>
+    public partial class Context
     {
         /// <summary>
         /// Starts round #0 of consensus for <see cref="Height"/>.
@@ -14,7 +14,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="lastCommit">A <see cref="Block.LastCommit"/> from previous block.
         /// </param>
         /// <param name="bootstrapping">A <see langword="bool"/> flag indicating whether
-        /// this <see cref="Context{T}"/> should run as a bootstrapping <see cref="Context{T}"/>
+        /// this <see cref="Context"/> should run as a bootstrapping <see cref="Context"/>
         /// or not.</param>
         public void Start(BlockCommit? lastCommit = null, bool bootstrapping = false)
         {

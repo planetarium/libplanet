@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -12,13 +11,10 @@ using Serilog;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// A class that maintains the states of a <see cref="Context{T}"/> for block
+    /// A class that maintains the states of a <see cref="Context"/> for block
     /// indices now in consensus.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
-    /// </typeparam>
-    public partial class ConsensusContext<T> : IDisposable
-        where T : IAction, new()
+    public partial class ConsensusContext : IDisposable
     {
         private readonly object _contextLock;
         private readonly object _newHeightLock;
@@ -28,13 +24,13 @@ namespace Libplanet.Net.Consensus
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
-        private readonly Dictionary<long, Context<T>> _contexts;
+        private readonly Dictionary<long, Context> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
         private bool _bootstrapping;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusContext"/> class.
         /// </summary>
         /// <param name="broadcastMessage">A delegate method that will broadcasting given
         /// <see cref="ConsensusMsg"/> to validators.
@@ -64,15 +60,15 @@ namespace Libplanet.Net.Consensus
 
             _contextTimeoutOption = contextTimeoutOption;
 
-            _contexts = new Dictionary<long, Context<T>>();
+            _contexts = new Dictionary<long, Context>();
             _blockChain.TipChanged += OnTipChanged;
             _bootstrapping = true;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "ConsensusContext")
-                .ForContext<ConsensusContext<T>>()
-                .ForContext("Source", nameof(ConsensusContext<T>));
+                .ForContext<ConsensusContext>()
+                .ForContext("Source", nameof(ConsensusContext));
 
             _contextLock = new object();
             _newHeightLock = new object();
@@ -88,7 +84,7 @@ namespace Libplanet.Net.Consensus
         public DelegateBroadcastMessage BroadcastMessage { get; }
 
         /// <summary>
-        /// The index of block that <see cref="ConsensusContext{T}"/> is watching. The value can be
+        /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
         /// changed by starting a consensus or appending a block.
         /// </summary>
         /// <seealso cref="NewHeight"/>  <seealso cref="OnTipChanged"/>
@@ -97,10 +93,10 @@ namespace Libplanet.Net.Consensus
         public long Height { get; private set; }
 
         /// <summary>
-        /// A current round of <see cref="Context{T}"/> in current <see cref="Height"/>.
+        /// A current round of <see cref="Context"/> in current <see cref="Height"/>.
         /// </summary>
-        /// <returns>If there is <see cref="Context{T}"/> for <see cref="Height"/> returns the round
-        /// of current <see cref="Context{T}"/>, or otherwise returns -1.
+        /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the round
+        /// of current <see cref="Context"/>, or otherwise returns -1.
         /// </returns>
         public long Round
         {
@@ -114,10 +110,10 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// The current step of <see cref="Context{T}"/> in current <see cref="Height"/>.
+        /// The current step of <see cref="Context"/> in current <see cref="Height"/>.
         /// </summary>
-        /// <returns>If there is <see cref="Context{T}"/> for <see cref="Height"/> returns the step
-        /// of current <see cref="Context{T}"/>, or otherwise returns
+        /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the step
+        /// of current <see cref="Context"/>, or otherwise returns
         /// <see cref="Libplanet.Net.Consensus.Step.Null"/>.
         /// </returns>
         public Step Step
@@ -132,10 +128,10 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A dictionary of <see cref="Context{T}"/> for each heights. Each key represents the
-        /// height of value, and value is the <see cref="Context{T}"/>.
+        /// A dictionary of <see cref="Context"/> for each heights. Each key represents the
+        /// height of value, and value is the <see cref="Context"/>.
         /// </summary>
-        internal Dictionary<long, Context<T>> Contexts => _contexts;
+        internal Dictionary<long, Context> Contexts => _contexts;
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -143,7 +139,7 @@ namespace Libplanet.Net.Consensus
             _newHeightCts?.Cancel();
             lock (_contextLock)
             {
-                foreach (Context<T> context in _contexts.Values)
+                foreach (Context context in _contexts.Values)
                 {
                     context.Dispose();
                 }
@@ -153,9 +149,9 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Starts a new <see cref="Context{T}"/> for given <paramref name="height"/>.
+        /// Starts a new <see cref="Context"/> for given <paramref name="height"/>.
         /// </summary>
-        /// <param name="height">The height of a new <see cref="Context{T}"/> to start.</param>
+        /// <param name="height">The height of a new <see cref="Context"/> to start.</param>
         /// <exception cref="InvalidHeightIncreasingException">Thrown if given
         /// <paramref name="height"/> is less than or equal to <see cref="Height"/>.</exception>
         /// <remarks>The method is also called when the tip of the <see cref="BlockChain"/> is
@@ -226,15 +222,15 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// <para>
         /// Handles a received <see cref="ConsensusMsg"/> by either dispatching it to the right
-        /// <see cref="Context{T}"/> or discarding it.
+        /// <see cref="Context"/> or discarding it.
         /// </para>
         /// <para>
         /// In particular, this discards <paramref name="consensusMessage"/> with
         /// <see cref="ConsensusMsg.Height"/> less than <see cref="Height"/>.  Otherwise,
-        /// given <paramref name="consensusMessage"/> is passed on to a <see cref="Context{T}"/>
-        /// with <see cref="Context{T}.Height"/> the same as <see cref="ConsensusMsg.Height"/> of
-        /// <paramref name="consensusMessage"/>.  If there is no such <see cref="Context{T}"/>,
-        /// then a new <see cref="Context{T}"/> is created for the dispatch.
+        /// given <paramref name="consensusMessage"/> is passed on to a <see cref="Context"/>
+        /// with <see cref="Context.Height"/> the same as <see cref="ConsensusMsg.Height"/> of
+        /// <paramref name="consensusMessage"/>.  If there is no such <see cref="Context"/>,
+        /// then a new <see cref="Context"/> is created for the dispatch.
         /// </para>
         /// </summary>
         /// <param name="consensusMessage">The <see cref="ConsensusMsg"/> received from
@@ -242,7 +238,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="consensusMessage"/> is dispatched to
-        /// a <see cref="Context{T}"/>, <see langword="false"/> otherwise.
+        /// a <see cref="Context"/>, <see langword="false"/> otherwise.
         /// </returns>
         public bool HandleMessage(ConsensusMsg consensusMessage)
         {
@@ -270,10 +266,10 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Returns the summary for <see cref="ConsensusContext{T}"/>.
+        /// Returns the summary for <see cref="ConsensusContext"/>.
         /// </summary>
-        /// <returns>Returns the current height <see cref="Context{T}"/>. if there's no instance of
-        /// <see cref="Context{T}"/> for current height, returns "No context".
+        /// <returns>Returns the current height <see cref="Context"/>. if there's no instance of
+        /// <see cref="Context"/> for current height, returns "No context".
         /// </returns>
         public override string ToString()
         {
@@ -286,15 +282,15 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A handler to process <see cref="Context{T}.StateChanged"/> <see langword="event"/>s.
+        /// A handler to process <see cref="Context.StateChanged"/> <see langword="event"/>s.
         /// In particular, this watches for a successful state change into
-        /// <see cref="Step.EndCommit"/> for a <see cref="Context{T}"/> to turn off
+        /// <see cref="Step.EndCommit"/> for a <see cref="Context"/> to turn off
         /// bootstrapping.
         /// </summary>
         /// <param name="sender">The source object invoking the event.</param>
         /// <param name="e">The event arguments given by the source object.</param>
         /// <remarks>
-        /// This is conditionally attached to <see cref="Context{T}.StateChanged"/>
+        /// This is conditionally attached to <see cref="Context.StateChanged"/>
         /// to reduce memory usage.
         /// </remarks>
         /// <seealso cref="AttachEventHandlers"/>
@@ -359,10 +355,10 @@ namespace Libplanet.Net.Consensus
         /// and attach event handlers to it, and return the created context.
         /// </summary>
         /// <param name="height">The height of the context to create.</param>
-        private Context<T> CreateContext(long height)
+        private Context CreateContext(long height)
         {
             // blockchain may not contain block of Height - 1?
-            var context = new Context<T>(
+            var context = new Context(
                 this,
                 _blockChain,
                 height,

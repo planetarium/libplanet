@@ -9,7 +9,7 @@ using Libplanet.Net.Messages;
 using Libplanet.Tests.Store;
 using Xunit;
 
-namespace Libplanet.Net.Tests.Consensus.Context
+namespace Libplanet.Net.Tests.Consensus
 {
     public class MessageLogTest
     {

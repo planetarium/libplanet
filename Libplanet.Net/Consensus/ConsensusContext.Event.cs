@@ -1,32 +1,30 @@
 using System;
-using Libplanet.Action;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public partial class ConsensusContext<T>
-        where T : IAction, new()
+    public partial class ConsensusContext
     {
-        /// <inheritdoc cref="Context{T}.ExceptionOccurred"/>
+        /// <inheritdoc cref="Context.ExceptionOccurred"/>
         internal event EventHandler<(long Height, Exception)>? ExceptionOccurred;
 
-        /// <inheritdoc cref="Context{T}.TimeoutProcessed"/>
+        /// <inheritdoc cref="Context.TimeoutProcessed"/>
         internal event EventHandler<(long Height, int Round, Step Step)>? TimeoutProcessed;
 
-        /// <inheritdoc cref="Context{T}.StateChanged"/>
+        /// <inheritdoc cref="Context.StateChanged"/>
         internal event EventHandler<(long Height, int MessageLogSize, int Round, Step Step)>?
             StateChanged;
 
-        /// <inheritdoc cref="Context{T}.MessageBroadcasted"/>
+        /// <inheritdoc cref="Context.MessageBroadcasted"/>
         internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageBroadcasted;
 
-        /// <inheritdoc cref="Context{T}.MessageConsumed"/>
+        /// <inheritdoc cref="Context.MessageConsumed"/>
         internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageConsumed;
 
-        /// <inheritdoc cref="Context{T}.MutationConsumed"/>
+        /// <inheritdoc cref="Context.MutationConsumed"/>
         internal event EventHandler<(long Height, System.Action)>? MutationConsumed;
 
-        private void AttachEventHandlers(Context<T> context)
+        private void AttachEventHandlers(Context context)
         {
             context.ExceptionOccurred += (sender, exception) =>
                 ExceptionOccurred?.Invoke(this, (context.Height, exception));

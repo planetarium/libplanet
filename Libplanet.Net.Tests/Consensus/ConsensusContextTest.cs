@@ -13,7 +13,7 @@ using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Net.Tests.Consensus.ConsensusContext
+namespace Libplanet.Net.Tests.Consensus
 {
     public class ConsensusContextTest
     {

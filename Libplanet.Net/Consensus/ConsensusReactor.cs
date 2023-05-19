@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -16,20 +15,17 @@ namespace Libplanet.Net.Consensus
 {
     /// <summary>
     /// A manager class for starting network and joining into consensus.
-    /// <seealso cref="ConsensusContext{T}"/>
+    /// <seealso cref="ConsensusContext"/>
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain"/>.
-    /// </typeparam>
-    public class ConsensusReactor<T> : IReactor
-        where T : IAction, new()
+    public class ConsensusReactor : IReactor
     {
         private readonly Gossip _gossip;
-        private readonly ConsensusContext<T> _consensusContext;
+        private readonly ConsensusContext _consensusContext;
         private readonly BlockChain _blockChain;
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusReactor{T}"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusReactor"/> class.
         /// </summary>
         /// <param name="consensusTransport">An <see cref="ITransport"/> for sending the
         /// <see cref="ConsensusMsg"/>s to validators.</param>
@@ -68,7 +64,7 @@ namespace Libplanet.Net.Consensus
                 TimeSpan.FromMinutes(2));
             _blockChain = blockChain;
 
-            _consensusContext = new ConsensusContext<T>(
+            _consensusContext = new ConsensusContext(
                 PublishMessage,
                 blockChain,
                 privateKey,
@@ -78,16 +74,16 @@ namespace Libplanet.Net.Consensus
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "Reactor")
-                .ForContext<ConsensusReactor<T>>()
-                .ForContext("Source", nameof(ConsensusReactor<T>));
+                .ForContext<ConsensusReactor>()
+                .ForContext("Source", nameof(ConsensusReactor));
         }
 
         /// <summary>
-        /// Whether this <see cref="ConsensusReactor{T}"/> is running.
+        /// Whether this <see cref="ConsensusReactor"/> is running.
         /// </summary>
         public bool Running => _gossip.Running;
 
-        /// <inheritdoc cref="ConsensusContext{T}.Height"/>
+        /// <inheritdoc cref="ConsensusContext.Height"/>
         public long Height => _consensusContext.Height;
 
         /// <summary>
@@ -96,7 +92,7 @@ namespace Libplanet.Net.Consensus
         public IReadOnlyList<BoundPeer> Validators => _gossip.Peers.ToList().AsReadOnly();
 
         // FIXME: This should be exposed in a better way.
-        internal ConsensusContext<T> ConsensusContext => _consensusContext;
+        internal ConsensusContext ConsensusContext => _consensusContext;
 
         /// <summary>
         /// <inheritdoc cref="IDisposable.Dispose()"/>

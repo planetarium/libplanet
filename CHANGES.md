@@ -25,6 +25,9 @@ To be released.
  -  Removed type parameter `T` from `BlockChain<T>` class.  [[#3182]]
  -  Removed type parameter `T` from `IBlockPolicy<T>` interface.  [[#3182]]
  -  Removed type parameter `T` from `IStagePolicy<T>` interface.  [[#3182]]
+ -  Removed type parameter `T` from `Context<T>` class.  [[#3183]]
+ -  Removed type parameter `T` from `ConsensusContext<T>` class.  [[#3183]]
+ -  Removed type parameter `T` from `ConsensusReactor<T>` class.  [[#3183]]
 
 ### Backward-incompatible network protocol changes
 
@@ -66,6 +69,7 @@ To be released.
 [#3172]: https://github.com/planetarium/libplanet/pull/3172
 [#3173]: https://github.com/planetarium/libplanet/pull/3173
 [#3182]: https://github.com/planetarium/libplanet/pull/3182
+[#3183]: https://github.com/planetarium/libplanet/pull/3183
 
 
 Version 1.2.1
