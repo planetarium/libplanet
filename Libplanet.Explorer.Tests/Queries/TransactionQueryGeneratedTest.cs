@@ -19,7 +19,7 @@ namespace Libplanet.Explorer.Tests.Queries;
 public class TransactionQueryGeneratedTest
 {
     protected readonly GeneratedBlockChainFixture Fx;
-    protected MockBlockChainContext<PolymorphicAction<SimpleAction>> Source;
+    protected MockBlockChainContext Source;
     protected TransactionQuery<PolymorphicAction<SimpleAction>> QueryGraph;
 
     public TransactionQueryGeneratedTest()
@@ -39,7 +39,7 @@ public class TransactionQueryGeneratedTest
                     .Add(ImmutableArray<PolymorphicAction<SimpleAction>>
                         .Empty
                         .Add(new SimpleAction0Fail()))));
-        Source = new MockBlockChainContext<PolymorphicAction<SimpleAction>>(Fx.Chain);
+        Source = new MockBlockChainContext(Fx.Chain);
         var _ = new ExplorerQuery<PolymorphicAction<SimpleAction>>(Source);
         QueryGraph = new TransactionQuery<PolymorphicAction<SimpleAction>>(Source);
     }

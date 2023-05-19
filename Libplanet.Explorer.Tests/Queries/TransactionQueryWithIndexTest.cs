@@ -7,7 +7,7 @@ public class TransactionQueryWithIndexTest : TransactionQueryTest
 {
     public TransactionQueryWithIndexTest()
     {
-        Source = new MockBlockChainContextWithIndex<NullAction>(Chain);
+        Source = new MockBlockChainContextWithIndex(Chain);
         QueryGraph = new TransactionQuery<NullAction>(Source);
     }
 }

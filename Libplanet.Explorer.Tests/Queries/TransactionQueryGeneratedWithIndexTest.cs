@@ -9,7 +9,7 @@ public class TransactionQueryGeneratedWithIndexTest : TransactionQueryGeneratedT
 {
     public TransactionQueryGeneratedWithIndexTest()
     {
-        Source = new MockBlockChainContextWithIndex<PolymorphicAction<SimpleAction>>(Fx.Chain);
+        Source = new MockBlockChainContextWithIndex(Fx.Chain);
         var _ = new ExplorerQuery<PolymorphicAction<SimpleAction>>(Source);
         QueryGraph = new TransactionQuery<PolymorphicAction<SimpleAction>>(Source);
     }

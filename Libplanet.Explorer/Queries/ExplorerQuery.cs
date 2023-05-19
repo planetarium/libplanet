@@ -18,7 +18,7 @@ namespace Libplanet.Explorer.Queries
     public class ExplorerQuery<T> : ObjectGraphType
         where T : IAction, new()
     {
-        public ExplorerQuery(IBlockChainContext<T> chainContext)
+        public ExplorerQuery(IBlockChainContext chainContext)
         {
             ChainContext = chainContext;
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
@@ -34,7 +34,7 @@ namespace Libplanet.Explorer.Queries
             Name = "ExplorerQuery";
         }
 
-        private static IBlockChainContext<T> ChainContext { get; set; }
+        private static IBlockChainContext ChainContext { get; set; }
 
         private static BlockChain Chain => ChainContext.BlockChain;
 

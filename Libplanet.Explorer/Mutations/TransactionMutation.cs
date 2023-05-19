@@ -12,9 +12,9 @@ namespace Libplanet.Explorer.Mutations
     public class TransactionMutation<T> : ObjectGraphType
         where T : IAction, new()
     {
-        private readonly IBlockChainContext<T> _context;
+        private readonly IBlockChainContext _context;
 
-        public TransactionMutation(IBlockChainContext<T> context)
+        public TransactionMutation(IBlockChainContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 

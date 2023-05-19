@@ -8,7 +8,7 @@ namespace Libplanet.Explorer.GraphTypes;
 public class BlockType<T> : ObjectGraphType<Block>
     where T : IAction, new()
 {
-    public BlockType(IBlockChainContext<T> context)
+    public BlockType(IBlockChainContext context)
     {
         // We need multiple row of description for clearer, not confusing explanation of field.
         Field<NonNullGraphType<IdGraphType>>(

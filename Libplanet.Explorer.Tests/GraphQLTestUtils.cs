@@ -41,12 +41,11 @@ namespace Libplanet.Explorer.Tests
             var services = new ServiceCollection();
             System.Action addContext = source switch
             {
-                IBlockChainContext<NullAction> context => () => { services.AddSingleton(context); },
-                IBlockChainContext<PolymorphicAction<SimpleAction>> context => () => { services.AddSingleton(context); },
+                IBlockChainContext context => () => { services.AddSingleton(context); },
                 _ => () =>
                 {
-                    services.AddSingleton<IBlockChainContext<NullAction>>(
-                        new MockBlockChainContext<NullAction>());
+                    services.AddSingleton<IBlockChainContext>(
+                        new MockBlockChainContext());
                 }
             };
             addContext();

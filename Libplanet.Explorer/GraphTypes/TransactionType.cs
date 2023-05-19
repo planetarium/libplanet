@@ -11,7 +11,7 @@ namespace Libplanet.Explorer.GraphTypes
     public class TransactionType<T> : ObjectGraphType<Transaction>
         where T : IAction, new()
     {
-        public TransactionType(IBlockChainContext<T> context)
+        public TransactionType(IBlockChainContext context)
         {
             Field<NonNullGraphType<IdGraphType>>(
                 name: "Id",
@@ -77,7 +77,7 @@ namespace Libplanet.Explorer.GraphTypes
                     var exceptionMessage =
                         "To resolve the field 'BlockRef', an instance of"
                         + $" {nameof(IBlockChainIndex)} must be provided to the"
-                        + $" {nameof(IBlockChainContext<T>)}.";
+                        + $" {nameof(IBlockChainContext)}.";
                     ctx.Errors.Add(new ExecutionError(exceptionMessage));
                     return null;
                 });

@@ -7,8 +7,7 @@ using Libplanet.Store;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
-public class MockBlockChainContext<T> : IBlockChainContext<T>
-    where T : IAction, new()
+public class MockBlockChainContext : IBlockChainContext
 {
     public bool Preloaded => true;
 

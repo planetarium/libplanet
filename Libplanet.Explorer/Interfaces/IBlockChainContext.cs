@@ -10,8 +10,7 @@ using Libplanet.Store;
 
 namespace Libplanet.Explorer.Interfaces
 {
-    public interface IBlockChainContext<T>
-        where T : IAction, new()
+    public interface IBlockChainContext
     {
         bool Preloaded { get; }
 
@@ -29,7 +28,7 @@ namespace Libplanet.Explorer.Interfaces
         private static ConditionalWeakTable<object, Schema> _schemaObjects =
             new ConditionalWeakTable<object, Schema>();
 
-        public static Schema GetSchema<T>(this IBlockChainContext<T> context)
+        public static Schema GetSchema<T>(this IBlockChainContext context)
             where T : IAction, new()
         {
             return _schemaObjects.GetValue(

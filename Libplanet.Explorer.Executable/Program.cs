@@ -64,7 +64,7 @@ namespace Libplanet.Explorer.Executable
             serviceCollection.AddGraphQL()
                 .AddGraphTypes(typeof(LibplanetExplorerSchema<NullAction>));
 
-            serviceCollection.AddSingleton<IBlockChainContext<NullAction>, Startup>();
+            serviceCollection.AddSingleton<IBlockChainContext, Startup>();
             serviceCollection.AddSingleton<IStore, MemoryStore>();
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
@@ -471,7 +471,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
         }
 
-        internal class Startup : IBlockChainContext<NullAction>
+        internal class Startup : IBlockChainContext
         {
             public bool Preloaded => PreloadedSingleton;
 

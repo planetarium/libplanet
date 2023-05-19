@@ -17,7 +17,7 @@ namespace Libplanet.Explorer
 {
     public class ExplorerStartup<T, TU>
         where T : IAction, new()
-        where TU : class, IBlockChainContext<T>
+        where TU : class, IBlockChainContext
     {
         public ExplorerStartup(IConfiguration configuration)
         {
@@ -39,11 +39,11 @@ namespace Libplanet.Explorer
             );
             services.AddControllers();
 
-            services.AddSingleton<IBlockChainContext<T>, TU>();
+            services.AddSingleton<IBlockChainContext, TU>();
             services.AddSingleton<IStore>(
-                provider => provider.GetRequiredService<IBlockChainContext<T>>().Store);
+                provider => provider.GetRequiredService<IBlockChainContext>().Store);
             services.AddSingleton<IBlockChainIndex>(
-                provider => provider.GetRequiredService<IBlockChainContext<T>>().Index);
+                provider => provider.GetRequiredService<IBlockChainContext>().Index);
 
             services.TryAddSingleton<ActionType>();
             services.TryAddSingleton<BlockType<T>>();

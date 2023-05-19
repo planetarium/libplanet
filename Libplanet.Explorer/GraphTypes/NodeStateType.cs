@@ -7,7 +7,7 @@ using Libplanet.Net;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class NodeStateType<T> : ObjectGraphType<IBlockChainContext<T>>
+    public class NodeStateType<T> : ObjectGraphType<IBlockChainContext>
         where T : IAction, new()
     {
         public NodeStateType()

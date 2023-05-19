@@ -19,11 +19,11 @@ namespace Libplanet.Explorer.Queries
         where T : IAction, new()
     {
         private static readonly Codec _codec = new Codec();
-        private readonly IBlockChainContext<T> _context;
+        private readonly IBlockChainContext _context;
 
         // FIXME should be refactored to reduce LoC of constructor.
         #pragma warning disable MEN003
-        public TransactionQuery(IBlockChainContext<T> context)
+        public TransactionQuery(IBlockChainContext context)
         #pragma warning restore MEN003
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
