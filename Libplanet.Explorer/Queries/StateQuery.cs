@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -13,9 +9,8 @@ using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Queries;
 
-public class StateQuery<T>
+public class StateQuery
     : ObjectGraphType<(IBlockChainStates ChainStates, IBlockPolicy Policy)>
-    where T : IAction, new()
 {
     public StateQuery()
     {
