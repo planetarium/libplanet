@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Tx;
 using Nito.AsyncEx;
@@ -14,9 +13,8 @@ using Serilog;
 
 namespace Libplanet.Net
 {
-    public class TxCompletion<TPeer, TAction> : IDisposable
-    where TPeer : notnull
-    where TAction : IAction, new()
+    public class TxCompletion<TPeer> : IDisposable
+        where TPeer : notnull
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly BlockChain _blockChain;
@@ -40,8 +38,8 @@ namespace Libplanet.Net
             TxReceived = new AsyncAutoResetEvent();
 
             _logger = Log
-                .ForContext<TxCompletion<TPeer, TAction>>()
-                .ForContext("Source", nameof(TxCompletion<TPeer, TAction>));
+                .ForContext<TxCompletion<TPeer>>()
+                .ForContext("Source", nameof(TxCompletion<TPeer>));
         }
 
         public delegate IAsyncEnumerable<Transaction> TxFetcher(
@@ -69,7 +67,7 @@ namespace Libplanet.Net
         {
             if (_disposed)
             {
-                throw new ObjectDisposedException(nameof(TxCompletion<TPeer, TAction>));
+                throw new ObjectDisposedException(nameof(TxCompletion<TPeer>));
             }
 
             HashSet<TxId> required = GetRequiredTxIds(txIds);

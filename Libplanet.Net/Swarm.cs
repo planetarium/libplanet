@@ -86,7 +86,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
-            TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
+            TxCompletion = new TxCompletion<BoundPeer>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
 
             // FIXME: after the initialization of NetMQTransport is fully converted to asynchronous
@@ -179,7 +179,7 @@ namespace Libplanet.Net
 
         internal ITransport Transport { get; }
 
-        internal TxCompletion<BoundPeer, T> TxCompletion { get; }
+        internal TxCompletion<BoundPeer> TxCompletion { get; }
 
         internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
 
