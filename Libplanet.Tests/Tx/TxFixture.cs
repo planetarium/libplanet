@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -64,10 +63,10 @@ namespace Libplanet.Tests.Tx
                 0,
                 PrivateKey1,
                 genesisHash,
-                new PolymorphicAction<BaseAction>[0],
+                new BaseAction[0],
                 timestamp: timestamp
             );
-            PolymorphicAction<BaseAction>[] actions =
+            BaseAction[] actions =
             {
                 new Attack
                 {

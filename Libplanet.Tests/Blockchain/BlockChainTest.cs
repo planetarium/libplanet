@@ -182,14 +182,42 @@ namespace Libplanet.Tests.Blockchain
         {
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            BlockChain chain = MakeBlockChain<PolymorphicAction<BaseAction>>(
-                new BlockPolicy(),
+            var blockChainStates = new BlockChainStates(store, stateStore);
+            var policy = new BlockPolicy();
+            var actionLoader = TypedActionLoader.Create(
+                typeof(BaseAction).Assembly, typeof(BaseAction));
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                blockChainStates,
+                actionLoader,
+                null);
+            var nonce = 0;
+            var txs = TestUtils.ValidatorSet.Validators
+                .Select(validator => Transaction.Create(
+                    nonce++,
+                    GenesisProposer,
+                    null,
+                    actions: new IAction[]
+                        {
+                            new Initialize(
+                                validatorSet: TestUtils.ValidatorSet,
+                                states: ImmutableDictionary.Create<Address, IValue>()),
+                        },
+                    timestamp: DateTimeOffset.UtcNow))
+                .OrderBy(tx => tx.Id)
+                .ToImmutableList();
+            var genesis = BlockChain.ProposeGenesisBlock(
+                actionEvaluator, transactions: txs, blockAction: policy.BlockAction);
+            var chain = BlockChain.Create(
+                policy,
+                new VolatileStagePolicy(),
                 store,
-                stateStore
-            );
+                stateStore,
+                genesis,
+                actionEvaluator);
             Block genesisBlock = chain.Genesis;
 
-            var actions1 = new List<PolymorphicAction<BaseAction>>
+            var actions1 = new List<BaseAction>
             {
                 new Attack
                 {
@@ -229,7 +257,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains("orc", result.Targets);
             Assert.Contains("goblin", result.Targets);
 
-            PolymorphicAction<BaseAction>[] actions2 =
+            BaseAction[] actions2 =
             {
                 new Attack
                 {
@@ -258,7 +286,7 @@ namespace Libplanet.Tests.Blockchain
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
-                new List<PolymorphicAction<BaseAction>>
+                new List<BaseAction>
                 {
                     new Attack
                     {

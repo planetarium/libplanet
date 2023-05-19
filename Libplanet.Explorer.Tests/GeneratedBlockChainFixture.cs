@@ -43,9 +43,9 @@ public class GeneratedBlockChainFixture
         int blockCount = 20,
         int maxTxCount = 20,
         int privateKeyCount = 10,
-        ImmutableArray<ImmutableArray<ImmutableArray<PolymorphicAction<SimpleAction>>>>?
+        ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>?
             txActionsForPrefixBlocks = null,
-        ImmutableArray<ImmutableArray<ImmutableArray<PolymorphicAction<SimpleAction>>>>?
+        ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>?
             txActionsForSuffixBlocks = null)
     {
         var random = new System.Random(seed);
@@ -85,7 +85,7 @@ public class GeneratedBlockChainFixture
         var actionEvaluator = new ActionEvaluator(
             _ => policy.BlockAction,
             new BlockChainStates(store, stateStore),
-            new SingleActionLoader(typeof(PolymorphicAction<SimpleAction>)),
+            TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)),
             null);
         Block genesisBlock = BlockChain.ProposeGenesisBlock(
             actionEvaluator,
@@ -195,16 +195,16 @@ public class GeneratedBlockChainFixture
             Chain.Genesis.Hash,
             random.Next() % 2 == 0
                 ? GetRandomActions(random.Next())
-                : ImmutableHashSet<PolymorphicAction<SimpleAction>>.Empty,
+                : ImmutableHashSet<SimpleAction>.Empty,
             GetRandomAddresses(random.Next()));
     }
 
-    private ImmutableArray<PolymorphicAction<SimpleAction>> GetRandomActions(int seed)
+    private ImmutableArray<SimpleAction> GetRandomActions(int seed)
     {
         var random = new System.Random(seed);
         return Enumerable.Range(0, random.Next(10))
             .Aggregate(
-                ImmutableArray<PolymorphicAction<SimpleAction>>.Empty,
+                ImmutableArray<SimpleAction>.Empty,
                 (arr, _) => arr.Add(SimpleAction.GetAction(random.Next())));
     }
 

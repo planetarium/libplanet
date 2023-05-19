@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -296,31 +296,34 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(2, tx.Actions.Count);
 
-            var innerAction0 = ToAction<PolymorphicAction<BaseAction>>(
-                tx.Actions[0]).InnerAction;
-            Assert.IsType<Attack>(innerAction0);
+            var actionLoader = TypedActionLoader.Create(
+                typeof(BaseAction).Assembly, typeof(BaseAction));
+            var action0 = actionLoader.LoadAction(0, tx.Actions[0]);
+            Assert.IsType<Attack>(action0);
             var targetAddress =
-                ((Bencodex.Types.Dictionary)innerAction0.PlainValue)
+                ((Dictionary)((Dictionary)action0.PlainValue)["values"])
                     .GetValue<Binary>("target_address").ByteArray;
             AssertBytesEqual(
                 new Address(publicKey).ByteArray,
                 targetAddress
             );
             Assert.Equal(
-                Bencodex.Types.Dictionary.Empty
-                    .Add("weapon", "wand")
-                    .Add("target", "orc")
-                    .Add("target_address", new Address(publicKey).ByteArray),
-                innerAction0.PlainValue
+                Dictionary.Empty
+                    .Add("type_id", "attack")
+                    .Add("values", Dictionary.Empty
+                        .Add("weapon", "wand")
+                        .Add("target", "orc")
+                        .Add("target_address", new Address(publicKey).ByteArray)),
+                action0.PlainValue
             );
 
-            var innerAction1 = ToAction<PolymorphicAction<BaseAction>>(
-                tx.Actions[1]).InnerAction;
-            Assert.IsType<Sleep>(innerAction1);
+            var action1 = actionLoader.LoadAction(0, tx.Actions[1]);
+            Assert.IsType<Sleep>(action1);
             Assert.Equal(
-                Bencodex.Types.Dictionary.Empty
-                    .Add("zone_id", 10),
-                innerAction1.PlainValue
+                Dictionary.Empty
+                    .Add("type_id", "sleep")
+                    .Add("values", Dictionary.Empty.Add("zone_id", 10)),
+                action1.PlainValue
             );
             Assert.Throws<DecodingException>(() =>
                 TxMarshaler.UnmarshalTransaction(
