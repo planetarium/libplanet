@@ -19,7 +19,6 @@ namespace Libplanet.Tx
     /// </summary>
     /// <seealso cref="ITransaction"/>
     /// <seealso cref="IAction"/>
-    /// <seealso cref="PolymorphicAction{T}"/>
     public sealed class Transaction : IEquatable<Transaction>, ITransaction
     {
         private static readonly Codec Codec = new Codec();

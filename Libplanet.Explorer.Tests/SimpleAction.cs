@@ -1,12 +1,23 @@
+using System;
+using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.State;
 
 namespace Libplanet.Explorer.Tests;
 
-public class SimpleAction : IAction
+public abstract class SimpleAction : IAction
 {
-    public IValue PlainValue => Null.Value;
+    public IValue TypeId => this
+        .GetType()
+        .GetCustomAttribute<ActionTypeAttribute>() is ActionTypeAttribute attribute
+            ? attribute.TypeIdentifier
+            : throw new NullReferenceException(
+                $"Given type {this.GetType()} is missing {nameof(ActionTypeAttribute)}.");
+
+    public IValue PlainValue => Dictionary.Empty
+        .Add("type_id", TypeId)
+        .Add("values", Null.Value);
 
     public void LoadPlainValue(IValue plainValue)
     {

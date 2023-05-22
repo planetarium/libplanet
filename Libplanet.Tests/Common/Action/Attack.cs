@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -9,13 +8,12 @@ namespace Libplanet.Tests.Common.Action
     [ActionType("attack")]
     public class Attack : BaseAction
     {
-        public override IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
-            {
-                ["weapon"] = (Text)Weapon,
-                ["target"] = (Text)Target,
-                ["target_address"] = new Binary(TargetAddress.ByteArray),
-            });
+        public override IValue PlainValue => Dictionary.Empty
+            .Add("type_id", TypeId)
+            .Add("values", Dictionary.Empty
+                .Add("weapon", Weapon)
+                .Add("target", Target)
+                .Add("target_address", TargetAddress.ByteArray));
 
         public string Weapon { get; set; }
 
@@ -23,17 +21,12 @@ namespace Libplanet.Tests.Common.Action
 
         public Address TargetAddress { get; set; }
 
-        public override void LoadPlainValue(
-            IValue plainValue)
+        public override void LoadPlainValue(IValue plainValue)
         {
-            LoadPlainValue((Bencodex.Types.Dictionary)plainValue);
-        }
-
-        public void LoadPlainValue(Bencodex.Types.Dictionary plainValue)
-        {
-            Weapon = (Text)plainValue["weapon"];
-            Target = (Text)plainValue["target"];
-            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
+            Dictionary values = (Dictionary)GetValues(plainValue);
+            Weapon = (Text)values["weapon"];
+            Target = (Text)values["target"];
+            TargetAddress = new Address(values["target_address"]);
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

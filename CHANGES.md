@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `PolymorphicAction<T>` class.  [[#3193]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3193]: https://github.com/planetarium/libplanet/pull/3193
 
 
 Version 1.3.0

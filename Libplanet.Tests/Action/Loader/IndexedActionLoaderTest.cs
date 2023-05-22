@@ -45,9 +45,11 @@ namespace Libplanet.Tests.Action
             var action1 = new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo");
             var action2 = new Attack();
             action2.LoadPlainValue(Dictionary.Empty
-                .Add("weapon", "sword")
-                .Add("target", "dummy")
-                .Add("target_address", new PrivateKey().PublicKey.ToAddress().ByteArray));
+                .Add("type_id", "attack")
+                .Add("values", Dictionary.Empty
+                    .Add("weapon", "sword")
+                    .Add("target", "dummy")
+                    .Add("target_address", new PrivateKey().PublicKey.ToAddress().ByteArray)));
             var action3 = new RandomAction(new PrivateKey().PublicKey.ToAddress());
 
             var loader = new IndexedActionLoader(

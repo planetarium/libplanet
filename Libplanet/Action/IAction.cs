@@ -82,8 +82,7 @@ namespace Libplanet.Action
     ///         IImmutableDictionary<IKey, IValue> nextState;
     ///         // Does different things depending on the action's type.
     ///         // This way is against the common principals of programming
-    ///         // as it is just an example.  You could compare this with
-    ///         // a better example of PolymorphicAction<T> class.
+    ///         // as it is just an example.
     ///         switch (Type)
     ///         {
     ///             case ActType.CreateCharacter:
@@ -147,9 +146,6 @@ namespace Libplanet.Action
     ///     }
     /// }
     /// ]]></code>
-    /// <para>Note that the above example has several bad practices.
-    /// Compare this example with <see cref="PolymorphicAction{T}"/>'s
-    /// example.</para>
     /// </example>
     public interface IAction
     {

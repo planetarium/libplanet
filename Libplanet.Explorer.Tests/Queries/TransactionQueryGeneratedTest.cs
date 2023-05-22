@@ -27,16 +27,16 @@ public class TransactionQueryGeneratedTest
         Fx = new GeneratedBlockChainFixture(
             new System.Random().Next(),
             txActionsForSuffixBlocks:
-            ImmutableArray<ImmutableArray<ImmutableArray<PolymorphicAction<SimpleAction>>>>
+            ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>
                 .Empty
-                .Add(ImmutableArray<ImmutableArray<PolymorphicAction<SimpleAction>>>
+                .Add(ImmutableArray<ImmutableArray<SimpleAction>>
                     .Empty
-                    .Add(ImmutableArray<PolymorphicAction<SimpleAction>>
+                    .Add(ImmutableArray<SimpleAction>
                         .Empty
                         .Add(new SimpleAction0())))
-                .Add(ImmutableArray<ImmutableArray<PolymorphicAction<SimpleAction>>>
+                .Add(ImmutableArray<ImmutableArray<SimpleAction>>
                     .Empty
-                    .Add(ImmutableArray<PolymorphicAction<SimpleAction>>
+                    .Add(ImmutableArray<SimpleAction>
                         .Empty
                         .Add(new SimpleAction0Fail()))));
         Source = new MockBlockChainContext(Fx.Chain);
@@ -57,7 +57,7 @@ public class TransactionQueryGeneratedTest
             Fx.Chain.GetNextTxNonce(pk.ToAddress()),
             pk,
             Fx.Chain.Genesis.Hash,
-            ImmutableArray<PolymorphicAction<SimpleAction>>.Empty.Add(new SimpleAction1()));
+            ImmutableArray<SimpleAction>.Empty.Add(new SimpleAction1()));
         Fx.Chain.StageTransaction(stagingTx);
 
         var queryResult = await ExecuteTransactionResultQueryAsync(successTx.Id);
