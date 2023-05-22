@@ -108,23 +108,9 @@ that do not implement <a class="xref" href="Libplanet.Action.IExtractableExcepti
 supposedly a serialized <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> cannot be deserialized via an
 <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></h4>
-      <section><p>The exception that is thrown when an action class without
-<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> is tried to used with
-<a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.NullAction.html">NullAction</a></h4>
       <section><p>An action implementation which does nothing for filling type parameter taking of
 <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a></h4>
-      <section><p>A decorator to enable subtype polymorphism for action classes.</p>
-<p>By convention, concrete action subclasses are named with verb
-phrases, e.g., <code>Heal</code>, <code>Sell</code>.</p>
-<p>One downside of this compared to the vanilla <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
-is the fact that it uses reflection under the hood.  This may cause
-compatibility issues on certain platforms, and is slightly slower.
-</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.RandomExtensions.html">RandomExtensions</a></h4>
       <section><p>This extension class provides some convenient methods
