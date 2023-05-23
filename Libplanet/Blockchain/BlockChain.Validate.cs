@@ -1,18 +1,23 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Tx;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
     public partial class BlockChain
     {
+        private static readonly Codec _codec = new Codec();
+
         internal static Dictionary<Address, long> ValidateGenesisNonces(
             Block block)
         {
@@ -322,6 +327,31 @@ namespace Libplanet.Blockchain
             var rootHash = DetermineBlockStateRootHash(block, out evaluations);
             if (!rootHash.Equals(block.StateRootHash))
             {
+                var totalDelta = evaluations.GetTotalDelta(
+                    ToStateKey,
+                    ToFungibleAssetKey,
+                    ToTotalSupplyKey,
+                    ValidatorSetKey);
+
+                var dumpData = _codec.Encode(
+                    new Bencodex.Types.List(
+                        totalDelta.Select(
+                            pair => new Bencodex.Types.List(
+                                (Bencodex.Types.Text)pair.Key,
+                                pair.Value
+                            )
+                        )
+                    )
+                );
+
+                File.WriteAllBytes(
+                    Path.Combine(
+                        Path.GetTempPath(),
+                        $"libplanet_state_dump_{block.Index}_{rootHash}"
+                    ),
+                    dumpData
+                );
+
                 var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
                     $"is {block.StateRootHash}, but the execution result is {rootHash}.";
                 throw new InvalidBlockStateRootHashException(

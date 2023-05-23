@@ -21,6 +21,10 @@ To be released.
 
 ### Behavioral changes
 
+ -  `BlockChain` became to leave a state_dump if an 
+    `InvalidBlockStateRootHashException` was thrown during block evaluation.
+    [[#3194]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -29,6 +33,7 @@ To be released.
 
 [#3168]: https://github.com/planetarium/libplanet/pull/3168
 [#3193]: https://github.com/planetarium/libplanet/pull/3193
+[#3194]: https://github.com/planetarium/libplanet/pull/3194
 
 
 Version 1.3.0
