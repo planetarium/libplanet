@@ -19,7 +19,8 @@ namespace Libplanet.Blocks
     /// <seealso cref="Block.Hash"/>
     [JsonConverter(typeof(BlockHashJsonConverter))]
     [Serializable]
-    public readonly struct BlockHash : ISerializable, IEquatable<BlockHash>, IBencodable
+    public readonly struct BlockHash :
+        ISerializable, IEquatable<BlockHash>, IComparable<BlockHash>, IComparable, IBencodable
     {
         /// <summary>
         /// The size of bytes that each <see cref="BlockHash"/> consists of.
@@ -197,6 +198,29 @@ namespace Libplanet.Blocks
 
             return code;
         }
+
+        /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
+        public int CompareTo(BlockHash other)
+        {
+            ImmutableArray<byte> self = ByteArray, operand = other.ByteArray;
+
+            for (int i = 0; i < Size; i++)
+            {
+                int cmp = ((IComparable<byte>)self[i]).CompareTo(operand[i]);
+                if (cmp != 0)
+                {
+                    return cmp;
+                }
+            }
+
+            return 0;
+        }
+
+        /// <inheritdoc cref="IComparable.CompareTo(object)"/>
+        public int CompareTo(object? obj) => obj is BlockHash other
+            ? this.CompareTo(other)
+            : throw new ArgumentException(
+                $"Argument {nameof(obj)} is not an ${nameof(BlockHash)}.", nameof(obj));
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public void GetObjectData(SerializationInfo info, StreamingContext context) =>
