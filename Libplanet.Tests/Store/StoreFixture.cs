@@ -113,7 +113,6 @@ namespace Libplanet.Tests.Store
                 BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     preEval,
-                    blockAction,
                     out IReadOnlyList<IActionEvaluation> evals));
             stateStore.Commit(null, evals.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));

@@ -36,9 +36,6 @@ namespace Libplanet.Blockchain
         /// in the genesis <see cref="Block"/>.</param>
         /// <param name="timestamp">The timestamp of the genesis block.  If it's null, it will
         /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
-        /// <param name="blockAction">A block action to execute and be rendered for every block.
-        /// It must match to <see cref="BlockPolicy.BlockAction"/> of <see cref="Policy"/>.
-        /// </param>
         /// <returns>A genesis <see cref="Block"/> proposed with given parameters.</returns>
         /// <seealso cref="BlockChain.Create"/>
         // FIXME: This method should take a IBlockPolicy instead of params blockAction
@@ -47,8 +44,7 @@ namespace Libplanet.Blockchain
             IActionEvaluator actionEvaluator,
             PrivateKey privateKey = null,
             ImmutableList<Transaction> transactions = null,
-            DateTimeOffset? timestamp = null,
-            IAction blockAction = null)
+            DateTimeOffset? timestamp = null)
         {
             privateKey ??= new PrivateKey();
             transactions = transactions is { } txs
@@ -68,7 +64,7 @@ namespace Libplanet.Blockchain
             PreEvaluationBlock preEval = content.Propose();
             return preEval.Sign(
                 privateKey,
-                DetermineGenesisStateRootHash(actionEvaluator, preEval, blockAction, out _));
+                DetermineGenesisStateRootHash(actionEvaluator, preEval, out _));
         }
 
         /// <summary>

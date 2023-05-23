@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -27,7 +26,6 @@ namespace Libplanet.Blockchain
         /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> for which
         /// to determine the state root hash.</param>
-        /// <param name="blockAction">The <see cref="IBlockPolicy.BlockAction"/> to use.</param>
         /// <param name="evaluations">The evaluation result from <see cref="EvaluateGenesis"/>
         /// for <paramref name="preEvaluationBlock"/>.</param>
         /// <returns>The state root hash calculated by committing <paramref name="evaluations"/> to
@@ -41,10 +39,9 @@ namespace Libplanet.Blockchain
         public static HashDigest<SHA256> DetermineGenesisStateRootHash(
             IActionEvaluator actionEvaluator,
             IPreEvaluationBlock preEvaluationBlock,
-            IAction blockAction,
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
-            evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock, blockAction);
+            evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
             ImmutableDictionary<string, IValue> delta = evaluations.GetTotalDelta(
                 ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
@@ -59,17 +56,15 @@ namespace Libplanet.Blockchain
         /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to
         /// evaluate.</param>
-        /// <param name="blockAction">The <see cref="IBlockPolicy.BlockAction"/> to use.</param>
         /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="IActionEvaluation"/>s
         /// resulting from evaluating <paramref name="preEvaluationBlock"/> using
-        /// <paramref name="blockAction"/>.</returns>
+        /// <paramref name="actionEvaluator"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="preEvaluationBlock"/>s
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         [Pure]
         public static IReadOnlyList<IActionEvaluation> EvaluateGenesis(
             IActionEvaluator actionEvaluator,
-            IPreEvaluationBlock preEvaluationBlock,
-            IAction blockAction)
+            IPreEvaluationBlock preEvaluationBlock)
         {
             if (preEvaluationBlock.Index > 0)
             {

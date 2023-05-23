@@ -206,8 +206,7 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.UtcNow))
                 .OrderBy(tx => tx.Id)
                 .ToImmutableList();
-            var genesis = BlockChain.ProposeGenesisBlock(
-                actionEvaluator, transactions: txs, blockAction: policy.BlockAction);
+            var genesis = BlockChain.ProposeGenesisBlock(actionEvaluator, transactions: txs);
             var chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
@@ -619,8 +618,7 @@ namespace Libplanet.Tests.Blockchain
                                 timestamp: DateTimeOffset.UtcNow
                             ),
                         }),
-                    privateKey: GenesisProposer,
-                    blockAction: _policy.BlockAction);
+                    privateKey: GenesisProposer);
 
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer();
@@ -1031,8 +1029,7 @@ namespace Libplanet.Tests.Blockchain
                     ProposeGenesis(
                         timestamp: DateTimeOffset.UtcNow,
                         proposer: GenesisProposer.PublicKey),
-                    privateKey: GenesisProposer,
-                    blockAction: _policy.BlockAction);
+                    privateKey: GenesisProposer);
                 var chain2 = BlockChain.Create(
                     _policy,
                     _stagePolicy,
@@ -1098,8 +1095,7 @@ namespace Libplanet.Tests.Blockchain
                             Array.Empty<DumbAction>()
                         ),
                     }),
-                GenesisProposer,
-                policy.BlockAction);
+                GenesisProposer);
             var chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
@@ -1699,8 +1695,7 @@ namespace Libplanet.Tests.Blockchain
             Block genesisBlock = ProposeGenesisBlock(
                 actionEvaluator,
                 ProposeGenesis(GenesisProposer.PublicKey),
-                GenesisProposer,
-                blockPolicy.BlockAction);
+                GenesisProposer);
             var chain = BlockChain.Create(
                 blockPolicy,
                 new VolatileStagePolicy(),
@@ -2086,8 +2081,7 @@ namespace Libplanet.Tests.Blockchain
             var genesisWithTx = ProposeGenesisBlock(
                 actionEvaluator,
                 ProposeGenesis(GenesisProposer.PublicKey, new[] { genesisTx }),
-                privateKey: GenesisProposer,
-                blockAction: policy.BlockAction);
+                privateKey: GenesisProposer);
 
             var chain = BlockChain.Create(
                 policy,

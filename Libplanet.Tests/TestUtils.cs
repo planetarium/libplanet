@@ -467,13 +467,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Block ProposeGenesisBlock(
             IActionEvaluator actionEvaluator,
             PreEvaluationBlock preEval,
-            PrivateKey privateKey,
-            IAction blockAction = null)
+            PrivateKey privateKey)
         {
             return preEval.Sign(
                 privateKey,
                 BlockChain.DetermineGenesisStateRootHash(
-                    actionEvaluator, preEval, blockAction, out _));
+                    actionEvaluator, preEval, out _));
         }
 
         public static PreEvaluationBlock ProposeNext(
@@ -624,7 +623,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var stateRootHash = BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     preEval,
-                    policy.BlockAction,
                     out _);
                 genesisBlock = protocolVersion < 2
                     ? new Block(
