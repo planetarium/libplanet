@@ -63,7 +63,6 @@ namespace Libplanet.Tests.Action.Sys
                 randomSeed: 123,
                 gasLimit: 0,
                 rehearsal: false,
-                previousBlockStatesTrie: null,
                 blockAction: false
             );
             var initialize = new Initialize(
@@ -99,7 +98,6 @@ namespace Libplanet.Tests.Action.Sys
                 randomSeed: 123,
                 gasLimit: long.MaxValue,
                 rehearsal: false,
-                previousBlockStatesTrie: null,
                 blockAction: false
             );
             var initialize = new Initialize(

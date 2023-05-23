@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.State;
-using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Xunit;
 
@@ -151,33 +149,6 @@ namespace Libplanet.Tests.Action
                 values,
                 new[] { clone.Random.Next(), clone.Random.Next(), clone.Random.Next() }
             );
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void LazyPreviousStateRootHash(bool callPreviousStateRootHash)
-        {
-            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            ITrie previousBlockStatesTrie = new MerkleTrie(keyValueStore);
-            previousBlockStatesTrie = previousBlockStatesTrie.Set(new KeyBytes(0x01), Null.Value);
-            var actionContext = new ActionContext(
-                signer: _address,
-                txid: _txid,
-                miner: _address,
-                blockIndex: 1,
-                previousStates: new DumbAccountStateDelta(),
-                randomSeed: _random.Next(),
-                gasLimit: 0,
-                previousBlockStatesTrie: previousBlockStatesTrie
-            );
-
-            if (callPreviousStateRootHash)
-            {
-                _ = actionContext.PreviousStateRootHash;
-            }
-
-            Assert.Equal(callPreviousStateRootHash ? 1 : 0, keyValueStore.ListKeys().Count());
         }
 
         private class DumbAccountStateDelta :

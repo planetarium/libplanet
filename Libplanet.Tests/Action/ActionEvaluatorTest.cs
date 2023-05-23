@@ -755,7 +755,6 @@ namespace Libplanet.Tests.Action
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false
             ).ToArray();
 
@@ -773,7 +772,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
-                Assert.Equal(deltaA[i].RootHash, context.PreviousStateRootHash);
                 Assert.Equal(txA.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(
@@ -806,7 +804,6 @@ namespace Libplanet.Tests.Action
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
                 blockAction: false
             ).ToArray();
 
@@ -826,7 +823,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
-                Assert.Equal(deltaB[i].RootHash, context.PreviousStateRootHash);
                 Assert.Equal(txB.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(
@@ -874,10 +870,7 @@ namespace Libplanet.Tests.Action
                 totalSupplyGetter,
                 validatorSetGetter,
                 genesis.Miner);
-            var evaluation = actionEvaluator.EvaluatePolicyBlockAction(
-                genesis,
-                previousStates,
-                null);
+            var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
@@ -899,10 +892,7 @@ namespace Libplanet.Tests.Action
                 totalSupplyGetter,
                 validatorSetGetter,
                 block.Miner);
-            evaluation = actionEvaluator.EvaluatePolicyBlockAction(
-                block,
-                previousStates,
-                null);
+            evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
@@ -922,10 +912,7 @@ namespace Libplanet.Tests.Action
                 block,
                 previousStates).ToList();
             previousStates = txEvaluations.Last().OutputStates;
-            evaluation = actionEvaluator.EvaluatePolicyBlockAction(
-                block,
-                previousStates,
-                null);
+            evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(
                 (Integer)2,
@@ -1121,7 +1108,6 @@ namespace Libplanet.Tests.Action
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false
             ).ToArray();
             byte[] hashedSignature;

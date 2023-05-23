@@ -10,6 +10,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `IBlockChainStates.GetTrie()` interface method.  [[#3168]]
  -  Removed `PolymorphicAction<T>` class.  [[#3193]]
 
 ### Backward-incompatible network protocol changes
@@ -26,6 +27,7 @@ To be released.
 
 ### CLI tools
 
+[#3168]: https://github.com/planetarium/libplanet/pull/3168
 [#3193]: https://github.com/planetarium/libplanet/pull/3193
 
 
