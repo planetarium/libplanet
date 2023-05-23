@@ -33,6 +33,7 @@ namespace Libplanet.Action
 
             if (newGasUsed > GasLimit)
             {
+                GasUsed = GasLimit;
                 throw new GasLimitExceededException(GasLimit, newGasUsed);
             }
 

@@ -102,6 +102,7 @@ namespace Libplanet.Action
 
             if (_context.GasLimit() - _context.GasUsed() <= 0)
             {
+                _state = FeeCollectState.Refund;
                 return state;
             }
 
@@ -127,6 +128,7 @@ namespace Libplanet.Action
 
             if (_context.GasUsed() <= 0)
             {
+                _state = FeeCollectState.Refund;
                 return state;
             }
 

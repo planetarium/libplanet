@@ -484,7 +484,7 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
-                gasLimit: tx.GasLimit ?? 0,
+                gasLimit: tx.GasLimit ?? long.MaxValue,
                 maxGasPrice: tx.MaxGasPrice,
                 logger: _logger);
         }

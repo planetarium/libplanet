@@ -1064,6 +1064,9 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 new FungibleAssetValue(foo, 9),
                 evaluations.Single().OutputStates.GetBalance(address, foo));
+            Assert.Equal(
+                new FungibleAssetValue(foo, 1),
+                evaluations.Single().OutputStates.GetBalance(miner.ToAddress(), foo));
         }
 
         [Fact]
@@ -1125,6 +1128,12 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 typeof(GasLimitExceededException),
                 evaluations.Single().Exception?.InnerException?.GetType());
+            Assert.Equal(
+                new FungibleAssetValue(foo, 5),
+                evaluations.Single().OutputStates.GetBalance(address, foo));
+            Assert.Equal(
+                new FungibleAssetValue(foo, 5),
+                evaluations.Single().OutputStates.GetBalance(miner.ToAddress(), foo));
         }
 
         [Fact]
