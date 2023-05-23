@@ -508,19 +508,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.Miner
   nameWithType: IActionContext.Miner
-- uid: Libplanet.Action.IActionContext.PreviousStateRootHash
-  name: PreviousStateRootHash
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStateRootHash
-  commentId: P:Libplanet.Action.IActionContext.PreviousStateRootHash
-  fullName: Libplanet.Action.IActionContext.PreviousStateRootHash
-  nameWithType: IActionContext.PreviousStateRootHash
-- uid: Libplanet.Action.IActionContext.PreviousStateRootHash*
-  name: PreviousStateRootHash
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStateRootHash_
-  commentId: Overload:Libplanet.Action.IActionContext.PreviousStateRootHash
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.PreviousStateRootHash
-  nameWithType: IActionContext.PreviousStateRootHash
 - uid: Libplanet.Action.IActionContext.PreviousStates
   name: PreviousStates
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates
@@ -2585,19 +2572,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetTransaction
   nameWithType: BlockChain.GetTransaction
-- uid: Libplanet.Blockchain.BlockChain.GetTrie(Libplanet.Blocks.BlockHash)
-  name: GetTrie(BlockHash)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTrie_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChain.GetTrie(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChain.GetTrie(Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChain.GetTrie(BlockHash)
-- uid: Libplanet.Blockchain.BlockChain.GetTrie*
-  name: GetTrie
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTrie_
-  commentId: Overload:Libplanet.Blockchain.BlockChain.GetTrie
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain.GetTrie
-  nameWithType: BlockChain.GetTrie
 - uid: Libplanet.Blockchain.BlockChain.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)
   name: GetTxExecution(BlockHash, TxId)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_
@@ -2867,19 +2841,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.GetTotalSupply
   nameWithType: BlockChainStates.GetTotalSupply
-- uid: Libplanet.Blockchain.BlockChainStates.GetTrie(Libplanet.Blocks.BlockHash)
-  name: GetTrie(BlockHash)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTrie_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetTrie(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChainStates.GetTrie(Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChainStates.GetTrie(BlockHash)
-- uid: Libplanet.Blockchain.BlockChainStates.GetTrie*
-  name: GetTrie
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTrie_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetTrie
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates.GetTrie
-  nameWithType: BlockChainStates.GetTrie
 - uid: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
   name: GetValidatorSet(BlockHash)
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetValidatorSet_Libplanet_Blocks_BlockHash_
@@ -3044,19 +3005,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply
   nameWithType: IBlockChainStates.GetTotalSupply
-- uid: Libplanet.Blockchain.IBlockChainStates.GetTrie(Libplanet.Blocks.BlockHash)
-  name: GetTrie(BlockHash)
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTrie_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetTrie(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetTrie(Libplanet.Blocks.BlockHash)
-  nameWithType: IBlockChainStates.GetTrie(BlockHash)
-- uid: Libplanet.Blockchain.IBlockChainStates.GetTrie*
-  name: GetTrie
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTrie_
-  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetTrie
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetTrie
-  nameWithType: IBlockChainStates.GetTrie
 - uid: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
   name: GetValidatorSet(BlockHash)
   href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetValidatorSet_Libplanet_Blocks_BlockHash_
