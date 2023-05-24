@@ -12,6 +12,11 @@ To be released.
 
  -  Removed `IBlockChainStates.GetTrie()` interface method.  [[#3168]]
  -  Removed `PolymorphicAction<T>` class.  [[#3193]]
+ -  Changed `BlockChain.Create()` to accept `IActionEvaluator` interface
+    instead of `ActionEvaluator` object.  [[#3195]]
+ -  Removed `blockAction` parameter from `BlockChain.EvaluateGenesis()`,
+    `BlockChain.DetermineGenesisStateRootHash()`,
+    and `BlockChain.ProposeGenesisBlock()` methods.  [[#3195]]
 
 ### Backward-incompatible network protocol changes
 
@@ -29,6 +34,7 @@ To be released.
 
 [#3168]: https://github.com/planetarium/libplanet/pull/3168
 [#3193]: https://github.com/planetarium/libplanet/pull/3193
+[#3195]: https://github.com/planetarium/libplanet/pull/3195
 
 
 Version 1.3.0

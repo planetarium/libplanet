@@ -347,7 +347,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
-            ActionEvaluator actionEvaluator,
+            IActionEvaluator actionEvaluator,
             IEnumerable<IRenderer> renderers = null,
             IBlockChainStates blockChainStates = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
@@ -379,7 +379,6 @@ namespace Libplanet.Blockchain
             var computedStateRootHash = DetermineGenesisStateRootHash(
                 actionEvaluator,
                 preEval,
-                policy.BlockAction,
                 out IReadOnlyList<IActionEvaluation> evals);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {

@@ -188,8 +188,7 @@ namespace Libplanet.Tests.Blockchain
             var genesisBlock = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
                 TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
-                TestUtils.GenesisProposer,
-                policy.BlockAction);
+                TestUtils.GenesisProposer);
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 

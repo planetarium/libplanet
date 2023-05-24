@@ -141,8 +141,7 @@ namespace Libplanet.Tests.Blockchain
                             {
                                 new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
                             }),
-                    }.ToImmutableList(),
-                    blockAction: policy.BlockAction);
+                    }.ToImmutableList());
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),

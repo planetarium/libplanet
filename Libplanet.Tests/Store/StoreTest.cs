@@ -1056,8 +1056,7 @@ namespace Libplanet.Tests.Store
                     null);
                 var genesis = preEval.Sign(
                     GenesisProposer,
-                    BlockChain.DetermineGenesisStateRootHash(
-                        actionEvaluator, preEval, policy.BlockAction, out _));
+                    BlockChain.DetermineGenesisStateRootHash(actionEvaluator, preEval, out _));
                 var blocks = BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),

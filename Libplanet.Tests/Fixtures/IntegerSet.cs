@@ -84,8 +84,7 @@ namespace Libplanet.Tests.Fixtures
                     null,
                     DateTimeOffset.UtcNow,
                     Block.CurrentProtocolVersion),
-                Miner,
-                policy.BlockAction);
+                Miner);
             Chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),

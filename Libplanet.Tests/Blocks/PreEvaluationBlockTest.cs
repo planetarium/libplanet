@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Blocks
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
                     BlockChain.DetermineGenesisStateRootHash(
-                        actionEvaluator, preEvalGenesis, blockAction, out _));
+                        actionEvaluator, preEvalGenesis, out _));
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Blocks
                     feeCalculator: null);
                 HashDigest<SHA256> genesisStateRootHash =
                     BlockChain.DetermineGenesisStateRootHash(
-                        actionEvaluator, preEvalGenesis, blockAction, out _);
+                        actionEvaluator, preEvalGenesis, out _);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);

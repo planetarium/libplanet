@@ -155,10 +155,7 @@ public class BlockCommand
             new SingleActionLoader(typeof(NullAction)),
             null);
         Block genesis = BlockChain.ProposeGenesisBlock(
-            actionEvaluator,
-            privateKey: key,
-            transactions: txs,
-            blockAction: blockAction);
+            actionEvaluator, privateKey: key, transactions: txs);
         using Stream stream = file == "-"
             ? Console.OpenStandardOutput()
             : File.Open(file, FileMode.Create);
