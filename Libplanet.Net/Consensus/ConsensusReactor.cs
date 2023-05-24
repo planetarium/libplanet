@@ -83,7 +83,10 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public bool Running => _gossip.Running;
 
-        /// <inheritdoc cref="ConsensusContext.Height"/>
+        /// <summary>
+        /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
+        /// changed by starting a consensus or appending a block.
+        /// </summary>
         public long Height => _consensusContext.Height;
 
         /// <summary>

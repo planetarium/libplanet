@@ -343,7 +343,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A timeout mutation to run if +2/3 <see cref="ConsensusPreCommitMsg"/>s were received but
         /// is still in <paramref name="round"/> round and <see cref="Step.PreCommit"/> step
-        /// after <see cref="TimeoutPreVote"/>.
+        /// after <see cref="TimeoutPreCommit"/>.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutPreCommit(int round)

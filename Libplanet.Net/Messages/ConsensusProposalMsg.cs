@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Bencodex;
-using Libplanet.Blocks;
 using Libplanet.Consensus;
 
 namespace Libplanet.Net.Messages
@@ -11,8 +9,6 @@ namespace Libplanet.Net.Messages
     /// </summary>
     public class ConsensusProposalMsg : ConsensusMsg
     {
-        private static Codec _codec = new Codec();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusProposalMsg"/> class.
         /// </summary>
@@ -35,7 +31,7 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// A marshalled <see cref="Block"/>.
+        /// A <see cref="Proposal"/> of the message.
         /// </summary>
         public Proposal Proposal { get; }
 
