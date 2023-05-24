@@ -68,6 +68,11 @@
 <ul>
 <li>Removed <code>IBlockChainStates.GetTrie()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3168">#3168</a>]</li>
 <li>Removed <code>PolymorphicAction&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3193">#3193</a>]</li>
+<li>Changed <code>BlockChain.Create()</code> to accept <code>IActionEvaluator</code> interface
+instead of <code>ActionEvaluator</code> object.  [<a href="https://github.com/planetarium/libplanet/pull/3195">#3195</a>]</li>
+<li>Removed <code>blockAction</code> parameter from <code>BlockChain.EvaluateGenesis()</code>,
+<code>BlockChain.DetermineGenesisStateRootHash()</code>,
+and <code>BlockChain.ProposeGenesisBlock()</code> methods.  [<a href="https://github.com/planetarium/libplanet/pull/3195">#3195</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
