@@ -7,6 +7,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Tx;
 using Serilog;
 using FAV = Libplanet.Assets.FungibleAssetValue;
@@ -176,6 +177,21 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> GetBlockCommitHashes();
+
+        /// <inheritdoc/>
+        public abstract IEnumerable<DuplicateVoteEvidence> GetPendingEvidences();
+
+        /// <inheritdoc/>
+        public abstract void PutPendingEvidence(DuplicateVoteEvidence evidence);
+
+        /// <inheritdoc/>
+        public abstract void DeletePendingEvidence(DuplicateVoteEvidence evidence);
+
+        /// <inheritdoc/>
+        public abstract void CommitPendingEvidence(DuplicateVoteEvidence evidence);
+
+        /// <inheritdoc/>
+        public abstract IEnumerable<DuplicateVoteEvidence> GetCommittedEvidences();
 
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {

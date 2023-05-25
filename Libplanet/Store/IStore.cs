@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Tx;
 
 namespace Libplanet.Store
@@ -362,5 +363,21 @@ namespace Libplanet.Store
         /// <returns>Returns an <see cref="IEnumerable{T}"/> of <see cref="BlockHash"/>es
         /// of all <see cref="BlockCommit"/>s.</returns>
         IEnumerable<BlockHash> GetBlockCommitHashes();
+
+        IEnumerable<DuplicateVoteEvidence> GetPendingEvidences();
+
+        void PutPendingEvidence(DuplicateVoteEvidence evidence);
+
+        void DeletePendingEvidence(EvidenceId evidenceId);
+
+        bool ContainsPendingEvidence(EvidenceId evidenceId);
+
+        IEnumerable<DuplicateVoteEvidence> GetCommittedEvidences();
+
+        void PutCommittedEvidence(DuplicateVoteEvidence evidence);
+
+        void DeleteCommittedEvidence(EvidenceId evidenceId);
+
+        bool ContainsCommittedEvidence(EvidenceId evidenceId);
     }
 }

@@ -18,6 +18,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
+using Org.BouncyCastle.Math.EC.Multiplier;
 using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
 
@@ -45,6 +46,9 @@ namespace Libplanet.Blockchain
             "SA1401:FieldsMustBePrivate",
             Justification = "Temporary visibility.")]
         internal readonly ReaderWriterLockSlim _rwlock;
+
+        // FIXME: The _maxEvidenceDuration field have to be part of policy.
+        private const long _maxEvidenceDuration = 10;
         private readonly object _txLock;
         private readonly ILogger _logger;
         private readonly IBlockChainStates _blockChainStates;
@@ -61,6 +65,8 @@ namespace Libplanet.Blockchain
         /// Cached genesis block.
         /// </summary>
         private Block _genesis;
+
+        private DuplicatedVotesPool _duplicatedVotesPool;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain"/> class by loading
@@ -152,7 +158,7 @@ namespace Libplanet.Blockchain
             StateStore = stateStore;
 
             _blockChainStates = blockChainStates;
-
+            _duplicatedVotesPool = new DuplicatedVotesPool();
             _blocks = new BlockSet(store);
             Renderers = renderers is IEnumerable<IRenderer> r
                 ? r.ToImmutableArray()
