@@ -8,11 +8,11 @@ namespace Libplanet.Consensus
 {
     public class DuplicatedVotesPool
     {
-        private ConcurrentDictionary<(long, PublicKey), List<Vote>> _duplicatedVotes;
+        private ConcurrentDictionary<(long, int, PublicKey), List<Vote>> _duplicatedVotes;
 
         public DuplicatedVotesPool()
         {
-            _duplicatedVotes = new ConcurrentDictionary<(long, PublicKey), List<Vote>>();
+            _duplicatedVotes = new ConcurrentDictionary<(long, int, PublicKey), List<Vote>>();
         }
 
         public void Add(Vote vote, Vote voteDup)
@@ -22,7 +22,17 @@ namespace Libplanet.Consensus
                 throw new ArgumentException();
             }
 
+            if (vote.Round != voteDup.Round)
+            {
+                throw new ArgumentException();
+            }
+
             if (vote.ValidatorPublicKey != voteDup.ValidatorPublicKey)
+            {
+                throw new ArgumentException();
+            }
+
+            if (vote.Flag != voteDup.Flag)
             {
                 throw new ArgumentException();
             }
@@ -53,14 +63,14 @@ namespace Libplanet.Consensus
             }
 
             _duplicatedVotes.AddOrUpdate(
-                (vote.Height, vote.ValidatorPublicKey),
+                (vote.Height, vote.Round, vote.ValidatorPublicKey),
                 new List<Vote>() { vote, voteDup },
                 (key, voteList) => voteList.Append(voteDup).ToList());
         }
 
         public IEnumerable<Vote[]> Exhaust()
         {
-            foreach ((long, PublicKey) key in _duplicatedVotes.Keys)
+            foreach ((long, int, PublicKey) key in _duplicatedVotes.Keys)
             {
                 if (_duplicatedVotes.TryRemove(key, out List<Vote>? voteList))
                 {

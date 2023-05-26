@@ -107,6 +107,14 @@ namespace Libplanet.Blockchain
             BigInteger validatorPower
                 = validatorSet.GetValidator(evidence.Votes[0].ValidatorPublicKey).Power;
             BigInteger totalPower = validatorSet.TotalPower;
+
+            if (validatorSet.PublicKeys.Contains(evidence.Votes[0].ValidatorPublicKey))
+            {
+                throw new InvalidEvidenceException(
+                    $"Evidence public key is not a validator. " +
+                    $"PublicKey: {evidence.Votes[0].ValidatorPublicKey}");
+            }
+
             if (evidence.ValidatorPower != validatorPower)
             {
                 throw new InvalidEvidenceException(

@@ -75,10 +75,22 @@ namespace Libplanet.Consensus
                     $"Height of votes are different from height {height}");
             }
 
+            if (votes.Any(vote => vote.Round != votes.First().Round))
+            {
+                throw new ArgumentException(
+                    $"Round of votes are different");
+            }
+
             if (votes.Any(vote => vote.ValidatorPublicKey != votes.First().ValidatorPublicKey))
             {
                 throw new ArgumentException(
                     $"Validator public key of votes are different");
+            }
+
+            if (votes.Any(vote => vote.Flag != votes.First().Flag))
+            {
+                throw new ArgumentException(
+                    $"Flags of votes are different");
             }
 
             if (votes.Any(vote => vote.BlockHash is null))
