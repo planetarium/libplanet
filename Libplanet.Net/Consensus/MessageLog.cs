@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -32,11 +33,12 @@ namespace Libplanet.Net.Consensus
 
         private long _height;
         private ValidatorSet _validators;
+        private BlockChain _blockChain;
         private Dictionary<int, ConsensusProposalMsg> _proposals;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>> _preVotes;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>> _preCommits;
 
-        internal MessageLog(long height, ValidatorSet validators)
+        internal MessageLog(long height, ValidatorSet validators, BlockChain blockChain)
         {
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -46,6 +48,7 @@ namespace Libplanet.Net.Consensus
 
             _height = height;
             _validators = validators;
+            _blockChain = blockChain;
             _proposals = new Dictionary<int, ConsensusProposalMsg>();
             _preVotes = new Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>>();
             _preCommits = new Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>>();
@@ -148,6 +151,9 @@ namespace Libplanet.Net.Consensus
 
                     if (_preVotes[preVote.Round].ContainsKey(preVote.ValidatorPublicKey))
                     {
+                        _blockChain.ReportConflictingVotes(
+                            _preVotes[preVote.Round][preVote.ValidatorPublicKey].PreVote,
+                            preVote.PreVote);
                         var msg =
                             "There is already a prevote message for given prevote message's " +
                             $"round {preVote.Round} and validator {preVote.ValidatorPublicKey}";
@@ -168,6 +174,9 @@ namespace Libplanet.Net.Consensus
 
                     if (_preCommits[preCommit.Round].ContainsKey(preCommit.ValidatorPublicKey))
                     {
+                        _blockChain.ReportConflictingVotes(
+                            _preCommits[preCommit.Round][preCommit.ValidatorPublicKey].PreCommit,
+                            preCommit.PreCommit);
                         var msg =
                             "There is already a precommit message for given precommit message's " +
                             $"round {preCommit.Round} and validator {preCommit.ValidatorPublicKey}";
