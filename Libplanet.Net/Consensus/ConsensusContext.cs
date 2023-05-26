@@ -114,15 +114,17 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the step
         /// of current <see cref="Context"/>, or otherwise returns
-        /// <see cref="Libplanet.Net.Consensus.Step.Null"/>.
+        /// <see cref="ConsensusStep.Null"/>.
         /// </returns>
-        public Step Step
+        public ConsensusStep Step
         {
             get
             {
                 lock (_contextLock)
                 {
-                    return _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
+                    return _contexts.ContainsKey(Height)
+                        ? _contexts[Height].Step
+                        : ConsensusStep.Null;
                 }
             }
         }
@@ -284,7 +286,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A handler to process <see cref="Context.StateChanged"/> <see langword="event"/>s.
         /// In particular, this watches for a successful state change into
-        /// <see cref="Step.EndCommit"/> for a <see cref="Context"/> to turn off
+        /// <see cref="ConsensusStep.EndCommit"/> for a <see cref="Context"/> to turn off
         /// bootstrapping.
         /// </summary>
         /// <param name="sender">The source object invoking the event.</param>
@@ -295,9 +297,9 @@ namespace Libplanet.Net.Consensus
         /// </remarks>
         /// <seealso cref="AttachEventHandlers"/>
         private void OnContextStateChanged(
-            object? sender, (int MessageLogSize, int Round, Step Step) e)
+            object? sender, (int MessageLogSize, int Round, ConsensusStep Step) e)
         {
-            if (e.Step == Step.EndCommit)
+            if (e.Step == ConsensusStep.EndCommit)
             {
                 _bootstrapping = false;
             }

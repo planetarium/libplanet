@@ -50,7 +50,7 @@ namespace Libplanet.Net.Tests.Consensus
             var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stateChangedToRoundOnePreVote.Set();
                 }
@@ -67,7 +67,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Wait for round 1 prevote step.
             await stateChangedToRoundOnePreVote.WaitAsync();
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
         }
@@ -85,7 +85,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(block.Hash, preCommit?.BlockHash);
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
 
@@ -155,7 +155,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
@@ -185,7 +185,7 @@ namespace Libplanet.Net.Tests.Consensus
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -201,7 +201,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
-                if (evnetArgs.Step == Step.PreVote)
+                if (evnetArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -242,7 +242,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -274,7 +274,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
-                if (evnetArgs.Step == Step.PreVote)
+                if (evnetArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -313,7 +313,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -336,7 +336,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
-                if (evnetArgs.Step == Step.PreVote)
+                if (evnetArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -393,7 +393,7 @@ namespace Libplanet.Net.Tests.Consensus
                     TestUtils.PrivateKeys[1]));
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
 
@@ -410,7 +410,7 @@ namespace Libplanet.Net.Tests.Consensus
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, null, VoteFlag.PreVote)));
             await nilPreCommitSent.WaitAsync();
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -423,7 +423,7 @@ namespace Libplanet.Net.Tests.Consensus
             var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToRoundOnePreVote.Set();
                 }
@@ -442,7 +442,7 @@ namespace Libplanet.Net.Tests.Consensus
                         TestUtils.PrivateKeys[3], 1, 1, hash: null, flag: VoteFlag.PreVote)));
 
             await stepChangedToRoundOnePreVote.WaitAsync();
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
         }
@@ -459,7 +459,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -474,7 +474,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.Start();
             await Task.WhenAll(preVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -493,7 +493,7 @@ namespace Libplanet.Net.Tests.Consensus
             var roundOneStepChangedToPreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     roundOneStepChangedToPreVote.Set();
                 }
@@ -538,7 +538,7 @@ namespace Libplanet.Net.Tests.Consensus
             await roundOneStepChangedToPreVote.WaitAsync();
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -572,7 +572,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Wait for timeout.
             await timeoutProcessed.WaitAsync();
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -605,7 +605,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Wait for timeout.
             await timeoutProcessed.WaitAsync();
-            Assert.Equal(Step.Propose, context.Step);
+            Assert.Equal(ConsensusStep.Propose, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
         }

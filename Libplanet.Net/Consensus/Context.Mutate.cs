@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
                 Round,
                 ToString());
             Round = round;
-            Step = Step.Propose;
+            Step = ConsensusStep.Propose;
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
                 _logger.Information(
@@ -103,11 +103,11 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Checks the current state to mutate <see cref="Step"/> and/or schedule timeouts.
+        /// Checks the current state to mutate <see cref="ConsensusStep"/> and/or schedule timeouts.
         /// </summary>
         private void ProcessGenericUponRules()
         {
-            if (Step == Step.Default || Step == Step.EndCommit)
+            if (Step == ConsensusStep.Default || Step == ConsensusStep.EndCommit)
             {
                 _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
@@ -116,13 +116,13 @@ namespace Libplanet.Net.Consensus
             (Block Block, int ValidRound)? propose = GetProposal(Round);
             if (propose is { } p1 &&
                 p1.ValidRound == -1 &&
-                Step == Step.Propose)
+                Step == ConsensusStep.Propose)
             {
                 _logger.Debug(
                     "Entering PreVote step due to proposal message with " +
                     "valid round -1. (context: {Context})",
                     ToString());
-                Step = Step.PreVote;
+                Step = ConsensusStep.PreVote;
 
                 if (IsValid(p1.Block, out _) && (_lockedRound == -1 || _lockedValue == p1.Block))
                 {
@@ -141,14 +141,14 @@ namespace Libplanet.Net.Consensus
                 p2.ValidRound < Round &&
                 HasTwoThirdsPreVote(
                     p2.ValidRound, preVote => p2.Block.Hash.Equals(preVote.BlockHash)) &&
-                Step == Step.Propose)
+                Step == ConsensusStep.Propose)
             {
                 _logger.Debug(
                     "Entering PreVote step due to proposal message and have collected " +
                     "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
                     p2.ValidRound,
                     ToString());
-                Step = Step.PreVote;
+                Step = ConsensusStep.PreVote;
 
                 if (IsValid(p2.Block, out _) &&
                     (_lockedRound <= p2.ValidRound || _lockedValue == p2.Block))
@@ -164,7 +164,7 @@ namespace Libplanet.Net.Consensus
             }
 
             if (HasTwoThirdsPreVote(Round, _ => true) &&
-                Step == Step.PreVote &&
+                Step == ConsensusStep.PreVote &&
                 !_preVoteTimeoutFlags.Contains(Round))
             {
                 _logger.Debug(
@@ -180,7 +180,7 @@ namespace Libplanet.Net.Consensus
                 HasTwoThirdsPreVote(
                     Round, preVote => p3.Block.Hash.Equals(preVote.BlockHash)) &&
                 IsValid(p3.Block, out _) &&
-                (Step == Step.PreVote || Step == Step.PreCommit) &&
+                (Step == ConsensusStep.PreVote || Step == ConsensusStep.PreCommit) &&
                 !_hasTwoThirdsPreVoteFlags.Contains(Round))
             {
                 _logger.Debug(
@@ -189,14 +189,14 @@ namespace Libplanet.Net.Consensus
                     Round,
                     ToString());
                 _hasTwoThirdsPreVoteFlags.Add(Round);
-                if (Step == Step.PreVote)
+                if (Step == ConsensusStep.PreVote)
                 {
                     _logger.Debug(
                         "Entering PreCommit step due to proposal message and have collected " +
                         "2/3+ PreVote for current round {Round}. (context: {Context})",
                         Round,
                         ToString());
-                    Step = Step.PreCommit;
+                    Step = ConsensusStep.PreCommit;
                     _lockedValue = p3.Block;
                     _lockedRound = Round;
                     BroadcastMessage(
@@ -209,14 +209,14 @@ namespace Libplanet.Net.Consensus
             }
 
             if (HasTwoThirdsPreVote(Round, preVote => preVote.BlockHash is null) &&
-                Step == Step.PreVote)
+                Step == ConsensusStep.PreVote)
             {
                 _logger.Debug(
                     "PreCommit nil for the round {Round} because 2/3+ PreVotes were collected. " +
                     "(context: {Context})",
                     Round,
                     ToString());
-                Step = Step.PreCommit;
+                Step = ConsensusStep.PreCommit;
                 BroadcastMessage(
                     new ConsensusPreCommitMsg(MakeVote(Round, null, VoteFlag.PreCommit)));
             }
@@ -236,13 +236,13 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// Checks the current state to mutate <see cref="Round"/> or to terminate
-        /// by setting <see cref="Step"/> to <see cref="Step.EndCommit"/>.
+        /// by setting <see cref="ConsensusStep"/> to <see cref="ConsensusStep.EndCommit"/>.
         /// </summary>
         /// <param name="message">The <see cref="ConsensusMsg"/> to process.
         /// Although this is not strictly needed, this is used for optimization.</param>
         private void ProcessHeightOrRoundUponRules(ConsensusMsg message)
         {
-            if (Step == Step.Default || Step == Step.EndCommit)
+            if (Step == ConsensusStep.Default || Step == ConsensusStep.EndCommit)
             {
                 _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
@@ -255,7 +255,7 @@ namespace Libplanet.Net.Consensus
                     round, preCommit => block4.Hash.Equals(preCommit.BlockHash)) &&
                 IsValid(block4, out _))
             {
-                Step = Step.EndCommit;
+                Step = ConsensusStep.EndCommit;
                 _decision = block4;
                 _committedRound = round;
 
@@ -309,46 +309,46 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// A timeout mutation to run if no <see cref="ConsensusProposalMsg"/> is received in
-        /// <see cref="TimeoutPropose"/> and is still in <see cref="Step.Propose"/> step.
+        /// <see cref="TimeoutPropose"/> and is still in <see cref="ConsensusStep.Propose"/> step.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutPropose(int round)
         {
-            if (round == Round && Step == Step.Propose)
+            if (round == Round && Step == ConsensusStep.Propose)
             {
                 BroadcastMessage(
                     new ConsensusPreVoteMsg(MakeVote(Round, null, VoteFlag.PreVote)));
-                Step = Step.PreVote;
-                TimeoutProcessed?.Invoke(this, (round, Step.Propose));
+                Step = ConsensusStep.PreVote;
+                TimeoutProcessed?.Invoke(this, (round, ConsensusStep.Propose));
             }
         }
 
         /// <summary>
         /// A timeout mutation to run if +2/3 <see cref="ConsensusPreVoteMsg"/>s were received but
-        /// is still in <paramref name="round"/> round and <see cref="Step.PreVote"/> step
+        /// is still in <paramref name="round"/> round and <see cref="ConsensusStep.PreVote"/> step
         /// after <see cref="TimeoutPreVote"/>.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutPreVote(int round)
         {
-            if (round == Round && Step == Step.PreVote)
+            if (round == Round && Step == ConsensusStep.PreVote)
             {
                 BroadcastMessage(
                     new ConsensusPreCommitMsg(MakeVote(Round, null, VoteFlag.PreCommit)));
-                Step = Step.PreCommit;
-                TimeoutProcessed?.Invoke(this, (round, Step.PreVote));
+                Step = ConsensusStep.PreCommit;
+                TimeoutProcessed?.Invoke(this, (round, ConsensusStep.PreVote));
             }
         }
 
         /// <summary>
         /// A timeout mutation to run if +2/3 <see cref="ConsensusPreCommitMsg"/>s were received but
-        /// is still in <paramref name="round"/> round and <see cref="Step.PreCommit"/> step
-        /// after <see cref="TimeoutPreCommit"/>.
+        /// is still in <paramref name="round"/> round and <see cref="ConsensusStep.PreCommit"/>
+        /// step after <see cref="TimeoutPreCommit"/>.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutPreCommit(int round)
         {
-            if (Step == Step.Default || Step == Step.EndCommit)
+            if (Step == ConsensusStep.Default || Step == ConsensusStep.EndCommit)
             {
                 _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
@@ -357,7 +357,7 @@ namespace Libplanet.Net.Consensus
             if (round == Round)
             {
                 StartRound(Round + 1);
-                TimeoutProcessed?.Invoke(this, (round, Step.PreCommit));
+                TimeoutProcessed?.Invoke(this, (round, ConsensusStep.PreCommit));
             }
         }
     }

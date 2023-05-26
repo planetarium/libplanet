@@ -43,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 2 && eventArgs.Step == Step.Propose)
+                if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     stateChangedToRoundTwoPropose.Set();
                 }
@@ -108,7 +108,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await roundTwoVoteSent.WaitAsync();
             Assert.False(timeoutProcessed); // Assert no transition is due to timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -125,19 +125,19 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 2 && eventArgs.Step == Step.Propose)
+                if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     stateChangedToRoundTwoPropose.Set();
                 }
-                else if (eventArgs.Round == 2 && eventArgs.Step == Step.PreVote)
+                else if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stateChangedToRoundTwoPreVote.Set();
                 }
-                else if (eventArgs.Round == 2 && eventArgs.Step == Step.PreCommit)
+                else if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stateChangedToRoundTwoPreCommit.Set();
                 }
-                else if (eventArgs.Round == 3 && eventArgs.Step == Step.Propose)
+                else if (eventArgs.Round == 3 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     stateChangedToRoundThreePropose.Set();
                 }

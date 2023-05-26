@@ -48,15 +48,15 @@ namespace Libplanet.Net.Tests.Consensus
             AsyncAutoResetEvent heightFourStepChangedToPropose = new AsyncAutoResetEvent();
             consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Height == 3 && eventArgs.Step == Step.Propose)
+                if (eventArgs.Height == 3 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     heightThreeStepChangedToPropose.Set();
                 }
-                else if (eventArgs.Height == 3 && eventArgs.Step == Step.EndCommit)
+                else if (eventArgs.Height == 3 && eventArgs.Step == ConsensusStep.EndCommit)
                 {
                     heightThreeStepChangedToEndCommit.Set();
                 }
-                else if (eventArgs.Height == 4 && eventArgs.Step == Step.Propose)
+                else if (eventArgs.Height == 4 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     heightFourStepChangedToPropose.Set();
                 }
@@ -113,7 +113,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
 
-            Assert.Equal(Step.Null, consensusContext.Step);
+            Assert.Equal(ConsensusStep.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
         }
 
@@ -200,7 +200,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             consensusContext.StateChanged += (sender, tuple) =>
             {
-                if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
+                if (tuple.Height == 1 && tuple.Step == ConsensusStep.EndCommit)
                 {
                     heightOneEndCommit.Set();
                 }

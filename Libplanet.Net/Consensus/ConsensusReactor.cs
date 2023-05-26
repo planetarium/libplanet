@@ -43,7 +43,7 @@ namespace Libplanet.Net.Consensus
         /// block.
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="Step"/>.</param>
+        /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public ConsensusReactor(
             ITransport consensusTransport,
             BlockChain blockChain,

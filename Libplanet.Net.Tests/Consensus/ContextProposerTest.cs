@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
@@ -69,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Null(preCommit?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -84,7 +84,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
@@ -132,7 +132,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(proposal?.BlockHash, preCommit?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -166,7 +166,7 @@ namespace Libplanet.Net.Tests.Consensus
             await roundChangedToOne.WaitAsync();
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
-            Assert.Equal(Step.Propose, context.Step);
+            Assert.Equal(ConsensusStep.Propose, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -180,12 +180,12 @@ namespace Libplanet.Net.Tests.Consensus
             var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
 
-                if (eventArgs.Step == Step.EndCommit)
+                if (eventArgs.Step == ConsensusStep.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
@@ -221,7 +221,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(proposal?.BlockHash, context.GetBlockCommit()?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
-            Assert.Equal(Step.EndCommit, context.Step);
+            Assert.Equal(ConsensusStep.EndCommit, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -235,7 +235,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -250,7 +250,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.Start();
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(5, context.Height);
         }
 
@@ -267,7 +267,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -294,7 +294,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(proposal?.BlockHash, preVote?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
         }
 
         [Fact(Timeout = Timeout)]

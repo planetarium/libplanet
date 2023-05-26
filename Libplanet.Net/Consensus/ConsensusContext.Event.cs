@@ -9,11 +9,14 @@ namespace Libplanet.Net.Consensus
         internal event EventHandler<(long Height, Exception)>? ExceptionOccurred;
 
         /// <inheritdoc cref="Context.TimeoutProcessed"/>
-        internal event EventHandler<(long Height, int Round, Step Step)>? TimeoutProcessed;
+        internal event EventHandler<(long Height, int Round, ConsensusStep Step)>? TimeoutProcessed;
 
         /// <inheritdoc cref="Context.StateChanged"/>
-        internal event EventHandler<(long Height, int MessageLogSize, int Round, Step Step)>?
-            StateChanged;
+        internal event EventHandler<(
+            long Height,
+            int MessageLogSize,
+            int Round,
+            ConsensusStep Step)>? StateChanged;
 
         /// <inheritdoc cref="Context.MessageBroadcasted"/>
         internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageBroadcasted;

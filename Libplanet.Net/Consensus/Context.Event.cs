@@ -15,13 +15,16 @@ namespace Libplanet.Net.Consensus
         /// This is conditionally triggered when internal countdown timer has reached zero,
         /// i.e. when certain conditions are met.
         /// </summary>
-        internal event EventHandler<(int Round, Step Step)>? TimeoutProcessed;
+        internal event EventHandler<(int Round, ConsensusStep Step)>? TimeoutProcessed;
 
         /// <summary>
         /// An event that is invoked when the message log size, <see cref="Round"/>,
-        /// and/or <see cref="Step"/> is changed.
+        /// and/or <see cref="ConsensusStep"/> is changed.
         /// </summary>
-        internal event EventHandler<(int MessageLogSize, int Round, Step Step)>? StateChanged;
+        internal event EventHandler<(
+            int MessageLogSize,
+            int Round,
+            ConsensusStep Step)>? StateChanged;
 
         /// <summary>
         /// An event that is invoked when a <see cref="ConsensusMsg"/> is broadcasted.

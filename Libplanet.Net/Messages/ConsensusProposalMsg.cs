@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Consensus;
+using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Consensus.Step.Propose"/>.
+    /// A message class for <see cref="ConsensusStep.Propose"/>.
     /// </summary>
     public class ConsensusProposalMsg : ConsensusMsg
     {

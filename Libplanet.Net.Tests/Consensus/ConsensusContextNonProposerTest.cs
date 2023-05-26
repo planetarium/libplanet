@@ -125,26 +125,26 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 if (eventArgs.Height == 2)
                 {
-                    if (eventArgs.Step == Step.PreVote)
+                    if (eventArgs.Step == ConsensusStep.PreVote)
                     {
                         heightTwoStepChangedToPreVote.Set();
                     }
-                    else if (eventArgs.Step == Step.PreCommit)
+                    else if (eventArgs.Step == ConsensusStep.PreCommit)
                     {
                         heightTwoStepChangedToPreCommit.Set();
                     }
-                    else if (eventArgs.Step == Step.EndCommit)
+                    else if (eventArgs.Step == ConsensusStep.EndCommit)
                     {
                         heightTwoStepChangedToEndCommit.Set();
                     }
                 }
                 else if (eventArgs.Height == 3)
                 {
-                    if (eventArgs.Step == Step.Propose)
+                    if (eventArgs.Step == ConsensusStep.Propose)
                     {
                         heightThreeStepChangedToPropose.Set();
                     }
-                    else if (eventArgs.Step == Step.PreVote)
+                    else if (eventArgs.Step == ConsensusStep.PreVote)
                     {
                         heightThreeStepChangedToPreVote.Set();
                     }
@@ -234,7 +234,7 @@ namespace Libplanet.Net.Tests.Consensus
             // Propose -> PreVote (message consumed)
             await heightThreeStepChangedToPreVote.WaitAsync();
             Assert.Equal(3, consensusContext.Height);
-            Assert.Equal(Step.PreVote, consensusContext.Step);
+            Assert.Equal(ConsensusStep.PreVote, consensusContext.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -290,7 +290,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.PrivateKeys[2]);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
+                if (eventArgs.Height == 1 && eventArgs.Step == ConsensusStep.EndCommit)
                 {
                     heightOneEndCommit.Set();
                 }

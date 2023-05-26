@@ -106,7 +106,7 @@ namespace Libplanet.Net.Consensus
                 try
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
                 catch (OperationCanceledException oce)
                 {
@@ -153,16 +153,17 @@ namespace Libplanet.Net.Consensus
                     ProcessHeightOrRoundUponRules(message);
                 }
             });
+
             MessageConsumed?.Invoke(this, message);
         }
 
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
-            (int MessageLogSize, int Round, Step Step) prevState =
+            (int MessageLogSize, int Round, ConsensusStep Step) prevState =
                 (_messageLog.GetTotalCount(), Round, Step);
             mutation();
-            (int MessageLogSize, int Round, Step Step) nextState =
+            (int MessageLogSize, int Round, ConsensusStep Step) nextState =
                 (_messageLog.GetTotalCount(), Round, Step);
             while (prevState != nextState)
             {

@@ -454,14 +454,14 @@ namespace Libplanet.Net.Tests
                 _ = swarms[2].StartAsync();
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreCommit)
+                    if (eventArgs.Step == ConsensusStep.PreCommit)
                     {
                         stepChangedToPreCommits[0].Set();
                     }
                 };
                 swarms[2].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreCommit)
+                    if (eventArgs.Step == ConsensusStep.PreCommit)
                     {
                         stepChangedToPreCommits[2].Set();
                     }

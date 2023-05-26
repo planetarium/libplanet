@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Consensus;
+using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Consensus.Step.PreCommit"/>.
+    /// A message class for <see cref="ConsensusStep.PreCommit"/>.
     /// </summary>
     public class ConsensusPreCommitMsg : ConsensusMsg
     {
@@ -14,7 +15,7 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusPreCommitMsg"/> class.
         /// </summary>
-        /// <param name="vote">The <see cref="Vote"/> for <see cref="Consensus.Step.PreCommit"/>
+        /// <param name="vote">The <see cref="Vote"/> for <see cref="ConsensusStep.PreCommit"/>
         /// to attach.
         /// </param>
         /// <exception cref="ArgumentException">Thrown when given <paramref name="vote"/>'s
@@ -42,7 +43,7 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// A <see cref="Vote"/> for <see cref="Consensus.Step.PreCommit"/>.  This will always
+        /// A <see cref="Vote"/> for <see cref="ConsensusStep.PreCommit"/>.  This will always
         /// have its <see cref="Vote.Flag"/> set to <see cref="VoteFlag.PreCommit"/>.
         /// </summary>
         public Vote PreCommit { get; }
