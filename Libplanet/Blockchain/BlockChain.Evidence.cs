@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 
 namespace Libplanet.Blockchain
 {
     public partial class BlockChain
     {
-        public long ExpirationHeight => Tip.Index - _maxEvidenceDuration;
+        public long EvidenceExpirationHeight => Tip.Index - _maxEvidenceDuration;
 
         public IEnumerable<DuplicateVoteEvidence> GetPendingEvidences()
-            => Store.GetPendingEvidences();
+            => Store.IteratePendingEvidenceIds().Select(id => Store.GetPendingEvidence(id));
 
         public void PutPendingEvidence(DuplicateVoteEvidence evidence)
         {
@@ -23,29 +23,31 @@ namespace Libplanet.Blockchain
             Store.DeletePendingEvidence(evidence.Id);
         }
 
-        public IEnumerable<DuplicateVoteEvidence> GetCommittedEvidences()
-            => Store.GetCommittedEvidences();
-
         public void AddEvidence(DuplicateVoteEvidence evidence)
         {
-            if (IsPending(evidence))
-            {
-                throw new ArgumentException($"Evidence {evidence} already pending.");
-            }
-
-            if (IsCommitted(evidence))
+            if (IsEvidenceCommitted(evidence))
             {
                 throw new ArgumentException($"Evidence {evidence} already committed.");
             }
 
-            Verify(evidence);
+            if (IsEvidencePending(evidence))
+            {
+                throw new ArgumentException($"Evidence {evidence} already pending.");
+            }
+
+            VerifyEvidence(evidence);
 
             PutPendingEvidence(evidence);
         }
 
         public void CommitEvidence(DuplicateVoteEvidence evidence)
         {
-            if (IsPending(evidence))
+            if (IsEvidenceCommitted(evidence))
+            {
+                throw new ArgumentException($"Evidence {evidence} already committed.");
+            }
+
+            if (IsEvidencePending(evidence))
             {
                 DeletePendingEvidence(evidence);
             }
@@ -53,31 +55,32 @@ namespace Libplanet.Blockchain
             Store.PutCommittedEvidence(evidence);
         }
 
-        public void ProcessExpiration()
+        public void ProcessEvidenceExpiration()
         {
             foreach (DuplicateVoteEvidence evidence in GetPendingEvidences())
             {
-                if (IsExpired(evidence))
+                if (IsEvidenceExpired(evidence))
                 {
                     DeletePendingEvidence(evidence);
                 }
             }
         }
 
-        public void Update(List<DuplicateVoteEvidence> evidenceList)
+        public void UpdateEvidence(
+            IEnumerable<Vote[]> duplicatedVoteSets, List<DuplicateVoteEvidence> blockEvidence)
         {
-            ProcessDuplicatedVotesPool();
-            foreach (var evidence in evidenceList)
+            ProcessDuplicatedVoteSets(duplicatedVoteSets);
+            foreach (var evidence in blockEvidence)
             {
                 CommitEvidence(evidence);
             }
 
-            ProcessExpiration();
+            ProcessEvidenceExpiration();
         }
 
-        public void ProcessDuplicatedVotesPool()
+        public void ProcessDuplicatedVoteSets(IEnumerable<Vote[]> duplicatedVoteSets)
         {
-            foreach (Vote[] votes in _duplicatedVotesPool.Exhaust())
+            foreach (Vote[] votes in duplicatedVoteSets)
             {
                 AddEvidence(
                     new DuplicateVoteEvidence(
@@ -87,21 +90,16 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public void ReportConflictingVotes(Vote vote, Vote voteDup)
-        {
-            _duplicatedVotesPool.Add(vote, voteDup);
-        }
-
-        public bool IsPending(DuplicateVoteEvidence evidence)
+        public bool IsEvidencePending(DuplicateVoteEvidence evidence)
             => Store.ContainsPendingEvidence(evidence.Id);
 
-        public bool IsCommitted(DuplicateVoteEvidence evidence)
+        public bool IsEvidenceCommitted(DuplicateVoteEvidence evidence)
             => Store.ContainsCommittedEvidence(evidence.Id);
 
-        public bool IsExpired(DuplicateVoteEvidence evidence)
-            => evidence.Height < ExpirationHeight;
+        public bool IsEvidenceExpired(DuplicateVoteEvidence evidence)
+            => evidence.Height < EvidenceExpirationHeight;
 
-        public void Verify(DuplicateVoteEvidence evidence)
+        public void VerifyEvidence(DuplicateVoteEvidence evidence)
         {
             ValidatorSet validatorSet = GetValidatorSet(this[evidence.Height].Hash);
             BigInteger validatorPower
