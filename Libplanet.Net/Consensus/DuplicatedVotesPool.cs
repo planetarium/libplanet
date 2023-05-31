@@ -2,9 +2,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 
-namespace Libplanet.Consensus
+namespace Libplanet.Net.Consensus
 {
     public class DuplicatedVotesPool
     {
