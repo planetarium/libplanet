@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Tx;
 
@@ -192,5 +193,32 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes() =>
             Store.GetBlockCommitHashes();
+
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds() =>
+            Store.IteratePendingEvidenceIds();
+
+        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId) =>
+            Store.GetPendingEvidence(evidenceId);
+
+        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId) =>
+            Store.GetCommittedEvidence(evidenceId);
+
+        public void PutPendingEvidence(DuplicateVoteEvidence evidence) =>
+            Store.PutPendingEvidence(evidence);
+
+        public void PutCommittedEvidence(DuplicateVoteEvidence evidence) =>
+            Store.PutCommittedEvidence(evidence);
+
+        public void DeletePendingEvidence(EvidenceId evidenceId) =>
+            Store.DeletePendingEvidence(evidenceId);
+
+        public void DeleteCommittedEvidence(EvidenceId evidenceId) =>
+            Store.DeleteCommittedEvidence(evidenceId);
+
+        public bool ContainsPendingEvidence(EvidenceId evidenceId) =>
+            Store.ContainsPendingEvidence(evidenceId);
+
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId) =>
+            Store.ContainsCommittedEvidence(evidenceId);
     }
 }

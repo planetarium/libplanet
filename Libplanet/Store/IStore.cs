@@ -364,19 +364,21 @@ namespace Libplanet.Store
         /// of all <see cref="BlockCommit"/>s.</returns>
         IEnumerable<BlockHash> GetBlockCommitHashes();
 
-        IEnumerable<DuplicateVoteEvidence> GetPendingEvidences();
+        IEnumerable<EvidenceId> IteratePendingEvidenceIds();
+
+        DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId);
+
+        DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId);
 
         void PutPendingEvidence(DuplicateVoteEvidence evidence);
 
-        void DeletePendingEvidence(EvidenceId evidenceId);
-
-        bool ContainsPendingEvidence(EvidenceId evidenceId);
-
-        IEnumerable<DuplicateVoteEvidence> GetCommittedEvidences();
-
         void PutCommittedEvidence(DuplicateVoteEvidence evidence);
 
+        void DeletePendingEvidence(EvidenceId evidenceId);
+
         void DeleteCommittedEvidence(EvidenceId evidenceId);
+
+        bool ContainsPendingEvidence(EvidenceId evidenceId);
 
         bool ContainsCommittedEvidence(EvidenceId evidenceId);
     }

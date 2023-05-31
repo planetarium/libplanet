@@ -19,6 +19,8 @@ namespace Libplanet.Store
     /// </summary>
     public abstract class BaseStore : IStore
     {
+        protected static readonly byte[] EvidenceKey = { 0x65 };        // 'e'
+
         /// <inheritdoc/>
         public abstract IEnumerable<Guid> ListChainIds();
 
@@ -179,19 +181,31 @@ namespace Libplanet.Store
         public abstract IEnumerable<BlockHash> GetBlockCommitHashes();
 
         /// <inheritdoc/>
-        public abstract IEnumerable<DuplicateVoteEvidence> GetPendingEvidences();
+        public abstract IEnumerable<EvidenceId> IteratePendingEvidenceIds();
+
+        /// <inheritdoc/>
+        public abstract DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId);
 
         /// <inheritdoc/>
         public abstract void PutPendingEvidence(DuplicateVoteEvidence evidence);
 
         /// <inheritdoc/>
-        public abstract void DeletePendingEvidence(DuplicateVoteEvidence evidence);
+        public abstract void PutCommittedEvidence(DuplicateVoteEvidence evidence);
 
         /// <inheritdoc/>
-        public abstract void CommitPendingEvidence(DuplicateVoteEvidence evidence);
+        public abstract void DeletePendingEvidence(EvidenceId evidenceId);
 
         /// <inheritdoc/>
-        public abstract IEnumerable<DuplicateVoteEvidence> GetCommittedEvidences();
+        public abstract void DeleteCommittedEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract bool ContainsPendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract bool ContainsCommittedEvidence(EvidenceId evidenceId);
 
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Tx;
 
@@ -233,6 +234,60 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(GetBlockCommitHashes));
             return _store.GetBlockCommitHashes();
+        }
+
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds()
+        {
+            Log(nameof(IteratePendingEvidenceIds));
+            return _store.IteratePendingEvidenceIds();
+        }
+
+        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId)
+        {
+            Log(nameof(GetPendingEvidence));
+            return _store.GetPendingEvidence(evidenceId);
+        }
+
+        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId)
+        {
+            Log(nameof(GetCommittedEvidence));
+            return _store.GetCommittedEvidence(evidenceId);
+        }
+
+        public void PutPendingEvidence(DuplicateVoteEvidence evidence)
+        {
+            Log(nameof(PutPendingEvidence));
+            _store.PutPendingEvidence(evidence);
+        }
+
+        public void PutCommittedEvidence(DuplicateVoteEvidence evidence)
+        {
+            Log(nameof(PutCommittedEvidence));
+            _store.PutCommittedEvidence(evidence);
+        }
+
+        public void DeletePendingEvidence(EvidenceId evidenceId)
+        {
+            Log(nameof(DeletePendingEvidence));
+            _store.DeletePendingEvidence(evidenceId);
+        }
+
+        public void DeleteCommittedEvidence(EvidenceId evidenceId)
+        {
+            Log(nameof(DeleteCommittedEvidence));
+            _store.DeleteCommittedEvidence(evidenceId);
+        }
+
+        public bool ContainsPendingEvidence(EvidenceId evidenceId)
+        {
+            Log(nameof(ContainsPendingEvidence));
+            return _store.ContainsPendingEvidence(evidenceId);
+        }
+
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId)
+        {
+            Log(nameof(ContainsCommittedEvidence));
+            return _store.ContainsCommittedEvidence(evidenceId);
         }
 
         public Guid? GetCanonicalChainId()
