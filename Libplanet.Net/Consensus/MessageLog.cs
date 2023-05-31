@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -33,12 +32,12 @@ namespace Libplanet.Net.Consensus
 
         private long _height;
         private ValidatorSet _validators;
-        private BlockChain _blockChain;
+        private DuplicatedVotesPool _duplicatedVotesPool;
         private Dictionary<int, ConsensusProposalMsg> _proposals;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>> _preVotes;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>> _preCommits;
 
-        internal MessageLog(long height, ValidatorSet validators, BlockChain blockChain)
+        internal MessageLog(long height, ValidatorSet validators)
         {
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -48,7 +47,7 @@ namespace Libplanet.Net.Consensus
 
             _height = height;
             _validators = validators;
-            _blockChain = blockChain;
+            _duplicatedVotesPool = new DuplicatedVotesPool();
             _proposals = new Dictionary<int, ConsensusProposalMsg>();
             _preVotes = new Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>>();
             _preCommits = new Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>>();
@@ -151,7 +150,7 @@ namespace Libplanet.Net.Consensus
 
                     if (_preVotes[preVote.Round].ContainsKey(preVote.ValidatorPublicKey))
                     {
-                        _blockChain.ReportConflictingVotes(
+                        _duplicatedVotesPool.Add(
                             _preVotes[preVote.Round][preVote.ValidatorPublicKey].PreVote,
                             preVote.PreVote);
                         var msg =
@@ -174,7 +173,7 @@ namespace Libplanet.Net.Consensus
 
                     if (_preCommits[preCommit.Round].ContainsKey(preCommit.ValidatorPublicKey))
                     {
-                        _blockChain.ReportConflictingVotes(
+                        _duplicatedVotesPool.Add(
                             _preCommits[preCommit.Round][preCommit.ValidatorPublicKey].PreCommit,
                             preCommit.PreCommit);
                         var msg =
@@ -362,6 +361,11 @@ namespace Libplanet.Net.Consensus
                     ? pool[random.Next(pool.Count)]
                     : null;
             }
+        }
+
+        internal IEnumerable<Vote[]> GetDuplicatedVoteSets()
+        {
+            return _duplicatedVotesPool.Exhaust();
         }
     }
 }
