@@ -66,7 +66,7 @@ namespace Libplanet.Net.Consensus
             _duplicatedVotes.AddOrUpdate(
                 (vote.Height, vote.Round, vote.ValidatorPublicKey),
                 new List<Vote>() { vote, voteDup },
-                (key, voteList) => voteList.Append(voteDup).ToList());
+                (key, voteList) => voteList.Concat(new List<Vote> { voteDup }).ToList());
         }
 
         public IEnumerable<Vote[]> Exhaust()
