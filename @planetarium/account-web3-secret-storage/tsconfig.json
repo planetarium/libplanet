@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "nodenext",
+    "module": "ESNext",
     "lib": ["ES2020"]
   }
 }

@@ -17,14 +17,81 @@ import {
   type ImportableKeyStore,
   RawPrivateKey,
 } from "@planetarium/account";
-import { Dirent } from "node:fs";
-import * as fs from "node:fs/promises";
-import { homedir } from "node:os";
-import * as path from "node:path";
+
+const IS_NODE = typeof window === "undefined";
+
+interface IFileSystem {
+  mkdir(path: string, options?: { recursive: true }): Promise<void>;
+  listFiles(directory: string): AsyncIterable<string>;
+  readFile(path: string, options?: { encoding: "utf8" }): Promise<string>;
+  delete(path: string): Promise<void>;
+  writeFile(path: string, content: string, encoding?: "utf8"): Promise<void>;
+}
+
+export class NodeJsFileSystem implements IFileSystem {
+  readonly #fs: typeof import("node:fs/promises");
+
+  private constructor(fs: typeof import("node:fs/promises")) {
+    this.#fs = fs;
+  }
+
+  static async create(): Promise<NodeJsFileSystem> {
+    return new NodeJsFileSystem(await import("node:fs/promises"));
+  }
+
+  async mkdir(path: string, options?: { recursive: true }): Promise<void> {
+    await this.#fs.mkdir(path, options);
+  }
+
+  readFile(path: string, options?: { encoding: "utf8" }): Promise<string> {
+    return this.#fs.readFile(path, options) as Promise<string>;
+  }
+
+  delete(path: string): Promise<void> {
+    return this.#fs.unlink(path);
+  }
+
+  async *listFiles(directory: string): AsyncIterable<string> {
+    let dir;
+    try {
+      dir = await this.#fs.opendir(directory);
+    } catch (e) {
+      if (
+        typeof e === "object" &&
+        e != null &&
+        "code" in e &&
+        e.code === "ENOENT"
+      ) {
+        // In case where there is no directory at all (it's likely the first
+        // time to run this operation in a system), it should be considered
+        // it's just empty (instead of considering it an exceptional case).
+        return;
+      }
+      throw e;
+    }
+    for await (const dirEntry of dir) {
+      if (!dirEntry.isFile()) continue;
+      yield dirEntry.name;
+    }
+  }
+
+  writeFile(path: string, content: string, encoding?: "utf8"): Promise<void> {
+    return this.#fs.writeFile(path, content, encoding);
+  }
+}
 
 export interface Web3KeyStoreOptions {
   path?: string;
   passphraseEntry: PassphraseEntry;
+  fileSystem: IFileSystem;
+}
+
+function pathJoin(x: string, y: string) {
+  if (IS_NODE) {
+    return require("path").join(x, y);
+  }
+
+  return `${x}/${y}`;
 }
 
 /**
@@ -34,17 +101,23 @@ export interface Web3KeyStoreOptions {
  * - Windows: `%AppData%\planetarium\keystore`
  */
 export function getDefaultWeb3KeyStorePath(): string {
-  const baseDir =
-    process.platform === "win32"
-      ? process.env.AppData || path.join(homedir(), "AppData", "Roaming")
-      : process.env.XDG_CONFIG_HOME || path.join(homedir(), ".config");
-  // Note that it's not necessary to explicitly choose one of `path.win32` or
-  // `path.posix` here, but it makes unit tests less dependent on mocks:
-  return (process.platform === "win32" ? path.win32 : path.posix).join(
-    baseDir,
-    "planetarium",
-    "keystore",
-  );
+  if (IS_NODE) {
+    const { homedir } = require("node:os");
+    const path = require("node:path");
+    const baseDir =
+      process.platform === "win32"
+        ? process.env.AppData || path.join(homedir(), "AppData", "Roaming")
+        : process.env.XDG_CONFIG_HOME || path.join(homedir(), ".config");
+    // Note that it's not necessary to explicitly choose one of `path.win32` or
+    // `path.posix` here, but it makes unit tests less dependent on mocks:
+    return (process.platform === "win32" ? path.win32 : path.posix).join(
+      baseDir,
+      "planetarium",
+      "keystore",
+    );
+  } else {
+    return "/planetarium/account/web3-secret-storage/keystore";
+  }
 }
 
 const pattern =
@@ -72,59 +145,45 @@ export class Web3KeyStore
 {
   readonly #passphraseEntry: PassphraseEntry;
   readonly #accountOptions: Partial<Web3AccountOptions>;
+  readonly #fileSystem: IFileSystem;
 
   readonly path: string;
 
   constructor(options: Web3KeyStoreOptions & Partial<Web3AccountOptions>) {
-    this.path = options.path ?? getDefaultWeb3KeyStorePath();
+    this.path = options.path || getDefaultWeb3KeyStorePath();
     this.#passphraseEntry = options.passphraseEntry;
+    this.#fileSystem = options.fileSystem;
     this.#accountOptions = options;
   }
 
-  async *#listKeyFiles(): AsyncIterable<Dirent> {
-    let dir;
-    try {
-      dir = await fs.opendir(this.path);
-    } catch (e) {
-      if (
-        typeof e === "object" &&
-        e != null &&
-        "code" in e &&
-        e.code === "ENOENT"
-      ) {
-        // In case where there is no directory at all (it's likely the first
-        // time to run this operation in a system), it should be considered
-        // it's just empty (instead of considering it an exceptional case).
-        return;
-      }
-      throw e;
-    }
-    for await (const dirEntry of dir) {
-      if (!dirEntry.isFile()) continue;
-      yield dirEntry;
+  async *#listKeyFiles(): AsyncIterable<string> {
+    for await (const name of this.#fileSystem.listFiles(this.path)) {
+      yield name;
     }
   }
 
   async #getKeyPath(
     keyId: KeyId,
   ): Promise<{ path: string; keyId: string; createdAt?: Date } | undefined> {
-    for await (const dirEntry of this.#listKeyFiles()) {
-      const parsed = parseKeyFilename(dirEntry.name);
+    for await (const name of this.#listKeyFiles()) {
+      const parsed = parseKeyFilename(name);
       if (parsed != null && parsed.keyId === keyId) {
-        return { ...parsed, path: path.join(this.path, dirEntry.name) };
+        return { ...parsed, path: pathJoin(this.path, name) };
       }
     }
     return undefined;
   }
 
   async *list(): AsyncIterable<AccountMetadata<KeyId, Web3KeyMetadata>> {
-    for await (const dirEntry of this.#listKeyFiles()) {
-      const parsed = parseKeyFilename(dirEntry.name);
+    for await (const name of this.#listKeyFiles()) {
+      const parsed = parseKeyFilename(name);
       if (parsed == null) continue;
-      const keyPath = path.join(this.path, dirEntry.name);
+      const keyPath = pathJoin(this.path, name);
       let json: unknown;
       try {
-        json = JSON.parse(await fs.readFile(keyPath, { encoding: "utf8" }));
+        json = JSON.parse(
+          await this.#fileSystem.readFile(keyPath, { encoding: "utf8" }),
+        );
       } catch (_) {
         continue;
       }
@@ -147,7 +206,9 @@ export class Web3KeyStore
     if (keyPath == null) return { result: "keyNotFound", keyId };
     let json;
     try {
-      json = await fs.readFile(keyPath.path, { encoding: "utf8" });
+      json = await this.#fileSystem.readFile(keyPath.path, {
+        encoding: "utf8",
+      });
     } catch (e) {
       if (
         e != null &&
@@ -202,7 +263,7 @@ export class Web3KeyStore
     const keyPath = await this.#getKeyPath(keyId);
     if (keyPath == null) return { result: "keyNotFound", keyId };
     try {
-      await fs.unlink(keyPath.path);
+      await this.#fileSystem.delete(keyPath.path);
     } catch (e) {
       return { result: "error", message: `${e}` };
     }
@@ -238,12 +299,12 @@ export class Web3KeyStore
     const keyId = generateKeyId();
     const keyObject = await encryptKeyObject(keyId, privateKey, passphrase);
     try {
-      await fs.mkdir(this.path, { recursive: true });
+      await this.#fileSystem.mkdir(this.path, { recursive: true });
     } catch (e) {
       return { result: "error", message: `${e}` };
     }
     const createdAt = new Date();
-    const keyPath = path.join(
+    const keyPath = pathJoin(
       this.path,
       `UTC--${createdAt
         .toISOString()
@@ -251,7 +312,11 @@ export class Web3KeyStore
         .replace(/:/g, "-")}--${keyId}`,
     );
     try {
-      await fs.writeFile(keyPath, JSON.stringify(keyObject), "utf8");
+      await this.#fileSystem.writeFile(
+        keyPath,
+        JSON.stringify(keyObject),
+        "utf8",
+      );
     } catch (e) {
       return { result: "error", message: `${e}` };
     }

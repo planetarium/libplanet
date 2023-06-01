@@ -1,4 +1,5 @@
 import {
+  NodeJsFileSystem,
   Web3KeyStore,
   getDefaultWeb3KeyStorePath,
   parseKeyFilename,
@@ -37,7 +38,7 @@ describe("getDefaultWeb3KeyStorePath", () => {
       platform: "linux",
     });
     vi.stubEnv("XDG_CONFIG_HOME", "");
-    vi.spyOn(await import("node:os"), "homedir").mockReturnValue("/home/user");
+    vi.spyOn(require("node:os"), "homedir").mockReturnValue("/home/user");
     expect(getDefaultWeb3KeyStorePath()).toBe(
       "/home/user/.config/planetarium/keystore",
     );
@@ -60,7 +61,7 @@ describe("getDefaultWeb3KeyStorePath", () => {
       platform: "win32",
     });
     vi.stubEnv("AppData", "");
-    vi.spyOn(await import("node:os"), "homedir").mockReturnValue(
+    vi.spyOn(require("node:os"), "homedir").mockReturnValue(
       "C:\\Users\\user",
     );
     expect(getDefaultWeb3KeyStorePath()).toBe(
@@ -124,6 +125,7 @@ describe("Web3KeyStore", () => {
     const store = new Web3KeyStore({
       path: tmpDir,
       passphraseEntry: new MockPassphraseEntry(),
+      fileSystem: await NodeJsFileSystem.create(),
     });
     let i = 0;
     for await (const key of store.list()) {
@@ -196,7 +198,7 @@ describe("Web3KeyStore", () => {
 
   testInTempDir("get", async (tmpDir) => {
     const passphraseEntry = new MockPassphraseEntry();
-    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
+    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry, fileSystem: await NodeJsFileSystem.create() });
     await copyFile(
       path.join(
         __dirname,
@@ -262,7 +264,7 @@ describe("Web3KeyStore", () => {
 
   testInTempDir("get insufficient lengthed key", async (tmpDir) => {
     const passphraseEntry = new MockPassphraseEntry("1");
-    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
+    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry, fileSystem: await NodeJsFileSystem.create() });
     await copyFile(
       path.join(
         __dirname,
@@ -286,6 +288,7 @@ describe("Web3KeyStore", () => {
       path: tmpDir,
       passphraseEntry,
       allowWeakPrivateKey: true,
+      fileSystem: await NodeJsFileSystem.create()
     });
     const result2 = await nonStrictStore.get(
       "b35a2647-8581-43ff-a98e-6083dc952632",
@@ -299,7 +302,7 @@ describe("Web3KeyStore", () => {
 
   testInTempDir("generate", async (tmpDir) => {
     const passphraseEntry = new MockPassphraseEntry();
-    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
+    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry, fileSystem: await NodeJsFileSystem.create() });
 
     const before = new Date().setMilliseconds(0);
     const result = await store.generate();
@@ -329,7 +332,7 @@ describe("Web3KeyStore", () => {
 
   testInTempDir("delete", async (tmpDir) => {
     const passphraseEntry = new MockPassphraseEntry();
-    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
+    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry, fileSystem: await NodeJsFileSystem.create() });
     await copyFile(
       path.join(
         __dirname,
@@ -384,7 +387,7 @@ describe("Web3KeyStore", () => {
 
   testInTempDir("import", async (tmpDir) => {
     const passphraseEntry = new MockPassphraseEntry();
-    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry });
+    const store = new Web3KeyStore({ path: tmpDir, passphraseEntry, fileSystem: await NodeJsFileSystem.create() });
 
     const privateKey = RawPrivateKey.fromHex(
       "e8b612d1126989e1b85b0b94e511bfca5eff4866bb646fc7a42275759bc2d529",
@@ -423,6 +426,7 @@ describe("Web3KeyStore", () => {
       path: tmpDir,
       passphraseEntry,
       allowWeakPrivateKey: true,
+      fileSystem: await NodeJsFileSystem.create()
     });
     const result2 = await nonStrictStore.import(insufficientLenghtedKey);
     expect(result2.result).toBe("success");
