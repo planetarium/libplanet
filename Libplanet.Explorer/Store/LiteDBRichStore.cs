@@ -1,12 +1,11 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LiteDB;
@@ -207,6 +206,42 @@ namespace Libplanet.Explorer.Store
         /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes() =>
             _store.GetBlockCommitHashes();
+
+        /// <inheritdoc />
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds() =>
+            _store.IteratePendingEvidenceIds();
+
+        /// <inheritdoc />
+        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId) =>
+            _store.GetPendingEvidence(evidenceId);
+
+        /// <inheritdoc />
+        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId) =>
+            _store.GetCommittedEvidence(evidenceId);
+
+        /// <inheritdoc />
+        public void PutPendingEvidence(DuplicateVoteEvidence evidence) =>
+            _store.PutPendingEvidence(evidence);
+
+        /// <inheritdoc />
+        public void PutCommittedEvidence(DuplicateVoteEvidence evidence) =>
+            _store.PutCommittedEvidence(evidence);
+
+        /// <inheritdoc />
+        public void DeletePendingEvidence(EvidenceId evidenceId) =>
+            _store.DeletePendingEvidence(evidenceId);
+
+        /// <inheritdoc />
+        public void DeleteCommittedEvidence(EvidenceId evidenceId) =>
+            _store.DeleteCommittedEvidence(evidenceId);
+
+        /// <inheritdoc />
+        public bool ContainsPendingEvidence(EvidenceId evidenceId) =>
+            _store.ContainsPendingEvidence(evidenceId);
+
+        /// <inheritdoc />
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId) =>
+            _store.ContainsCommittedEvidence(evidenceId);
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
         public void PutBlock(Block block)
