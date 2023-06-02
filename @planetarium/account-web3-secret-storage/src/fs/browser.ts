@@ -25,7 +25,12 @@ export async function* listFiles(directory: string): AsyncIterable<string> {
     }
 
     if (item.startsWith(directory)) {
-      yield item.slice(directory.length);
+      let sliced = item.slice(directory.length);
+      if (sliced.startsWith("/")) {
+        sliced = sliced.slice(1);
+      }
+
+      yield sliced;
     }
   }
 }
