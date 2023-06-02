@@ -4,8 +4,23 @@
   "description": "Libplanet account implementation using Ethereum Web3 Secret Storage",
   "type": "module",
   "main": "./dist/index.js",
-  "exports": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "imports": {
+    "#crypto": {
+      "node": "./src/crypto/node.ts",
+      "default": "./src/crypto/browser.ts"
+    }
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "types": "./dist/index.d.ts",
+        "require": "./dist/index.cjs",
+        "import": "./dist/index.mjs"
+      },
+      "browser": "./dist/index.browser.mjs",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
     "dist/**/*"
   ],
@@ -45,5 +60,8 @@
   },
   "peerDependencies": {
     "@planetarium/account": "workspace:^"
+  },
+  "engines": {
+    "node": "20.2.0"
   }
 }
