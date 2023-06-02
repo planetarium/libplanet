@@ -7,4 +7,9 @@ export {
   Web3Account,
   type Web3KeyObject,
 } from "./Web3Account.js";
-export { getDefaultWeb3KeyStorePath, Web3KeyStore } from "./Web3KeyStore.js";
+export {
+  getDefaultWeb3KeyStorePath,
+  Web3KeyStore,
+  LocalStorageFileSystem,
+  NodeJsFileSystem,
+} from "./Web3KeyStore.js";
