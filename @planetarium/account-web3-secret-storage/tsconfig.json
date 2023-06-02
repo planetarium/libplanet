@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "nodenext",
     "module": "ESNext",
-    "lib": ["ES2020"]
+    "lib": ["ES2020", "DOM"]
   }
 }

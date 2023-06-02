@@ -80,6 +80,44 @@ export class NodeJsFileSystem implements IFileSystem {
   }
 }
 
+export class LocalStorageFileSystem implements IFileSystem {
+  async mkdir(path: string, options?: unknown): Promise<void> {}
+
+  readFile(path: string, options?: { encoding: "utf8" }): Promise<string> {
+    const item = localStorage.getItem(path);
+    if (item == null) {
+      throw new Error("Not found");
+    }
+
+    return Promise.resolve(item);
+  }
+
+  async delete(path: string): Promise<void> {
+    localStorage.removeItem(path);
+  }
+
+  async *listFiles(directory: string): AsyncIterable<string> {
+    for (let i = 0; i < localStorage.length; ++i) {
+      const item = localStorage.key(i);
+      if (item == null) {
+        throw new Error(`Expected ${i}th item in localStorage.`);
+      }
+
+      if (item.startsWith(directory)) {
+        yield item.slice(directory.length);
+      }
+    }
+  }
+
+  async writeFile(
+    path: string,
+    content: string,
+    encoding?: "utf8",
+  ): Promise<void> {
+    localStorage.setItem(path, content);
+  }
+}
+
 export interface Web3KeyStoreOptions {
   path?: string;
   passphraseEntry: PassphraseEntry;
