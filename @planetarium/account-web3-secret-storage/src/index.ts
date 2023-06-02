@@ -10,6 +10,4 @@ export {
 export {
   getDefaultWeb3KeyStorePath,
   Web3KeyStore,
-  LocalStorageFileSystem,
-  NodeJsFileSystem,
 } from "./Web3KeyStore.js";

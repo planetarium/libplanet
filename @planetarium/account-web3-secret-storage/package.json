@@ -8,6 +8,14 @@
     "#crypto": {
       "node": "./src/crypto/node.ts",
       "default": "./src/crypto/browser.ts"
+    },
+    "#path": {
+      "node": "./src/path/node.ts",
+      "default": "./src/path/browser.ts"
+    },
+    "#fs": {
+      "node": "./src/fs/node.ts",
+      "default": "./src/fs/browser.ts"
     }
   },
   "exports": {
