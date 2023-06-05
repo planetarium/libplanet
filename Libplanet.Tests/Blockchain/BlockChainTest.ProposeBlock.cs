@@ -178,7 +178,8 @@ namespace Libplanet.Tests.Blockchain
                         new[] { new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo") }),
                 }.ToImmutableList();
 
-                var block = blockChain.ProposeBlock(new PrivateKey(), txs, null);
+                var block = blockChain.ProposeBlock(
+                    new PrivateKey(), txs, null, ImmutableArray<Evidence>.Empty);
                 Assert.Throws<InvalidTxNonceException>(
                     () => blockChain.Append(block, CreateBlockCommit(block)));
             }

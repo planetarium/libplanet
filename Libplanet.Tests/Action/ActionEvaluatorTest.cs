@@ -82,7 +82,8 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    evidences: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
@@ -229,7 +230,8 @@ namespace Libplanet.Tests.Action
                     publicKey: new PrivateKey().PublicKey,
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    evidences: null),
                 transactions: txs).Propose();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
@@ -584,7 +586,8 @@ namespace Libplanet.Tests.Action
                     publicKey: keys[0].PublicKey,
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    evidences: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
@@ -712,7 +715,8 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: CreateBlockCommit(hash, 122, 0)),
+                    lastCommit: CreateBlockCommit(hash, 122, 0),
+                    evidences: null),
                 transactions: txs).Propose();
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -854,7 +858,10 @@ namespace Libplanet.Tests.Action
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(
-                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+                GenesisProposer,
+                txs.ToImmutableList(),
+                CreateBlockCommit(chain.Tip),
+                chain.GetPendingEvidences());
 
             AccountStateGetter accountStateGetter =
                 ActionEvaluator.NullAccountStateGetter;

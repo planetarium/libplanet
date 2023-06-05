@@ -766,12 +766,14 @@ namespace Libplanet.Net.Tests
             Block block1 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[0] }.ToImmutableList(),
-                TestUtils.CreateBlockCommit(blockChain.Tip));
+                TestUtils.CreateBlockCommit(blockChain.Tip),
+                blockChain.GetPendingEvidences());
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
             Block block2 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[1] }.ToImmutableList(),
-                CreateBlockCommit(blockChain.Tip));
+                CreateBlockCommit(blockChain.Tip),
+                blockChain.GetPendingEvidences());
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
             try

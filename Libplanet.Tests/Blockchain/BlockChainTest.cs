@@ -83,7 +83,8 @@ namespace Libplanet.Tests.Blockchain
                         publicKey: _fx.Proposer.PublicKey,
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
-                        lastCommit: null)).Propose(),
+                        lastCommit: null,
+                        evidences: null)).Propose(),
                 _fx.Proposer);
         }
 
@@ -669,11 +670,17 @@ namespace Libplanet.Tests.Blockchain
             };
 
             Block b1 = _blockChain.ProposeBlock(
-                _fx.Proposer, txsA.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txsA.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             _blockChain.Append(b1, TestUtils.CreateBlockCommit(b1));
 
             Block b2 = _blockChain.ProposeBlock(
-                _fx.Proposer, txsA.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txsA.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             Assert.Throws<InvalidTxNonceException>(() =>
                 _blockChain.Append(b2, CreateBlockCommit(b2)));
 
@@ -685,7 +692,10 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: privateKey),
             };
             b2 = _blockChain.ProposeBlock(
-                _fx.Proposer, txsB.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txsB.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             _blockChain.Append(b2, CreateBlockCommit(b2));
         }
 
@@ -714,7 +724,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
             Block b1 = _blockChain.ProposeBlock(
-                _fx.Proposer, txsA.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txsA.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
@@ -727,7 +740,10 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: privateKey),
             };
             Block b2 = _blockChain.ProposeBlock(
-                _fx.Proposer, txsB.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txsB.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             _blockChain.Append(b2, CreateBlockCommit(b2));
 
             Assert.Equal(2, _blockChain.GetNextTxNonce(address));
@@ -780,7 +796,10 @@ namespace Libplanet.Tests.Blockchain
             var minerAddress = miner.ToAddress();
 
             Block block1 = _blockChain.ProposeBlock(
-                miner, txs1.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                miner,
+                txs1.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             _blockChain.Append(block1, CreateBlockCommit(block1));
 
             PrivateKey privateKey = new PrivateKey(new byte[]
@@ -839,7 +858,10 @@ namespace Libplanet.Tests.Blockchain
             foreach (Transaction[] txs in txsA)
             {
                 Block b = _blockChain.ProposeBlock(
-                    miner, txs.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                    miner,
+                    txs.ToImmutableList(),
+                    CreateBlockCommit(_blockChain.Tip),
+                    _blockChain.GetPendingEvidences());
                 _blockChain.Append(b, CreateBlockCommit(b));
             }
 
@@ -866,7 +888,10 @@ namespace Libplanet.Tests.Blockchain
             };
 
             Block forkTip = fork.ProposeBlock(
-                miner, txsB.ToImmutableList(), CreateBlockCommit(fork.Tip));
+                miner,
+                txsB.ToImmutableList(),
+                CreateBlockCommit(fork.Tip),
+                fork.GetPendingEvidences());
             fork.Append(forkTip, CreateBlockCommit(forkTip), render: true);
 
             Guid previousChainId = _blockChain.Id;
@@ -1144,7 +1169,10 @@ namespace Libplanet.Tests.Blockchain
                     Transaction.Create(0, privateKey, chain.Genesis.Hash, actions),
                 };
                 b = chain.ProposeBlock(
-                    _fx.Proposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+                    _fx.Proposer,
+                    txs.ToImmutableList(),
+                    CreateBlockCommit(chain.Tip),
+                    chain.GetPendingEvidences());
                 chain.Append(b, CreateBlockCommit(b));
             }
 
@@ -1380,7 +1408,10 @@ namespace Libplanet.Tests.Blockchain
             };
 
             Block b1 = _blockChain.ProposeBlock(
-                _fx.Proposer, txsA.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txsA.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                _blockChain.GetPendingEvidences());
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));

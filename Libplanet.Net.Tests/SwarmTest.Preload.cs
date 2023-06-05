@@ -470,7 +470,8 @@ namespace Libplanet.Net.Tests
                 Block block = minerChain.ProposeBlock(
                     ChainPrivateKey,
                     new[] { tx }.ToImmutableList(),
-                    CreateBlockCommit(minerChain.Tip));
+                    CreateBlockCommit(minerChain.Tip),
+                    minerChain.GetPendingEvidences());
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
 
                 await receiverSwarm.PreloadAsync();

@@ -40,7 +40,8 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     publicKey: privateKey.PublicKey,
                     previousHash: lastBlockHash,
                     txHash: null,
-                    lastCommit: lastBlockCommit)).Propose();
+                    lastCommit: lastBlockCommit,
+                    evidences: null)).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);

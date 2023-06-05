@@ -231,7 +231,8 @@ public class GeneratedBlockChainFixture
                     pk.PublicKey,
                     Chain.Tip.Hash,
                     BlockContent.DeriveTxHash(transactions),
-                    Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value)),
+                    Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value),
+                    evidences: Chain.GetPendingEvidences()),
                 transactions).Propose(),
             pk);
         Chain.Append(

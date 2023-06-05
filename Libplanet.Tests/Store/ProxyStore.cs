@@ -197,16 +197,16 @@ namespace Libplanet.Tests.Store
         public IEnumerable<EvidenceId> IteratePendingEvidenceIds() =>
             Store.IteratePendingEvidenceIds();
 
-        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId) =>
+        public Evidence GetPendingEvidence(EvidenceId evidenceId) =>
             Store.GetPendingEvidence(evidenceId);
 
-        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId) =>
+        public Evidence GetCommittedEvidence(EvidenceId evidenceId) =>
             Store.GetCommittedEvidence(evidenceId);
 
-        public void PutPendingEvidence(DuplicateVoteEvidence evidence) =>
+        public void PutPendingEvidence(Evidence evidence) =>
             Store.PutPendingEvidence(evidence);
 
-        public void PutCommittedEvidence(DuplicateVoteEvidence evidence) =>
+        public void PutCommittedEvidence(Evidence evidence) =>
             Store.PutCommittedEvidence(evidence);
 
         public void DeletePendingEvidence(EvidenceId evidenceId) =>

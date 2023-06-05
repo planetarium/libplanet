@@ -242,25 +242,25 @@ namespace Libplanet.Tests.Store
             return _store.IteratePendingEvidenceIds();
         }
 
-        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId)
+        public Evidence GetPendingEvidence(EvidenceId evidenceId)
         {
             Log(nameof(GetPendingEvidence));
             return _store.GetPendingEvidence(evidenceId);
         }
 
-        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId)
+        public Evidence GetCommittedEvidence(EvidenceId evidenceId)
         {
             Log(nameof(GetCommittedEvidence));
             return _store.GetCommittedEvidence(evidenceId);
         }
 
-        public void PutPendingEvidence(DuplicateVoteEvidence evidence)
+        public void PutPendingEvidence(Evidence evidence)
         {
             Log(nameof(PutPendingEvidence));
             _store.PutPendingEvidence(evidence);
         }
 
-        public void PutCommittedEvidence(DuplicateVoteEvidence evidence)
+        public void PutCommittedEvidence(Evidence evidence)
         {
             Log(nameof(PutCommittedEvidence));
             _store.PutCommittedEvidence(evidence);
