@@ -6,7 +6,7 @@ function prefixed(str: string): string {
 
 export async function mkdir(path: string, options?: unknown): Promise<void> {}
 
-export function readFile(
+export async function readFile(
   path: string,
   options?: { encoding: "utf8" },
 ): Promise<string> {
@@ -15,17 +15,14 @@ export function readFile(
     throw new Error("Not found");
   }
 
-  return Promise.resolve(item);
+  return item;
 }
 
-// This function returns a Promise.resolve() to maintain interface compatibility
-// with fs/node.ts which uses fs.unlink() and appease the linter, despite it not
-// being a true async function.
-export function removeFile(path: string): Promise<void> {
+export async function removeFile(path: string): Promise<void> {
   localStorage.removeItem(prefixed(path));
-  return Promise.resolve();
 }
 
+// TODO: Implement with performant structure.
 export async function* listFiles(directory: string): AsyncIterable<string> {
   for (let i = 0; i < localStorage.length; ++i) {
     const item = localStorage.key(i);
