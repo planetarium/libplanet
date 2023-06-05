@@ -1,5 +1,4 @@
 import {
-  NodeJsFileSystem,
   Web3KeyStore,
   getDefaultWeb3KeyStorePath,
   parseKeyFilename,
