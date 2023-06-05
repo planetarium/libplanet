@@ -1,10 +1,16 @@
+const PREFIX = "PLANETARIUM_EMULATED_FS_" as const;
+
+function prefixed(str: string): string {
+  return PREFIX + str;
+}
+
 export async function mkdir(path: string, options?: unknown): Promise<void> {}
 
 export function readFile(
   path: string,
   options?: { encoding: "utf8" },
 ): Promise<string> {
-  const item = localStorage.getItem(path);
+  const item = localStorage.getItem(prefixed(path));
   if (item == null) {
     throw new Error("Not found");
   }
@@ -12,8 +18,11 @@ export function readFile(
   return Promise.resolve(item);
 }
 
+// This function returns a Promise.resolve() to maintain interface compatibility
+// with fs/node.ts which uses fs.unlink() and appease the linter, despite it not
+// being a true async function.
 export function removeFile(path: string): Promise<void> {
-  localStorage.removeItem(path);
+  localStorage.removeItem(prefixed(path));
   return Promise.resolve();
 }
 
@@ -24,8 +33,8 @@ export async function* listFiles(directory: string): AsyncIterable<string> {
       throw new Error(`Expected ${i}th item in localStorage.`);
     }
 
-    if (item.startsWith(directory)) {
-      let sliced = item.slice(directory.length);
+    if (item.startsWith(prefixed(directory))) {
+      let sliced = item.slice(prefixed(directory).length);
       if (sliced.startsWith("/")) {
         sliced = sliced.slice(1);
       }
@@ -40,5 +49,5 @@ export async function writeFile(
   content: string,
   encoding?: "utf8",
 ): Promise<void> {
-  localStorage.setItem(path, content);
+  localStorage.setItem(prefixed(path), content);
 }
