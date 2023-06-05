@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
@@ -14,7 +13,7 @@ namespace Libplanet.Consensus
     /// Represents a evidence of duplicate vote on consensus.
     /// </summary>
     public class DuplicateVoteEvidence
-        : IDuplicateVoteEvidence, IEquatable<DuplicateVoteEvidence>, IBencodable
+        : Evidence, IEquatable<DuplicateVoteEvidence>, IBencodable
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly byte[] HeightKey = { 0x68 };                // 'h'
@@ -22,9 +21,6 @@ namespace Libplanet.Consensus
         private static readonly byte[] ValidatorPowerKey = { 0x70 };        // 'p'
         private static readonly byte[] TotalPowerKey = { 0x50 };            // 'P'
         private static readonly byte[] TimestampKey = { 0x74 };             // 't'
-        private static readonly Codec Codec = new Codec();
-
-        private EvidenceId? _id;
 
         /// <summary>
         /// Creates a <see cref="DuplicateVoteEvidence"/> instance.
@@ -62,6 +58,7 @@ namespace Libplanet.Consensus
             BigInteger validatorPower,
             BigInteger totalPower,
             DateTimeOffset timestamp)
+            : base(height, timestamp)
         {
             if (votes.Count() < 2)
             {
@@ -111,11 +108,9 @@ namespace Libplanet.Consensus
                     $"Signature of votes are invalid");
             }
 
-            Height = height;
             Votes = votes.OrderBy(vote => vote.BlockHash).ToArray();
             ValidatorPower = validatorPower;
             TotalPower = totalPower;
-            Timestamp = timestamp;
         }
 
         private DuplicateVoteEvidence(Bencodex.Types.Dictionary bencoded)
@@ -131,28 +126,7 @@ namespace Libplanet.Consensus
         {
         }
 
-        /// <summary>
-        /// A unique identifier derived from this <see cref="DuplicateVoteEvidence"/>'s
-        /// content.
-        /// <para>For more characteristics, see <see cref="EvidenceId"/> type.</para>
-        /// </summary>
-        /// <seealso cref="EvidenceId"/>
-        public EvidenceId Id
-        {
-            get
-            {
-                if (!(_id is { } nonNull))
-                {
-                    using var hasher = SHA256.Create();
-                    byte[] payload = Codec.Encode(Bencoded);
-                    _id = nonNull = new EvidenceId(hasher.ComputeHash(payload));
-                }
-
-                return nonNull;
-            }
-        }
-
-        public long Height { get; }
+        public override EvidenceType Type => EvidenceType.DuplicateVoteEvidence;
 
         public Vote[] Votes { get; }
 
@@ -160,11 +134,9 @@ namespace Libplanet.Consensus
 
         public BigInteger TotalPower { get; }
 
-        public DateTimeOffset Timestamp { get; }
-
         /// <inheritdoc/>
         [JsonIgnore]
-        public Bencodex.Types.IValue Bencoded
+        public override Bencodex.Types.IValue Bencoded
         {
             get
             {

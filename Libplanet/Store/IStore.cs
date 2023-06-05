@@ -366,13 +366,13 @@ namespace Libplanet.Store
 
         IEnumerable<EvidenceId> IteratePendingEvidenceIds();
 
-        DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId);
+        Evidence GetPendingEvidence(EvidenceId evidenceId);
 
-        DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId);
+        Evidence GetCommittedEvidence(EvidenceId evidenceId);
 
-        void PutPendingEvidence(DuplicateVoteEvidence evidence);
+        void PutPendingEvidence(Evidence evidence);
 
-        void PutCommittedEvidence(DuplicateVoteEvidence evidence);
+        void PutCommittedEvidence(Evidence evidence);
 
         void DeletePendingEvidence(EvidenceId evidenceId);
 

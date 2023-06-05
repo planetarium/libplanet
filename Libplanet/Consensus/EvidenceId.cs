@@ -13,13 +13,13 @@ namespace Libplanet.Consensus
 {
     /// <summary>
     /// <see cref="EvidenceId"/>, abbreviation of Evidence identifier,
-    /// is a SHA-256 digest derived from a <see cref="DuplicateVoteEvidence"/>'s
+    /// is a SHA-256 digest derived from a <see cref="Evidence"/>'s
     /// content.
     /// <para>As it is a SHA-256 digest, it consists of 32 <see cref="byte"/>s,
     /// and 64 characters in hexadecimal.
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
-    /// <seealso cref="DuplicateVoteEvidence.Id"/>
+    /// <seealso cref="Evidence.Id"/>
     [Serializable]
     [JsonConverter(typeof(EvidenceIdJsonConverter))]
     public readonly struct EvidenceId

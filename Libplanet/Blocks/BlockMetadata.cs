@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
+using Bencodex.Types;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -41,8 +45,9 @@ namespace Libplanet.Blocks
         /// creating a copy.  This is a relatively heavy operation, so must be used sparingly.
         /// </para>
         /// <para>
-        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>.  Refer to the
+        /// This gets redirected to
+        /// <see cref="BlockMetadata(int, long, DateTimeOffset, Address, PublicKey?, BlockHash?,
+        /// HashDigest{SHA256}?, BlockCommit?, ImmutableArray{Evidence}?)"/>.  Refer to the
         /// aforementioned constructor to see the full list of <see cref="Exception"/>s
         /// that may be thrown.
         /// </para>
@@ -51,7 +56,7 @@ namespace Libplanet.Blocks
         /// an actual <see cref="BlockMetadata"/> instance, but can be any object which
         /// implements <see cref="IBlockMetadata"/>.</param>
         /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, ImmutableArray{Evidence}?)"/>
         public BlockMetadata(IBlockMetadata metadata)
             : this(
                 protocolVersion: metadata.ProtocolVersion,
@@ -61,7 +66,8 @@ namespace Libplanet.Blocks
                 publicKey: metadata.PublicKey,
                 previousHash: metadata.PreviousHash,
                 txHash: metadata.TxHash,
-                lastCommit: metadata.LastCommit)
+                lastCommit: metadata.LastCommit,
+                evidences: metadata.Evidences)
         {
         }
 
@@ -76,15 +82,17 @@ namespace Libplanet.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="evidences">Goes to <see cref="IBlockMetadata.Evidences"/>.</param>
         /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, ImmutableArray{Evidence}?)"/>
         public BlockMetadata(
             long index,
             DateTimeOffset timestamp,
             PublicKey publicKey,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
-            BlockCommit? lastCommit)
+            BlockCommit? lastCommit,
+            ImmutableArray<Evidence>? evidences)
             : this(
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
@@ -93,7 +101,8 @@ namespace Libplanet.Blocks
                 publicKey: publicKey,
                 previousHash: previousHash,
                 txHash: txHash,
-                lastCommit: lastCommit)
+                lastCommit: lastCommit,
+                evidences: evidences)
         {
         }
 
@@ -113,6 +122,7 @@ namespace Libplanet.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="evidences">Goes to <see cref="IBlockMetadata.Evidences"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// <paramref name="protocolVersion"/> is less than zero or greater than
         /// <see cref="CurrentProtocolVersion"/>, the latest known protocol version.</exception>
@@ -140,7 +150,8 @@ namespace Libplanet.Blocks
             PublicKey? publicKey,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
-            BlockCommit? lastCommit)
+            BlockCommit? lastCommit,
+            ImmutableArray<Evidence>? evidences)
         {
             // Protocol version validity check.
             if (protocolVersion < 0)
@@ -227,6 +238,7 @@ namespace Libplanet.Blocks
 
             TxHash = txHash;
             LastCommit = lastCommit;
+            Evidences = evidences;
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
@@ -251,6 +263,8 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256>? TxHash { get; private set; }
 
         public BlockCommit? LastCommit { get; set; }
+
+        public ImmutableArray<Evidence>? Evidences { get; set; }
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
@@ -284,6 +298,13 @@ namespace Libplanet.Blocks
             if (LastCommit is { } lastCommit)
             {
                 dict = dict.Add("last_commit", lastCommit.ToHash().ByteArray);
+            }
+
+            if (Evidences is { } evidences)
+            {
+                dict = dict.Add(
+                    "evidences",
+                    new List(evidences.Select(ev => Evidence.Bencode(ev))));
             }
 
             // As blocks hadn't been signed before ProtocolVersion <= 1, the PublicKey property

@@ -19,8 +19,6 @@ namespace Libplanet.Store
     /// </summary>
     public abstract class BaseStore : IStore
     {
-        protected static readonly byte[] EvidenceKey = { 0x65 };        // 'e'
-
         /// <inheritdoc/>
         public abstract IEnumerable<Guid> ListChainIds();
 
@@ -184,16 +182,16 @@ namespace Libplanet.Store
         public abstract IEnumerable<EvidenceId> IteratePendingEvidenceIds();
 
         /// <inheritdoc/>
-        public abstract DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId);
+        public abstract Evidence GetPendingEvidence(EvidenceId evidenceId);
 
         /// <inheritdoc/>
-        public abstract DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId);
+        public abstract Evidence GetCommittedEvidence(EvidenceId evidenceId);
 
         /// <inheritdoc/>
-        public abstract void PutPendingEvidence(DuplicateVoteEvidence evidence);
+        public abstract void PutPendingEvidence(Evidence evidence);
 
         /// <inheritdoc/>
-        public abstract void PutCommittedEvidence(DuplicateVoteEvidence evidence);
+        public abstract void PutCommittedEvidence(Evidence evidence);
 
         /// <inheritdoc/>
         public abstract void DeletePendingEvidence(EvidenceId evidenceId);

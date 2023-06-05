@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tx;
 
@@ -37,6 +38,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
+        private static readonly byte[] EvidencesKey = { 0x76 }; // 'v'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {
@@ -68,6 +70,13 @@ namespace Libplanet.Blocks
             if (metadata.LastCommit is { } commit)
             {
                 dict = dict.Add(LastCommitKey, commit.Bencoded);
+            }
+
+            if (metadata.Evidences is { } evidences)
+            {
+                dict = dict.Add(
+                    EvidencesKey,
+                    new List(evidences.Select(ev => Evidence.Bencode(ev))));
             }
 
             return dict;
@@ -185,7 +194,11 @@ namespace Libplanet.Blocks
                     : (HashDigest<SHA256>?)null,
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
                     ? new BlockCommit(marshaled.GetValue<IValue>(LastCommitKey))
-                    : (BlockCommit?)null);
+                    : (BlockCommit?)null,
+                evidences: marshaled.ContainsKey(EvidencesKey)
+                    ? marshaled.GetValue<List>(EvidencesKey).Select(
+                        ev => Evidence.Decode(ev)).ToImmutableArray()
+                    : (ImmutableArray<Evidence>?)null);
 #pragma warning restore SA1118
         }
 

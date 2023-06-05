@@ -261,6 +261,12 @@ namespace Libplanet.Blockchain
                     throw new InvalidBlockLastCommitException(
                         "The genesis block and the next block should not have lastCommit.");
                 }
+
+                if (block.Evidences is { })
+                {
+                    throw new InvalidBlockLastCommitException(
+                        "The genesis block and the next block should not have evidences.");
+                }
             }
             else
             {
@@ -292,6 +298,25 @@ namespace Libplanet.Blockchain
                 catch (InvalidBlockCommitException ibce)
                 {
                     throw new InvalidBlockLastCommitException(ibce.Message);
+                }
+
+                // FIXME: After chain migration, this check have to be within last commit check.
+                if (block.ProtocolVersion < 5)
+                {
+                    if (block.Evidences is { })
+                    {
+                        throw new InvalidBlockLastCommitException(
+                            "A block before protocol version 5 should not have evidences.");
+                    }
+                }
+                else
+                {
+                    if (block.Evidences is null)
+                    {
+                        throw new InvalidBlockLastCommitException(
+                            "A PBFT block that does not have zero or one index or " +
+                            "is a block after protocol version 5 should have evidences.");
+                    }
                 }
             }
         }

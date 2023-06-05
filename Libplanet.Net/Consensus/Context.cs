@@ -105,6 +105,7 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private ImmutableArray<Evidence> _commitEvidences;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.

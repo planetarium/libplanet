@@ -56,11 +56,11 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<Guid, BlockCommit> _chainCommits =
             new ConcurrentDictionary<Guid, BlockCommit>();
 
-        private readonly ConcurrentDictionary<EvidenceId, DuplicateVoteEvidence> _pendingEvidences =
-            new ConcurrentDictionary<EvidenceId, DuplicateVoteEvidence>();
+        private readonly ConcurrentDictionary<EvidenceId, Evidence> _pendingEvidences =
+            new ConcurrentDictionary<EvidenceId, Evidence>();
 
-        private readonly ConcurrentDictionary<EvidenceId, DuplicateVoteEvidence> _committedEvidences
-            = new ConcurrentDictionary<EvidenceId, DuplicateVoteEvidence>();
+        private readonly ConcurrentDictionary<EvidenceId, Evidence> _committedEvidences
+            = new ConcurrentDictionary<EvidenceId, Evidence>();
 
         private Guid? _canonicalChainId;
 
@@ -311,13 +311,13 @@ namespace Libplanet.Store
             => _pendingEvidences.Keys;
 
         /// <inheritdoc/>
-        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId)
+        public Evidence GetPendingEvidence(EvidenceId evidenceId)
             => _pendingEvidences.TryGetValue(evidenceId, out var evidence)
             ? evidence
             : null;
 
         /// <inheritdoc/>
-        public void PutPendingEvidence(DuplicateVoteEvidence evidence)
+        public void PutPendingEvidence(Evidence evidence)
             => _pendingEvidences[evidence.Id] = evidence;
 
         /// <inheritdoc/>
@@ -329,13 +329,13 @@ namespace Libplanet.Store
             => _pendingEvidences.ContainsKey(evidenceId);
 
         /// <inheritdoc/>
-        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId)
+        public Evidence GetCommittedEvidence(EvidenceId evidenceId)
             => _committedEvidences.TryGetValue(evidenceId, out var evidence)
             ? evidence
             : null;
 
         /// <inheritdoc/>
-        public void PutCommittedEvidence(DuplicateVoteEvidence evidence)
+        public void PutCommittedEvidence(Evidence evidence)
             => _committedEvidences[evidence.Id] = evidence;
 
         /// <inheritdoc/>

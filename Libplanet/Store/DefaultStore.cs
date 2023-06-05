@@ -118,7 +118,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _committedEvidences;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
-        private readonly LruCache<EvidenceId, DuplicateVoteEvidence> _evidenceCache;
+        private readonly LruCache<EvidenceId, Evidence> _evidenceCache;
 
         private readonly MemoryStream _memoryStream;
 
@@ -217,7 +217,7 @@ namespace Libplanet.Store
                     b => new BlockCommit(Codec.Decode(b)));
                 _db.Mapper.RegisterType(
                     evidence => Codec.Encode(evidence.Bencoded),
-                    b => new DuplicateVoteEvidence(Codec.Decode(b)));
+                    b => Evidence.Decode(Codec.Decode(b)));
             }
 
             _root.CreateDirectory(TxRootPath);
@@ -239,7 +239,7 @@ namespace Libplanet.Store
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
-            _evidenceCache = new LruCache<EvidenceId, DuplicateVoteEvidence>(
+            _evidenceCache = new LruCache<EvidenceId, Evidence>(
                 capacity: evidenceCacheSize);
         }
 
@@ -772,7 +772,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId)
+        public override Evidence GetPendingEvidence(EvidenceId evidenceId)
         {
             UPath path = PendingEvidencePath(evidenceId);
             if (!_pendingEvidences.FileExists(path))
@@ -790,12 +790,12 @@ namespace Libplanet.Store
                 return null;
             }
 
-            DuplicateVoteEvidence evidence = new DuplicateVoteEvidence(Codec.Decode(bytes));
+            Evidence evidence = Evidence.Decode(Codec.Decode(bytes));
             return evidence;
         }
 
         /// <inheritdoc/>
-        public override void PutPendingEvidence(DuplicateVoteEvidence evidence)
+        public override void PutPendingEvidence(Evidence evidence)
         {
             if (_evidenceCache.ContainsKey(evidence.Id))
             {
@@ -810,7 +810,7 @@ namespace Libplanet.Store
             WriteContentAddressableFile(
                 _pendingEvidences,
                 PendingEvidencePath(evidence.Id),
-                Codec.Encode(evidence.Bencoded));
+                Codec.Encode(Evidence.Bencode(evidence)));
         }
 
         /// <inheritdoc/>
@@ -832,9 +832,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId)
+        public override Evidence GetCommittedEvidence(EvidenceId evidenceId)
         {
-            if (_evidenceCache.TryGetValue(evidenceId, out DuplicateVoteEvidence cachedEvidence))
+            if (_evidenceCache.TryGetValue(evidenceId, out Evidence cachedEvidence))
             {
                 return cachedEvidence;
             }
@@ -855,12 +855,12 @@ namespace Libplanet.Store
                 return null;
             }
 
-            DuplicateVoteEvidence evidence = new DuplicateVoteEvidence(Codec.Decode(bytes));
+            Evidence evidence = Evidence.Decode(Codec.Decode(bytes));
             return evidence;
         }
 
         /// <inheritdoc/>
-        public override void PutCommittedEvidence(DuplicateVoteEvidence evidence)
+        public override void PutCommittedEvidence(Evidence evidence)
         {
             if (_evidenceCache.ContainsKey(evidence.Id))
             {
@@ -875,7 +875,7 @@ namespace Libplanet.Store
             WriteContentAddressableFile(
                 _pendingEvidences,
                 PendingEvidencePath(evidence.Id),
-                Codec.Encode(evidence.Bencoded));
+                Codec.Encode(Evidence.Bencode(evidence)));
 
             _evidenceCache.AddOrUpdate(evidence.Id, evidence);
         }

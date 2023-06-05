@@ -132,7 +132,7 @@ namespace Libplanet.RocksDBStore
 
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
-        private readonly LruCache<EvidenceId, DuplicateVoteEvidence> _evidenceCache;
+        private readonly LruCache<EvidenceId, Evidence> _evidenceCache;
 
         private readonly DbOptions _options;
         private readonly string _path;
@@ -208,7 +208,7 @@ namespace Libplanet.RocksDBStore
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
-            _evidenceCache = new LruCache<EvidenceId, DuplicateVoteEvidence>(
+            _evidenceCache = new LruCache<EvidenceId, Evidence>(
                 capacity: evidenceCacheSize);
             _indexCache = new LruCache<Guid, LruCache<(int, int?), List<BlockHash>>>(64);
 
@@ -1383,7 +1383,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId)
+        public override Evidence GetPendingEvidence(EvidenceId evidenceId)
         {
             _rwEvidenceLock.EnterReadLock();
 
@@ -1396,7 +1396,7 @@ namespace Libplanet.RocksDBStore
                     return null;
                 }
 
-                return new DuplicateVoteEvidence(Codec.Decode(bytes));
+                return Evidence.Decode(Codec.Decode(bytes));
             }
             catch (Exception e)
             {
@@ -1411,7 +1411,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void PutPendingEvidence(DuplicateVoteEvidence evidence)
+        public override void PutPendingEvidence(Evidence evidence)
         {
             if (_evidenceCache.ContainsKey(evidence.Id))
             {
@@ -1428,7 +1428,7 @@ namespace Libplanet.RocksDBStore
             _rwEvidenceLock.EnterWriteLock();
             try
             {
-                byte[] value = Codec.Encode(evidence.Bencoded);
+                byte[] value = Codec.Encode(Evidence.Bencode(evidence));
                 _pendingEvidenceDb.Put(key, value);
             }
             catch (Exception e)
@@ -1475,9 +1475,9 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId)
+        public override Evidence GetCommittedEvidence(EvidenceId evidenceId)
         {
-            if (_evidenceCache.TryGetValue(evidenceId, out DuplicateVoteEvidence cachedEvidence))
+            if (_evidenceCache.TryGetValue(evidenceId, out Evidence cachedEvidence))
             {
                 return cachedEvidence;
             }
@@ -1493,7 +1493,7 @@ namespace Libplanet.RocksDBStore
                     return null;
                 }
 
-                return new DuplicateVoteEvidence(Codec.Decode(bytes));
+                return Evidence.Decode(Codec.Decode(bytes));
             }
             catch (Exception e)
             {
@@ -1508,7 +1508,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override void PutCommittedEvidence(DuplicateVoteEvidence evidence)
+        public override void PutCommittedEvidence(Evidence evidence)
         {
             if (_evidenceCache.ContainsKey(evidence.Id))
             {
@@ -1525,7 +1525,7 @@ namespace Libplanet.RocksDBStore
             _rwEvidenceLock.EnterWriteLock();
             try
             {
-                byte[] value = Codec.Encode(evidence.Bencoded);
+                byte[] value = Codec.Encode(Evidence.Bencode(evidence));
                 _committedEvidenceDb.Put(key, value);
                 _evidenceCache.AddOrUpdate(evidence.Id, evidence);
             }

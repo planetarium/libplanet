@@ -183,19 +183,19 @@ namespace Libplanet.Explorer.Store
             _store.IteratePendingEvidenceIds();
 
         /// <inheritdoc />
-        public DuplicateVoteEvidence GetPendingEvidence(EvidenceId evidenceId) =>
+        public Evidence GetPendingEvidence(EvidenceId evidenceId) =>
             _store.GetPendingEvidence(evidenceId);
 
         /// <inheritdoc />
-        public DuplicateVoteEvidence GetCommittedEvidence(EvidenceId evidenceId) =>
+        public Evidence GetCommittedEvidence(EvidenceId evidenceId) =>
             _store.GetCommittedEvidence(evidenceId);
 
         /// <inheritdoc />
-        public void PutPendingEvidence(DuplicateVoteEvidence evidence) =>
+        public void PutPendingEvidence(Evidence evidence) =>
             _store.PutPendingEvidence(evidence);
 
         /// <inheritdoc />
-        public void PutCommittedEvidence(DuplicateVoteEvidence evidence) =>
+        public void PutCommittedEvidence(Evidence evidence) =>
             _store.PutCommittedEvidence(evidence);
 
         /// <inheritdoc />

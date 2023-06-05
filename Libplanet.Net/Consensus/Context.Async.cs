@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -13,16 +15,22 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block.LastCommit"/> from previous block.
         /// </param>
+        /// <param name="commitEvidences">A <see cref="Block.Evidences"/> to be commited.
+        /// </param>
         /// <param name="bootstrapping">A <see langword="bool"/> flag indicating whether
         /// this <see cref="Context"/> should run as a bootstrapping <see cref="Context"/>
         /// or not.</param>
-        public void Start(BlockCommit? lastCommit = null, bool bootstrapping = false)
+        public void Start(
+            BlockCommit? lastCommit = null,
+            ImmutableArray<Evidence>? commitEvidences = null,
+            bool bootstrapping = false)
         {
             _logger.Information(
                 "Starting context for height #{Height}, LastCommit: {LastCommit}",
                 Height,
                 lastCommit);
             _lastCommit = lastCommit;
+            _commitEvidences = commitEvidences ?? ImmutableArray<Evidence>.Empty;
             ProduceMutation(() => StartRound(0));
 
             // FIXME: Exceptions inside tasks should be handled properly.

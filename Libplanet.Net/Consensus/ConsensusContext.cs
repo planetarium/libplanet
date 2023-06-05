@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -177,6 +179,7 @@ namespace Libplanet.Net.Consensus
                 }
 
                 BlockCommit? lastCommit = null;
+                ImmutableArray<Evidence>? commitEvidences = null;
                 lock (_contextLock)
                 {
                     lastCommit = _contexts.ContainsKey(height - 1)
@@ -200,6 +203,8 @@ namespace Libplanet.Net.Consensus
                                 lastCommit.Round);
                         }
                     }
+
+                    commitEvidences = _blockChain.GetPendingEvidences();
                 }
 
                 RemoveOldContexts(height);
@@ -214,7 +219,7 @@ namespace Libplanet.Net.Consensus
                         _contexts[height] = CreateContext(height);
                     }
 
-                    _contexts[height].Start(lastCommit, _bootstrapping);
+                    _contexts[height].Start(lastCommit, commitEvidences, _bootstrapping);
                 }
             }
         }
