@@ -7,5 +7,10 @@ export default defineConfig({
     unstubEnvs: true,
     unstubGlobals: true,
     testTimeout: 30000,
+    alias: {
+      "#crypto": "./src/crypto/node.ts",
+      "#path": "./src/path/node.ts",
+      "#fs": "./src/fs/node.ts",
+    },
   },
 });
