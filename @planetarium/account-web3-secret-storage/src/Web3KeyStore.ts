@@ -55,7 +55,7 @@ export class Web3KeyStore
   readonly path: string;
 
   constructor(options: Web3KeyStoreOptions & Partial<Web3AccountOptions>) {
-    this.path = options.path || getDefaultWeb3KeyStorePath();
+    this.path = options.path ?? getDefaultWeb3KeyStorePath();
     this.#passphraseEntry = options.passphraseEntry;
     this.#accountOptions = options;
   }
@@ -85,9 +85,7 @@ export class Web3KeyStore
       const keyPath = join(this.path, name);
       let json: unknown;
       try {
-        json = JSON.parse(
-          await fs.readFile(keyPath, { encoding: "utf8" }),
-        );
+        json = JSON.parse(await fs.readFile(keyPath, { encoding: "utf8" }));
       } catch (_) {
         continue;
       }
@@ -216,11 +214,7 @@ export class Web3KeyStore
         .replace(/:/g, "-")}--${keyId}`,
     );
     try {
-      await fs.writeFile(
-        keyPath,
-        JSON.stringify(keyObject),
-        "utf8",
-      );
+      await fs.writeFile(keyPath, JSON.stringify(keyObject), "utf8");
     } catch (e) {
       return { result: "error", message: `${e}` };
     }
