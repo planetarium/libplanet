@@ -17,34 +17,13 @@ import {
   type ImportableKeyStore,
   RawPrivateKey,
 } from "@planetarium/account";
-import { Dirent } from "node:fs";
-import * as fs from "node:fs/promises";
-import { homedir } from "node:os";
-import * as path from "node:path";
+import { join, getDefaultWeb3KeyStorePath } from "#path";
+export { getDefaultWeb3KeyStorePath } from "#path";
+import * as fs from "#fs";
 
 export interface Web3KeyStoreOptions {
   path?: string;
   passphraseEntry: PassphraseEntry;
-}
-
-/**
- * Determines the default key store path.  It depends on the platform:
- *
- * - Linux/macOS: `$HOME/.config/planetarium/keystore`
- * - Windows: `%AppData%\planetarium\keystore`
- */
-export function getDefaultWeb3KeyStorePath(): string {
-  const baseDir =
-    process.platform === "win32"
-      ? process.env.AppData || path.join(homedir(), "AppData", "Roaming")
-      : process.env.XDG_CONFIG_HOME || path.join(homedir(), ".config");
-  // Note that it's not necessary to explicitly choose one of `path.win32` or
-  // `path.posix` here, but it makes unit tests less dependent on mocks:
-  return (process.platform === "win32" ? path.win32 : path.posix).join(
-    baseDir,
-    "planetarium",
-    "keystore",
-  );
 }
 
 const pattern =
@@ -81,47 +60,29 @@ export class Web3KeyStore
     this.#accountOptions = options;
   }
 
-  async *#listKeyFiles(): AsyncIterable<Dirent> {
-    let dir;
-    try {
-      dir = await fs.opendir(this.path);
-    } catch (e) {
-      if (
-        typeof e === "object" &&
-        e != null &&
-        "code" in e &&
-        e.code === "ENOENT"
-      ) {
-        // In case where there is no directory at all (it's likely the first
-        // time to run this operation in a system), it should be considered
-        // it's just empty (instead of considering it an exceptional case).
-        return;
-      }
-      throw e;
-    }
-    for await (const dirEntry of dir) {
-      if (!dirEntry.isFile()) continue;
-      yield dirEntry;
+  async *#listKeyFiles(): AsyncIterable<string> {
+    for await (const name of fs.listFiles(this.path)) {
+      yield name;
     }
   }
 
   async #getKeyPath(
     keyId: KeyId,
   ): Promise<{ path: string; keyId: string; createdAt?: Date } | undefined> {
-    for await (const dirEntry of this.#listKeyFiles()) {
-      const parsed = parseKeyFilename(dirEntry.name);
+    for await (const name of this.#listKeyFiles()) {
+      const parsed = parseKeyFilename(name);
       if (parsed != null && parsed.keyId === keyId) {
-        return { ...parsed, path: path.join(this.path, dirEntry.name) };
+        return { ...parsed, path: join(this.path, name) };
       }
     }
     return undefined;
   }
 
   async *list(): AsyncIterable<AccountMetadata<KeyId, Web3KeyMetadata>> {
-    for await (const dirEntry of this.#listKeyFiles()) {
-      const parsed = parseKeyFilename(dirEntry.name);
+    for await (const name of this.#listKeyFiles()) {
+      const parsed = parseKeyFilename(name);
       if (parsed == null) continue;
-      const keyPath = path.join(this.path, dirEntry.name);
+      const keyPath = join(this.path, name);
       let json: unknown;
       try {
         json = JSON.parse(await fs.readFile(keyPath, { encoding: "utf8" }));
@@ -147,7 +108,9 @@ export class Web3KeyStore
     if (keyPath == null) return { result: "keyNotFound", keyId };
     let json;
     try {
-      json = await fs.readFile(keyPath.path, { encoding: "utf8" });
+      json = await fs.readFile(keyPath.path, {
+        encoding: "utf8",
+      });
     } catch (e) {
       if (
         e != null &&
@@ -202,7 +165,7 @@ export class Web3KeyStore
     const keyPath = await this.#getKeyPath(keyId);
     if (keyPath == null) return { result: "keyNotFound", keyId };
     try {
-      await fs.unlink(keyPath.path);
+      await fs.removeFile(keyPath.path);
     } catch (e) {
       return { result: "error", message: `${e}` };
     }
@@ -243,7 +206,7 @@ export class Web3KeyStore
       return { result: "error", message: `${e}` };
     }
     const createdAt = new Date();
-    const keyPath = path.join(
+    const keyPath = join(
       this.path,
       `UTC--${createdAt
         .toISOString()

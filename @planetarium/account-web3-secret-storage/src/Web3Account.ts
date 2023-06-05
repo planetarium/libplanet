@@ -7,13 +7,11 @@ import {
   RawPrivateKey,
   Signature,
 } from "@planetarium/account";
-import { Crypto } from "@peculiar/webcrypto";
+import { crypto } from "#crypto";
 import { pbkdf2Async } from "@noble/hashes/pbkdf2";
 import { scrypt } from "scrypt-js";
 import { sha256 } from "@noble/hashes/sha256";
 import { keccak_256 } from "@noble/hashes/sha3";
-
-const crypto = new Crypto();
 
 export type Web3KeyObjectKdf =
   | {

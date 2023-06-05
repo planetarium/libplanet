@@ -37,7 +37,7 @@ describe("getDefaultWeb3KeyStorePath", () => {
       platform: "linux",
     });
     vi.stubEnv("XDG_CONFIG_HOME", "");
-    vi.spyOn(await import("node:os"), "homedir").mockReturnValue("/home/user");
+    vi.spyOn(require("node:os"), "homedir").mockReturnValue("/home/user");
     expect(getDefaultWeb3KeyStorePath()).toBe(
       "/home/user/.config/planetarium/keystore",
     );
@@ -60,9 +60,7 @@ describe("getDefaultWeb3KeyStorePath", () => {
       platform: "win32",
     });
     vi.stubEnv("AppData", "");
-    vi.spyOn(await import("node:os"), "homedir").mockReturnValue(
-      "C:\\Users\\user",
-    );
+    vi.spyOn(require("node:os"), "homedir").mockReturnValue("C:\\Users\\user");
     expect(getDefaultWeb3KeyStorePath()).toBe(
       "C:\\Users\\user\\AppData\\Roaming\\planetarium\\keystore",
     );
