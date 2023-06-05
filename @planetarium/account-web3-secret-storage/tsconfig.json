@@ -1,6 +1,7 @@
 {
-  "include": ["./src", "*.d.ts", "*.ts"],
+  "include": ["./src", "*.d.ts", "src/*.ts"],
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "dist",
     "target": "ESNext",
     "strict": true,
