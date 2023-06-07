@@ -4,9 +4,7 @@ Libplanet changelog
 Version 1.4.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 7, 2023.
 
 ### Backward-incompatible API changes
 
@@ -17,20 +15,6 @@ To be released.
  -  Removed `blockAction` parameter from `BlockChain.EvaluateGenesis()`,
     `BlockChain.DetermineGenesisStateRootHash()`,
     and `BlockChain.ProposeGenesisBlock()` methods.  [[#3195]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3168]: https://github.com/planetarium/libplanet/pull/3168
 [#3193]: https://github.com/planetarium/libplanet/pull/3193
