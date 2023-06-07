@@ -187,9 +187,11 @@ namespace Libplanet.Action
         /// <param name="gasLimit">
         /// The maximum amount of gas that can be consumed by the transaction.
         /// </param>
+        /// <param name="maxGasPrice">
+        /// The maximum gas price that can be used by the transaction.
+        /// </param>
         /// <param name="blockAction">Pass <see langword="true"/> if it is
         /// <see cref="IBlockPolicy.BlockAction"/>.</param>
-        /// <param name="feeCalculator">Fee calculator.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -221,14 +223,15 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
-            long gasLimit = 0,
+            long gasLimit = long.MaxValue,
+            FungibleAssetValue? maxGasPrice = null,
             bool blockAction = false,
-            IFeeCalculator? feeCalculator = null,
             ILogger? logger = null)
         {
             ActionContext CreateActionContext(
                 IAccountStateDelta prevStates,
                 int randomSeed,
+                long actionGasLimit = long.MaxValue,
                 List<string>? logs = null
             )
             {
@@ -240,7 +243,7 @@ namespace Libplanet.Action
                     previousStates: prevStates,
                     randomSeed: randomSeed,
                     blockAction: blockAction,
-                    gasLimit: gasLimit,
+                    gasLimit: actionGasLimit,
                     logs: logs);
             }
 
@@ -258,33 +261,17 @@ namespace Libplanet.Action
             {
                 Exception? exc = null;
                 IAccountStateDelta nextStates = states;
-                ActionContext context = CreateActionContext(states, seed);
+                long nextGasLimit = gasLimit;
+
+                ActionContext context = CreateActionContext(nextStates, seed, nextGasLimit);
+                IFeeCollector feeCollector = new FeeCollector(context, maxGasPrice);
                 try
                 {
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
-
-                    if (blockIndex == 0)
-                    {
-                        logger?.Verbose("The actions in the genesis block don't be charged");
-                    }
-                    else if (blockAction)
-                    {
-                        logger?.Verbose("blockAction don't be charged");
-                    }
-                    else if (feeCalculator is null)
-                    {
-                        logger?.Verbose("No fee calculator given, skip charging");
-                    }
-                    else
-                    {
-                        logger?.Verbose($"Measuring fee of {action} started");
-                        FungibleAssetValue fee = feeCalculator.CalculateFee(action);
-                        logger?.Verbose($"Measured fee of {action} is {fee}");
-                        nextStates = states = states.TransferAsset(signer, miner, fee);
-                        context = CreateActionContext(states, seed);
-                    }
-
+                    nextStates = feeCollector.Mortgage(nextStates);
+                    context = CreateActionContext(nextStates, seed, nextGasLimit);
+                    feeCollector = feeCollector.Next(context);
                     nextStates = action.Execute(context);
                     logger?
                         .ForContext("Tag", "Metric")
@@ -345,6 +332,10 @@ namespace Libplanet.Action
                         e);
                 }
 
+                nextStates = feeCollector.Refund(nextStates);
+                nextStates = feeCollector.Reward(nextStates);
+                nextGasLimit = context.GasLimit() - context.GasUsed();
+
                 // As IActionContext.Random is stateful, we cannot reuse
                 // the context which is once consumed by Execute().
                 ActionContext equivalentContext = CreateActionContext(states, seed);
@@ -362,6 +353,7 @@ namespace Libplanet.Action
                 }
 
                 states = nextStates;
+                gasLimit = nextGasLimit;
                 unchecked
                 {
                     seed++;
@@ -493,7 +485,8 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
-                feeCalculator: _feeCalculator,
+                gasLimit: tx.GasLimit ?? long.MaxValue,
+                maxGasPrice: tx.MaxGasPrice,
                 logger: _logger);
         }
 

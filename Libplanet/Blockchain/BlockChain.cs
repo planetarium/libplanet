@@ -697,6 +697,9 @@ namespace Libplanet.Blockchain
         /// signs a new transaction.</param>
         /// <param name="actions">A list of custom actions to include to a new transaction.
         /// </param>
+        /// <param name="maxGasPrice"> The maximum gas price this transaction can pay fee. </param>
+        /// <param name="gasLimit"> The maximum amount of gas this transaction can consume.
+        /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
         /// <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/> is created and
@@ -706,6 +709,8 @@ namespace Libplanet.Blockchain
         public Transaction MakeTransaction(
             PrivateKey privateKey,
             IEnumerable<IAction> actions,
+            FungibleAssetValue? maxGasPrice = null,
+            long? gasLimit = null,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
@@ -718,6 +723,8 @@ namespace Libplanet.Blockchain
                     privateKey,
                     Genesis.Hash,
                     actions,
+                    maxGasPrice,
+                    gasLimit,
                     updatedAddresses,
                     timestamp);
                 StageTransaction(tx);

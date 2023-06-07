@@ -85,6 +85,14 @@ namespace Libplanet.Action
         void PutLog(string log);
 
         /// <summary>
+        /// Consumes the specified amount of gas.
+        /// </summary>
+        /// <param name="gas">
+        /// The amount of gas to consume.
+        /// </param>
+        void UseGas(long gas);
+
+        /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed
         /// state (with the same seed).  The clone and its original are a distinct instance
         /// each other, in other words, one's state transfer must not affect the other one

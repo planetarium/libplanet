@@ -354,6 +354,8 @@ public class StoreCommandTest : IDisposable
             _genesisBlock.Hash,
             new[] { new Utils.DummyAction() },
             null,
+            null,
+            null,
             DateTimeOffset.UtcNow
         );
     }
