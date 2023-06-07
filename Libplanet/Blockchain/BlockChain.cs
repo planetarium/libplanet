@@ -46,8 +46,6 @@ namespace Libplanet.Blockchain
             Justification = "Temporary visibility.")]
         internal readonly ReaderWriterLockSlim _rwlock;
 
-        // FIXME: The _maxEvidenceDuration field have to be part of policy.
-        private const long _maxEvidenceDuration = 10;
         private readonly object _txLock;
         private readonly ILogger _logger;
         private readonly IBlockChainStates _blockChainStates;
@@ -155,6 +153,7 @@ namespace Libplanet.Blockchain
             StateStore = stateStore;
 
             _blockChainStates = blockChainStates;
+
             _blocks = new BlockSet(store);
             Renderers = renderers is IEnumerable<IRenderer> r
                 ? r.ToImmutableArray()

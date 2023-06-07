@@ -42,6 +42,11 @@ namespace Libplanet.Consensus
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="DuplicateVoteEvidence"/> instance from
+        /// bencoded <see cref="IValue"/>.
+        /// </summary>
+        /// <param name="bencoded">Bencoded <see cref="IValue"/>.</param>
         public DuplicateVoteEvidence(Bencodex.Types.IValue bencoded)
             : this(bencoded is Bencodex.Types.Dictionary dict
                 ? dict
@@ -128,10 +133,21 @@ namespace Libplanet.Consensus
 
         public override EvidenceType Type => EvidenceType.DuplicateVoteEvidence;
 
+        /// <summary>
+        /// The conflicting votes.
+        /// At least two votes are needed for duplicate vote evidence.
+        /// </summary>
         public Vote[] Votes { get; }
 
+        /// <summary>
+        /// Consensus power of validator that committed infraction at the time
+        /// that infraction has been occured.
+        /// </summary>
         public BigInteger ValidatorPower { get; }
 
+        /// <summary>
+        /// Total power of validators at the time that infraction has been occured.
+        /// </summary>
         public BigInteger TotalPower { get; }
 
         /// <inheritdoc/>

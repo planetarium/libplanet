@@ -24,6 +24,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
+        private readonly Func<long, long> _getMaxEvidencePendingDuration;
 
         /// <summary>
         /// <para>
@@ -65,6 +66,10 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block"/> given the <see cref="Block"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
+        /// <param name="getMaxEvidencePendingDuration">The function determining the maximum
+        /// pending duration of <see cref="Consensus.Evidence"/> to be committed.
+        /// Goes to <see cref="GetMaxEvidencePendingDuration"/>.  Set to a constant function
+        /// of <c>10</c> by default.</param>
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
@@ -75,7 +80,8 @@ namespace Libplanet.Blockchain.Policies
             Func<long, long>? getMaxTransactionsBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
-            Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
+            Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
+            Func<long, long>? getMaxEvidencePendingDuration = null)
         {
             BlockAction = blockAction;
             BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
@@ -84,6 +90,7 @@ namespace Libplanet.Blockchain.Policies
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
+            _getMaxEvidencePendingDuration = getMaxEvidencePendingDuration ?? (_ => 10L);
 
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             if (validateNextBlock is { } vnb)
@@ -99,6 +106,7 @@ namespace Libplanet.Blockchain.Policies
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
+                    long maxEvidencePendingDuration = GetMaxEvidencePendingDuration(block.Index);
 
                     long blockBytes = BlockMarshaler.MarshalTransactions(block.Transactions)
                         .EncodingLength;
@@ -144,6 +152,15 @@ namespace Libplanet.Blockchain.Policies
                                 offendingGroup.Key,
                                 offendingGroupCount);
                         }
+                    }
+
+                    long evidenceExpirationHeight = block.Index - maxEvidencePendingDuration;
+                    if (block.Evidences is { } evs &&
+                        evs.Any(ev => ev.Height < evidenceExpirationHeight))
+                    {
+                        return new InvalidBlockEvidencesPendingDurationException(
+                            $"Block #{block.Index} {block.Hash} includes evidence" +
+                            $"that is older than expiration height {evidenceExpirationHeight}");
                     }
 
                     return null;
@@ -193,5 +210,10 @@ namespace Libplanet.Blockchain.Policies
         [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
+
+        /// <inheritdoc/>
+        [Pure]
+        public long GetMaxEvidencePendingDuration(long index)
+            => _getMaxEvidencePendingDuration(index);
     }
 }

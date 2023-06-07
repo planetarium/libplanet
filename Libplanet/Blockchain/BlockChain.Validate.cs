@@ -305,7 +305,7 @@ namespace Libplanet.Blockchain
                 {
                     if (block.Evidences is { })
                     {
-                        throw new InvalidBlockLastCommitException(
+                        throw new InvalidBlockEvidencesException(
                             "A block before protocol version 5 should not have evidences.");
                     }
                 }
@@ -313,9 +313,14 @@ namespace Libplanet.Blockchain
                 {
                     if (block.Evidences is null)
                     {
-                        throw new InvalidBlockLastCommitException(
+                        throw new InvalidBlockEvidencesException(
                             "A PBFT block that does not have zero or one index or " +
                             "is a block after protocol version 5 should have evidences.");
+                    }
+
+                    foreach (Evidence evidence in block.Evidences)
+                    {
+                        VerifyEvidence(evidence);
                     }
                 }
             }

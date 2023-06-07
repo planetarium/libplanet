@@ -60,6 +60,10 @@ namespace Libplanet.Blocks
         /// </summary>
         BlockCommit? LastCommit { get; }
 
+        /// <summary>
+        /// Committing <see cref="Evidence"/>s of vote infraction
+        /// that has been made on previous blocks.
+        /// </summary>
         ImmutableArray<Evidence>? Evidences { get; }
     }
 }
