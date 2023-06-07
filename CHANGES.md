@@ -4,9 +4,7 @@ Libplanet changelog
 Version 1.4.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 7, 2023.
 
 ### Backward-incompatible API changes
 
@@ -18,20 +16,6 @@ To be released.
     `BlockChain.DetermineGenesisStateRootHash()`,
     and `BlockChain.ProposeGenesisBlock()` methods.  [[#3195]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 [#3168]: https://github.com/planetarium/libplanet/pull/3168
 [#3193]: https://github.com/planetarium/libplanet/pull/3193
 [#3195]: https://github.com/planetarium/libplanet/pull/3195
@@ -40,9 +24,7 @@ To be released.
 Version 1.3.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on May 19, 2023.
 
 ### Backward-incompatible API changes
 
@@ -67,12 +49,8 @@ To be released.
  -  Removed type parameter `T` from `BlockCandidateTable<T>` class.  [[#3184]]
  -  Removed type parameter `T` from `TxCompletion<T>` class.  [[#3184]]
  -  Removed type parameter `T` from `Swarm<T>` class.  [[#3184]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
+ -  (Libplanet.Explorer) Removed type parameter `T` requiring `T` as
+    `IAction` from all classes.  [[#3185]]
 
 ### Behavioral changes
 
@@ -97,12 +75,6 @@ To be released.
  -  Moved creation of `BlockDemandTable` and `BlockCandidateTable`
     to constructor of `Swarm<T>` from `Swarm<T>.StartAsync()`.  [[#3154]]
 
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 [#3152]: https://github.com/planetarium/libplanet/pull/3152
 [#3154]: https://github.com/planetarium/libplanet/pull/3154
 [#3172]: https://github.com/planetarium/libplanet/pull/3172
@@ -110,6 +82,7 @@ To be released.
 [#3182]: https://github.com/planetarium/libplanet/pull/3182
 [#3183]: https://github.com/planetarium/libplanet/pull/3183
 [#3184]: https://github.com/planetarium/libplanet/pull/3184
+[#3185]: https://github.com/planetarium/libplanet/pull/3185
 
 
 Version 1.2.1
