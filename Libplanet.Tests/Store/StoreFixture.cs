@@ -106,8 +106,7 @@ namespace Libplanet.Tests.Store
             var actionEvaluator = new ActionEvaluator(
                 _ => blockAction,
                 new BlockChainStates(new MemoryStore(), stateStore),
-                new SingleActionLoader(typeof(DumbAction)),
-                null);
+                new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
                 Proposer,
                 BlockChain.DetermineGenesisStateRootHash(

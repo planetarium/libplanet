@@ -22,6 +22,8 @@ namespace Libplanet.Tests.Action
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
+            AccountGetter accountGetter,
+            SubTrieStateGetter subTrieStateGetter,
             Address signer
         ) =>
             new AccountStateDeltaImplV0(
@@ -29,6 +31,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieStateGetter,
                 signer);
 
         [Fact]

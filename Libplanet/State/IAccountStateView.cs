@@ -40,6 +40,9 @@ namespace Libplanet.State
         [Pure]
         IValue? GetState(Address address);
 
+        [Pure]
+        IValue? GetState(IAccount account, Address address);
+
         /// <summary>
         /// Gets multiple account states associated with the specified <paramref name="addresses"/>
         /// at once.
@@ -75,5 +78,8 @@ namespace Libplanet.State
         /// <seealso cref="Currency.MaximumSupply"/>
         [Pure]
         FungibleAssetValue GetTotalSupply(Currency currency);
+
+        [Pure]
+        IAccount GetAccount(Address address);
     }
 }

@@ -16,6 +16,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog;
@@ -507,6 +508,12 @@ namespace Libplanet.Blockchain
                 )[0]
             : null;
 
+        public IValue GetState(IAccount account, Address address, BlockHash? offset = null) =>
+            _blockChainStates.GetState(account, address, offset ?? Tip.Hash);
+
+        public IValue GetState(IAccount account, Address address, BlockHash offset) =>
+            _blockChainStates.GetState(account, address, offset);
+
         /// <summary>
         /// Gets multiple states associated to the specified <paramref name="addresses"/>.
         /// </summary>
@@ -594,6 +601,12 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
         public ValidatorSet GetValidatorSet(BlockHash offset) =>
             _blockChainStates.GetValidatorSet(offset);
+
+        public IAccount GetAccount(Address address, BlockHash? offset = null) =>
+            GetAccount(address, offset ?? Tip.Hash);
+
+        public IAccount GetAccount(Address address, BlockHash offset) =>
+            _blockChainStates.GetAccount(address, offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

@@ -19,6 +19,8 @@ namespace Libplanet.State
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
+            AccountGetter accountGetter,
+            SubTrieStateGetter subTrieStateGetter,
             Address signer
         )
             : base(
@@ -26,6 +28,8 @@ namespace Libplanet.State
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieStateGetter,
                 signer)
         {
         }
@@ -80,6 +84,8 @@ namespace Libplanet.State
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
+                AccountGetter,
+                SubTrieStateGetter,
                 Signer)
             {
                 UpdatedStates = updatedStates,
@@ -95,6 +101,8 @@ namespace Libplanet.State
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
+                AccountGetter,
+                SubTrieStateGetter,
                 Signer)
             {
                 UpdatedStates = UpdatedStates,

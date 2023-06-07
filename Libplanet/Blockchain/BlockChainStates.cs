@@ -7,6 +7,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
@@ -77,6 +78,15 @@ namespace Libplanet.Blockchain
             throw new IncompleteBlockStatesException(offset);
         }
 
+        public IValue? GetState(IAccount account, Address address, BlockHash offset)
+        {
+            ITrie subTrie = _stateStore.GetStateRoot(account.StateRootHash);
+            return subTrie.Get(new[]
+            {
+                StateStoreExtensions.EncodeKey(ToStateKey(account.Id)),
+            })[0];
+        }
+
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address,
@@ -135,6 +145,14 @@ namespace Libplanet.Blockchain
             }
 
             throw new IncompleteBlockStatesException(offset);
+        }
+
+        public IAccount GetAccount(Address address, BlockHash offset)
+        {
+            IValue? rawAccount = GetStates(new[] { address }, offset)[0];
+            return rawAccount is null
+                ? new Account(address, MerkleTrie.EmptyRootHash)
+                : new Account((List)rawAccount);
         }
     }
 }

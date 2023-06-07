@@ -87,8 +87,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 NullChainStates.Instance,
-                new SingleActionLoader(typeof(RandomAction)),
-                null);
+                new SingleActionLoader(typeof(RandomAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
                 BlockChain.DetermineGenesisStateRootHash(
@@ -237,6 +236,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
+                ActionEvaluator.NullAccountGetter,
+                ActionEvaluator.NullSubTrieValueGetter,
                 genesis.Miner);
 
             Assert.Throws<OutOfMemoryException>(
@@ -251,6 +252,16 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluateTxs()
         {
+            IAccountStateDelta ChooseVersion(BlockHeader header) =>
+                AccountStateDeltaImpl.ChooseVersion(
+                    header.ProtocolVersion,
+                    ActionEvaluator.NullAccountStateGetter,
+                    ActionEvaluator.NullAccountBalanceGetter,
+                    ActionEvaluator.NullTotalSupplyGetter,
+                    ActionEvaluator.NullValidatorSetGetter,
+                    ActionEvaluator.NullAccountGetter,
+                    ActionEvaluator.NullSubTrieValueGetter,
+                    header.Miner);
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null)
             {
                 return new DumbAction(
@@ -292,16 +303,8 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                feeCalculator: null);
-            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
-                genesis.ProtocolVersion,
-                ActionEvaluator.NullAccountStateGetter,
-                ActionEvaluator.NullAccountBalanceGetter,
-                ActionEvaluator.NullTotalSupplyGetter,
-                ActionEvaluator.NullValidatorSetGetter,
-                genesis.Miner);
-
+                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
+            IAccountStateDelta previousStates = ChooseVersion(genesis.Header);
             Transaction[] block1Txs =
             {
                 Transaction.Create(
@@ -338,13 +341,7 @@ namespace Libplanet.Tests.Action
                 genesis,
                 GenesisProposer,
                 block1Txs);
-            previousStates = AccountStateDeltaImpl.ChooseVersion(
-                block1.ProtocolVersion,
-                ActionEvaluator.NullAccountStateGetter,
-                ActionEvaluator.NullAccountBalanceGetter,
-                ActionEvaluator.NullTotalSupplyGetter,
-                ActionEvaluator.NullValidatorSetGetter,
-                block1.Miner);
+            previousStates = ChooseVersion(block1.Header);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousStates).ToImmutableArray();
@@ -378,13 +375,7 @@ namespace Libplanet.Tests.Action
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            previousStates = AccountStateDeltaImpl.ChooseVersion(
-                block1.ProtocolVersion,
-                ActionEvaluator.NullAccountStateGetter,
-                ActionEvaluator.NullAccountBalanceGetter,
-                ActionEvaluator.NullTotalSupplyGetter,
-                ActionEvaluator.NullValidatorSetGetter,
-                block1.Miner);
+            previousStates = ChooseVersion(block1.Header);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
@@ -414,7 +405,6 @@ namespace Libplanet.Tests.Action
                         new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0),
                 }.ToImmutableDictionary(),
                 balances1);
-
             Transaction[] block2Txs =
             {
                 // Note that these timestamps in themselves does not have any meanings but are
@@ -478,6 +468,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
+                ActionEvaluator.NullAccountGetter,
+                ActionEvaluator.NullSubTrieValueGetter,
                 block2.Miner);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
@@ -528,6 +520,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
+                ActionEvaluator.NullAccountGetter,
+                ActionEvaluator.NullSubTrieValueGetter,
                 block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
@@ -589,8 +583,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                feeCalculator: null);
+                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
@@ -602,6 +595,8 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator.NullAccountBalanceGetter,
                     ActionEvaluator.NullTotalSupplyGetter,
                     ActionEvaluator.NullValidatorSetGetter,
+                    ActionEvaluator.NullAccountGetter,
+                    ActionEvaluator.NullSubTrieValueGetter,
                     tx.Signer
                 )
             ).ToImmutableArray();
@@ -674,6 +669,8 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator.NullAccountBalanceGetter,
                     ActionEvaluator.NullTotalSupplyGetter,
                     ActionEvaluator.NullValidatorSetGetter,
+                    ActionEvaluator.NullAccountGetter,
+                    ActionEvaluator.NullSubTrieValueGetter,
                     tx.Signer
                 )
             ).Last().OutputStates;
@@ -704,8 +701,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(ThrowException)),
-                feeCalculator: null
+                actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
             var block = new BlockContent(
                 new BlockMetadata(
@@ -724,6 +720,8 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator.NullAccountBalanceGetter,
                     ActionEvaluator.NullTotalSupplyGetter,
                     ActionEvaluator.NullValidatorSetGetter,
+                    ActionEvaluator.NullAccountGetter,
+                    ActionEvaluator.NullSubTrieValueGetter,
                     tx.Signer
                 )
             ).Last().OutputStates;
@@ -864,12 +862,16 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter;
             TotalSupplyGetter totalSupplyGetter = ActionEvaluator.NullTotalSupplyGetter;
             ValidatorSetGetter validatorSetGetter = ActionEvaluator.NullValidatorSetGetter;
+            AccountGetter accountGetter = ActionEvaluator.NullAccountGetter;
+            SubTrieStateGetter subTrieStateGetter = ActionEvaluator.NullSubTrieValueGetter;
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieStateGetter,
                 genesis.Miner);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousStates);
 
@@ -892,6 +894,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieStateGetter,
                 block.Miner);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
@@ -908,6 +912,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
+                ActionEvaluator.NullAccountGetter,
+                ActionEvaluator.NullSubTrieValueGetter,
                 block.Miner);
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
@@ -1037,7 +1043,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy<UseGasAction>(),
+                policy: new BlockPolicy(),
                 actions: new[] { freeGasAction, },
                 store: store,
                 stateStore: stateStore);
@@ -1097,7 +1103,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy<UseGasAction>(),
+                policy: new BlockPolicy(),
                 actions: new[]
                 {
                     freeGasAction,
@@ -1164,7 +1170,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy<UseGasAction>(),
+                policy: new BlockPolicy(),
                 actions: new[]
                 {
                     freeGasAction,
@@ -1225,7 +1231,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy<UseGasAction>(),
+                policy: new BlockPolicy(),
                 actions: new[]
                 {
                     freeGasAction,

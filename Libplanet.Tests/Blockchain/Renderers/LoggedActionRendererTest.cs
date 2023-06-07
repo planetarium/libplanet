@@ -27,6 +27,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 (_, __) => default,
                 _ => default,
                 () => new ValidatorSet(),
+                (_) => Account.NullAccount,
+                (_, __) => default,
                 default);
 
         private static Exception _exception = new Exception();

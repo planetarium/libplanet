@@ -20,6 +20,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 (_, __) => default,
                 _ => default,
                 () => new ValidatorSet(),
+                _ => Account.NullAccount,
+                (_, __) => default,
                 default);
 
         private static IActionContext _actionContext =

@@ -3,6 +3,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.State;
 
 namespace Libplanet.Blockchain
 {
@@ -26,6 +27,25 @@ namespace Libplanet.Blockchain
             IReadOnlyList<Address> addresses,
             BlockHash offset
         );
+
+        /// <summary>
+        /// Gets the account state of the given <paramref name="address"/> in the
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="account">
+        /// The <see cref="IAccount"/> instance to get its sub-state.
+        /// </param>
+        /// <param name="address">
+        /// The <see cref="Address"/> referring the key to get its state.
+        /// </param>
+        /// <param name="offset">
+        /// The <see cref="HashDigest{T}"/> of the block to start finding the state.
+        /// </param>
+        /// <returns>
+        /// The account state of the given <paramref name="address"/> in the
+        /// <see cref="IAccount"/>'s sub-state from <see cref="IAccount.StateRootHash"/>.
+        /// </returns>
+        IValue? GetState(IAccount account, Address address, BlockHash offset);
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
@@ -68,5 +88,21 @@ namespace Libplanet.Blockchain
         /// <paramref name="offset"/>.
         /// </returns>
         ValidatorSet GetValidatorSet(BlockHash offset);
+
+        /// <summary>
+        /// Returns the account of the given <paramref name="address"/> in the
+        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="address">
+        /// The <see cref="Address"/> referring the key to get its state.
+        /// </param>
+        /// <param name="offset">
+        /// The <see cref="HashDigest{T}"/> of the block to start finding the state.
+        /// </param>
+        /// <returns>
+        /// The account of the given <paramref name="address"/> in the
+        /// <see cref="IAccount"/>'s sub-state from <see cref="IAccount.StateRootHash"/>.
+        /// </returns>
+        IAccount GetAccount(Address address, BlockHash offset);
     }
 }

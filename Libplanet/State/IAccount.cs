@@ -15,11 +15,6 @@ namespace Libplanet.State
         public Address Id { get; }
 
         /// <summary>
-        /// Account's memo.
-        /// </summary>
-        public string? Memo { get; }
-
-        /// <summary>
         /// Account's state root hash.
         /// </summary>
         public HashDigest<SHA256> StateRootHash { get; }

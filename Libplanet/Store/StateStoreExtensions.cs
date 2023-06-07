@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
-using Libplanet.State;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Store
@@ -106,34 +105,5 @@ namespace Libplanet.Store
             HashDigest<SHA256> stateRootHash
         ) =>
             stateStore.GetStateRoot(stateRootHash).Recorded;
-
-        public static IAccount GetAccount(
-            this IStateStore stateStore,
-            HashDigest<SHA256>? stateRootHash,
-            string key
-        )
-        {
-            ITrie trie = stateStore.GetStateRoot(stateRootHash);
-            if (trie.Get(new[] { EncodeKey(key) })[0] is Bencodex.Types.List rawAddress)
-            {
-                return new Account(rawAddress);
-            }
-            else
-            {
-                return new Account(
-                    new Address(key),
-                    null,
-                    stateStore.GetStateRoot(null).Commit().Hash);
-            }
-        }
-
-        public static IAccountDelta GetAccountDelta(
-            this IStateStore stateStore,
-            IAccount account
-        )
-        {
-            ITrie trie = stateStore.GetStateRoot(account.StateRootHash);
-            return new AccountDeltaImpl(account, trie);
-        }
     }
 }

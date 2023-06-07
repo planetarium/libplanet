@@ -76,8 +76,7 @@ namespace Libplanet.Tests.Fixtures
             var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 new BlockChainStates(Store, StateStore),
-                new SingleActionLoader(typeof(Arithmetic)),
-                null);
+                new SingleActionLoader(typeof(Arithmetic)));
             Genesis = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
                 TestUtils.ProposeGenesis(
@@ -175,6 +174,8 @@ namespace Libplanet.Tests.Fixtures
                 (a, c) => Chain.GetBalance(a, c, offset),
                 c => Chain.GetTotalSupply(c),
                 () => Chain.GetValidatorSet(),
+                a => Chain.GetAccount(a, offset),
+                (a, k) => Chain.GetState(a, k),
                 signer
             );
         }

@@ -69,6 +69,8 @@ namespace Libplanet.State
         [Pure]
         IImmutableSet<Currency> TotalSupplyUpdatedCurrencies { get; }
 
+        IImmutableSet<(IAccount, Address)> UpdatedSubTrie { get; }
+
         /// <summary>
         /// Gets a new instance that the account state of the given
         /// <paramref name="address"/> is set to the given
@@ -87,6 +89,9 @@ namespace Libplanet.State
         /// </remarks>
         [Pure]
         IAccountStateDelta SetState(Address address, IValue state);
+
+        [Pure]
+        IAccountStateDelta SetState(IAccount account, Address address, IValue value);
 
         /// <summary>
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),

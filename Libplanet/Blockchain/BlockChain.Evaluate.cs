@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using static Libplanet.Blockchain.KeyConverters;
@@ -107,6 +109,16 @@ namespace Libplanet.Blockchain
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 evaluations = EvaluateBlock(block);
+                ImmutableArray<IAccount> accountStateDelta = ImmutableArray<IAccount>.Empty;
+                foreach (IAccount updatedAccount in evaluations.GetUpdatedAccounts())
+                {
+                    ITrie subTrie = StateStore.Commit(
+                        updatedAccount.StateRootHash,
+                        evaluations.GetSubStateDelta(ToStateKey, updatedAccount));
+                    accountStateDelta = accountStateDelta
+                        .Add(new Account(updatedAccount.Id, subTrie.Hash));
+                }
+
                 var totalDelta =
                     evaluations.GetTotalDelta(
                         ToStateKey,
@@ -120,6 +132,14 @@ namespace Libplanet.Blockchain
                     totalDelta.Count,
                     block.Index,
                     block.PreEvaluationHash);
+
+                ImmutableDictionary<string, IValue> delta = totalDelta;
+                totalDelta = totalDelta.Concat(
+                    accountStateDelta.ToImmutableDictionary(
+                        x => ToStateKey(x.Id),
+                        account => account.Serialize())
+                        .Where(kvp => !delta.ContainsKey(kvp.Key)))
+                    .ToImmutableDictionary();
 
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);

@@ -1,3 +1,5 @@
+using Libplanet.State;
+
 namespace Libplanet.Action
 {
     /// <summary>

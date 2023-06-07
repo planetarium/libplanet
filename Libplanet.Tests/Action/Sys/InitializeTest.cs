@@ -51,6 +51,8 @@ namespace Libplanet.Tests.Action.Sys
                 accountBalanceGetter: (_, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
                 validatorSetGetter: () => new ValidatorSet(),
+                accountGetter: _ => Account.NullAccount,
+                subTrieStateGetter: (_, __) => default,
                 signer: signer
             );
             BlockHash genesisHash = random.NextBlockHash();
@@ -86,6 +88,8 @@ namespace Libplanet.Tests.Action.Sys
                 accountBalanceGetter: (_, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
                 validatorSetGetter: () => new ValidatorSet(),
+                accountGetter: _ => Account.NullAccount,
+                subTrieStateGetter: (_, __) => default,
                 signer: signer
             );
             BlockHash genesisHash = random.NextBlockHash();

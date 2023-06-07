@@ -22,6 +22,9 @@ namespace Libplanet.Blockchain
         ) =>
             new IValue?[addresses.Count];
 
+        public IValue? GetState(IAccount account, Address address, BlockHash offset) =>
+            null;
+
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
@@ -46,6 +49,9 @@ namespace Libplanet.Blockchain
         {
             return new ValidatorSet();
         }
+
+        public IAccount GetAccount(Address address, BlockHash offset) =>
+            Account.NullAccount;
 
         public ITrie? GetTrie(BlockHash offset) => null;
     }

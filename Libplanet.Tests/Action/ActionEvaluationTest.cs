@@ -43,6 +43,8 @@ namespace Libplanet.Tests.Action
                         (_, c) => new FungibleAssetValue(c),
                         c => c * 0,
                         () => new ValidatorSet(),
+                        _ => Account.NullAccount,
+                        (_, __) => default,
                         address
                     ),
                     123,
@@ -56,6 +58,8 @@ namespace Libplanet.Tests.Action
                     (_, c) => new FungibleAssetValue(c),
                     c => c * 0,
                     () => new ValidatorSet(),
+                    _ => Account.NullAccount,
+                    (_, __) => default,
                     address
                 )
             );

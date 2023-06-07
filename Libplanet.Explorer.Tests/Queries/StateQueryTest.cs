@@ -14,6 +14,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
+using Libplanet.State;
 using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -185,6 +186,9 @@ public class StateQueryTest
                 _ => null,
             }).ToImmutableList();
 
+        public IValue GetState(IAccount account, Address address, BlockHash offset) =>
+            null; 
+
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
@@ -206,6 +210,9 @@ public class StateQueryTest
                         "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
                     new BigInteger(1)),
             });
+
+        public IAccount GetAccount(Address address, BlockHash offset) =>
+            Account.NullAccount;
 
         public ITrie GetTrie(BlockHash offset) => null;
     }

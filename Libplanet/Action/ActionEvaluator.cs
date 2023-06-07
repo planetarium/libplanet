@@ -28,7 +28,6 @@ namespace Libplanet.Action
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
         private readonly IActionLoader _actionLoader;
-        private readonly IFeeCalculator? _feeCalculator;
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
@@ -40,12 +39,10 @@ namespace Libplanet.Action
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using action type lookup.</param>
-        /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
-            IActionLoader actionTypeLoader,
-            IFeeCalculator? feeCalculator
+            IActionLoader actionTypeLoader
         )
 #pragma warning restore MEN002
 #pragma warning restore CS1573
@@ -55,7 +52,6 @@ namespace Libplanet.Action
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _actionLoader = actionTypeLoader;
-            _feeCalculator = feeCalculator;
         }
 
         /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>
@@ -165,6 +161,14 @@ namespace Libplanet.Action
         {
             return new ValidatorSet();
         }
+
+        [Pure]
+        internal static IValue? NullSubTrieValueGetter(IAccount accountAddress, Address keyAddress)
+            => null;
+
+        [Pure]
+        internal static IAccount NullAccountGetter(Address account)
+            => Account.NullAccount;
 
         /// <summary>
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
@@ -433,6 +437,8 @@ namespace Libplanet.Action
                     delta.GetBalance,
                     delta.GetTotalSupply,
                     delta.GetValidatorSet,
+                    delta.GetAccount,
+                    delta.GetState,
                     tx.Signer);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
@@ -601,8 +607,13 @@ namespace Libplanet.Action
         private IAccountStateDelta GetPreviousBlockOutputStates(
             IPreEvaluationBlockHeader blockHeader)
         {
-            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
-                InitializeAccountGettersPair(blockHeader);
+            var (
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    totalSupplyGetter,
+                    validatorSetGetter,
+                    accountGetter,
+                    subTrieValueGetter) = InitializeAccountGettersPair(blockHeader);
             Address miner = blockHeader.Miner;
 
             return AccountStateDeltaImpl.ChooseVersion(
@@ -611,10 +622,18 @@ namespace Libplanet.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieValueGetter,
                 miner);
         }
 
-        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
+        private (
+            AccountStateGetter,
+            AccountBalanceGetter,
+            TotalSupplyGetter,
+            ValidatorSetGetter,
+            AccountGetter,
+            SubTrieStateGetter)
             InitializeAccountGettersPair(
             IPreEvaluationBlockHeader blockHeader)
         {
@@ -622,6 +641,8 @@ namespace Libplanet.Action
             AccountBalanceGetter accountBalanceGetter;
             TotalSupplyGetter totalSupplyGetter;
             ValidatorSetGetter validatorSetGetter;
+            SubTrieStateGetter subTrieStateGetter;
+            AccountGetter accountGetter;
 
             if (blockHeader.PreviousHash is { } previousHash)
             {
@@ -639,6 +660,9 @@ namespace Libplanet.Action
                     previousHash
                 );
                 validatorSetGetter = () => _blockChainStates.GetValidatorSet(previousHash);
+                accountGetter = address => _blockChainStates.GetAccount(address, previousHash);
+                subTrieStateGetter = (account, keyAddress) =>
+                    _blockChainStates.GetState(account, keyAddress, previousHash);
             }
             else
             {
@@ -646,10 +670,12 @@ namespace Libplanet.Action
                 accountBalanceGetter = NullAccountBalanceGetter;
                 totalSupplyGetter = NullTotalSupplyGetter;
                 validatorSetGetter = NullValidatorSetGetter;
+                accountGetter = NullAccountGetter;
+                subTrieStateGetter = NullSubTrieValueGetter;
             }
 
             return (accountStateGetter, accountBalanceGetter, totalSupplyGetter,
-                validatorSetGetter);
+                validatorSetGetter, accountGetter, subTrieStateGetter);
         }
 
         private IEnumerable<IAction> LoadActions(long index, ITransaction tx)

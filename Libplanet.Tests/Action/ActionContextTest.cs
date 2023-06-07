@@ -164,16 +164,24 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
                 ImmutableHashSet<Currency>.Empty;
 
+            public IImmutableSet<(IAccount, Address)> UpdatedSubTrie =>
+                ImmutableHashSet<(IAccount, Address)>.Empty;
+
             public IImmutableDictionary<Address, IImmutableSet<Currency>>
             UpdatedFungibleAssets =>
                 ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
 
             public IValue GetState(Address address) => null;
 
+            public IValue GetState(IAccount account, Address address) => null;
+
             public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
                 new IValue[addresses.Count];
 
             public IAccountStateDelta SetState(Address address, IValue state) => this;
+
+            public IAccountStateDelta SetState(IAccount account, Address address, IValue value) =>
+                this;
 
             public FungibleAssetValue GetBalance(Address address, Currency currency) =>
                 new FungibleAssetValue(currency);
@@ -187,6 +195,9 @@ namespace Libplanet.Tests.Action
 
                 return currency * 0;
             }
+
+            public IAccount GetAccount(Address address) =>
+                Account.NullAccount;
 
             public virtual ValidatorSet GetValidatorSet()
             {

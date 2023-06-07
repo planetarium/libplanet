@@ -27,6 +27,11 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
+        /// <param name="accountGetter">
+        /// A view to the &#x201c;epoch&#x201d; account states.
+        /// </param>
+        /// <param name="subTrieStateGetter">A view to the &#x201c;epoch&#x201d; value from
+        /// account's sub-trie.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
         internal AccountStateDeltaImpl(
@@ -34,6 +39,8 @@ namespace Libplanet.State
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
+            AccountGetter accountGetter,
+            SubTrieStateGetter subTrieStateGetter,
             Address signer
         )
         {
@@ -41,9 +48,12 @@ namespace Libplanet.State
             BalanceGetter = accountBalanceGetter;
             TotalSupplyGetter = totalSupplyGetter;
             ValidatorSetGetter = validatorSetGetter;
+            AccountGetter = accountGetter;
+            SubTrieStateGetter = subTrieStateGetter;
             UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
+            UpdatedSubStates = ImmutableDictionary<(IAccount, Address), IValue>.Empty;
             Signer = signer;
         }
 
@@ -67,6 +77,9 @@ namespace Libplanet.State
                     g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2)
                 .ToImmutableHashSet());
 
+        IImmutableSet<(IAccount, Address)> IAccountStateDelta.UpdatedSubTrie =>
+            UpdatedSubStates.Keys.ToImmutableHashSet();
+
         [Pure]
         IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
             UpdatedTotalSupply.Keys.ToImmutableHashSet();
@@ -79,6 +92,10 @@ namespace Libplanet.State
 
         protected ValidatorSetGetter ValidatorSetGetter { get; set; }
 
+        protected AccountGetter AccountGetter { get; set; }
+
+        protected SubTrieStateGetter SubTrieStateGetter { get; set; }
+
         protected Address Signer { get; set; }
 
         protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
@@ -88,6 +105,8 @@ namespace Libplanet.State
             get;
             set;
         }
+
+        protected IImmutableDictionary<(IAccount, Address), IValue> UpdatedSubStates { get; set; }
 
         protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
 
@@ -105,6 +124,11 @@ namespace Libplanet.State
             ActionContext.GetStateTimer.Value?.Stop();
             return state;
         }
+
+        public IValue? GetState(IAccount account, Address address) =>
+            UpdatedSubStates.TryGetValue((account, address), out IValue? value)
+                ? value
+                : SubTrieStateGetter(account, address);
 
         /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
@@ -147,6 +171,9 @@ namespace Libplanet.State
         IAccountStateDelta IAccountStateDelta.SetState(Address address, IValue state) =>
             UpdateStates(UpdatedStates.SetItem(address, state));
 
+        public IAccountStateDelta SetState(IAccount account, Address address, IValue value) =>
+            UpdateSubStates(UpdatedSubStates.SetItem((account, address), value));
+
         /// <inheritdoc/>
         [Pure]
         public virtual FungibleAssetValue GetBalance(Address address, Currency currency) =>
@@ -169,6 +196,8 @@ namespace Libplanet.State
 
             return TotalSupplyGetter(currency);
         }
+
+        public IAccount GetAccount(Address address) => AccountGetter(address);
 
         /// <inheritdoc/>
         [Pure]
@@ -330,6 +359,11 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
+        /// <param name="accountGetter">
+        /// A view to the &#x201c;epoch&#x201d; account states.
+        /// </param>
+        /// <param name="subTrieStateGetter">A view to the &#x201c;epoch&#x201d; value from
+        /// account's sub-trie.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
         /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
@@ -341,18 +375,24 @@ namespace Libplanet.State
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
+            AccountGetter accountGetter,
+            SubTrieStateGetter subTrieStateGetter,
             Address signer) => protocolVersion > 0
             ? new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieStateGetter,
                 signer)
             : new AccountStateDeltaImplV0(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                accountGetter,
+                subTrieStateGetter,
                 signer);
 
         [Pure]
@@ -373,12 +413,15 @@ namespace Libplanet.State
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
+                AccountGetter,
+                SubTrieStateGetter,
                 Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = UpdatedValidatorSet,
+                UpdatedSubStates = UpdatedSubStates,
             };
 
         [Pure]
@@ -397,12 +440,15 @@ namespace Libplanet.State
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
+                AccountGetter,
+                SubTrieStateGetter,
                 Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
                 UpdatedTotalSupply = updatedTotalSupply,
                 UpdatedValidatorSet = UpdatedValidatorSet,
+                UpdatedSubStates = UpdatedSubStates,
             };
 
         [Pure]
@@ -414,12 +460,34 @@ namespace Libplanet.State
                 BalanceGetter,
                 TotalSupplyGetter,
                 ValidatorSetGetter,
+                AccountGetter,
+                SubTrieStateGetter,
                 Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
+                UpdatedSubStates = UpdatedSubStates,
+            };
+
+        [Pure]
+        protected virtual AccountStateDeltaImpl UpdateSubStates(
+            IImmutableDictionary<(IAccount, Address), IValue> updatedSubStates) =>
+            new AccountStateDeltaImpl(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                AccountGetter,
+                SubTrieStateGetter,
+                Signer)
+            {
+                UpdatedStates = UpdatedStates,
+                UpdatedFungibles = UpdatedFungibles,
+                UpdatedTotalSupply = UpdatedTotalSupply,
+                UpdatedValidatorSet = UpdatedValidatorSet,
+                UpdatedSubStates = updatedSubStates,
             };
     }
 }

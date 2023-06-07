@@ -24,10 +24,13 @@ namespace Libplanet.Tests.Action
     {
         protected readonly PrivateKey[] _keys;
         protected readonly Address[] _addr;
+        protected readonly Address[] _accountAddr;
         protected readonly Currency[] _currencies;
         protected readonly IImmutableDictionary<Address, IValue> _states;
         protected readonly IImmutableDictionary<(Address, Currency), BigInteger> _assets;
         protected readonly IImmutableDictionary<Currency, (BigInteger, BigInteger)> _totalSupplies;
+        protected readonly IImmutableDictionary<Address, IAccount> _accounts;
+        protected readonly IImmutableDictionary<(IAccount, Address), IValue> _subTrieStates;
         protected readonly ValidatorSet _validatorSet;
         protected readonly IAccountStateDelta _init;
 
@@ -41,6 +44,12 @@ namespace Libplanet.Tests.Action
             };
 
             _addr = _keys.Select(AddressExtensions.ToAddress).ToArray();
+
+            _accountAddr = new[]
+            {
+                new PrivateKey(),
+                new PrivateKey(),
+            }.Select(AddressExtensions.ToAddress).ToArray();
 
             _currencies = new[]
             {
@@ -81,6 +90,20 @@ namespace Libplanet.Tests.Action
                     new Validator(_keys[2].PublicKey, 1),
                 }.ToList());
 
+            _accounts =
+                new Dictionary<Address, IAccount>()
+                {
+                    [_accountAddr[0]] = new Account(_addr[0], default),
+                    [_accountAddr[1]] = new Account(_addr[1], default),
+                }.ToImmutableDictionary();
+
+            _subTrieStates =
+                new Dictionary<(IAccount, Address), IValue>()
+                {
+                    [(_accounts[_accountAddr[0]], _addr[0])] = (Text)"s_a",
+                    [(_accounts[_accountAddr[1]], _addr[1])] = (Text)"s_b",
+                }.ToImmutableDictionary();
+
             output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
             int i = 0;
             foreach (Address a in _addr)
@@ -103,6 +126,8 @@ namespace Libplanet.Tests.Action
                 GetBalance,
                 GetTotalSupply,
                 GetValidatorSet,
+                GetAccount,
+                GetState,
                 _addr[0]);
         }
 
@@ -113,6 +138,8 @@ namespace Libplanet.Tests.Action
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
+            AccountGetter accountGetter,
+            SubTrieStateGetter subTrieStateGetter,
             Address signer
         );
 
@@ -173,6 +200,20 @@ namespace Libplanet.Tests.Action
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
             Assert.Empty(_init.UpdatedAddresses);
             Assert.Empty(_init.StateUpdatedAddresses);
+        }
+
+        [Fact]
+        public virtual void SubStates()
+        {
+            IAccount account0 = _init.GetAccount(_accountAddr[0]);
+
+            IAccountStateDelta a = _init.SetState(account0, _addr[0], (Text)"A");
+            Assert.NotEqual(
+                (Text)_init.GetState(account0, _addr[0]),
+                (Text)a.GetState(account0, _addr[0]));
+            Assert.Equal("A", (Text)a.GetState(account0, _addr[0]));
+            Assert.Equal((Text)_init.GetState(_addr[0]), (Text)a.GetState(_addr[0]));
+            Assert.Equal(_init.GetState(account0, _addr[1]), a.GetState(account0, _addr[1]));
         }
 
         [Fact]
@@ -298,7 +339,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
+                CreateInstance(
+                    GetStates,
+                    GetBalance,
+                    GetTotalSupply,
+                    GetValidatorSet,
+                    GetAccount,
+                    GetState,
+                    _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.MintAsset(_addr[1], Value(0, 10))
@@ -340,7 +388,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
+                CreateInstance(
+                    GetStates,
+                    GetBalance,
+                    GetTotalSupply,
+                    GetValidatorSet,
+                    GetAccount,
+                    GetState,
+                    _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.BurnAsset(_addr[0], Value(0, 5))
@@ -415,6 +470,12 @@ namespace Libplanet.Tests.Action
         protected IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) => addresses
             .Select(address => _states.TryGetValue(address, out IValue v) ? v : null)
             .ToArray();
+
+        protected IValue GetState(IAccount account, Address key) =>
+            _subTrieStates.TryGetValue((account, key), out IValue v) ? v : null;
+
+        protected IAccount GetAccount(Address address) =>
+            _accounts.TryGetValue(address, out IAccount account) ? account : Account.NullAccount;
 
         protected FungibleAssetValue GetBalance(Address address, Currency currency) =>
             new FungibleAssetValue(

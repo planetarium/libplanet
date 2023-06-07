@@ -11,6 +11,43 @@ namespace Libplanet.Action
 {
     internal static class ActionEvaluationsExtensions
     {
+        public static ImmutableDictionary<string, IValue> GetSubStateDelta(
+            this IReadOnlyList<IActionEvaluation> actionEvaluations,
+            Func<Address, string> toStateKey,
+            IAccount targetAccount)
+        {
+            IAccountStateDelta lastStates = actionEvaluations.Count > 0
+                ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
+                : null;
+
+            bool Predicate((IAccount, Address) x) =>
+                x.Item1 == targetAccount;
+
+            string KeySelector((IAccount, Address) cell) =>
+                toStateKey(cell.Item2);
+
+            IValue ElementSelector((IAccount, Address) tuple) =>
+                lastStates?.GetState(tuple.Item1, tuple.Item2);
+
+            IImmutableSet<(IAccount, Address)> stateUpdatedCell = actionEvaluations
+                .SelectMany(a => a.OutputStates.UpdatedSubTrie)
+                .Where(Predicate)
+                .ToImmutableHashSet();
+
+            return stateUpdatedCell.ToImmutableDictionary(
+                KeySelector,
+                ElementSelector);
+        }
+
+        public static ImmutableHashSet<IAccount> GetUpdatedAccounts(
+            this IReadOnlyList<IActionEvaluation> actionEvaluations)
+        {
+            return actionEvaluations
+                .SelectMany(a => a.OutputStates.UpdatedSubTrie)
+                .Select(x => x.Item1)
+                .ToImmutableHashSet();
+        }
+
         public static ImmutableDictionary<string, IValue> GetTotalDelta(
             this IReadOnlyList<IActionEvaluation> actionEvaluations,
             Func<Address, string> toStateKey,
