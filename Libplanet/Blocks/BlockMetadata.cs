@@ -22,7 +22,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 4;
+        public const int CurrentProtocolVersion = 5;
 
         /// <summary>
         /// The last PoW protocol version.
