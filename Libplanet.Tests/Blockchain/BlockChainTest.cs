@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
         }
 
@@ -673,14 +673,14 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(b1, TestUtils.CreateBlockCommit(b1));
 
             Block b2 = _blockChain.ProposeBlock(
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             Assert.Throws<InvalidTxNonceException>(() =>
                 _blockChain.Append(b2, CreateBlockCommit(b2)));
 
@@ -695,7 +695,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsB.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(b2, CreateBlockCommit(b2));
         }
 
@@ -727,7 +727,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
@@ -743,7 +743,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsB.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(b2, CreateBlockCommit(b2));
 
             Assert.Equal(2, _blockChain.GetNextTxNonce(address));
@@ -799,7 +799,7 @@ namespace Libplanet.Tests.Blockchain
                 miner,
                 txs1.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(block1, CreateBlockCommit(block1));
 
             PrivateKey privateKey = new PrivateKey(new byte[]
@@ -861,7 +861,7 @@ namespace Libplanet.Tests.Blockchain
                     miner,
                     txs.ToImmutableList(),
                     CreateBlockCommit(_blockChain.Tip),
-                    _blockChain.GetPendingEvidences());
+                    ImmutableArray<Evidence>.Empty);
                 _blockChain.Append(b, CreateBlockCommit(b));
             }
 
@@ -891,7 +891,7 @@ namespace Libplanet.Tests.Blockchain
                 miner,
                 txsB.ToImmutableList(),
                 CreateBlockCommit(fork.Tip),
-                fork.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             fork.Append(forkTip, CreateBlockCommit(forkTip), render: true);
 
             Guid previousChainId = _blockChain.Id;
@@ -1172,7 +1172,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.Proposer,
                     txs.ToImmutableList(),
                     CreateBlockCommit(chain.Tip),
-                    chain.GetPendingEvidences());
+                    ImmutableArray<Evidence>.Empty);
                 chain.Append(b, CreateBlockCommit(b));
             }
 
@@ -1411,7 +1411,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));

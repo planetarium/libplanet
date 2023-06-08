@@ -30,7 +30,7 @@ namespace Libplanet.Net.Consensus
                 Height,
                 lastCommit);
             _lastCommit = lastCommit;
-            _commitEvidences = commitEvidences ?? ImmutableArray<Evidence>.Empty;
+            _commitEvidences = commitEvidences;
             ProduceMutation(() => StartRound(0));
 
             // FIXME: Exceptions inside tasks should be handled properly.

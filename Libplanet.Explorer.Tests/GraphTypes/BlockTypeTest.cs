@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -41,7 +40,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     previousHash: lastBlockHash,
                     txHash: null,
                     lastCommit: lastBlockCommit,
-                    evidences: null)).Propose();
+                    evidences: ImmutableArray<Evidence>.Empty)).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);

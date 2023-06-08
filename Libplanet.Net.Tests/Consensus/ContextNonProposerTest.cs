@@ -151,7 +151,7 @@ namespace Libplanet.Net.Tests.Consensus
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 key);
 
             context.StateChanged += (_, eventArgs) =>
@@ -234,7 +234,7 @@ namespace Libplanet.Net.Tests.Consensus
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 TestUtils.PrivateKeys[1]);
 
             context.Start();
@@ -380,7 +380,7 @@ namespace Libplanet.Net.Tests.Consensus
                 previousHash: blockChain.Genesis.Hash,
                 txHash: BlockContent.DeriveTxHash(txs),
                 lastCommit: null,
-                evidences: null);
+                evidences: ImmutableArray<Evidence>.Empty);
             var preEval = new PreEvaluationBlock(
                 new PreEvaluationBlockHeader(
                     metadata, metadata.DerivePreEvaluationHash(default)),

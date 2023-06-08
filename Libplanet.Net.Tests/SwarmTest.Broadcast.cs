@@ -13,6 +13,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
@@ -767,13 +768,13 @@ namespace Libplanet.Net.Tests
                 GenesisProposer,
                 new[] { transactions[0] }.ToImmutableList(),
                 TestUtils.CreateBlockCommit(blockChain.Tip),
-                blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
             Block block2 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[1] }.ToImmutableList(),
                 CreateBlockCommit(blockChain.Tip),
-                blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
             try

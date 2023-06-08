@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Tests.Blocks;
 using Libplanet.Tests.Fixtures;
 using Xunit;
@@ -31,6 +32,7 @@ namespace Libplanet.Tests
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
+        private static readonly byte[] EvidencesKey = { 0x76 }; // 'v
 
         // Block fields:
         private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
@@ -63,7 +65,9 @@ namespace Libplanet.Tests
                     TimestampKey,
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true))
-                .Add(TxHashKey, _fx.Genesis.TxHash.Value.ByteArray);
+                .Add(TxHashKey, _fx.Genesis.TxHash.Value.ByteArray)
+                .Add(
+                EvidencesKey, new List(_fx.Genesis.Evidences?.Select(ev => Evidence.Bencode(ev))));
             var expectedGenesisHeader = _marshaledGenesisMetadata
                 .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
@@ -83,7 +87,9 @@ namespace Libplanet.Tests
                 .Add(
                     TimestampKey,
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
+                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true))
+                .Add(
+                EvidencesKey, new List(_fx.HasTx.Evidences?.Select(ev => Evidence.Bencode(ev))));
             var expectedNextHeader = _marshaledNextMetadata
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
@@ -101,7 +107,9 @@ namespace Libplanet.Tests
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
                 .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
-                .Add(LastCommitKey, _fx.HasTx.LastCommit.Bencoded);
+                .Add(LastCommitKey, _fx.HasTx.LastCommit.Bencoded)
+                .Add(
+                EvidencesKey, new List(_fx.HasTx.Evidences?.Select(ev => Evidence.Bencode(ev))));
             var expectedHasTxHeader = _marshaledHasTxMetadata
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)

@@ -150,9 +150,16 @@ namespace Libplanet.Net.Consensus
 
                     if (_preVotes[preVote.Round].ContainsKey(preVote.ValidatorPublicKey))
                     {
-                        _duplicatedVotesPool.Add(
-                            _preVotes[preVote.Round][preVote.ValidatorPublicKey].PreVote,
-                            preVote.PreVote);
+                        try
+                        {
+                            _duplicatedVotesPool.Add(
+                                _preVotes[preVote.Round][preVote.ValidatorPublicKey].PreVote,
+                                preVote.PreVote);
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+
                         var msg =
                             "There is already a prevote message for given prevote message's " +
                             $"round {preVote.Round} and validator {preVote.ValidatorPublicKey}";
@@ -173,9 +180,17 @@ namespace Libplanet.Net.Consensus
 
                     if (_preCommits[preCommit.Round].ContainsKey(preCommit.ValidatorPublicKey))
                     {
-                        _duplicatedVotesPool.Add(
-                            _preCommits[preCommit.Round][preCommit.ValidatorPublicKey].PreCommit,
-                            preCommit.PreCommit);
+                        try
+                        {
+                            _duplicatedVotesPool.Add(
+                                _preCommits[preCommit.Round][preCommit.ValidatorPublicKey]
+                                .PreCommit,
+                                preCommit.PreCommit);
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+
                         var msg =
                             "There is already a precommit message for given precommit message's " +
                             $"round {preCommit.Round} and validator {preCommit.ValidatorPublicKey}";

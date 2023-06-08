@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
             Assert.Equal(_blockChain.Tip, validNextBlock);
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Blockchain
                             previousHash: block1.Hash,
                             txHash: null,
                             lastCommit: null,
-                            evidences: null)).Propose(),
+                            evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                     _fx.Proposer);
                 _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             });
@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: prev.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
@@ -122,7 +122,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: prev.Hash,
                         txHash: null,
                         lastCommit: TestUtils.CreateBlockCommit(prev.Hash, prev.Index + 1, 0),
-                        evidences: _blockChain.GetPendingEvidences()))
+                        evidences: ImmutableArray<Evidence>.Empty))
                         .Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockIndexException>(
@@ -149,7 +149,7 @@ namespace Libplanet.Tests.Blockchain
                         // ReSharper disable once PossibleInvalidOperationException
                         lastCommit: TestUtils.CreateBlockCommit(
                             _validNext.PreviousHash.Value, 1, 0),
-                        evidences: _blockChain.GetPendingEvidences())).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _validNext.Hash,
                         txHash: null,
                         lastCommit: TestUtils.CreateBlockCommit(_validNext),
-                        evidences: _blockChain.GetPendingEvidences())).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(
@@ -219,7 +219,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: genesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 TestUtils.GenesisProposer);
 
             var policyWithBlockAction = new BlockPolicy(
@@ -255,7 +255,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
             Assert.Equal(_blockChain.Tip, validNextBlock);
@@ -273,7 +273,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
@@ -305,7 +305,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
@@ -329,7 +329,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: blockCommit,
-                        evidences: _blockChain.GetPendingEvidences())).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
@@ -347,7 +347,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
@@ -370,7 +370,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: blockCommit,
-                        evidences: _blockChain.GetPendingEvidences())).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
@@ -410,7 +410,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
@@ -434,7 +434,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
@@ -458,7 +458,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
@@ -491,7 +491,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
@@ -525,7 +525,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: blockChain.Genesis.Hash,
                         txHash: null,
                         lastCommit: null,
-                        evidences: null)).Propose(),
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 _fx.Proposer);
 
             Vote GenerateVote(PrivateKey key, VoteFlag flag)

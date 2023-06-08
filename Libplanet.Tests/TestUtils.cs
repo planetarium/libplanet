@@ -442,7 +442,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs);
             return content.Propose();
         }
@@ -489,6 +489,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ? new List<Transaction>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
 
+            if (protocolVersion >= 5)
+            {
+                evidences = evidences ?? ImmutableArray<Evidence>.Empty;
+            }
+
             var content = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
@@ -514,7 +519,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            ImmutableArray<Evidence>? evidences = null)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -527,7 +533,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner?.PublicKey,
                 blockInterval,
                 protocolVersion,
-                lastCommit);
+                lastCommit,
+                evidences);
             return preEval.Sign(miner, stateRootHash);
         }
 

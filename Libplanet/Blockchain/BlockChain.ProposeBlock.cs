@@ -60,7 +60,7 @@ namespace Libplanet.Blockchain
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: transactions);
 
             PreEvaluationBlock preEval = content.Propose();

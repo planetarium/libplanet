@@ -126,10 +126,11 @@ namespace Libplanet.Tests.Blocks
                     "public_key",
                     ParseHex("0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f")
                 )
-                .Add("protocol_version", 4)
+                .Add("protocol_version", 5)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"));
+                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"))
+                .Add("evidences", List.Empty);
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
@@ -152,7 +153,8 @@ namespace Libplanet.Tests.Blocks
                     "transaction_fingerprint",
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
-                .Add("protocol_version", 4);
+                .Add("protocol_version", 5)
+                .Add("evidences", List.Empty);
             AssertBencodexEqual(
                 expectedBlock1,
                 Block1Metadata.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
@@ -245,13 +247,13 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
-                FromHex("d6c03233c2fbe96c57c823c5edc679810f1714dceef7a466a3f7a6659af9fe17"),
+                FromHex("d09debc55e0b26b5215dc63372bc1f62bd1908a8623ae634f0f5df5316fe8ba4"),
                 hash.ByteArray);
 
             hash = Block1Metadata.DerivePreEvaluationHash(
                 new Nonce(FromHex("e7c1adf92c65d35aaae5")));
             AssertBytesEqual(
-                FromHex("9ae70453c854c69c03e9841e117d269b97615dcf4f580fb99577d981d3f61ebf"),
+                FromHex("d6d563ecca27e3179688564d10db2f90c0d15c5bbfc12856cd0c9b46ba12151e"),
                 hash.ByteArray);
         }
 

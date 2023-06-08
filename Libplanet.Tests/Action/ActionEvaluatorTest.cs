@@ -12,6 +12,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Store;
@@ -83,7 +84,7 @@ namespace Libplanet.Tests.Action
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
@@ -231,7 +232,7 @@ namespace Libplanet.Tests.Action
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs).Propose();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
@@ -489,9 +490,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
+                (1, 0, new[] { "A", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -587,7 +588,7 @@ namespace Libplanet.Tests.Action
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
@@ -716,7 +717,7 @@ namespace Libplanet.Tests.Action
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0),
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs).Propose();
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -861,7 +862,7 @@ namespace Libplanet.Tests.Action
                 GenesisProposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(chain.Tip),
-                chain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
 
             AccountStateGetter accountStateGetter =
                 ActionEvaluator.NullAccountStateGetter;

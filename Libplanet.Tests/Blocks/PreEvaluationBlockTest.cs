@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Tests.Store;
@@ -73,7 +75,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: genesis.Hash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null,
-                        evidences: null),
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: txs);
                 PreEvaluationBlock preEval1 = content1.Propose();
 
@@ -139,7 +141,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: genesis.Hash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null,
-                        evidences: null),
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: txs);
                 PreEvaluationBlock preEval1 = content1.Propose();
 

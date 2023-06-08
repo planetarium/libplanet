@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Tx;
@@ -64,7 +65,7 @@ namespace Libplanet.Tests.Blocks
                     previousHash: Block1Content.PreviousHash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs);
             Assert.Equal(
                 new[] { Block1Tx1.Id, Block1Tx0.Id, tx2.Id },
@@ -98,7 +99,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null,
-                        evidences: null),
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: txs));
             Assert.Equal(Block1Tx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
@@ -132,7 +133,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null,
-                        evidences: null),
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: txs));
             Assert.Equal(dupTx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
@@ -171,7 +172,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(inconsistentTxs),
                         lastCommit: null,
-                        evidences: null),
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: inconsistentTxs));
             Assert.Equal(Block1Content.Transactions[0].GenesisHash, e.ExpectedGenesisHash);
             Assert.Equal(differentGenesisHash, e.ImproperGenesisHash);

@@ -6,6 +6,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
@@ -112,7 +113,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                _blockChain.GetPendingEvidences());
+                ImmutableArray<Evidence>.Empty);
             _blockChain.Append(block1, CreateBlockCommit(block1), render: true);
 
             var minerAddress = genesis.Miner;

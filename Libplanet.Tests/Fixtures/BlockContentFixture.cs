@@ -7,6 +7,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tx;
 using Xunit;
@@ -60,7 +61,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(genTxs),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: genTxs);
             GenesisMetadata = new BlockMetadata(GenesisContent);
             GenesisHash = BlockHash.FromString(
@@ -116,7 +117,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null,
-                    evidences: null),
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: block1Transactions);
             Block1TxHash = HashDigest<SHA256>.FromString(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");

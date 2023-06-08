@@ -75,8 +75,7 @@ namespace Libplanet.Net.Consensus
             if (vote.BlockHash.Equals(voteDup.BlockHash))
             {
                 throw new ArgumentException(
-                    $"Block hash of vote pair are different " +
-                    $": {vote.BlockHash}, {voteDup.BlockHash}");
+                    $"Block hash of vote pair are equal : {vote.BlockHash}");
             }
 
             if (!vote.Verify())
