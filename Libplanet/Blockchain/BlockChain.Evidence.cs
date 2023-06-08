@@ -104,14 +104,15 @@ namespace Libplanet.Blockchain
         /// <param name="duplicatedVoteSets"><see cref="Vote"/>s that are found duplicated.</param>
         /// <param name="blockEvidences"><see cref="Evidence"/>s committed on the block.</param>
         public void UpdateEvidence(
-            IEnumerable<Vote[]> duplicatedVoteSets, IEnumerable<Evidence>? blockEvidences)
+            IEnumerable<IEnumerable<Vote>> duplicatedVoteSets,
+            IEnumerable<Evidence>? blockEvidences)
         {
-            foreach (Vote[] votes in duplicatedVoteSets)
+            foreach (IEnumerable<Vote> votes in duplicatedVoteSets)
             {
                 AddEvidence(
                     new DuplicateVoteEvidence(
                         votes,
-                        GetValidatorSet(this[votes[0].Height].Hash),
+                        GetValidatorSet(this[votes.First().Height].Hash),
                         DateTimeOffset.UtcNow));
             }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -30,13 +31,13 @@ namespace Libplanet.Consensus
         /// from block of conflicting votes has been made.</param>
         /// <param name="timestamp">The timestamp of evidence.</param>
         public DuplicateVoteEvidence(
-            Vote[] votes,
+            IEnumerable<Vote> votes,
             ValidatorSet validatorSet,
             DateTimeOffset timestamp)
             : this(
-                  height: votes[0].Height,
+                  height: votes.First().Height,
                   votes: votes,
-                  validatorPower: validatorSet.GetValidator(votes[0].ValidatorPublicKey).Power,
+                  validatorPower: validatorSet.GetValidator(votes.First().ValidatorPublicKey).Power,
                   totalPower: validatorSet.TotalPower,
                   timestamp: timestamp)
         {
@@ -113,7 +114,7 @@ namespace Libplanet.Consensus
                     $"Signature of votes are invalid");
             }
 
-            Votes = votes.OrderBy(vote => vote.BlockHash).ToArray();
+            Votes = votes.OrderBy(vote => vote.BlockHash).ToImmutableArray();
             ValidatorPower = validatorPower;
             TotalPower = totalPower;
         }
@@ -137,7 +138,7 @@ namespace Libplanet.Consensus
         /// The conflicting votes.
         /// At least two votes are needed for duplicate vote evidence.
         /// </summary>
-        public Vote[] Votes { get; }
+        public ImmutableArray<Vote> Votes { get; }
 
         /// <summary>
         /// Consensus power of validator that committed infraction at the time

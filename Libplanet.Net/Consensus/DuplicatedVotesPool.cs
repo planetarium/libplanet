@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -99,18 +100,18 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Retrieve duplicated vote sets from the <see cref="DuplicatedVotesPool"/>.
         /// <seealso cref="Blockchain.BlockChain.UpdateEvidence(
-        /// IEnumerable{Vote[]}, IEnumerable{Evidence}?)"/>
+        /// IEnumerable{IEnumerable{Vote}}, IEnumerable{Evidence}?)"/>
         /// <seealso cref="Context.ProcessHeightOrRoundUponRules(Messages.ConsensusMsg)"/>
         /// </summary>
         /// <returns>Duplicated vote sets retrieved from the <see cref="DuplicatedVotesPool"/>.
         /// </returns>
-        public IEnumerable<Vote[]> Exhaust()
+        public IEnumerable<IEnumerable<Vote>> Exhaust()
         {
             foreach ((long, int, PublicKey) key in _duplicatedVotes.Keys)
             {
                 if (_duplicatedVotes.TryRemove(key, out List<Vote>? voteList))
                 {
-                    yield return voteList.ToArray();
+                    yield return voteList;
                 }
             }
         }
