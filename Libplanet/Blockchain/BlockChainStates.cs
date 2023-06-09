@@ -58,25 +58,20 @@ namespace Libplanet.Blockchain
 
             IReadOnlyList<Address> uncachedAddresses =
                 uncachedIndices.Select(index => addresses[index]).ToArray();
-            if (_store.GetStateRootHash(offset) is { } h && _stateStore.ContainsStateRoot(h))
+            ITrie stateRoot = GetStateRoot(offset);
+            string[] stringKeys = uncachedAddresses.Select(ToStateKey).ToArray();
+            IReadOnlyList<IValue?> fetched = stateRoot.Get(
+                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
             {
-                IReadOnlyList<IValue?> fetched = uncachedAddresses
-                    .Select(a => _stateStore.GetStates(h, new string[] { ToStateKey(a) })[0])
-                    .AsParallel()
-                    .ToList();
-                foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
+                result[v] = fetched[i];
+                if (fetched[i] is { } f)
                 {
-                    result[v] = fetched[i];
-                    if (fetched[i] is { } f)
-                    {
-                        _stateCache.AddOrUpdate(offset, addresses[v], fetched[i]);
-                    }
+                    _stateCache.AddOrUpdate(offset, addresses[v], fetched[i]);
                 }
-
-                return result;
             }
 
-            throw new IncompleteBlockStatesException(offset);
+            return result;
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
@@ -85,18 +80,13 @@ namespace Libplanet.Blockchain
             Currency currency,
             BlockHash offset)
         {
-            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
-            {
-                string rawKey = ToFungibleAssetKey(address, currency);
-                IReadOnlyList<IValue?> values =
-                    _stateStore.GetStates(stateRootHash, new[] { rawKey });
-                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
-            }
-
-            throw new IncompleteBlockStatesException(offset);
+            ITrie stateRoot = GetStateRoot(offset);
+            string[] stringKeys = new[] { ToFungibleAssetKey(address, currency) };
+            IReadOnlyList<IValue?> rawValues = stateRoot.Get(
+                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
@@ -109,18 +99,13 @@ namespace Libplanet.Blockchain
                 throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
-            {
-                string rawKey = ToTotalSupplyKey(currency);
-                IReadOnlyList<IValue?> values =
-                    _stateStore.GetStates(stateRootHash, new[] { rawKey });
-                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
-            }
-
-            throw new IncompleteBlockStatesException(offset);
+            ITrie stateRoot = GetStateRoot(offset);
+            string[] stringKeys = new[] { ToTotalSupplyKey(currency) };
+            IReadOnlyList<IValue?> rawValues = stateRoot.Get(
+                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
