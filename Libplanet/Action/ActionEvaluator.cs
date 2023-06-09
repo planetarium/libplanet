@@ -625,35 +625,18 @@ namespace Libplanet.Action
             InitializeAccountGettersPair(
             IPreEvaluationBlockHeader blockHeader)
         {
-            AccountStateGetter accountStateGetter;
-            AccountBalanceGetter accountBalanceGetter;
-            TotalSupplyGetter totalSupplyGetter;
-            ValidatorSetGetter validatorSetGetter;
-
-            if (blockHeader.PreviousHash is { } previousHash)
-            {
-                accountStateGetter = addresses => _blockChainStates.GetStates(
-                    addresses,
-                    previousHash
-                );
-                accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
-                    address,
-                    currency,
-                    previousHash
-                );
-                totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
-                    currency,
-                    previousHash
-                );
-                validatorSetGetter = () => _blockChainStates.GetValidatorSet(previousHash);
-            }
-            else
-            {
-                accountStateGetter = NullAccountStateGetter;
-                accountBalanceGetter = NullAccountBalanceGetter;
-                totalSupplyGetter = NullTotalSupplyGetter;
-                validatorSetGetter = NullValidatorSetGetter;
-            }
+            AccountStateGetter accountStateGetter = addresses =>
+                _blockChainStates.GetStates(
+                    addresses, blockHeader.PreviousHash);
+            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
+                _blockChainStates.GetBalance(
+                    address, currency, blockHeader.PreviousHash);
+            TotalSupplyGetter totalSupplyGetter = currency =>
+                _blockChainStates.GetTotalSupply(
+                    currency, blockHeader.PreviousHash);
+            ValidatorSetGetter validatorSetGetter = () =>
+                _blockChainStates.GetValidatorSet(
+                    blockHeader.PreviousHash);
 
             return (accountStateGetter, accountBalanceGetter, totalSupplyGetter,
                 validatorSetGetter);

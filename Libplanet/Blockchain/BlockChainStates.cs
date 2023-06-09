@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
@@ -32,15 +31,20 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset)
+            BlockHash? offset)
         {
+            if (!(offset is { } hash))
+            {
+                return Enumerable.Range(0, addresses.Count).Select(_ => (IValue?)null).ToList();
+            }
+
             int length = addresses.Count;
             List<int> uncachedIndices = new List<int>(length);
             IValue?[] result = new IValue?[length];
 
             for (int i = 0; i < length; i++)
             {
-                if (_stateCache.TryGetValue(offset, addresses[i], out IValue? cachedValue) &&
+                if (_stateCache.TryGetValue(hash, addresses[i], out IValue? cachedValue) &&
                     cachedValue is { } cv)
                 {
                     result[i] = cv;
@@ -67,7 +71,7 @@ namespace Libplanet.Blockchain
                 result[v] = fetched[i];
                 if (fetched[i] is { } f)
                 {
-                    _stateCache.AddOrUpdate(offset, addresses[v], fetched[i]);
+                    _stateCache.AddOrUpdate(hash, addresses[v], fetched[i]);
                 }
             }
 
@@ -78,7 +82,7 @@ namespace Libplanet.Blockchain
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset)
+            BlockHash? offset)
         {
             ITrie stateRoot = GetStateRoot(offset);
             string[] stringKeys = new[] { ToFungibleAssetKey(address, currency) };
@@ -92,7 +96,7 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset)
+            BlockHash? offset)
         {
             if (!currency.TotalSupplyTrackable)
             {
@@ -109,19 +113,15 @@ namespace Libplanet.Blockchain
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
-        public ValidatorSet GetValidatorSet(BlockHash offset)
+        public ValidatorSet GetValidatorSet(BlockHash? offset)
         {
-            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
-            {
-                IReadOnlyList<IValue?> values =
-                    _stateStore.GetStates(stateRootHash, new[] { ValidatorSetKey });
-                return values.Count > 0 && values[0] is List l
-                    ? new ValidatorSet(l)
-                    : new ValidatorSet();
-            }
-
-            throw new IncompleteBlockStatesException(offset);
+            ITrie stateRoot = GetStateRoot(offset);
+            string[] stringKeys = new[] { ValidatorSetKey };
+            IReadOnlyList<IValue?> rawValues = stateRoot.Get(
+                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            return rawValues.Count > 0 && rawValues[0] is List list
+                ? new ValidatorSet(list)
+                : new ValidatorSet();
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetStateRoot"/>
@@ -131,25 +131,22 @@ namespace Libplanet.Blockchain
             {
                 return _stateStore.GetStateRoot(null);
             }
-            else
+            else if (_store.GetStateRootHash(hash) is { } stateRootHash)
             {
-                if (_store.GetStateRootHash(hash) is { } stateRootHash)
+                if (_stateStore.ContainsStateRoot(stateRootHash))
                 {
-                    if (_stateStore.ContainsStateRoot(stateRootHash))
-                    {
-                        return _stateStore.GetStateRoot(stateRootHash);
-                    }
-                    else
-                    {
-                        throw new ArgumentException(
-                            $"Could not find state root {stateRootHash} in {nameof(IStateStore)}.");
-                    }
+                    return _stateStore.GetStateRoot(stateRootHash);
                 }
                 else
                 {
                     throw new ArgumentException(
-                        $"Could not find block hash {hash} in {nameof(IStore)}.");
+                        $"Could not find state root {stateRootHash} in {nameof(IStateStore)}.");
                 }
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Could not find block hash {hash} in {nameof(IStore)}.");
             }
         }
     }

@@ -21,20 +21,20 @@ namespace Libplanet.Blockchain
 
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset
+            BlockHash? offset
         ) =>
             new IValue?[addresses.Count];
 
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset
+            BlockHash? offset
         ) =>
             currency * 0;
 
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset
+            BlockHash? offset
         )
         {
             if (!currency.TotalSupplyTrackable)
@@ -45,7 +45,7 @@ namespace Libplanet.Blockchain
             return currency * 0;
         }
 
-        public ValidatorSet GetValidatorSet(BlockHash offset)
+        public ValidatorSet GetValidatorSet(BlockHash? offset)
         {
             return new ValidatorSet();
         }

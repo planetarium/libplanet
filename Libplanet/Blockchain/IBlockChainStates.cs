@@ -27,7 +27,7 @@ namespace Libplanet.Blockchain
         /// </returns>
         IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset
+            BlockHash? offset
         );
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Libplanet.Blockchain
         FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset
+            BlockHash? offset
         );
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
         FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset
+            BlockHash? offset
         );
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Libplanet.Blockchain
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at the
         /// <paramref name="offset"/>.
         /// </returns>
-        ValidatorSet GetValidatorSet(BlockHash offset);
+        ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
