@@ -873,8 +873,8 @@ namespace Libplanet.Store
             }
 
             WriteContentAddressableFile(
-                _pendingEvidences,
-                PendingEvidencePath(evidence.Id),
+                _committedEvidences,
+                CommittedEvidencePath(evidence.Id),
                 Codec.Encode(Evidence.Bencode(evidence)));
 
             _evidenceCache.AddOrUpdate(evidence.Id, evidence);
