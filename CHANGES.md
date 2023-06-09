@@ -10,11 +10,48 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `BlockHash` inherits `IComparable`.  [[#3196]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `Evidence` abstract class.  [[#3196]]
+ -  Added `EvidenceId` class.  [[#3196]]
+ -  Added `IBlockMetadata.Evidences` property.  [[#3196]]
+ -  Added `DuplicateVoteEvidence` class.  [[#3196]]
+ -  Added `IStore.IteratePendingEvidenceIds()` interface method.
+    [[#3196]]
+ -  Added `IStore.GetPendingEvidence(EvidenceId)` interface method.
+    [[#3196]]
+ -  Added `IStore.GetCommittedEvidence(EvidenceId)` interface method.
+    [[#3196]]
+ -  Added `IStore.PutPendingEvidence(Evidence)` interface method.
+    [[#3196]]
+ -  Added `IStore.PutCommittedEvidence(Evidence)` interface method.
+    [[#3196]]
+ -  Added `IStore.DeletePendingEvidence(EvidenceId)` interface method.
+    [[#3196]]
+ -  Added `IStore.DeleteCommittedEvidence(EvidenceId)` interface method.
+    [[#3196]]
+ -  Added `IStore.ContainsPendingEvidence(EvidenceId)` interface method.
+    [[#3196]]
+ -  Added `IStore.ContainsCommittedEvidence(EvidenceId)` interface method.
+    [[#3196]]
+ -  Added `BlockChain.GetPendingEvidences()` method.  [[#3196]]
+ -  Added `BlockChain.DeletePendingEvidence(EvidenceId)` method.  [[#3196]]
+ -  Added `BlockChain.AddEvidence(Evidence)` method.  [[#3196]]
+ -  Added `BlockChain.CommitEvidence(Evidence)` method.  [[#3196]]
+ -  Added `BlockChain.ProcessEvidenceExpirationAhead()` method.  [[#3196]]
+ -  Added `BlockChain.UpdateEvidence()` method.  [[#3196]]
+ -  Added `BlockChain.IsEvidenceCommitted(EvidenceId)` method.  [[#3196]]
+ -  Added `BlockChain.EvidenceExpirationHeight(long)` method.  [[#3196]]
+ -  Added `BlockChain.IsEvidenceExpired(Evidence, long)` method.  [[#3196]]
+ -  Added `BlockChain.VerifyEvidence(Evidence)` method.  [[#3196]]
+ -  Added `BlockChain.VerifyDuplicateVoteEvidence(DuplicateVoteEvidence)`
+    method.  [[#3196]]
 
 ### Behavioral changes
 
@@ -23,6 +60,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3196]: https://github.com/planetarium/libplanet/pull/3196
 
 
 Version 1.4.0
