@@ -182,9 +182,10 @@ namespace Libplanet.Net.Consensus
                 ImmutableArray<Evidence>? commitEvidences = null;
                 lock (_contextLock)
                 {
-                    lastCommit = _contexts.ContainsKey(height - 1)
-                        ? _contexts[height - 1].GetBlockCommit()
+                    Context? lastContext = _contexts.ContainsKey(height - 1)
+                        ? _contexts[height - 1]
                         : null;
+                    lastCommit = lastContext?.GetBlockCommit();
                     _logger.Debug(
                         "LastCommit of height #{Height} is: {LastCommit}",
                         Height,
@@ -203,6 +204,10 @@ namespace Libplanet.Net.Consensus
                                 lastCommit.Round);
                         }
                     }
+
+                    _blockChain.UpdateEvidence(
+                        lastContext?.GetDuplicatedVoteSets() ?? new List<List<Vote>>(),
+                        _blockChain[height - 1].Evidences);
 
                     commitEvidences = _blockChain.GetPendingEvidences();
                 }

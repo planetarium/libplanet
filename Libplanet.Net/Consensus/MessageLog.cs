@@ -378,6 +378,12 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Gets the duplicated <see cref="Vote"/> sets from it's <see cref="DuplicatedVotesPool"/>.
+        /// </summary>
+        /// <returns>Duplicated <see cref="Vote"/> sets collected by
+        /// <see cref="DuplicatedVotesPool"/>.
+        /// </returns>
         internal IEnumerable<IEnumerable<Vote>> GetDuplicatedVoteSets()
         {
             return _duplicatedVotesPool.Exhaust();

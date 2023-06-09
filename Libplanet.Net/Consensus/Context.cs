@@ -274,6 +274,14 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Gets the duplicated <see cref="Vote"/> sets from it's <see cref="MessageLog"/>.
+        /// </summary>
+        /// <returns>Duplicated <see cref="Vote"/> sets collected by <see cref="MessageLog"/>.
+        /// </returns>
+        internal IEnumerable<IEnumerable<Vote>> GetDuplicatedVoteSets()
+            => _messageLog.GetDuplicatedVoteSets();
+
+        /// <summary>
         /// Gets the timeout of <see cref="Libplanet.Net.Consensus.Step.PreVote"/> with the given
         /// round.
         /// </summary>

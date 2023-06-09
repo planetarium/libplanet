@@ -274,9 +274,6 @@ namespace Libplanet.Net.Consensus
                         GetBlockCommit(),
                         true,
                         actionEvaluations: evaluatedActions);
-
-                    _blockChain.UpdateEvidence(
-                        _messageLog.GetDuplicatedVoteSets(), block4.Evidences);
                 }
                 catch (Exception e)
                 {
