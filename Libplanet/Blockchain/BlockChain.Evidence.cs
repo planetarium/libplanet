@@ -109,18 +109,32 @@ namespace Libplanet.Blockchain
         {
             foreach (IEnumerable<Vote> votes in duplicatedVoteSets)
             {
-                AddEvidence(
-                    new DuplicateVoteEvidence(
-                        votes,
-                        GetValidatorSet(this[votes.First().Height].Hash),
-                        DateTimeOffset.UtcNow));
+                try
+                {
+                    AddEvidence(
+                        new DuplicateVoteEvidence(
+                            votes,
+                            GetValidatorSet(this[votes.First().Height].Hash),
+                            votes.ElementAt(1).Timestamp));
+                }
+                catch (Exception e)
+                {
+                    _logger.Debug(e, $"Evidence couldn't be added as pending : {e.Message}");
+                }
             }
 
             if (blockEvidences is { } evidences)
             {
                 foreach (var evidence in evidences)
                 {
-                    CommitEvidence(evidence);
+                    try
+                    {
+                        CommitEvidence(evidence);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Debug(e, $"Evidence couldn't be committed : {e.Message}");
+                    }
                 }
             }
 
@@ -200,16 +214,17 @@ namespace Libplanet.Blockchain
         public void VerifyDuplicateVoteEvidence(DuplicateVoteEvidence evidence)
         {
             ValidatorSet validatorSet = GetValidatorSet(this[evidence.Height].Hash);
-            BigInteger validatorPower
-                = validatorSet.GetValidator(evidence.Votes[0].ValidatorPublicKey).Power;
-            BigInteger totalPower = validatorSet.TotalPower;
 
-            if (validatorSet.PublicKeys.Contains(evidence.Votes[0].ValidatorPublicKey))
+            if (!validatorSet.PublicKeys.Contains(evidence.Votes[0].ValidatorPublicKey))
             {
                 throw new InvalidEvidenceException(
                     $"Evidence public key is not a validator. " +
                     $"PublicKey: {evidence.Votes[0].ValidatorPublicKey}");
             }
+
+            BigInteger validatorPower
+                = validatorSet.GetValidator(evidence.Votes[0].ValidatorPublicKey).Power;
+            BigInteger totalPower = validatorSet.TotalPower;
 
             if (evidence.ValidatorPower != validatorPower)
             {

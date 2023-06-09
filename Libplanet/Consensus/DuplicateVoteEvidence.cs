@@ -35,11 +35,11 @@ namespace Libplanet.Consensus
             ValidatorSet validatorSet,
             DateTimeOffset timestamp)
             : this(
-                  height: votes.First().Height,
-                  votes: votes,
-                  validatorPower: validatorSet.GetValidator(votes.First().ValidatorPublicKey).Power,
-                  totalPower: validatorSet.TotalPower,
-                  timestamp: timestamp)
+                  votes.First().Height,
+                  votes,
+                  validatorSet.GetValidator(votes.First().ValidatorPublicKey).Power,
+                  validatorSet.TotalPower,
+                  timestamp)
         {
         }
 
@@ -112,6 +112,24 @@ namespace Libplanet.Consensus
             {
                 throw new ArgumentException(
                     $"Signature of votes are invalid");
+            }
+
+            if (height < 0L)
+            {
+                throw new ArgumentException(
+                    $"Height is not positive");
+            }
+
+            if (validatorPower <= BigInteger.Zero)
+            {
+                throw new ArgumentException(
+                    $"Validator Power is not positive");
+            }
+
+            if (totalPower <= BigInteger.Zero)
+            {
+                throw new ArgumentException(
+                    $"Total power is not positive");
             }
 
             Votes = votes.OrderBy(vote => vote.BlockHash).ToImmutableArray();

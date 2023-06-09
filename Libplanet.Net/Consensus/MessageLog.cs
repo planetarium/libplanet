@@ -378,7 +378,7 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        internal IEnumerable<Vote[]> GetDuplicatedVoteSets()
+        internal IEnumerable<IEnumerable<Vote>> GetDuplicatedVoteSets()
         {
             return _duplicatedVotesPool.Exhaust();
         }
