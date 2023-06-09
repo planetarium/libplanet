@@ -1576,7 +1576,7 @@ namespace Libplanet.RocksDBStore
                 return true;
             }
 
-            return _pendingEvidenceDb.Get(PendingEvidenceKey(evidenceId)) is { };
+            return _committedEvidenceDb.Get(CommittedEvidenceKey(evidenceId)) is { };
         }
 
         [StoreLoader("rocksdb+file")]
