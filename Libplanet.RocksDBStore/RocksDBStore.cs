@@ -1100,6 +1100,8 @@ namespace Libplanet.RocksDBStore
 
                     _txDbCache.Clear();
                     _blockCommitDb?.Dispose();
+                    _pendingEvidenceDb?.Dispose();
+                    _committedEvidenceDb?.Dispose();
 
                     foreach (var db in _blockDbCache.Values)
                     {
