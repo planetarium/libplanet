@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -7,6 +8,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
@@ -135,6 +137,35 @@ namespace Libplanet.Blockchain
             }
 
             throw new IncompleteBlockStatesException(offset);
+        }
+
+        /// <inheritdoc cref="IBlockChainStates.GetStateRoot"/>
+        public ITrie GetStateRoot(BlockHash? offset)
+        {
+            if (!(offset is { } hash))
+            {
+                return _stateStore.GetStateRoot(null);
+            }
+            else
+            {
+                if (_store.GetStateRootHash(hash) is { } stateRootHash)
+                {
+                    if (_stateStore.ContainsStateRoot(stateRootHash))
+                    {
+                        return _stateStore.GetStateRoot(stateRootHash);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"Could not find state root {stateRootHash} in {nameof(IStateStore)}.");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"Could not find block hash {hash} in {nameof(IStore)}.");
+                }
+            }
         }
     }
 }

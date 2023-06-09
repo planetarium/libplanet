@@ -4,6 +4,7 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.State;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Blockchain
@@ -11,6 +12,8 @@ namespace Libplanet.Blockchain
     internal class NullChainStates : IBlockChainStates
     {
         public static readonly NullChainStates Instance = new NullChainStates();
+        private static readonly IStateStore _stateStore =
+            new TrieStateStore(new MemoryKeyValueStore());
 
         private NullChainStates()
         {
@@ -47,6 +50,6 @@ namespace Libplanet.Blockchain
             return new ValidatorSet();
         }
 
-        public ITrie? GetTrie(BlockHash offset) => null;
+        public ITrie GetStateRoot(BlockHash? offset) => _stateStore.GetStateRoot(null);
     }
 }

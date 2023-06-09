@@ -14,6 +14,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -175,6 +176,9 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
+        private static readonly IStateStore _stateStore =
+            new TrieStateStore(new MemoryKeyValueStore());
+
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
             BlockHash offset
@@ -207,6 +211,6 @@ public class StateQueryTest
                     new BigInteger(1)),
             });
 
-        public ITrie GetTrie(BlockHash offset) => null;
+        public ITrie GetStateRoot(BlockHash? offset) => null;
     }
 }
