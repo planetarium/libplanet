@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `IBlockChainStates` interface overhauled.  [[#3207]]
+     -  Added `IBlockChainStates.GetStateRoot()` interface method.
+     -  All `IBlockChainStates` methods now take nullable `BlockHash?`
+        instead of `BlockHash` as `offset` parameter.
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -20,9 +25,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `AccountStateDeltaImpl.Signer` would have an inappropraite
+    value when evaluating an `IBlockAction` if `Block` had any `Transaction`s.
+    [[#3207]]
+
 ### Dependencies
 
 ### CLI tools
+
+[#3207]: https://github.com/planetarium/libplanet/pull/3207
 
 
 Version 1.4.0
