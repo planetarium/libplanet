@@ -12,7 +12,6 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Tx;
 using Serilog;
@@ -98,8 +97,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
-
+                IAccountStateDelta previousStates = GetBlockOutputStates(block.PreviousHash);
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
                     previousStates: previousStates).ToImmutableList();
@@ -114,6 +112,13 @@ namespace Libplanet.Action
                     previousStates = evaluations.Count > 0
                         ? evaluations.Last().OutputStates
                         : previousStates;
+                    previousStates = AccountStateDeltaImpl.ChooseVersion(
+                        block.ProtocolVersion,
+                        previousStates.GetStates,
+                        previousStates.GetBalance,
+                        previousStates.GetTotalSupply,
+                        previousStates.GetValidatorSet,
+                        block.Miner);
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(
                             blockHeader: block,
@@ -134,36 +139,6 @@ namespace Libplanet.Action
                         ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
                         stopwatch.ElapsedMilliseconds);
             }
-        }
-
-        [Pure]
-        internal static IReadOnlyList<IValue?> NullAccountStateGetter(
-            IReadOnlyList<Address> addresses
-        ) =>
-            new IValue?[addresses.Count];
-
-        [Pure]
-        internal static FungibleAssetValue NullAccountBalanceGetter(
-            Address address,
-            Currency currency
-        ) =>
-            currency * 0;
-
-        [Pure]
-        internal static FungibleAssetValue NullTotalSupplyGetter(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            return currency * 0;
-        }
-
-        [Pure]
-        internal static ValidatorSet NullValidatorSetGetter()
-        {
-            return new ValidatorSet();
         }
 
         /// <summary>
@@ -539,28 +514,29 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the last previous states for the previous block of
-        /// <paramref name="blockHeader"/>.
+        /// Retrieves the output states for <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="blockHeader">The header of block to reference.</param>
-        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
-        /// <see cref="Block"/>.
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the block to reference.</param>
+        /// <returns>The output <see cref="IAccountStateDelta"/> for the <see cref="Block"/>
+        /// with <paramref name="blockHash"/> as its <see cref="Block.Hash"/>.
+        /// If <paramref name="blockHash"/> is <see langword="null"/>, this returns
+        /// default states.
         /// </returns>
-        internal IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader blockHeader)
+        /// <remarks>
+        /// Note that returned <see cref="IAccountStateDelta"/> always defaults to
+        /// <see cref="AccountStateDeltaImplV0"/> instance with <see langword="default"/> value
+        /// assigned for its signer.  These should be reassigned accordingly before use.
+        /// </remarks>
+        internal IAccountStateDelta GetBlockOutputStates(BlockHash? blockHash)
         {
             AccountStateGetter accountStateGetter = addresses =>
-                _blockChainStates.GetStates(
-                    addresses, blockHeader.PreviousHash);
+                _blockChainStates.GetStates(addresses, blockHash);
             AccountBalanceGetter accountBalanceGetter = (address, currency) =>
-                _blockChainStates.GetBalance(
-                    address, currency, blockHeader.PreviousHash);
+                _blockChainStates.GetBalance(address, currency, blockHash);
             TotalSupplyGetter totalSupplyGetter = currency =>
-                _blockChainStates.GetTotalSupply(
-                    currency, blockHeader.PreviousHash);
+                _blockChainStates.GetTotalSupply(currency, blockHash);
             ValidatorSetGetter validatorSetGetter = () =>
-                _blockChainStates.GetValidatorSet(
-                    blockHeader.PreviousHash);
+                _blockChainStates.GetValidatorSet(blockHash);
 
             // FIXME: Unless we actually know the previous block,
             // proper AccountStateDeltaImpl can't be made.
