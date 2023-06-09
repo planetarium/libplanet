@@ -561,15 +561,19 @@ namespace Libplanet.Action
             ValidatorSetGetter validatorSetGetter = () =>
                 _blockChainStates.GetValidatorSet(
                     blockHeader.PreviousHash);
-            Address miner = blockHeader.Miner;
 
+            // FIXME: Unless we actually know the previous block,
+            // proper AccountStateDeltaImpl can't be made.
+            // This could possibly change the behavior in some edge cases
+            // depending on user's implementation of IAction Execute(),
+            // especially if MintAsset() and BurnAsset() has been used.
             return AccountStateDeltaImpl.ChooseVersion(
-                blockHeader.ProtocolVersion,
+                0,
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
-                miner);
+                default(Address));
         }
 
         [Pure]
