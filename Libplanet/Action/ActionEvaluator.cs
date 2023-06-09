@@ -538,6 +538,40 @@ namespace Libplanet.Action
             ).Single();
         }
 
+        /// <summary>
+        /// Retrieves the last previous states for the previous block of
+        /// <paramref name="blockHeader"/>.
+        /// </summary>
+        /// <param name="blockHeader">The header of block to reference.</param>
+        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
+        /// <see cref="Block"/>.
+        /// </returns>
+        internal IAccountStateDelta GetPreviousBlockOutputStates(
+            IPreEvaluationBlockHeader blockHeader)
+        {
+            AccountStateGetter accountStateGetter = addresses =>
+                _blockChainStates.GetStates(
+                    addresses, blockHeader.PreviousHash);
+            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
+                _blockChainStates.GetBalance(
+                    address, currency, blockHeader.PreviousHash);
+            TotalSupplyGetter totalSupplyGetter = currency =>
+                _blockChainStates.GetTotalSupply(
+                    currency, blockHeader.PreviousHash);
+            ValidatorSetGetter validatorSetGetter = () =>
+                _blockChainStates.GetValidatorSet(
+                    blockHeader.PreviousHash);
+            Address miner = blockHeader.Miner;
+
+            return AccountStateDeltaImpl.ChooseVersion(
+                blockHeader.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter,
+                miner);
+        }
+
         [Pure]
         private static IEnumerable<ITransaction> OrderTxsForEvaluationV0(
             IEnumerable<ITransaction> txs,
@@ -595,51 +629,6 @@ namespace Libplanet.Action
             }
 
             return result.SelectMany(group => group.OrderBy(tx => tx.Nonce));
-        }
-
-        /// <summary>
-        /// Retrieves the last previous states for the previous block of
-        /// <paramref name="blockHeader"/>.
-        /// </summary>
-        /// <param name="blockHeader">The header of block to reference.</param>
-        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
-        /// <see cref="Block"/>.
-        /// </returns>
-        private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader blockHeader)
-        {
-            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
-                InitializeAccountGettersPair(blockHeader);
-            Address miner = blockHeader.Miner;
-
-            return AccountStateDeltaImpl.ChooseVersion(
-                blockHeader.ProtocolVersion,
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                miner);
-        }
-
-        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
-            InitializeAccountGettersPair(
-            IPreEvaluationBlockHeader blockHeader)
-        {
-            AccountStateGetter accountStateGetter = addresses =>
-                _blockChainStates.GetStates(
-                    addresses, blockHeader.PreviousHash);
-            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
-                _blockChainStates.GetBalance(
-                    address, currency, blockHeader.PreviousHash);
-            TotalSupplyGetter totalSupplyGetter = currency =>
-                _blockChainStates.GetTotalSupply(
-                    currency, blockHeader.PreviousHash);
-            ValidatorSetGetter validatorSetGetter = () =>
-                _blockChainStates.GetValidatorSet(
-                    blockHeader.PreviousHash);
-
-            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter,
-                validatorSetGetter);
         }
 
         private IEnumerable<IAction> LoadActions(long index, ITransaction tx)
