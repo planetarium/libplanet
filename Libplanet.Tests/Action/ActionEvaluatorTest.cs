@@ -12,7 +12,6 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Store;
@@ -442,21 +441,9 @@ namespace Libplanet.Tests.Action
                 GenesisProposer,
                 block2Txs,
                 lastCommit: CreateBlockCommit(block1, true));
-            AccountStateGetter accountStateGetter = addrs =>
-                addrs.Select(dirty1.GetValueOrDefault).ToArray();
-            AccountBalanceGetter accountBalanceGetter = (address, currency)
-                => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
-                    ? v
-                    : new FungibleAssetValue(currency);
-            TotalSupplyGetter totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
-            ValidatorSetGetter validatorSetGetter = () => new ValidatorSet();
+            previousStates = evals1.Last().OutputStates;
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                block2.ProtocolVersion,
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                block2.Miner);
+                block2.ProtocolVersion, previousStates, block2.Miner);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
@@ -493,21 +480,9 @@ namespace Libplanet.Tests.Action
                     (Integer)randomValue);
             }
 
-            accountStateGetter = addrs =>
-                addrs.Select(dirty1.GetValueOrDefault).ToArray();
-            accountBalanceGetter = (address, currency) => balances1.TryGetValue(
-                (address, currency), out FungibleAssetValue value)
-                    ? value
-                    : new FungibleAssetValue(currency);
-            totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
-            validatorSetGetter = () => new ValidatorSet();
+            previousStates = evals1.Last().OutputStates;
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                block2.ProtocolVersion,
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                block2.Miner);
+                block2.ProtocolVersion, previousStates, block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -575,12 +550,7 @@ namespace Libplanet.Tests.Action
                 ImmutableList<(Address, string)>.Empty;
             var previousStates = actionEvaluator.GetBlockOutputStates(null);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                int.MaxValue,
-                previousStates.GetStates,
-                previousStates.GetBalance,
-                previousStates.GetTotalSupply,
-                previousStates.GetValidatorSet,
-                tx.Signer);
+                block.ProtocolVersion, previousStates, tx.Signer);
             var evaluations = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
@@ -648,11 +618,8 @@ namespace Libplanet.Tests.Action
                 ImmutableList<(Address, string)>.Empty;
             previousStates = actionEvaluator.GetBlockOutputStates(null);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                int.MaxValue,
-                previousStates.GetStates,
-                previousStates.GetBalance,
-                previousStates.GetTotalSupply,
-                previousStates.GetValidatorSet,
+                block.ProtocolVersion,
+                previousStates,
                 tx.Signer);
             IAccountStateDelta delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -697,12 +664,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs).Propose();
             var previousStates = actionEvaluator.GetBlockOutputStates(null);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                int.MaxValue,
-                previousStates.GetStates,
-                previousStates.GetBalance,
-                previousStates.GetTotalSupply,
-                previousStates.GetValidatorSet,
-                tx.Signer);
+                block.ProtocolVersion, previousStates, tx.Signer);
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
@@ -840,12 +802,7 @@ namespace Libplanet.Tests.Action
 
             var previousStates = actionEvaluator.GetBlockOutputStates(null);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                genesis.ProtocolVersion,
-                previousStates.GetStates,
-                previousStates.GetBalance,
-                previousStates.GetTotalSupply,
-                previousStates.GetValidatorSet,
-                genesis.Miner);
+                genesis.ProtocolVersion, previousStates, genesis.Miner);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -856,12 +813,7 @@ namespace Libplanet.Tests.Action
 
             previousStates = actionEvaluator.GetBlockOutputStates(block.PreviousHash);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                block.ProtocolVersion,
-                previousStates.GetStates,
-                previousStates.GetBalance,
-                previousStates.GetTotalSupply,
-                previousStates.GetValidatorSet,
-                block.Miner);
+                block.ProtocolVersion, previousStates, block.Miner);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -873,12 +825,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, CreateBlockCommit(block), render: true);
             previousStates = actionEvaluator.GetBlockOutputStates(block.PreviousHash);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
-                block.ProtocolVersion,
-                previousStates.GetStates,
-                previousStates.GetBalance,
-                previousStates.GetTotalSupply,
-                previousStates.GetValidatorSet,
-                block.Miner);
+                block.ProtocolVersion, previousStates, block.Miner);
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
                 previousStates).ToList();

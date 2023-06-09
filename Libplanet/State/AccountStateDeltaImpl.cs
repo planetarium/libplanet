@@ -317,19 +317,13 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a null delta from the given <paramref name="accountStateGetter"/>,
-        /// <paramref name="accountBalanceGetter"/>, and <paramref name="totalSupplyGetter"/>,
+        /// Creates a null delta from given <paramref name="previousStates"/>
         /// with a subtype of <see cref="AccountStateDeltaImpl"/> that corresponds to the
         /// <paramref name="protocolVersion"/>.
         /// </summary>
         /// <param name="protocolVersion">The protocol version of which to create a delta.</param>
-        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
-        /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
+        /// <param name="previousStates">The <see cref="IAccountStateDelta"/> to use as a basis.
         /// </param>
-        /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
-        /// currencies.</param>
-        /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
-        /// set.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
         /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
@@ -337,22 +331,19 @@ namespace Libplanet.State
         [Pure]
         internal static AccountStateDeltaImpl ChooseVersion(
             int protocolVersion,
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
+            IAccountStateDelta previousStates,
             Address signer) => protocolVersion > 0
             ? new AccountStateDeltaImpl(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
+                previousStates.GetStates,
+                previousStates.GetBalance,
+                previousStates.GetTotalSupply,
+                previousStates.GetValidatorSet,
                 signer)
             : new AccountStateDeltaImplV0(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
+                previousStates.GetStates,
+                previousStates.GetBalance,
+                previousStates.GetTotalSupply,
+                previousStates.GetValidatorSet,
                 signer);
 
         [Pure]

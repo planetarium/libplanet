@@ -98,6 +98,8 @@ namespace Libplanet.Action
             try
             {
                 IAccountStateDelta previousStates = GetBlockOutputStates(block.PreviousHash);
+                previousStates = AccountStateDeltaImpl.ChooseVersion(
+                    block.ProtocolVersion, previousStates, block.Miner);
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
                     previousStates: previousStates).ToImmutableList();
@@ -113,12 +115,7 @@ namespace Libplanet.Action
                         ? evaluations.Last().OutputStates
                         : previousStates;
                     previousStates = AccountStateDeltaImpl.ChooseVersion(
-                        block.ProtocolVersion,
-                        previousStates.GetStates,
-                        previousStates.GetBalance,
-                        previousStates.GetTotalSupply,
-                        previousStates.GetValidatorSet,
-                        block.Miner);
+                        block.ProtocolVersion, previousStates, block.Miner);
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(
                             blockHeader: block,
@@ -411,12 +408,7 @@ namespace Libplanet.Action
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 delta = AccountStateDeltaImpl.ChooseVersion(
-                    block.ProtocolVersion,
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    tx.Signer);
+                    block.ProtocolVersion, delta, tx.Signer);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -543,12 +535,15 @@ namespace Libplanet.Action
             // This could possibly change the behavior in some edge cases
             // depending on user's implementation of IAction Execute(),
             // especially if MintAsset() and BurnAsset() has been used.
-            return AccountStateDeltaImpl.ChooseVersion(
-                0,
+            var delta = new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
+                default(Address));
+            return AccountStateDeltaImpl.ChooseVersion(
+                0,
+                delta,
                 default(Address));
         }
 
