@@ -11,8 +11,16 @@ To be released.
 ### Backward-incompatible API changes
 
  -  `BlockHash` inherits `IComparable`.  [[#3196]]
+ -  Added `commitEvidences` parameter on `Context.Start()`.
+ -  Added `evidences` parameter on `BlockChain.ProposeBlock()`.
 
 ### Backward-incompatible network protocol changes
+
+ -  The `Block.CurrentProtocolVersion` is bumped from 4 to 5:  [[#3196]]
+     -  Blocks have `Evidences` property, which represents consensus of voting
+        infractions. any `Evidence`s commited on the block are considered as
+        evidence of malicious behavior recognized by the community,
+        and is justified to be punished.  [[#3196]]
 
 ### Backward-incompatible storage format changes
 
@@ -40,6 +48,8 @@ To be released.
     [[#3196]]
  -  Added `IStore.ContainsCommittedEvidence(EvidenceId)` interface method.
     [[#3196]]
+ -  Added `IBlockPolicy.GetMaxEvidencePendingDuration(long)`
+    interface method.  [[#3196]]
  -  Added `BlockChain.GetPendingEvidences()` method.  [[#3196]]
  -  Added `BlockChain.DeletePendingEvidence(EvidenceId)` method.  [[#3196]]
  -  Added `BlockChain.AddEvidence(Evidence)` method.  [[#3196]]
@@ -54,6 +64,13 @@ To be released.
     method.  [[#3196]]
 
 ### Behavioral changes
+
+ -  `ConsensusContext` updates `BlockChain.Store`'s `Evidence`s
+    on `Context.NewHeight()`.  [[#3196]]
+ -  `MessageLog` collects conflicting `Vote`s while adding messages.
+    [[#3196]]
+ -  `BlockChain` rejects `Block`s with improper `Evidences` property.
+    [[#3196]]
 
 ### Bug fixes
 

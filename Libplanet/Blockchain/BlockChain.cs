@@ -45,7 +45,6 @@ namespace Libplanet.Blockchain
             "SA1401:FieldsMustBePrivate",
             Justification = "Temporary visibility.")]
         internal readonly ReaderWriterLockSlim _rwlock;
-
         private readonly object _txLock;
         private readonly ILogger _logger;
         private readonly IBlockChainStates _blockChainStates;
