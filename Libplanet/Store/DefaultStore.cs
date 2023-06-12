@@ -883,6 +883,8 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override void DeleteCommittedEvidence(EvidenceId evidenceId)
         {
+            _evidenceCache.Remove(evidenceId);
+
             UPath path = CommittedEvidencePath(evidenceId);
             if (!_committedEvidences.FileExists(path))
             {

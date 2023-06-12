@@ -1545,6 +1545,8 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteCommittedEvidence(EvidenceId evidenceId)
         {
+            _evidenceCache.Remove(evidenceId);
+
             byte[] key = CommittedEvidenceKey(evidenceId);
 
             if (!(_committedEvidenceDb.Get(key) is { }))
