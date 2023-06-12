@@ -237,7 +237,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                genesis.Miner);
+                genesis.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
 
             Assert.Throws<OutOfMemoryException>(
                 () => actionEvaluator.EvaluateTx(
@@ -300,7 +301,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                genesis.Miner);
+                genesis.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
 
             Transaction[] block1Txs =
             {
@@ -344,7 +346,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                block1.Miner);
+                block1.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousStates).ToImmutableArray();
@@ -384,7 +387,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                block1.Miner);
+                block1.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
@@ -478,7 +482,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                block2.Miner);
+                block2.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
@@ -528,7 +533,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                block2.Miner);
+                block2.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -868,7 +874,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
-                genesis.Miner);
+                genesis.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -890,7 +897,8 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
-                block.Miner);
+                block.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -906,7 +914,8 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator.NullAccountBalanceGetter,
                 ActionEvaluator.NullTotalSupplyGetter,
                 ActionEvaluator.NullValidatorSetGetter,
-                block.Miner);
+                block.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
                 previousStates).ToList();

@@ -44,6 +44,7 @@ namespace Libplanet.State
             UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
+            TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             Signer = signer;
         }
 
@@ -67,9 +68,21 @@ namespace Libplanet.State
                     g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2)
                 .ToImmutableHashSet());
 
+        /// <inheritdoc/>
+        IImmutableDictionary<Address, IImmutableSet<Currency>>
+            IAccountStateDelta.TotalUpdatedFungibleAssets => TotalUpdatedFungibles
+                .GroupBy(kv => kv.Key.Item1)
+                .ToImmutableDictionary(
+                    group => group.Key,
+                    group => (IImmutableSet<Currency>)group.Select(kv => kv.Key.Item2)
+                .ToImmutableHashSet());
+
         [Pure]
         IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
             UpdatedTotalSupply.Keys.ToImmutableHashSet();
+
+        public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
+            { get; set; }
 
         protected AccountStateGetter StateGetter { get; set; }
 
@@ -84,10 +97,7 @@ namespace Libplanet.State
         protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
 
         protected IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
-        {
-            get;
-            set;
-        }
+            { get; set; }
 
         protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
 
@@ -332,6 +342,8 @@ namespace Libplanet.State
         /// set.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
+        /// <param name="previousTotalUpdatedFungibles">The previous
+        /// <see cref="AccountStateDeltaImpl"/>'s total updated fungibles to keep track of.</param>
         /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
         /// corresponds to the <paramref name="protocolVersion"/>.</returns>
         [Pure]
@@ -341,19 +353,27 @@ namespace Libplanet.State
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
-            Address signer) => protocolVersion > 0
-            ? new AccountStateDeltaImpl(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                signer)
-            : new AccountStateDeltaImplV0(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                signer);
+            Address signer,
+            IImmutableDictionary<(Address, Currency), BigInteger> previousTotalUpdatedFungibles)
+                => protocolVersion > 0
+                ? new AccountStateDeltaImpl(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    totalSupplyGetter,
+                    validatorSetGetter,
+                    signer)
+                    {
+                        TotalUpdatedFungibles = previousTotalUpdatedFungibles,
+                    }
+                : new AccountStateDeltaImplV0(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    totalSupplyGetter,
+                    validatorSetGetter,
+                    signer)
+                    {
+                        TotalUpdatedFungibles = previousTotalUpdatedFungibles,
+                    };
 
         [Pure]
         protected virtual FungibleAssetValue GetBalance(
@@ -379,6 +399,7 @@ namespace Libplanet.State
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = UpdatedValidatorSet,
+                TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
         [Pure]
@@ -403,6 +424,7 @@ namespace Libplanet.State
                 UpdatedFungibles = updatedFungibleAssets,
                 UpdatedTotalSupply = updatedTotalSupply,
                 UpdatedValidatorSet = UpdatedValidatorSet,
+                TotalUpdatedFungibles = TotalUpdatedFungibles.SetItems(updatedFungibleAssets),
             };
 
         [Pure]
@@ -420,6 +442,7 @@ namespace Libplanet.State
                 UpdatedFungibles = UpdatedFungibles,
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
+                TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
     }
 }

@@ -168,6 +168,10 @@ namespace Libplanet.Tests.Action
             UpdatedFungibleAssets =>
                 ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
 
+            public IImmutableDictionary<Address, IImmutableSet<Currency>>
+            TotalUpdatedFungibleAssets =>
+                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+
             public IValue GetState(Address address) => null;
 
             public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
