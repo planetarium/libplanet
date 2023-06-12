@@ -1739,7 +1739,8 @@ namespace Libplanet.Tests.Blockchain
                 nullAccountBalanceGetter,
                 nullTotalSupplyGetter,
                 nullValidatorSetGetter,
-                b.Miner);
+                b.Miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
             ActionEvaluation[] evals =
                 actionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
@@ -1786,7 +1787,8 @@ namespace Libplanet.Tests.Blockchain
                                 : currency * 0;
                         },
                         () => new ValidatorSet(),
-                        b.Miner);
+                        b.Miner,
+                        ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
 
                     dirty = actionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);

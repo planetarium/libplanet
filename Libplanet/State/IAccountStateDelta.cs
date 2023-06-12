@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 
 namespace Libplanet.State
 {
@@ -58,10 +59,18 @@ namespace Libplanet.State
         /// <c>{ [A] = { FOO }, [B] = { FOO, BAR }, [C] = { BAR } }</c>.</para>
         /// </summary>
         [Pure]
-        IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets
-        {
-            get;
-        }
+        IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
+
+        /// <summary>
+        /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
+        /// that have been updated since the previous <see cref="Block"/>'s output states.
+        /// </summary>
+        /// <remarks>
+        /// Due to a bug in old implementation, this does not work properly under
+        /// <see cref="Block.ProtocolVersion"/> zero.
+        /// </remarks>
+        [Pure]
+        IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets { get; }
 
         /// <summary>
         /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.

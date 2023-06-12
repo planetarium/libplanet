@@ -148,5 +148,57 @@ namespace Libplanet.Tests.Action
             var delta = _init;
             Assert.Throws<SupplyOverflowException>(() => delta.MintAsset(_addr[0], Value(4, 200)));
         }
+
+        [Fact]
+        public virtual void TotalUpdatedFungibleAssets()
+        {
+            IAccountStateDelta delta0 = _init;
+
+            // currencies[0] (FOO) allows only _addr[0] to burn
+            delta0 = delta0.BurnAsset(_addr[0], Value(0, 1));
+            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.DoesNotContain(
+                Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+
+            // Forcefully create null delta
+            delta0 = AccountStateDeltaImpl.ChooseVersion(
+                1,
+                delta0.GetStates,
+                delta0.GetBalance,
+                delta0.GetTotalSupply,
+                delta0.GetValidatorSet,
+                _addr[0],
+                ((AccountStateDeltaImpl)delta0).TotalUpdatedFungibles);
+
+            // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
+            delta0 = delta0.MintAsset(_addr[0], Value(1, 1));
+            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
+
+            // Forcefully create null delta
+            // Currently there is no way to swap signer without clearing
+            delta0 = AccountStateDeltaImpl.ChooseVersion(
+                1,
+                delta0.GetStates,
+                delta0.GetBalance,
+                delta0.GetTotalSupply,
+                delta0.GetValidatorSet,
+                _addr[1],
+                ((AccountStateDeltaImpl)delta0).TotalUpdatedFungibles);
+            delta0 = delta0.BurnAsset(_addr[1], Value(1, 1));
+
+            // _addr[0] burned currencies[0] & minted currencies[1]
+            // _addr[1] burned currencies[1]
+            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.DoesNotContain(
+                Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[1]]);
+            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[1]]);
+        }
     }
 }
