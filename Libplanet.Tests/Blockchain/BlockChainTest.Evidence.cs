@@ -37,13 +37,14 @@ namespace Libplanet.Tests.Blockchain
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key);
             var evidence = new DuplicateVoteEvidence(
-                new Vote[] { voteRef, voteDup },
+                voteRef,
+                voteDup,
                 _blockChain.GetValidatorSet(_blockChain.Tip.Hash),
                 voteDup.Timestamp);
 
-            var duplicatedVoteSets = new List<List<Vote>>()
+            var duplicatedVoteSets = new List<Tuple<Vote, Vote>>()
             {
-                new List<Vote>() { voteRef, voteDup },
+                Tuple.Create(voteRef, voteDup),
             };
 
             Assert.Empty(_blockChain.GetPendingEvidences());
@@ -83,7 +84,8 @@ namespace Libplanet.Tests.Blockchain
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key);
             var evidence = new DuplicateVoteEvidence(
-                new Vote[] { voteRef, voteDup },
+                voteRef,
+                voteDup,
                 _blockChain.GetValidatorSet(_blockChain.Tip.Hash),
                 voteDup.Timestamp);
 
@@ -118,14 +120,15 @@ namespace Libplanet.Tests.Blockchain
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key);
             var evidence = new DuplicateVoteEvidence(
-                new Vote[] { voteRef, voteDup },
+                voteRef,
+                voteDup,
                 new ValidatorSet(
                     new List<Validator> { new Validator(key.PublicKey, BigInteger.One) }),
                 voteDup.Timestamp);
 
-            var duplicatedVoteSets = new List<List<Vote>>()
+            var duplicatedVoteSets = new List<Tuple<Vote, Vote>>()
             {
-                new List<Vote>() { voteRef, voteDup },
+                Tuple.Create(voteRef, voteDup),
             };
 
             Assert.Empty(_blockChain.GetPendingEvidences());
@@ -158,13 +161,14 @@ namespace Libplanet.Tests.Blockchain
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key);
             var evidence = new DuplicateVoteEvidence(
-                new Vote[] { voteRef, voteDup },
+                voteRef,
+                voteDup,
                 _blockChain.GetValidatorSet(_blockChain.Tip.Hash),
                 voteDup.Timestamp);
 
-            var duplicatedVoteSets = new List<List<Vote>>()
+            var duplicatedVoteSets = new List<Tuple<Vote, Vote>>()
             {
-                new List<Vote>() { voteRef, voteDup },
+                Tuple.Create(voteRef, voteDup),
             };
 
             Assert.Empty(_blockChain.GetPendingEvidences());

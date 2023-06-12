@@ -1252,11 +1252,13 @@ namespace Libplanet.Tests.Store
                 Evidence[] evidences =
                 {
                     new DuplicateVoteEvidence(
-                        duplicateVoteOne,
+                        duplicateVoteOne[0],
+                        duplicateVoteOne[1],
                         TestUtils.ValidatorSet,
                         duplicateVoteOne.Last().Timestamp),
                     new DuplicateVoteEvidence(
-                        duplicateVoteTwo,
+                        duplicateVoteTwo[0],
+                        duplicateVoteTwo[1],
                         TestUtils.ValidatorSet,
                         duplicateVoteTwo.Last().Timestamp),
                 };
@@ -1293,7 +1295,8 @@ namespace Libplanet.Tests.Store
                         signer.PublicKey,
                         VoteFlag.PreCommit).Sign(signer));
                 Evidence evidence = new DuplicateVoteEvidence(
-                    duplicateVote,
+                    duplicateVote[0],
+                    duplicateVote[1],
                     TestUtils.ValidatorSet,
                     duplicateVote.Last().Timestamp);
 
@@ -1333,7 +1336,8 @@ namespace Libplanet.Tests.Store
                         signer.PublicKey,
                         VoteFlag.PreCommit).Sign(signer));
                 Evidence evidence = new DuplicateVoteEvidence(
-                    duplicateVote,
+                    duplicateVote[0],
+                    duplicateVote[1],
                     TestUtils.ValidatorSet,
                     duplicateVote.Last().Timestamp);
 

@@ -30,7 +30,8 @@ namespace Libplanet.Tests.Consensus
                 VoteFlag.PreCommit).Sign(key);
 
             var expected = new DuplicateVoteEvidence(
-                new Vote[] { voteRef, voteDup },
+                voteRef,
+                voteDup,
                 new ValidatorSet(
                     new List<Validator> { new Validator(key.PublicKey, BigInteger.One) }),
                 DateTimeOffset.UtcNow);

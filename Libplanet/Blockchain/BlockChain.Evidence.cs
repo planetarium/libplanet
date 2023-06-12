@@ -96,26 +96,29 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Update <see cref="Store"/> with given <paramref name="duplicatedVoteSets"/>
+        /// Update <see cref="Store"/> with given <paramref name="duplicatedVotePairs"/>
         /// and <paramref name="blockEvidences"/>.
-        /// Add <paramref name="duplicatedVoteSets"/> on the pending evidence pool,
+        /// Add <paramref name="duplicatedVotePairs"/> on the pending evidence pool,
         /// and update <paramref name="blockEvidences"/> as committed.
         /// </summary>
-        /// <param name="duplicatedVoteSets"><see cref="Vote"/>s that are found duplicated.</param>
+        /// <param name="duplicatedVotePairs"><see cref="Vote"/>s that are found duplicated.</param>
         /// <param name="blockEvidences"><see cref="Evidence"/>s committed on the block.</param>
         public void UpdateEvidence(
-            IEnumerable<IEnumerable<Vote>> duplicatedVoteSets,
+            IEnumerable<Tuple<Vote, Vote>> duplicatedVotePairs,
             IEnumerable<Evidence>? blockEvidences)
         {
-            foreach (IEnumerable<Vote> votes in duplicatedVoteSets)
+            foreach ((Vote voteRef, Vote voteDup) in duplicatedVotePairs)
             {
                 try
                 {
+                    (_, Vote dup) = DuplicateVoteEvidence.OrderDuplicateVotePair(voteRef, voteDup);
+
                     AddEvidence(
                         new DuplicateVoteEvidence(
-                            votes,
-                            GetValidatorSet(this[votes.First().Height].Hash),
-                            votes.ElementAt(1).Timestamp));
+                            voteRef,
+                            voteDup,
+                            GetValidatorSet(this[voteRef.Height].Hash),
+                            dup.Timestamp));
                 }
                 catch (Exception e)
                 {
@@ -215,15 +218,15 @@ namespace Libplanet.Blockchain
         {
             ValidatorSet validatorSet = GetValidatorSet(this[evidence.Height].Hash);
 
-            if (!validatorSet.PublicKeys.Contains(evidence.Votes[0].ValidatorPublicKey))
+            if (!validatorSet.PublicKeys.Contains(evidence.VoteRef.ValidatorPublicKey))
             {
                 throw new InvalidEvidenceException(
                     $"Evidence public key is not a validator. " +
-                    $"PublicKey: {evidence.Votes[0].ValidatorPublicKey}");
+                    $"PublicKey: {evidence.VoteRef.ValidatorPublicKey}");
             }
 
             BigInteger validatorPower
-                = validatorSet.GetValidator(evidence.Votes[0].ValidatorPublicKey).Power;
+                = validatorSet.GetValidator(evidence.VoteRef.ValidatorPublicKey).Power;
             BigInteger totalPower = validatorSet.TotalPower;
 
             if (evidence.ValidatorPower != validatorPower)

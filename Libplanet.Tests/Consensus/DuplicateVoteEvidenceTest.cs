@@ -11,26 +11,6 @@ namespace Libplanet.Tests.Consensus
     public class DuplicateVoteEvidenceTest
     {
         [Fact]
-        public void CannotCreateWithSingleVote()
-        {
-            var key = new PrivateKey();
-            var vote = new VoteMetadata(
-                1,
-                2,
-                new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
-                DateTimeOffset.UtcNow,
-                key.PublicKey,
-                VoteFlag.PreCommit).Sign(key);
-
-            Assert.Throws<ArgumentException>(
-                () => new DuplicateVoteEvidence(
-                    new Vote[] { vote },
-                    new ValidatorSet(
-                        new List<Validator> { new Validator(key.PublicKey, BigInteger.One) }),
-                    DateTimeOffset.UtcNow));
-        }
-
-        [Fact]
         public void CannotCreateWithDifferentHeight()
         {
             var key = new PrivateKey();
@@ -51,7 +31,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.Throws<ArgumentException>(
                 () => new DuplicateVoteEvidence(
-                    new Vote[] { voteRef, voteDup },
+                    voteRef,
+                    voteDup,
                     new ValidatorSet(
                         new List<Validator> { new Validator(key.PublicKey, BigInteger.One) }),
                     DateTimeOffset.UtcNow));
@@ -78,7 +59,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.Throws<ArgumentException>(
                 () => new DuplicateVoteEvidence(
-                    new Vote[] { voteRef, voteDup },
+                    voteRef,
+                    voteDup,
                     new ValidatorSet(
                         new List<Validator>
                         {
@@ -109,7 +91,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.Throws<ArgumentException>(
                 () => new DuplicateVoteEvidence(
-                    new Vote[] { voteRef, voteDup },
+                    voteRef,
+                    voteDup,
                     new ValidatorSet(
                         new List<Validator>
                         {
@@ -140,7 +123,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.Throws<ArgumentException>(
                 () => new DuplicateVoteEvidence(
-                    new Vote[] { voteRef, voteDup },
+                    voteRef,
+                    voteDup,
                     new ValidatorSet(
                         new List<Validator>
                         {
@@ -170,7 +154,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.Throws<ArgumentException>(
                 () => new DuplicateVoteEvidence(
-                    new Vote[] { voteRef, voteDup },
+                    voteRef,
+                    voteDup,
                     new ValidatorSet(
                         new List<Validator>
                         {
@@ -201,7 +186,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.Throws<ArgumentException>(
                 () => new DuplicateVoteEvidence(
-                    new Vote[] { voteRef, voteDup },
+                    voteRef,
+                    voteDup,
                     new ValidatorSet(
                         new List<Validator>
                         {
@@ -230,12 +216,14 @@ namespace Libplanet.Tests.Consensus
                 VoteFlag.PreCommit).Sign(key);
 
             var expected = new DuplicateVoteEvidence(
-                new Vote[] { voteRef, voteDup },
+                voteRef,
+                voteDup,
                 new ValidatorSet(
                     new List<Validator> { new Validator(key.PublicKey, BigInteger.One) }),
-                DateTimeOffset.UtcNow);
+                voteDup.Timestamp);
 
             var decoded = new DuplicateVoteEvidence(expected.Bencoded);
+            Assert.Equal(expected.Bencoded, decoded.Bencoded);
             Assert.Equal(expected, decoded);
         }
     }

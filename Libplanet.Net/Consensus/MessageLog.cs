@@ -33,7 +33,7 @@ namespace Libplanet.Net.Consensus
 
         private long _height;
         private ValidatorSet _validators;
-        private DuplicatedVotesPool _duplicatedVotesPool;
+        private DuplicatedVotePairPool _duplicatedVotePairPool;
         private Dictionary<int, ConsensusProposalMsg> _proposals;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>> _preVotes;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>> _preCommits;
@@ -48,7 +48,7 @@ namespace Libplanet.Net.Consensus
 
             _height = height;
             _validators = validators;
-            _duplicatedVotesPool = new DuplicatedVotesPool();
+            _duplicatedVotePairPool = new DuplicatedVotePairPool();
             _proposals = new Dictionary<int, ConsensusProposalMsg>();
             _preVotes = new Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>>();
             _preCommits = new Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>>();
@@ -153,7 +153,7 @@ namespace Libplanet.Net.Consensus
                     {
                         try
                         {
-                            _duplicatedVotesPool.Add(
+                            _duplicatedVotePairPool.Add(
                                 _preVotes[preVote.Round][preVote.ValidatorPublicKey].PreVote,
                                 preVote.PreVote);
                         }
@@ -183,7 +183,7 @@ namespace Libplanet.Net.Consensus
                     {
                         try
                         {
-                            _duplicatedVotesPool.Add(
+                            _duplicatedVotePairPool.Add(
                                 _preCommits[preCommit.Round][preCommit.ValidatorPublicKey]
                                 .PreCommit,
                                 preCommit.PreCommit);
@@ -380,35 +380,36 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the duplicated <see cref="Vote"/> sets from it's <see cref="DuplicatedVotesPool"/>.
+        /// Gets the duplicated <see cref="Vote"/> pairs from it's
+        /// <see cref="DuplicatedVotePairPool"/>.
         /// </summary>
-        /// <returns>Duplicated <see cref="Vote"/> sets collected by
-        /// <see cref="DuplicatedVotesPool"/>.
+        /// <returns>Duplicated <see cref="Vote"/> pairs collected by
+        /// <see cref="DuplicatedVotePairPool"/>.
         /// </returns>
-        internal IEnumerable<IEnumerable<Vote>> GetDuplicatedVoteSets()
+        internal IEnumerable<Tuple<Vote, Vote>> GetDuplicatedVotePairs()
         {
-            return _duplicatedVotesPool.Exhaust();
+            return _duplicatedVotePairPool.Exhaust();
         }
 
         /// <summary>
-        /// Pool that gathers duplicated <see cref="Vote"/>s.
+        /// Pool that gathers duplicated <see cref="Vote"/> pairs.
         /// </summary>
-        private class DuplicatedVotesPool
+        private class DuplicatedVotePairPool
         {
-            private ConcurrentDictionary<(long, int, PublicKey), List<Vote>> _duplicatedVotes;
+            private ConcurrentDictionary<Tuple<Vote, Vote>, bool> _duplicatedVotePairs;
 
             /// <summary>
-            /// Creates a <see cref="DuplicatedVotesPool"/> instance.
+            /// Creates a <see cref="DuplicatedVotePairPool"/> instance.
             /// </summary>
-            public DuplicatedVotesPool()
+            public DuplicatedVotePairPool()
             {
-                _duplicatedVotes = new ConcurrentDictionary<(long, int, PublicKey), List<Vote>>();
+                _duplicatedVotePairs = new ConcurrentDictionary<Tuple<Vote, Vote>, bool>();
             }
 
             /// <summary>
             /// Add duplicated <see cref="Vote"/>s to the pool.
             /// </summary>
-            /// <param name="vote">
+            /// <param name="voteRef">
             /// Reference <see cref="Vote"/> of duplicated pair.
             /// In general, <see cref="Vote"/> that has been made first, and added on the
             /// <see cref="MessageLog"/>.</param>
@@ -418,34 +419,34 @@ namespace Libplanet.Net.Consensus
             /// <see cref="MessageLog"/>.</param>
             /// <exception cref="ArgumentException">Thrown if pair of <see cref="Vote"/>s
             /// are not conflicting.</exception>
-            public void Add(Vote vote, Vote voteDup)
+            public void Add(Vote voteRef, Vote voteDup)
             {
-                if (vote.Height != voteDup.Height)
+                if (voteRef.Height != voteDup.Height)
                 {
                     throw new ArgumentException(
-                        $"Heights of vote pair are different : {vote.Height}, {voteDup.Height}");
+                        $"Heights of vote pair are different : {voteRef.Height}, {voteDup.Height}");
                 }
 
-                if (vote.Round != voteDup.Round)
+                if (voteRef.Round != voteDup.Round)
                 {
                     throw new ArgumentException(
-                        $"Rounds of vote pair are different : {vote.Round}, {voteDup.Round}");
+                        $"Rounds of vote pair are different : {voteRef.Round}, {voteDup.Round}");
                 }
 
-                if (vote.ValidatorPublicKey != voteDup.ValidatorPublicKey)
+                if (voteRef.ValidatorPublicKey != voteDup.ValidatorPublicKey)
                 {
                     throw new ArgumentException(
                         $"Public keys of vote pair are different " +
-                        $": {vote.ValidatorPublicKey}, {voteDup.ValidatorPublicKey}");
+                        $": {voteRef.ValidatorPublicKey}, {voteDup.ValidatorPublicKey}");
                 }
 
-                if (vote.Flag != voteDup.Flag)
+                if (voteRef.Flag != voteDup.Flag)
                 {
                     throw new ArgumentException(
-                        $"Vote flags of vote pair are different : {vote.Flag}, {voteDup.Flag}");
+                        $"Vote flags of vote pair are different : {voteRef.Flag}, {voteDup.Flag}");
                 }
 
-                if (vote.BlockHash is null)
+                if (voteRef.BlockHash is null)
                 {
                     throw new ArgumentException("vote is nill");
                 }
@@ -455,16 +456,16 @@ namespace Libplanet.Net.Consensus
                     throw new ArgumentException("voteDup is nill");
                 }
 
-                if (vote.BlockHash.Equals(voteDup.BlockHash))
+                if (voteRef.BlockHash.Equals(voteDup.BlockHash))
                 {
                     throw new ArgumentException(
-                        $"Block hash of vote pair are equal : {vote.BlockHash}");
+                        $"Block hash of vote pair are equal : {voteRef.BlockHash}");
                 }
 
-                if (!vote.Verify())
+                if (!voteRef.Verify())
                 {
                     throw new ArgumentException(
-                        $"vote has invalid signature : {vote}, {vote.Signature}");
+                        $"vote has invalid signature : {voteRef}, {voteRef.Signature}");
                 }
 
                 if (!voteDup.Verify())
@@ -473,27 +474,26 @@ namespace Libplanet.Net.Consensus
                         $"voteDup has invalid signature : {voteDup}, {voteDup.Signature}");
                 }
 
-                _duplicatedVotes.AddOrUpdate(
-                    (vote.Height, vote.Round, vote.ValidatorPublicKey),
-                    new List<Vote>() { vote, voteDup },
-                    (key, voteList) => voteList.Concat(new List<Vote> { voteDup }).ToList());
+                _duplicatedVotePairs.TryAdd(
+                    Tuple.Create(voteRef, voteDup), true);
             }
 
             /// <summary>
-            /// Retrieve duplicated vote sets from the <see cref="DuplicatedVotesPool"/>.
+            /// Retrieve duplicated vote pairs from the <see cref="DuplicatedVotePairPool"/>.
             /// <seealso cref="Blockchain.BlockChain.UpdateEvidence(
-            /// IEnumerable{IEnumerable{Vote}}, IEnumerable{Evidence}?)"/>
+            /// IEnumerable{Tuple{Vote, Vote}}, IEnumerable{Evidence}?)"/>
             /// <seealso cref="Context.ProcessHeightOrRoundUponRules(Messages.ConsensusMsg)"/>
             /// </summary>
-            /// <returns>Duplicated vote sets retrieved from the <see cref="DuplicatedVotesPool"/>.
+            /// <returns>Duplicated vote pairs retrieved from the
+            /// <see cref="DuplicatedVotePairPool"/>.
             /// </returns>
-            public IEnumerable<IEnumerable<Vote>> Exhaust()
+            public IEnumerable<Tuple<Vote, Vote>> Exhaust()
             {
-                foreach ((long, int, PublicKey) key in _duplicatedVotes.Keys)
+                foreach (Tuple<Vote, Vote> key in _duplicatedVotePairs.Keys)
                 {
-                    if (_duplicatedVotes.TryRemove(key, out List<Vote>? voteList))
+                    if (_duplicatedVotePairs.TryRemove(key, out _))
                     {
-                        yield return voteList;
+                        yield return key;
                     }
                 }
             }

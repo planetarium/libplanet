@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using Bencodex;
+using Bencodex.Misc;
 using Bencodex.Types;
 
 namespace Libplanet.Consensus
@@ -18,7 +16,8 @@ namespace Libplanet.Consensus
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly byte[] HeightKey = { 0x68 };                // 'h'
-        private static readonly byte[] VotesKey = { 0x76 };                 // 'v'
+        private static readonly byte[] VoteRefKey = { 0x76 };                 // 'v'
+        private static readonly byte[] VoteDupKey = { 0x56 };                 // 'V'
         private static readonly byte[] ValidatorPowerKey = { 0x70 };        // 'p'
         private static readonly byte[] TotalPowerKey = { 0x50 };            // 'P'
         private static readonly byte[] TimestampKey = { 0x74 };             // 't'
@@ -26,18 +25,21 @@ namespace Libplanet.Consensus
         /// <summary>
         /// Creates a <see cref="DuplicateVoteEvidence"/> instance.
         /// </summary>
-        /// <param name="votes">Conflicting <see cref="Vote"/>s.</param>
+        /// <param name="voteRef">Reference vote of conflicting <see cref="Vote"/>s.</param>
+        /// <param name="voteDup">Duplicated vote of conflicting <see cref="Vote"/>s.</param>
         /// <param name="validatorSet"><see cref="ValidatorSet"/>
         /// from block of conflicting votes has been made.</param>
         /// <param name="timestamp">The timestamp of evidence.</param>
         public DuplicateVoteEvidence(
-            IEnumerable<Vote> votes,
+            Vote voteRef,
+            Vote voteDup,
             ValidatorSet validatorSet,
             DateTimeOffset timestamp)
             : this(
-                  votes.First().Height,
-                  votes,
-                  validatorSet.GetValidator(votes.First().ValidatorPublicKey).Power,
+                  voteRef.Height,
+                  voteRef,
+                  voteDup,
+                  validatorSet.GetValidator(voteRef.ValidatorPublicKey).Power,
                   validatorSet.TotalPower,
                   timestamp)
         {
@@ -60,58 +62,88 @@ namespace Libplanet.Consensus
 
         private DuplicateVoteEvidence(
             long height,
-            IEnumerable<Vote> votes,
+            Vote voteRef,
+            Vote voteDup,
             BigInteger validatorPower,
             BigInteger totalPower,
             DateTimeOffset timestamp)
             : base(height, timestamp)
         {
-            if (votes.Count() < 2)
+            if (voteRef.Height != height)
             {
                 throw new ArgumentException(
-                    $"Less than two votes are found : {votes.Count()}");
+                    $"Height of voteRef is different from height : " +
+                    $"Expected {height}, Actual {voteRef.Height}");
             }
 
-            if (votes.Any(vote => vote.Height != height))
+            if (voteDup.Height != height)
             {
                 throw new ArgumentException(
-                    $"Height of votes are different from height {height}");
+                    $"Height of voteDup is different from height : " +
+                    $"Expected {height}, Actual {voteDup.Height}");
             }
 
-            if (votes.Any(vote => vote.Round != votes.First().Round))
+            if (voteRef.Round != voteDup.Round)
             {
                 throw new ArgumentException(
-                    $"Round of votes are different");
+                    $"Round of votes are different : " +
+                    $"voteRef {voteRef.Round}, voteDup {voteDup.Round}");
             }
 
-            if (votes.Any(vote => vote.ValidatorPublicKey != votes.First().ValidatorPublicKey))
+            if (voteRef.ValidatorPublicKey != voteDup.ValidatorPublicKey)
             {
                 throw new ArgumentException(
-                    $"Validator public key of votes are different");
+                    $"Validator public key of votes are different : " +
+                    $"voteRef {voteRef.ValidatorPublicKey}," +
+                    $"voteDup {voteDup.ValidatorPublicKey}");
             }
 
-            if (votes.Any(vote => vote.Flag != votes.First().Flag))
+            if (voteRef.Flag != voteDup.Flag)
             {
                 throw new ArgumentException(
-                    $"Flags of votes are different");
+                    $"Flags of votes are different : " +
+                    $"voteRef {voteRef.Flag}, voteDup {voteDup.Flag}");
             }
 
-            if (votes.Any(vote => vote.BlockHash is null))
+            if (voteRef.BlockHash is { } voteRefHash)
+            {
+            }
+            else
             {
                 throw new ArgumentException(
-                    $"Nil votes are included in votes");
+                    $"voteRef is nill vote");
             }
 
-            if (votes.Select(vote => vote.BlockHash).Distinct().Count() != votes.Count())
+            if (voteDup.BlockHash is { } voteDupHash)
+            {
+            }
+            else
             {
                 throw new ArgumentException(
-                    $"Some block hash of votes are same");
+                    $"voteDup is nill vote");
             }
 
-            if (votes.Any(vote => !vote.Verify()))
+            if (voteRefHash.Equals(voteDupHash))
             {
                 throw new ArgumentException(
-                    $"Signature of votes are invalid");
+                    $"Blockhash of votes are same : " +
+                    $"{voteRefHash}");
+            }
+
+            if (!voteRef.Verify())
+            {
+                throw new ArgumentException(
+                    $"Signature of voteRef is invalid : " +
+                    $"voteRef {voteRef}," +
+                    $"signature {voteRef.Signature.Hex()}");
+            }
+
+            if (!voteDup.Verify())
+            {
+                throw new ArgumentException(
+                    $"Signature of voteDup is invalid : " +
+                    $"voteDup {voteDup}," +
+                    $"signature {voteDup.Signature.Hex()}");
             }
 
             if (height < 0L)
@@ -132,7 +164,7 @@ namespace Libplanet.Consensus
                     $"Total power is not positive");
             }
 
-            Votes = votes.OrderBy(vote => vote.BlockHash).ToImmutableArray();
+            (VoteRef, VoteDup) = OrderDuplicateVotePair(voteRef, voteDup);
             ValidatorPower = validatorPower;
             TotalPower = totalPower;
         }
@@ -140,7 +172,8 @@ namespace Libplanet.Consensus
         private DuplicateVoteEvidence(Bencodex.Types.Dictionary bencoded)
             : this(
                 height: bencoded.GetValue<Integer>(HeightKey),
-                votes: bencoded.GetValue<List>(VotesKey).Select(v => new Vote(v)),
+                voteRef: new Vote(bencoded.GetValue<IValue>(VoteRefKey)),
+                voteDup: new Vote(bencoded.GetValue<IValue>(VoteDupKey)),
                 validatorPower: bencoded.GetValue<Integer>(ValidatorPowerKey),
                 totalPower: bencoded.GetValue<Integer>(TotalPowerKey),
                 timestamp: DateTimeOffset.ParseExact(
@@ -153,10 +186,14 @@ namespace Libplanet.Consensus
         public override EvidenceType Type => EvidenceType.DuplicateVoteEvidence;
 
         /// <summary>
-        /// The conflicting votes.
-        /// At least two votes are needed for duplicate vote evidence.
+        /// The reference vote of conflicting votes.
         /// </summary>
-        public ImmutableArray<Vote> Votes { get; }
+        public Vote VoteRef { get; }
+
+        /// <summary>
+        /// The duplicated vote of conflicting votes.
+        /// </summary>
+        public Vote VoteDup { get; }
 
         /// <summary>
         /// Consensus power of validator that committed infraction at the time
@@ -177,7 +214,8 @@ namespace Libplanet.Consensus
             {
                 Dictionary bencoded = Bencodex.Types.Dictionary.Empty
                     .Add(HeightKey, Height)
-                    .Add(VotesKey, new Bencodex.Types.List(Votes.Select(v => v.Bencoded)))
+                    .Add(VoteRefKey, VoteRef.Bencoded)
+                    .Add(VoteDupKey, VoteDup.Bencoded)
                     .Add(ValidatorPowerKey, ValidatorPower)
                     .Add(TotalPowerKey, TotalPower)
                     .Add(
@@ -187,39 +225,73 @@ namespace Libplanet.Consensus
             }
         }
 
-        /// <inheritdoc/>
-        public bool Equals(DuplicateVoteEvidence? other)
+        public static (Vote, Vote) OrderDuplicateVotePair(Vote voteRef, Vote voteDup)
         {
-            return other is DuplicateVoteEvidence metadata &&
-                Height == metadata.Height &&
-                Votes.SequenceEqual(metadata.Votes) &&
-                ValidatorPower == metadata.ValidatorPower &&
-                TotalPower == metadata.TotalPower &&
-                Timestamp
-                    .ToString(TimestampFormat, CultureInfo.InvariantCulture).Equals(
-                        metadata.Timestamp.ToString(
-                            TimestampFormat,
-                            CultureInfo.InvariantCulture));
+            if (voteRef.BlockHash is { } voteRefHash)
+            {
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"voteRef is nill vote");
+            }
+
+            if (voteDup.BlockHash is { } voteDupHash)
+            {
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"voteDup is nill vote");
+            }
+
+            if (voteRef.Timestamp < voteDup.Timestamp)
+            {
+                return (voteRef, voteDup);
+            }
+            else if (voteRef.Timestamp > voteDup.Timestamp)
+            {
+                return (voteDup, voteRef);
+            }
+            else
+            {
+                if (voteRefHash.CompareTo(voteDupHash) < 0)
+                {
+                    return (voteRef, voteDup);
+                }
+                else
+                {
+                    return (voteDup, voteRef);
+                }
+            }
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object? obj) =>
-            obj is DuplicateVoteEvidence other && Equals(other);
+        public bool Equals(DuplicateVoteEvidence? other)
+            => other is DuplicateVoteEvidence duplicateVoteEvidence &&
+                Height == duplicateVoteEvidence.Height &&
+                VoteRef.Equals(duplicateVoteEvidence.VoteRef) &&
+                VoteDup.Equals(duplicateVoteEvidence.VoteDup) &&
+                ValidatorPower == duplicateVoteEvidence.ValidatorPower &&
+                TotalPower == duplicateVoteEvidence.TotalPower &&
+                Timestamp
+                    .ToString(TimestampFormat, CultureInfo.InvariantCulture).Equals(
+                        duplicateVoteEvidence.Timestamp.ToString(
+                            TimestampFormat,
+                            CultureInfo.InvariantCulture));
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+            => obj is DuplicateVoteEvidence other && Equals(other);
 
         /// <inheritdoc/>
         public override int GetHashCode()
-        {
-            HashCode hash = default;
-            hash.Add(Height);
-            foreach (var vote in Votes)
-            {
-                hash.Add(vote);
-            }
-
-            hash.Add(ValidatorPower);
-            hash.Add(TotalPower);
-            hash.Add(Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture));
-            return hash.ToHashCode();
-        }
+            => HashCode.Combine(
+                Height,
+                VoteRef,
+                VoteDup,
+                ValidatorPower,
+                TotalPower,
+                Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture));
     }
 }

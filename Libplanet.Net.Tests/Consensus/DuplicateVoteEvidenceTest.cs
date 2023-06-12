@@ -155,7 +155,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
-            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVoteSets());
+            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVotePairs());
         }
 
         [Fact(Timeout = Timeout)]
@@ -201,7 +201,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
-            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVoteSets());
+            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVotePairs());
         }
 
         [Fact(Timeout = Timeout)]
@@ -246,7 +246,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
-            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVoteSets());
+            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVotePairs());
         }
 
         [Fact(Timeout = Timeout)]
@@ -287,7 +287,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
-            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVoteSets());
+            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVotePairs());
         }
 
         [Fact(Timeout = Timeout)]
@@ -328,7 +328,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
-            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVoteSets());
+            Assert.Empty(consensusContext.Contexts[3].GetDuplicatedVotePairs());
         }
     }
 }
