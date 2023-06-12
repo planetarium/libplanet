@@ -65,6 +65,10 @@ namespace Libplanet.State
         /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
         /// that have been updated since the previous <see cref="Block"/>'s output states.
         /// </summary>
+        /// <remarks>
+        /// Due to a bug in old implementation, this does not work properly under
+        /// <see cref="Block.ProtocolVersion"/> zero.
+        /// </remarks>
         [Pure]
         IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets { get; }
 

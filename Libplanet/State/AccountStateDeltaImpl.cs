@@ -82,7 +82,7 @@ namespace Libplanet.State
             UpdatedTotalSupply.Keys.ToImmutableHashSet();
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
-            { get; set; }
+            { get; protected set; }
 
         protected AccountStateGetter StateGetter { get; set; }
 
