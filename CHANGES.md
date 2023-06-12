@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `IAccountStateDelta.TotalUpdatedFungibleAssets` interface property.
+    [[#3208]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3208]: https://github.com/planetarium/libplanet/pull/3208
 
 
 Version 1.4.0
