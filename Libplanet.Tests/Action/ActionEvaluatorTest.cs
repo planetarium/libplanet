@@ -1016,6 +1016,46 @@ namespace Libplanet.Tests.Action
                     .Select(tx => tx.Signer.ToString())));
         }
 
+        [Fact]
+        public void TotalUpdatedFungibleAssets()
+        {
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator<MintAction>(
+                policy: _policy,
+                store: _storeFx.Store,
+                stateStore: _storeFx.StateStore,
+                genesisBlock: _storeFx.GenesisBlock,
+                privateKey: ChainPrivateKey);
+            var privateKeys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
+            var addresses = privateKeys.Select(privateKey => privateKey.ToAddress()).ToList();
+
+            // Only addresses[0] and addresses[1] are able to mint
+            var currency = Currency.Uncapped(
+                "FOO", 0, addresses.Take(2).ToImmutableHashSet());
+
+            var mintAction = new MintAction();
+            mintAction.LoadPlainValue(currency.Serialize());
+            var txs = privateKeys.Select(privateKey =>
+                Transaction.Create(
+                    0, privateKey, chain.Genesis.Hash, new[] { mintAction }))
+                .ToList();
+
+            var genesis = chain.Genesis;
+            var block = chain.ProposeBlock(
+                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+
+            var evals = chain.EvaluateBlock(block);
+
+            // Includes policy block action
+            Assert.Equal(4, evals.Count);
+            var latest = evals.Last().OutputStates;
+
+            // Only addresses[0] and addresses[1] succeeded in minting
+            Assert.Equal(2, latest.TotalUpdatedFungibleAssets.Count);
+            Assert.Contains(addresses[0], latest.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(addresses[1], latest.TotalUpdatedFungibleAssets.Keys);
+            Assert.DoesNotContain(addresses[2], latest.TotalUpdatedFungibleAssets.Keys);
+        }
+
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
@@ -1166,6 +1206,22 @@ namespace Libplanet.Tests.Action
                     .SetState(SignerKey, (Text)context.Signer.ToHex())
                     .SetState(MinerKey, (Text)context.Miner.ToHex())
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
+        }
+
+        private sealed class MintAction : IAction
+        {
+            public Currency Currency { get; set; }
+
+            public IValue PlainValue => Currency.Serialize();
+
+            public void LoadPlainValue(IValue plainValue)
+            {
+                Currency = new Currency(plainValue);
+            }
+
+            public IAccountStateDelta Execute(IActionContext context) =>
+                context.PreviousStates.MintAsset(
+                    context.Signer, new FungibleAssetValue(Currency, 1));
         }
     }
 
