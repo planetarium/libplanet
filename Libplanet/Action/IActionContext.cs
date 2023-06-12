@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.State;
 using Libplanet.Tx;
@@ -12,29 +13,33 @@ namespace Libplanet.Action
     public interface IActionContext
     {
         /// <summary>
-        /// <see cref="Address"/> of an account who made and signed
-        /// a transaction that an executed <see cref="IAction"/> belongs to.
+        /// The <see cref="Transaction.Signer"/> of the <see cref="Transaction"/> that contains
+        /// the <see cref="IAction"/> to be executed.  If the <see cref="IAction"/> is
+        /// not part of a <see cref="Transaction"/>, e.g. <see cref="IBlockPolicy.BlockAction"/>,
+        /// this is set to <see cref="Block.Miner"/> instead.
         /// </summary>
         [Pure]
         Address Signer { get; }
 
         /// <summary>
-        /// <see cref="Transaction.Id"/> of a transaction that an executed <see cref="IAction"/>
-        /// belongs to.  This is <see langword="null"/>
-        /// iff <see cref="BlockAction"/> is <see langword="true"/>.
+        /// The <see cref="Transaction.Id"/> of the <see cref="Transaction"/> that contains
+        /// the <see cref="IAction"/>.  If the <see cref="IAction"/> is not part of
+        /// a <see cref="Transaction"/>, e.g. <see cref="IBlockPolicy.BlockAction"/>,
+        /// this is set to <see langword="null"/>.
         /// </summary>
         [Pure]
         TxId? TxId { get; }
 
         /// <summary>
-        /// <see cref="Address"/> of a block miner account.
+        /// The <see cref="Block.Miner"/> of the <see cref="Block"/> that contains
+        /// the <see cref="IAction"/>.
         /// </summary>
         [Pure]
         Address Miner { get; }
 
         /// <summary>
-        /// <see cref="Block"/>.<see cref="Block.Index"/> of a transaction that an executed
-        /// <see cref="IAction"/> belongs to.
+        /// The <see cref="Block.Index"/> of the <see cref="Block"/> that contains
+        /// the <see cref="IAction"/>.
         /// </summary>
         [Pure]
         long BlockIndex { get; }

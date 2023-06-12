@@ -26,7 +26,6 @@ namespace Libplanet.Action
             int randomSeed,
             long gasLimit,
             bool rehearsal = false,
-            bool blockAction = false,
             List<string>? logs = null)
         {
             Signer = signer;
@@ -38,7 +37,6 @@ namespace Libplanet.Action
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
             _gasLimit = gasLimit;
-            BlockAction = blockAction;
             Logs = logs ?? new List<string>();
 
             GetStateTimer.Value = new Stopwatch();
@@ -46,21 +44,29 @@ namespace Libplanet.Action
             GetGasMeter.Value = new GasMeter(_gasLimit);
         }
 
+        /// <inheritdoc cref="IActionContext.Signer"/>
         public Address Signer { get; }
 
+        /// <inheritdoc cref="IActionContext.TxId"/>
         public TxId? TxId { get; }
 
+        /// <inheritdoc cref="IActionContext.Miner"/>
         public Address Miner { get; }
 
+        /// <inheritdoc cref="IActionContext.BlockIndex"/>
         public long BlockIndex { get; }
 
+        /// <inheritdoc cref="IActionContext.Rehearsal"/>
         public bool Rehearsal { get; }
 
+        /// <inheritdoc cref="IActionContext.PreviousStates"/>
         public IAccountStateDelta PreviousStates { get; }
 
+        /// <inheritdoc cref="IActionContext.Random"/>
         public IRandom Random { get; }
 
-        public bool BlockAction { get; }
+        /// <inheritdoc cref="IActionContext.BlockAction"/>
+        public bool BlockAction => TxId is null;
 
         internal List<string> Logs { get; }
 
@@ -81,7 +87,6 @@ namespace Libplanet.Action
                 _randomSeed,
                 _gasLimit,
                 Rehearsal,
-                BlockAction,
                 new List<string>());
 
         /// <summary>

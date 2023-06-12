@@ -190,8 +190,6 @@ namespace Libplanet.Action
         /// <param name="maxGasPrice">
         /// The maximum gas price that can be used by the transaction.
         /// </param>
-        /// <param name="blockAction">Pass <see langword="true"/> if it is
-        /// <see cref="IBlockPolicy.BlockAction"/>.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -225,7 +223,6 @@ namespace Libplanet.Action
             IImmutableList<IAction> actions,
             long gasLimit = long.MaxValue,
             FungibleAssetValue? maxGasPrice = null,
-            bool blockAction = false,
             ILogger? logger = null)
         {
             ActionContext CreateActionContext(
@@ -242,7 +239,6 @@ namespace Libplanet.Action
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
-                    blockAction: blockAction,
                     gasLimit: actionGasLimit,
                     logs: logs);
             }
@@ -527,9 +523,7 @@ namespace Libplanet.Action
                 miner: blockHeader.Miner,
                 signer: blockHeader.Miner,
                 signature: Array.Empty<byte>(),
-                actions: new[] { policyBlockAction }.ToImmutableList(),
-                blockAction: true
-            ).Single();
+                actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
         [Pure]

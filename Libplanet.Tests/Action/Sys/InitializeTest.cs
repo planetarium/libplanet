@@ -62,9 +62,7 @@ namespace Libplanet.Tests.Action.Sys
                 previousStates: prevStates,
                 randomSeed: 123,
                 gasLimit: 0,
-                rehearsal: false,
-                blockAction: false
-            );
+                rehearsal: false);
             var initialize = new Initialize(
                 states: _states,
                 validatorSet: _validatorSet
@@ -97,9 +95,7 @@ namespace Libplanet.Tests.Action.Sys
                 previousStates: prevStates,
                 randomSeed: 123,
                 gasLimit: long.MaxValue,
-                rehearsal: false,
-                blockAction: false
-            );
+                rehearsal: false);
             var initialize = new Initialize(
                 states: _states,
                 validatorSet: _validatorSet
