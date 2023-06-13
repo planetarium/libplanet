@@ -441,7 +441,8 @@ namespace Libplanet.Action
                     delta.GetBalance,
                     delta.GetTotalSupply,
                     delta.GetValidatorSet,
-                    tx.Signer);
+                    tx.Signer,
+                    ((AccountStateDeltaImpl)delta).TotalUpdatedFungibles);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -618,7 +619,8 @@ namespace Libplanet.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
-                miner);
+                miner,
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
         }
 
         private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
