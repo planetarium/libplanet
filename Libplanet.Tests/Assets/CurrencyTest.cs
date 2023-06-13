@@ -233,12 +233,6 @@ namespace Libplanet.Tests.Assets
                     .Add("decimalPlaces", new byte[] { 2 })
                     .Add("minters", Null.Value),
                 foo.Serialize());
-            Assert.Equal(
-                Dictionary.Empty
-                    .Add("ticker", "FOO")
-                    .Add("decimals", 2)
-                    .Add("minters", Null.Value),
-                foo.Serialize(hash: true));
 
             Assert.Equal(foo, new Currency(foo.Serialize()));
 
@@ -256,17 +250,6 @@ namespace Libplanet.Tests.Assets
                         List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray()))
                     .Add("totalSupplyTrackable", true),
                 bar.Serialize());
-            Assert.Equal(
-                Dictionary.Empty
-                    .Add("ticker", "BAR")
-                    .Add("decimals", 0)
-                    .Add("maximumSupplyMajor", 100)
-                    .Add("maximumSupplyMinor", 0)
-                    .Add(
-                        "minters",
-                        List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray()))
-                    .Add("totalSupplyTrackable", true),
-                bar.Serialize(hash: true));
 
             Assert.Equal(bar, new Currency(bar.Serialize()));
         }

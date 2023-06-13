@@ -130,17 +130,17 @@ namespace Libplanet.Tests.Tx
             for (int i = 0; i < 6; i++)
             {
                 var invoice = new TxInvoice(
-                        i == 0 ? (BlockHash?)null : genesisHash,
-                        i == 1 ? null : updatedAddresses,
-                        i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
-                        i == 3 ? null : actions,
-                        i == 4 ? (FungibleAssetValue?)null : new FungibleAssetValue(
-                            Currency.Uncapped(
-                                "FOO",
-                                18,
-                                new PrivateKey().ToAddress()),
-                            100),
-                        i == 5 ? (long?)null : 10);
+                   i == 0 ? (BlockHash?)null : genesisHash,
+                   i == 1 ? null : updatedAddresses,
+                   i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
+                   i == 3 ? null : actions,
+                   i == 4 ? (FungibleAssetValue?)null : new FungibleAssetValue(
+                       Currency.Uncapped(
+                           "FOO",
+                           18,
+                           new PrivateKey().ToAddress()),
+                       100),
+                   i == 5 ? (long?)null : 10);
                 Assert.False(invoice1.Equals(invoice));
                 Assert.False(invoice1.Equals((object)invoice));
                 Assert.NotEqual(invoice1.GetHashCode(), invoice.GetHashCode());

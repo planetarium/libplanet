@@ -92,9 +92,9 @@ namespace Libplanet.Assets
         /// <summary>
         /// Deserializes a <see cref="Currency"/> type from a Bencodex value.
         /// </summary>
-        /// <param name="serialized">The Bencodex value serialized by <see cref="Serialize(bool)"/>
+        /// <param name="serialized">The Bencodex value serialized by <see cref="Serialize()"/>
         /// method.</param>
-        /// <seealso cref="Serialize(bool)"/>
+        /// <seealso cref="Serialize()"/>
         public Currency(IValue serialized)
         {
             BigInteger? maximumSupplyMajor = null, maximumSupplyMinor = null;
@@ -671,26 +671,9 @@ namespace Libplanet.Assets
         /// <summary>
         /// Serializes the currency into a Bencodex value.
         /// </summary>
-        /// <param name="hash">Whether to serialize the currency for hash calculation.</param>
         /// <returns>The serialized Bencodex value.</returns>
         [Pure]
-        public IValue Serialize(bool hash = false) =>
-            hash ? SerializeForHash() : SerializeForState();
-
-        private static SHA1 GetSHA1()
-        {
-            try
-            {
-                return new SHA1CryptoServiceProvider();
-            }
-            catch (PlatformNotSupportedException)
-            {
-                return new SHA1Managed();
-            }
-        }
-
-        [Pure]
-        private IValue SerializeForState()
+        public IValue Serialize()
         {
             IValue minters = Minters is IImmutableSet<Address> m
                 ? new Bencodex.Types.List(m.Select<Address, IValue>(a => new Binary(a.ByteArray)))
@@ -714,6 +697,18 @@ namespace Libplanet.Assets
             }
 
             return serialized;
+        }
+
+        private static SHA1 GetSHA1()
+        {
+            try
+            {
+                return new SHA1CryptoServiceProvider();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return new SHA1Managed();
+            }
         }
 
         [Pure]
