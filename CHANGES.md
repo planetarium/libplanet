@@ -15,6 +15,8 @@ To be released.
 
  -  Added `ITransaction.MaxGasPrice` property.  [[#3201]]
  -  Added `ITransaction.GasLimit` property.  [[#3201]]
+ -  `Currency.Serialize()`'s behavioral is changed.
+    the serialize field is replaced. [[#3201]]
 
 ### Backward-incompatible network protocol changes
 
