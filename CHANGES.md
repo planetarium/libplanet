@@ -21,12 +21,18 @@ To be released.
 
 ### Behavioral changes
 
+ -  Improved performance of `StateStoreExtensions.Commit()` extension method
+    and `MerkleTrie.Commit()` method.  [[#3165]]
+ -  Improved performance of `HashDigest<T>.DeriveFrom()` static method on
+    .NET Standard 2.1+.  [[#3165]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+[#3165]: https://github.com/planetarium/libplanet/pull/3165
 [#3208]: https://github.com/planetarium/libplanet/pull/3208
 
 
