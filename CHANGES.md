@@ -16,7 +16,7 @@ Released on June 14, 2023.
  -  Added `ITransaction.MaxGasPrice` property.  [[#3201]]
  -  Added `ITransaction.GasLimit` property.  [[#3201]]
  -  `Currency.Serialize()`'s behavioral is changed.
-    the serialize field is replaced. [[#3201]]
+    the serialize field is replaced.  [[#3201]]
 
 ### Added APIs
 
