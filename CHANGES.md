@@ -12,6 +12,8 @@ To be released.
 
  -  Added `IAccountStateDelta.TotalUpdatedFungibleAssets` interface property.
     [[#3208]]
+ -  Removed `blockAction` parameter from `ActionContext()`.
+    [[#3209]]
 
  -  Added `ITransaction.MaxGasPrice` property.  [[#3201]]
  -  Added `ITransaction.GasLimit` property.  [[#3201]]
@@ -41,6 +43,7 @@ To be released.
 
 [#3165]: https://github.com/planetarium/libplanet/pull/3165
 [#3208]: https://github.com/planetarium/libplanet/pull/3208
+[#3209]: https://github.com/planetarium/libplanet/pull/3209
 
 
 Version 1.4.0

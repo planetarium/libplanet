@@ -761,9 +761,7 @@ namespace Libplanet.Tests.Action
                 signature: txA.Signature,
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray(),
-                blockAction: false
-            ).ToArray();
+                    .ToImmutableArray()).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             for (int i = 0; i < evalsA.Length; i++)
@@ -810,9 +808,7 @@ namespace Libplanet.Tests.Action
                 signature: txB.Signature,
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray(),
-                blockAction: false
-            ).ToArray();
+                    .ToImmutableArray()).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
 
@@ -1406,9 +1402,7 @@ namespace Libplanet.Tests.Action
                 signature: txA.Signature,
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray(),
-                blockAction: false
-            ).ToArray();
+                    .ToImmutableArray()).ToArray();
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
             {
