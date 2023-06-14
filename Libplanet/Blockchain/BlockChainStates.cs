@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain
 
             IReadOnlyList<Address> uncachedAddresses =
                 uncachedIndices.Select(index => addresses[index]).ToArray();
-            ITrie stateRoot = GetStateRoot(offset);
+            ITrie stateRoot = GetStateRoot(hash);
             string[] stringKeys = uncachedAddresses.Select(ToStateKey).ToArray();
             IReadOnlyList<IValue?> fetched = stateRoot.Get(
                 stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
