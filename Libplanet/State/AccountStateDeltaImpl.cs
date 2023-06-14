@@ -7,6 +7,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 
 namespace Libplanet.State
@@ -325,12 +326,8 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a null delta from the given <paramref name="accountStateGetter"/>,
-        /// <paramref name="accountBalanceGetter"/>, and <paramref name="totalSupplyGetter"/>,
-        /// with a subtype of <see cref="AccountStateDeltaImpl"/> that corresponds to the
-        /// <paramref name="protocolVersion"/>.
+        /// Creates a default null delta.
         /// </summary>
-        /// <param name="protocolVersion">The protocol version of which to create a delta.</param>
         /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
         /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
         /// </param>
@@ -338,40 +335,109 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
-        /// to mint a currency.</param>
-        /// <param name="previousTotalUpdatedFungibles">The previous
-        /// <see cref="AccountStateDeltaImpl"/>'s total updated fungibles to keep track of.</param>
-        /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
-        /// corresponds to the <paramref name="protocolVersion"/>.</returns>
-        [Pure]
-        internal static AccountStateDeltaImpl ChooseVersion(
-            int protocolVersion,
+        /// <returns>A null delta of type <see cref="AccountStateDeltaImplV0"/>
+        /// with <see langword="default"/> <see cref="Address"/> as its
+        /// <see cref="AccountStateDeltaImpl.Signer"/>.</returns>
+        /// <remarks>
+        /// This is not immediately usable.  Choose its proper type with <see cref="ChooseVersion"/>
+        /// and signer with <see cref="ChooseSigner"/> before use.
+        /// </remarks>
+        /// <seealso cref="ChooseVersion"/>
+        /// <seealso cref="ChooseSigner"/>
+        internal static IAccountStateDelta Create(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer,
-            IImmutableDictionary<(Address, Currency), BigInteger> previousTotalUpdatedFungibles)
-                => protocolVersion > 0
+            ValidatorSetGetter validatorSetGetter)
+        {
+            return new AccountStateDeltaImplV0(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter,
+                default(Address));
+        }
+
+        /// <summary>
+        /// Creates a null delta with given <paramref name="protocolVersion"/>.
+        /// </summary>
+        /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
+        /// <param name="protocolVersion">The <see cref="Block.ProtocolVersion"/> for which
+        /// this delta will be used.</param>
+        /// <returns>A null delta with an appropriate type as <see cref="IAccountStateDelta"/>
+        /// given <paramref name="protocolVersion"/>.</returns>
+        /// <remarks>
+        /// This clears <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/> and should be
+        /// only used right after <see cref="Create"/>.
+        /// </remarks>
+        /// <seealso cref="Create"/>
+        internal static IAccountStateDelta ChooseVersion(
+            IAccountStateDelta delta,
+            int protocolVersion) => protocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    totalSupplyGetter,
-                    validatorSetGetter,
-                    signer)
-                    {
-                        TotalUpdatedFungibles = previousTotalUpdatedFungibles,
-                    }
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    delta.GetValidatorSet,
+                    default(Address))
                 : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    totalSupplyGetter,
-                    validatorSetGetter,
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    delta.GetValidatorSet,
+                    default(Address));
+
+        /// <summary>
+        /// Creates a null delta with given <paramref name="signer"/>.
+        /// </summary>
+        /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
+        /// <param name="signer">The <see cref="Address"/> to set.</param>
+        /// <returns>A null delta with given <paramref name="signer"/> that is of the same type
+        /// as <paramref name="delta"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown if given <paramref name="delta"/>
+        /// is neither <see cref="AccountStateDeltaImplV0"/>
+        /// nor <see cref="AccountStateDeltaImpl"/>.
+        /// </exception>
+        /// <remarks>
+        /// This inherits <paramref name="delta"/>'s
+        /// <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/>.
+        /// </remarks>
+        internal static IAccountStateDelta ChooseSigner(
+            IAccountStateDelta delta,
+            Address signer)
+        {
+            // The order is important since AccountStateDeltaImplV0 inherits from
+            // AccountStateDeltaImpl
+            if (delta is AccountStateDeltaImplV0 implV0)
+            {
+                return new AccountStateDeltaImplV0(
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    delta.GetValidatorSet,
                     signer)
                     {
-                        TotalUpdatedFungibles = previousTotalUpdatedFungibles,
+                        TotalUpdatedFungibles = implV0.TotalUpdatedFungibles,
                     };
+            }
+            else if (delta is AccountStateDeltaImpl impl)
+            {
+                return new AccountStateDeltaImpl(
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    delta.GetValidatorSet,
+                    signer)
+                    {
+                        TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
+                    };
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Unknown type for {nameof(delta)}: {delta.GetType()}");
+            }
+        }
 
         [Pure]
         protected virtual FungibleAssetValue GetBalance(
