@@ -26,11 +26,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `BlockAction` could have unintended
+    `AccountStateDeltaImpl.Signer` during its execution.  [[#3215]]
+
 ### Dependencies
 
 ### CLI tools
 
 [#3214]: https://github.com/planetarium/libplanet/pull/3214
+[#3215]: https://github.com/planetarium/libplanet/pull/3215
 
 
 Version 2.0.0
