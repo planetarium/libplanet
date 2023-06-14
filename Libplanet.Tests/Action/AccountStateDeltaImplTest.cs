@@ -162,14 +162,7 @@ namespace Libplanet.Tests.Action
                 Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
 
             // Forcefully create null delta
-            delta0 = AccountStateDeltaImpl.ChooseVersion(
-                1,
-                delta0.GetStates,
-                delta0.GetBalance,
-                delta0.GetTotalSupply,
-                delta0.GetValidatorSet,
-                _addr[0],
-                ((AccountStateDeltaImpl)delta0).TotalUpdatedFungibles);
+            delta0 = AccountStateDeltaImpl.ChooseSigner(delta0, _addr[0]);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
             delta0 = delta0.MintAsset(_addr[0], Value(1, 1));
@@ -180,14 +173,7 @@ namespace Libplanet.Tests.Action
 
             // Forcefully create null delta
             // Currently there is no way to swap signer without clearing
-            delta0 = AccountStateDeltaImpl.ChooseVersion(
-                1,
-                delta0.GetStates,
-                delta0.GetBalance,
-                delta0.GetTotalSupply,
-                delta0.GetValidatorSet,
-                _addr[1],
-                ((AccountStateDeltaImpl)delta0).TotalUpdatedFungibles);
+            delta0 = AccountStateDeltaImpl.ChooseSigner(delta0, _addr[1]);
             delta0 = delta0.BurnAsset(_addr[1], Value(1, 1));
 
             // _addr[0] burned currencies[0] & minted currencies[1]

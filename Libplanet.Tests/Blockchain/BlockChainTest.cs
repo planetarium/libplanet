@@ -9,7 +9,6 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -1721,34 +1720,15 @@ namespace Libplanet.Tests.Blockchain
 
             // Build a store with incomplete states
             Block b = chain.Genesis;
-            AccountStateGetter nullAccountStateGetter = (address) => null;
-            AccountBalanceGetter nullAccountBalanceGetter =
-                (address, currency) => new FungibleAssetValue(currency);
-            TotalSupplyGetter nullTotalSupplyGetter = currency =>
-            {
-                if (!currency.TotalSupplyTrackable)
-                {
-                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-                }
-
-                return currency * 0;
-            };
-            ValidatorSetGetter nullValidatorSetGetter = () => new ValidatorSet();
-            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
-                b.ProtocolVersion,
-                nullAccountStateGetter,
-                nullAccountBalanceGetter,
-                nullTotalSupplyGetter,
-                nullValidatorSetGetter,
-                b.Miner,
-                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
+            IAccountStateDelta previousStates =
+                actionEvaluator.GetBlockOutputStates(b.PreviousHash);
+            previousStates =
+                AccountStateDeltaImpl.ChooseVersion(previousStates, b.ProtocolVersion);
+            previousStates =
+                AccountStateDeltaImpl.ChooseSigner(previousStates, b.Miner);
             ActionEvaluation[] evals =
                 actionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
-                evals.GetDirtyBalances();
-            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies
-                = evals.GetDirtyTotalSupplies();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
                 .Select(_ => new PrivateKey().ToAddress())
@@ -1773,23 +1753,11 @@ namespace Libplanet.Tests.Blockchain
                             lastCommit: CreateBlockCommit(b)),
                         GenesisProposer);
                     previousStates = AccountStateDeltaImpl.ChooseVersion(
-                        b.ProtocolVersion,
-                        addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
-                        (address, currency) => balances.GetValueOrDefault((address, currency)),
-                        currency =>
-                        {
-                            if (!currency.TotalSupplyTrackable)
-                            {
-                                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-                            }
-
-                            return totalSupplies.TryGetValue(currency, out var totalSupply)
-                                ? totalSupply
-                                : currency * 0;
-                        },
-                        () => new ValidatorSet(),
-                        b.Miner,
-                        ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
+                        previousStates,
+                        b.ProtocolVersion);
+                    previousStates = AccountStateDeltaImpl.ChooseSigner(
+                        previousStates,
+                        b.Miner);
 
                     dirty = actionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);

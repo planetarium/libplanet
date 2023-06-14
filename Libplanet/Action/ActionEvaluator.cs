@@ -12,7 +12,6 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Tx;
 using Serilog;
@@ -99,6 +98,10 @@ namespace Libplanet.Action
             try
             {
                 IAccountStateDelta previousStates = GetBlockOutputStates(block.PreviousHash);
+                previousStates = AccountStateDeltaImpl.ChooseVersion(
+                    previousStates, block.ProtocolVersion);
+                previousStates = AccountStateDeltaImpl.ChooseSigner(
+                    previousStates, block.Miner);
 
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
@@ -114,6 +117,8 @@ namespace Libplanet.Action
                     previousStates = evaluations.Count > 0
                         ? evaluations.Last().OutputStates
                         : previousStates;
+                    previousStates = AccountStateDeltaImpl.ChooseSigner(
+                        previousStates, block.Miner);
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(
                             blockHeader: block,
@@ -134,36 +139,6 @@ namespace Libplanet.Action
                         ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
                         stopwatch.ElapsedMilliseconds);
             }
-        }
-
-        [Pure]
-        internal static IReadOnlyList<IValue?> NullAccountStateGetter(
-            IReadOnlyList<Address> addresses
-        ) =>
-            new IValue?[addresses.Count];
-
-        [Pure]
-        internal static FungibleAssetValue NullAccountBalanceGetter(
-            Address address,
-            Currency currency
-        ) =>
-            currency * 0;
-
-        [Pure]
-        internal static FungibleAssetValue NullTotalSupplyGetter(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            return currency * 0;
-        }
-
-        [Pure]
-        internal static ValidatorSet NullValidatorSetGetter()
-        {
-            return new ValidatorSet();
         }
 
         /// <summary>
@@ -423,14 +398,9 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = AccountStateDeltaImpl.ChooseVersion(
-                    block.ProtocolVersion,
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    tx.Signer,
-                    ((AccountStateDeltaImpl)delta).TotalUpdatedFungibles);
+                delta = AccountStateDeltaImpl.ChooseSigner(
+                    delta,
+                    tx.Signer);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -526,6 +496,33 @@ namespace Libplanet.Action
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
+        /// <summary>
+        /// Retrieves the output states for <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="Block.Hash"/> of the <see cref="Block"/>
+        /// to reference.</param>
+        /// <returns>The last <see cref="IAccountStateDelta"/> for <paramref name="offset"/>.
+        /// If <paramref name="offset"/> is <see langword="null"/>, returns the default empty
+        /// states.
+        /// </returns>
+        internal IAccountStateDelta GetBlockOutputStates(BlockHash? offset)
+        {
+            AccountStateGetter accountStateGetter = addresses =>
+                _blockChainStates.GetStates(addresses, offset);
+            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
+                _blockChainStates.GetBalance(address, currency, offset);
+            TotalSupplyGetter totalSupplyGetter = currency =>
+                _blockChainStates.GetTotalSupply(currency, offset);
+            ValidatorSetGetter validatorSetGetter = () =>
+                _blockChainStates.GetValidatorSet(offset);
+
+            return AccountStateDeltaImpl.Create(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter);
+        }
+
         [Pure]
         private static IEnumerable<ITransaction> OrderTxsForEvaluationV0(
             IEnumerable<ITransaction> txs,
@@ -583,36 +580,6 @@ namespace Libplanet.Action
             }
 
             return result.SelectMany(group => group.OrderBy(tx => tx.Nonce));
-        }
-
-        /// <summary>
-        /// Retrieves the output states for <paramref name="offset"/>.
-        /// </summary>
-        /// <param name="offset">The <see cref="Block.Hash"/> of the <see cref="Block"/>
-        /// to reference.</param>
-        /// <returns>The last <see cref="IAccountStateDelta"/> for <paramref name="offset"/>.
-        /// If <paramref name="offset"/> is <see langword="null"/>, returns the default empty
-        /// states.
-        /// </returns>
-        private IAccountStateDelta GetBlockOutputStates(BlockHash? offset)
-        {
-            AccountStateGetter accountStateGetter = addresses =>
-                _blockChainStates.GetStates(addresses, offset);
-            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
-                _blockChainStates.GetBalance(address, currency, offset);
-            TotalSupplyGetter totalSupplyGetter = currency =>
-                _blockChainStates.GetTotalSupply(currency, offset);
-            ValidatorSetGetter validatorSetGetter = () =>
-                _blockChainStates.GetValidatorSet(offset);
-
-            return AccountStateDeltaImpl.ChooseVersion(
-                0,
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                default(Address),
-                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
         }
 
         private IEnumerable<IAction> LoadActions(long index, ITransaction tx)
