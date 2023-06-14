@@ -98,7 +98,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
+                IAccountStateDelta previousStates = GetBlockOutputStates(block.PreviousHash);
 
                 ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
                     block: block,
@@ -586,66 +586,33 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the last previous states for the previous block of
-        /// <paramref name="blockHeader"/>.
+        /// Retrieves the output states for <paramref name="offset"/>.
         /// </summary>
-        /// <param name="blockHeader">The header of block to reference.</param>
-        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
-        /// <see cref="Block"/>.
+        /// <param name="offset">The <see cref="Block.Hash"/> of the <see cref="Block"/>
+        /// to reference.</param>
+        /// <returns>The last <see cref="IAccountStateDelta"/> for <paramref name="offset"/>.
+        /// If <paramref name="offset"/> is <see langword="null"/>, returns the default empty
+        /// states.
         /// </returns>
-        private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader blockHeader)
+        private IAccountStateDelta GetBlockOutputStates(BlockHash? offset)
         {
-            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
-                InitializeAccountGettersPair(blockHeader);
-            Address miner = blockHeader.Miner;
+            AccountStateGetter accountStateGetter = addresses =>
+                _blockChainStates.GetStates(addresses, offset);
+            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
+                _blockChainStates.GetBalance(address, currency, offset);
+            TotalSupplyGetter totalSupplyGetter = currency =>
+                _blockChainStates.GetTotalSupply(currency, offset);
+            ValidatorSetGetter validatorSetGetter = () =>
+                _blockChainStates.GetValidatorSet(offset);
 
             return AccountStateDeltaImpl.ChooseVersion(
-                blockHeader.ProtocolVersion,
+                0,
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter,
-                miner,
+                default(Address),
                 ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
-        }
-
-        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
-            InitializeAccountGettersPair(
-            IPreEvaluationBlockHeader blockHeader)
-        {
-            AccountStateGetter accountStateGetter;
-            AccountBalanceGetter accountBalanceGetter;
-            TotalSupplyGetter totalSupplyGetter;
-            ValidatorSetGetter validatorSetGetter;
-
-            if (blockHeader.PreviousHash is { } previousHash)
-            {
-                accountStateGetter = addresses => _blockChainStates.GetStates(
-                    addresses,
-                    previousHash
-                );
-                accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
-                    address,
-                    currency,
-                    previousHash
-                );
-                totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
-                    currency,
-                    previousHash
-                );
-                validatorSetGetter = () => _blockChainStates.GetValidatorSet(previousHash);
-            }
-            else
-            {
-                accountStateGetter = NullAccountStateGetter;
-                accountBalanceGetter = NullAccountBalanceGetter;
-                totalSupplyGetter = NullTotalSupplyGetter;
-                validatorSetGetter = NullValidatorSetGetter;
-            }
-
-            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter,
-                validatorSetGetter);
         }
 
         private IEnumerable<IAction> LoadActions(long index, ITransaction tx)
