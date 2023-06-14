@@ -97,15 +97,9 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousStates = GetBlockOutputStates(block.PreviousHash);
-                previousStates = AccountStateDeltaImpl.ChooseVersion(
-                    previousStates, block.ProtocolVersion);
-                previousStates = AccountStateDeltaImpl.ChooseSigner(
-                    previousStates, block.Miner);
-
-                ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
-                    block: block,
-                    previousStates: previousStates).ToImmutableList();
+                IAccountStateDelta previousStates = PrepareInitialDelta(block);
+                ImmutableList<ActionEvaluation> evaluations =
+                    EvaluateBlock(block, previousStates).ToImmutableList();
 
                 var policyBlockAction = _policyBlockActionGetter(block);
                 if (policyBlockAction is null)
@@ -120,9 +114,7 @@ namespace Libplanet.Action
                     previousStates = AccountStateDeltaImpl.ChooseSigner(
                         previousStates, block.Miner);
                     return evaluations.Add(
-                        EvaluatePolicyBlockAction(
-                            blockHeader: block,
-                            previousStates: previousStates)
+                        EvaluatePolicyBlockAction(block, previousStates)
                     );
                 }
             }
@@ -497,30 +489,32 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the output states for <paramref name="offset"/>.
+        /// Prepares the initial <see cref="IAccountStateDelta"/> to for evaluating
+        /// <paramref name="block"/>.
         /// </summary>
-        /// <param name="offset">The <see cref="Block.Hash"/> of the <see cref="Block"/>
-        /// to reference.</param>
-        /// <returns>The last <see cref="IAccountStateDelta"/> for <paramref name="offset"/>.
-        /// If <paramref name="offset"/> is <see langword="null"/>, returns the default empty
-        /// states.
+        /// <param name="block">The <see cref="Block"/> to evaluate..</param>
+        /// <returns>The initial <see cref="IAccountStateDelta"/> to be used
+        /// for evaluating <paramref name="block"/>.
         /// </returns>
-        internal IAccountStateDelta GetBlockOutputStates(BlockHash? offset)
+        internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
         {
             AccountStateGetter accountStateGetter = addresses =>
-                _blockChainStates.GetStates(addresses, offset);
+                _blockChainStates.GetStates(addresses, block.PreviousHash);
             AccountBalanceGetter accountBalanceGetter = (address, currency) =>
-                _blockChainStates.GetBalance(address, currency, offset);
+                _blockChainStates.GetBalance(address, currency, block.PreviousHash);
             TotalSupplyGetter totalSupplyGetter = currency =>
-                _blockChainStates.GetTotalSupply(currency, offset);
+                _blockChainStates.GetTotalSupply(currency, block.PreviousHash);
             ValidatorSetGetter validatorSetGetter = () =>
-                _blockChainStates.GetValidatorSet(offset);
+                _blockChainStates.GetValidatorSet(block.PreviousHash);
 
-            return AccountStateDeltaImpl.Create(
+            IAccountStateDelta delta = AccountStateDeltaImpl.Create(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
                 validatorSetGetter);
+            delta = AccountStateDeltaImpl.ChooseVersion(delta, block.ProtocolVersion);
+            delta = AccountStateDeltaImpl.ChooseSigner(delta, block.Miner);
+            return delta;
         }
 
         [Pure]

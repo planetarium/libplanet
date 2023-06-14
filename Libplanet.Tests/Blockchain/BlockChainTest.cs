@@ -1720,12 +1720,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Build a store with incomplete states
             Block b = chain.Genesis;
-            IAccountStateDelta previousStates =
-                actionEvaluator.GetBlockOutputStates(b.PreviousHash);
-            previousStates =
-                AccountStateDeltaImpl.ChooseVersion(previousStates, b.ProtocolVersion);
-            previousStates =
-                AccountStateDeltaImpl.ChooseSigner(previousStates, b.Miner);
+            IAccountStateDelta previousStates = actionEvaluator.PrepareInitialDelta(b);
             ActionEvaluation[] evals =
                 actionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
