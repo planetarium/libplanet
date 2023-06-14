@@ -4,9 +4,7 @@ Libplanet changelog
 Version 2.0.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 14, 2023.
 
 ### Backward-incompatible API changes
 
@@ -20,10 +18,6 @@ To be released.
  -  `Currency.Serialize()`'s behavioral is changed.
     the serialize field is replaced. [[#3201]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `FungibleAssetValue.Serialize()` method.  [[#3201]]
@@ -35,13 +29,8 @@ To be released.
  -  Improved performance of `HashDigest<T>.DeriveFrom()` static method on
     .NET Standard 2.1+.  [[#3165]]
 
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 [#3165]: https://github.com/planetarium/libplanet/pull/3165
+[#3201]: https://github.com/planetarium/libplanet/pull/3201
 [#3208]: https://github.com/planetarium/libplanet/pull/3208
 [#3209]: https://github.com/planetarium/libplanet/pull/3209
 
