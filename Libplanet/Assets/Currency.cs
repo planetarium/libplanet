@@ -112,7 +112,7 @@ namespace Libplanet.Assets
                 );
             }
 
-            if (!(d.ContainsKey("decimals") && d["decimals"] is Integer decimals))
+            if (!(d.ContainsKey("decimalPlaces") && d["decimalPlaces"] is Binary decimals))
             {
                 throw new ArgumentException(
                     "Expected an integer field named \"decimals\".",
@@ -206,7 +206,7 @@ namespace Libplanet.Assets
             }
 
             Ticker = ticker;
-            DecimalPlaces = (byte)(long)decimals;
+            DecimalPlaces = decimals.First();
 
             if (_maximumSupply is var (_, minor) && minor > 0 &&
                 Math.Floor(BigInteger.Log10(minor)) >= DecimalPlaces)
@@ -675,6 +675,45 @@ namespace Libplanet.Assets
         [Pure]
         public IValue Serialize()
         {
+            IValue minters = Minters is IImmutableSet<Address> m
+                ? new Bencodex.Types.List(m.Select<Address, IValue>(a => new Binary(a.ByteArray)))
+                : (IValue)Null.Value;
+            var serialized = Bencodex.Types.Dictionary.Empty
+                .Add("ticker", Ticker)
+                .Add("minters", minters)
+                .Add("decimalPlaces", new[] { DecimalPlaces });
+            if (TotalSupplyTrackable)
+            {
+                serialized = serialized.Add("totalSupplyTrackable", true);
+                if (MaximumSupply is { } maximumSupply)
+                {
+                    serialized = serialized.Add(
+                        "maximumSupplyMajor",
+                        (IValue)new Integer(maximumSupply.MajorUnit)
+                    ).Add(
+                        "maximumSupplyMinor",
+                        (IValue)new Integer(maximumSupply.MinorUnit));
+                }
+            }
+
+            return serialized;
+        }
+
+        private static SHA1 GetSHA1()
+        {
+            try
+            {
+                return new SHA1CryptoServiceProvider();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return new SHA1Managed();
+            }
+        }
+
+        [Pure]
+        private IValue SerializeForHash()
+        {
             IValue minters = Minters is ImmutableHashSet<Address> a
                 ? new List(a.OrderBy(m => m).Select(m => m.ByteArray))
                 : (IValue)Null.Value;
@@ -698,18 +737,6 @@ namespace Libplanet.Assets
             return serialized;
         }
 
-        private static SHA1 GetSHA1()
-        {
-            try
-            {
-                return new SHA1CryptoServiceProvider();
-            }
-            catch (PlatformNotSupportedException)
-            {
-                return new SHA1Managed();
-            }
-        }
-
         [Pure]
         private HashDigest<SHA1> GetHash()
         {
@@ -717,7 +744,7 @@ namespace Libplanet.Assets
             using var sha1 = GetSHA1();
             using var stream = new CryptoStream(buffer, sha1, CryptoStreamMode.Write);
             var codec = new Codec();
-            codec.Encode(Serialize(), stream);
+            codec.Encode(SerializeForHash(), stream);
             stream.FlushFinalBlock();
             return new HashDigest<SHA1>(sha1.Hash);
         }

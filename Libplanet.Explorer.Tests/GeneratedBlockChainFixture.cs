@@ -196,6 +196,8 @@ public class GeneratedBlockChainFixture
             random.Next() % 2 == 0
                 ? GetRandomActions(random.Next())
                 : ImmutableHashSet<SimpleAction>.Empty,
+            null,
+            null,
             GetRandomAddresses(random.Next()));
     }
 

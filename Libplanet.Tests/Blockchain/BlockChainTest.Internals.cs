@@ -33,6 +33,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new DumbAction[0],
                     null,
+                    null,
+                    null,
                     ts ?? DateTimeOffset.UtcNow
                 );
 

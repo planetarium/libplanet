@@ -701,6 +701,8 @@ namespace Libplanet.Tests.Action
                 _txFx.PrivateKey1,
                 null,
                 new[] { action },
+                null,
+                null,
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
             var txs = new Transaction[] { tx };
@@ -1056,6 +1058,255 @@ namespace Libplanet.Tests.Action
             Assert.DoesNotContain(addresses[2], latest.TotalUpdatedFungibleAssets.Keys);
         }
 
+        [Fact]
+        public void EvaluateActionAndCollectFee()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            Currency foo = Currency.Uncapped(
+                "FOO",
+                18,
+                null
+            );
+
+            var freeGasAction = new UseGasAction()
+            {
+                GasUsage = 0,
+                Memo = "FREE",
+                MintValue = new FungibleAssetValue(foo, 10),
+                Receiver = address,
+            };
+
+            var payGasAction = new UseGasAction()
+            {
+                GasUsage = 1,
+                Memo = "CHARGE",
+            };
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+                policy: new BlockPolicy(),
+                actions: new[] { freeGasAction, },
+                store: store,
+                stateStore: stateStore);
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                maxGasPrice: new FungibleAssetValue(foo, 1),
+                gasLimit: 2,
+                actions: new[]
+                {
+                    payGasAction,
+                });
+
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            Block block = chain.ProposeBlock(miner);
+
+            var evaluations = chain.ActionEvaluator.Evaluate(block);
+
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.Single(evaluations);
+            Assert.Null(evaluations.Single().Exception);
+            Assert.Equal(
+                new FungibleAssetValue(foo, 9),
+                evaluations.Single().OutputStates.GetBalance(address, foo));
+            Assert.Equal(
+                new FungibleAssetValue(foo, 1),
+                evaluations.Single().OutputStates.GetBalance(miner.ToAddress(), foo));
+        }
+
+        [Fact]
+        public void EvaluateThrowingExceedGasLimit()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            Currency foo = Currency.Uncapped(
+                "FOO",
+                18,
+                null
+            );
+
+            var freeGasAction = new UseGasAction()
+            {
+                GasUsage = 0,
+                Memo = "FREE",
+                MintValue = new FungibleAssetValue(foo, 10),
+                Receiver = address,
+            };
+
+            var payGasAction = new UseGasAction()
+            {
+                GasUsage = 10,
+                Memo = "CHARGE",
+            };
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+                policy: new BlockPolicy(),
+                actions: new[]
+                {
+                    freeGasAction,
+                },
+                store: store,
+                stateStore: stateStore);
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                maxGasPrice: new FungibleAssetValue(foo, 1),
+                gasLimit: 5,
+                actions: new[]
+                {
+                    payGasAction,
+                });
+
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            Block block = chain.ProposeBlock(miner);
+
+            var evaluations = chain.ActionEvaluator.Evaluate(block);
+
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.Single(evaluations);
+            Assert.NotNull(evaluations.Single().Exception);
+            Assert.NotNull(evaluations.Single().Exception?.InnerException);
+            Assert.Equal(
+                typeof(GasLimitExceededException),
+                evaluations.Single().Exception?.InnerException?.GetType());
+            Assert.Equal(
+                new FungibleAssetValue(foo, 5),
+                evaluations.Single().OutputStates.GetBalance(address, foo));
+            Assert.Equal(
+                new FungibleAssetValue(foo, 5),
+                evaluations.Single().OutputStates.GetBalance(miner.ToAddress(), foo));
+        }
+
+        [Fact]
+        public void EvaluateThrowingInsufficientBalanceForGasFee()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            Currency foo = Currency.Uncapped(
+                "FOO",
+                18,
+                null
+            );
+
+            var freeGasAction = new UseGasAction()
+            {
+                GasUsage = 0,
+                Memo = "FREE",
+                MintValue = new FungibleAssetValue(foo, 10),
+                Receiver = address,
+            };
+
+            var payGasAction = new UseGasAction()
+            {
+                GasUsage = 2,
+                Memo = "CHARGE",
+            };
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+                policy: new BlockPolicy(),
+                actions: new[]
+                {
+                    freeGasAction,
+                },
+                store: store,
+                stateStore: stateStore);
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                maxGasPrice: new FungibleAssetValue(foo, 10),
+                gasLimit: 5,
+                actions: new[]
+                {
+                    payGasAction,
+                });
+
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            Block block = chain.ProposeBlock(miner);
+
+            var evaluations = chain.ActionEvaluator.Evaluate(block);
+
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.Single(evaluations);
+            Assert.NotNull(evaluations.Single().Exception);
+            Assert.NotNull(evaluations.Single().Exception?.InnerException);
+            Assert.Equal(
+                typeof(InsufficientBalanceException),
+                evaluations.Single().Exception?.InnerException?.GetType());
+         }
+
+        [Fact]
+        public void EvaluateMinusGasFee()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            Currency foo = Currency.Uncapped(
+                "FOO",
+                18,
+                null
+            );
+
+            var freeGasAction = new UseGasAction()
+            {
+                GasUsage = 0,
+                Memo = "FREE",
+                MintValue = new FungibleAssetValue(foo, 10),
+                Receiver = address,
+            };
+
+            var payGasAction = new UseGasAction()
+            {
+                GasUsage = 1,
+                Memo = "CHARGE",
+            };
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+                policy: new BlockPolicy(),
+                actions: new[]
+                {
+                    freeGasAction,
+                },
+                store: store,
+                stateStore: stateStore);
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                maxGasPrice: new FungibleAssetValue(foo, -10),
+                gasLimit: 5,
+                actions: new[]
+                {
+                    payGasAction,
+                });
+
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            Block block = chain.ProposeBlock(miner);
+
+            var evaluations = chain.ActionEvaluator.Evaluate(block);
+
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.Single(evaluations);
+            Assert.NotNull(evaluations.Single().Exception);
+            Assert.NotNull(evaluations.Single().Exception?.InnerException);
+            Assert.Equal(
+                typeof(ArgumentOutOfRangeException),
+                evaluations.Single().Exception?.InnerException?.GetType());
+        }
+
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
@@ -1206,6 +1457,53 @@ namespace Libplanet.Tests.Action
                     .SetState(SignerKey, (Text)context.Signer.ToHex())
                     .SetState(MinerKey, (Text)context.Miner.ToHex())
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
+        }
+
+        private sealed class UseGasAction : IAction
+        {
+            public long GasUsage { get; set; }
+
+            public string Memo { get; set; }
+
+            public FungibleAssetValue? MintValue { get; set; }
+
+            public Address? Receiver { get; set; }
+
+            public IValue PlainValue => new List(
+                (Integer)GasUsage,
+                (Text)Memo,
+                MintValue is null ? (IValue)default(Null) : MintValue.Value.Serialize(),
+                Receiver is null ? (IValue)default(Null) : (IValue)(Binary)Receiver.Value.ByteArray
+                );
+
+            public void LoadPlainValue(IValue plainValue)
+            {
+                var asList = (List)plainValue;
+                GasUsage = (Bencodex.Types.Integer)asList[0];
+                Memo = (Text)asList[1];
+                if (!(asList[2] is Bencodex.Types.Null))
+                {
+                    MintValue = new FungibleAssetValue(asList[2]);
+                }
+
+                if (!(asList[3] is Bencodex.Types.Null))
+                {
+                    Receiver = new Address(asList[3]);
+                }
+            }
+
+            public IAccountStateDelta Execute(IActionContext context)
+            {
+                context.UseGas(GasUsage);
+                var state = context.PreviousStates
+                    .SetState(context.Signer, (Text)Memo);
+                if (!(Receiver is null) && !(MintValue is null))
+                {
+                    state = state.MintAsset(Receiver.Value, MintValue.Value);
+                }
+
+                return state;
+            }
         }
 
         private sealed class MintAction : IAction

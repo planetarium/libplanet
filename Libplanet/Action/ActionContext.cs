@@ -67,6 +67,9 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.PutLog(string)"/>
         public void PutLog(string log) => Logs.Add(log);
 
+        /// <inheritdoc cref="IActionContext.UseGas(long)"/>
+        public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
+
         [Pure]
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(

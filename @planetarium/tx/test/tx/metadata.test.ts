@@ -12,6 +12,8 @@ test("encodeTxMetadata", () => {
     timestamp: new Date("2022-05-23T01:02:00+00:00"),
     updatedAddresses: new Set(),
     genesisHash: null,
+    maxGasPrice: null,
+    gasLimit: null,
   });
   expect(inspect(encoded, { compact: false })).toMatchSnapshot();
   expect(encode(encoded)).toMatchSnapshot();

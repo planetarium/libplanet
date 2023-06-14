@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -39,7 +40,7 @@ namespace Libplanet.Tx
         /// <paramref name="signature"/> is not valid for <paramref name="unsignedTx"/>.</exception>
         public Transaction(IUnsignedTx unsignedTx, ImmutableArray<byte> signature)
         {
-            _unsignedTx = unsignedTx is UnsignedTx u ? u : new UnsignedTx(unsignedTx);
+            _unsignedTx = unsignedTx as UnsignedTx ?? new UnsignedTx(unsignedTx);
             _signature = signature.IsDefaultOrEmpty ? Array.Empty<byte>() : signature.ToArray();
 
             if (!_unsignedTx.VerifySignature(signature))
@@ -59,7 +60,7 @@ namespace Libplanet.Tx
         /// does not match the public key of <paramref name="unsignedTx"/>.</exception>
         public Transaction(IUnsignedTx unsignedTx, PrivateKey privateKey)
         {
-            _unsignedTx = unsignedTx is UnsignedTx u ? u : new UnsignedTx(unsignedTx);
+            _unsignedTx = unsignedTx as UnsignedTx ?? new UnsignedTx(unsignedTx);
             _signature = _unsignedTx.CreateSignature(privateKey).ToArray();
         }
 
@@ -147,6 +148,12 @@ namespace Libplanet.Tx
         [JsonConverter(typeof(TxActionListJsonConverter))]
         public TxActionList Actions => _unsignedTx.Actions;
 
+        /// <inheritdoc cref="ITxInvoice.MaxGasPrice"/>
+        public FungibleAssetValue? MaxGasPrice => _unsignedTx.MaxGasPrice;
+
+        /// <inheritdoc cref="ITxInvoice.GasLimit"/>
+        public long? GasLimit => _unsignedTx.GasLimit;
+
         /// <inheritdoc cref="ITxInvoice.Timestamp"/>
         public DateTimeOffset Timestamp => _unsignedTx.Timestamp;
 
@@ -224,6 +231,9 @@ namespace Libplanet.Tx
         /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
         /// the <see cref="Actions"/> property.</param>
+        /// <param name="maxGasPrice"> The maximum gas price this transaction can pay fee.</param>
+        /// <param name="gasLimit"> The maximum amount of gas this transaction can consume.
+        /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
         /// states affected by <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/>
@@ -240,6 +250,8 @@ namespace Libplanet.Tx
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IAction> actions,
+            FungibleAssetValue? maxGasPrice = null,
+            long? gasLimit = null,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null) =>
             Create(
@@ -247,6 +259,8 @@ namespace Libplanet.Tx
                 privateKey,
                 genesisHash,
                 actions.Select(action => action.PlainValue),
+                maxGasPrice,
+                gasLimit,
                 updatedAddresses,
                 timestamp
             );
@@ -293,6 +307,9 @@ namespace Libplanet.Tx
         /// <param name="actions">A list of user-defined custom actions to include.  This can
         /// be empty, but cannot be <see langword="null"/>.  This goes to
         /// the <see cref="Actions"/> property.</param>
+        /// <param name="maxGasPrice"> The maximum gas price this transaction can pay fee.</param>
+        /// <param name="gasLimit"> The maximum amount of gas this transaction can consume.
+        /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
         /// states affected by <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/>
@@ -309,6 +326,8 @@ namespace Libplanet.Tx
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<IValue> actions,
+            FungibleAssetValue? maxGasPrice = null,
+            long? gasLimit = null,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null) =>
             Create(
@@ -316,6 +335,8 @@ namespace Libplanet.Tx
                 privateKey,
                 genesisHash,
                 new TxActionList(new List(actions)),
+                maxGasPrice,
+                gasLimit,
                 updatedAddresses,
                 timestamp
             );
@@ -365,6 +386,8 @@ namespace Libplanet.Tx
             PrivateKey privateKey,
             BlockHash? genesisHash,
             TxActionList actions,
+            FungibleAssetValue? maxGasPrice = null,
+            long? gasLimit = null,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
@@ -377,13 +400,17 @@ namespace Libplanet.Tx
                 genesisHash,
                 updatedAddresses ?? ImmutableHashSet<Address>.Empty,
                 timestamp ?? DateTimeOffset.UtcNow,
-                actions);
+                actions,
+                maxGasPrice,
+                gasLimit);
             var signMeta = new TxSigningMetadata(privateKey.PublicKey, nonce);
             var invoice = new TxInvoice(
                 draftInvoice.GenesisHash,
                 draftInvoice.UpdatedAddresses,
                 draftInvoice.Timestamp,
-                draftInvoice.Actions);
+                draftInvoice.Actions,
+                draftInvoice.MaxGasPrice,
+                draftInvoice.GasLimit);
             var unsignedTx = new UnsignedTx(invoice, signMeta);
             return new Transaction(unsignedTx, privateKey);
         }

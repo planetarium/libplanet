@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Immutable;
+using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 
 namespace Libplanet.Tx
@@ -39,5 +41,20 @@ namespace Libplanet.Tx
         /// A list of actions in this transaction.
         /// </summary>
         TxActionList Actions { get; }
+
+        /// <summary>
+        /// The maximum amount of <see cref="FungibleAssetValue"/> that the transaction author is
+        /// willing to pay for the transaction.
+        /// This can be <see langword="null"/> if align the handling of that transaction
+        /// with the <see cref="IFeeCollector"/>.
+        /// </summary>
+        FungibleAssetValue? MaxGasPrice { get; }
+
+        /// <summary>
+        /// The limit of the total amount of gas that the transaction will use.
+        /// This can be <see langword="null"/> if align the handling of that transaction
+        /// with the <see cref="IFeeCollector"/>.
+        /// </summary>
+        long? GasLimit { get; }
     }
 }

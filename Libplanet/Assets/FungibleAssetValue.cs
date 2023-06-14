@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Bencodex.Types;
 using Libplanet.Serialization;
 
 namespace Libplanet.Assets
@@ -41,6 +42,20 @@ namespace Libplanet.Assets
         /// </remarks>
         /// <seealso cref="FromRawValue(Assets.Currency, BigInteger)"/>
         public readonly BigInteger RawValue;
+
+        public FungibleAssetValue(IValue value)
+        {
+            if (!(value is Bencodex.Types.List list))
+            {
+                throw new ArgumentException(
+                    $"The given value is not a list: {value}",
+                    nameof(value)
+                );
+            }
+
+            Currency = new Currency(list[0]);
+            RawValue = (Bencodex.Types.Integer)list[1];
+        }
 
         /// <summary>
         /// Creates a zero value of the <paramref name="currency"/>.
@@ -637,6 +652,10 @@ namespace Libplanet.Assets
         [Pure]
         public override string ToString() =>
             $"{GetQuantityString()} {Currency.Ticker}";
+
+        public IValue Serialize() => Bencodex.Types.List.Empty
+                .Add(Currency.Serialize())
+                .Add((Bencodex.Types.Integer)RawValue);
     }
 
     [SuppressMessage(

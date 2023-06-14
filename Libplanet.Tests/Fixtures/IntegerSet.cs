@@ -61,6 +61,8 @@ namespace Libplanet.Tests.Fixtures
                         pair.Key,
                         null,
                         new[] { pair.Action },
+                        null,
+                        null,
                         ImmutableHashSet<Address>.Empty.Add(pair.Key.ToAddress())
                     )
                 )

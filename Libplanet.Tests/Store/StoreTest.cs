@@ -782,6 +782,8 @@ namespace Libplanet.Tests.Store
                     key,
                     null,
                     new[] { action },
+                    null,
+                    null,
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
                 );
