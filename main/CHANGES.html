@@ -66,12 +66,23 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
-<li>Added <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code> interface property.
-[<a href="https://github.com/planetarium/libplanet/pull/3208">#3208</a>]</li>
+<li><p>Added <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code> interface property.
+[<a href="https://github.com/planetarium/libplanet/pull/3208">#3208</a>]</p>
+</li>
+<li><p>Added <code>ITransaction.MaxGasPrice</code> property.  [[#3201]]</p>
+</li>
+<li><p>Added <code>ITransaction.GasLimit</code> property.  [[#3201]]</p>
+</li>
+<li><p><code>Currency.Serialize()</code>'s behavioral is changed.
+the serialize field is replaced. [[#3201]]</p>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>FungibleAssetValue.Serialize()</code> method.  [[#3201]]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>StateStoreExtensions.Commit()</code> extension method

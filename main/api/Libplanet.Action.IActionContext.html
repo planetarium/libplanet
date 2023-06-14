@@ -365,7 +365,7 @@ TxId? TxId { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GasLimit.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GasLimit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L111">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_GasLimit_" data-uid="Libplanet.Action.IActionContext.GasLimit*"></a>
   <h4 id="Libplanet_Action_IActionContext_GasLimit" data-uid="Libplanet.Action.IActionContext.GasLimit">GasLimit()</h4>
@@ -398,7 +398,7 @@ long GasLimit()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GasUsed.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GasUsed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L102">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L110">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_GasUsed_" data-uid="Libplanet.Action.IActionContext.GasUsed*"></a>
   <h4 id="Libplanet_Action_IActionContext_GasUsed" data-uid="Libplanet.Action.IActionContext.GasUsed">GasUsed()</h4>
@@ -431,7 +431,7 @@ long GasUsed()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GetUnconsumedContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GetUnconsumedContext%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L95">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_GetUnconsumedContext_" data-uid="Libplanet.Action.IActionContext.GetUnconsumedContext*"></a>
   <h4 id="Libplanet_Action_IActionContext_GetUnconsumedContext" data-uid="Libplanet.Action.IActionContext.GetUnconsumedContext">GetUnconsumedContext()</h4>
@@ -493,6 +493,40 @@ is entirely equivalent to the original's unconsumed initial state.</p>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">log</span></td>
         <td><p>A log to record in <a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_UseGas_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.UseGas(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IActionContext.cs/#L93">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_UseGas_" data-uid="Libplanet.Action.IActionContext.UseGas*"></a>
+  <h4 id="Libplanet_Action_IActionContext_UseGas_System_Int64_" data-uid="Libplanet.Action.IActionContext.UseGas(System.Int64)">UseGas(Int64)</h4>
+  <div class="markdown level1 summary"><p>Consumes the specified amount of gas.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UseGas(long gas)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">gas</span></td>
+        <td><p>The amount of gas to consume.</p>
 </td>
       </tr>
     </tbody>

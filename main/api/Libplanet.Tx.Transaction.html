@@ -123,7 +123,7 @@ a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted o
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction__ctor_Libplanet_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.%23ctor(Libplanet.Tx.IUnsignedTx%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L60">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction__ctor_" data-uid="Libplanet.Tx.Transaction.#ctor*"></a>
   <h4 id="Libplanet_Tx_Transaction__ctor_Libplanet_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Tx.Transaction.#ctor(Libplanet.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)">Transaction(IUnsignedTx, PrivateKey)</h4>
@@ -186,7 +186,7 @@ does not match the public key of <code data-dev-comment-type="paramref" class="p
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction__ctor_Libplanet_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.%23ctor(Libplanet.Tx.IUnsignedTx%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L41">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction__ctor_" data-uid="Libplanet.Tx.Transaction.#ctor*"></a>
   <h4 id="Libplanet_Tx_Transaction__ctor_Libplanet_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Tx.Transaction.#ctor(Libplanet.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})">Transaction(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
@@ -252,7 +252,7 @@ does not match the public key of <code data-dev-comment-type="paramref" class="p
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Actions.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Actions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L148">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Actions_" data-uid="Libplanet.Tx.Transaction.Actions*"></a>
   <h4 id="Libplanet_Tx_Transaction_Actions" data-uid="Libplanet.Tx.Transaction.Actions">Actions</h4>
@@ -287,10 +287,48 @@ public TxActionList Actions { get; }</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_GasLimit.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.GasLimit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L155">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_Transaction_GasLimit_" data-uid="Libplanet.Tx.Transaction.GasLimit*"></a>
+  <h4 id="Libplanet_Tx_Transaction_GasLimit" data-uid="Libplanet.Tx.Transaction.GasLimit">GasLimit</h4>
+  <div class="markdown level1 summary"><p>The limit of the total amount of gas that the transaction will use.
+This can be <span class="xref">null</span> if align the handling of that transaction
+with the <span class="xref">Libplanet.Action.IFeeCollector</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long? GasLimit { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Tx_Transaction_GasLimit_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></div>
+      <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_GenesisHash.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.GenesisHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L157">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L164">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_GenesisHash_" data-uid="Libplanet.Tx.Transaction.GenesisHash*"></a>
   <h4 id="Libplanet_Tx_Transaction_GenesisHash" data-uid="Libplanet.Tx.Transaction.GenesisHash">GenesisHash</h4>
@@ -328,7 +366,7 @@ the genesis block.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Id.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Id%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Id_" data-uid="Libplanet.Tx.Transaction.Id*"></a>
   <h4 id="Libplanet_Tx_Transaction_Id" data-uid="Libplanet.Tx.Transaction.Id">Id</h4>
@@ -362,10 +400,49 @@ content.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_MaxGasPrice.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.MaxGasPrice%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L152">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_Transaction_MaxGasPrice_" data-uid="Libplanet.Tx.Transaction.MaxGasPrice*"></a>
+  <h4 id="Libplanet_Tx_Transaction_MaxGasPrice" data-uid="Libplanet.Tx.Transaction.MaxGasPrice">MaxGasPrice</h4>
+  <div class="markdown level1 summary"><p>The maximum amount of <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a> that the transaction author is
+willing to pay for the transaction.
+This can be <span class="xref">null</span> if align the handling of that transaction
+with the <span class="xref">Libplanet.Action.IFeeCollector</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue? MaxGasPrice { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Tx_Transaction_MaxGasPrice_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></div>
+      <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Nonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L108">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L109">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Nonce_" data-uid="Libplanet.Tx.Transaction.Nonce*"></a>
   <h4 id="Libplanet_Tx_Transaction_Nonce" data-uid="Libplanet.Tx.Transaction.Nonce">Nonce</h4>
@@ -403,7 +480,7 @@ attack.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L154">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L161">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_PublicKey_" data-uid="Libplanet.Tx.Transaction.PublicKey*"></a>
   <h4 id="Libplanet_Tx_Transaction_PublicKey" data-uid="Libplanet.Tx.Transaction.PublicKey">PublicKey</h4>
@@ -441,7 +518,7 @@ This cannot be <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L127">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L128">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Signature_" data-uid="Libplanet.Tx.Transaction.Signature*"></a>
   <h4 id="Libplanet_Tx_Transaction_Signature" data-uid="Libplanet.Tx.Transaction.Signature">Signature</h4>
@@ -487,7 +564,7 @@ array if the transaction is not signed yet.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Signer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L111">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Signer_" data-uid="Libplanet.Tx.Transaction.Signer*"></a>
   <h4 id="Libplanet_Tx_Transaction_Signer" data-uid="Libplanet.Tx.Transaction.Signer">Signer</h4>
@@ -524,7 +601,7 @@ from the <a class="xref" href="Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L151">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L158">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Timestamp_" data-uid="Libplanet.Tx.Transaction.Timestamp*"></a>
   <h4 id="Libplanet_Tx_Transaction_Timestamp" data-uid="Libplanet.Tx.Transaction.Timestamp">Timestamp</h4>
@@ -560,7 +637,7 @@ from the <a class="xref" href="Libplanet.Tx.ITxSigningMetadata.html#Libplanet_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.UpdatedAddresses%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L114">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L115">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_UpdatedAddresses_" data-uid="Libplanet.Tx.Transaction.UpdatedAddresses*"></a>
   <h4 id="Libplanet_Tx_Transaction_UpdatedAddresses" data-uid="Libplanet.Tx.Transaction.UpdatedAddresses">UpdatedAddresses</h4>
@@ -596,13 +673,13 @@ transaction.  However, it could be wrong.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Collections.Generic.IEnumerable%7BBencodex.Types.IValue%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Collections.Generic.IEnumerable%7BBencodex.Types.IValue%7D%2CSystem.Nullable%7BLibplanet.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L307">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L324">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Create_" data-uid="Libplanet.Tx.Transaction.Create*"></a>
-  <h4 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__" data-uid="Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IValue&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
+  <h4 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__" data-uid="Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IValue&gt;, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
   <div class="markdown level1 summary"><p>A façade factory to create a new <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.
 It automatically fills the following values from:</p>
 <table><thead><tr><th>Property</th><th>Parameter the filled value derived from</th></tr></thead><tbody><tr><td><a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Signer">Signer</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_PublicKey">PublicKey</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_UpdatedAddresses">UpdatedAddresses</a></td><td><code data-dev-comment-type="paramref" class="paramref">actions</code> and
@@ -613,7 +690,7 @@ included in the created <a class="xref" href="Libplanet.Tx.Transaction.html">Tra
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Transaction Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;IValue&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;IValue&gt; actions, FungibleAssetValue? maxGasPrice = null, long? gasLimit = null, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -662,6 +739,18 @@ the <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td><span class="parametername">maxGasPrice</span></td>
+        <td><p>The maximum gas price this transaction can pay fee.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">gasLimit</span></td>
+        <td><p>The maximum amount of gas this transaction can consume.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">updatedAddresses</span></td>
         <td><p><a class="xref" href="Libplanet.Address.html">Address</a>es whose
@@ -713,20 +802,20 @@ is passed to <code data-dev-comment-type="paramref" class="paramref">privateKey<
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset___seealso">See Also</h5>
+  <h5 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></div>
       <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Action.IAction%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Action.IAction%7D%2CSystem.Nullable%7BLibplanet.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L238">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L248">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Create_" data-uid="Libplanet.Tx.Transaction.Create*"></a>
-  <h4 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__" data-uid="Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IAction&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
+  <h4 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__" data-uid="Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IAction&gt;, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
   <div class="markdown level1 summary"><p>A façade factory to create a new <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>.
 It automatically fills the following values from:</p>
 <table><thead><tr><th>Property</th><th>Parameter the filled value derived from</th></tr></thead><tbody><tr><td><a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Signer">Signer</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_PublicKey">PublicKey</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_UpdatedAddresses">UpdatedAddresses</a></td><td><code data-dev-comment-type="paramref" class="paramref">actions</code> and
@@ -737,7 +826,7 @@ included in the created <a class="xref" href="Libplanet.Tx.Transaction.html">Tra
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Transaction Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;IAction&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;IAction&gt; actions, FungibleAssetValue? maxGasPrice = null, long? gasLimit = null, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -786,6 +875,18 @@ the <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td><span class="parametername">maxGasPrice</span></td>
+        <td><p>The maximum gas price this transaction can pay fee.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">gasLimit</span></td>
+        <td><p>The maximum amount of gas this transaction can consume.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">updatedAddresses</span></td>
         <td><p><a class="xref" href="Libplanet.Address.html">Address</a>es whose
@@ -837,7 +938,7 @@ is passed to <code data-dev-comment-type="paramref" class="paramref">privateKey<
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset___seealso">See Also</h5>
+  <h5 id="Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Tx.ITransaction.html">ITransaction</a></div>
       <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
@@ -847,7 +948,7 @@ is passed to <code data-dev-comment-type="paramref" class="paramref">privateKey<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Deserialize_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Deserialize(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L171">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L178">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Deserialize_" data-uid="Libplanet.Tx.Transaction.Deserialize*"></a>
   <h4 id="Libplanet_Tx_Transaction_Deserialize_System_Byte___" data-uid="Libplanet.Tx.Transaction.Deserialize(System.Byte[])">Deserialize(Byte[])</h4>
@@ -921,7 +1022,7 @@ the account who corresponds to <a class="xref" href="Libplanet.Tx.Transaction.ht
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Equals_Libplanet_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Equals(Libplanet.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L347">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L368">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Equals_" data-uid="Libplanet.Tx.Transaction.Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_Equals_Libplanet_Tx_Transaction_" data-uid="Libplanet.Tx.Transaction.Equals(Libplanet.Tx.Transaction)">Equals(Transaction)</h4>
@@ -975,7 +1076,7 @@ a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted o
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L350">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L371">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Equals_" data-uid="Libplanet.Tx.Transaction.Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_Equals_System_Object_" data-uid="Libplanet.Tx.Transaction.Equals(System.Object)">Equals(Object)</h4>
@@ -1031,7 +1132,7 @@ a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted o
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L353">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L374">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_GetHashCode_" data-uid="Libplanet.Tx.Transaction.GetHashCode*"></a>
   <h4 id="Libplanet_Tx_Transaction_GetHashCode" data-uid="Libplanet.Tx.Transaction.GetHashCode">GetHashCode()</h4>
@@ -1070,7 +1171,7 @@ a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> and transmitted o
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.Serialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L328">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L349">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_Serialize_" data-uid="Libplanet.Tx.Transaction.Serialize*"></a>
   <h4 id="Libplanet_Tx_Transaction_Serialize" data-uid="Libplanet.Tx.Transaction.Serialize">Serialize()</h4>
@@ -1110,7 +1211,7 @@ representation of this <a class="xref" href="Libplanet.Tx.Transaction.html">Tran
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.System%23IEquatable%7BLibplanet%23Tx%23ITxInvoice%7D%23Equals(Libplanet.Tx.ITxInvoice)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L332">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L353">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)">IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice)</h4>
@@ -1165,7 +1266,7 @@ bool IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice other)</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_Libplanet_Tx_ITxSigningMetadata_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.System%23IEquatable%7BLibplanet%23Tx%23ITxSigningMetadata%7D%23Equals(Libplanet.Tx.ITxSigningMetadata)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L337">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L358">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_ITxSigningMetadata__Equals_Libplanet_Tx_ITxSigningMetadata_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#ITxSigningMetadata}#Equals(Libplanet.Tx.ITxSigningMetadata)">IEquatable&lt;ITxSigningMetadata&gt;.Equals(ITxSigningMetadata)</h4>
@@ -1220,7 +1321,7 @@ bool IEquatable&lt;ITxSigningMetadata&gt;.Equals(ITxSigningMetadata other)</code
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_Libplanet_Tx_IUnsignedTx_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction.System%23IEquatable%7BLibplanet%23Tx%23IUnsignedTx%7D%23Equals(Libplanet.Tx.IUnsignedTx)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L342">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L363">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_System_IEquatable_Libplanet_Tx_IUnsignedTx__Equals_Libplanet_Tx_IUnsignedTx_" data-uid="Libplanet.Tx.Transaction.System#IEquatable{Libplanet#Tx#IUnsignedTx}#Equals(Libplanet.Tx.IUnsignedTx)">IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx)</h4>
@@ -1342,7 +1443,7 @@ bool IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx other)</code></pre>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_Transaction.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/Transaction.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

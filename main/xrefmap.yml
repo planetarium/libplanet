@@ -586,6 +586,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.TxId
   nameWithType: IActionContext.TxId
+- uid: Libplanet.Action.IActionContext.UseGas(System.Int64)
+  name: UseGas(Int64)
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_UseGas_System_Int64_
+  commentId: M:Libplanet.Action.IActionContext.UseGas(System.Int64)
+  fullName: Libplanet.Action.IActionContext.UseGas(System.Int64)
+  nameWithType: IActionContext.UseGas(Int64)
+- uid: Libplanet.Action.IActionContext.UseGas*
+  name: UseGas
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_UseGas_
+  commentId: Overload:Libplanet.Action.IActionContext.UseGas
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.UseGas
+  nameWithType: IActionContext.UseGas
 - uid: Libplanet.Action.IActionEvaluation
   name: IActionEvaluation
   href: api/Libplanet.Action.IActionEvaluation.html
@@ -1793,6 +1806,12 @@ references:
   commentId: T:Libplanet.Assets.FungibleAssetValue
   fullName: Libplanet.Assets.FungibleAssetValue
   nameWithType: FungibleAssetValue
+- uid: Libplanet.Assets.FungibleAssetValue.#ctor(Bencodex.Types.IValue)
+  name: FungibleAssetValue(IValue)
+  href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Assets.FungibleAssetValue.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Assets.FungibleAssetValue.FungibleAssetValue(Bencodex.Types.IValue)
+  nameWithType: FungibleAssetValue.FungibleAssetValue(IValue)
 - uid: Libplanet.Assets.FungibleAssetValue.#ctor(Libplanet.Assets.Currency,System.Int32,System.Numerics.BigInteger,System.Numerics.BigInteger)
   name: FungibleAssetValue(Currency, Int32, BigInteger, BigInteger)
   href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue__ctor_Libplanet_Assets_Currency_System_Int32_System_Numerics_BigInteger_System_Numerics_BigInteger_
@@ -2151,6 +2170,19 @@ references:
   commentId: F:Libplanet.Assets.FungibleAssetValue.RawValue
   fullName: Libplanet.Assets.FungibleAssetValue.RawValue
   nameWithType: FungibleAssetValue.RawValue
+- uid: Libplanet.Assets.FungibleAssetValue.Serialize
+  name: Serialize()
+  href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_Serialize
+  commentId: M:Libplanet.Assets.FungibleAssetValue.Serialize
+  fullName: Libplanet.Assets.FungibleAssetValue.Serialize()
+  nameWithType: FungibleAssetValue.Serialize()
+- uid: Libplanet.Assets.FungibleAssetValue.Serialize*
+  name: Serialize
+  href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_Serialize_
+  commentId: Overload:Libplanet.Assets.FungibleAssetValue.Serialize
+  isSpec: "True"
+  fullName: Libplanet.Assets.FungibleAssetValue.Serialize
+  nameWithType: FungibleAssetValue.Serialize
 - uid: Libplanet.Assets.FungibleAssetValue.Sign
   name: Sign
   href: api/Libplanet.Assets.FungibleAssetValue.html#Libplanet_Assets_FungibleAssetValue_Sign
@@ -2654,15 +2686,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.Item
   nameWithType: BlockChain.Item
-- uid: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: MakeTransaction(PrivateKey, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: BlockChain.MakeTransaction(PrivateKey, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain.MakeTransaction(PrivateKey, IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: MakeTransaction(PrivateKey, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Nullable<Libplanet.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Nullable(Of Libplanet.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: BlockChain.MakeTransaction(PrivateKey, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: BlockChain.MakeTransaction(PrivateKey, IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Blockchain.BlockChain.MakeTransaction*
   name: MakeTransaction
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_MakeTransaction_
@@ -27262,6 +27294,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITxInvoice.Actions
   nameWithType: ITxInvoice.Actions
+- uid: Libplanet.Tx.ITxInvoice.GasLimit
+  name: GasLimit
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_GasLimit
+  commentId: P:Libplanet.Tx.ITxInvoice.GasLimit
+  fullName: Libplanet.Tx.ITxInvoice.GasLimit
+  nameWithType: ITxInvoice.GasLimit
+- uid: Libplanet.Tx.ITxInvoice.GasLimit*
+  name: GasLimit
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_GasLimit_
+  commentId: Overload:Libplanet.Tx.ITxInvoice.GasLimit
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxInvoice.GasLimit
+  nameWithType: ITxInvoice.GasLimit
 - uid: Libplanet.Tx.ITxInvoice.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_GenesisHash
@@ -27275,6 +27320,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.ITxInvoice.GenesisHash
   nameWithType: ITxInvoice.GenesisHash
+- uid: Libplanet.Tx.ITxInvoice.MaxGasPrice
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_MaxGasPrice
+  commentId: P:Libplanet.Tx.ITxInvoice.MaxGasPrice
+  fullName: Libplanet.Tx.ITxInvoice.MaxGasPrice
+  nameWithType: ITxInvoice.MaxGasPrice
+- uid: Libplanet.Tx.ITxInvoice.MaxGasPrice*
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_MaxGasPrice_
+  commentId: Overload:Libplanet.Tx.ITxInvoice.MaxGasPrice
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITxInvoice.MaxGasPrice
+  nameWithType: ITxInvoice.MaxGasPrice
 - uid: Libplanet.Tx.ITxInvoice.Timestamp
   name: Timestamp
   href: api/Libplanet.Tx.ITxInvoice.html#Libplanet_Tx_ITxInvoice_Timestamp
@@ -27393,24 +27451,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.Transaction.Actions
   nameWithType: Transaction.Actions
-- uid: Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-- uid: Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Nullable<Libplanet.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Nullable(Of Libplanet.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Nullable<Libplanet.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Nullable(Of Libplanet.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Create_
@@ -27453,6 +27511,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.Transaction.Equals
   nameWithType: Transaction.Equals
+- uid: Libplanet.Tx.Transaction.GasLimit
+  name: GasLimit
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GasLimit
+  commentId: P:Libplanet.Tx.Transaction.GasLimit
+  fullName: Libplanet.Tx.Transaction.GasLimit
+  nameWithType: Transaction.GasLimit
+- uid: Libplanet.Tx.Transaction.GasLimit*
+  name: GasLimit
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GasLimit_
+  commentId: Overload:Libplanet.Tx.Transaction.GasLimit
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction.GasLimit
+  nameWithType: Transaction.GasLimit
 - uid: Libplanet.Tx.Transaction.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_GenesisHash
@@ -27492,6 +27563,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.Transaction.Id
   nameWithType: Transaction.Id
+- uid: Libplanet.Tx.Transaction.MaxGasPrice
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_MaxGasPrice
+  commentId: P:Libplanet.Tx.Transaction.MaxGasPrice
+  fullName: Libplanet.Tx.Transaction.MaxGasPrice
+  nameWithType: Transaction.MaxGasPrice
+- uid: Libplanet.Tx.Transaction.MaxGasPrice*
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_MaxGasPrice_
+  commentId: Overload:Libplanet.Tx.Transaction.MaxGasPrice
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction.MaxGasPrice
+  nameWithType: Transaction.MaxGasPrice
 - uid: Libplanet.Tx.Transaction.Nonce
   name: Nonce
   href: api/Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Nonce
@@ -28231,24 +28315,24 @@ references:
   commentId: M:Libplanet.Tx.TxInvoice.#ctor(Libplanet.Tx.ITxInvoice)
   fullName: Libplanet.Tx.TxInvoice.TxInvoice(Libplanet.Tx.ITxInvoice)
   nameWithType: TxInvoice.TxInvoice(ITxInvoice)
-- uid: Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{System.DateTimeOffset},Libplanet.Tx.TxActionList)
-  name: TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList)
-  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_System_DateTimeOffset__Libplanet_Tx_TxActionList_
-  commentId: M:Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{System.DateTimeOffset},Libplanet.Tx.TxActionList)
-  name.vb: TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList)
-  fullName: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Address>, System.Nullable<System.DateTimeOffset>, Libplanet.Tx.TxActionList)
-  fullName.vb: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset), Libplanet.Tx.TxActionList)
-  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList)
-  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList)
-- uid: Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,Libplanet.Tx.TxActionList)
-  name: TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList)
-  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_DateTimeOffset_Libplanet_Tx_TxActionList_
-  commentId: M:Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,Libplanet.Tx.TxActionList)
-  name.vb: TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList)
-  fullName: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.DateTimeOffset, Libplanet.Tx.TxActionList)
-  fullName.vb: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.DateTimeOffset, Libplanet.Tx.TxActionList)
-  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList)
-  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList)
+- uid: Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{System.DateTimeOffset},Libplanet.Tx.TxActionList,System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name: TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_System_DateTimeOffset__Libplanet_Tx_TxActionList_System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__
+  commentId: M:Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{System.DateTimeOffset},Libplanet.Tx.TxActionList,System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name.vb: TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+  fullName: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Address>, System.Nullable<System.DateTimeOffset>, Libplanet.Tx.TxActionList, System.Nullable<Libplanet.Assets.FungibleAssetValue>, System.Nullable<System.Int64>)
+  fullName.vb: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset), Libplanet.Tx.TxActionList, System.Nullable(Of Libplanet.Assets.FungibleAssetValue), System.Nullable(Of System.Int64))
+  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+- uid: Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,Libplanet.Tx.TxActionList,System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name: TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Blocks_BlockHash__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_DateTimeOffset_Libplanet_Tx_TxActionList_System_Nullable_Libplanet_Assets_FungibleAssetValue__System_Nullable_System_Int64__
+  commentId: M:Libplanet.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.DateTimeOffset,Libplanet.Tx.TxActionList,System.Nullable{Libplanet.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name.vb: TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+  fullName: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Blocks.BlockHash>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.DateTimeOffset, Libplanet.Tx.TxActionList, System.Nullable<Libplanet.Assets.FungibleAssetValue>, System.Nullable<System.Int64>)
+  fullName.vb: Libplanet.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Blocks.BlockHash), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.DateTimeOffset, Libplanet.Tx.TxActionList, System.Nullable(Of Libplanet.Assets.FungibleAssetValue), System.Nullable(Of System.Int64))
+  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
 - uid: Libplanet.Tx.TxInvoice.#ctor*
   name: TxInvoice
   href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice__ctor_
@@ -28288,6 +28372,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxInvoice.Equals
   nameWithType: TxInvoice.Equals
+- uid: Libplanet.Tx.TxInvoice.GasLimit
+  name: GasLimit
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GasLimit
+  commentId: P:Libplanet.Tx.TxInvoice.GasLimit
+  fullName: Libplanet.Tx.TxInvoice.GasLimit
+  nameWithType: TxInvoice.GasLimit
+- uid: Libplanet.Tx.TxInvoice.GasLimit*
+  name: GasLimit
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GasLimit_
+  commentId: Overload:Libplanet.Tx.TxInvoice.GasLimit
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.GasLimit
+  nameWithType: TxInvoice.GasLimit
 - uid: Libplanet.Tx.TxInvoice.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_GenesisHash
@@ -28314,6 +28411,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxInvoice.GetHashCode
   nameWithType: TxInvoice.GetHashCode
+- uid: Libplanet.Tx.TxInvoice.MaxGasPrice
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_MaxGasPrice
+  commentId: P:Libplanet.Tx.TxInvoice.MaxGasPrice
+  fullName: Libplanet.Tx.TxInvoice.MaxGasPrice
+  nameWithType: TxInvoice.MaxGasPrice
+- uid: Libplanet.Tx.TxInvoice.MaxGasPrice*
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_MaxGasPrice_
+  commentId: Overload:Libplanet.Tx.TxInvoice.MaxGasPrice
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxInvoice.MaxGasPrice
+  nameWithType: TxInvoice.MaxGasPrice
 - uid: Libplanet.Tx.TxInvoice.System#IEquatable{Libplanet#Tx#ITxInvoice}#Equals(Libplanet.Tx.ITxInvoice)
   name: IEquatable<ITxInvoice>.Equals(ITxInvoice)
   href: api/Libplanet.Tx.TxInvoice.html#Libplanet_Tx_TxInvoice_System_IEquatable_Libplanet_Tx_ITxInvoice__Equals_Libplanet_Tx_ITxInvoice_
@@ -28980,6 +29090,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.UnsignedTx.Equals
   nameWithType: UnsignedTx.Equals
+- uid: Libplanet.Tx.UnsignedTx.GasLimit
+  name: GasLimit
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GasLimit
+  commentId: P:Libplanet.Tx.UnsignedTx.GasLimit
+  fullName: Libplanet.Tx.UnsignedTx.GasLimit
+  nameWithType: UnsignedTx.GasLimit
+- uid: Libplanet.Tx.UnsignedTx.GasLimit*
+  name: GasLimit
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GasLimit_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.GasLimit
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.GasLimit
+  nameWithType: UnsignedTx.GasLimit
 - uid: Libplanet.Tx.UnsignedTx.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_GenesisHash
@@ -29006,6 +29129,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.UnsignedTx.GetHashCode
   nameWithType: UnsignedTx.GetHashCode
+- uid: Libplanet.Tx.UnsignedTx.MaxGasPrice
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_MaxGasPrice
+  commentId: P:Libplanet.Tx.UnsignedTx.MaxGasPrice
+  fullName: Libplanet.Tx.UnsignedTx.MaxGasPrice
+  nameWithType: UnsignedTx.MaxGasPrice
+- uid: Libplanet.Tx.UnsignedTx.MaxGasPrice*
+  name: MaxGasPrice
+  href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_MaxGasPrice_
+  commentId: Overload:Libplanet.Tx.UnsignedTx.MaxGasPrice
+  isSpec: "True"
+  fullName: Libplanet.Tx.UnsignedTx.MaxGasPrice
+  nameWithType: UnsignedTx.MaxGasPrice
 - uid: Libplanet.Tx.UnsignedTx.Nonce
   name: Nonce
   href: api/Libplanet.Tx.UnsignedTx.html#Libplanet_Tx_UnsignedTx_Nonce
