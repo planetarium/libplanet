@@ -1644,8 +1644,7 @@ namespace Libplanet.Tests.Blockchain
         /// <summary>
         /// Builds a fixture that has incomplete states for blocks other
         /// than the tip, to test <c>GetState()</c> method's
-        /// <c>completeStates: true</c> option and
-        /// <see cref="IncompleteBlockStatesException"/>.
+        /// <c>completeStates: true</c> option.
         ///
         /// <para>The fixture this makes has total 5 addresses (i.e., accounts;
         /// these go to the second item of the returned triple) and 11 blocks
