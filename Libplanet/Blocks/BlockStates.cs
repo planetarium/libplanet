@@ -63,7 +63,6 @@ namespace Libplanet.Blocks
                 : currency * 0;
         }
 
-
         /// <inheritdoc cref="IBlockStates.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {

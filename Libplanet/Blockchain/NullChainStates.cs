@@ -16,22 +16,40 @@ namespace Libplanet.Blockchain
         }
 
         public IReadOnlyList<IValue?> GetStates(
-            IReadOnlyList<Address> addresses,
-            BlockHash? offset
-        ) =>
-            new IValue?[addresses.Count];
+            IReadOnlyList<Address> addresses, BlockHash? offset) =>
+            GetBlockStates(offset).GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency,
-            BlockHash? offset
-        ) =>
+            Address address, Currency currency, BlockHash? offset) =>
+            GetBlockStates(offset).GetBalance(address, currency);
+
+        public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
+            GetBlockStates(offset).GetTotalSupply(currency);
+
+        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
+            GetBlockStates(offset).GetValidatorSet();
+
+        public IBlockStates GetBlockStates(BlockHash? offset) => new NullBlockStates(offset);
+    }
+
+#pragma warning disable SA1402  // File may only contain a single type
+    internal class NullBlockStates : IBlockStates
+#pragma warning restore SA1402
+    {
+        public NullBlockStates(BlockHash? blockHash)
+        {
+            BlockHash = blockHash;
+        }
+
+        public BlockHash? BlockHash { get; }
+
+        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
+            new IValue?[addresses.Count];
+
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
             currency * 0;
 
-        public FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            BlockHash? offset
-        )
+        public FungibleAssetValue GetTotalSupply(Currency currency)
         {
             if (!currency.TotalSupplyTrackable)
             {
@@ -41,9 +59,7 @@ namespace Libplanet.Blockchain
             return currency * 0;
         }
 
-        public ValidatorSet GetValidatorSet(BlockHash? offset)
-        {
-            return new ValidatorSet();
-        }
+        public ValidatorSet GetValidatorSet() =>
+            new ValidatorSet();
     }
 }
