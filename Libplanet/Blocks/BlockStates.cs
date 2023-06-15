@@ -17,11 +17,13 @@ namespace Libplanet.Blocks
     {
         private BlockHash? _blockHash;
         private ITrie _stateRoot;
+        private BlockStatesCache _cache;
 
         internal BlockStates(BlockHash? blockHash, ITrie stateRoot)
         {
             _blockHash = blockHash;
             _stateRoot = stateRoot;
+            _cache = new BlockStatesCache();
         }
 
         /// <inheritdoc cref="IBlockStates.BlockHash"/>
@@ -30,10 +32,45 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {
-            string[] stringKeys = addresses.Select(ToStateKey).ToArray();
+            // Try using cache first
+            int length = addresses.Count;
+            List<int> uncachedIndices = new List<int>(length);
+            IValue?[] result = new IValue?[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                if (_cache.TryGetValue(addresses[i], out IValue? cachedValue) &&
+                    cachedValue is { } cv)
+                {
+                    result[i] = cv;
+                }
+                else
+                {
+                    uncachedIndices.Add(i);
+                }
+            }
+
+            if (uncachedIndices.Count == 0)
+            {
+                return result;
+            }
+
+            // Fetched uncached and update cache
+            IReadOnlyList<Address> uncachedAddresses =
+                uncachedIndices.Select(index => addresses[index]).ToArray();
+            string[] uncachedStringKeys = uncachedAddresses.Select(ToStateKey).ToArray();
             IReadOnlyList<IValue?> fetched = _stateRoot.Get(
-                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
-            return fetched;
+                uncachedStringKeys.Select(StateStoreExtensions.EncodeKey).ToList()).ToArray();
+            foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
+            {
+                result[v] = fetched[i];
+                if (fetched[i] is { } f)
+                {
+                    _cache.AddOrUpdate(addresses[v], fetched[i]);
+                }
+            }
+
+            return result;
         }
 
         /// <inheritdoc cref="IBlockStates.GetBalance"/>
