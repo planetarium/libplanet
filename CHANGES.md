@@ -11,8 +11,10 @@ To be released.
 ### Backward-incompatible API changes
 
  -  All `IBlockChainStates` methods now take nullable `BlockHash?`
-    instead of `BlockHash` as `offset` parameter.  [[#3124]]
- -  Removed `IncompleteBlockStatesException` class.  [[#3124]]
+    instead of `BlockHash` as `offset` parameter.  [[#3214]]
+ -  Removed `IncompleteBlockStatesException` class.  [[#3214]]
+ -  Changed `BlockChain`'s implementation of `IBlockChainStates` to match
+    interface description.  [[#3214]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,7 +30,7 @@ To be released.
 
 ### CLI tools
 
-[#3124]: https://github.com/planetarium/libplanet/pull/3214
+[#3214]: https://github.com/planetarium/libplanet/pull/3214
 
 
 Version 2.0.0
