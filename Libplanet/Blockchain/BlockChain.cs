@@ -487,112 +487,73 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Gets the state of the given <paramref name="address"/> in the
-        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
+        /// Gets the current state of given <paramref name="address"/> in the
+        /// <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="address">An <see cref="Address"/> to get the states of.</param>
-        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
-        /// the state.  It will be The tip of the <see cref="BlockChain"/> if it is
-        /// <see langword="null"/>.</param>
         /// <returns>The current state of given <paramref name="address"/>.  This can be
         /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
-        public IValue GetState(
-            Address address,
-            BlockHash? offset = null
-        ) =>
-            Count > 0
-            ? GetStates(
-                    new[] { address },
-                    offset ?? Tip.Hash
-                )[0]
-            : null;
+        public IValue GetState(Address address) =>
+            GetStates(new[] { address }, Tip.Hash)[0];
 
         /// <summary>
         /// Gets multiple states associated to the specified <paramref name="addresses"/>.
         /// </summary>
         /// <param name="addresses">Addresses of states to query.</param>
-        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
-        /// the states.  <see cref="Tip"/> by default.</param>
         /// <returns>The states associated to the specified <paramref name="addresses"/>.
         /// Associated values are ordered in the same way to the corresponding
         /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
         /// </returns>
-        public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses,
-            BlockHash? offset = null
-        ) =>
-            Count > 0
-                ? GetStates(
-                    addresses,
-                    offset ?? Tip.Hash
-                )
-                : new IValue[addresses.Count];
+        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
+            GetStates(addresses, Tip.Hash);
 
+        /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset
-        ) => _blockChainStates.GetStates(addresses, offset);
+            BlockHash? offset) =>
+            _blockChainStates.GetStates(addresses, offset);
 
         /// <summary>
-        /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/> from <paramref name="offset"/>.
+        /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
+        /// in the <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="address">The owner <see cref="Address"/> to query.</param>
         /// <param name="currency">The currency type to query.</param>
-        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
-        /// start finding the state. It will be the tip of the
-        /// <see cref="BlockChain"/> if it is <see langword="null"/>.</param>
-        /// <returns>The <paramref name="address"/>'s current balance (or balance as of the given
-        /// <paramref name="offset"/>) of the <paramref name="currency"/>.
+        /// <returns>The <paramref name="address"/>'s current balance.
         /// </returns>
         public FungibleAssetValue GetBalance(
             Address address,
-            Currency currency,
-            BlockHash? offset = null
-        ) =>
+            Currency currency) =>
             GetBalance(
                 address,
                 currency,
-                offset ?? Tip.Hash
-            );
+                Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset
-        ) => _blockChainStates.GetBalance(address, currency, offset);
+            BlockHash? offset) =>
+            _blockChainStates.GetBalance(address, currency, offset);
 
         /// <summary>
-        /// Gets the total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/> from <paramref name="offset"/>, and if not found, derive
-        /// from the sum of all balances.
+        /// Gets the current total supply of a <paramref name="currency"/> in the
+        /// <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
-        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
-        /// start finding the state.</param>
         /// <returns>The total supply value of <paramref name="currency"/> at
-        /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
-        public FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            BlockHash? offset = null
-        ) =>
-            GetTotalSupply(
-                currency,
-                offset ?? Tip.Hash
-            );
+        /// <see cref="BlockChain.Tip"/> in <see cref="FungibleAssetValue"/>.</returns>
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            GetTotalSupply(currency, Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
-        public FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            BlockHash offset
-        ) => _blockChainStates.GetTotalSupply(currency, offset);
+        public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
+            _blockChainStates.GetTotalSupply(currency, offset);
 
-        public ValidatorSet GetValidatorSet(BlockHash? offset = null) =>
-            GetValidatorSet(offset ?? Tip.Hash);
+        public ValidatorSet GetValidatorSet() => GetValidatorSet(Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
-        public ValidatorSet GetValidatorSet(BlockHash offset) =>
+        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
         /// <summary>
