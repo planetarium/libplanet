@@ -6,6 +6,9 @@ using Libplanet.State;
 
 namespace Libplanet.Blocks
 {
+    /// <summary>
+    /// A minimal interface to get states from output states of a <see cref="Block"/>.
+    /// </summary>
     public interface IBlockStates
     {
         /// <summary>

@@ -53,18 +53,8 @@ namespace Libplanet.Blockchain
         /// at <paramref name="offset"/>.  If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
-        /// <see langword="null"/> and one of the following is true.
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
-        ///     </description></item>
-        ///     <item><description>
-        ///         Corresponding <see cref="Block"/> is found but its state root is not found
-        ///         in the <see cref="IStateStore"/>.
-        ///     </description></item>
-        /// </list>
-        /// </exception>
+        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockStates"/> at
+        /// <paramref name="offset"/> cannot be created.</exception>
         FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
@@ -81,21 +71,12 @@ namespace Libplanet.Blockchain
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockStates"/> at
+        /// <paramref name="offset"/> cannot be created.</exception>
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
-        /// <see langword="null"/> and one of the following is true.
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
-        ///     </description></item>
-        ///     <item><description>
-        ///         Corresponding <see cref="Block"/> is found but its state root is not found
-        ///         in the <see cref="IStateStore"/>.
-        ///     </description></item>
-        /// </list>
-        /// </exception>
+        /// <seealso cref="GetBlockStates"/>
         FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash? offset);
@@ -109,6 +90,20 @@ namespace Libplanet.Blockchain
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
         /// <paramref name="offset"/>.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockStates"/> at
+        /// <paramref name="offset"/> cannot be created.</exception>
+        /// <seealso cref="GetBlockStates"/>
+        ValidatorSet GetValidatorSet(BlockHash? offset);
+
+        /// <summary>
+        /// Returns the <see cref="IBlockStates"/> in the <see cref="BlockChain"/>
+        /// at <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
+        /// for which to create an <see cref="IBlockStates"/>.</param>
+        /// <returns>
+        /// The <see cref="IBlockStates"/> at <paramref name="offset"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
         /// <see langword="null"/> and one of the following is true.
         /// <list type="bullet">
@@ -121,6 +116,7 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </exception>
-        ValidatorSet GetValidatorSet(BlockHash? offset);
+        /// <seealso cref="IBlockStates"/>
+        IBlockStates GetBlockStates(BlockHash? offset);
     }
 }

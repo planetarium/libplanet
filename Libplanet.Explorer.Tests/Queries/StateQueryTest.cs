@@ -176,10 +176,33 @@ public class StateQueryTest
     private class MockChainStates : IBlockChainStates
     {
         public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses,
-            BlockHash? offset
-        ) =>
-            offset is { } _
+            IReadOnlyList<Address> addresses, BlockHash? offset) =>
+            GetBlockStates(offset).GetStates(addresses);
+
+        public FungibleAssetValue GetBalance(
+            Address address, Currency currency, BlockHash? offset) =>
+            GetBlockStates(offset).GetBalance(address, currency);
+
+        public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
+            GetBlockStates(offset).GetTotalSupply(currency);
+
+        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
+            GetBlockStates(offset).GetValidatorSet();
+
+        public IBlockStates GetBlockStates(BlockHash? offset) => new MockBlockStates(offset);
+    }
+
+    private class MockBlockStates : IBlockStates
+    {
+        public MockBlockStates(BlockHash? blockHash)
+        {
+            BlockHash = blockHash;
+        }
+
+        public BlockHash? BlockHash { get; }
+
+        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
+            BlockHash is { } _
                 ? addresses.Select(address => address.ToString() switch
                 {
                     "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
@@ -187,25 +210,18 @@ public class StateQueryTest
                 }).ToImmutableList()
                 : addresses.Select(address => (IValue)null).ToList();
 
-        public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency,
-            BlockHash? offset
-        ) =>
-            offset is { } _
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            BlockHash is { } _
                 ? currency * 123
                 : currency * 0;
 
-        public FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            BlockHash? offset
-        ) =>
-            offset is { } _
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            BlockHash is { } _
                 ? currency * 10000
                 : currency * 0;
 
-        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            offset is { } _
+        public ValidatorSet GetValidatorSet() =>
+            BlockHash is { } _
                 ? new ValidatorSet(new List<Validator>
                 {
                     new(
