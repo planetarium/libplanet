@@ -15,12 +15,16 @@ To be released.
  -  Removed `IncompleteBlockStatesException` class.  [[#3214]]
  -  Changed `BlockChain`'s implementation of `IBlockChainStates` to match
     interface description.  [[#3214]]
+ -  Added `IBlockChainStates.GetBlockStates()` interface method.  [[#3216]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `IBlockStates` interface and its default implementation
+    `BlockStates`.  [[#3216]]
 
 ### Behavioral changes
 
@@ -35,6 +39,7 @@ To be released.
 
 [#3214]: https://github.com/planetarium/libplanet/pull/3214
 [#3215]: https://github.com/planetarium/libplanet/pull/3215
+[#3216]: https://github.com/planetarium/libplanet/pull/3216
 
 
 Version 2.0.0
