@@ -67,6 +67,9 @@ namespace Libplanet.State
             return UpdateFungibleAssets(
                 UpdatedFungibles
                     .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue),
+                TotalUpdatedFungibles
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
                     .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
         }
@@ -84,11 +87,13 @@ namespace Libplanet.State
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
+                TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
         [Pure]
         protected override AccountStateDeltaImpl UpdateFungibleAssets(
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
         ) =>
             new AccountStateDeltaImplV0(
                 StateGetter,
@@ -99,6 +104,7 @@ namespace Libplanet.State
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
+                TotalUpdatedFungibles = totalUpdatedFungibles,
             };
     }
 }

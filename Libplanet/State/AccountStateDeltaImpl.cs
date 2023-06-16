@@ -206,6 +206,8 @@ namespace Libplanet.State
             }
 
             FungibleAssetValue balance = GetBalance(recipient, currency);
+            (Address, Currency) assetKey = (recipient, currency);
+            BigInteger rawBalance = (balance + value).RawValue;
 
             if (currency.TotalSupplyTrackable)
             {
@@ -219,13 +221,15 @@ namespace Libplanet.State
                 }
 
                 return UpdateFungibleAssets(
-                    UpdatedFungibles.SetItem((recipient, currency), (balance + value).RawValue),
+                    UpdatedFungibles.SetItem(assetKey, rawBalance),
+                    TotalUpdatedFungibles.SetItem(assetKey, rawBalance),
                     UpdatedTotalSupply.SetItem(currency, (currentTotalSupply + value).RawValue)
                 );
             }
 
             return UpdateFungibleAssets(
-                UpdatedFungibles.SetItem((recipient, currency), (balance + value).RawValue)
+                UpdatedFungibles.SetItem(assetKey, rawBalance),
+                TotalUpdatedFungibles.SetItem(assetKey, rawBalance)
             );
         }
 
@@ -238,6 +242,8 @@ namespace Libplanet.State
             bool allowNegativeBalance = false
         )
         {
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -256,18 +262,24 @@ namespace Libplanet.State
                 throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
+            (Address, Currency) senderAssetKey = (sender, currency);
+            BigInteger senderRawBalance = (senderBalance - value).RawValue;
+
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
-                UpdatedFungibles
-                .SetItem((sender, currency), (senderBalance - value).RawValue);
+                UpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles =
+                TotalUpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
 
             FungibleAssetValue recipientBalance = GetBalance(
                 recipient,
                 currency,
                 updatedFungibleAssets);
+            (Address, Currency) recipientAssetKey = (recipient, currency);
+            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
 
             return UpdateFungibleAssets(
-                updatedFungibleAssets
-                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
+                updatedFungibleAssets.SetItem(recipientAssetKey, recipientRawBalance),
+                totalUpdatedFungibles.SetItem(recipientAssetKey, recipientRawBalance)
             );
         }
 
@@ -302,10 +314,13 @@ namespace Libplanet.State
                 throw new InsufficientBalanceException(msg, owner, balance);
             }
 
+            (Address, Currency) assetKey = (owner, currency);
+            BigInteger rawBalance = (balance - value).RawValue;
             if (currency.TotalSupplyTrackable)
             {
                 return UpdateFungibleAssets(
-                    UpdatedFungibles.SetItem((owner, currency), (balance - value).RawValue),
+                    UpdatedFungibles.SetItem(assetKey, rawBalance),
+                    TotalUpdatedFungibles.SetItem(assetKey, rawBalance),
                     UpdatedTotalSupply.SetItem(
                         currency,
                         (GetTotalSupply(currency) - value).RawValue)
@@ -313,7 +328,8 @@ namespace Libplanet.State
             }
 
             return UpdateFungibleAssets(
-                UpdatedFungibles.SetItem((owner, currency), (balance - value).RawValue)
+                UpdatedFungibles.SetItem(assetKey, rawBalance),
+                TotalUpdatedFungibles.SetItem(assetKey, rawBalance)
             );
         }
 
@@ -402,13 +418,19 @@ namespace Libplanet.State
 
         [Pure]
         protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
         ) =>
-            UpdateFungibleAssets(updatedFungibleAssets, UpdatedTotalSupply);
+            UpdateFungibleAssets(
+                updatedFungibleAssets,
+                totalUpdatedFungibles,
+                UpdatedTotalSupply
+            );
 
         [Pure]
         protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles,
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
         ) =>
             new AccountStateDeltaImpl(
@@ -422,7 +444,7 @@ namespace Libplanet.State
                 UpdatedFungibles = updatedFungibleAssets,
                 UpdatedTotalSupply = updatedTotalSupply,
                 UpdatedValidatorSet = UpdatedValidatorSet,
-                TotalUpdatedFungibles = TotalUpdatedFungibles.SetItems(updatedFungibleAssets),
+                TotalUpdatedFungibles = totalUpdatedFungibles,
             };
 
         [Pure]
