@@ -265,21 +265,36 @@ namespace Libplanet.Action
                 {
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
+                    var sw = new Stopwatch();
+                    sw.Start();
                     nextStates = feeCollector.Mortgage(nextStates);
+                    sw.Stop();
+                    var elapsed1 = sw.ElapsedMilliseconds;
+                    sw.Restart();
                     context = CreateActionContext(nextStates, seed, nextGasLimit);
+                    sw.Stop();
+                    var elapsed2 = sw.ElapsedMilliseconds;
+                    sw.Restart();
                     feeCollector = feeCollector.Next(context);
+                    sw.Stop();
+                    var elapsed3 = sw.ElapsedMilliseconds;
+                    sw.Restart();
                     nextStates = action.Execute(context);
+                    sw.Stop();
+                    var elapsed4 = sw.ElapsedMilliseconds;
                     logger?
                         .ForContext("Tag", "Metric")
                         .ForContext("Subtag", "ActionExecutionTime")
                         .Information(
                             "Action {Action} took {DurationMs} ms to execute, " +
                             "GetState called {GetStateCount} times " +
-                            "and took {GetStateDurationMs} ms",
+                            "and took {GetStateDurationMs} ms " +
+                            "mortage {Elapsed1} ms / context {Elapsed2} ms / next {Elapsed3} ms / execute {Elapsed4}",
                             action,
                             stopwatch.ElapsedMilliseconds,
                             ActionContext.GetStateCount.Value,
-                            ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
+                            ActionContext.GetStateTimer.Value?.ElapsedMilliseconds,
+                            elapsed1, elapsed2, elapsed3, elapsed4);
                 }
                 catch (OutOfMemoryException e)
                 {
