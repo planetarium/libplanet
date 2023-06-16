@@ -11,10 +11,10 @@ namespace Libplanet.State
     {
         internal Delta()
         {
-            StatesDelta = ImmutableDictionary<Address, IValue>.Empty;
-            FungiblesDelta = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            TotalSuppliesDelta = ImmutableDictionary<Currency, BigInteger>.Empty;
-            ValidatorSetDelta = null;
+            States = ImmutableDictionary<Address, IValue>.Empty;
+            Fungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
+            TotalSupplies = ImmutableDictionary<Currency, BigInteger>.Empty;
+            ValidatorSet = null;
         }
 
         internal Delta(
@@ -23,10 +23,10 @@ namespace Libplanet.State
             IImmutableDictionary<Currency, BigInteger> totalSuppliesDelta,
             ValidatorSet? validatorSetDelta)
         {
-            StatesDelta = statesDelta;
-            FungiblesDelta = fungiblesDelta;
-            TotalSuppliesDelta = totalSuppliesDelta;
-            ValidatorSetDelta = validatorSetDelta;
+            States = statesDelta;
+            Fungibles = fungiblesDelta;
+            TotalSupplies = totalSuppliesDelta;
+            ValidatorSet = validatorSetDelta;
         }
 
         /// <inheritdoc cref="IDelta.UpdatedAddresses"/>
@@ -35,30 +35,30 @@ namespace Libplanet.State
 
         /// <inheritdoc cref="IDelta.StateUpdatedAddresses"/>
         public IImmutableSet<Address> StateUpdatedAddresses =>
-            StatesDelta.Keys.ToImmutableHashSet();
+            States.Keys.ToImmutableHashSet();
 
-        /// <inheritdoc cref="IDelta.StatesDelta"/>
-        public IImmutableDictionary<Address, IValue> StatesDelta { get; }
+        /// <inheritdoc cref="IDelta.States"/>
+        public IImmutableDictionary<Address, IValue> States { get; }
 
         /// <inheritdoc cref="IDelta.FungibleUpdatedAddresses"/>
         public IImmutableSet<Address> FungibleUpdatedAddresses =>
-            FungiblesDelta.Keys.Select(pair => pair.Item1).ToImmutableHashSet();
+            Fungibles.Keys.Select(pair => pair.Item1).ToImmutableHashSet();
 
         /// <inheritdoc cref="IDelta.UpdatedFungibleAssets"/>
         public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
-            FungiblesDelta.Keys.ToImmutableHashSet();
+            Fungibles.Keys.ToImmutableHashSet();
 
-        /// <inheritdoc cref="IDelta.FungiblesDelta"/>
-        public IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta { get; }
+        /// <inheritdoc cref="IDelta.Fungibles"/>
+        public IImmutableDictionary<(Address, Currency), BigInteger> Fungibles { get; }
 
         /// <inheritdoc cref="IDelta.UpdatedTotalSupplyCurrencies"/>
         public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
-            TotalSuppliesDelta.Keys.ToImmutableHashSet();
+            TotalSupplies.Keys.ToImmutableHashSet();
 
-        /// <inheritdoc cref="IDelta.TotalSuppliesDelta"/>
-        public IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta { get; }
+        /// <inheritdoc cref="IDelta.TotalSupplies"/>
+        public IImmutableDictionary<Currency, BigInteger> TotalSupplies { get; }
 
-        /// <inheritdoc cref="IDelta.ValidatorSetDelta"/>
-        public ValidatorSet? ValidatorSetDelta { get; }
+        /// <inheritdoc cref="IDelta.ValidatorSet"/>
+        public ValidatorSet? ValidatorSet { get; }
     }
 }

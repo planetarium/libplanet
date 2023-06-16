@@ -30,10 +30,10 @@ namespace Libplanet.State
         /// its state changed.
         /// </para>
         /// <para>
-        /// This is equivalent to the set of keys in <see cref="StatesDelta"/>.
+        /// This is equivalent to the set of keys in <see cref="States"/>.
         /// </para>
         /// </summary>
-        /// <seealso cref="StatesDelta"/>
+        /// <seealso cref="States"/>
         [Pure]
         IImmutableSet<Address> StateUpdatedAddresses { get; }
 
@@ -41,7 +41,7 @@ namespace Libplanet.State
         /// A dictionary representing changed states for each <see cref="Address"/>.
         /// </summary>
         [Pure]
-        IImmutableDictionary<Address, IValue> StatesDelta { get; }
+        IImmutableDictionary<Address, IValue> States { get; }
 
         /// <summary>
         /// <para>
@@ -51,11 +51,11 @@ namespace Libplanet.State
         /// <para>
         /// This is equivalent to the set of <see cref="Address"/>es that appear in
         /// <see cref="UpdatedFungibleAssets"/>, and in turn those that appear in
-        /// <see cref="FungiblesDelta"/>.
+        /// <see cref="Fungibles"/>.
         /// </para>
         /// </summary>
         /// <seealso cref="UpdatedFungibleAssets"/>
-        /// <seealso cref="FungiblesDelta"/>
+        /// <seealso cref="Fungibles"/>
         [Pure]
         IImmutableSet<Address> FungibleUpdatedAddresses { get; }
 
@@ -75,11 +75,11 @@ namespace Libplanet.State
         /// this becomes <c>{ (A, FOO), (B, BAR) }</c> not an empty set.
         /// </para>
         /// <para>
-        /// This is equivalent to the keys of <see cref="FungiblesDelta"/>.
+        /// This is equivalent to the keys of <see cref="Fungibles"/>.
         /// </para>
         /// </summary>
         /// <seealso cref="FungibleUpdatedAddresses"/>
-        /// <seealso cref="FungiblesDelta"/>
+        /// <seealso cref="Fungibles"/>
         [Pure]
         IImmutableSet<(Address, Currency)> UpdatedFungibleAssets { get; }
 
@@ -89,17 +89,17 @@ namespace Libplanet.State
         /// </summary>
         /// <seealso cref="UpdatedFungibleAssets"/>
         [Pure]
-        IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta { get; }
+        IImmutableDictionary<(Address, Currency), BigInteger> Fungibles { get; }
 
         /// <summary>
         /// <para>
         /// The set of <see cref="Currency">Currencies</see> with their total supplies updated.
         /// </para>
         /// <para>
-        /// This is equivalent to the set of keys in <see cref="TotalSuppliesDelta"/>.
+        /// This is equivalent to the set of keys in <see cref="TotalSupplies"/>.
         /// </para>
         /// </summary>
-        /// <seealso cref="TotalSuppliesDelta"/>
+        /// <seealso cref="TotalSupplies"/>
         [Pure]
         IImmutableSet<Currency> UpdatedTotalSupplyCurrencies { get; }
 
@@ -108,12 +108,12 @@ namespace Libplanet.State
         /// </summary>
         /// <seealso cref="UpdatedTotalSupplyCurrencies"/>
         [Pure]
-        IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta { get; }
+        IImmutableDictionary<Currency, BigInteger> TotalSupplies { get; }
 
         /// <summary>
-        /// A <see cref="ValidatorSet"/> representing a change in <see cref="ValidatorSet"/>,
-        /// if not <see langword="null"/>.
+        /// A <see cref="Consensus.ValidatorSet"/> representing a change in
+        /// <see cref="Consensus.ValidatorSet"/>, if not <see langword="null"/>.
         /// </summary>
-        ValidatorSet? ValidatorSetDelta { get; }
+        ValidatorSet? ValidatorSet { get; }
     }
 }

@@ -66,15 +66,15 @@ namespace Libplanet.State
         public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
             Delta.UpdatedTotalSupplyCurrencies;
 
-        public IImmutableDictionary<Address, IValue> StatesDelta => Delta.StatesDelta;
+        public IImmutableDictionary<Address, IValue> StatesDelta => Delta.States;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta =>
-            Delta.FungiblesDelta;
+            Delta.Fungibles;
 
         public IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta =>
-            Delta.TotalSuppliesDelta;
+            Delta.TotalSupplies;
 
-        public ValidatorSet? ValidatorSetDelta => Delta.ValidatorSetDelta;
+        public ValidatorSet? ValidatorSetDelta => Delta.ValidatorSet;
 
         /// <inheritdoc/>
         public IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets =>
@@ -456,9 +456,9 @@ namespace Libplanet.State
             {
                 Delta = new Delta(
                     statesDelta,
-                    Delta.FungiblesDelta,
-                    Delta.TotalSuppliesDelta,
-                    Delta.ValidatorSetDelta),
+                    Delta.Fungibles,
+                    Delta.TotalSupplies,
+                    Delta.ValidatorSet),
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
@@ -481,10 +481,10 @@ namespace Libplanet.State
                 Signer)
             {
                 Delta = new Delta(
-                    Delta.StatesDelta,
+                    Delta.States,
                     fungiblesDelta,
                     totalSuppliesDelta,
-                    Delta.ValidatorSetDelta),
+                    Delta.ValidatorSet),
                 TotalUpdatedFungibles = TotalUpdatedFungibles.SetItems(fungiblesDelta),
             };
 
@@ -500,9 +500,9 @@ namespace Libplanet.State
                 Signer)
             {
                 Delta = new Delta(
-                    Delta.StatesDelta,
-                    Delta.FungiblesDelta,
-                    Delta.TotalSuppliesDelta,
+                    Delta.States,
+                    Delta.Fungibles,
+                    Delta.TotalSupplies,
                     validatorSetDelta),
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };

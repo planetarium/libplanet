@@ -81,9 +81,9 @@ namespace Libplanet.State
             {
                 Delta = new Delta(
                     statesDelta,
-                    Delta.FungiblesDelta,
-                    Delta.TotalSuppliesDelta,
-                    Delta.ValidatorSetDelta),
+                    Delta.Fungibles,
+                    Delta.TotalSupplies,
+                    Delta.ValidatorSet),
             };
 
         [Pure]
@@ -98,10 +98,10 @@ namespace Libplanet.State
                 Signer)
             {
                 Delta = new Delta(
-                    Delta.StatesDelta,
+                    Delta.States,
                     fungiblesDelta,
-                    Delta.TotalSuppliesDelta,
-                    Delta.ValidatorSetDelta),
+                    Delta.TotalSupplies,
+                    Delta.ValidatorSet),
             };
     }
 }
