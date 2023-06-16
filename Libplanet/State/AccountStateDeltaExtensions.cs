@@ -9,31 +9,20 @@ namespace Libplanet.State
 {
     internal static class AccountStateDeltaExtensions
     {
-        internal static IImmutableDictionary<Address, IValue?> GetUpdatedStates(
-            this IAccountStateDelta delta
-        )
-        {
-            return delta.StateUpdatedAddresses.Select(address =>
-                new KeyValuePair<Address, IValue?>(
-                    address,
-                    delta.GetState(address)
-                )
-            ).ToImmutableDictionary();
-        }
+        internal static IImmutableDictionary<Address, IValue> GetUpdatedStates(
+            this IAccountStateDelta delta) => delta.StatesDelta;
 
         internal static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
             GetUpdatedBalances(this IAccountStateDelta delta) =>
-            delta.UpdatedFungibleAssets.ToImmutableDictionary(
-                pair => pair,
-                pair => delta.GetBalance(pair.Item1, pair.Item2));
+            delta.FungiblesDelta.ToImmutableDictionary(
+                kv => kv.Key,
+                kv => FungibleAssetValue.FromRawValue(kv.Key.Item2, kv.Value));
 
         internal static IImmutableDictionary<Currency, FungibleAssetValue>
             GetUpdatedTotalSupplies(this IAccountStateDelta delta) =>
-            delta.UpdatedTotalSupplyCurrencies.Select(currency =>
-                    new KeyValuePair<Currency, FungibleAssetValue>(
-                        currency,
-                        delta.GetTotalSupply(currency)))
-                .ToImmutableDictionary();
+            delta.TotalSuppliesDelta.ToImmutableDictionary(
+                kv => kv.Key,
+                kv => FungibleAssetValue.FromRawValue(kv.Key, kv.Value));
 
         internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(
             this IAccountStateDelta delta)

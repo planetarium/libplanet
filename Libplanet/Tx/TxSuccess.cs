@@ -41,7 +41,7 @@ namespace Libplanet.Tx
             BlockHash blockHash,
             TxId txId,
             List<List<string>>? actionsLogsList,
-            IImmutableDictionary<Address, IValue?> updatedStates,
+            IImmutableDictionary<Address, IValue> updatedStates,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> fungibleAssetsDelta,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
                 updatedFungibleAssets
@@ -60,8 +60,7 @@ namespace Libplanet.Tx
                 (Dictionary)_codec.Decode(info.GetValue<byte[]>(nameof(UpdatedStates)));
             UpdatedStates = updatedStates.ToImmutableDictionary(
                 kv => new Address(kv.Key),
-                kv => kv.Value is List l && l.Any() ? l[0] : null
-            );
+                kv => kv.Value);
             FungibleAssetsDelta = DecodeFungibleAssetGroups(
                 info.GetValue<byte[]>(nameof(FungibleAssetsDelta))
             );
@@ -74,7 +73,7 @@ namespace Libplanet.Tx
         /// The states delta made by the actions in the transaction within the block.
         /// </summary>
         [Pure]
-        public IImmutableDictionary<Address, IValue?> UpdatedStates { get; }
+        public IImmutableDictionary<Address, IValue> UpdatedStates { get; }
 
         /// <summary>
         /// <see cref="Address"/>es and sets of
@@ -110,16 +109,9 @@ namespace Libplanet.Tx
             base.GetObjectData(info, context);
             info.AddValue(
                 nameof(UpdatedStates),
-                _codec.Encode(
-                    new Dictionary(
-                        UpdatedStates.Select(kv =>
-                            new KeyValuePair<IKey, IValue>(
-                                new Binary(kv.Key.ToByteArray()),
-                                kv.Value is { } v ? List.Empty.Add(v) : List.Empty
-                            )
-                        )
-                    )
-                )
+                _codec.Encode(new Dictionary(
+                    UpdatedStates.Select(kv =>
+                        new KeyValuePair<IKey, IValue>(new Binary(kv.Key.ByteArray), kv.Value))))
             );
             info.AddValue(
                 nameof(FungibleAssetsDelta),
