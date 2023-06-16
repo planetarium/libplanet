@@ -16,6 +16,15 @@ To be released.
  -  Changed `BlockChain`'s implementation of `IBlockChainStates` to match
     interface description.  [[#3214]]
  -  Added `IBlockChainStates.GetBlockStates()` interface method.  [[#3216]]
+ -  `IAccountStateDelta` overhauled.  [[3219]]
+     -  Added `StateDelta`, `FungiblesDelta`, `TotalSuppliesDelta`,
+        `ValidatorSetDelta` properties.
+     -  Added `FungibleUpdatedAddresses` property.
+     -  Changed `UpdatedFungibleAssets` property type to
+        `IImmutableSet<(Address, Currency)>` from
+        `IImmutableDictionary<Address, IImmutableSet<Currency>>`.
+     -  Changed the name `TotalSupplyUpdatedCurrencies` to
+        `UpdatedTotalSupplyCurrencies`.
 
 ### Backward-incompatible network protocol changes
 
@@ -40,6 +49,7 @@ To be released.
 [#3214]: https://github.com/planetarium/libplanet/pull/3214
 [#3215]: https://github.com/planetarium/libplanet/pull/3215
 [#3216]: https://github.com/planetarium/libplanet/pull/3216
+[#3219]: https://github.com/planetarium/libplanet/pull/3219
 
 
 Version 2.0.0
