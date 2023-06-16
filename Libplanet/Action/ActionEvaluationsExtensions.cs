@@ -22,9 +22,9 @@ namespace Libplanet.Action
                 .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
                 .ToImmutableHashSet();
             IImmutableSet<(Address, Currency)> updatedFungibleAssets = actionEvaluations
-                .SelectMany(a => a.OutputStates.UpdatedFungibleAssets
-                    .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
-                .ToImmutableHashSet();
+                .Aggregate(
+                    ImmutableHashSet<(Address, Currency)>.Empty,
+                    (prev, next) => prev.Union(next.OutputStates.UpdatedFungibleAssets));
             IImmutableSet<Currency> updatedTotalSupplies = actionEvaluations
                 .SelectMany(a => a.OutputStates.UpdatedTotalSupplyCurrencies)
                 .ToImmutableHashSet();

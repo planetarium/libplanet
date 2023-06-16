@@ -41,36 +41,89 @@ namespace Libplanet.State
     public interface IAccountStateDelta : IAccountStateView
     {
         /// <summary>
-        /// <seealso cref="Address"/>es of the accounts that have
-        /// been updated since then.
+        /// <para>
+        /// A set of <seealso cref="Address"/>es where each <see cref="Address"/> has
+        /// either its state changed or its <see cref="FungibleAssetValue"/> changed.
+        /// </para>
+        /// <para>
+        /// This is equivalent to the union of <see cref="StateUpdatedAddresses"/> and
+        /// <see cref="FungibleUpdatedAddresses"/>.
+        /// </para>
         /// </summary>
+        /// <seealso cref="StateUpdatedAddresses"/>
+        /// <seealso cref="FungibleUpdatedAddresses"/>
         [Pure]
         IImmutableSet<Address> UpdatedAddresses { get; }
 
         /// <summary>
-        /// <see cref="Address"/>es of the accounts whose states have been updated since then.
+        /// <para>
+        /// A set of <seealso cref="Address"/>es where each <see cref="Address"/> has
+        /// its state changed.
+        /// </para>
+        /// <para>
+        /// This is equivalent to the set of keys in <see cref="StatesDelta"/>.
+        /// </para>
         /// </summary>
+        /// <seealso cref="StatesDelta"/>
         [Pure]
         IImmutableSet<Address> StateUpdatedAddresses { get; }
 
+        /// <summary>
+        /// A dictionary representing changed states for each <see cref="Address"/>.
+        /// </summary>
+        [Pure]
         IImmutableDictionary<Address, IValue> StatesDelta { get; }
 
+        /// <summary>
+        /// <para>
+        /// A set of <see cref="Address"/>es where each <see cref="Address"/> has
+        /// its <see cref="FungibleAssetValue"/> changed.
+        /// </para>
+        /// <para>
+        /// This is equivalent to the set of <see cref="Address"/>es that appear in
+        /// <see cref="UpdatedFungibleAssets"/>, and in turn those that appear in
+        /// <see cref="FungiblesDelta"/>.
+        /// </para>
+        /// </summary>
+        /// <seealso cref="UpdatedFungibleAssets"/>
+        /// <seealso cref="FungiblesDelta"/>
+        [Pure]
         IImmutableSet<Address> FungibleUpdatedAddresses { get; }
 
         /// <summary>
-        /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
-        /// been updated since then.
-        /// <para>For example, if A transfers 10 FOO to B and B transfers 20 BAR to C,
+        /// <para>
+        /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
+        /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed.
+        /// </para>
+        /// <para>
+        /// For example, if A transfers 10 FOO to B and B transfers 20 BAR to C,
         /// <see cref="UpdatedFungibleAssets"/> become likes
-        /// <c>{ [A] = { FOO }, [B] = { FOO, BAR }, [C] = { BAR } }</c>.</para>
+        /// <c>{ (A, FOO), (B, FOO), (B, BAR), (C, BAR) }</c>.
+        /// </para>
+        /// <para>
+        /// Furthermore, this represents any pair that has been "touched", i.e.,
+        /// if A transfers 10 FOO to B and B transfers 10 FOO back to A,
+        /// this becomes <c>{ (A, FOO), (B, BAR) }</c> not an empty set.
+        /// </para>
+        /// <para>
+        /// This is equivalent to the keys of <see cref="FungiblesDelta"/>.
+        /// </para>
         /// </summary>
+        /// <seealso cref="FungibleUpdatedAddresses"/>
+        /// <seealso cref="FungiblesDelta"/>
         [Pure]
-        IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
+        IImmutableSet<(Address, Currency)> UpdatedFungibleAssets { get; }
 
+        /// <summary>
+        /// A dictionary representing the changed <see cref="FungibleAssetValue"/>s for each
+        /// <see cref="Address"/> and <see cref="Currency"/> pair.
+        /// </summary>
+        /// <seealso cref="UpdatedFungibleAssets"/>
+        [Pure]
         IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta { get; }
 
         /// <summary>
-        /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
+        /// A set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
         /// that have been updated since the previous <see cref="Block"/>'s output states.
         /// </summary>
         /// <remarks>
@@ -81,13 +134,28 @@ namespace Libplanet.State
         IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets { get; }
 
         /// <summary>
-        /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
+        /// <para>
+        /// The set of <see cref="Currency">Currencies</see> with their total supplies updated.
+        /// </para>
+        /// <para>
+        /// This is equivalent to the set of keys in <see cref="TotalSuppliesDelta"/>.
+        /// </para>
         /// </summary>
+        /// <seealso cref="TotalSuppliesDelta"/>
         [Pure]
         IImmutableSet<Currency> UpdatedTotalSupplyCurrencies { get; }
 
+        /// <summary>
+        /// A dictionary representing the changed total supply for each <see cref="Currency"/>.
+        /// </summary>
+        /// <seealso cref="UpdatedTotalSupplyCurrencies"/>
+        [Pure]
         IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta { get; }
 
+        /// <summary>
+        /// A <see cref="ValidatorSet"/> representing a change in <see cref="ValidatorSet"/>,
+        /// if not <see langword="null"/>.
+        /// </summary>
         ValidatorSet? ValidatorSetDelta { get; }
 
         /// <summary>

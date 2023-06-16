@@ -168,9 +168,8 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> FungibleUpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
-            public IImmutableDictionary<Address, IImmutableSet<Currency>>
-                UpdatedFungibleAssets =>
-                    ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+            public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
+                ImmutableHashSet<(Address, Currency)>.Empty;
 
             public IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta =>
                 ImmutableDictionary<(Address, Currency), BigInteger>.Empty;

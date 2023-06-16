@@ -189,14 +189,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Zero(0), a.GetBalance(_addr[2], _currencies[0]));
             Assert.Equal(Zero(1), a.GetBalance(_addr[2], _currencies[1]));
             Assert.Equal(
-                new Dictionary<Address, IImmutableSet<Currency>>
-                {
-                    [_addr[1]] = ImmutableHashSet.Create(_currencies[2]),
-                    [_addr[2]] = ImmutableHashSet.Create(_currencies[2]),
-                }.ToImmutableDictionary(),
+                ImmutableHashSet<(Address, Currency)>.Empty
+                    .Add((_addr[1], _currencies[2]))
+                    .Add((_addr[2], _currencies[2])),
                 a.UpdatedFungibleAssets
             );
-            Assert.Equal(a.UpdatedFungibleAssets.Keys.ToImmutableHashSet(), a.UpdatedAddresses);
+            Assert.Equal(
+                a.UpdatedFungibleAssets.Select(pair => pair.Item1).ToImmutableHashSet(),
+                a.UpdatedAddresses);
             Assert.Empty(a.StateUpdatedAddresses);
             Assert.Empty(_init.UpdatedAddresses);
             Assert.Empty(_init.StateUpdatedAddresses);

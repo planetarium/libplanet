@@ -62,12 +62,8 @@ namespace Libplanet.State
             FungiblesDelta.Select(kv => kv.Key.Item1).ToImmutableHashSet();
 
         /// <inheritdoc/>
-        public IImmutableDictionary<Address, IImmutableSet<Currency>>
-            UpdatedFungibleAssets => FungiblesDelta
-                .GroupBy(kv => kv.Key.Item1, kv => kv.Key.Item2)
-                .ToImmutableDictionary(
-                    group => group.Key,
-                    group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
+        public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
+            FungiblesDelta.Keys.ToImmutableHashSet();
 
         /// <inheritdoc/>
         public IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets =>

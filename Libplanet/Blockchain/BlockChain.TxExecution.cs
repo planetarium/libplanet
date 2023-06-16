@@ -51,24 +51,24 @@ namespace Libplanet.Blockchain
                         txid,
                         actionsLogsList,
                         outputStates.GetUpdatedStates(),
-                        outputStates.UpdatedFungibleAssets.ToImmutableDictionary(
-                            kv => kv.Key,
-                            kv => (IImmutableDictionary<Currency, FungibleAssetValue>)kv.Value
-                                .ToImmutableDictionary(
-                                    currency => currency,
-                                    currency => outputStates.GetBalance(kv.Key, currency) -
-                                        prevStates.GetBalance(kv.Key, currency)
-                                )
-                        ),
-                        outputStates.UpdatedFungibleAssets.ToImmutableDictionary(
-                            kv => kv.Key,
-                            kv => (IImmutableDictionary<Currency, FungibleAssetValue>)kv.Value
-                                .ToImmutableDictionary(
-                                    currency => currency,
-                                    currency => outputStates.GetBalance(kv.Key, currency)
-                                )
-                        )
-                    );
+                        outputStates.UpdatedFungibleAssets
+                            .GroupBy(pair => pair.Item1, pair => pair.Item2)
+                            .ToImmutableDictionary(
+                                group => group.Key,
+                                group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
+                                    .ToImmutableDictionary(
+                                        currency => currency,
+                                        currency =>
+                                            outputStates.GetBalance(group.Key, currency) -
+                                            prevStates.GetBalance(group.Key, currency))),
+                        outputStates.UpdatedFungibleAssets
+                            .GroupBy(pair => pair.Item1, pair => pair.Item2)
+                            .ToImmutableDictionary(
+                                group => group.Key,
+                                group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
+                                    .ToImmutableDictionary(
+                                        currency => currency,
+                                        currency => outputStates.GetBalance(group.Key, currency))));
                 }
 
                 yield return txExecution;
