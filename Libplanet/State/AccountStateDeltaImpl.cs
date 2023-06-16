@@ -51,34 +51,45 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        IImmutableSet<Address> IAccountStateDelta.UpdatedAddresses =>
+        public IImmutableSet<Address> UpdatedAddresses =>
             UpdatedStates.Keys.ToImmutableHashSet().Union(
                 UpdatedFungibles.Select(kv => kv.Key.Item1)
             );
 
         /// <inheritdoc/>
-        IImmutableSet<Address> IAccountStateDelta.StateUpdatedAddresses =>
+        public IImmutableSet<Address> StateUpdatedAddresses =>
             UpdatedStates.Keys.ToImmutableHashSet();
 
         /// <inheritdoc/>
-        IImmutableDictionary<Address, IImmutableSet<Currency>>
-            IAccountStateDelta.UpdatedFungibleAssets => UpdatedFungibles
+        public IImmutableDictionary<Address, IImmutableSet<Currency>>
+            UpdatedFungibleAssets => UpdatedFungibles
                 .GroupBy(kv => kv.Key.Item1, kv => kv.Key.Item2)
                 .ToImmutableDictionary(
                     group => group.Key,
                     group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
 
         /// <inheritdoc/>
-        IImmutableDictionary<Address, IImmutableSet<Currency>>
-            IAccountStateDelta.TotalUpdatedFungibleAssets => TotalUpdatedFungibles
+        public IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets =>
+            TotalUpdatedFungibles
                 .GroupBy(kv => kv.Key.Item1, kv => kv.Key.Item2)
                 .ToImmutableDictionary(
                     group => group.Key,
                     group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
 
         [Pure]
-        IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
+        public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
             UpdatedTotalSupply.Keys.ToImmutableHashSet();
+
+        public IImmutableDictionary<Address, IValue> UpdatedStates
+            { get; protected set; }
+
+        public IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
+            { get; protected set; }
+
+        public IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply
+            { get; protected set; }
+
+        public ValidatorSet? UpdatedValidatorSet { get; protected set; } = null;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
             { get; protected set; }
@@ -92,15 +103,6 @@ namespace Libplanet.State
         protected ValidatorSetGetter ValidatorSetGetter { get; set; }
 
         protected Address Signer { get; set; }
-
-        protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
-
-        protected IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
-            { get; set; }
-
-        protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
-
-        protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
         /// <inheritdoc/>
         [Pure]

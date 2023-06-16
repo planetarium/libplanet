@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 
 namespace Libplanet.State
 {
@@ -51,6 +53,8 @@ namespace Libplanet.State
         [Pure]
         IImmutableSet<Address> StateUpdatedAddresses { get; }
 
+        IImmutableDictionary<Address, IValue> UpdatedStates { get; }
+
         /// <summary>
         /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
         /// been updated since then.
@@ -60,6 +64,8 @@ namespace Libplanet.State
         /// </summary>
         [Pure]
         IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
+
+        IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles { get; }
 
         /// <summary>
         /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
@@ -77,6 +83,10 @@ namespace Libplanet.State
         /// </summary>
         [Pure]
         IImmutableSet<Currency> TotalSupplyUpdatedCurrencies { get; }
+
+        IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; }
+
+        ValidatorSet? UpdatedValidatorSet { get; }
 
         /// <summary>
         /// Gets a new instance that the account state of the given

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -161,16 +162,27 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> StateUpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
+            public IImmutableDictionary<Address, IValue> UpdatedStates =>
+                ImmutableDictionary<Address, IValue>.Empty;
+
+            public IImmutableDictionary<Address, IImmutableSet<Currency>>
+                UpdatedFungibleAssets =>
+                    ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+
+            public IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles =>
+                ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
+
+            public IImmutableDictionary<Address, IImmutableSet<Currency>>
+                TotalUpdatedFungibleAssets =>
+                    ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+
             public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
                 ImmutableHashSet<Currency>.Empty;
 
-            public IImmutableDictionary<Address, IImmutableSet<Currency>>
-            UpdatedFungibleAssets =>
-                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+            public IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply =>
+                ImmutableDictionary<Currency, BigInteger>.Empty;
 
-            public IImmutableDictionary<Address, IImmutableSet<Currency>>
-            TotalUpdatedFungibleAssets =>
-                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+            public ValidatorSet UpdatedValidatorSet => null;
 
             public IValue GetState(Address address) => null;
 
