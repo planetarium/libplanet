@@ -31,12 +31,6 @@ namespace Libplanet.State
         }
 
         /// <inheritdoc/>
-        public override FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            UpdatedFungibles.TryGetValue((address, currency), out BigInteger balance)
-                ? FungibleAssetValue.FromRawValue(currency, balance)
-                : BalanceGetter(address, currency);
-
-        /// <inheritdoc/>
         [Pure]
         public override IAccountStateDelta TransferAsset(
             Address sender,
@@ -65,7 +59,7 @@ namespace Libplanet.State
             }
 
             return UpdateFungibleAssets(
-                UpdatedFungibles
+                FungiblesDelta
                     .SetItem((sender, currency), (senderBalance - value).RawValue)
                     .SetItem((recipient, currency), (recipientBalance + value).RawValue)
             );
@@ -73,7 +67,7 @@ namespace Libplanet.State
 
         [Pure]
         protected override AccountStateDeltaImpl UpdateStates(
-            IImmutableDictionary<Address, IValue> updatedStates
+            IImmutableDictionary<Address, IValue> statesDelta
         ) =>
             new AccountStateDeltaImplV0(
                 StateGetter,
@@ -82,13 +76,13 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                UpdatedStates = updatedStates,
-                UpdatedFungibles = UpdatedFungibles,
+                StatesDelta = statesDelta,
+                FungiblesDelta = FungiblesDelta,
             };
 
         [Pure]
         protected override AccountStateDeltaImpl UpdateFungibleAssets(
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
+            IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta
         ) =>
             new AccountStateDeltaImplV0(
                 StateGetter,
@@ -97,8 +91,8 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                UpdatedStates = UpdatedStates,
-                UpdatedFungibles = updatedFungibleAssets,
+                StatesDelta = StatesDelta,
+                FungiblesDelta = fungiblesDelta,
             };
     }
 }

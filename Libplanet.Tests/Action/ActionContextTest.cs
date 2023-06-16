@@ -162,27 +162,30 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> StateUpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
-            public IImmutableDictionary<Address, IValue> UpdatedStates =>
+            public IImmutableDictionary<Address, IValue> StatesDelta =>
                 ImmutableDictionary<Address, IValue>.Empty;
+
+            public IImmutableSet<Address> FungibleUpdatedAddresses =>
+                ImmutableHashSet<Address>.Empty;
 
             public IImmutableDictionary<Address, IImmutableSet<Currency>>
                 UpdatedFungibleAssets =>
                     ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
 
-            public IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles =>
+            public IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta =>
                 ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
 
             public IImmutableDictionary<Address, IImmutableSet<Currency>>
                 TotalUpdatedFungibleAssets =>
                     ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
 
-            public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
+            public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
                 ImmutableHashSet<Currency>.Empty;
 
-            public IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply =>
+            public IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta =>
                 ImmutableDictionary<Currency, BigInteger>.Empty;
 
-            public ValidatorSet UpdatedValidatorSet => null;
+            public ValidatorSet ValidatorSetDelta => null;
 
             public IValue GetState(Address address) => null;
 

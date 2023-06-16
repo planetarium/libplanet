@@ -53,7 +53,9 @@ namespace Libplanet.State
         [Pure]
         IImmutableSet<Address> StateUpdatedAddresses { get; }
 
-        IImmutableDictionary<Address, IValue> UpdatedStates { get; }
+        IImmutableDictionary<Address, IValue> StatesDelta { get; }
+
+        IImmutableSet<Address> FungibleUpdatedAddresses { get; }
 
         /// <summary>
         /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
@@ -65,7 +67,7 @@ namespace Libplanet.State
         [Pure]
         IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
 
-        IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles { get; }
+        IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta { get; }
 
         /// <summary>
         /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
@@ -82,11 +84,11 @@ namespace Libplanet.State
         /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
         /// </summary>
         [Pure]
-        IImmutableSet<Currency> TotalSupplyUpdatedCurrencies { get; }
+        IImmutableSet<Currency> UpdatedTotalSupplyCurrencies { get; }
 
-        IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; }
+        IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta { get; }
 
-        ValidatorSet? UpdatedValidatorSet { get; }
+        ValidatorSet? ValidatorSetDelta { get; }
 
         /// <summary>
         /// Gets a new instance that the account state of the given

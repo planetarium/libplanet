@@ -34,7 +34,7 @@ namespace Libplanet.State
 
         internal static IImmutableDictionary<Currency, FungibleAssetValue>
             GetUpdatedTotalSupplies(this IAccountStateDelta delta) =>
-            delta.TotalSupplyUpdatedCurrencies.Select(currency =>
+            delta.UpdatedTotalSupplyCurrencies.Select(currency =>
                     new KeyValuePair<Currency, FungibleAssetValue>(
                         currency,
                         delta.GetTotalSupply(currency)))

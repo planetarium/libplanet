@@ -26,7 +26,7 @@ namespace Libplanet.Action
                     .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
                 .ToImmutableHashSet();
             IImmutableSet<Currency> updatedTotalSupplies = actionEvaluations
-                .SelectMany(a => a.OutputStates.TotalSupplyUpdatedCurrencies)
+                .SelectMany(a => a.OutputStates.UpdatedTotalSupplyCurrencies)
                 .ToImmutableHashSet();
 
             IAccountStateDelta lastStates = actionEvaluations.Count > 0
