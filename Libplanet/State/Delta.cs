@@ -18,9 +18,9 @@ namespace Libplanet.State
         }
 
         internal Delta(
-            ImmutableDictionary<Address, IValue> statesDelta,
-            ImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta,
-            ImmutableDictionary<Currency, BigInteger> totalSuppliesDelta,
+            IImmutableDictionary<Address, IValue> statesDelta,
+            IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta,
+            IImmutableDictionary<Currency, BigInteger> totalSuppliesDelta,
             ValidatorSet? validatorSetDelta)
         {
             StatesDelta = statesDelta;

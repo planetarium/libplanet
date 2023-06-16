@@ -42,28 +42,39 @@ namespace Libplanet.State
             BalanceGetter = accountBalanceGetter;
             TotalSupplyGetter = totalSupplyGetter;
             ValidatorSetGetter = validatorSetGetter;
-            StatesDelta = ImmutableDictionary<Address, IValue>.Empty;
-            FungiblesDelta = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            TotalSuppliesDelta = ImmutableDictionary<Currency, BigInteger>.Empty;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             Signer = signer;
+            Delta = new Delta();
         }
+
+        public IDelta Delta { get; protected set; }
 
         /// <inheritdoc/>
         [Pure]
-        public IImmutableSet<Address> UpdatedAddresses =>
-            StatesDelta.Keys.ToImmutableHashSet().Union(FungibleUpdatedAddresses);
+        public IImmutableSet<Address> UpdatedAddresses => Delta.UpdatedAddresses;
 
         /// <inheritdoc/>
-        public IImmutableSet<Address> StateUpdatedAddresses =>
-            StatesDelta.Keys.ToImmutableHashSet();
+        public IImmutableSet<Address> StateUpdatedAddresses => Delta.StateUpdatedAddresses;
 
-        public IImmutableSet<Address> FungibleUpdatedAddresses =>
-            FungiblesDelta.Select(kv => kv.Key.Item1).ToImmutableHashSet();
+        public IImmutableSet<Address> FungibleUpdatedAddresses => Delta.FungibleUpdatedAddresses;
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
-            FungiblesDelta.Keys.ToImmutableHashSet();
+            Delta.UpdatedFungibleAssets;
+
+        [Pure]
+        public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
+            Delta.UpdatedTotalSupplyCurrencies;
+
+        public IImmutableDictionary<Address, IValue> StatesDelta => Delta.StatesDelta;
+
+        public IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta =>
+            Delta.FungiblesDelta;
+
+        public IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta =>
+            Delta.TotalSuppliesDelta;
+
+        public ValidatorSet? ValidatorSetDelta => Delta.ValidatorSetDelta;
 
         /// <inheritdoc/>
         public IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets =>
@@ -72,21 +83,6 @@ namespace Libplanet.State
                 .ToImmutableDictionary(
                     group => group.Key,
                     group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
-
-        [Pure]
-        public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
-            TotalSuppliesDelta.Keys.ToImmutableHashSet();
-
-        public IImmutableDictionary<Address, IValue> StatesDelta
-            { get; protected set; }
-
-        public IImmutableDictionary<(Address, Currency), BigInteger> FungiblesDelta
-            { get; protected set; }
-
-        public IImmutableDictionary<Currency, BigInteger> TotalSuppliesDelta
-            { get; protected set; }
-
-        public ValidatorSet? ValidatorSetDelta { get; protected set; } = null;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
             { get; protected set; }
@@ -458,10 +454,11 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                StatesDelta = statesDelta,
-                FungiblesDelta = FungiblesDelta,
-                TotalSuppliesDelta = TotalSuppliesDelta,
-                ValidatorSetDelta = ValidatorSetDelta,
+                Delta = new Delta(
+                    statesDelta,
+                    Delta.FungiblesDelta,
+                    Delta.TotalSuppliesDelta,
+                    Delta.ValidatorSetDelta),
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
@@ -483,16 +480,17 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                StatesDelta = StatesDelta,
-                FungiblesDelta = fungiblesDelta,
-                TotalSuppliesDelta = totalSuppliesDelta,
-                ValidatorSetDelta = ValidatorSetDelta,
+                Delta = new Delta(
+                    Delta.StatesDelta,
+                    fungiblesDelta,
+                    totalSuppliesDelta,
+                    Delta.ValidatorSetDelta),
                 TotalUpdatedFungibles = TotalUpdatedFungibles.SetItems(fungiblesDelta),
             };
 
         [Pure]
         protected virtual AccountStateDeltaImpl UpdateValidatorSet(
-            ValidatorSet updatedValidatorSet
+            ValidatorSet validatorSetDelta
         ) =>
             new AccountStateDeltaImpl(
                 StateGetter,
@@ -501,10 +499,11 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                StatesDelta = StatesDelta,
-                FungiblesDelta = FungiblesDelta,
-                TotalSuppliesDelta = TotalSuppliesDelta,
-                ValidatorSetDelta = updatedValidatorSet,
+                Delta = new Delta(
+                    Delta.StatesDelta,
+                    Delta.FungiblesDelta,
+                    Delta.TotalSuppliesDelta,
+                    validatorSetDelta),
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
     }

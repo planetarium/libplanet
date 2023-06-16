@@ -40,6 +40,8 @@ namespace Libplanet.State
     /// </remarks>
     public interface IAccountStateDelta : IAccountStateView
     {
+        IDelta Delta { get; }
+
         /// <summary>
         /// <para>
         /// A set of <seealso cref="Address"/>es where each <see cref="Address"/> has

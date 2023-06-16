@@ -58,6 +58,9 @@ namespace Libplanet.State
                 throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
+            // NOTE: If sender and recipient are the same, this increases the balance
+            // by value amount as the latter SetItem() overwrites the former.
+            // This is why new AccountStateDeltaImpl was introduced.
             return UpdateFungibleAssets(
                 FungiblesDelta
                     .SetItem((sender, currency), (senderBalance - value).RawValue)
@@ -76,8 +79,11 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                StatesDelta = statesDelta,
-                FungiblesDelta = FungiblesDelta,
+                Delta = new Delta(
+                    statesDelta,
+                    Delta.FungiblesDelta,
+                    Delta.TotalSuppliesDelta,
+                    Delta.ValidatorSetDelta),
             };
 
         [Pure]
@@ -91,8 +97,11 @@ namespace Libplanet.State
                 ValidatorSetGetter,
                 Signer)
             {
-                StatesDelta = StatesDelta,
-                FungiblesDelta = fungiblesDelta,
+                Delta = new Delta(
+                    Delta.StatesDelta,
+                    fungiblesDelta,
+                    Delta.TotalSuppliesDelta,
+                    Delta.ValidatorSetDelta),
             };
     }
 }
