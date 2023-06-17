@@ -1,6 +1,6 @@
 using Libplanet.Assets;
 
-namespace Libplanet.Blockchain
+namespace Libplanet.State
 {
     internal static class KeyConverters
     {

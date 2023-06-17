@@ -9,7 +9,7 @@ using Libplanet.Consensus;
 
 namespace Libplanet.State
 {
-    internal static class DeltaExtensions
+    internal static class IDeltaExtensions
     {
         public static IDelta GetTotalDelta(this IReadOnlyList<IDelta> deltas) =>
             new Delta(

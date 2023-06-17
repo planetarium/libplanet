@@ -13,7 +13,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Tests.Store
 {

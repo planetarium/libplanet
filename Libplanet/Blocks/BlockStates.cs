@@ -6,7 +6,7 @@ using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Blocks
 {
