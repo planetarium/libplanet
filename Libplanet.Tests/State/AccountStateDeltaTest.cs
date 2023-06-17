@@ -18,7 +18,7 @@ using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Tests.Action
+namespace Libplanet.Tests.State
 {
     public abstract class AccountStateDeltaTest
     {
