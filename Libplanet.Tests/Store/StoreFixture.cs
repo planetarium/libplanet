@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
@@ -114,8 +116,14 @@ namespace Libplanet.Tests.Store
                     actionEvaluator,
                     preEval,
                     out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
+            stateStore.Commit(
+                null,
+                evals
+                    .Select(eval => eval.OutputStates.Delta)
+                    .ToList()
+                    .GetTotalDelta()
+                    .GetRawDelta(
+                        ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,

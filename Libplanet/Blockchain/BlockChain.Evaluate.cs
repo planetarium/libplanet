@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using static Libplanet.Blockchain.KeyConverters;
@@ -42,10 +44,17 @@ namespace Libplanet.Blockchain
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
-            ImmutableDictionary<string, IValue> delta = evaluations.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            IDelta totalDelta = evaluations
+                .Select(evaluation => evaluation.OutputStates.Delta)
+                .ToList()
+                .GetTotalDelta();
+            IImmutableDictionary<string, IValue> rawTotalDelta = totalDelta.GetRawDelta(
+                ToStateKey,
+                ToFungibleAssetKey,
+                ToTotalSupplyKey,
+                ValidatorSetKey);
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
-            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
+            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, rawTotalDelta);
             return trie.Hash;
         }
 
@@ -107,22 +116,21 @@ namespace Libplanet.Blockchain
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 evaluations = EvaluateBlock(block);
-                var totalDelta =
-                    evaluations.GetTotalDelta(
-                        ToStateKey,
-                        ToFungibleAssetKey,
-                        ToTotalSupplyKey,
-                        ValidatorSetKey);
+                var rawDelta = evaluations
+                    .Select(evaluation => evaluation.OutputStates.Delta)
+                    .ToList()
+                    .GetTotalDelta()
+                    .GetRawDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
                 _logger.Debug(
                     "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
                     "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
                     stopwatch.ElapsedMilliseconds,
-                    totalDelta.Count,
+                    rawDelta.Count,
                     block.Index,
                     block.PreEvaluationHash);
 
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
-                ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
+                ITrie stateRoot = StateStore.Commit(prevStateRootHash, rawDelta);
                 HashDigest<SHA256> rootHash = stateRoot.Hash;
                 _logger
                     .ForContext("Tag", "Metric")
@@ -132,7 +140,7 @@ namespace Libplanet.Blockchain
                         "and resulting in state root hash {StateRootHash} for " +
                         "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
                         stopwatch.ElapsedMilliseconds,
-                        totalDelta.Count,
+                        rawDelta.Count,
                         rootHash,
                         block.Index,
                         block.PreEvaluationHash);

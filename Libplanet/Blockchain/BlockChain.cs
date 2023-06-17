@@ -16,6 +16,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog;
@@ -409,9 +410,12 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            var delta = evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
-            stateStore.Commit(null, delta);
+            var rawDelta = evals
+                .Select(eval => eval.OutputStates.Delta)
+                .ToList()
+                .GetTotalDelta()
+                .GetRawDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            stateStore.Commit(null, rawDelta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
 
