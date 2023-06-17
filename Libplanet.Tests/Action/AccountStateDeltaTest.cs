@@ -27,7 +27,7 @@ namespace Libplanet.Tests.Action
         protected readonly Currency[] _currencies;
         protected readonly IImmutableDictionary<Address, IValue> _states;
         protected readonly IImmutableDictionary<(Address, Currency), BigInteger> _assets;
-        protected readonly IImmutableDictionary<Currency, (BigInteger, BigInteger)> _totalSupplies;
+        protected readonly IImmutableDictionary<Currency, BigInteger> _totalSupplies;
         protected readonly ValidatorSet _validatorSet;
         protected readonly IAccountStateDelta _init;
 
@@ -68,9 +68,9 @@ namespace Libplanet.Tests.Action
                 [(_addr[1], _currencies[2])] = 20,
             }.ToImmutableDictionary();
 
-            _totalSupplies = new Dictionary<Currency, (BigInteger, BigInteger)>
+            _totalSupplies = new Dictionary<Currency, BigInteger>
             {
-                [_currencies[3]] = (5, 0),
+                [_currencies[3]] = 5,
             }.ToImmutableDictionary();
 
             _validatorSet =
@@ -431,7 +431,7 @@ namespace Libplanet.Tests.Action
             }
 
             return _totalSupplies.TryGetValue(currency, out var totalSupply)
-                ? new FungibleAssetValue(currency, totalSupply.Item1, totalSupply.Item2)
+                ? FungibleAssetValue.FromRawValue(currency, totalSupply)
                 : currency * 0;
         }
 

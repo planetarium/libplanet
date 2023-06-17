@@ -93,17 +93,11 @@ namespace Libplanet.Tests.Action
             Assert.Empty(delta.UpdatedTotalSupplyCurrencies);
 
             Assert.Equal(
-                new FungibleAssetValue(
-                    _currencies[3],
-                    _totalSupplies[_currencies[3]].Item1,
-                    _totalSupplies[_currencies[3]].Item2),
+                FungibleAssetValue.FromRawValue(_currencies[3], _totalSupplies[_currencies[3]]),
                 _init.GetTotalSupply(_currencies[3])
             );
             Assert.Equal(
-                new FungibleAssetValue(
-                    _currencies[3],
-                    _totalSupplies[_currencies[3]].Item1,
-                    _totalSupplies[_currencies[3]].Item2),
+                FungibleAssetValue.FromRawValue(_currencies[3], _totalSupplies[_currencies[3]]),
                 _init.GetTotalSupply(_currencies[3])
             );
 
