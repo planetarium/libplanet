@@ -448,6 +448,7 @@ namespace Libplanet.Action
                 beginBlockResult.IsSuccess
                     ? beginBlockResult.Value
                     : new List<ActionEvaluation>();
+            delta = evaluations.Any() ? evaluations.Last().OutputStates : delta;
 
             List<(ITransaction, IAction, long)> metrics =
                 new List<(ITransaction, IAction, long)>();

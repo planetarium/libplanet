@@ -160,6 +160,122 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void EvaluateWithBeginBlock()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            long blockIndex = 1;
+
+            var beginBlockAction = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
+
+            var action = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
+                policy: new BlockPolicy(),
+                store: store,
+                stateStore: stateStore,
+                beginBlock: new ActionEvaluatorEventHandler().Add(beginBlockAction));
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action });
+
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            Block block = chain.ProposeBlock(miner);
+            chain.Append(block, CreateBlockCommit(block));
+
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
+
+            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[1].InputContext.BlockAction);
+            Assert.Equal(2, evaluations.Count);
+            Assert.Null(evaluations.First().Exception);
+            Assert.Null(evaluations.Last().Exception);
+            Assert.Equal(chain.GetState(action.SignerKey), (Text)address.ToHex());
+            Assert.Equal(chain.GetState(action.MinerKey), (Text)miner.ToAddress().ToHex());
+            Assert.Equal(
+                chain.GetState(beginBlockAction.SignerKey),
+                (Text)miner.ToAddress().ToHex());
+            Assert.Equal(
+                chain.GetState(beginBlockAction.MinerKey),
+                (Text)miner.ToAddress().ToHex());
+            var state = chain.GetState(action.BlockIndexKey);
+            Assert.Equal((long)(Integer)state, blockIndex);
+        }
+
+        [Fact]
+        public void EvaluateWithEndBlock()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.ToAddress();
+            long blockIndex = 1;
+
+            var endBlockAction = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
+
+            var action = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
+                policy: new BlockPolicy(),
+                store: store,
+                stateStore: stateStore,
+                endBlock: new ActionEvaluatorEventHandler().Add(endBlockAction));
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action });
+
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            Block block = chain.ProposeBlock(miner);
+            chain.Append(block, CreateBlockCommit(block));
+
+            var evaluations = chain.ActionEvaluator.Evaluate(chain.Tip);
+
+            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[1].InputContext.BlockAction);
+            Assert.Equal(2, evaluations.Count);
+            Assert.Null(evaluations.First().Exception);
+            Assert.Null(evaluations.Last().Exception);
+            Assert.Equal(chain.GetState(action.SignerKey), (Text)address.ToHex());
+            Assert.Equal(chain.GetState(action.MinerKey), (Text)miner.ToAddress().ToHex());
+            Assert.Equal(
+                chain.GetState(endBlockAction.SignerKey),
+                (Text)miner.ToAddress().ToHex());
+            Assert.Equal(
+                chain.GetState(endBlockAction.MinerKey),
+                (Text)miner.ToAddress().ToHex());
+            var state = chain.GetState(action.BlockIndexKey);
+            Assert.Equal((long)(Integer)state, blockIndex);
+        }
+
+        [Fact]
         public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();

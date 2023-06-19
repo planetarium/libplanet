@@ -546,6 +546,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// An <see cref="IEnumerable{T}"/> of <see cref="IRenderer"/>s.</param>
         /// <param name="genesisBlock">Genesis <see cref="Block"/> of the chain.
         /// If null is given, a genesis will be generated.</param>
+        /// <param name="beginBlock">
+        /// An <see cref="ActionEvaluatorEventHandler"/> to be invoked at the beginning of
+        /// block evaluation.</param>
+        /// <param name="endBlock">
+        /// An <see cref="ActionEvaluatorEventHandler"/> to be invoked at the end of
+        /// block evaluation.</param>
         /// <param name="protocolVersion">Block protocol version of genesis block.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
         /// <returns>A <see cref="BlockChain"/> instance.</returns>
@@ -559,6 +565,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer> renderers = null,
             Block genesisBlock = null,
+            ActionEvaluatorEventHandler beginBlock = null,
+            ActionEvaluatorEventHandler endBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
             where T : IAction, new()
@@ -573,6 +581,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 timestamp,
                 renderers,
                 genesisBlock,
+                beginBlock,
+                endBlock,
                 protocolVersion
             ).BlockChain;
         }
@@ -588,6 +598,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             DateTimeOffset? timestamp = null,
             IEnumerable<IRenderer> renderers = null,
             Block genesisBlock = null,
+            ActionEvaluatorEventHandler beginBlock = null,
+            ActionEvaluatorEventHandler endBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
             where T : IAction, new()
@@ -610,7 +622,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     _ => policy.BlockAction,
                     blockChainStates: blockChainStates,
                     actionTypeLoader: new SingleActionLoader(typeof(T)),
-                    feeCalculator: null);
+                    feeCalculator: null,
+                    beginBlock: beginBlock,
+                    endBlock: endBlock);
 
             if (genesisBlock is null)
             {
