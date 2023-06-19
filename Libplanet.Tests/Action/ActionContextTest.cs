@@ -219,8 +219,8 @@ namespace Libplanet.Tests.Action
                 return new ValidatorSet();
             }
 
-            public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value) =>
-                this;
+            public IAccountStateDelta MintAsset(
+                IActionContext context, Address recipient, FungibleAssetValue value) => this;
 
             public IAccountStateDelta TransferAsset(
                 Address sender,
@@ -229,7 +229,8 @@ namespace Libplanet.Tests.Action
                 bool allowNegativeBalance = false
             ) => this;
 
-            public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
+            public IAccountStateDelta BurnAsset(
+                IActionContext context, Address owner, FungibleAssetValue value) => this;
 
             public IAccountStateDelta SetValidator(Validator validator) => this;
         }

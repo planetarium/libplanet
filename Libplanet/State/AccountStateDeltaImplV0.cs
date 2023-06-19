@@ -19,15 +19,12 @@ namespace Libplanet.State
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer
-        )
+            ValidatorSetGetter validatorSetGetter)
             : base(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                signer)
+                validatorSetGetter)
         {
         }
 
@@ -76,8 +73,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 Delta = new Delta(
                     statesDelta,
@@ -101,8 +97,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 Delta = new Delta(
                     Delta.States,
@@ -119,8 +114,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 Delta = new Delta(
                     Delta.States,

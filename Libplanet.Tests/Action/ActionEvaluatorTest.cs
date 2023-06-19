@@ -450,8 +450,6 @@ namespace Libplanet.Tests.Action
             // Forcefully reset with ChooseVersion
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 evals1.Last().OutputStates, block2.ProtocolVersion);
-            previousStates = AccountStateDeltaImpl.ChooseSigner(
-                previousStates, block2.Miner);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
@@ -490,8 +488,6 @@ namespace Libplanet.Tests.Action
 
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 evals1.Last().OutputStates, block2.ProtocolVersion);
-            previousStates = AccountStateDeltaImpl.ChooseSigner(
-                previousStates, block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -813,9 +809,6 @@ namespace Libplanet.Tests.Action
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 evaluation.OutputStates,
                 block.ProtocolVersion);
-            previousStates = AccountStateDeltaImpl.ChooseSigner(
-                previousStates,
-                block.Miner);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -1406,7 +1399,7 @@ namespace Libplanet.Tests.Action
                     .SetState(context.Signer, (Text)Memo);
                 if (!(Receiver is null) && !(MintValue is null))
                 {
-                    state = state.MintAsset(Receiver.Value, MintValue.Value);
+                    state = state.MintAsset(context, Receiver.Value, MintValue.Value);
                 }
 
                 return state;
@@ -1426,7 +1419,7 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta Execute(IActionContext context) =>
                 context.PreviousStates.MintAsset(
-                    context.Signer, new FungibleAssetValue(Currency, 1));
+                    context, context.Signer, new FungibleAssetValue(Currency, 1));
         }
     }
 

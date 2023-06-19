@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -19,27 +20,35 @@ namespace Libplanet.Tests.State
 
         public override int ProtocolVersion { get; } = Block.CurrentProtocolVersion;
 
-        public override IAccountStateDelta CreateInstance(
+        public override IAccountStateDelta CreateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer
-        ) =>
+            ValidatorSetGetter validatorSetGetter) =>
             new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                signer);
+                validatorSetGetter);
+
+        public override IActionContext CreateContext(Address signer, IAccountStateDelta delta) =>
+            new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                1,  // Protocol version 1
+                delta,
+                0,
+                0);
 
         [Fact]
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImpl>(_init);
+            Assert.IsType<AccountStateDeltaImpl>(_initDelta);
 
-            IAccountStateDelta a = _init.TransferAsset(
+            IAccountStateDelta a = _initDelta.TransferAsset(
                 _addr[0],
                 _addr[1],
                 Value(0, 6),
@@ -87,37 +96,34 @@ namespace Libplanet.Tests.State
         [Fact]
         public void TotalSupplyTracking()
         {
-            IAccountStateDelta delta = _init;
+            IAccountStateDelta delta = _initDelta;
+            IActionContext context = _initContext;
 
             Assert.Empty(delta.GetUpdatedTotalSupplies());
             Assert.Empty(delta.UpdatedTotalSupplyCurrencies);
 
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(_currencies[3], _totalSupplies[_currencies[3]]),
-                _init.GetTotalSupply(_currencies[3])
-            );
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(_currencies[3], _totalSupplies[_currencies[3]]),
-                _init.GetTotalSupply(_currencies[3])
+                _initDelta.GetTotalSupply(_currencies[3])
             );
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _init.GetTotalSupply(_currencies[0]));
+                _initDelta.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[0], Value(0, 5)),
                 delta.GetUpdatedTotalSupplies());
             Assert.DoesNotContain(_currencies[0], delta.UpdatedTotalSupplyCurrencies);
 
-            Assert.Equal(Value(4, 0), _init.GetTotalSupply(_currencies[4]));
+            Assert.Equal(Value(4, 0), _initDelta.GetTotalSupply(_currencies[4]));
             Assert.DoesNotContain(_currencies[4], delta.UpdatedTotalSupplyCurrencies);
 
-            delta = delta.MintAsset(_addr[0], Value(0, 10));
+            delta = delta.MintAsset(context, _addr[0], Value(0, 10));
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _init.GetTotalSupply(_currencies[0]));
+                _initDelta.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(_currencies[0], delta.UpdatedTotalSupplyCurrencies);
 
-            delta = delta.MintAsset(_addr[0], Value(4, 10));
+            delta = delta.MintAsset(context, _addr[0], Value(4, 10));
             Assert.Equal(Value(4, 10), delta.GetTotalSupply(_currencies[4]));
             Assert.Contains(
                 new KeyValuePair<Currency, FungibleAssetValue>(
@@ -125,7 +131,7 @@ namespace Libplanet.Tests.State
                 delta.GetUpdatedTotalSupplies());
             Assert.Contains(_currencies[4], delta.UpdatedTotalSupplyCurrencies);
 
-            delta = delta.BurnAsset(_addr[0], Value(4, 5));
+            delta = delta.BurnAsset(context, _addr[0], Value(4, 5));
             Assert.Equal(Value(4, 5), delta.GetTotalSupply(_currencies[4]));
             Assert.Contains(
                 new KeyValuePair<Currency, FungibleAssetValue>(
@@ -138,37 +144,39 @@ namespace Libplanet.Tests.State
         public override void MintAsset()
         {
             base.MintAsset();
-
-            var delta = _init;
-            Assert.Throws<SupplyOverflowException>(() => delta.MintAsset(_addr[0], Value(4, 200)));
+            Assert.Throws<SupplyOverflowException>(
+                () => _initDelta.MintAsset(_initContext, _addr[0], Value(4, 200)));
         }
 
         [Fact]
         public virtual void TotalUpdatedFungibleAssets()
         {
-            IAccountStateDelta delta0 = _init;
+            IAccountStateDelta delta0 = _initDelta;
+            IActionContext context0 = _initContext;
 
             // currencies[0] (FOO) allows only _addr[0] to burn
-            delta0 = delta0.BurnAsset(_addr[0], Value(0, 1));
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 1));
             Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
             Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
             Assert.DoesNotContain(
                 Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
 
-            // Forcefully create null delta
-            delta0 = AccountStateDeltaImpl.ChooseSigner(delta0, _addr[0]);
+            // Currently there is no way flush delta
+            delta0 = AccountStateDeltaImpl.ChooseVersion(delta0, context0.BlockProtocolVersion);
+            context0 = CreateContext(_addr[0], delta0);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
-            delta0 = delta0.MintAsset(_addr[0], Value(1, 1));
+            delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
             Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
             Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
             Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
             Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
 
             // Forcefully create null delta
-            // Currently there is no way to swap signer without clearing
-            delta0 = AccountStateDeltaImpl.ChooseSigner(delta0, _addr[1]);
-            delta0 = delta0.BurnAsset(_addr[1], Value(1, 1));
+            delta0 = AccountStateDeltaImpl.ChooseVersion(delta0, context0.BlockProtocolVersion);
+            context0 = CreateContext(_addr[1], delta0);
+
+            delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));
 
             // _addr[0] burned currencies[0] & minted currencies[1]
             // _addr[1] burned currencies[1]

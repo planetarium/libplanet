@@ -111,8 +111,8 @@ namespace Libplanet.Action
                     previousStates = evaluations.Count > 0
                         ? evaluations.Last().OutputStates
                         : previousStates;
-                    previousStates = AccountStateDeltaImpl.ChooseSigner(
-                        previousStates, block.Miner);
+                    previousStates = AccountStateDeltaImpl.ChooseVersion(
+                        previousStates, block.ProtocolVersion);
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(block, previousStates)
                     );
@@ -394,9 +394,9 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = AccountStateDeltaImpl.ChooseSigner(
+                delta = AccountStateDeltaImpl.ChooseVersion(
                     delta,
-                    tx.Signer);
+                    block.ProtocolVersion);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -511,7 +511,6 @@ namespace Libplanet.Action
                 blockStates.GetTotalSupply,
                 blockStates.GetValidatorSet);
             delta = AccountStateDeltaImpl.ChooseVersion(delta, block.ProtocolVersion);
-            delta = AccountStateDeltaImpl.ChooseSigner(delta, block.Miner);
             return delta;
         }
 

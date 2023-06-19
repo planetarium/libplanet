@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
@@ -183,6 +184,8 @@ namespace Libplanet.State
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
         /// and give it to the <paramref name="recipient"/>.
         /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
         /// <param name="recipient">The address who receives the minted asset.</param>
         /// <param name="value">The asset value to mint.</param>
         /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
@@ -197,7 +200,8 @@ namespace Libplanet.State
         /// <see cref="FungibleAssetValue.Currency"/> exceeds the
         /// <see cref="Currency.MaximumSupply"/>.</exception>
         [Pure]
-        IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value);
+        IAccountStateDelta MintAsset(
+            IActionContext context, Address recipient, FungibleAssetValue value);
 
         /// <summary>
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
@@ -230,6 +234,8 @@ namespace Libplanet.State
         /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
         /// <paramref name="owner"/>'s balance.
         /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
         /// <param name="owner">The address who owns the fungible asset to burn.</param>
         /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
         /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
@@ -242,6 +248,7 @@ namespace Libplanet.State
         /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="owner"/>
         /// has insufficient balance than <paramref name="value"/> to burn.</exception>
         [Pure]
-        IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value);
+        IAccountStateDelta BurnAsset(
+            IActionContext context, Address owner, FungibleAssetValue value);
     }
 }

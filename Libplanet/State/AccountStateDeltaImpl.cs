@@ -28,22 +28,17 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
-        /// to mint a currency.</param>
         internal AccountStateDeltaImpl(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer
-        )
+            ValidatorSetGetter validatorSetGetter)
         {
             StateGetter = accountStateGetter;
             BalanceGetter = accountBalanceGetter;
             TotalSupplyGetter = totalSupplyGetter;
             ValidatorSetGetter = validatorSetGetter;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            Signer = signer;
             Delta = new Delta();
         }
 
@@ -85,7 +80,7 @@ namespace Libplanet.State
                     group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
-            { get; protected set; }
+        { get; protected set; }
 
         protected AccountStateGetter StateGetter { get; set; }
 
@@ -94,8 +89,6 @@ namespace Libplanet.State
         protected TotalSupplyGetter TotalSupplyGetter { get; set; }
 
         protected ValidatorSetGetter ValidatorSetGetter { get; set; }
-
-        protected Address Signer { get; set; }
 
         /// <inheritdoc/>
         [Pure]
@@ -181,7 +174,8 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
+        public virtual IAccountStateDelta MintAsset(
+            IActionContext context, Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
             {
@@ -192,11 +186,11 @@ namespace Libplanet.State
             }
 
             Currency currency = value.Currency;
-            if (!currency.AllowsToMint(Signer))
+            if (!currency.AllowsToMint(context.Signer))
             {
                 throw new CurrencyPermissionException(
-                    $"The account {Signer} has no permission to mint the currency {currency}.",
-                    Signer,
+                    $"The account {context.Signer} has no permission to mint currency {currency}.",
+                    context.Signer,
                     currency
                 );
             }
@@ -269,7 +263,8 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)
+        public virtual IAccountStateDelta BurnAsset(
+            IActionContext context, Address owner, FungibleAssetValue value)
         {
             string msg;
 
@@ -282,11 +277,11 @@ namespace Libplanet.State
             }
 
             Currency currency = value.Currency;
-            if (!currency.AllowsToMint(Signer))
+            if (!currency.AllowsToMint(context.Signer))
             {
-                msg = $"The account {Signer} has no permission to burn assets of " +
+                msg = $"The account {context.Signer} has no permission to burn assets of " +
                       $"the currency {currency}.";
-                throw new CurrencyPermissionException(msg, Signer, currency);
+                throw new CurrencyPermissionException(msg, context.Signer, currency);
             }
 
             FungibleAssetValue balance = GetBalance(owner, currency);
@@ -330,15 +325,12 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <returns>A null delta of type <see cref="AccountStateDeltaImplV0"/>
-        /// with <see langword="default"/> <see cref="Address"/> as its
-        /// <see cref="AccountStateDeltaImpl.Signer"/>.</returns>
+        /// <returns>A null delta of type <see cref="AccountStateDeltaImplV0"/>.</returns>
         /// <remarks>
-        /// This is not immediately usable.  Choose its proper type with <see cref="ChooseVersion"/>
-        /// and signer with <see cref="ChooseSigner"/> before use.
+        /// This is not immediately usable.  Choose its proper type
+        /// with <see cref="ChooseVersion"/> before use.
         /// </remarks>
         /// <seealso cref="ChooseVersion"/>
-        /// <seealso cref="ChooseSigner"/>
         internal static IAccountStateDelta Create(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
@@ -349,8 +341,7 @@ namespace Libplanet.State
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                default(Address));
+                validatorSetGetter);
         }
 
         /// <summary>
@@ -373,66 +364,18 @@ namespace Libplanet.State
                     delta.GetStates,
                     delta.GetBalance,
                     delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    default(Address))
+                    delta.GetValidatorSet)
+                {
+                    TotalUpdatedFungibles = ((AccountStateDeltaImpl)delta).TotalUpdatedFungibles,
+                }
                 : new AccountStateDeltaImplV0(
                     delta.GetStates,
                     delta.GetBalance,
                     delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    default(Address));
-
-        /// <summary>
-        /// Creates a null delta with given <paramref name="signer"/>.
-        /// </summary>
-        /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <param name="signer">The <see cref="Address"/> to set.</param>
-        /// <returns>A null delta with given <paramref name="signer"/> that is of the same type
-        /// as <paramref name="delta"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown if given <paramref name="delta"/>
-        /// is neither <see cref="AccountStateDeltaImplV0"/>
-        /// nor <see cref="AccountStateDeltaImpl"/>.
-        /// </exception>
-        /// <remarks>
-        /// This inherits <paramref name="delta"/>'s
-        /// <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/>.
-        /// </remarks>
-        internal static IAccountStateDelta ChooseSigner(
-            IAccountStateDelta delta,
-            Address signer)
-        {
-            // The order is important since AccountStateDeltaImplV0 inherits from
-            // AccountStateDeltaImpl
-            if (delta is AccountStateDeltaImplV0 implV0)
-            {
-                return new AccountStateDeltaImplV0(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    signer)
-                    {
-                        TotalUpdatedFungibles = implV0.TotalUpdatedFungibles,
-                    };
-            }
-            else if (delta is AccountStateDeltaImpl impl)
-            {
-                return new AccountStateDeltaImpl(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    signer)
-                    {
-                        TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
-                    };
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Unknown type for {nameof(delta)}: {delta.GetType()}");
-            }
-        }
+                    delta.GetValidatorSet)
+                {
+                    TotalUpdatedFungibles = ((AccountStateDeltaImplV0)delta).TotalUpdatedFungibles,
+                };
 
         [Pure]
         protected virtual FungibleAssetValue GetBalance(
@@ -450,8 +393,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 Delta = new Delta(
                     statesDelta,
@@ -475,8 +417,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 Delta = new Delta(
                     Delta.States,
@@ -493,8 +434,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 Delta = new Delta(
                     Delta.States,

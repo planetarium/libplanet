@@ -50,9 +50,7 @@ namespace Libplanet.Tests.Action.Sys
                 accountStateGetter: _ => new List(),
                 accountBalanceGetter: (_, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
-                validatorSetGetter: () => new ValidatorSet(),
-                signer: signer
-            );
+                validatorSetGetter: () => new ValidatorSet());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -84,9 +82,7 @@ namespace Libplanet.Tests.Action.Sys
                 accountStateGetter: _ => new List(),
                 accountBalanceGetter: (_, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
-                validatorSetGetter: () => new ValidatorSet(),
-                signer: signer
-            );
+                validatorSetGetter: () => new ValidatorSet());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,

@@ -1750,9 +1750,6 @@ namespace Libplanet.Tests.Blockchain
                     previousStates = AccountStateDeltaImpl.ChooseVersion(
                         previousStates,
                         b.ProtocolVersion);
-                    previousStates = AccountStateDeltaImpl.ChooseSigner(
-                        previousStates,
-                        b.Miner);
 
                     dirty = actionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);

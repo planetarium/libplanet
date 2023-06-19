@@ -1,3 +1,4 @@
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.State;
@@ -17,27 +18,35 @@ namespace Libplanet.Tests.State
 
         public override int ProtocolVersion { get; } = 0;
 
-        public override IAccountStateDelta CreateInstance(
+        public override IAccountStateDelta CreateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer
-        ) =>
+            ValidatorSetGetter validatorSetGetter) =>
             new AccountStateDeltaImplV0(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                signer);
+                validatorSetGetter);
+
+        public override IActionContext CreateContext(Address signer, IAccountStateDelta delta) =>
+            new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                0,  // Protocol version 0
+                delta,
+                0,
+                0);
 
         [Fact]
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImplV0>(_init);
+            Assert.IsType<AccountStateDeltaImplV0>(_initDelta);
 
-            IAccountStateDelta a = _init.TransferAsset(
+            IAccountStateDelta a = _initDelta.TransferAsset(
                 _addr[0],
                 _addr[1],
                 Value(0, 6),
