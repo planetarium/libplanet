@@ -25,6 +25,7 @@ To be released.
         `IImmutableDictionary<Address, IImmutableSet<Currency>>`.
      -  Changed the name `TotalSupplyUpdatedCurrencies` to
         `UpdatedTotalSupplyCurrencies`.
+ -  Added `IAccountStateDelta.Delta` propery.  [[#3220]]
 
 ### Backward-incompatible network protocol changes
 
@@ -34,6 +35,8 @@ To be released.
 
  -  Added `IBlockStates` interface and its default implementation
     `BlockStates`.  [[#3216]]
+ -  Added `IDelta` interface and its default implementation
+    `Delta`.  [[#3220]]
 
 ### Behavioral changes
 
@@ -50,6 +53,7 @@ To be released.
 [#3215]: https://github.com/planetarium/libplanet/pull/3215
 [#3216]: https://github.com/planetarium/libplanet/pull/3216
 [#3219]: https://github.com/planetarium/libplanet/pull/3219
+[#3220]: https://github.com/planetarium/libplanet/pull/3220
 
 
 Version 2.0.0
