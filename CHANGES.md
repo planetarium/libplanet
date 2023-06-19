@@ -18,11 +18,16 @@ To be released.
 
 ### Behavioral changes
 
+ -  Improved performance of fungible asset APIs on default
+    `IAccountStateDelta` implementation.  [[#3218]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3218]: https://github.com/planetarium/libplanet/pull/3218
 
 
 Version 2.0.0
