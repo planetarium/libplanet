@@ -67,6 +67,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
+    <PackageReference Include="FluentResults" Version="3.15.2" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
