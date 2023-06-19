@@ -7,6 +7,7 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using FluentResults;
 using Libplanet.Action.Loader;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -28,7 +29,8 @@ namespace Libplanet.Action
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
         private readonly IActionLoader _actionLoader;
-        private readonly IFeeCalculator? _feeCalculator;
+        private readonly ActionEvaluatorEventHandler _beginBlock;
+        private readonly ActionEvaluatorEventHandler _endBlock;
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
@@ -41,12 +43,17 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using action type lookup.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
+        /// <param name="beginBlock">A <see cref="ActionEvaluatorEventHandler"/> to be executed at the beginning of
+        /// each block evaluation.</param>
+        /// <param name="endBlock">A <see cref="ActionEvaluatorEventHandler"/> to be executed at the end of
+        /// each block evaluation.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
             IActionLoader actionTypeLoader,
-            IFeeCalculator? feeCalculator
-        )
+            IFeeCalculator? feeCalculator,
+            ActionEvaluatorEventHandler? beginBlock = null,
+            ActionEvaluatorEventHandler? endBlock = null)
 #pragma warning restore MEN002
 #pragma warning restore CS1573
         {
@@ -55,7 +62,8 @@ namespace Libplanet.Action
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _actionLoader = actionTypeLoader;
-            _feeCalculator = feeCalculator;
+            _beginBlock = beginBlock ?? new ActionEvaluatorEventHandler();
+            _endBlock = endBlock ?? new ActionEvaluatorEventHandler();
         }
 
         /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>
@@ -407,6 +415,21 @@ namespace Libplanet.Action
             IPreEvaluationBlock block,
             IAccountStateDelta previousStates)
         {
+            ActionContext CreateActionContext(
+                IAccountStateDelta prevStates
+            )
+            {
+                return new ActionContext(
+                    signer: block.Miner,
+                    txid: null,
+                    miner: block.Miner,
+                    blockIndex: block.Index,
+                    previousStates: prevStates,
+                    randomSeed: int.MaxValue,
+                    gasLimit: long.MaxValue,
+                    logs: null);
+            }
+
             IAccountStateDelta delta = previousStates;
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
@@ -419,10 +442,20 @@ namespace Libplanet.Action
                 )
             );
 
+            Result<IEnumerable<ActionEvaluation>> beginBlockResult =
+                _beginBlock.Execute(CreateActionContext(delta), CreateActionContext);
+            IEnumerable<ActionEvaluation> evaluations =
+                beginBlockResult.IsSuccess
+                    ? beginBlockResult.Value
+                    : new List<ActionEvaluation>();
+
+            List<(ITransaction, IAction, long)> metrics =
+                new List<(ITransaction, IAction, long)>();
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             foreach (ITransaction tx in orderedTxs)
             {
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
                 delta = AccountStateDeltaImpl.ChooseVersion(
                     block.ProtocolVersion,
                     delta.GetStates,
@@ -431,36 +464,48 @@ namespace Libplanet.Action
                     delta.GetValidatorSet,
                     tx.Signer,
                     ((AccountStateDeltaImpl)delta).TotalUpdatedFungibles);
-
-                IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
+                IEnumerable<ActionEvaluation> actionEvaluations = EvaluateTx(
                     blockHeader: block,
                     tx: tx,
                     previousStates: delta);
+                delta = actionEvaluations.Any() ? actionEvaluations.Last().OutputStates : delta;
+                metrics.AddRange(
+                    actionEvaluations.Select(ev =>
+                        (tx, ev.Action, stopwatch.ElapsedMilliseconds)));
 
-                var actions = new List<IAction>();
-                foreach (ActionEvaluation evaluation in evaluations)
-                {
-                    yield return evaluation;
-                    delta = evaluation.OutputStates;
-                    actions.Add(evaluation.Action);
-                }
+                evaluations = evaluations.Concat(actionEvaluations);
+            }
 
-                // FIXME: This is dependant on when the returned value is enumerated.
-                ILogger logger = _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "TxEvaluationDuration");
+            Result<IEnumerable<ActionEvaluation>> endBlockResult =
+                _endBlock.Execute(CreateActionContext(delta), CreateActionContext);
+            IEnumerable<ActionEvaluation> endBlockEvaluations =
+                endBlockResult.IsSuccess
+                    ? endBlockResult.Value
+                    : new List<ActionEvaluation>();
+
+            evaluations = evaluations.Concat(endBlockEvaluations);
+
+            ILogger logger = _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "TxEvaluationDuration");
+            foreach (var metric in metrics)
+            {
                 logger.Information(
                     "Took {DurationMs} ms to evaluate {ActionCount} actions {ActionTypes} " +
                     "in transaction {TxId} by {Signer} as a part of block #{Index} " +
                     "pre-evaluation hash {PreEvaluationHash}",
                     stopwatch.ElapsedMilliseconds,
-                    actions.Count,
-                    actions.Select(action => action.ToString()!.Split('.')
-                        .LastOrDefault()?.Replace(">", string.Empty)),
-                    tx.Id,
-                    tx.Signer,
+                    metrics.Count,
+                    metric.Item2,
+                    metric.Item1.Id,
+                    metric.Item1.Signer,
                     block.Index,
                     ByteUtil.Hex(block.PreEvaluationHash.ByteArray));
+            }
+
+            foreach (ActionEvaluation evaluation in evaluations)
+            {
+                yield return evaluation;
             }
         }
 
