@@ -44,6 +44,8 @@ namespace Libplanet.Action
         [Pure]
         long BlockIndex { get; }
 
+        int BlockProtocolVersion { get; }
+
         /// <summary>
         /// Whether an <see cref="IAction"/> is being executed during
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing

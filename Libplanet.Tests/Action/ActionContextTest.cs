@@ -40,6 +40,7 @@ namespace Libplanet.Tests.Action
                     txid: _txid,
                     miner: _address,
                     blockIndex: 1,
+                    blockProtocolVersion: 1,
                     previousStates: new DumbAccountStateDelta(),
                     randomSeed: seed,
                     gasLimit: 0
@@ -57,6 +58,7 @@ namespace Libplanet.Tests.Action
                 txid: _txid,
                 miner: _address,
                 blockIndex: 1,
+                blockProtocolVersion: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: 0,
                 gasLimit: 0
@@ -67,6 +69,7 @@ namespace Libplanet.Tests.Action
                 txid: _txid,
                 miner: _address,
                 blockIndex: 1,
+                blockProtocolVersion: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: 0,
                 gasLimit: 0
@@ -77,6 +80,7 @@ namespace Libplanet.Tests.Action
                 txid: _txid,
                 miner: _address,
                 blockIndex: 1,
+                blockProtocolVersion: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: 1,
                 gasLimit: 0
@@ -112,6 +116,7 @@ namespace Libplanet.Tests.Action
                     txid: _txid,
                     miner: _address,
                     blockIndex: 1,
+                    blockProtocolVersion: 1,
                     previousStates: new DumbAccountStateDelta(),
                     randomSeed: i,
                     gasLimit: 0
@@ -131,6 +136,7 @@ namespace Libplanet.Tests.Action
                 txid: _txid,
                 miner: _address,
                 blockIndex: 1,
+                blockProtocolVersion: 1,
                 previousStates: new DumbAccountStateDelta(),
                 randomSeed: _random.Next(),
                 gasLimit: 0,

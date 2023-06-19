@@ -38,6 +38,7 @@ namespace Libplanet.Tests.Action
                     txid,
                     address,
                     1,
+                    1,
                     new AccountStateDeltaImpl(
                         addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),

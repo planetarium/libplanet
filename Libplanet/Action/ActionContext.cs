@@ -22,16 +22,26 @@ namespace Libplanet.Action
             TxId? txid,
             Address miner,
             long blockIndex,
+            int blockProtocolVersion,
             IAccountStateDelta previousStates,
             int randomSeed,
             long gasLimit,
             bool rehearsal = false,
             List<string>? logs = null)
         {
+            if (!(blockProtocolVersion > 0 ^ previousStates is AccountStateDeltaImplV0))
+            {
+                throw new ArgumentException(
+                    $"Invalid type for {nameof(previousStates)} for given " +
+                    $"{nameof(blockProtocolVersion)} of {blockProtocolVersion}: " +
+                    $"{previousStates.GetType()}");
+            }
+
             Signer = signer;
             TxId = txid;
             Miner = miner;
             BlockIndex = blockIndex;
+            BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
@@ -55,6 +65,8 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.BlockIndex"/>
         public long BlockIndex { get; }
+
+        public int BlockProtocolVersion { get; }
 
         /// <inheritdoc cref="IActionContext.Rehearsal"/>
         public bool Rehearsal { get; }
@@ -83,6 +95,7 @@ namespace Libplanet.Action
                 TxId,
                 Miner,
                 BlockIndex,
+                BlockProtocolVersion,
                 PreviousStates,
                 _randomSeed,
                 _gasLimit,

@@ -444,9 +444,8 @@ namespace Libplanet.State
                 : BalanceGetter(address, currency);
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateStates(
-            IImmutableDictionary<Address, IValue> statesDelta
-        ) =>
+        protected virtual IAccountStateDelta UpdateStates(
+            IImmutableDictionary<Address, IValue> statesDelta) =>
             new AccountStateDeltaImpl(
                 StateGetter,
                 BalanceGetter,
@@ -463,16 +462,15 @@ namespace Libplanet.State
             };
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+        protected virtual IAccountStateDelta UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta
         ) =>
             UpdateFungibleAssets(fungiblesDelta, TotalSuppliesDelta);
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+        protected virtual IAccountStateDelta UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta,
-            IImmutableDictionary<Currency, BigInteger> totalSuppliesDelta
-        ) =>
+            IImmutableDictionary<Currency, BigInteger> totalSuppliesDelta) =>
             new AccountStateDeltaImpl(
                 StateGetter,
                 BalanceGetter,
@@ -489,9 +487,8 @@ namespace Libplanet.State
             };
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateValidatorSet(
-            ValidatorSet validatorSetDelta
-        ) =>
+        protected virtual IAccountStateDelta UpdateValidatorSet(
+            ValidatorSet validatorSetDelta) =>
             new AccountStateDeltaImpl(
                 StateGetter,
                 BalanceGetter,

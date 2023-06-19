@@ -28,6 +28,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 default,
                 default,
+                1,
                 _stateDelta,
                 default,
                 0);

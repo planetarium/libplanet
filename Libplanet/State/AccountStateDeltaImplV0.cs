@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Consensus;
 
 namespace Libplanet.State
 {
@@ -69,9 +70,8 @@ namespace Libplanet.State
         }
 
         [Pure]
-        protected override AccountStateDeltaImpl UpdateStates(
-            IImmutableDictionary<Address, IValue> statesDelta
-        ) =>
+        protected override IAccountStateDelta UpdateStates(
+            IImmutableDictionary<Address, IValue> statesDelta) =>
             new AccountStateDeltaImplV0(
                 StateGetter,
                 BalanceGetter,
@@ -84,12 +84,19 @@ namespace Libplanet.State
                     Delta.Fungibles,
                     Delta.TotalSupplies,
                     Delta.ValidatorSet),
+                TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
         [Pure]
-        protected override AccountStateDeltaImpl UpdateFungibleAssets(
+        protected override IAccountStateDelta UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta
         ) =>
+            UpdateFungibleAssets(fungiblesDelta, TotalSuppliesDelta);
+
+        [Pure]
+        protected override IAccountStateDelta UpdateFungibleAssets(
+            IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta,
+            IImmutableDictionary<Currency, BigInteger> totalSuppliesDelta) =>
             new AccountStateDeltaImplV0(
                 StateGetter,
                 BalanceGetter,
@@ -100,8 +107,27 @@ namespace Libplanet.State
                 Delta = new Delta(
                     Delta.States,
                     fungiblesDelta,
-                    Delta.TotalSupplies,
+                    totalSuppliesDelta,
                     Delta.ValidatorSet),
+                TotalUpdatedFungibles = TotalUpdatedFungibles.SetItems(fungiblesDelta),
+            };
+
+        [Pure]
+        protected override IAccountStateDelta UpdateValidatorSet(
+            ValidatorSet validatorSetDelta) =>
+            new AccountStateDeltaImplV0(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
+            {
+                Delta = new Delta(
+                    Delta.States,
+                    Delta.Fungibles,
+                    Delta.TotalSupplies,
+                    validatorSetDelta),
+                TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
     }
 }
