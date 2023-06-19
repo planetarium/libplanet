@@ -242,8 +242,6 @@ namespace Libplanet.State
             bool allowNegativeBalance = false
         )
         {
-            var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
