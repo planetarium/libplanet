@@ -16,6 +16,10 @@ To be released.
 
 ### Added APIs
 
+ -  Added `ActionEvaluatorEventHander` class.  [[#3221]]
+ -  Added `beginBlock` parameter from `ActionEvaluator`.  [[#3221]]
+ -  Added `endBlock` parameter from `ActionEvaluator`.  [[#3221]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -24,6 +28,8 @@ To be released.
 
 ### CLI tools
 
+
+[#3221]: https://github.com/planetarium/libplanet/pull/3221
 
 Version 2.0.0
 -------------
