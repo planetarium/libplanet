@@ -4,9 +4,7 @@ Libplanet changelog
 Version 2.1.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 20, 2023.
 
 ### Backward-incompatible API changes
 
@@ -16,10 +14,6 @@ To be released.
  -  Changed `BlockChain`'s implementation of `IBlockChainStates` to match
     interface description.  [[#3214]]
  -  Added `IBlockChainStates.GetBlockStates()` interface method.  [[#3216]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -35,10 +29,6 @@ To be released.
 
  -  Fixed a bug where `BlockAction` could have unintended
     `AccountStateDeltaImpl.Signer` during its execution.  [[#3215]]
-
-### Dependencies
-
-### CLI tools
 
 [#3214]: https://github.com/planetarium/libplanet/pull/3214
 [#3215]: https://github.com/planetarium/libplanet/pull/3215
@@ -57,7 +47,6 @@ Released on June 14, 2023.
     [[#3208]]
  -  Removed `blockAction` parameter from `ActionContext()`.
     [[#3209]]
-
  -  Added `ITransaction.MaxGasPrice` property.  [[#3201]]
  -  Added `ITransaction.GasLimit` property.  [[#3201]]
  -  `Currency.Serialize()`'s behavioral is changed.
