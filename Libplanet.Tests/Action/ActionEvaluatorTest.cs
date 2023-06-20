@@ -448,7 +448,7 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(block1, true));
 
             // Forcefully reset
-            previousStates = AccountStateDeltaImpl.Flush(evals1.Last().OutputStates);
+            previousStates = AccountStateDelta.Flush(evals1.Last().OutputStates);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
@@ -485,7 +485,7 @@ namespace Libplanet.Tests.Action
                     (Integer)randomValue);
             }
 
-            previousStates = AccountStateDeltaImpl.Flush(evals1.Last().OutputStates);
+            previousStates = AccountStateDelta.Flush(evals1.Last().OutputStates);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -804,7 +804,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            previousStates = AccountStateDeltaImpl.Flush(evaluation.OutputStates);
+            previousStates = AccountStateDelta.Flush(evaluation.OutputStates);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);

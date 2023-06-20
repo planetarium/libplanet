@@ -16,7 +16,7 @@ namespace Libplanet.State
     /// An internal implementation of <see cref="IAccountStateDelta"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDeltaImpl : IValidatorSupportStateDelta, IAccountStateDelta
+    internal class AccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
     {
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
@@ -28,7 +28,12 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        internal AccountStateDeltaImpl(
+        /// <remarks>
+        /// This is only internally exposed for testing purposes.  Please use
+        /// <see cref="Create"/> instead.
+        /// </remarks>
+        /// <seealso cref="Create"/>
+        internal AccountStateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
@@ -285,40 +290,15 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a default null delta.
-        /// </summary>
-        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
-        /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
-        /// </param>
-        /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
-        /// currencies.</param>
-        /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
-        /// set.</param>
-        /// <returns>A null <see cref="IAccountStateDelta"/> instance.</returns>
-        internal static IAccountStateDelta Create(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter)
-        {
-            return new AccountStateDeltaImpl(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter);
-        }
-
-        /// <summary>
         /// Creates a default null delta from a <see cref="IBlockStates"/> as its
         /// base state.
         /// </summary>
         /// <param name="baseStates">The <see cref="IBlockStates"/> to use as
         /// the base state.</param>
         /// <returns>A null <see cref="IAccountStateDelta"/> instance.</returns>
-        internal static IAccountStateDelta Create(
-            IBlockStates baseStates)
+        internal static IAccountStateDelta Create(IBlockStates baseStates)
         {
-            return new AccountStateDeltaImpl(
+            return new AccountStateDelta(
                 baseStates.GetStates,
                 baseStates.GetBalance,
                 baseStates.GetTotalSupply,
@@ -336,14 +316,14 @@ namespace Libplanet.State
         internal static IAccountStateDelta Flush(
             IAccountStateDelta previousDelta)
         {
-            return new AccountStateDeltaImpl(
+            return new AccountStateDelta(
                 previousDelta.GetStates,
                 previousDelta.GetBalance,
                 previousDelta.GetTotalSupply,
                 previousDelta.GetValidatorSet)
                 {
                     TotalUpdatedFungibles =
-                        ((AccountStateDeltaImpl)previousDelta).TotalUpdatedFungibles,
+                        ((AccountStateDelta)previousDelta).TotalUpdatedFungibles,
                 };
         }
 
@@ -359,7 +339,7 @@ namespace Libplanet.State
         [Pure]
         protected virtual IAccountStateDelta UpdateStates(
             IImmutableDictionary<Address, IValue> statesDelta) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
@@ -383,7 +363,7 @@ namespace Libplanet.State
         protected virtual IAccountStateDelta UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> fungiblesDelta,
             IImmutableDictionary<Currency, BigInteger> totalSuppliesDelta) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
@@ -400,7 +380,7 @@ namespace Libplanet.State
         [Pure]
         protected virtual IAccountStateDelta UpdateValidatorSet(
             ValidatorSet validatorSetDelta) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,

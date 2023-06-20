@@ -170,7 +170,7 @@ namespace Libplanet.Tests.Fixtures
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
         {
             offset = offset ?? Tip.Hash;
-            return new AccountStateDeltaImpl(
+            return new AccountStateDelta(
                 a => Chain.GetStates(a, offset),
                 (a, c) => Chain.GetBalance(a, c, offset),
                 c => Chain.GetTotalSupply(c),

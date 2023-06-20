@@ -25,7 +25,7 @@ namespace Libplanet.Tests.State
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
@@ -46,7 +46,7 @@ namespace Libplanet.Tests.State
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImpl>(_initDelta);
+            Assert.IsType<AccountStateDelta>(_initDelta);
 
             IAccountStateDelta a = _initDelta.TransferAsset(
                 _initContext,
@@ -55,10 +55,10 @@ namespace Libplanet.Tests.State
                 Value(0, 6),
                 allowNegativeBalance: true
             );
-            Assert.IsType<AccountStateDeltaImpl>(a);
+            Assert.IsType<AccountStateDelta>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
             a = a.TransferAsset(_initContext, _addr[1], _addr[1], Value(0, 5));
-            Assert.IsType<AccountStateDeltaImpl>(a);
+            Assert.IsType<AccountStateDelta>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
 
@@ -163,7 +163,7 @@ namespace Libplanet.Tests.State
                 Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
 
             // Currently there is no way flush delta
-            delta0 = AccountStateDeltaImpl.Flush(delta0);
+            delta0 = AccountStateDelta.Flush(delta0);
             context0 = CreateContext(_addr[0], delta0);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
@@ -174,7 +174,7 @@ namespace Libplanet.Tests.State
             Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
 
             // Forcefully create null delta
-            delta0 = AccountStateDeltaImpl.Flush(delta0);
+            delta0 = AccountStateDelta.Flush(delta0);
             context0 = CreateContext(_addr[1], delta0);
 
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));

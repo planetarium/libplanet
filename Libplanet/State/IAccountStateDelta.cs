@@ -224,6 +224,12 @@ namespace Libplanet.State
         /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="sender"/>
         /// has insufficient balance than <paramref name="value"/> to transfer and
         /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
+        /// <remarks>
+        /// The behavior is different depending on <paramref name="context"/>'s
+        /// <see cref="IActionContext.BlockProtocolVersion"/>.  There is a bug for version 0
+        /// where this may not act as intended.  Such behavior is left intact for backward
+        /// compatibility.
+        /// </remarks>
         [Pure]
         IAccountStateDelta TransferAsset(
             IActionContext context,

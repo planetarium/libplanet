@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IValue _action = new DumbAction().PlainValue;
 
         private static IAccountStateDelta _stateDelta =
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 _ => null,
                 (_, __) => default,
                 _ => default,

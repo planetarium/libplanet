@@ -111,7 +111,7 @@ namespace Libplanet.Action
                     previousStates = evaluations.Count > 0
                         ? evaluations.Last().OutputStates
                         : previousStates;
-                    previousStates = AccountStateDeltaImpl.Flush(previousStates);
+                    previousStates = AccountStateDelta.Flush(previousStates);
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(block, previousStates)
                     );
@@ -393,7 +393,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = AccountStateDeltaImpl.Flush(delta);
+                delta = AccountStateDelta.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -502,7 +502,7 @@ namespace Libplanet.Action
         internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
         {
             IBlockStates blockStates = _blockChainStates.GetBlockStates(block.PreviousHash);
-            IAccountStateDelta delta = AccountStateDeltaImpl.Create(blockStates);
+            IAccountStateDelta delta = AccountStateDelta.Create(blockStates);
             return delta;
         }
 
