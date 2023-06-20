@@ -12,7 +12,6 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Tx;
 using Serilog;
@@ -98,11 +97,9 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousStates = GetPreviousBlockOutputStates(block);
-
-                ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
-                    block: block,
-                    previousStates: previousStates).ToImmutableList();
+                IAccountStateDelta previousStates = PrepareInitialDelta(block);
+                ImmutableList<ActionEvaluation> evaluations =
+                    EvaluateBlock(block, previousStates).ToImmutableList();
 
                 var policyBlockAction = _policyBlockActionGetter(block);
                 if (policyBlockAction is null)
@@ -114,10 +111,10 @@ namespace Libplanet.Action
                     previousStates = evaluations.Count > 0
                         ? evaluations.Last().OutputStates
                         : previousStates;
+                    previousStates = AccountStateDeltaImpl.ChooseSigner(
+                        previousStates, block.Miner);
                     return evaluations.Add(
-                        EvaluatePolicyBlockAction(
-                            blockHeader: block,
-                            previousStates: previousStates)
+                        EvaluatePolicyBlockAction(block, previousStates)
                     );
                 }
             }
@@ -134,36 +131,6 @@ namespace Libplanet.Action
                         ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
                         stopwatch.ElapsedMilliseconds);
             }
-        }
-
-        [Pure]
-        internal static IReadOnlyList<IValue?> NullAccountStateGetter(
-            IReadOnlyList<Address> addresses
-        ) =>
-            new IValue?[addresses.Count];
-
-        [Pure]
-        internal static FungibleAssetValue NullAccountBalanceGetter(
-            Address address,
-            Currency currency
-        ) =>
-            currency * 0;
-
-        [Pure]
-        internal static FungibleAssetValue NullTotalSupplyGetter(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            return currency * 0;
-        }
-
-        [Pure]
-        internal static ValidatorSet NullValidatorSetGetter()
-        {
-            return new ValidatorSet();
         }
 
         /// <summary>
@@ -423,14 +390,9 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = AccountStateDeltaImpl.ChooseVersion(
-                    block.ProtocolVersion,
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    tx.Signer,
-                    ((AccountStateDeltaImpl)delta).TotalUpdatedFungibles);
+                delta = AccountStateDeltaImpl.ChooseSigner(
+                    delta,
+                    tx.Signer);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -526,6 +488,35 @@ namespace Libplanet.Action
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
+        /// <summary>
+        /// Prepares the initial <see cref="IAccountStateDelta"/> to for evaluating
+        /// <paramref name="block"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="Block"/> to evaluate..</param>
+        /// <returns>The initial <see cref="IAccountStateDelta"/> to be used
+        /// for evaluating <paramref name="block"/>.
+        /// </returns>
+        internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
+        {
+            AccountStateGetter accountStateGetter = addresses =>
+                _blockChainStates.GetStates(addresses, block.PreviousHash);
+            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
+                _blockChainStates.GetBalance(address, currency, block.PreviousHash);
+            TotalSupplyGetter totalSupplyGetter = currency =>
+                _blockChainStates.GetTotalSupply(currency, block.PreviousHash);
+            ValidatorSetGetter validatorSetGetter = () =>
+                _blockChainStates.GetValidatorSet(block.PreviousHash);
+
+            IAccountStateDelta delta = AccountStateDeltaImpl.Create(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter);
+            delta = AccountStateDeltaImpl.ChooseVersion(delta, block.ProtocolVersion);
+            delta = AccountStateDeltaImpl.ChooseSigner(delta, block.Miner);
+            return delta;
+        }
+
         [Pure]
         private static IEnumerable<ITransaction> OrderTxsForEvaluationV0(
             IEnumerable<ITransaction> txs,
@@ -583,69 +574,6 @@ namespace Libplanet.Action
             }
 
             return result.SelectMany(group => group.OrderBy(tx => tx.Nonce));
-        }
-
-        /// <summary>
-        /// Retrieves the last previous states for the previous block of
-        /// <paramref name="blockHeader"/>.
-        /// </summary>
-        /// <param name="blockHeader">The header of block to reference.</param>
-        /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
-        /// <see cref="Block"/>.
-        /// </returns>
-        private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader blockHeader)
-        {
-            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter, validatorSetGetter) =
-                InitializeAccountGettersPair(blockHeader);
-            Address miner = blockHeader.Miner;
-
-            return AccountStateDeltaImpl.ChooseVersion(
-                blockHeader.ProtocolVersion,
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter,
-                miner,
-                ImmutableDictionary<(Address, Currency), BigInteger>.Empty);
-        }
-
-        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter, ValidatorSetGetter)
-            InitializeAccountGettersPair(
-            IPreEvaluationBlockHeader blockHeader)
-        {
-            AccountStateGetter accountStateGetter;
-            AccountBalanceGetter accountBalanceGetter;
-            TotalSupplyGetter totalSupplyGetter;
-            ValidatorSetGetter validatorSetGetter;
-
-            if (blockHeader.PreviousHash is { } previousHash)
-            {
-                accountStateGetter = addresses => _blockChainStates.GetStates(
-                    addresses,
-                    previousHash
-                );
-                accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
-                    address,
-                    currency,
-                    previousHash
-                );
-                totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
-                    currency,
-                    previousHash
-                );
-                validatorSetGetter = () => _blockChainStates.GetValidatorSet(previousHash);
-            }
-            else
-            {
-                accountStateGetter = NullAccountStateGetter;
-                accountBalanceGetter = NullAccountBalanceGetter;
-                totalSupplyGetter = NullTotalSupplyGetter;
-                validatorSetGetter = NullValidatorSetGetter;
-            }
-
-            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter,
-                validatorSetGetter);
         }
 
         private IEnumerable<IAction> LoadActions(long index, ITransaction tx)
