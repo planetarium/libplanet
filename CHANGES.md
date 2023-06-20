@@ -6,6 +6,11 @@ Version 2.0.1
 
 To be released.
 
+ -  (@planetarium/tx) Fixed a bug where an `encodeCurrency` serialized
+    `Currency` in an incompatible way with Libplanet.  [[#3225]]
+
+[#3225]: https://github.com/planetarium/libplanet/pull/3225
+
 
 Version 2.0.0
 -------------
