@@ -71,10 +71,15 @@ instead of <code>BlockHash</code> as <code>offset</code> parameter.  [<a href="h
 <li>Removed <code>IncompleteBlockStatesException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3214">#3214</a>]</li>
 <li>Changed <code>BlockChain</code>'s implementation of <code>IBlockChainStates</code> to match
 interface description.  [<a href="https://github.com/planetarium/libplanet/pull/3214">#3214</a>]</li>
+<li>Added <code>IBlockChainStates.GetBlockStates()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3216">#3216</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>IBlockStates</code> interface and its default implementation
+<code>BlockStates</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3216">#3216</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of fungible asset APIs on default
