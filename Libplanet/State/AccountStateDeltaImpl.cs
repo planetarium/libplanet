@@ -226,41 +226,9 @@ namespace Libplanet.State
             Address sender,
             Address recipient,
             FungibleAssetValue value,
-            bool allowNegativeBalance = false
-        )
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = GetBalance(sender, currency);
-
-            if (!allowNegativeBalance && senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
-                FungiblesDelta
-                .SetItem((sender, currency), (senderBalance - value).RawValue);
-
-            FungibleAssetValue recipientBalance = GetBalance(
-                recipient,
-                currency,
-                updatedFungibleAssets);
-
-            return UpdateFungibleAssets(
-                updatedFungibleAssets
-                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
-            );
-        }
+            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
+                ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
+                : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
 
         /// <inheritdoc/>
         [Pure]
@@ -326,19 +294,14 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <returns>A null delta of type <see cref="AccountStateDeltaImplV0"/>.</returns>
-        /// <remarks>
-        /// This is not immediately usable.  Choose its proper type
-        /// with <see cref="ChooseVersion"/> before use.
-        /// </remarks>
-        /// <seealso cref="ChooseVersion"/>
+        /// <returns>A null <see cref="IAccountStateDelta"/> instance.</returns>
         internal static IAccountStateDelta Create(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter)
         {
-            return new AccountStateDeltaImplV0(
+            return new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
@@ -346,37 +309,43 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a null delta with given <paramref name="protocolVersion"/>.
+        /// Creates a default null delta from a <see cref="IBlockStates"/> as its
+        /// base state.
         /// </summary>
-        /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <param name="protocolVersion">The <see cref="Block.ProtocolVersion"/> for which
-        /// this delta will be used.</param>
-        /// <returns>A null delta with an appropriate type as <see cref="IAccountStateDelta"/>
-        /// given <paramref name="protocolVersion"/>.</returns>
-        /// <remarks>
-        /// This clears <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/> and should be
-        /// only used right after <see cref="Create"/>.
-        /// </remarks>
-        /// <seealso cref="Create"/>
-        internal static IAccountStateDelta ChooseVersion(
-            IAccountStateDelta delta,
-            int protocolVersion) => protocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet)
+        /// <param name="baseStates">The <see cref="IBlockStates"/> to use as
+        /// the base state.</param>
+        /// <returns>A null <see cref="IAccountStateDelta"/> instance.</returns>
+        internal static IAccountStateDelta Create(
+            IBlockStates baseStates)
+        {
+            return new AccountStateDeltaImpl(
+                baseStates.GetStates,
+                baseStates.GetBalance,
+                baseStates.GetTotalSupply,
+                baseStates.GetValidatorSet);
+        }
+
+        /// <summary>
+        /// Creates a null delta from <paramref name="previousDelta"/> except
+        /// total updated fungible assets.
+        /// </summary>
+        /// <param name="previousDelta">The previous <see cref="IAccountStateDelta"/> to flush.
+        /// </param>
+        /// <returns>A null delta created from <paramref name="previousDelta"/> except
+        /// its <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/> intact.</returns>
+        internal static IAccountStateDelta Flush(
+            IAccountStateDelta previousDelta)
+        {
+            return new AccountStateDeltaImpl(
+                previousDelta.GetStates,
+                previousDelta.GetBalance,
+                previousDelta.GetTotalSupply,
+                previousDelta.GetValidatorSet)
                 {
-                    TotalUpdatedFungibles = ((AccountStateDeltaImpl)delta).TotalUpdatedFungibles,
-                }
-                : new AccountStateDeltaImplV0(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet)
-                {
-                    TotalUpdatedFungibles = ((AccountStateDeltaImplV0)delta).TotalUpdatedFungibles,
+                    TotalUpdatedFungibles =
+                        ((AccountStateDeltaImpl)previousDelta).TotalUpdatedFungibles,
                 };
+        }
 
         [Pure]
         protected virtual FungibleAssetValue GetBalance(
@@ -444,5 +413,81 @@ namespace Libplanet.State
                     validatorSetDelta),
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
+
+        [Pure]
+        private IAccountStateDelta TransferAssetV0(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            // NOTE: If sender and recipient are the same, this increases the balance
+            // by value amount as the latter SetItem() overwrites the former.
+            // This is why new AccountStateDeltaImpl was introduced.
+            return UpdateFungibleAssets(
+                FungiblesDelta
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
+            );
+        }
+
+        [Pure]
+        private IAccountStateDelta TransferAssetV1(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
+                FungiblesDelta
+                .SetItem((sender, currency), (senderBalance - value).RawValue);
+
+            FungibleAssetValue recipientBalance = GetBalance(
+                recipient,
+                currency,
+                updatedFungibleAssets);
+
+            return UpdateFungibleAssets(
+                updatedFungibleAssets
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
+            );
+        }
     }
 }

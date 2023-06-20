@@ -29,14 +29,6 @@ namespace Libplanet.Action
             bool rehearsal = false,
             List<string>? logs = null)
         {
-            if (!(blockProtocolVersion > 0 ^ previousStates is AccountStateDeltaImplV0))
-            {
-                throw new ArgumentException(
-                    $"Invalid type for {nameof(previousStates)} for given " +
-                    $"{nameof(blockProtocolVersion)} of {blockProtocolVersion}: " +
-                    $"{previousStates.GetType()}");
-            }
-
             Signer = signer;
             TxId = txid;
             Miner = miner;

@@ -163,7 +163,7 @@ namespace Libplanet.Tests.State
                 Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
 
             // Currently there is no way flush delta
-            delta0 = AccountStateDeltaImpl.ChooseVersion(delta0, context0.BlockProtocolVersion);
+            delta0 = AccountStateDeltaImpl.Flush(delta0);
             context0 = CreateContext(_addr[0], delta0);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
@@ -174,7 +174,7 @@ namespace Libplanet.Tests.State
             Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
 
             // Forcefully create null delta
-            delta0 = AccountStateDeltaImpl.ChooseVersion(delta0, context0.BlockProtocolVersion);
+            delta0 = AccountStateDeltaImpl.Flush(delta0);
             context0 = CreateContext(_addr[1], delta0);
 
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));

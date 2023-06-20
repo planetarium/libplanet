@@ -23,7 +23,7 @@ namespace Libplanet.Tests.State
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter) =>
-            new AccountStateDeltaImplV0(
+            new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.State
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImplV0>(_initDelta);
+            Assert.IsType<AccountStateDeltaImpl>(_initDelta);
 
             IAccountStateDelta a = _initDelta.TransferAsset(
                 _initContext,
@@ -53,10 +53,10 @@ namespace Libplanet.Tests.State
                 Value(0, 6),
                 allowNegativeBalance: true
             );
-            Assert.IsType<AccountStateDeltaImplV0>(a);
+            Assert.IsType<AccountStateDeltaImpl>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
             a = a.TransferAsset(_initContext, _addr[1], _addr[1], Value(0, 5));
-            Assert.IsType<AccountStateDeltaImplV0>(a);
+            Assert.IsType<AccountStateDeltaImpl>(a);
             Assert.Equal(Value(0, 11), a.GetBalance(_addr[1], _currencies[0]));
         }
 
