@@ -222,6 +222,7 @@ namespace Libplanet.State
         /// <inheritdoc/>
         [Pure]
         public virtual IAccountStateDelta TransferAsset(
+            IActionContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value,

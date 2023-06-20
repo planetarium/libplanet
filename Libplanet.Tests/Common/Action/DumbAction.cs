@@ -197,6 +197,7 @@ namespace Libplanet.Tests.Common.Action
             if (!(Transfer is null))
             {
                 nextState = nextState.TransferAsset(
+                    context: context,
                     sender: Transfer.Item1,
                     recipient: Transfer.Item2,
                     value: FungibleAssetValue.FromRawValue(DumbCurrency, Transfer.Item3),

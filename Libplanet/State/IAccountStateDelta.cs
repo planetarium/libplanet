@@ -207,6 +207,8 @@ namespace Libplanet.State
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
         /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
         /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
         /// <param name="sender">The address who sends the fungible asset to
         /// the <paramref name="recipient"/>.</param>
         /// <param name="recipient">The address who receives the fungible asset from
@@ -224,6 +226,7 @@ namespace Libplanet.State
         /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
         [Pure]
         IAccountStateDelta TransferAsset(
+            IActionContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value,

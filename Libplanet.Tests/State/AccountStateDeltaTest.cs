@@ -182,7 +182,8 @@ namespace Libplanet.Tests.State
         [Fact]
         public virtual void FungibleAssets()
         {
-            IAccountStateDelta a = _initDelta.TransferAsset(_addr[1], _addr[2], Value(2, 5));
+            IAccountStateDelta a = _initDelta.TransferAsset(
+                _initContext, _addr[1], _addr[2], Value(2, 5));
             Assert.Equal(Value(2, 15), a.GetBalance(_addr[1], _currencies[2]));
             Assert.Equal(Value(2, 5), a.GetBalance(_addr[2], _currencies[2]));
             Assert.Equal(Value(0, 5), a.GetBalance(_addr[0], _currencies[0]));
@@ -212,16 +213,17 @@ namespace Libplanet.Tests.State
         public virtual void TransferAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initDelta.TransferAsset(_addr[0], _addr[1], Zero(0))
+                _initDelta.TransferAsset(_initContext, _addr[0], _addr[1], Zero(0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initDelta.TransferAsset(_addr[0], _addr[1], Value(0, -1))
+                _initDelta.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, -1))
             );
             Assert.Throws<InsufficientBalanceException>(() =>
-                _initDelta.TransferAsset(_addr[0], _addr[1], Value(0, 6))
+                _initDelta.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 6))
             );
 
             IAccountStateDelta a = _initDelta.TransferAsset(
+                _initContext,
                 _addr[0],
                 _addr[1],
                 Value(0, 6),

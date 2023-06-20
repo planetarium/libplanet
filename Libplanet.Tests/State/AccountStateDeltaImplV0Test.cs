@@ -47,6 +47,7 @@ namespace Libplanet.Tests.State
             Assert.IsType<AccountStateDeltaImplV0>(_initDelta);
 
             IAccountStateDelta a = _initDelta.TransferAsset(
+                _initContext,
                 _addr[0],
                 _addr[1],
                 Value(0, 6),
@@ -54,7 +55,7 @@ namespace Libplanet.Tests.State
             );
             Assert.IsType<AccountStateDeltaImplV0>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
-            a = a.TransferAsset(_addr[1], _addr[1], Value(0, 5));
+            a = a.TransferAsset(_initContext, _addr[1], _addr[1], Value(0, 5));
             Assert.IsType<AccountStateDeltaImplV0>(a);
             Assert.Equal(Value(0, 11), a.GetBalance(_addr[1], _currencies[0]));
         }
