@@ -422,34 +422,31 @@ namespace Libplanet.State
         {
             // The order is important since AccountStateDeltaImplV0 inherits from
             // AccountStateDeltaImpl
-            if (delta is AccountStateDeltaImplV0 implV0)
+            switch (delta)
             {
-                return new AccountStateDeltaImplV0(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    signer)
-                    {
-                        TotalUpdatedFungibles = implV0.TotalUpdatedFungibles,
-                    };
-            }
-            else if (delta is AccountStateDeltaImpl impl)
-            {
-                return new AccountStateDeltaImpl(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    signer)
-                    {
-                        TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
-                    };
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Unknown type for {nameof(delta)}: {delta.GetType()}");
+                case AccountStateDeltaImplV0 implV0:
+                    return new AccountStateDeltaImplV0(
+                        delta.GetStates,
+                        delta.GetBalance,
+                        delta.GetTotalSupply,
+                        delta.GetValidatorSet,
+                        signer)
+                        {
+                            TotalUpdatedFungibles = implV0.TotalUpdatedFungibles,
+                        };
+                case AccountStateDeltaImpl impl:
+                    return new AccountStateDeltaImpl(
+                        delta.GetStates,
+                        delta.GetBalance,
+                        delta.GetTotalSupply,
+                        delta.GetValidatorSet,
+                        signer)
+                        {
+                            TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
+                        };
+                default:
+                    throw new ArgumentException(
+                        $"Unknown type for {nameof(delta)}: {delta.GetType()}");
             }
         }
 
