@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "Se69fQWWZ9p2tpnNPVL6MfQSpWEoH2bylEfBLoE/CqE="
+          "hash": "M4kgSRZ0Z271yqb+CD8iTF30/T4AmnKDqB1/TACfZTI="
         }
       },
       "is_incremental": false,
@@ -525,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain.html",
-          "hash": "VR5Jio7qf3B1Jbn9UTV16bWWRrfBGeDSY0U+rbt7eks="
+          "hash": "Ge2diINpauzqdwyHa42Cc5VlO8at0OuK8QYkFFv+uc4="
         }
       },
       "is_incremental": false,
@@ -537,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChainStates.html",
-          "hash": "zGQ1BroRNeAmVdWBj2AW7+VqG2aDvXa6J01GwI0C5+0="
+          "hash": "xbQthHn/POcbXbYuckPWkUCwe6zGuFUqMFD1eqPvBck="
         }
       },
       "is_incremental": false,
@@ -573,19 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.IBlockChainStates.html",
-          "hash": "b/wjOv0+YPOrBxd17PUhFksam3VANAO2+W0DMcDmj6k="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain.IncompleteBlockStatesException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Blockchain.IncompleteBlockStatesException.html",
-          "hash": "dW5ocqGWKNFeV8GrHlkIZ2jcYR8vNsiP7gNvfJw6TdE="
+          "hash": "OBBrIJar7ckIv5HQ/1nCVTwQDZJgSm/ehNsqZRceFpM="
         }
       },
       "is_incremental": false,
@@ -897,7 +885,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.html",
-          "hash": "Zj0Qhr6AncFk1qtj4pwZv9B20cPCezYax6NJgr7Hm8c="
+          "hash": "YinQMfq9snNPgmqTKNUhNRe2YmmwRnV01fNXOB1U8es="
         }
       },
       "is_incremental": false,
@@ -4593,7 +4581,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Oe9goepaDE/WrYnRnkk9hu1LDyegJQe8fqJxqewF0dM="
+          "hash": "oAWTxbZB+W49SnmR0sf7Sn4rXRYxO3lGhrsCesui28o="
         }
       },
       "is_incremental": false,
@@ -4702,7 +4690,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 372,
+          "total_file_count": 371,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

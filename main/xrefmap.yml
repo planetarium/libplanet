@@ -2448,12 +2448,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.Genesis
   nameWithType: BlockChain.Genesis
-- uid: Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  name: GetBalance(Address, Currency, BlockHash)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChain.GetBalance(Address, Currency, BlockHash)
 - uid: Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetBalance(Address, Currency, Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
@@ -2463,6 +2457,12 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
   nameWithType: BlockChain.GetBalance(Address, Currency, Nullable<BlockHash>)
   nameWithType.vb: BlockChain.GetBalance(Address, Currency, Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  name: GetBalance(Address, Currency)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  fullName: Libplanet.Blockchain.BlockChain.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
+  nameWithType: BlockChain.GetBalance(Address, Currency)
 - uid: Libplanet.Blockchain.BlockChain.GetBalance*
   name: GetBalance
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBalance_
@@ -2528,15 +2528,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetStagedTransactionIds
   nameWithType: BlockChain.GetStagedTransactionIds
-- uid: Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})
-  name: GetState(Address, Nullable<BlockHash>)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__
-  commentId: M:Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})
-  name.vb: GetState(Address, Nullable(Of BlockHash))
-  fullName: Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address, System.Nullable<Libplanet.Blocks.BlockHash>)
-  fullName.vb: Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address, System.Nullable(Of Libplanet.Blocks.BlockHash))
-  nameWithType: BlockChain.GetState(Address, Nullable<BlockHash>)
-  nameWithType.vb: BlockChain.GetState(Address, Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address)
+  name: GetState(Address)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetState_Libplanet_Address_
+  commentId: M:Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address)
+  fullName: Libplanet.Blockchain.BlockChain.GetState(Libplanet.Address)
+  nameWithType: BlockChain.GetState(Address)
 - uid: Libplanet.Blockchain.BlockChain.GetState*
   name: GetState
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetState_
@@ -2544,15 +2541,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetState
   nameWithType: BlockChain.GetState
-- uid: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
-  name: GetStates(IReadOnlyList<Address>, BlockHash)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
-  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash)
-  fullName: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash)
-  fullName.vb: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChain.GetStates(IReadOnlyList<Address>, BlockHash)
-  nameWithType.vb: BlockChain.GetStates(IReadOnlyList(Of Address), BlockHash)
 - uid: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__
@@ -2562,6 +2550,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash))
   nameWithType: BlockChain.GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
   nameWithType.vb: BlockChain.GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
+  name: GetStates(IReadOnlyList<Address>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__
+  commentId: M:Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
+  name.vb: GetStates(IReadOnlyList(Of Address))
+  fullName: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address))
+  nameWithType: BlockChain.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: BlockChain.GetStates(IReadOnlyList(Of Address))
 - uid: Libplanet.Blockchain.BlockChain.GetStates*
   name: GetStates
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetStates_
@@ -2569,12 +2566,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetStates
   nameWithType: BlockChain.GetStates
-- uid: Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  name: GetTotalSupply(Currency, BlockHash)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChain.GetTotalSupply(Currency, BlockHash)
 - uid: Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetTotalSupply(Currency, Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
@@ -2584,6 +2575,12 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
   nameWithType: BlockChain.GetTotalSupply(Currency, Nullable<BlockHash>)
   nameWithType.vb: BlockChain.GetTotalSupply(Currency, Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency)
+  name: GetTotalSupply(Currency)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTotalSupply_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency)
+  fullName: Libplanet.Blockchain.BlockChain.GetTotalSupply(Libplanet.Assets.Currency)
+  nameWithType: BlockChain.GetTotalSupply(Currency)
 - uid: Libplanet.Blockchain.BlockChain.GetTotalSupply*
   name: GetTotalSupply
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetTotalSupply_
@@ -2617,12 +2614,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetTxExecution
   nameWithType: BlockChain.GetTxExecution
-- uid: Libplanet.Blockchain.BlockChain.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  name: GetValidatorSet(BlockHash)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetValidatorSet_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChain.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChain.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChain.GetValidatorSet(BlockHash)
+- uid: Libplanet.Blockchain.BlockChain.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetValidatorSet
+  commentId: M:Libplanet.Blockchain.BlockChain.GetValidatorSet
+  fullName: Libplanet.Blockchain.BlockChain.GetValidatorSet()
+  nameWithType: BlockChain.GetValidatorSet()
 - uid: Libplanet.Blockchain.BlockChain.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetValidatorSet(Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__
@@ -2831,12 +2828,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.BlockChainStates
   nameWithType: BlockChainStates.BlockChainStates
-- uid: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  name: GetBalance(Address, Currency, BlockHash)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChainStates.GetBalance(Address, Currency, BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetBalance(Address, Currency, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetBalance(Address, Currency, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChainStates.GetBalance(Address, Currency, Nullable<BlockHash>)
+  nameWithType.vb: BlockChainStates.GetBalance(Address, Currency, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChainStates.GetBalance*
   name: GetBalance
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBalance_
@@ -2844,15 +2844,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.GetBalance
   nameWithType: BlockChainStates.GetBalance
-- uid: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
-  name: GetStates(IReadOnlyList<Address>, BlockHash)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
-  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash)
-  fullName: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChainStates.GetStates(IReadOnlyList<Address>, BlockHash)
-  nameWithType.vb: BlockChainStates.GetStates(IReadOnlyList(Of Address), BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChainStates.GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
+  nameWithType.vb: BlockChainStates.GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChainStates.GetStates*
   name: GetStates
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetStates_
@@ -2860,12 +2860,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.GetStates
   nameWithType: BlockChainStates.GetStates
-- uid: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  name: GetTotalSupply(Currency, BlockHash)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChainStates.GetTotalSupply(Currency, BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetTotalSupply(Currency, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetTotalSupply(Currency, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChainStates.GetTotalSupply(Currency, Nullable<BlockHash>)
+  nameWithType.vb: BlockChainStates.GetTotalSupply(Currency, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChainStates.GetTotalSupply*
   name: GetTotalSupply
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetTotalSupply_
@@ -2873,12 +2876,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.GetTotalSupply
   nameWithType: BlockChainStates.GetTotalSupply
-- uid: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  name: GetValidatorSet(BlockHash)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetValidatorSet_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  nameWithType: BlockChainStates.GetValidatorSet(BlockHash)
+- uid: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetValidatorSet(Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetValidatorSet(Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetValidatorSet(System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChainStates.GetValidatorSet(Nullable<BlockHash>)
+  nameWithType.vb: BlockChainStates.GetValidatorSet(Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChainStates.GetValidatorSet*
   name: GetValidatorSet
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetValidatorSet_
@@ -2995,12 +3001,15 @@ references:
   commentId: T:Libplanet.Blockchain.IBlockChainStates
   fullName: Libplanet.Blockchain.IBlockChainStates
   nameWithType: IBlockChainStates
-- uid: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  name: GetBalance(Address, Currency, BlockHash)
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
-  nameWithType: IBlockChainStates.GetBalance(Address, Currency, BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetBalance(Address, Currency, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetBalance(Address, Currency, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: IBlockChainStates.GetBalance(Address, Currency, Nullable<BlockHash>)
+  nameWithType.vb: IBlockChainStates.GetBalance(Address, Currency, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.IBlockChainStates.GetBalance*
   name: GetBalance
   href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBalance_
@@ -3008,15 +3017,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.IBlockChainStates.GetBalance
   nameWithType: IBlockChainStates.GetBalance
-- uid: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
-  name: GetStates(IReadOnlyList<Address>, BlockHash)
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash)
-  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash)
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash)
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash)
-  nameWithType: IBlockChainStates.GetStates(IReadOnlyList<Address>, BlockHash)
-  nameWithType.vb: IBlockChainStates.GetStates(IReadOnlyList(Of Address), BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: IBlockChainStates.GetStates(IReadOnlyList<Address>, Nullable<BlockHash>)
+  nameWithType.vb: IBlockChainStates.GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.IBlockChainStates.GetStates*
   name: GetStates
   href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetStates_
@@ -3024,12 +3033,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.IBlockChainStates.GetStates
   nameWithType: IBlockChainStates.GetStates
-- uid: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  name: GetTotalSupply(Currency, BlockHash)
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash)
-  nameWithType: IBlockChainStates.GetTotalSupply(Currency, BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetTotalSupply(Currency, Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetTotalSupply(Currency, Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: IBlockChainStates.GetTotalSupply(Currency, Nullable<BlockHash>)
+  nameWithType.vb: IBlockChainStates.GetTotalSupply(Currency, Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply*
   name: GetTotalSupply
   href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetTotalSupply_
@@ -3037,12 +3049,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.IBlockChainStates.GetTotalSupply
   nameWithType: IBlockChainStates.GetTotalSupply
-- uid: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  name: GetValidatorSet(BlockHash)
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetValidatorSet_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(Libplanet.Blocks.BlockHash)
-  nameWithType: IBlockChainStates.GetValidatorSet(BlockHash)
+- uid: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetValidatorSet(Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetValidatorSet(Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet(System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: IBlockChainStates.GetValidatorSet(Nullable<BlockHash>)
+  nameWithType.vb: IBlockChainStates.GetValidatorSet(Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet*
   name: GetValidatorSet
   href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetValidatorSet_
@@ -3050,38 +3065,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.IBlockChainStates.GetValidatorSet
   nameWithType: IBlockChainStates.GetValidatorSet
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException
-  name: IncompleteBlockStatesException
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
-  commentId: T:Libplanet.Blockchain.IncompleteBlockStatesException
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException
-  nameWithType: IncompleteBlockStatesException
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.Blocks.BlockHash,System.String)
-  name: IncompleteBlockStatesException(BlockHash, String)
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_Blocks_BlockHash_System_String_
-  commentId: M:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.Blocks.BlockHash,System.String)
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.Blocks.BlockHash, System.String)
-  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException(BlockHash, String)
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor*
-  name: IncompleteBlockStatesException
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_
-  commentId: Overload:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException
-  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
-  name: BlockHash
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash
-  commentId: P:Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
-  nameWithType: IncompleteBlockStatesException.BlockHash
-- uid: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash*
-  name: BlockHash
-  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash_
-  commentId: Overload:Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
-  nameWithType: IncompleteBlockStatesException.BlockHash
 - uid: Libplanet.Blockchain.MineBlockEventArgs
   name: MineBlockEventArgs
   href: api/Libplanet.Blockchain.MineBlockEventArgs.html
