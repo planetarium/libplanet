@@ -160,13 +160,16 @@ namespace Libplanet.Blockchain
                 else
                 {
                     throw new ArgumentException(
-                        $"Could not find state root {stateRootHash} in {nameof(IStateStore)}.");
+                        $"Could not find state root {stateRootHash} associated with " +
+                        $"block hash {offset} in {nameof(IStateStore)}.",
+                        nameof(offset));
                 }
             }
             else
             {
                 throw new ArgumentException(
-                    $"Could not find block hash {hash} in {nameof(IStore)}.");
+                    $"Could not find block hash {hash} in {nameof(IStore)}.",
+                    nameof(offset));
             }
         }
     }
