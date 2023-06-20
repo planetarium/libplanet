@@ -556,6 +556,12 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
+        public IBlockStates GetBlockStates() => GetBlockStates(Tip.Hash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetBlockStates" />
+        public IBlockStates GetBlockStates(BlockHash? offset) =>
+            _blockChainStates.GetBlockStates(offset);
+
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
         /// <see cref="Transaction"/> within a <see cref="Block"/>.

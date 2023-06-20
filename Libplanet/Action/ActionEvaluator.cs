@@ -498,20 +498,12 @@ namespace Libplanet.Action
         /// </returns>
         internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
         {
-            AccountStateGetter accountStateGetter = addresses =>
-                _blockChainStates.GetStates(addresses, block.PreviousHash);
-            AccountBalanceGetter accountBalanceGetter = (address, currency) =>
-                _blockChainStates.GetBalance(address, currency, block.PreviousHash);
-            TotalSupplyGetter totalSupplyGetter = currency =>
-                _blockChainStates.GetTotalSupply(currency, block.PreviousHash);
-            ValidatorSetGetter validatorSetGetter = () =>
-                _blockChainStates.GetValidatorSet(block.PreviousHash);
-
+            IBlockStates blockStates = _blockChainStates.GetBlockStates(block.PreviousHash);
             IAccountStateDelta delta = AccountStateDeltaImpl.Create(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter);
+                blockStates.GetStates,
+                blockStates.GetBalance,
+                blockStates.GetTotalSupply,
+                blockStates.GetValidatorSet);
             delta = AccountStateDeltaImpl.ChooseVersion(delta, block.ProtocolVersion);
             delta = AccountStateDeltaImpl.ChooseSigner(delta, block.Miner);
             return delta;
