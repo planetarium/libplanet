@@ -177,36 +177,42 @@ public class StateQueryTest
     {
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
-            BlockHash offset
+            BlockHash? offset
         ) =>
-            addresses.Select(address => address.ToString() switch
-            {
-                "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
-                _ => null,
-            }).ToImmutableList();
+            offset is { } _
+                ? addresses.Select(address => address.ToString() switch
+                {
+                    "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
+                    _ => null,
+                }).ToImmutableList()
+                : addresses.Select(address => (IValue)null).ToList();
 
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
-            BlockHash offset
+            BlockHash? offset
         ) =>
-            currency * 123;
+            offset is { } _
+                ? currency * 123
+                : currency * 0;
 
         public FungibleAssetValue GetTotalSupply(
             Currency currency,
-            BlockHash offset
+            BlockHash? offset
         ) =>
-            currency * 10000;
+            offset is { } _
+                ? currency * 10000
+                : currency * 0;
 
-        public ValidatorSet GetValidatorSet(BlockHash offset)
-            => new ValidatorSet(new List<Validator>
-            {
-                new(
-                    PublicKey.FromHex(
-                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                    new BigInteger(1)),
-            });
-
-        public ITrie GetTrie(BlockHash offset) => null;
+        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
+            offset is { } _
+                ? new ValidatorSet(new List<Validator>
+                {
+                    new(
+                        PublicKey.FromHex(
+                            "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                        new BigInteger(1)),
+                })
+                : new ValidatorSet();
     }
 }
