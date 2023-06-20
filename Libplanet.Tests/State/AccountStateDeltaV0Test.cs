@@ -1,4 +1,3 @@
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.State;
@@ -9,36 +8,14 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.State
 {
-    public class AccountStateDeltaImplV0Test : AccountStateDeltaTest
+    public class AccountStateDeltaV0Test : AccountStateDeltaTest
     {
-        public AccountStateDeltaImplV0Test(ITestOutputHelper output)
+        public AccountStateDeltaV0Test(ITestOutputHelper output)
             : base(output)
         {
         }
 
         public override int ProtocolVersion { get; } = 0;
-
-        public override IAccountStateDelta CreateDelta(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter) =>
-            new AccountStateDelta(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter);
-
-        public override IActionContext CreateContext(Address signer, IAccountStateDelta delta) =>
-            new ActionContext(
-                signer,
-                null,
-                signer,
-                0,
-                0,  // Protocol version 0
-                delta,
-                0,
-                0);
 
         [Fact]
         public override void TransferAsset()

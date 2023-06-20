@@ -110,15 +110,27 @@ namespace Libplanet.Tests.State
 
         public abstract int ProtocolVersion { get; }
 
-        public abstract IAccountStateDelta CreateDelta(
+        public virtual IAccountStateDelta CreateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter);
+            ValidatorSetGetter validatorSetGetter) =>
+            new AccountStateDelta(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter);
 
-        public abstract IActionContext CreateContext(
-            Address signer,
-            IAccountStateDelta delta);
+        public virtual IActionContext CreateContext(Address signer, IAccountStateDelta delta) =>
+            new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                ProtocolVersion,
+                delta,
+                0,
+                0);
 
         [Fact]
         public virtual void NullDelta()
@@ -289,6 +301,8 @@ namespace Libplanet.Tests.State
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 _initDelta.MintAsset(_initContext, _addr[0], Value(0, -1))
             );
+            Assert.Throws<SupplyOverflowException>(
+                () => _initDelta.MintAsset(_initContext, _addr[0], Value(4, 200)));
 
             IAccountStateDelta delta0 = _initDelta;
             // currencies[0] (FOO) allows only _addr[0] to mint
@@ -414,6 +428,94 @@ namespace Libplanet.Tests.State
             delta = delta.SetValidator(new Validator(key3, 0));
             delta = delta.SetValidator(new Validator(key4, 0));
             Assert.Equal(0, delta.GetValidatorSet().TotalCount);
+        }
+
+        [Fact]
+        public virtual void TotalUpdatedFungibleAssets()
+        {
+            IAccountStateDelta delta0 = _initDelta;
+            IActionContext context0 = _initContext;
+
+            // currencies[0] (FOO) allows only _addr[0] to burn
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 1));
+            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.DoesNotContain(
+                Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+
+            // Currently there is no way flush delta
+            delta0 = AccountStateDelta.Flush(delta0);
+            context0 = CreateContext(_addr[0], delta0);
+
+            // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
+            delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
+            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
+
+            // Forcefully create null delta
+            delta0 = AccountStateDelta.Flush(delta0);
+            context0 = CreateContext(_addr[1], delta0);
+
+            delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));
+
+            // _addr[0] burned currencies[0] & minted currencies[1]
+            // _addr[1] burned currencies[1]
+            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.DoesNotContain(
+                Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[1]]);
+            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[1]]);
+        }
+
+        [Fact]
+        public virtual void TotalSupplyTracking()
+        {
+            IAccountStateDelta delta = _initDelta;
+            IActionContext context = _initContext;
+
+            Assert.Empty(delta.GetUpdatedTotalSupplies());
+            Assert.Empty(delta.UpdatedTotalSupplyCurrencies);
+
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(_currencies[3], _totalSupplies[_currencies[3]]),
+                _initDelta.GetTotalSupply(_currencies[3])
+            );
+
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                _initDelta.GetTotalSupply(_currencies[0]));
+            Assert.DoesNotContain(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[0], Value(0, 5)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.DoesNotContain(_currencies[0], delta.UpdatedTotalSupplyCurrencies);
+
+            Assert.Equal(Value(4, 0), _initDelta.GetTotalSupply(_currencies[4]));
+            Assert.DoesNotContain(_currencies[4], delta.UpdatedTotalSupplyCurrencies);
+
+            delta = delta.MintAsset(context, _addr[0], Value(0, 10));
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                _initDelta.GetTotalSupply(_currencies[0]));
+            Assert.DoesNotContain(_currencies[0], delta.UpdatedTotalSupplyCurrencies);
+
+            delta = delta.MintAsset(context, _addr[0], Value(4, 10));
+            Assert.Equal(Value(4, 10), delta.GetTotalSupply(_currencies[4]));
+            Assert.Contains(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[4], Value(4, 10)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], delta.UpdatedTotalSupplyCurrencies);
+
+            delta = delta.BurnAsset(context, _addr[0], Value(4, 5));
+            Assert.Equal(Value(4, 5), delta.GetTotalSupply(_currencies[4]));
+            Assert.Contains(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[4], Value(4, 5)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], delta.UpdatedTotalSupplyCurrencies);
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
