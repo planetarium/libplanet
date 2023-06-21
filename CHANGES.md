@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `BlockProtocolVersion` property to `IActionContext`.  [[#3228]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
