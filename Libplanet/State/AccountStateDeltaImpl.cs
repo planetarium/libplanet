@@ -241,47 +241,9 @@ namespace Libplanet.State
             Address sender,
             Address recipient,
             FungibleAssetValue value,
-            bool allowNegativeBalance = false
-        )
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = GetBalance(sender, currency);
-
-            if (!allowNegativeBalance && senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            (Address, Currency) senderAssetKey = (sender, currency);
-            BigInteger senderRawBalance = (senderBalance - value).RawValue;
-
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
-                UpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
-            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles =
-                TotalUpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
-
-            FungibleAssetValue recipientBalance = GetBalance(
-                recipient,
-                currency,
-                updatedFungibleAssets);
-            (Address, Currency) recipientAssetKey = (recipient, currency);
-            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
-
-            return UpdateFungibleAssets(
-                updatedFungibleAssets.SetItem(recipientAssetKey, recipientRawBalance),
-                totalUpdatedFungibles.SetItem(recipientAssetKey, recipientRawBalance)
-            );
-        }
+            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
+                ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
+                : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
 
         /// <inheritdoc/>
         [Pure]
@@ -526,5 +488,87 @@ namespace Libplanet.State
                 UpdatedValidatorSet = updatedValidatorSet,
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
+
+        [Pure]
+        private IAccountStateDelta TransferAssetV0(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            return UpdateFungibleAssets(
+                UpdatedFungibles
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue),
+                TotalUpdatedFungibles
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
+            );
+        }
+
+        [Pure]
+        private IAccountStateDelta TransferAssetV1(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            (Address, Currency) senderAssetKey = (sender, currency);
+            BigInteger senderRawBalance = (senderBalance - value).RawValue;
+
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
+                UpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles =
+                TotalUpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
+
+            FungibleAssetValue recipientBalance = GetBalance(
+                recipient,
+                currency,
+                updatedFungibleAssets);
+            (Address, Currency) recipientAssetKey = (recipient, currency);
+            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
+
+            return UpdateFungibleAssets(
+                updatedFungibleAssets.SetItem(recipientAssetKey, recipientRawBalance),
+                totalUpdatedFungibles.SetItem(recipientAssetKey, recipientRawBalance)
+            );
+        }
     }
 }
