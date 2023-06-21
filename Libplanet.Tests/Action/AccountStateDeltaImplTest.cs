@@ -50,7 +50,6 @@ namespace Libplanet.Tests.Action
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImpl>(_initDelta);
 
             IAccountStateDelta a = _initDelta.TransferAsset(
                 _initContext,
@@ -59,11 +58,9 @@ namespace Libplanet.Tests.Action
                 Value(0, 6),
                 allowNegativeBalance: true
             );
-            Assert.IsType<AccountStateDeltaImpl>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
             IActionContext c = CreateContext(a, _addr[0]);
             a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 5));
-            Assert.IsType<AccountStateDeltaImpl>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
 

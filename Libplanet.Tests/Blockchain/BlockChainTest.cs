@@ -1747,9 +1747,8 @@ namespace Libplanet.Tests.Blockchain
                             miner: GenesisProposer.PublicKey,
                             lastCommit: CreateBlockCommit(b)),
                         GenesisProposer);
-                    previousStates = AccountStateDeltaImpl.ChooseVersion(
-                        previousStates,
-                        b.ProtocolVersion);
+                    previousStates = AccountStateDeltaImpl.Create(
+                        previousStates);
                     previousStates = AccountStateDeltaImpl.ChooseSigner(
                         previousStates,
                         b.Miner);

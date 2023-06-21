@@ -510,7 +510,6 @@ namespace Libplanet.Action
                 blockStates.GetBalance,
                 blockStates.GetTotalSupply,
                 blockStates.GetValidatorSet);
-            delta = AccountStateDeltaImpl.ChooseVersion(delta, block.ProtocolVersion);
             delta = AccountStateDeltaImpl.ChooseSigner(delta, block.Miner);
             return delta;
         }
