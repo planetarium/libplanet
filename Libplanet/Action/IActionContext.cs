@@ -45,6 +45,13 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
+        /// The <see cref="Block.ProtocolVersion"/> of the <see cref="Block"/> that contains
+        /// the <see cref="IAction"/>.
+        /// </summary>
+        [Pure]
+        int BlockProtocolVersion { get; }
+
+        /// <summary>
         /// Whether an <see cref="IAction"/> is being executed during
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing
         /// in <see cref="PreviousStates"/>.

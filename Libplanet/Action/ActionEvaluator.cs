@@ -142,6 +142,8 @@ namespace Libplanet.Action
         /// the <see cref="IPreEvaluationBlock"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
         /// that <paramref name="actions"/> belong to.</param>
+        /// <param name="blockProtocolVersion">The <see cref="Block.ProtocolVersion"/> of the
+        /// <see cref="Block"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="txid">The <see cref="ITransaction.Id"/> of the
         /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
@@ -182,6 +184,7 @@ namespace Libplanet.Action
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             HashDigest<SHA256> preEvaluationHash,
             long blockIndex,
+            int blockProtocolVersion,
             TxId? txid,
             IAccountStateDelta previousStates,
             Address miner,
@@ -204,6 +207,7 @@ namespace Libplanet.Action
                     txid: txid,
                     miner: miner,
                     blockIndex: blockIndex,
+                    blockProtocolVersion: blockProtocolVersion,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit,
@@ -437,6 +441,7 @@ namespace Libplanet.Action
             return EvaluateActions(
                 preEvaluationHash: blockHeader.PreEvaluationHash,
                 blockIndex: blockHeader.Index,
+                blockProtocolVersion: blockHeader.ProtocolVersion,
                 txid: tx.Id,
                 previousStates: previousStates,
                 miner: blockHeader.Miner,
@@ -480,6 +485,7 @@ namespace Libplanet.Action
             return EvaluateActions(
                 preEvaluationHash: blockHeader.PreEvaluationHash,
                 blockIndex: blockHeader.Index,
+                blockProtocolVersion: blockHeader.ProtocolVersion,
                 txid: null,
                 previousStates: previousStates,
                 miner: blockHeader.Miner,

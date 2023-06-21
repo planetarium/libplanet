@@ -5,6 +5,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
@@ -79,6 +80,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default,
                     default,
                     default,
+                    Block.CurrentProtocolVersion,
                     123,
                     _stateDelta,
                     default,
