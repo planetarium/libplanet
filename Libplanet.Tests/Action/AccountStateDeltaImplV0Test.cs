@@ -18,21 +18,6 @@ namespace Libplanet.Tests.Action
 
         public override int ProtocolVersion { get; } = 0;
 
-        public override IAccountStateDelta CreateInstance(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer
-        ) =>
-            AccountStateDeltaImpl.ChooseSigner(
-                AccountStateDeltaImpl.Create(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    totalSupplyGetter,
-                    validatorSetGetter),
-                signer);
-
         public override IActionContext CreateContext(
             IAccountStateDelta delta, Address signer) =>
             new ActionContext(

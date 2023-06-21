@@ -82,24 +82,24 @@ namespace Libplanet.State
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
             { get; protected set; }
 
-        protected AccountStateGetter StateGetter { get; set; }
+        private AccountStateGetter StateGetter { get; set; }
 
-        protected AccountBalanceGetter BalanceGetter { get; set; }
+        private AccountBalanceGetter BalanceGetter { get; set; }
 
-        protected TotalSupplyGetter TotalSupplyGetter { get; set; }
+        private TotalSupplyGetter TotalSupplyGetter { get; set; }
 
-        protected ValidatorSetGetter ValidatorSetGetter { get; set; }
+        private ValidatorSetGetter ValidatorSetGetter { get; set; }
 
-        protected Address Signer { get; set; }
+        private Address Signer { get; set; }
 
-        protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
+        private IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
 
-        protected IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
+        private IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
             { get; set; }
 
-        protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
+        private IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
 
-        protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
+        private ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
         /// <inheritdoc/>
         [Pure]
@@ -386,7 +386,7 @@ namespace Libplanet.State
         }
 
         [Pure]
-        protected virtual FungibleAssetValue GetBalance(
+        private FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
             IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
@@ -395,7 +395,7 @@ namespace Libplanet.State
                 : BalanceGetter(address, currency);
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateStates(
+        private AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
             new AccountStateDeltaImpl(
@@ -413,7 +413,7 @@ namespace Libplanet.State
             };
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+        private AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
         ) =>
@@ -424,7 +424,7 @@ namespace Libplanet.State
             );
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+        private AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles,
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
@@ -444,7 +444,7 @@ namespace Libplanet.State
             };
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateValidatorSet(
+        private AccountStateDeltaImpl UpdateValidatorSet(
             ValidatorSet updatedValidatorSet
         ) =>
             new AccountStateDeltaImpl(

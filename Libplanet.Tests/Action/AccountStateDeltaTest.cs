@@ -112,12 +112,18 @@ namespace Libplanet.Tests.Action
 
         public abstract int ProtocolVersion { get; }
 
-        public abstract IAccountStateDelta CreateInstance(
+        public virtual IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter,
-            Address signer);
+            Address signer) =>
+            new AccountStateDeltaImpl(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter,
+                signer);
 
         public abstract IActionContext CreateContext(
             IAccountStateDelta delta,
