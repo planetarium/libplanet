@@ -1,3 +1,4 @@
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.State;
@@ -31,13 +32,26 @@ namespace Libplanet.Tests.Action
                 validatorSetGetter,
                 signer);
 
+        public override IActionContext CreateContext(
+            IAccountStateDelta delta, Address signer) =>
+            new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                ProtocolVersion,
+                delta,
+                0,
+                0);
+
         [Fact]
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImplV0>(_init);
+            Assert.IsType<AccountStateDeltaImplV0>(_initDelta);
 
-            IAccountStateDelta a = _init.TransferAsset(
+            IAccountStateDelta a = _initDelta.TransferAsset(
+                _initContext,
                 _addr[0],
                 _addr[1],
                 Value(0, 6),
@@ -45,7 +59,8 @@ namespace Libplanet.Tests.Action
             );
             Assert.IsType<AccountStateDeltaImplV0>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
-            a = a.TransferAsset(_addr[1], _addr[1], Value(0, 5));
+            IActionContext c = CreateContext(a, _addr[0]);
+            a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 5));
             Assert.IsType<AccountStateDeltaImplV0>(a);
             Assert.Equal(Value(0, 11), a.GetBalance(_addr[1], _currencies[0]));
         }

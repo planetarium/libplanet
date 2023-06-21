@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Assets;
 
 namespace Libplanet.State
@@ -39,6 +40,7 @@ namespace Libplanet.State
         /// <inheritdoc/>
         [Pure]
         public override IAccountStateDelta TransferAsset(
+            IActionContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value,

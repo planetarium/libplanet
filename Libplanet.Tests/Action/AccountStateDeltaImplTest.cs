@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -33,13 +34,26 @@ namespace Libplanet.Tests.Action
                 validatorSetGetter,
                 signer);
 
+        public override IActionContext CreateContext(
+            IAccountStateDelta delta, Address signer) =>
+            new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                ProtocolVersion,
+                delta,
+                0,
+                0);
+
         [Fact]
         public override void TransferAsset()
         {
             base.TransferAsset();
-            Assert.IsType<AccountStateDeltaImpl>(_init);
+            Assert.IsType<AccountStateDeltaImpl>(_initDelta);
 
-            IAccountStateDelta a = _init.TransferAsset(
+            IAccountStateDelta a = _initDelta.TransferAsset(
+                _initContext,
                 _addr[0],
                 _addr[1],
                 Value(0, 6),
@@ -47,7 +61,8 @@ namespace Libplanet.Tests.Action
             );
             Assert.IsType<AccountStateDeltaImpl>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
-            a = a.TransferAsset(_addr[1], _addr[1], Value(0, 5));
+            IActionContext c = CreateContext(a, _addr[0]);
+            a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 5));
             Assert.IsType<AccountStateDeltaImpl>(a);
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
@@ -87,7 +102,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void TotalSupplyTracking()
         {
-            IAccountStateDelta delta = _init;
+            IAccountStateDelta delta = _initDelta;
 
             Assert.Empty(delta.GetUpdatedTotalSupplies());
             Assert.Empty(delta.TotalSupplyUpdatedCurrencies);
@@ -97,30 +112,30 @@ namespace Libplanet.Tests.Action
                     _currencies[3],
                     _totalSupplies[_currencies[3]].Item1,
                     _totalSupplies[_currencies[3]].Item2),
-                _init.GetTotalSupply(_currencies[3])
+                _initDelta.GetTotalSupply(_currencies[3])
             );
             Assert.Equal(
                 new FungibleAssetValue(
                     _currencies[3],
                     _totalSupplies[_currencies[3]].Item1,
                     _totalSupplies[_currencies[3]].Item2),
-                _init.GetTotalSupply(_currencies[3])
+                _initDelta.GetTotalSupply(_currencies[3])
             );
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _init.GetTotalSupply(_currencies[0]));
+                _initDelta.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[0], Value(0, 5)),
                 delta.GetUpdatedTotalSupplies());
             Assert.DoesNotContain(_currencies[0], delta.TotalSupplyUpdatedCurrencies);
 
-            Assert.Equal(Value(4, 0), _init.GetTotalSupply(_currencies[4]));
+            Assert.Equal(Value(4, 0), _initDelta.GetTotalSupply(_currencies[4]));
             Assert.DoesNotContain(_currencies[4], delta.TotalSupplyUpdatedCurrencies);
 
             delta = delta.MintAsset(_addr[0], Value(0, 10));
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _init.GetTotalSupply(_currencies[0]));
+                _initDelta.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(_currencies[0], delta.TotalSupplyUpdatedCurrencies);
 
             delta = delta.MintAsset(_addr[0], Value(4, 10));
@@ -145,14 +160,14 @@ namespace Libplanet.Tests.Action
         {
             base.MintAsset();
 
-            var delta = _init;
+            var delta = _initDelta;
             Assert.Throws<SupplyOverflowException>(() => delta.MintAsset(_addr[0], Value(4, 200)));
         }
 
         [Fact]
         public virtual void TotalUpdatedFungibleAssets()
         {
-            IAccountStateDelta delta0 = _init;
+            IAccountStateDelta delta0 = _initDelta;
 
             // currencies[0] (FOO) allows only _addr[0] to burn
             delta0 = delta0.BurnAsset(_addr[0], Value(0, 1));
