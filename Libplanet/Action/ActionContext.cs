@@ -22,6 +22,7 @@ namespace Libplanet.Action
             TxId? txid,
             Address miner,
             long blockIndex,
+            int blockProtocolVersion,
             IAccountStateDelta previousStates,
             int randomSeed,
             long gasLimit,
@@ -56,6 +57,9 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.BlockIndex"/>
         public long BlockIndex { get; }
 
+        /// <inheritdoc cref="IActionContext.BlockProtocolVersion"/>
+        public int BlockProtocolVersion { get; }
+
         /// <inheritdoc cref="IActionContext.Rehearsal"/>
         public bool Rehearsal { get; }
 
@@ -83,6 +87,7 @@ namespace Libplanet.Action
                 TxId,
                 Miner,
                 BlockIndex,
+                BlockProtocolVersion,
                 PreviousStates,
                 _randomSeed,
                 _gasLimit,

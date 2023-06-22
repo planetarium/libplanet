@@ -27,6 +27,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 default,
                 default,
+                Block.CurrentProtocolVersion,
                 default,
                 _stateDelta,
                 default,

@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `BlockProtocolVersion` property to `IActionContext`.  [[#3228]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3228]: https://github.com/planetarium/libplanet/pull/3228
 
 
 Version 2.1.0

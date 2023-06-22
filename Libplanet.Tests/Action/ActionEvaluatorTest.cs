@@ -687,6 +687,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
+                blockProtocolVersion: blockA.ProtocolVersion,
                 txid: txA.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
                 miner: blockA.Miner,
@@ -734,6 +735,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
                 blockB.PreEvaluationHash,
                 blockIndex: blockB.Index,
+                blockProtocolVersion: blockB.ProtocolVersion,
                 txid: txB.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
                 miner: blockB.Miner,
@@ -1299,6 +1301,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
+                blockProtocolVersion: blockA.ProtocolVersion,
                 txid: txA.Id,
                 previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
                 miner: blockA.Miner,

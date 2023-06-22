@@ -2,6 +2,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.State;
@@ -38,6 +39,7 @@ namespace Libplanet.Tests.Action
                     txid,
                     address,
                     1,
+                    Block.CurrentProtocolVersion,
                     new AccountStateDeltaImpl(
                         addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),
