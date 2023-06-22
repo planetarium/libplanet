@@ -16,6 +16,26 @@ To be released.
  -  Changed the type for `IAccountStateDelta.TotalUpdatedFungibleAssets`
     to `IImmutableSet<(Address, Currency)>`
     from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
+ -  (@planetarium/tx) Removed some types and functions related to actions
+    because the concept of `SystemAction` and `CustomAction` was removed
+    since 1.1.0 and some system actions were removed since 1.2.0.  [[#3230]]
+     -  Removed `encodeUnsignedTxWithCustomActions()` function.
+     -  Removed `encodeUnsignedTxWithSystemAction()` function.
+     -  Removed `UnsignedTxWithCustomActions` type.
+     -  Removed `UnsignedTxWithSystemAction` type.
+     -  Removed `encodeMint()` function.
+     -  Removed `encodeTransfer()` function.
+     -  Removed `encodeSystemAction()` function.
+     -  Removed `CustomAction` type.
+     -  Removed `SystemAction` type.
+     -  Removed `Mint` type.
+     -  Removed `Transfer` type.
+     -  Added `UnsignedTx` type.
+     -  `signTx(UnsignedTxWithCustomActions | UnsignedTxWithSystemAction)`
+        function's signature became `signTx(UnsignedTx)`.
+     -  `SignedTx<T extends UnsignedTxWithCustomActions |
+         UnsignedTxWithSystemAction>`'s signature became 
+         `SignedTx<T extends UnsignedTx`.
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +51,7 @@ To be released.
 
 ### CLI tools
 
+[#3230]: https://github.com/planetarium/libplanet/pull/3230
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
 
 

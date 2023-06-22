@@ -1,45 +1,20 @@
-import { BencodexDictionary, Dictionary } from "@planetarium/bencodex";
-import { CustomAction, encodeSystemAction, SystemAction } from "../action.js";
+import { BencodexDictionary, Dictionary, Value } from "@planetarium/bencodex";
 import { encodeTxMetadata, TxMetadata } from "./metadata.js";
 
-const CUSTOM_ACTION_KEY = new Uint8Array([0x61]); // 'a'
+const ACTION_KEY = new Uint8Array([0x61]); // 'a'
 
-/**
- * @deprecated The system action will not work since Libplanet 1.2.0 version.
- */
-export interface UnsignedTxWithSystemAction extends TxMetadata {
-  systemAction: SystemAction;
-}
-
-export interface UnsignedTxWithCustomActions extends TxMetadata {
-  customActions: CustomAction[];
+export interface UnsignedTx extends TxMetadata {
+  actions: Value[];
 }
 
 /**
- * Encodes an unsigned transaction with a system action.
- * @param tx An unsigned transaction with a system action.
- * @returns An encoded transaction.
- * @deprecated The system action will not work since Libplanet 1.2.0 version.
- */
-export function encodeUnsignedTxWithSystemAction(
-  metadata: UnsignedTxWithSystemAction,
-): Dictionary {
-  return new BencodexDictionary([
-    ...encodeTxMetadata(metadata),
-    [CUSTOM_ACTION_KEY, [encodeSystemAction(metadata.systemAction)]],
-  ]);
-}
-
-/**
- * Encodes an unsigned transaction with custom actions.
- * @param tx An unsigned transaction with custom actions.
+ * Encodes an unsigned transaction.
+ * @param tx An unsigned transaction.
  * @returns An encoded transaction.
  */
-export function encodeUnsignedTxWithCustomActions(
-  metadata: UnsignedTxWithCustomActions,
-): Dictionary {
+export function encodeUnsignedTx(metadata: UnsignedTx): Dictionary {
   return new BencodexDictionary([
     ...encodeTxMetadata(metadata),
-    [CUSTOM_ACTION_KEY, metadata.customActions],
+    [ACTION_KEY, metadata.actions],
   ]);
 }
