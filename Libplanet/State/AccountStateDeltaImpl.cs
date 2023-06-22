@@ -185,7 +185,8 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
+        public virtual IAccountStateDelta MintAsset(
+            IActionContext context, Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
             {
@@ -246,7 +247,8 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)
+        public virtual IAccountStateDelta BurnAsset(
+            IActionContext context, Address owner, FungibleAssetValue value)
         {
             string msg;
 

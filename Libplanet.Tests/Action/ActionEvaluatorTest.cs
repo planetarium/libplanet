@@ -1399,7 +1399,7 @@ namespace Libplanet.Tests.Action
                     .SetState(context.Signer, (Text)Memo);
                 if (!(Receiver is null) && !(MintValue is null))
                 {
-                    state = state.MintAsset(Receiver.Value, MintValue.Value);
+                    state = state.MintAsset(context, Receiver.Value, MintValue.Value);
                 }
 
                 return state;
@@ -1419,7 +1419,7 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta Execute(IActionContext context) =>
                 context.PreviousStates.MintAsset(
-                    context.Signer, new FungibleAssetValue(Currency, 1));
+                    context, context.Signer, new FungibleAssetValue(Currency, 1));
         }
     }
 

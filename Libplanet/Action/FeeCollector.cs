@@ -81,6 +81,7 @@ namespace Libplanet.Action
             }
 
             IAccountStateDelta nextState = state.BurnAsset(
+                _context,
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
             _state = FeeCollectState.Mortgage;
@@ -107,6 +108,7 @@ namespace Libplanet.Action
             }
 
             IAccountStateDelta nextState = state.MintAsset(
+                _context,
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
             _state = FeeCollectState.Refund;
@@ -133,6 +135,7 @@ namespace Libplanet.Action
             }
 
             IAccountStateDelta nextState = state.MintAsset(
+                _context,
                 _context.Miner,
                 realGasPrice * _context.GasUsed());
             _state = FeeCollectState.Reward;
