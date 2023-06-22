@@ -456,6 +456,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.BlockIndex
   nameWithType: IActionContext.BlockIndex
+- uid: Libplanet.Action.IActionContext.BlockProtocolVersion
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockProtocolVersion
+  commentId: P:Libplanet.Action.IActionContext.BlockProtocolVersion
+  fullName: Libplanet.Action.IActionContext.BlockProtocolVersion
+  nameWithType: IActionContext.BlockProtocolVersion
+- uid: Libplanet.Action.IActionContext.BlockProtocolVersion*
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockProtocolVersion_
+  commentId: Overload:Libplanet.Action.IActionContext.BlockProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.BlockProtocolVersion
+  nameWithType: IActionContext.BlockProtocolVersion
 - uid: Libplanet.Action.IActionContext.GasLimit
   name: GasLimit()
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GasLimit
