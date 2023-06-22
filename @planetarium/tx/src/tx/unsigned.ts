@@ -4,6 +4,9 @@ import { encodeTxMetadata, TxMetadata } from "./metadata.js";
 
 const CUSTOM_ACTION_KEY = new Uint8Array([0x61]); // 'a'
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export interface UnsignedTxWithSystemAction extends TxMetadata {
   systemAction: SystemAction;
 }
@@ -16,6 +19,7 @@ export interface UnsignedTxWithCustomActions extends TxMetadata {
  * Encodes an unsigned transaction with a system action.
  * @param tx An unsigned transaction with a system action.
  * @returns An encoded transaction.
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
  */
 export function encodeUnsignedTxWithSystemAction(
   metadata: UnsignedTxWithSystemAction,

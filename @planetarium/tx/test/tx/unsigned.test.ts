@@ -26,16 +26,16 @@ test("encodeUnsignedTxWithSystemAction", async () => {
     },
     gasLimit: 1000000n,
     maxGasPrice: {
-        rawValue: 12500n,
-        currency: {
-            ticker: "FOO",
-            decimalPlaces: 2,
-            totalSupplyTrackable: true,
-            minters: null,
-            maximumSupply: null,
-        },
+      rawValue: 12500n,
+      currency: {
+        ticker: "FOO",
+        decimalPlaces: 2,
+        totalSupplyTrackable: true,
+        minters: null,
+        maximumSupply: null,
       },
-    });
+    },
+  });
   const payload = encode(encoded);
   const { stdout } = await execa(
     "dotnet",
@@ -62,7 +62,7 @@ test("encodeUnsignedTxWithSystemAction", async () => {
         "\ufeffvalues": {
           "\ufeffamount": "12500",
           "\ufeffcurrency": {
-            "\ufeffdecimals": "2",
+            "\ufeffdecimalPlaces": "0x02",
             "\ufeffminters": null,
             "\ufeffticker": "\ufeffFOO",
             "\ufefftotalSupplyTrackable": true,
@@ -77,16 +77,16 @@ test("encodeUnsignedTxWithSystemAction", async () => {
     genesisHash: null,
     gasLimit: 1000000,
     maxGasPrice: {
-          "quantity": "125",
-          "currency": {
-            "decimalPlaces": 2,
-            "minters": null,
-            "ticker": "FOO",
-            "totalSupplyTrackable": true,
-            "hash": "946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25",
-            "maximumSupply": null,
-          },
-    }
+      quantity: "125",
+      currency: {
+        decimalPlaces: 2,
+        minters: null,
+        ticker: "FOO",
+        totalSupplyTrackable: true,
+        hash: "946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25",
+        maximumSupply: null,
+      },
+    },
   });
 }, 30_000);
 
