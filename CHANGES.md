@@ -4,7 +4,7 @@ Libplanet changelog
 Version 2.1.1
 -------------
 
-To be released.
+Released on June 22, 2023.
 
  -  Ported changes from [Libplanet 2.0.1] release.  [[#3234]]
 
