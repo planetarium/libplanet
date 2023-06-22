@@ -47,7 +47,7 @@ describe("signTx", () => {
       { input: payload },
     );
     expect(JSON.parse(stdout)).toStrictEqual({
-      id: "2bce5a4210cd3554bd36ae6dea01014e3f67fe720b874e2d6c866cd88bc3559b",
+      id: "4a1ffc6a9e46c3fc3a8ca4868b79395af35569f91c044d78ad0db02c4602f197",
       nonce: 123,
       signer: "268344BA46e6CA2A8a5096565548b9018bc687Ce",
       updatedAddresses: [],
@@ -58,7 +58,7 @@ describe("signTx", () => {
           "\ufeffvalues": {
             "\ufeffamount": "12500",
             "\ufeffcurrency": {
-              "\ufeffdecimals": "2",
+              "\ufeffdecimalPlaces": "0x02",
               "\ufeffminters": null,
               "\ufeffticker": "\ufeffFOO",
               "\ufefftotalSupplyTrackable": true,
@@ -154,9 +154,7 @@ describe("signTx", () => {
             "\ufeffamount": [
               {
                 "\ufeffdecimalPlaces": "0x02",
-                "\ufeffminters": [
-                  "0x47d082a115c63e7b58b1532d20e631538eafadde",
-                ],
+                "\ufeffminters": ["0x47d082a115c63e7b58b1532d20e631538eafadde"],
                 "\ufeffticker": "\ufeffNCG",
               },
               "1000",

@@ -6,6 +6,11 @@ Version 2.1.1
 
 To be released.
 
+ -  Ported changes from [Libplanet 2.0.1] release.  [[#3234]]
+
+[Libplanet 2.0.1]: https://www.nuget.org/packages/Libplanet/2.0.1
+[#3234]: https://github.com/planetarium/libplanet/3234
+
 
 Version 2.1.0
 -------------
@@ -40,6 +45,16 @@ Released on June 20, 2023.
 [#3215]: https://github.com/planetarium/libplanet/pull/3215
 [#3216]: https://github.com/planetarium/libplanet/pull/3216
 [#3218]: https://github.com/planetarium/libplanet/pull/3218
+
+Version 2.0.1
+-------------
+
+Released on June 22, 2023.
+
+ -  (@planetarium/tx) Fixed a bug where an `encodeCurrency` serialized
+    `Currency` in an incompatible way with Libplanet.  [[#3225]]
+
+[#3225]: https://github.com/planetarium/libplanet/pull/3225
 
 
 Version 2.0.0
