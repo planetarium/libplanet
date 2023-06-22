@@ -3,7 +3,9 @@
 exports[`encodeCurrency 1`] = `
 "BencodexDictionary(3) {
   'ticker' => 'FOO',
-  'decimals' => 2n,
+  'decimalPlaces' => Uint8Array(1) [
+    2
+  ],
   'minters' => null
 }"
 `;
@@ -12,7 +14,8 @@ exports[`encodeCurrency 2`] = `
 Uint8Array [
   100,
   117,
-  56,
+  49,
+  51,
   58,
   100,
   101,
@@ -21,10 +24,15 @@ Uint8Array [
   109,
   97,
   108,
-  115,
-  105,
-  50,
+  80,
+  108,
+  97,
+  99,
   101,
+  115,
+  49,
+  58,
+  2,
   117,
   55,
   58,
@@ -58,7 +66,9 @@ Uint8Array [
 exports[`encodeCurrency 3`] = `
 "BencodexDictionary(6) {
   'ticker' => 'BAR',
-  'decimals' => 0n,
+  'decimalPlaces' => Uint8Array(1) [
+    0
+  ],
   'minters' => [
     Uint8Array(20) [
       80,
@@ -115,7 +125,8 @@ exports[`encodeCurrency 4`] = `
 Uint8Array [
   100,
   117,
-  56,
+  49,
+  51,
   58,
   100,
   101,
@@ -124,10 +135,15 @@ Uint8Array [
   109,
   97,
   108,
-  115,
-  105,
-  48,
+  80,
+  108,
+  97,
+  99,
   101,
+  115,
+  49,
+  58,
+  0,
   117,
   49,
   56,
