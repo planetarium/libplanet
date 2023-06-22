@@ -442,8 +442,8 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(block1, true));
 
             // Forcefully reset with ChooseVersion
-            previousStates = AccountStateDeltaImpl.ChooseVersion(
-                evals1.Last().OutputStates, block2.ProtocolVersion);
+            previousStates = AccountStateDeltaImpl.Create(
+                evals1.Last().OutputStates);
             previousStates = AccountStateDeltaImpl.ChooseSigner(
                 previousStates, block2.Miner);
             evals = actionEvaluator.EvaluateBlock(
@@ -482,8 +482,8 @@ namespace Libplanet.Tests.Action
                     (Integer)randomValue);
             }
 
-            previousStates = AccountStateDeltaImpl.ChooseVersion(
-                evals1.Last().OutputStates, block2.ProtocolVersion);
+            previousStates = AccountStateDeltaImpl.Create(
+                evals1.Last().OutputStates);
             previousStates = AccountStateDeltaImpl.ChooseSigner(
                 previousStates, block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
@@ -804,9 +804,8 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            previousStates = AccountStateDeltaImpl.ChooseVersion(
-                evaluation.OutputStates,
-                block.ProtocolVersion);
+            previousStates = AccountStateDeltaImpl.Create(
+                evaluation.OutputStates);
             previousStates = AccountStateDeltaImpl.ChooseSigner(
                 previousStates,
                 block.Miner);

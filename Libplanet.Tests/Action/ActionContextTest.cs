@@ -208,6 +208,7 @@ namespace Libplanet.Tests.Action
                 this;
 
             public IAccountStateDelta TransferAsset(
+                IActionContext context,
                 Address sender,
                 Address recipient,
                 FungibleAssetValue value,

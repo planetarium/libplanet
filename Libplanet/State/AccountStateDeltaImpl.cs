@@ -7,7 +7,6 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
-using Libplanet.Blocks;
 using Libplanet.Consensus;
 
 namespace Libplanet.State
@@ -83,24 +82,24 @@ namespace Libplanet.State
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
             { get; protected set; }
 
-        protected AccountStateGetter StateGetter { get; set; }
+        private AccountStateGetter StateGetter { get; set; }
 
-        protected AccountBalanceGetter BalanceGetter { get; set; }
+        private AccountBalanceGetter BalanceGetter { get; set; }
 
-        protected TotalSupplyGetter TotalSupplyGetter { get; set; }
+        private TotalSupplyGetter TotalSupplyGetter { get; set; }
 
-        protected ValidatorSetGetter ValidatorSetGetter { get; set; }
+        private ValidatorSetGetter ValidatorSetGetter { get; set; }
 
-        protected Address Signer { get; set; }
+        private Address Signer { get; set; }
 
-        protected IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
+        private IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
 
-        protected IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
+        private IImmutableDictionary<(Address, Currency), BigInteger> UpdatedFungibles
             { get; set; }
 
-        protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
+        private IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
 
-        protected ValidatorSet? UpdatedValidatorSet { get; set; } = null;
+        private ValidatorSet? UpdatedValidatorSet { get; set; } = null;
 
         /// <inheritdoc/>
         [Pure]
@@ -237,50 +236,13 @@ namespace Libplanet.State
         /// <inheritdoc/>
         [Pure]
         public virtual IAccountStateDelta TransferAsset(
+            IActionContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value,
-            bool allowNegativeBalance = false
-        )
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = GetBalance(sender, currency);
-
-            if (!allowNegativeBalance && senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            (Address, Currency) senderAssetKey = (sender, currency);
-            BigInteger senderRawBalance = (senderBalance - value).RawValue;
-
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
-                UpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
-            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles =
-                TotalUpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
-
-            FungibleAssetValue recipientBalance = GetBalance(
-                recipient,
-                currency,
-                updatedFungibleAssets);
-            (Address, Currency) recipientAssetKey = (recipient, currency);
-            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
-
-            return UpdateFungibleAssets(
-                updatedFungibleAssets.SetItem(recipientAssetKey, recipientRawBalance),
-                totalUpdatedFungibles.SetItem(recipientAssetKey, recipientRawBalance)
-            );
-        }
+            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
+                ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
+                : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
 
         /// <inheritdoc/>
         [Pure]
@@ -349,14 +311,13 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <returns>A null delta of type <see cref="AccountStateDeltaImplV0"/>
+        /// <returns>A null delta of type <see cref="AccountStateDeltaImpl"/>
         /// with <see langword="default"/> <see cref="Address"/> as its
         /// <see cref="AccountStateDeltaImpl.Signer"/>.</returns>
         /// <remarks>
-        /// This is not immediately usable.  Choose its proper type with <see cref="ChooseVersion"/>
-        /// and signer with <see cref="ChooseSigner"/> before use.
+        /// This is not immediately usable.  Choose its proper signer with
+        /// <see cref="ChooseSigner"/> before use.
         /// </remarks>
-        /// <seealso cref="ChooseVersion"/>
         /// <seealso cref="ChooseSigner"/>
         internal static IAccountStateDelta Create(
             AccountStateGetter accountStateGetter,
@@ -364,7 +325,7 @@ namespace Libplanet.State
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter)
         {
-            return new AccountStateDeltaImplV0(
+            return new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
@@ -373,44 +334,29 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a null delta with given <paramref name="protocolVersion"/>.
+        /// Creates a default null delta from <paramref name="delta"/>.
         /// </summary>
         /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <param name="protocolVersion">The <see cref="Block.ProtocolVersion"/> for which
-        /// this delta will be used.</param>
-        /// <returns>A null delta with an appropriate type as <see cref="IAccountStateDelta"/>
-        /// given <paramref name="protocolVersion"/>.</returns>
-        /// <remarks>
-        /// This clears <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/> and should be
-        /// only used right after <see cref="Create"/>.
-        /// </remarks>
-        /// <seealso cref="Create"/>
-        internal static IAccountStateDelta ChooseVersion(
-            IAccountStateDelta delta,
-            int protocolVersion) => protocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    default(Address))
-                : new AccountStateDeltaImplV0(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    default(Address));
+        /// <returns>A null delta made from <paramref name="delta"/>.</returns>
+        internal static IAccountStateDelta Create(
+            IAccountStateDelta delta) =>
+            new AccountStateDeltaImpl(
+                delta.GetStates,
+                delta.GetBalance,
+                delta.GetTotalSupply,
+                delta.GetValidatorSet,
+                default(Address));
 
         /// <summary>
-        /// Creates a null delta with given <paramref name="signer"/>.
+        /// Creates a null delta with given <paramref name="signer"/> while inheriting
+        /// <paramref name="delta"/>s total updated fungibles.
         /// </summary>
         /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
         /// <param name="signer">The <see cref="Address"/> to set.</param>
         /// <returns>A null delta with given <paramref name="signer"/> that is of the same type
         /// as <paramref name="delta"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if given <paramref name="delta"/>
-        /// is neither <see cref="AccountStateDeltaImplV0"/>
-        /// nor <see cref="AccountStateDeltaImpl"/>.
+        /// is not <see cref="AccountStateDeltaImpl"/>.
         /// </exception>
         /// <remarks>
         /// This inherits <paramref name="delta"/>'s
@@ -420,38 +366,27 @@ namespace Libplanet.State
             IAccountStateDelta delta,
             Address signer)
         {
-            // The order is important since AccountStateDeltaImplV0 inherits from
-            // AccountStateDeltaImpl
-            switch (delta)
+            if (delta is AccountStateDeltaImpl impl)
             {
-                case AccountStateDeltaImplV0 implV0:
-                    return new AccountStateDeltaImplV0(
-                        delta.GetStates,
-                        delta.GetBalance,
-                        delta.GetTotalSupply,
-                        delta.GetValidatorSet,
-                        signer)
-                        {
-                            TotalUpdatedFungibles = implV0.TotalUpdatedFungibles,
-                        };
-                case AccountStateDeltaImpl impl:
-                    return new AccountStateDeltaImpl(
-                        delta.GetStates,
-                        delta.GetBalance,
-                        delta.GetTotalSupply,
-                        delta.GetValidatorSet,
-                        signer)
-                        {
-                            TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
-                        };
-                default:
-                    throw new ArgumentException(
-                        $"Unknown type for {nameof(delta)}: {delta.GetType()}");
+                return new AccountStateDeltaImpl(
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    delta.GetValidatorSet,
+                    signer)
+                    {
+                        TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
+                    };
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Unknown type for {nameof(delta)}: {delta.GetType()}");
             }
         }
 
         [Pure]
-        protected virtual FungibleAssetValue GetBalance(
+        private FungibleAssetValue GetBalance(
             Address address,
             Currency currency,
             IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
@@ -460,7 +395,7 @@ namespace Libplanet.State
                 : BalanceGetter(address, currency);
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateStates(
+        private AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
             new AccountStateDeltaImpl(
@@ -478,7 +413,7 @@ namespace Libplanet.State
             };
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+        private AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
         ) =>
@@ -489,7 +424,7 @@ namespace Libplanet.State
             );
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+        private AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles,
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
@@ -509,7 +444,7 @@ namespace Libplanet.State
             };
 
         [Pure]
-        protected virtual AccountStateDeltaImpl UpdateValidatorSet(
+        private AccountStateDeltaImpl UpdateValidatorSet(
             ValidatorSet updatedValidatorSet
         ) =>
             new AccountStateDeltaImpl(
@@ -525,5 +460,87 @@ namespace Libplanet.State
                 UpdatedValidatorSet = updatedValidatorSet,
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
+
+        [Pure]
+        private IAccountStateDelta TransferAssetV0(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            return UpdateFungibleAssets(
+                UpdatedFungibles
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue),
+                TotalUpdatedFungibles
+                    .SetItem((sender, currency), (senderBalance - value).RawValue)
+                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
+            );
+        }
+
+        [Pure]
+        private IAccountStateDelta TransferAssetV1(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            (Address, Currency) senderAssetKey = (sender, currency);
+            BigInteger senderRawBalance = (senderBalance - value).RawValue;
+
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
+                UpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles =
+                TotalUpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
+
+            FungibleAssetValue recipientBalance = GetBalance(
+                recipient,
+                currency,
+                updatedFungibleAssets);
+            (Address, Currency) recipientAssetKey = (recipient, currency);
+            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
+
+            return UpdateFungibleAssets(
+                updatedFungibleAssets.SetItem(recipientAssetKey, recipientRawBalance),
+                totalUpdatedFungibles.SetItem(recipientAssetKey, recipientRawBalance)
+            );
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace Libplanet.Action
             TxId = txid;
             Miner = miner;
             BlockIndex = blockIndex;
+            BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
