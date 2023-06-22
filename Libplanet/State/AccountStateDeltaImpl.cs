@@ -27,15 +27,11 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
-        /// to mint a currency.</param>
         internal AccountStateDeltaImpl(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer
-        )
+            ValidatorSetGetter validatorSetGetter)
         {
             StateGetter = accountStateGetter;
             BalanceGetter = accountBalanceGetter;
@@ -45,7 +41,6 @@ namespace Libplanet.State
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
             UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            Signer = signer;
         }
 
         /// <inheritdoc/>
@@ -90,7 +85,7 @@ namespace Libplanet.State
 
         private ValidatorSetGetter ValidatorSetGetter { get; set; }
 
-        private Address Signer { get; set; }
+        private Address Signer => default(Address);
 
         private IImmutableDictionary<Address, IValue> UpdatedStates { get; set; }
 
@@ -197,11 +192,11 @@ namespace Libplanet.State
             }
 
             Currency currency = value.Currency;
-            if (!currency.AllowsToMint(Signer))
+            if (!currency.AllowsToMint(context.Signer))
             {
                 throw new CurrencyPermissionException(
-                    $"The account {Signer} has no permission to mint the currency {currency}.",
-                    Signer,
+                    $"The account {context.Signer} has no permission to mint currency {currency}.",
+                    context.Signer,
                     currency
                 );
             }
@@ -261,11 +256,11 @@ namespace Libplanet.State
             }
 
             Currency currency = value.Currency;
-            if (!currency.AllowsToMint(Signer))
+            if (!currency.AllowsToMint(context.Signer))
             {
-                msg = $"The account {Signer} has no permission to burn assets of " +
+                msg = $"The account {context.Signer} has no permission to burn assets of " +
                       $"the currency {currency}.";
-                throw new CurrencyPermissionException(msg, Signer, currency);
+                throw new CurrencyPermissionException(msg, context.Signer, currency);
             }
 
             FungibleAssetValue balance = GetBalance(owner, currency);
@@ -331,8 +326,7 @@ namespace Libplanet.State
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                default(Address));
+                validatorSetGetter);
         }
 
         /// <summary>
@@ -346,8 +340,7 @@ namespace Libplanet.State
                 delta.GetStates,
                 delta.GetBalance,
                 delta.GetTotalSupply,
-                delta.GetValidatorSet,
-                default(Address));
+                delta.GetValidatorSet);
 
         /// <summary>
         /// Creates a null delta with given <paramref name="signer"/> while inheriting
@@ -374,8 +367,7 @@ namespace Libplanet.State
                     delta.GetStates,
                     delta.GetBalance,
                     delta.GetTotalSupply,
-                    delta.GetValidatorSet,
-                    signer)
+                    delta.GetValidatorSet)
                     {
                         TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
                     };
@@ -404,8 +396,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
@@ -435,8 +426,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
@@ -453,8 +443,7 @@ namespace Libplanet.State
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
-                ValidatorSetGetter,
-                Signer)
+                ValidatorSetGetter)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = UpdatedFungibles,

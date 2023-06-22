@@ -104,8 +104,7 @@ namespace Libplanet.Tests.Action
                 GetStates,
                 GetBalance,
                 GetTotalSupply,
-                GetValidatorSet,
-                _addr[0]);
+                GetValidatorSet);
             _initContext = CreateContext(
                 _initDelta, _addr[0]);
         }
@@ -116,14 +115,12 @@ namespace Libplanet.Tests.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer) =>
+            ValidatorSetGetter validatorSetGetter) =>
             new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                signer);
+                validatorSetGetter);
 
         public abstract IActionContext CreateContext(
             IAccountStateDelta delta,
@@ -314,7 +311,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet);
             IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
@@ -357,7 +354,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet);
             IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
