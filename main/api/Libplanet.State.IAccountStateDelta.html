@@ -307,13 +307,13 @@ method does not manipulate the instance, but returns a new
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext%2CLibplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/IAccountStateDelta.cs/#L172">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/IAccountStateDelta.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_State_IAccountStateDelta_BurnAsset_" data-uid="Libplanet.State.IAccountStateDelta.BurnAsset*"></a>
-  <h4 id="Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">BurnAsset(Address, FungibleAssetValue)</h4>
+  <h4 id="Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">BurnAsset(IActionContext, Address, FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>Burns the fungible asset <code data-dev-comment-type="paramref" class="paramref">value</code> (i.e., in-game monetary) from
 <code data-dev-comment-type="paramref" class="paramref">owner</code>'s balance.</p>
 </div>
@@ -321,7 +321,7 @@ method does not manipulate the instance, but returns a new
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pre>
+IAccountStateDelta BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -333,6 +333,13 @@ IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pr
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> of the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+executing this method.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">owner</span></td>
@@ -363,7 +370,7 @@ IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value)</code></pr
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue__remarks">Remarks</h5>
+  <h5 id="Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This interface is immutable.  <a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_SetState_Libplanet_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a>
 method does not manipulate the instance, but returns a new
 <a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a> instance with updated states.</p>
@@ -399,13 +406,13 @@ has insufficient balance than <code data-dev-comment-type="paramref" class="para
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext%2CLibplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/IAccountStateDelta.cs/#L118">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/IAccountStateDelta.cs/#L120">View Source</a>
   </span>
   <a id="Libplanet_State_IAccountStateDelta_MintAsset_" data-uid="Libplanet.State.IAccountStateDelta.MintAsset*"></a>
-  <h4 id="Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">MintAsset(Address, FungibleAssetValue)</h4>
+  <h4 id="Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">MintAsset(IActionContext, Address, FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>Mints the fungible asset <code data-dev-comment-type="paramref" class="paramref">value</code> (i.e., in-game monetary),
 and give it to the <code data-dev-comment-type="paramref" class="paramref">recipient</code>.</p>
 </div>
@@ -413,7 +420,7 @@ and give it to the <code data-dev-comment-type="paramref" class="paramref">recip
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code></pre>
+IAccountStateDelta MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -425,6 +432,13 @@ IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code>
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> of the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+executing this method.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">recipient</span></td>
@@ -455,7 +469,7 @@ IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)</code>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue__remarks">Remarks</h5>
+  <h5 id="Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This interface is immutable.  <a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_SetState_Libplanet_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a>
 method does not manipulate the instance, but returns a new
 <a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a> instance with updated states.</p>
@@ -563,7 +577,7 @@ with updated states instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_State_IAccountStateDelta_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext%2CLibplanet.Address%2CLibplanet.Address%2CLibplanet.Assets.FungibleAssetValue%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/IAccountStateDelta.cs/#L148">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/State/IAccountStateDelta.cs/#L151">View Source</a>
   </span>
   <a id="Libplanet_State_IAccountStateDelta_TransferAsset_" data-uid="Libplanet.State.IAccountStateDelta.TransferAsset*"></a>
   <h4 id="Libplanet_State_IAccountStateDelta_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_" data-uid="Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)">TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)</h4>

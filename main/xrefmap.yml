@@ -20300,12 +20300,12 @@ references:
   commentId: T:Libplanet.State.IAccountStateDelta
   fullName: Libplanet.State.IAccountStateDelta
   nameWithType: IAccountStateDelta
-- uid: Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  name: BurnAsset(Address, FungibleAssetValue)
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  fullName: Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
-  nameWithType: IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)
+- uid: Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: BurnAsset(IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext, Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: IAccountStateDelta.BurnAsset(IActionContext, Address, FungibleAssetValue)
 - uid: Libplanet.State.IAccountStateDelta.BurnAsset*
   name: BurnAsset
   href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_BurnAsset_
@@ -20313,12 +20313,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.BurnAsset
   nameWithType: IAccountStateDelta.BurnAsset
-- uid: Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  name: MintAsset(Address, FungibleAssetValue)
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
-  fullName: Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
-  nameWithType: IAccountStateDelta.MintAsset(Address, FungibleAssetValue)
+- uid: Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: MintAsset(IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext, Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: IAccountStateDelta.MintAsset(IActionContext, Address, FungibleAssetValue)
 - uid: Libplanet.State.IAccountStateDelta.MintAsset*
   name: MintAsset
   href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_MintAsset_
