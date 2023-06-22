@@ -20378,12 +20378,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.TotalUpdatedFungibleAssets
   nameWithType: IAccountStateDelta.TotalUpdatedFungibleAssets
-- uid: Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
-  name: TransferAsset(Address, Address, FungibleAssetValue, Boolean)
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TransferAsset_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_
-  commentId: M:Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
-  fullName: Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Address, Libplanet.Address, Libplanet.Assets.FungibleAssetValue, System.Boolean)
-  nameWithType: IAccountStateDelta.TransferAsset(Address, Address, FungibleAssetValue, Boolean)
+- uid: Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
+  name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_
+  commentId: M:Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
+  fullName: Libplanet.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext, Libplanet.Address, Libplanet.Address, Libplanet.Assets.FungibleAssetValue, System.Boolean)
+  nameWithType: IAccountStateDelta.TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
 - uid: Libplanet.State.IAccountStateDelta.TransferAsset*
   name: TransferAsset
   href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TransferAsset_
