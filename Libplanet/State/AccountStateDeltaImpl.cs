@@ -313,9 +313,9 @@ namespace Libplanet.State
         /// <see cref="AccountStateDeltaImpl.Signer"/>.</returns>
         /// <remarks>
         /// This is not immediately usable.  Choose its proper signer with
-        /// <see cref="ChooseSigner"/> before use.
+        /// <see cref="Flush"/> before use.
         /// </remarks>
-        /// <seealso cref="ChooseSigner"/>
+        /// <seealso cref="Flush"/>
         internal static IAccountStateDelta Create(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
@@ -343,13 +343,11 @@ namespace Libplanet.State
                 delta.GetValidatorSet);
 
         /// <summary>
-        /// Creates a null delta with given <paramref name="signer"/> while inheriting
-        /// <paramref name="delta"/>s total updated fungibles.
+        /// Creates a null delta while inheriting <paramref name="delta"/>s
+        /// total updated fungibles.
         /// </summary>
         /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <param name="signer">The <see cref="Address"/> to set.</param>
-        /// <returns>A null delta with given <paramref name="signer"/> that is of the same type
-        /// as <paramref name="delta"/>.</returns>
+        /// <returns>A null delta that is of the same type as <paramref name="delta"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if given <paramref name="delta"/>
         /// is not <see cref="AccountStateDeltaImpl"/>.
         /// </exception>
@@ -357,9 +355,8 @@ namespace Libplanet.State
         /// This inherits <paramref name="delta"/>'s
         /// <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/>.
         /// </remarks>
-        internal static IAccountStateDelta ChooseSigner(
-            IAccountStateDelta delta,
-            Address signer)
+        internal static IAccountStateDelta Flush(
+            IAccountStateDelta delta)
         {
             if (delta is AccountStateDeltaImpl impl)
             {

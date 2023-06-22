@@ -1749,9 +1749,6 @@ namespace Libplanet.Tests.Blockchain
                         GenesisProposer);
                     previousStates = AccountStateDeltaImpl.Create(
                         previousStates);
-                    previousStates = AccountStateDeltaImpl.ChooseSigner(
-                        previousStates,
-                        b.Miner);
 
                     dirty = actionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);
