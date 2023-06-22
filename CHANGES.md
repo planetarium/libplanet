@@ -11,6 +11,8 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Added `BlockProtocolVersion` property to `IActionContext`.  [[#3228]]
+ -  Changed `IAccountStateDelta.TransferAsset()` to require additional
+    `IActionContext` parameter.  [[#3229]]
 
 ### Backward-incompatible network protocol changes
 
@@ -27,6 +29,7 @@ To be released.
 ### CLI tools
 
 [#3228]: https://github.com/planetarium/libplanet/pull/3228
+[#3229]: https://github.com/planetarium/libplanet/pull/3229
 
 
 Version 2.1.0
