@@ -26,6 +26,8 @@ To be released.
 
 ### CLI tools
 
+[#3228]: https://github.com/planetarium/libplanet/pull/3228
+
 
 Version 2.1.0
 -------------
