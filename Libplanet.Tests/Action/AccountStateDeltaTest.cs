@@ -116,7 +116,7 @@ namespace Libplanet.Tests.Action
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,

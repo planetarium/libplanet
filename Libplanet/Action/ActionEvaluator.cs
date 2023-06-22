@@ -392,7 +392,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = AccountStateDeltaImpl.Flush(delta);
+                delta = AccountStateDelta.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -501,7 +501,7 @@ namespace Libplanet.Action
         internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
         {
             IBlockStates blockStates = _blockChainStates.GetBlockStates(block.PreviousHash);
-            IAccountStateDelta delta = AccountStateDeltaImpl.Create(
+            IAccountStateDelta delta = AccountStateDelta.Create(
                 blockStates.GetStates,
                 blockStates.GetBalance,
                 blockStates.GetTotalSupply,
