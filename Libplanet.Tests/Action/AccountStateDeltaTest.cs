@@ -104,8 +104,7 @@ namespace Libplanet.Tests.Action
                 GetStates,
                 GetBalance,
                 GetTotalSupply,
-                GetValidatorSet,
-                _addr[0]);
+                GetValidatorSet);
             _initContext = CreateContext(
                 _initDelta, _addr[0]);
         }
@@ -116,14 +115,12 @@ namespace Libplanet.Tests.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter,
-            Address signer) =>
+            ValidatorSetGetter validatorSetGetter) =>
             new AccountStateDeltaImpl(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
-                validatorSetGetter,
-                signer);
+                validatorSetGetter);
 
         public abstract IActionContext CreateContext(
             IAccountStateDelta delta,
@@ -293,38 +290,39 @@ namespace Libplanet.Tests.Action
         public virtual void MintAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initDelta.MintAsset(_addr[0], Zero(0))
+                _initDelta.MintAsset(_initContext, _addr[0], Zero(0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initDelta.MintAsset(_addr[0], Value(0, -1))
+                _initDelta.MintAsset(_initContext, _addr[0], Value(0, -1))
             );
 
             IAccountStateDelta delta0 = _initDelta;
+            IActionContext context0 = _initContext;
             // currencies[0] (FOO) allows only _addr[0] to mint
-            delta0 = delta0.MintAsset(_addr[0], Value(0, 10));
+            delta0 = delta0.MintAsset(context0, _addr[0], Value(0, 10));
             Assert.Equal(Value(0, 15), delta0.GetBalance(_addr[0], _currencies[0]));
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint
-            delta0 = delta0.MintAsset(_addr[1], Value(1, 10));
+            delta0 = delta0.MintAsset(context0, _addr[1], Value(1, 10));
             Assert.Equal(Value(1, 25), delta0.GetBalance(_addr[1], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to mint
-            delta0 = delta0.MintAsset(_addr[2], Value(2, 10));
+            delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet);
+            IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
-                delta1.MintAsset(_addr[1], Value(0, 10))
-            );
+                delta1.MintAsset(context1, _addr[1], Value(0, 10)));
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint
-            delta1 = delta1.MintAsset(_addr[0], Value(1, 20));
+            delta1 = delta1.MintAsset(context1, _addr[0], Value(1, 20));
             Assert.Equal(Value(1, 10), delta1.GetBalance(_addr[0], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to mint
-            delta1 = delta1.MintAsset(_addr[2], Value(2, 10));
+            delta1 = delta1.MintAsset(context1, _addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[2], _currencies[2]));
         }
 
@@ -332,41 +330,42 @@ namespace Libplanet.Tests.Action
         public virtual void BurnAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initDelta.BurnAsset(_addr[0], Zero(0))
+                _initDelta.BurnAsset(_initContext, _addr[0], Zero(0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initDelta.BurnAsset(_addr[0], Value(0, -1))
+                _initDelta.BurnAsset(_initContext, _addr[0], Value(0, -1))
             );
             Assert.Throws<InsufficientBalanceException>(() =>
-                _initDelta.BurnAsset(_addr[0], Value(0, 6))
+                _initDelta.BurnAsset(_initContext, _addr[0], Value(0, 6))
             );
 
             IAccountStateDelta delta0 = _initDelta;
+            IActionContext context0 = _initContext;
             // currencies[0] (FOO) allows only _addr[0] to burn
-            delta0 = delta0.BurnAsset(_addr[0], Value(0, 4));
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 4));
             Assert.Equal(Value(0, 1), delta0.GetBalance(_addr[0], _currencies[0]));
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to burn
-            delta0 = delta0.BurnAsset(_addr[1], Value(1, 10));
+            delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 10));
             Assert.Equal(Value(1, 5), delta0.GetBalance(_addr[1], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to burn
-            delta0 = delta0.BurnAsset(_addr[1], Value(2, 10));
+            delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
             IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet, _addr[1]);
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet);
+            IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
-                delta1.BurnAsset(_addr[0], Value(0, 5))
-            );
+                delta1.BurnAsset(context1, _addr[0], Value(0, 5)));
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to burn
-            delta1 = delta1.BurnAsset(_addr[1], Value(1, 10));
+            delta1 = delta1.BurnAsset(context1, _addr[1], Value(1, 10));
             Assert.Equal(Value(1, 5), delta1.GetBalance(_addr[1], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to burn
-            delta1 = delta1.BurnAsset(_addr[1], Value(2, 10));
+            delta1 = delta1.BurnAsset(context1, _addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[1], _currencies[2]));
         }
 

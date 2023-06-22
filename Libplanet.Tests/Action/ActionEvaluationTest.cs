@@ -44,9 +44,7 @@ namespace Libplanet.Tests.Action
                         addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),
                         c => c * 0,
-                        () => new ValidatorSet(),
-                        address
-                    ),
+                        () => new ValidatorSet()),
                     123,
                     0,
                     false
@@ -57,9 +55,7 @@ namespace Libplanet.Tests.Action
                         .ToArray(),
                     (_, c) => new FungibleAssetValue(c),
                     c => c * 0,
-                    () => new ValidatorSet(),
-                    address
-                )
+                    () => new ValidatorSet())
             );
             var action = (DumbAction)evaluation.Action;
 

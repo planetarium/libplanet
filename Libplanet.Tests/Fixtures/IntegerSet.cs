@@ -174,9 +174,7 @@ namespace Libplanet.Tests.Fixtures
                 a => Chain.GetStates(a, offset),
                 (a, c) => Chain.GetBalance(a, c, offset),
                 c => Chain.GetTotalSupply(c),
-                () => Chain.GetValidatorSet(),
-                signer
-            );
+                () => Chain.GetValidatorSet());
         }
 
         public IAccountStateDelta CreateAccountStateDelta(int signerIndex, BlockHash? offset = null)
