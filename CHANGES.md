@@ -24,6 +24,9 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `IActionContext.BlockProtocolVersion` was not being set
+    properly in [#3228].
+
 ### Dependencies
 
 ### CLI tools
