@@ -2,8 +2,14 @@ import { RecordView, Value } from "@planetarium/bencodex";
 import { Address, encodeAddress } from "./address.js";
 import { encodeCurrency, FungibleAssetValue } from "./assets.js";
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export type SystemAction = Mint | Transfer;
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export function encodeSystemAction(action: SystemAction): Value {
   switch (action.type) {
     case "mint":
@@ -27,12 +33,18 @@ export function encodeSystemAction(action: SystemAction): Value {
   }
 }
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export interface Mint {
   type: "mint";
   recipient: Address;
   amount: FungibleAssetValue;
 }
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export function encodeMint(action: Mint): Value {
   return new RecordView(
     {
@@ -44,12 +56,18 @@ export function encodeMint(action: Mint): Value {
   );
 }
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export interface Transfer {
   type: "transfer";
   recipient: Address;
   amount: FungibleAssetValue;
 }
 
+/**
+ * @deprecated The system action will not work since Libplanet 1.2.0 version.
+ */
 export function encodeTransfer(action: Transfer): Value {
   return new RecordView(
     {

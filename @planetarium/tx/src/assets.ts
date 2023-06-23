@@ -17,6 +17,31 @@ export function encodeCurrency(currency: Currency): Value {
     currency.minters === null ? null : encodeAddressSet(currency.minters);
   const serialized: RecordValue = {
     ticker: currency.ticker,
+    decimalPlaces: new Uint8Array([currency.decimalPlaces]),
+    minters,
+  };
+
+  if (currency.maximumSupply !== null) {
+    if (!currency.totalSupplyTrackable) {
+      throw new TypeError("maximumSupply implies totalSupplyTrackable");
+    }
+
+    serialized.maximumSupplyMajor = currency.maximumSupply.major;
+    serialized.maximumSupplyMinor = currency.maximumSupply.minor;
+  }
+
+  if (currency.totalSupplyTrackable) {
+    serialized.totalSupplyTrackable = true;
+  }
+
+  return new RecordView(serialized, "text");
+}
+
+function encodeCurrencyForHash(currency: Currency): Value {
+  const minters: Value =
+    currency.minters === null ? null : encodeAddressSet(currency.minters);
+  const serialized: RecordValue = {
+    ticker: currency.ticker,
     decimals: BigInt(currency.decimalPlaces),
     minters,
   };
@@ -38,7 +63,7 @@ export function encodeCurrency(currency: Currency): Value {
 }
 
 export async function getCurrencyHash(currency: Currency): Promise<Uint8Array> {
-  const encoded = encode(encodeCurrency(currency));
+  const encoded = encode(encodeCurrencyForHash(currency));
   const buffer = await crypto.subtle.digest("SHA-1", encoded);
   return new Uint8Array(buffer);
 }
@@ -49,7 +74,7 @@ export interface FungibleAssetValue {
 }
 
 export function encodeFungibleAssetValue(value: FungibleAssetValue): Value[] {
-    return [encodeCurrency(value.currency), value.rawValue];
+  return [encodeCurrency(value.currency), value.rawValue];
 }
 
 function abs(value: bigint): bigint {
