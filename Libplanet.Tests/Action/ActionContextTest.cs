@@ -171,13 +171,11 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
                 ImmutableHashSet<Currency>.Empty;
 
-            public IImmutableDictionary<Address, IImmutableSet<Currency>>
-            UpdatedFungibleAssets =>
-                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+            public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
+                ImmutableHashSet<(Address, Currency)>.Empty;
 
-            public IImmutableDictionary<Address, IImmutableSet<Currency>>
-            TotalUpdatedFungibleAssets =>
-                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+            public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
+                ImmutableHashSet<(Address, Currency)>.Empty;
 
             public IValue GetState(Address address) => null;
 

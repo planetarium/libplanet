@@ -947,9 +947,11 @@ namespace Libplanet.Tests.Action
 
             // Only addresses[0] and addresses[1] succeeded in minting
             Assert.Equal(2, latest.TotalUpdatedFungibleAssets.Count);
-            Assert.Contains(addresses[0], latest.TotalUpdatedFungibleAssets.Keys);
-            Assert.Contains(addresses[1], latest.TotalUpdatedFungibleAssets.Keys);
-            Assert.DoesNotContain(addresses[2], latest.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains((addresses[0], currency), latest.TotalUpdatedFungibleAssets);
+            Assert.Contains((addresses[1], currency), latest.TotalUpdatedFungibleAssets);
+            Assert.DoesNotContain(
+                addresses[2],
+                latest.TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
         }
 
         [Fact]

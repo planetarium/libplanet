@@ -23,14 +23,12 @@ namespace Libplanet.State
 
         internal static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
             GetUpdatedBalances(this IAccountStateDelta delta) =>
-            delta.UpdatedFungibleAssets.SelectMany(kv =>
-                kv.Value.Select(currency =>
+            delta.UpdatedFungibleAssets
+                .Select(key =>
                     new KeyValuePair<(Address, Currency), FungibleAssetValue>(
-                        (kv.Key, currency),
-                        delta.GetBalance(kv.Key, currency)
-                    )
-                )
-            ).ToImmutableDictionary();
+                        key,
+                        delta.GetBalance(key.Item1, key.Item2)))
+                .ToImmutableDictionary();
 
         internal static IImmutableDictionary<Currency, FungibleAssetValue>
             GetUpdatedTotalSupplies(this IAccountStateDelta delta) =>

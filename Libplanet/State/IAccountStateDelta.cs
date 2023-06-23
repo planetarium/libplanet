@@ -60,7 +60,7 @@ namespace Libplanet.State
         /// <c>{ [A] = { FOO }, [B] = { FOO, BAR }, [C] = { BAR } }</c>.</para>
         /// </summary>
         [Pure]
-        IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
+        IImmutableSet<(Address, Currency)> UpdatedFungibleAssets { get; }
 
         /// <summary>
         /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
@@ -71,7 +71,7 @@ namespace Libplanet.State
         /// <see cref="Block.ProtocolVersion"/> zero.
         /// </remarks>
         [Pure]
-        IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets { get; }
+        IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
 
         /// <summary>
         /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
