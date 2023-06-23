@@ -666,7 +666,7 @@ Released on April 18, 2023.
 
     For example:
 
-    ~~~~ json
+    ~~~~
     {
        // ... other fields
        "actions": {
@@ -680,7 +680,7 @@ Released on April 18, 2023.
 
     Instead of:
 
-    ~~~~ json
+    ~~~~
     {
        // ... other fields
       "systemAction": {
