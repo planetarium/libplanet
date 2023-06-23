@@ -10,6 +10,13 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed the type for `IAccountStateDelta.UpdatedFungibleAssets`
+    to `IImmutableSet<(Address, Currency)>`
+    from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
+ -  Changed the type for `IAccountStateDelta.TotalUpdatedFungibleAssets`
+    to `IImmutableSet<(Address, Currency)>`
+    from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +30,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3244]: https://github.com/planetarium/libplanet/pull/3244
 
 
 Version 2.2.0

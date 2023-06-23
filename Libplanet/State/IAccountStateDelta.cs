@@ -53,25 +53,31 @@ namespace Libplanet.State
         IImmutableSet<Address> StateUpdatedAddresses { get; }
 
         /// <summary>
-        /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
-        /// been updated since then.
-        /// <para>For example, if A transfers 10 FOO to B and B transfers 20 BAR to C,
+        /// <para>
+        /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
+        /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed.
+        /// </para>
+        /// <para>
+        /// For example, if A transfers 10 FOO to B and B transfers 20 BAR to C,
         /// <see cref="UpdatedFungibleAssets"/> become likes
-        /// <c>{ [A] = { FOO }, [B] = { FOO, BAR }, [C] = { BAR } }</c>.</para>
+        /// <c>{ (A, FOO), (B, FOO), (B, BAR), (C, BAR) }</c>.
+        /// </para>
+        /// <para>
+        /// Furthermore, this represents any pair that has been "touched", i.e.,
+        /// if A transfers 10 FOO to B and B transfers 10 FOO back to A,
+        /// this becomes <c>{ (A, FOO), (B, BAR) }</c> not an empty set.
+        /// </para>
         /// </summary>
         [Pure]
-        IImmutableDictionary<Address, IImmutableSet<Currency>> UpdatedFungibleAssets { get; }
+        IImmutableSet<(Address, Currency)> UpdatedFungibleAssets { get; }
 
         /// <summary>
-        /// The set of <see cref="Address"/>es and associated sets of <see cref="Currency"/>
-        /// that have been updated since the previous <see cref="Block"/>'s output states.
+        /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
+        /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed
+        /// since the previous <see cref="Block"/>'s output states.
         /// </summary>
-        /// <remarks>
-        /// Due to a bug in old implementation, this does not work properly under
-        /// <see cref="Block.ProtocolVersion"/> zero.
-        /// </remarks>
         [Pure]
-        IImmutableDictionary<Address, IImmutableSet<Currency>> TotalUpdatedFungibleAssets { get; }
+        IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
 
         /// <summary>
         /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.

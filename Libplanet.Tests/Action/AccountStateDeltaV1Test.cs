@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -156,20 +157,22 @@ namespace Libplanet.Tests.Action
 
             // currencies[0] (FOO) allows only _addr[0] to burn
             delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 1));
-            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
-            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+            Assert.Contains(
+                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
-                Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
+                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
 
             // Forcefully create null delta
             delta0 = AccountStateDelta.Flush(delta0);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
             delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
-            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
-            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
-            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
-            Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(
+                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
+            Assert.Contains(
+                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
+            Assert.DoesNotContain(
+                _addr[1], delta0.TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
 
             // Forcefully create null delta
             delta0 = AccountStateDelta.Flush(delta0);
@@ -178,13 +181,14 @@ namespace Libplanet.Tests.Action
 
             // _addr[0] burned currencies[0] & minted currencies[1]
             // _addr[1] burned currencies[1]
-            Assert.Contains(_addr[0], delta0.TotalUpdatedFungibleAssets.Keys);
-            Assert.Contains(Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
-            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
-            Assert.Contains(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
+            Assert.Contains(
+                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
+            Assert.Contains(
+                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
-                Value(0, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[1]]);
-            Assert.Contains(Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[1]]);
+                (_addr[1], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
+            Assert.Contains(
+                (_addr[1], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
         }
     }
 }

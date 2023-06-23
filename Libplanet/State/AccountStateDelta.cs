@@ -55,20 +55,12 @@ namespace Libplanet.State
             UpdatedStates.Keys.ToImmutableHashSet();
 
         /// <inheritdoc/>
-        IImmutableDictionary<Address, IImmutableSet<Currency>>
-            IAccountStateDelta.UpdatedFungibleAssets => UpdatedFungibles
-                .GroupBy(kv => kv.Key.Item1, kv => kv.Key.Item2)
-                .ToImmutableDictionary(
-                    group => group.Key,
-                    group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
+        IImmutableSet<(Address, Currency)> IAccountStateDelta.UpdatedFungibleAssets =>
+            UpdatedFungibles.Keys.ToImmutableHashSet();
 
         /// <inheritdoc/>
-        IImmutableDictionary<Address, IImmutableSet<Currency>>
-            IAccountStateDelta.TotalUpdatedFungibleAssets => TotalUpdatedFungibles
-                .GroupBy(kv => kv.Key.Item1, kv => kv.Key.Item2)
-                .ToImmutableDictionary(
-                    group => group.Key,
-                    group => (IImmutableSet<Currency>)group.ToImmutableHashSet());
+        IImmutableSet<(Address, Currency)> IAccountStateDelta.TotalUpdatedFungibleAssets =>
+            TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
         [Pure]
         IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
