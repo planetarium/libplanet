@@ -4,9 +4,7 @@ Libplanet changelog
 Version 2.2.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 23, 2023.
 
 ### Backward-incompatible API changes
 
@@ -17,22 +15,10 @@ To be released.
     `IAccountStateDelta.BurnAsset()` to each require an additional
     `IActionContext` parameter.  [[#3231]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
 ### Bug fixes
 
  -  Fixed a bug where `IActionContext.BlockProtocolVersion` was not being set
     properly in [#3228].
-
-### Dependencies
-
-### CLI tools
 
 [#3228]: https://github.com/planetarium/libplanet/pull/3228
 [#3229]: https://github.com/planetarium/libplanet/pull/3229
