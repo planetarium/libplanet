@@ -462,7 +462,7 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                // Neeed to get txs from store, lock?
+                // Need to get txs from store, lock?
                 // TODO: Remove ChainId, enhancing lock management.
                 _blockChain._rwlock.EnterUpgradeableReadLock();
                 IReadOnlyList<IActionEvaluation> actionEvaluations;

@@ -156,7 +156,7 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Timing safe comparision of two byte arrays.
+        /// Timing safe comparison of two byte arrays.
         /// </summary>
         /// <remarks>In case of two byte arrays do not have the same length, it tries to keep
         /// the timing dependent on the length of the shorter one.</remarks>

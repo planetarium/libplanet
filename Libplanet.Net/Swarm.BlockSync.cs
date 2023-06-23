@@ -227,7 +227,7 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}()";
+                    $"Unexpected exception occurred during {nameof(PullBlocksAsync)}()";
                 _logger.Error(e, msg);
                 FillBlocksAsyncFailed.Set();
             }

@@ -11,7 +11,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// Marshaling and unmarshaling block data.
+    /// Marshaling and unmarshalling block data.
     /// </summary>
     public static class BlockMarshaler
     {

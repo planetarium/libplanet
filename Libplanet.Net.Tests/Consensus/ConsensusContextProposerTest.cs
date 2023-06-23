@@ -36,9 +36,9 @@ namespace Libplanet.Net.Tests.Consensus
 
             var timeoutProcessed = new AsyncAutoResetEvent();
 
-            consensusContext.TimeoutProcessed += (_, evnetArgs) =>
+            consensusContext.TimeoutProcessed += (_, eventArgs) =>
             {
-                if (evnetArgs.Height == 1)
+                if (eventArgs.Height == 1)
                 {
                     timeoutProcessed.Set();
                 }

@@ -29,7 +29,7 @@ namespace Libplanet.Blocks
         /// <param name="height">The <see cref="Block.Index"/> of the last committed
         /// <see cref="Block"/>.</param>
         /// <param name="round">The round in which a consensus was reached.</param>
-        /// <param name="blockHash">The <see cref="Block.Hash"/> of the last commited
+        /// <param name="blockHash">The <see cref="Block.Hash"/> of the last committed
         /// <see cref="Block"/>.</param>
         /// <param name="votes">The set of <see cref="Vote"/>s as a proof for the commit
         /// of the last <see cref="Block"/>.</param>

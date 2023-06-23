@@ -102,7 +102,7 @@ namespace Libplanet.Blocks
         /// <see cref="BlockMetadata"/>.  All other public constructors are redirected to this one.
         /// </summary>
         /// <remarks>
-        /// Except for debuggin and/or testing purposes, this shouldn't be called directly.
+        /// Except for debugging and/or testing purposes, this shouldn't be called directly.
         /// </remarks>
         /// <param name="protocolVersion">Goes to <see cref="IBlockMetadata.ProtocolVersion"/>.
         /// </param>

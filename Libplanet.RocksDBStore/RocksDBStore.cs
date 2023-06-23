@@ -163,9 +163,9 @@ namespace Libplanet.RocksDBStore
         /// option.</param>
         /// <param name="maxLogFileSize">The number to configure <c>max_log_file_size</c>
         /// RocksDB option.</param>
-        /// <param name="txEpochUnitSeconds">The interval between epochs of DB partions containing
+        /// <param name="txEpochUnitSeconds">The interval between epochs of DB partitions containing
         /// transactions.  86,400 seconds by default.</param>
-        /// <param name="blockEpochUnitSeconds">The interval between epochs of DB partions
+        /// <param name="blockEpochUnitSeconds">The interval between epochs of DB partitions
         /// containing blocks.  86,400 seconds by default.</param>
         /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
         /// RocksDB connection cache. 100 by default.</param>

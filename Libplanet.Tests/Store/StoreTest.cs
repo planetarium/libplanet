@@ -127,7 +127,7 @@ namespace Libplanet.Tests.Store
             Guid chainB = Guid.NewGuid();
             Guid chainC = Guid.NewGuid();
 
-            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // We need `Block<T>`s because `IStore` can't retrieve index(long) by block hash without
             // actual block...
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
@@ -225,7 +225,7 @@ namespace Libplanet.Tests.Store
             Guid chainB = Guid.NewGuid();
             Guid chainC = Guid.NewGuid();
 
-            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // We need `Block<T>`s because `IStore` can't retrieve index(long) by block hash without
             // actual block...
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
@@ -290,7 +290,7 @@ namespace Libplanet.Tests.Store
             Guid chainB = Guid.NewGuid();
             Guid chainC = Guid.NewGuid();
 
-            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // We need `Block<T>`s because `IStore` can't retrieve index(long) by block hash without
             // actual block...
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
@@ -830,7 +830,7 @@ namespace Libplanet.Tests.Store
             Guid chainB = Guid.NewGuid();
             Guid chainC = Guid.NewGuid();
 
-            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // We need `Block<T>`s because `IStore` can't retrieve index(long) by block hash without
             // actual block...
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
@@ -973,7 +973,7 @@ namespace Libplanet.Tests.Store
             Guid chainA = Guid.NewGuid();
             Guid chainB = Guid.NewGuid();
 
-            // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
+            // We need `Block<T>`s because `IStore` can't retrieve index(long) by block hash without
             // actual block...
             Block anotherBlock3 = ProposeNextBlock(
                 Fx.Block2,
