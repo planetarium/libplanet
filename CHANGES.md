@@ -2830,8 +2830,6 @@ Released on May 30th, 2022.
  -  (Libplanet.Net) Added `PreloadOptions` property to `SwarmOptions`.
     [[#2025]]
 
-### CLI tools
-
 [#2024]: https://github.com/planetarium/libplanet/pull/2024
 [#2025]: https://github.com/planetarium/libplanet/pull/2025
 [#2026]: https://github.com/planetarium/libplanet/pull/2026
@@ -2903,8 +2901,6 @@ Released on May 25th, 2022.
     present.  Instead, it silently returns an empty string now.  [[#1978]]
  -  Fixed a `TxId(byte[])` constructor's bug where `ParamName` and `Message` of
     `ArgumentOutOfRangeException` it had thrown had been reversed.  [[#1978]]
-
-### CLI tools
 
 [#1974]: https://github.com/planetarium/libplanet/issues/1974
 [#1978]: https://github.com/planetarium/libplanet/pull/1978
@@ -3102,8 +3098,6 @@ Released on April 19th, 2022.
 
  -  No longer depends on *Fody*.  [[#1866], [#1891]]
  -  No longer depends on *Equals.Fody*.  [[#1866], [#1891]]
-
-### CLI tools
 
 [#1866]: https://github.com/planetarium/libplanet/issues/1866
 [#1891]: https://github.com/planetarium/libplanet/pull/1891
@@ -4937,8 +4931,6 @@ Released on August 25, 2021.
     the peer that has chain with higher difficulty, but lower index.
     [[#1419], [#1425]]
 
-### CLI tools
-
 [#1419]: https://github.com/planetarium/libplanet/issues/1419
 [#1425]: https://github.com/planetarium/libplanet/pull/1425
 [#1430]: https://github.com/planetarium/libplanet/pull/1430
@@ -5083,8 +5075,6 @@ Released on July 28, 2021.
 
  -  Fixed a bug where `Swarm<T>` had stopped when `ObjectDisposedException`
     is thrown during `NetMQTransport.DoBroadcast()`.  [[#1362], [#1365]]
-
-### CLI tools
 
 [#1362]: https://github.com/planetarium/libplanet/issues/1362
 [#1365]: https://github.com/planetarium/libplanet/pull/1365

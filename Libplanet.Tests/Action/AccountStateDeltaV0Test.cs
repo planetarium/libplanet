@@ -9,9 +9,9 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public class AccountStateDeltaImplV0Test : AccountStateDeltaTest
+    public class AccountStateDeltaV0Test : AccountStateDeltaTest
     {
-        public AccountStateDeltaImplV0Test(ITestOutputHelper output)
+        public AccountStateDeltaV0Test(ITestOutputHelper output)
             : base(output)
         {
         }

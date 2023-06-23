@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Action
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    new AccountStateDeltaImpl(
+                    new AccountStateDelta(
                         addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),
                         c => c * 0,
@@ -49,7 +49,7 @@ namespace Libplanet.Tests.Action
                     0,
                     false
                 ),
-                new AccountStateDeltaImpl(
+                new AccountStateDelta(
                     addrs => addrs
                         .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)
                         .ToArray(),

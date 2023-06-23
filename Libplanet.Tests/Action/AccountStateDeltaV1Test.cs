@@ -11,9 +11,9 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public class AccountStateDeltaImplTest : AccountStateDeltaTest
+    public class AccountStateDeltaV1Test : AccountStateDeltaTest
     {
-        public AccountStateDeltaImplTest(ITestOutputHelper output)
+        public AccountStateDeltaV1Test(ITestOutputHelper output)
             : base(output)
         {
         }
@@ -162,7 +162,7 @@ namespace Libplanet.Tests.Action
                 Value(1, 0).Currency, delta0.TotalUpdatedFungibleAssets[_addr[0]]);
 
             // Forcefully create null delta
-            delta0 = AccountStateDeltaImpl.Flush(delta0);
+            delta0 = AccountStateDelta.Flush(delta0);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
             delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
@@ -172,7 +172,7 @@ namespace Libplanet.Tests.Action
             Assert.DoesNotContain(_addr[1], delta0.TotalUpdatedFungibleAssets.Keys);
 
             // Forcefully create null delta
-            delta0 = AccountStateDeltaImpl.Flush(delta0);
+            delta0 = AccountStateDelta.Flush(delta0);
             context0 = CreateContext(delta0, _addr[1]);
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));
 

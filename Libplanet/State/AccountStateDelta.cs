@@ -15,7 +15,7 @@ namespace Libplanet.State
     /// An internal implementation of <see cref="IAccountStateDelta"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDeltaImpl : IValidatorSupportStateDelta, IAccountStateDelta
+    internal class AccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
     {
         /// <summary>
         /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
@@ -27,7 +27,7 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        internal AccountStateDeltaImpl(
+        internal AccountStateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
@@ -308,9 +308,9 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <returns>A null delta of type <see cref="AccountStateDeltaImpl"/>
+        /// <returns>A null delta of type <see cref="AccountStateDelta"/>
         /// with <see langword="default"/> <see cref="Address"/> as its
-        /// <see cref="AccountStateDeltaImpl.Signer"/>.</returns>
+        /// <see cref="AccountStateDelta.Signer"/>.</returns>
         /// <remarks>
         /// This is not immediately usable.  Choose its proper signer with
         /// <see cref="Flush"/> before use.
@@ -322,7 +322,7 @@ namespace Libplanet.State
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter)
         {
-            return new AccountStateDeltaImpl(
+            return new AccountStateDelta(
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
@@ -336,7 +336,7 @@ namespace Libplanet.State
         /// <returns>A null delta made from <paramref name="delta"/>.</returns>
         internal static IAccountStateDelta Create(
             IAccountStateDelta delta) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 delta.GetStates,
                 delta.GetBalance,
                 delta.GetTotalSupply,
@@ -349,7 +349,7 @@ namespace Libplanet.State
         /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
         /// <returns>A null delta that is of the same type as <paramref name="delta"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if given <paramref name="delta"/>
-        /// is not <see cref="AccountStateDeltaImpl"/>.
+        /// is not <see cref="AccountStateDelta"/>.
         /// </exception>
         /// <remarks>
         /// This inherits <paramref name="delta"/>'s
@@ -358,9 +358,9 @@ namespace Libplanet.State
         internal static IAccountStateDelta Flush(
             IAccountStateDelta delta)
         {
-            if (delta is AccountStateDeltaImpl impl)
+            if (delta is AccountStateDelta impl)
             {
-                return new AccountStateDeltaImpl(
+                return new AccountStateDelta(
                     delta.GetStates,
                     delta.GetBalance,
                     delta.GetTotalSupply,
@@ -386,10 +386,10 @@ namespace Libplanet.State
                 : BalanceGetter(address, currency);
 
         [Pure]
-        private AccountStateDeltaImpl UpdateStates(
+        private AccountStateDelta UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
@@ -403,7 +403,7 @@ namespace Libplanet.State
             };
 
         [Pure]
-        private AccountStateDeltaImpl UpdateFungibleAssets(
+        private AccountStateDelta UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
         ) =>
@@ -414,12 +414,12 @@ namespace Libplanet.State
             );
 
         [Pure]
-        private AccountStateDeltaImpl UpdateFungibleAssets(
+        private AccountStateDelta UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles,
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
         ) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,
@@ -433,10 +433,10 @@ namespace Libplanet.State
             };
 
         [Pure]
-        private AccountStateDeltaImpl UpdateValidatorSet(
+        private AccountStateDelta UpdateValidatorSet(
             ValidatorSet updatedValidatorSet
         ) =>
-            new AccountStateDeltaImpl(
+            new AccountStateDelta(
                 StateGetter,
                 BalanceGetter,
                 TotalSupplyGetter,

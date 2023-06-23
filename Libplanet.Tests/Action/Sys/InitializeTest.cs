@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            var prevStates = new AccountStateDeltaImpl(
+            var prevStates = new AccountStateDelta(
                 accountStateGetter: _ => new List(),
                 accountBalanceGetter: (_, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            var prevStates = new AccountStateDeltaImpl(
+            var prevStates = new AccountStateDelta(
                 accountStateGetter: _ => new List(),
                 accountBalanceGetter: (_, c) => c * 0,
                 totalSupplyGetter: c => c * 0,
