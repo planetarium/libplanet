@@ -30,12 +30,13 @@ To be released.
      -  Removed `SystemAction` type.
      -  Removed `Mint` type.
      -  Removed `Transfer` type.
+     -  Added `encodeUnsignedTx()` function.
      -  Added `UnsignedTx` type.
      -  `signTx(UnsignedTxWithCustomActions | UnsignedTxWithSystemAction)`
         function's signature became `signTx(UnsignedTx)`.
      -  `SignedTx<T extends UnsignedTxWithCustomActions |
          UnsignedTxWithSystemAction>`'s signature became 
-         `SignedTx<T extends UnsignedTx`.
+         `SignedTx<T extends UnsignedTx>`.
 
 ### Backward-incompatible network protocol changes
 
