@@ -29,6 +29,9 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockStates.BlockHash"/>
         public BlockHash? BlockHash => _blockHash;
 
+        /// <inheritdoc cref="IBlockStates.GetState"/>
+        public IValue? GetState(Address address) => GetStates(new[] { address }).First();
+
         /// <inheritdoc cref="IBlockStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {

@@ -15,6 +15,10 @@ namespace Libplanet.Blockchain
         {
         }
 
+        public IValue? GetState(
+            Address address, BlockHash? offset) =>
+            GetBlockStates(offset).GetState(address);
+
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
             GetBlockStates(offset).GetStates(addresses);
@@ -42,6 +46,8 @@ namespace Libplanet.Blockchain
         }
 
         public BlockHash? BlockHash { get; }
+
+        public IValue? GetState(Address address) => null;
 
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
             new IValue?[addresses.Count];

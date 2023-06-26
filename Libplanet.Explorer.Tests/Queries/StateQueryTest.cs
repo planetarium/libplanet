@@ -175,6 +175,9 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
+        public IValue GetState(Address address, BlockHash? offset) =>
+            GetBlockStates(offset).GetState(address);
+
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
             GetBlockStates(offset).GetStates(addresses);
@@ -200,6 +203,8 @@ public class StateQueryTest
         }
 
         public BlockHash? BlockHash { get; }
+
+        public IValue GetState(Address address) => GetStates(new[] { address }).First();
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
             BlockHash is { } _
