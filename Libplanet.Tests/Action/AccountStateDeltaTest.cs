@@ -159,11 +159,11 @@ namespace Libplanet.Tests.Action
             Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.StateUpdatedAddresses);
             Assert.Equal(a.StateUpdatedAddresses, a.UpdatedAddresses);
             Assert.Empty(a.UpdatedFungibleAssets);
-            Assert.Empty(a.TotalSupplyUpdatedCurrencies);
+            Assert.Empty(a.UpdatedTotalSupplyCurrencies);
             Assert.Empty(_initDelta.UpdatedAddresses);
             Assert.Empty(_initDelta.StateUpdatedAddresses);
             Assert.Empty(_initDelta.UpdatedFungibleAssets);
-            Assert.Empty(_initDelta.TotalSupplyUpdatedCurrencies);
+            Assert.Empty(_initDelta.UpdatedTotalSupplyCurrencies);
 
             IAccountStateDelta b = a.SetState(_addr[0], (Text)"z");
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
@@ -211,7 +211,7 @@ namespace Libplanet.Tests.Action
             Assert.Empty(_initDelta.UpdatedAddresses);
             Assert.Empty(_initDelta.StateUpdatedAddresses);
             Assert.Empty(_initDelta.UpdatedFungibleAssets);
-            Assert.Empty(_initDelta.TotalSupplyUpdatedCurrencies);
+            Assert.Empty(_initDelta.UpdatedTotalSupplyCurrencies);
         }
 
         [Fact]

@@ -62,7 +62,7 @@ namespace Libplanet.State
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
         [Pure]
-        public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
+        public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
             Delta.UpdatedTotalSupplyCurrencies;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles

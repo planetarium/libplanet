@@ -169,7 +169,7 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> StateUpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
-            public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
+            public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
                 ImmutableHashSet<Currency>.Empty;
 
             public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>

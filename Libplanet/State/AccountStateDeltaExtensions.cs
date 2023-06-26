@@ -9,67 +9,53 @@ namespace Libplanet.State
 {
     internal static class AccountStateDeltaExtensions
     {
-        internal static IImmutableDictionary<Address, IValue?> GetUpdatedStates(
-            this IAccountStateDelta delta
-        )
-        {
-            return delta.StateUpdatedAddresses.Select(address =>
-                new KeyValuePair<Address, IValue?>(
-                    address,
-                    delta.GetState(address)
-                )
-            ).ToImmutableDictionary();
-        }
+        internal static IImmutableDictionary<Address, IValue> GetUpdatedStates(
+            this IAccountStateDelta stateDelta) => stateDelta.Delta.States;
 
         internal static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
-            GetUpdatedBalances(this IAccountStateDelta delta) =>
-            delta.UpdatedFungibleAssets
-                .Select(key =>
-                    new KeyValuePair<(Address, Currency), FungibleAssetValue>(
-                        key,
-                        delta.GetBalance(key.Item1, key.Item2)))
-                .ToImmutableDictionary();
+            GetUpdatedBalances(this IAccountStateDelta stateDelta) =>
+            stateDelta.Delta.Fungibles.ToImmutableDictionary(
+                kv => kv.Key,
+                kv => FungibleAssetValue.FromRawValue(kv.Key.Item2, kv.Value));
 
         internal static IImmutableDictionary<Currency, FungibleAssetValue>
-            GetUpdatedTotalSupplies(this IAccountStateDelta delta) =>
-            delta.TotalSupplyUpdatedCurrencies.Select(currency =>
-                    new KeyValuePair<Currency, FungibleAssetValue>(
-                        currency,
-                        delta.GetTotalSupply(currency)))
-                .ToImmutableDictionary();
+            GetUpdatedTotalSupplies(this IAccountStateDelta stateDelta) =>
+            stateDelta.Delta.TotalSupplies.ToImmutableDictionary(
+                kv => kv.Key,
+                kv => FungibleAssetValue.FromRawValue(kv.Key, kv.Value));
 
         internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(
-            this IAccountStateDelta delta)
+            this IAccountStateDelta stateDelta)
         {
-            var dict = delta.GetUpdatedStates()
+            var dict = stateDelta.GetUpdatedStates()
                 .Select(
                     pair =>
                         new KeyValuePair<string, IValue?>(
                             ToStateKey(pair.Key),
                             pair.Value))
                 .Union(
-                    delta.GetUpdatedBalances()
+                    stateDelta.GetUpdatedBalances()
                         .Select(
                             pair =>
                                 new KeyValuePair<string, IValue?>(
                                     ToFungibleAssetKey(pair.Key),
                                     (Integer)pair.Value.RawValue)))
                 .Union(
-                    delta.GetUpdatedTotalSupplies()
+                    stateDelta.GetUpdatedTotalSupplies()
                         .Select(
                             pair =>
                                 new KeyValuePair<string, IValue?>(
                                     ToTotalSupplyKey(pair.Key),
                                     (Integer)pair.Value.RawValue)));
 
-            if (delta.GetValidatorSet().Validators.Any())
+            if (stateDelta.GetValidatorSet().Validators.Any())
             {
                 dict = dict.Union(
                     new[]
                     {
                         new KeyValuePair<string, IValue?>(
                             ValidatorSetKey,
-                            delta.GetValidatorSet().Bencoded),
+                            stateDelta.GetValidatorSet().Bencoded),
                     });
             }
 
