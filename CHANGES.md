@@ -42,6 +42,11 @@ To be released.
  -  Added `IAccountStateDeltaView.GetValidatorSet()` interface method.
     [[#3247]]
  -  Added `IAccountStateDelta.SetValidator()` interface method.  [[#3247]]
+ -  Changed the name `IAccountStateDelta.TotalSupplyUpdatedCurrencies` to
+    `IAccountStateDelta.UpdatedTotalSupplyCurrencies`.  [[#3248]]
+ -  Changed `TxSuccess.UpdatedStates`'s type to
+    `IImmutableDictionary<Address, IValue>` from
+    `IImmutableDictionary<Address, IValue?>`.  [[#3248]]
 
 ### Backward-incompatible network protocol changes
 
