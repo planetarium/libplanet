@@ -28,7 +28,7 @@ namespace Libplanet.State
     /// </item>
     /// </list>
     /// </summary>
-    public interface IAccountStateView
+    public interface IAccountState
     {
         /// <summary>
         /// Gets the account state of the given <paramref name="address"/>.

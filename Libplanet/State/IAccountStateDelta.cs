@@ -38,7 +38,7 @@ namespace Libplanet.State
     /// method does not manipulate the instance, but returns a new
     /// <see cref="IAccountStateDelta"/> instance with updated states.
     /// </remarks>
-    public interface IAccountStateDelta : IAccountStateView
+    public interface IAccountStateDelta : IAccountState
     {
         /// <summary>
         /// The <see cref="IAccountDelta"/> representing the delta part of
