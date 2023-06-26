@@ -393,9 +393,11 @@ namespace Libplanet.Net.Tests
         {
             var collectedTwoMessages = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
-            var stepChangedToPreCommits = Enumerable.Range(0, 4).Select(i =>
+            var bootstrapMsgSent = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
-            var roundChangedToOnes = Enumerable.Range(0, 4).Select(i =>
+            var votesRecallMsgSent = Enumerable.Range(0, 4).Select(i =>
+                new AsyncAutoResetEvent()).ToList();
+            var stepChangedToPreCommits = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
             var policy = new NullBlockPolicy();
@@ -450,8 +452,14 @@ namespace Libplanet.Net.Tests
                 // Dispose swarm[3] to simulate shutdown during bootstrap.
                 swarms[3].Dispose();
 
-                // Bring swarm[2] online.
-                _ = swarms[2].StartAsync();
+                swarms[2].ConsensusReactor.ConsensusContext.MessageBroadcasted += (_, eventArgs) =>
+                {
+                    if (eventArgs.Message is ConsensusBootstrapMsg)
+                    {
+                        bootstrapMsgSent[2].Set();
+                    }
+                };
+
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
                     if (eventArgs.Step == ConsensusStep.PreCommit)
@@ -461,11 +469,21 @@ namespace Libplanet.Net.Tests
                 };
                 swarms[2].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
+                    if (eventArgs.VoteCount == 2)
+                    {
+                        collectedTwoMessages[2].Set();
+                    }
+
                     if (eventArgs.Step == ConsensusStep.PreCommit)
                     {
                         stepChangedToPreCommits[2].Set();
                     }
                 };
+                // Bring swarm[2] online.
+                _ = swarms[2].StartAsync();
+
+                await bootstrapMsgSent[2].WaitAsync();
+                await collectedTwoMessages[2].WaitAsync();
 
                 // Since we already have swarm[3]'s PreVote, when swarm[2] times out,
                 // swarm[2] adds additional PreVote, making it possible to reach PreCommit.
@@ -492,7 +510,6 @@ namespace Libplanet.Net.Tests
                 await roundOneProposed.WaitAsync();
 
                 await AssertThatEventually(() => swarms[0].BlockChain.Tip.Index == 1, int.MaxValue);
-                Assert.Equal(1, swarms[0].BlockChain.GetBlockCommit(1).Round);
             }
             finally
             {

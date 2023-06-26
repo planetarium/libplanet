@@ -105,6 +105,7 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private bool _bootstrapping;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -178,6 +179,7 @@ namespace Libplanet.Net.Consensus
             _validRound = -1;
             _decision = null;
             _committedRound = -1;
+            _bootstrapping = false;
             _blockChain = blockChain;
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
@@ -249,6 +251,70 @@ namespace Libplanet.Net.Consensus
                 _decision,
                 blockCommit);
             return blockCommit;
+        }
+
+        /// <summary>
+        /// Get <see cref="VotesRecall"/> containing <see cref="Vote"/>s
+        /// from <see cref="_heightVoteSet"/>  to respond <see cref="ConsensusBootstrapMsg"/>.
+        /// Round of returned <see cref="VotesRecall"/> is equal to <paramref name="round"/> + 1,
+        /// if <paramref name="round"/> is less than <see cref="Round"/>.
+        /// else, equal to <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">Round of requested <see cref="ConsensusBootstrapMsg"/>.</param>
+        /// <returns><see cref="VotesRecall"/> containing <see cref="Vote"/>s of proper
+        /// round.</returns>
+        public VotesRecall GetVotesRecall(int round)
+        {
+            ImmutableHashSet<Vote> votes;
+            if (round < Round)
+            {
+                round++;
+            }
+
+            votes = _heightVoteSet.PreVotes(round).List().Concat(
+                _heightVoteSet.PreCommits(round).List()).ToImmutableHashSet();
+
+            return new VotesRecallMetadata(
+                Height,
+                round,
+                DateTimeOffset.UtcNow,
+                _privateKey.PublicKey,
+                votes).Sign(_privateKey);
+        }
+
+        /// <summary>
+        /// Catch up <see cref="Round"/>s with given <paramref name="votesRecall"/>.
+        /// It only accepts <see cref="Vote"/>s those rounds are less than <see cref="Round"/> + 1.
+        /// </summary>
+        /// <param name="votesRecall">Received <see cref="VotesRecall"/> from peer
+        /// <see cref="Validator"/>.</param>
+        public void CatchupWithVotesRecall(VotesRecall votesRecall)
+        {
+            _logger.Debug(
+                "Catch up consensus with VotesRecall contains {count} votes : {votesRecall}",
+                votesRecall.Votes.Count,
+                votesRecall);
+            foreach (Vote vote in votesRecall.Votes)
+            {
+                if (vote.Round > Round + 1)
+                {
+                    _logger.Debug(
+                        "Round of vote {voteRound} is higher than {round} + 1",
+                        vote.Round,
+                        Round);
+                    continue;
+                }
+
+                try
+                {
+                    _heightVoteSet.AddVote(vote);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e.Message);
+                    continue;
+                }
+            }
         }
 
         /// <summary>

@@ -25,6 +25,14 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Round = round;
             _heightVoteSet.SetRound(round);
+            if (_bootstrapping)
+            {
+                Bootstrap bootstrap = new BootstrapMetadata(
+                    Height, round, DateTimeOffset.UtcNow, _privateKey.PublicKey).Sign(_privateKey);
+                BroadcastMessage(
+                    new ConsensusBootstrapMsg(bootstrap));
+            }
+
             Proposal = null;
             Step = ConsensusStep.Propose;
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
@@ -119,6 +127,25 @@ namespace Libplanet.Net.Consensus
                         voteMsg.Round,
                         voteMsg.ValidatorPublicKey.ToAddress(),
                         voteMsg.BlockHash,
+                        ToString());
+                }
+                else
+                {
+                    switch (message)
+                    {
+                        case ConsensusVotesRecallMsg votesRecall:
+                            CatchupWithVotesRecall(votesRecall.VotesRecall);
+                            break;
+                    }
+
+                    _logger.Debug(
+                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                        "Validator Address: {VAddress}. (context: {Context})",
+                        nameof(AddMessage),
+                        message,
+                        message.Height,
+                        message.Round,
+                        message.ValidatorPublicKey.ToAddress(),
                         ToString());
                 }
 

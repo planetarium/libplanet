@@ -120,6 +120,16 @@ namespace Libplanet.Net.Messages
             /// Consensus commit message.
             /// </summary>
             ConsensusCommit = 0x52,
+
+            /// <summary>
+            /// Message that informs peer is on bootstrapping to other peer.
+            /// </summary>
+            BootstrapMsg = 0x56,
+
+            /// <summary>
+            /// Message that helps peer by recalling past votes.
+            /// </summary>
+            VotesRecallMsg = 0x57,
         }
 
         /// <summary>

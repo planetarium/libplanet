@@ -160,6 +160,32 @@ namespace Libplanet.Net.Consensus
         {
             switch (content)
             {
+                case ConsensusBootstrapMsg bootstrapMsg:
+                    // NOTE: bootstrapMsg won't be added via `AddMessage()`,
+                    // and won't trigger mutation.
+                    try
+                    {
+                        var reply = _consensusContext.HandleBootstrap(bootstrapMsg);
+                        if (reply is null || reply.Votes.Count < 1)
+                        {
+                            _logger.Debug(
+                                "Cannot respond received ConsensusBootstrapMsg message " +
+                                "{Message} since there is no corresponding votes");
+                            break;
+                        }
+
+                        _gossip.PublishMessage(new ConsensusVotesRecallMsg(reply));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusBootstrapMsg message " +
+                            "{Message} since there is no corresponding peer in the table",
+                            bootstrapMsg);
+                    }
+
+                    break;
+
                 case ConsensusMsg consensusMsg:
                     _consensusContext.HandleMessage(consensusMsg);
                     break;

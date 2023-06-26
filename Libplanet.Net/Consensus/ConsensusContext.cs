@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -263,6 +264,78 @@ namespace Libplanet.Net.Consensus
                 }
 
                 _contexts[height].ProduceMessage(consensusMessage);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Handles a received <see cref="ConsensusBootstrapMsg"/>
+        /// and return <see cref="VotesRecall"/> to send as a reply.
+        /// </summary>
+        /// <param name="bootstrapMsg">The <see cref="ConsensusBootstrapMsg"/>
+        /// received from bootstrapping validator.
+        /// </param>
+        /// <returns>
+        /// A nullable <see cref="VotesRecall"/> to reply back.
+        /// </returns>
+        public VotesRecall? HandleBootstrap(ConsensusBootstrapMsg bootstrapMsg)
+        {
+            long height = bootstrapMsg.Bootstrap.Height;
+            int round = bootstrapMsg.Bootstrap.Round;
+            if (height < Height)
+            {
+                _logger.Debug(
+                    "Ignore a received Bootstrap as its height " +
+                    "#{Height} is lower than the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    if (_contexts.ContainsKey(height))
+                    {
+                        return _contexts[height]
+                            .GetVotesRecall(round);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Handles a received <see cref="ConsensusVotesRecallMsg"/>.
+        /// </summary>
+        /// <param name="votesRecallMsg">The <see cref="ConsensusVotesRecallMsg"/>
+        /// received from running validator.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="votesRecallMsg"/> is dispatched to
+        /// a <see cref="Context"/>, <see langword="false"/> otherwise.
+        /// </returns>
+        public bool HandleVotesRecall(ConsensusVotesRecallMsg votesRecallMsg)
+        {
+            long height = votesRecallMsg.Height;
+            if (height < Height)
+            {
+                _logger.Debug(
+                    "Discarding a received message as its height #{MessageHeight} " +
+                    "is lower than the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+                return false;
+            }
+
+            lock (_contextLock)
+            {
+                if (!_contexts.ContainsKey(height))
+                {
+                    _contexts[height] = CreateContext(height);
+                }
+
+                _contexts[height].ProduceMessage(votesRecallMsg);
                 return true;
             }
         }
