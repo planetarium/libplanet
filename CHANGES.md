@@ -10,12 +10,6 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Changed the type for `IAccountStateDelta.UpdatedFungibleAssets`
-    to `IImmutableSet<(Address, Currency)>`
-    from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
- -  Changed the type for `IAccountStateDelta.TotalUpdatedFungibleAssets`
-    to `IImmutableSet<(Address, Currency)>`
-    from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
  -  (@planetarium/tx) Removed some types and functions related to actions
     because the concept of `SystemAction` and `CustomAction` was removed
     since 1.1.0 and some system actions were removed since 1.2.0.  [[#3230]]
@@ -35,14 +29,24 @@ To be released.
      -  `signTx(UnsignedTxWithCustomActions | UnsignedTxWithSystemAction)`
         function's signature became `signTx(UnsignedTx)`.
      -  `SignedTx<T extends UnsignedTxWithCustomActions |
-         UnsignedTxWithSystemAction>`'s signature became 
+         UnsignedTxWithSystemAction>`'s signature became
          `SignedTx<T extends UnsignedTx>`.
+ -  Changed the type for `IAccountStateDelta.UpdatedFungibleAssets`
+    to `IImmutableSet<(Address, Currency)>`
+    from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
+ -  Changed the type for `IAccountStateDelta.TotalUpdatedFungibleAssets`
+    to `IImmutableSet<(Address, Currency)>`
+    from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
+ -  Added `IAccountStateDelta.Delta` propery.  [[#3245]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `IAccountDelta` interface and its default implementation
+    `AccountDelta` class.  [[#3245]]
 
 ### Behavioral changes
 
@@ -54,6 +58,7 @@ To be released.
 
 [#3230]: https://github.com/planetarium/libplanet/pull/3230
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
+[#3245]: https://github.com/planetarium/libplanet/pull/3245
 
 
 Version 2.2.0
