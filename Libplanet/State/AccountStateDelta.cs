@@ -18,7 +18,7 @@ namespace Libplanet.State
     internal class AccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
     {
         /// <summary>
-        /// Creates a null delta from the given <paramref name="accountStateGetter"/>.
+        /// Creates a null state delta from the given <paramref name="accountStateGetter"/>.
         /// </summary>
         /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
         /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
@@ -42,30 +42,31 @@ namespace Libplanet.State
         }
 
         /// <inheritdoc/>
+        public IAccountDelta Delta { get; private set; }
+
+        /// <inheritdoc/>
         [Pure]
-        IImmutableSet<Address> IAccountStateDelta.UpdatedAddresses =>
+        public IImmutableSet<Address> UpdatedAddresses =>
             Delta.UpdatedAddresses;
 
         /// <inheritdoc/>
-        IImmutableSet<Address> IAccountStateDelta.StateUpdatedAddresses =>
+        public IImmutableSet<Address> StateUpdatedAddresses =>
             Delta.StateUpdatedAddresses;
 
         /// <inheritdoc/>
-        IImmutableSet<(Address, Currency)> IAccountStateDelta.UpdatedFungibleAssets =>
+        public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
             Delta.UpdatedFungibleAssets;
 
         /// <inheritdoc/>
-        IImmutableSet<(Address, Currency)> IAccountStateDelta.TotalUpdatedFungibleAssets =>
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
         [Pure]
-        IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
+        public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
             Delta.UpdatedTotalSupplyCurrencies;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
             { get; protected set; }
-
-        public IAccountDelta Delta { get; private set; }
 
         private AccountStateGetter StateGetter { get; set; }
 
@@ -74,8 +75,6 @@ namespace Libplanet.State
         private TotalSupplyGetter TotalSupplyGetter { get; set; }
 
         private ValidatorSetGetter ValidatorSetGetter { get; set; }
-
-        private Address Signer => default(Address);
 
         /// <inheritdoc/>
         [Pure]
@@ -280,7 +279,7 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a default null delta.
+        /// Creates a default null state delta.
         /// </summary>
         /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
         /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
@@ -289,14 +288,7 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        /// <returns>A null delta of type <see cref="AccountStateDelta"/>
-        /// with <see langword="default"/> <see cref="Address"/> as its
-        /// <see cref="AccountStateDelta.Signer"/>.</returns>
-        /// <remarks>
-        /// This is not immediately usable.  Choose its proper signer with
-        /// <see cref="Flush"/> before use.
-        /// </remarks>
-        /// <seealso cref="Flush"/>
+        /// <returns>A null state delta of type <see cref="AccountStateDelta"/>.</returns>
         internal static IAccountStateDelta Create(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
@@ -311,41 +303,42 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a default null delta from <paramref name="delta"/>.
+        /// Creates a default null state delta from <paramref name="stateDelta"/>.
         /// </summary>
-        /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <returns>A null delta made from <paramref name="delta"/>.</returns>
+        /// <param name="stateDelta">The previous <see cref="IAccountStateDelta"/> to use.</param>
+        /// <returns>A null state delta made from <paramref name="stateDelta"/>.</returns>
         internal static IAccountStateDelta Create(
-            IAccountStateDelta delta) =>
+            IAccountStateDelta stateDelta) =>
             new AccountStateDelta(
-                delta.GetStates,
-                delta.GetBalance,
-                delta.GetTotalSupply,
-                delta.GetValidatorSet);
+                stateDelta.GetStates,
+                stateDelta.GetBalance,
+                stateDelta.GetTotalSupply,
+                stateDelta.GetValidatorSet);
 
         /// <summary>
-        /// Creates a null delta while inheriting <paramref name="delta"/>s
+        /// Creates a null state delta while inheriting <paramref name="stateDelta"/>s
         /// total updated fungibles.
         /// </summary>
-        /// <param name="delta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <returns>A null delta that is of the same type as <paramref name="delta"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown if given <paramref name="delta"/>
+        /// <param name="stateDelta">The previous <see cref="IAccountStateDelta"/> to use.</param>
+        /// <returns>A null state delta that is of the same type as <paramref name="stateDelta"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown if given <paramref name="stateDelta"/>
         /// is not <see cref="AccountStateDelta"/>.
         /// </exception>
         /// <remarks>
-        /// This inherits <paramref name="delta"/>'s
+        /// This inherits <paramref name="stateDelta"/>'s
         /// <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/>.
         /// </remarks>
         internal static IAccountStateDelta Flush(
-            IAccountStateDelta delta)
+            IAccountStateDelta stateDelta)
         {
-            if (delta is AccountStateDelta impl)
+            if (stateDelta is AccountStateDelta impl)
             {
                 return new AccountStateDelta(
-                    delta.GetStates,
-                    delta.GetBalance,
-                    delta.GetTotalSupply,
-                    delta.GetValidatorSet)
+                    stateDelta.GetStates,
+                    stateDelta.GetBalance,
+                    stateDelta.GetTotalSupply,
+                    stateDelta.GetValidatorSet)
                     {
                         TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
                     };
@@ -353,7 +346,7 @@ namespace Libplanet.State
             else
             {
                 throw new ArgumentException(
-                    $"Unknown type for {nameof(delta)}: {delta.GetType()}");
+                    $"Unknown type for {nameof(stateDelta)}: {stateDelta.GetType()}");
             }
         }
 
