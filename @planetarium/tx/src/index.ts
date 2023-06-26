@@ -8,24 +8,13 @@ export {
   getMinorUnit,
   getSign,
 } from "./assets.js";
-export {
-  encodeMint,
-  encodeSystemAction,
-  encodeTransfer,
-  type CustomAction,
-  type Mint,
-  type SystemAction,
-  type Transfer,
-} from "./action.js";
 export type {
   TxMetadata,
-  UnsignedTxWithSystemAction,
-  UnsignedTxWithCustomActions,
+  UnsignedTx,
 } from "./tx/index.js";
 export {
   encodeTxMetadata,
-  encodeUnsignedTxWithSystemAction,
-  encodeUnsignedTxWithCustomActions,
+  encodeUnsignedTx,
 } from "./tx/index.js";
 export {
   signTx,

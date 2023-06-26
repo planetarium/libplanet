@@ -1,17 +1,14 @@
 import { encodeSignedTx, signTx } from "../../src/tx/signed";
-import {
-  type UnsignedTxWithCustomActions,
-  type UnsignedTxWithSystemAction,
-} from "../../src/tx/unsigned";
-import { FOO, account1, address1, address2 } from "./fixtures";
+import { type UnsignedTx } from "../../src/tx/unsigned";
+import { account1, address1 } from "./fixtures";
 import { RecordView, encode } from "@planetarium/bencodex";
 import { execa } from "execa";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 
 describe("signTx", () => {
-  test("UnsignedTxWithSystemAction", async () => {
-    const unsigned: UnsignedTxWithSystemAction = {
+  test("UnsignedTx", async () => {
+    const unsigned: UnsignedTx = {
       nonce: 123n,
       publicKey: account1.publicKey.toBytes("uncompressed"),
       signer: address1.toBytes(),
@@ -20,73 +17,7 @@ describe("signTx", () => {
       genesisHash: null,
       maxGasPrice: null,
       gasLimit: null,
-      systemAction: {
-        type: "transfer",
-        recipient: address2.toBytes(),
-        amount: {
-          rawValue: 12500n,
-          currency: FOO,
-        },
-      },
-    };
-    const signed = await signTx(unsigned, account1);
-    const encoded = await encodeSignedTx(signed);
-    const payload = encode(encoded);
-    const { stdout } = await execa(
-      "dotnet",
-      [
-        "run",
-        "--no-build",
-        "--project",
-        join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
-        "--",
-        "tx",
-        "analyze",
-        "-",
-      ],
-      { input: payload },
-    );
-    expect(JSON.parse(stdout)).toStrictEqual({
-      id: "4a1ffc6a9e46c3fc3a8ca4868b79395af35569f91c044d78ad0db02c4602f197",
-      nonce: 123,
-      signer: "268344BA46e6CA2A8a5096565548b9018bc687Ce",
-      updatedAddresses: [],
-      signature: Buffer.from(signed.signature.toBytes()).toString("base64"),
       actions: [
-        {
-          "\ufefftype_id": "1",
-          "\ufeffvalues": {
-            "\ufeffamount": "12500",
-            "\ufeffcurrency": {
-              "\ufeffdecimalPlaces": "0x02",
-              "\ufeffminters": null,
-              "\ufeffticker": "\ufeffFOO",
-              "\ufefftotalSupplyTrackable": true,
-            },
-            "\ufeffrecipient": "0x8a29de186b85560d708451101c4bf02d63b25c50",
-          },
-        },
-      ],
-      timestamp: "2022-05-23T01:02:00+00:00",
-      publicKey:
-        "0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f",
-      genesisHash: null,
-      gasLimit: null,
-      maxGasPrice: null,
-    });
-  }, 30_000);
-
-  test("UnsignedTxWithCustomActions", async () => {
-    const unsigned: UnsignedTxWithCustomActions = {
-      nonce: 123n,
-      publicKey: account1.publicKey.toBytes("uncompressed"),
-      signer: address1.toBytes(),
-      timestamp: new Date("2022-05-23T01:02:00+00:00"),
-      updatedAddresses: new Set(),
-      genesisHash: null,
-      maxGasPrice: null,
-      gasLimit: null,
-      customActions: [
         new RecordView(
           {
             type_id: "transfer_asset",

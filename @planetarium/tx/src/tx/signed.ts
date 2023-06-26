@@ -1,21 +1,14 @@
 import { BencodexDictionary, Dictionary, encode } from "@planetarium/bencodex";
 import { Account, Address, Signature } from "@planetarium/account";
-import {
-  type UnsignedTxWithSystemAction,
-  type UnsignedTxWithCustomActions,
-  encodeUnsignedTxWithSystemAction,
-  encodeUnsignedTxWithCustomActions,
-} from "./unsigned.js";
+import { type UnsignedTx, encodeUnsignedTx } from "./unsigned.js";
 import { bytesEqual } from "../bytes.js";
 
 const SIGNATURE_KEY = new Uint8Array([0x53]); // 'S'
 
-export type SignedTx<
-  T extends UnsignedTxWithSystemAction | UnsignedTxWithCustomActions,
-> = T & { signature: Signature };
+export type SignedTx<T extends UnsignedTx> = T & { signature: Signature };
 
 export async function signTx(
-  tx: UnsignedTxWithSystemAction | UnsignedTxWithCustomActions,
+  tx: UnsignedTx,
   signAccount: Account,
 ): Promise<SignedTx<typeof tx>> {
   if (
@@ -33,10 +26,7 @@ export async function signTx(
   ) {
     throw new Error("The transaction signer does not match to the signAccount");
   }
-  const payload =
-    "systemAction" in tx
-      ? encodeUnsignedTxWithSystemAction(tx)
-      : encodeUnsignedTxWithCustomActions(tx);
+  const payload = encodeUnsignedTx(tx);
   const signature = await signAccount.sign(encode(payload));
   return {
     ...tx,
@@ -44,13 +34,10 @@ export async function signTx(
   };
 }
 
-export function encodeSignedTx<
-  T extends UnsignedTxWithSystemAction | UnsignedTxWithCustomActions,
->(tx: SignedTx<T>): Dictionary {
-  const dict =
-    "systemAction" in tx
-      ? encodeUnsignedTxWithSystemAction(tx)
-      : encodeUnsignedTxWithCustomActions(tx);
+export function encodeSignedTx<T extends UnsignedTx>(
+  tx: SignedTx<T>,
+): Dictionary {
+  const dict = encodeUnsignedTx(tx);
   const sig = tx.signature.toBytes();
   return new BencodexDictionary([...dict, [SIGNATURE_KEY, sig]]);
 }
