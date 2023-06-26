@@ -40,6 +40,13 @@ namespace Libplanet.State
     public interface IAccountStateDelta : IAccountStateView
     {
         /// <summary>
+        /// The <see cref="IAccountDelta"/> representing the delta part of
+        /// this <see cref="IAccountStateDelta"/>.
+        /// </summary>
+        [Pure]
+        IAccountDelta Delta { get; }
+
+        /// <summary>
         /// <seealso cref="Address"/>es of the accounts that have
         /// been updated since then.
         /// </summary>
