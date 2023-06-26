@@ -15,7 +15,7 @@ namespace Libplanet.State
     /// An internal implementation of <see cref="IAccountStateDelta"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
+    internal class AccountStateDelta : IAccountStateDelta
     {
         /// <summary>
         /// Creates a null state delta from the given <paramref name="accountStateGetter"/>.
@@ -155,11 +155,6 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual ValidatorSet GetValidatorSet() =>
-            Delta.ValidatorSet ?? ValidatorSetGetter();
-
-        /// <inheritdoc/>
-        [Pure]
         public virtual IAccountStateDelta MintAsset(
             IActionContext context, Address recipient, FungibleAssetValue value)
         {
@@ -271,13 +266,6 @@ namespace Libplanet.State
             );
         }
 
-        /// <inheritdoc/>
-        [Pure]
-        public IAccountStateDelta SetValidator(Validator validator)
-        {
-            return UpdateValidatorSet(GetValidatorSet().Update(validator));
-        }
-
         /// <summary>
         /// Creates a default null state delta.
         /// </summary>
@@ -348,6 +336,28 @@ namespace Libplanet.State
                 throw new ArgumentException(
                     $"Unknown type for {nameof(stateDelta)}: {stateDelta.GetType()}");
             }
+        }
+
+        /// <summary>
+        /// Returns the validator set.
+        /// </summary>
+        /// <returns>The validator set of type <see cref="ValidatorSet"/>.
+        /// </returns>
+        [Pure]
+        internal ValidatorSet GetValidatorSet() =>
+            Delta.ValidatorSet ?? ValidatorSetGetter();
+
+        /// <summary>
+        /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.
+        /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
+        /// <returns>A new <see cref="IAccountStateDelta"/> instance with
+        /// <paramref name="validator"/> set.</returns>
+        [Pure]
+        internal IAccountStateDelta SetValidator(Validator validator)
+        {
+            return UpdateValidatorSet(GetValidatorSet().Update(validator));
         }
 
         [Pure]

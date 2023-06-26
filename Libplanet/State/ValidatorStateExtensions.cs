@@ -7,7 +7,7 @@ namespace Libplanet.State
     {
         public static ValidatorSet GetValidatorSet(this IAccountStateDelta delta)
         {
-            if (delta is IValidatorSupportStateDelta impl)
+            if (delta is AccountStateDelta impl)
             {
                 return impl.GetValidatorSet();
             }
@@ -27,7 +27,7 @@ namespace Libplanet.State
             this IAccountStateDelta delta,
             Validator validator)
         {
-            if (delta is IValidatorSupportStateDelta impl)
+            if (delta is AccountStateDelta impl)
             {
                 return impl.SetValidator(validator);
             }

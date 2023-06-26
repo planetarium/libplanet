@@ -159,7 +159,6 @@ namespace Libplanet.Tests.Action
         }
 
         private class DumbAccountStateDelta :
-            IValidatorSupportStateDelta,
             IAccountStateDelta
         {
             public IAccountDelta Delta => new AccountDelta();
