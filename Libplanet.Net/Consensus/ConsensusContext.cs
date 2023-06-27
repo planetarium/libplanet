@@ -297,7 +297,7 @@ namespace Libplanet.Net.Consensus
         /// </remarks>
         /// <seealso cref="AttachEventHandlers"/>
         private void OnContextStateChanged(
-            object? sender, (int MessageLogSize, int Round, ConsensusStep Step) e)
+            object? sender, Context.ContextState e)
         {
             if (e.Step == ConsensusStep.EndCommit)
             {

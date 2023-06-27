@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2],
                         1,
-                        hash: null,
+                        hash: default,
                         flag: VoteFlag.PreVote)));
 
             consensusContext.HandleMessage(
@@ -64,7 +64,7 @@ namespace Libplanet.Net.Tests.Consensus
                     vote: TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3],
                         1,
-                        hash: null,
+                        hash: default,
                         flag: VoteFlag.PreVote)));
 
             await timeoutProcessed.WaitAsync();
@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Consensus
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2],
                         1,
-                        hash: null,
+                        hash: default,
                         flag: VoteFlag.PreCommit)));
 
             consensusContext.HandleMessage(
@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Consensus
                     vote: TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3],
                         1,
-                        hash: null,
+                        hash: default,
                         flag: VoteFlag.PreCommit)));
 
             await timeoutProcessed.WaitAsync();

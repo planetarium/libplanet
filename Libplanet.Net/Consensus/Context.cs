@@ -84,7 +84,7 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
-        private readonly MessageLog _messageLog;
+        private readonly HeightVoteSet _heightVoteSet;
 
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -182,7 +182,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
-            _messageLog = new MessageLog(height, validators);
+            _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
@@ -216,6 +216,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public ConsensusStep Step { get; private set; }
 
+        public Proposal? Proposal { get; private set; }
+
         /// <summary>
         /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
         /// validators.
@@ -238,9 +240,7 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         public BlockCommit? GetBlockCommit()
         {
-            var blockCommit = _decision is null
-                ? (BlockCommit?)null
-                : _messageLog.GetBlockCommit(_committedRound, _decision.Hash);
+            var blockCommit = _heightVoteSet.PreCommits(Round)?.ToBlockCommit();
             _logger.Debug(
                 "{FName}: CommittedRound: {CommittedRound}, Decision: {Decision}, " +
                 "BlockCommit: {BlockCommit}",
@@ -264,6 +264,7 @@ namespace Libplanet.Net.Consensus
                 { "height", Height },
                 { "round", Round },
                 { "step", Step.ToString() },
+                { "proposal", Proposal?.ToString() ?? "null" },
                 { "locked_value", _lockedValue?.Hash.ToString() ?? "null" },
                 { "locked_round", _lockedRound },
                 { "valid_value", _validValue?.Hash.ToString() ?? "null" },
@@ -447,7 +448,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns a signed <see cref="Vote"/> with consensus private key.</returns>
         /// <exception cref="ArgumentException">If <paramref name="flag"/> is either
         /// <see cref="VoteFlag.Null"/> or <see cref="VoteFlag.Unknown"/>.</exception>
-        private Vote MakeVote(int round, BlockHash? hash, VoteFlag flag)
+        private Vote MakeVote(int round, BlockHash hash, VoteFlag flag)
         {
             if (flag == VoteFlag.Null || flag == VoteFlag.Unknown)
             {
@@ -468,69 +469,19 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Gets the proposed block and valid round of the given round.
         /// </summary>
-        /// <param name="round">A round to get.</param>
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block, int)? GetProposal(int round)
+        private (Block, int)? GetProposal()
         {
-            ConsensusProposalMsg? proposal = _messageLog.GetProposal(round);
-            if (proposal is { } p)
+            if (Proposal is { } p)
             {
                 var block = BlockMarshaler.UnmarshalBlock(
-                    (Dictionary)_codec.Decode(p.Proposal.MarshaledBlock));
-                return (block, p.Proposal.ValidRound);
+                    (Dictionary)_codec.Decode(p.MarshaledBlock));
+                return (block, p.ValidRound);
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusPreVoteMsg"/> for
-        /// <paramref name="round"/> and <paramref name="predicate"/>.
-        /// </summary>
-        /// <param name="round">The round to check.</param>
-        /// <param name="predicate">An additional predicate for counting votes.</param>
-        /// <returns>Returns <see langword="true"/> if the count is +2/3,
-        /// otherwise <see langword="false"/>.</returns>
-        private bool HasTwoThirdsPreVote(int round, Func<ConsensusPreVoteMsg, bool> predicate)
-        {
-            var validatorPublicKeys = _messageLog.GetPreVotes(round).FindAll(
-                preVote => predicate(preVote)).Select(
-                preVote => preVote.PreVote.ValidatorPublicKey).ToList();
-            return _validatorSet.GetValidatorsPower(validatorPublicKeys)
-                > _validatorSet.TwoThirdsPower;
-        }
-
-        /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusPreCommitMsg"/> for
-        /// <paramref name="round"/> and <paramref name="predicate"/>.
-        /// </summary>
-        /// <param name="round">The round to check.</param>
-        /// <param name="predicate">An additional predicate for counting votes.</param>
-        /// <returns>Returns <see langword="true"/> if the count is +2/3,
-        /// otherwise <see langword="false"/>.</returns>
-        private bool HasTwoThirdsPreCommit(int round, Func<ConsensusPreCommitMsg, bool> predicate)
-        {
-            var validatorPublicKeys = _messageLog.GetPreCommits(round).FindAll(
-                preCommit => predicate(preCommit)).Select(
-                preCommit => preCommit.PreCommit.ValidatorPublicKey).ToList();
-            return _validatorSet.GetValidatorsPower(validatorPublicKeys)
-                > _validatorSet.TwoThirdsPower;
-        }
-
-        /// <summary>
-        /// Checks whether given <paramref name="round"/> has +1/3 distinct validators
-        /// already participating in it, i.e. has a <see cref="ConsensusMsg"/> in the
-        /// <see cref="MessageLog"/>.
-        /// </summary>
-        /// <param name="round">The round to check.</param>
-        /// <returns><see langword="true"/> if the count is +1/3,
-        /// otherwise <see langword="false"/>.</returns>
-        private bool HasOneThirdValidators(int round)
-        {
-            return _validatorSet.GetValidatorsPower(_messageLog.GetValidators(round))
-                > _validatorSet.OneThirdPower;
         }
     }
 }

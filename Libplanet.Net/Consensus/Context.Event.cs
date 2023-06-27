@@ -21,10 +21,7 @@ namespace Libplanet.Net.Consensus
         /// An event that is invoked when the message log size, <see cref="Round"/>,
         /// and/or <see cref="ConsensusStep"/> is changed.
         /// </summary>
-        internal event EventHandler<(
-            int MessageLogSize,
-            int Round,
-            ConsensusStep Step)>? StateChanged;
+        internal event EventHandler<ContextState>? StateChanged;
 
         /// <summary>
         /// An event that is invoked when a <see cref="ConsensusMsg"/> is broadcasted.

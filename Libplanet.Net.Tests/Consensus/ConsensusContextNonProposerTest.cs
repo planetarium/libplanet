@@ -276,7 +276,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         // Retry: This calculates delta time.
-        [RetryFact]
+        [RetryFact(10, Timeout = Timeout)]
         public async void NewHeightDelay()
         {
             var newHeightDelay = TimeSpan.FromSeconds(1);

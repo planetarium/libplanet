@@ -438,7 +438,7 @@ namespace Libplanet.Net.Tests
 
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.MessageLogSize == 2)
+                    if (eventArgs.VoteCount == 2)
                     {
                         collectedTwoMessages[0].Set();
                     }

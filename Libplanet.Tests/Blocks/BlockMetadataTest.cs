@@ -329,7 +329,7 @@ namespace Libplanet.Tests.Blocks
                 lastCommit: validLastCommit);
         }
 
-        private static Vote GenerateVote(BlockHash? hash, long height, int round, VoteFlag flag)
+        private static Vote GenerateVote(BlockHash hash, long height, int round, VoteFlag flag)
         {
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(

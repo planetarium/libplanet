@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A message class for <see cref="ConsensusStep.Propose"/>.
     /// </summary>
-    public class ConsensusProposalMsg : ConsensusMsg
+    public class ConsensusProposalMsg : ConsensusVoteMsg
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusProposalMsg"/> class.
@@ -43,17 +43,20 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusProposal;
 
+        /// <inheritdoc cref="Equals(ConsensusMsg?)"/>
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusProposalMsg message &&
                    message.Proposal.Equals(Proposal);
         }
 
+        /// <inheritdoc cref="Equals(object?)"/>
         public override bool Equals(object? obj)
         {
             return obj is ConsensusMsg other && Equals(other);
         }
 
+        /// <inheritdoc cref="ConsensusMsg.GetHashCode"/>
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, Proposal);

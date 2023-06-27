@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A message class for <see cref="ConsensusStep.PreCommit"/>.
     /// </summary>
-    public class ConsensusPreCommitMsg : ConsensusMsg
+    public class ConsensusPreCommitMsg : ConsensusVoteMsg
     {
         private static Bencodex.Codec _codec = new Bencodex.Codec();
 
@@ -55,17 +55,20 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusCommit;
 
+        /// <inheritdoc cref="ConsensusMsg.Equals(ConsensusMsg?)"/>
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusPreCommitMsg message &&
                 PreCommit.Equals(message.PreCommit);
         }
 
+        /// <inheritdoc cref="ConsensusMsg.Equals(object?)"/>
         public override bool Equals(object? obj)
         {
             return obj is ConsensusMsg other && Equals(other);
         }
 
+        /// <inheritdoc cref="ConsensusMsg.GetHashCode"/>
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, PreCommit);

@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A message class for <see cref="ConsensusStep.PreVote"/>.
     /// </summary>
-    public class ConsensusPreVoteMsg : ConsensusMsg
+    public class ConsensusPreVoteMsg : ConsensusVoteMsg
     {
         private static Bencodex.Codec _codec = new Bencodex.Codec();
 
@@ -55,17 +55,20 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusVote;
 
+        /// <inheritdoc cref="ConsensusMsg.Equals(ConsensusMsg?)"/>
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusPreVoteMsg message &&
                 PreVote.Equals(message.PreVote);
         }
 
+        /// <inheritdoc cref="ConsensusMsg.Equals(object?)"/>
         public override bool Equals(object? obj)
         {
             return obj is ConsensusMsg other && Equals(other);
         }
 
+        /// <inheritdoc cref="ConsensusMsg.GetHashCode"/>
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, PreVote);

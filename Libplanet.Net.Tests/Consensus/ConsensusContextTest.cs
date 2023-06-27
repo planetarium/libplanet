@@ -89,11 +89,11 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.NotNull(proposal?.BlockHash);
 
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[0], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[0], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[1], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[1], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[2], 3, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[2], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
             await heightThreeStepChangedToEndCommit.WaitAsync();
@@ -229,7 +229,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.PrivateKeys[x],
                 1,
                 0,
-                proposal?.BlockHash,
+                proposal.BlockHash,
                 VoteFlag.PreCommit)));
 
             foreach (var vote in votes)

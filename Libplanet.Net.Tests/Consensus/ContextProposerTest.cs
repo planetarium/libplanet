@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
@@ -57,16 +56,16 @@ namespace Libplanet.Net.Tests.Consensus
             context.Start();
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[0], 1, hash: null, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[0], 1, hash: default, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[2], 1, hash: null, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[2], 1, hash: default, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[3], 1, hash: default, flag: VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
-            Assert.Null(preCommit?.BlockHash);
+            Assert.Equal(default(BlockHash), preCommit?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(ConsensusStep.PreCommit, context.Step);
@@ -113,19 +112,19 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
                     1,
-                    hash: proposal?.BlockHash,
+                    hash: proposal.BlockHash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
                     1,
-                    hash: proposal?.BlockHash,
+                    hash: proposal.BlockHash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
                     1,
-                    hash: proposal?.BlockHash,
+                    hash: proposal.BlockHash,
                     flag: VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
@@ -153,15 +152,15 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[0], 1, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[0], 1, hash: default, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[2], 1, hash: default, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[3], 1, hash: default, flag: VoteFlag.PreCommit)));
 
             await roundChangedToOne.WaitAsync();
             Assert.Equal(1, context.Height);
@@ -242,7 +241,7 @@ namespace Libplanet.Net.Tests.Consensus
             };
             context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
                     nilPreVoteSent.Set();
                 }
@@ -342,8 +341,8 @@ namespace Libplanet.Net.Tests.Consensus
                 (Bencodex.Types.Dictionary)codec.Decode(proposal?.Proposal.MarshaledBlock!));
             Assert.Equal(context.Height + 1, proposedBlock.Index);
             await preVoteSent.WaitAsync();
-            Assert.Null(preVote?.BlockHash);
-            Assert.Null(preVote?.PreVote.BlockHash);
+            Assert.Equal(default(BlockHash), preVote?.BlockHash);
+            Assert.Equal(default(BlockHash), preVote?.PreVote.BlockHash);
         }
     }
 }

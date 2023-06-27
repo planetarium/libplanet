@@ -28,11 +28,6 @@ namespace Libplanet.Net.Consensus
             // FIXME: Exceptions inside tasks should be handled properly.
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
             _ = MutationConsumerTask(_cancellationTokenSource.Token);
-
-            if (bootstrapping)
-            {
-                _ = BootstrappingTask(_cancellationTokenSource.Token);
-            }
         }
 
         /// <summary>
@@ -99,29 +94,6 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        internal async Task BootstrappingTask(CancellationToken cancellationToken)
-        {
-            while (true)
-            {
-                try
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-                }
-                catch (OperationCanceledException oce)
-                {
-                    _logger.Debug(oce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, oce);
-                    throw;
-                }
-
-                if (_messageLog.GetRandomMessage() is { } message)
-                {
-                    BroadcastMessage(message);
-                }
-            }
-        }
-
         /// <summary>
         /// Adds <paramref name="message"/> to the message queue.
         /// </summary>
@@ -145,10 +117,7 @@ namespace Libplanet.Net.Consensus
             ConsensusMsg message = await _messageRequests.Reader.ReadAsync(cancellationToken);
             ProduceMutation(() =>
             {
-                int prevMessageLogSize = _messageLog.GetTotalCount();
-                AddMessage(message);
-                int nextMessageLogSize = _messageLog.GetTotalCount();
-                if (prevMessageLogSize < nextMessageLogSize)
+                if (AddMessage(message))
                 {
                     ProcessHeightOrRoundUponRules(message);
                 }
@@ -160,28 +129,48 @@ namespace Libplanet.Net.Consensus
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
-            (int MessageLogSize, int Round, ConsensusStep Step) prevState =
-                (_messageLog.GetTotalCount(), Round, Step);
+            var prevState = new ContextState(
+                _heightVoteSet.Count,
+                Height,
+                Round,
+                Step,
+                Proposal?.BlockHash);
             mutation();
-            (int MessageLogSize, int Round, ConsensusStep Step) nextState =
-                (_messageLog.GetTotalCount(), Round, Step);
-            while (prevState != nextState)
+            var nextState = new ContextState(
+                _heightVoteSet.Count,
+                Height,
+                Round,
+                Step,
+                Proposal?.BlockHash);
+            while (!prevState.Equals(nextState))
             {
                 _logger.Information(
-                    "State (MessageLogSize, Round, Step) changed from " +
-                    "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
-                    "({NextMessageLogSize}, {NextRound}, {NextStep})",
-                    prevState.MessageLogSize,
+                    "State (Proposal, VoteCount, Round, Step) " +
+                    "changed from " +
+                    "({PrevProposal}, {PrevVoteCount}, {PrevRound}, {PrevStep}) to " +
+                    "({NextProposal}, {NextVoteCount}, {NextRound}, {NextStep})",
+                    prevState.Proposal?.ToString() ?? "Null",
+                    prevState.VoteCount,
                     prevState.Round,
                     prevState.Step,
-                    nextState.MessageLogSize,
+                    nextState.Proposal?.ToString() ?? "Null",
+                    nextState.VoteCount,
                     nextState.Round,
                     nextState.Step);
-                StateChanged?.Invoke(
-                    this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
-                prevState = (_messageLog.GetTotalCount(), Round, Step);
+                StateChanged?.Invoke(this, nextState);
+                prevState = new ContextState(
+                    _heightVoteSet.Count,
+                    Height,
+                    Round,
+                    Step,
+                    Proposal?.BlockHash);
                 ProcessGenericUponRules();
-                nextState = (_messageLog.GetTotalCount(), Round, Step);
+                nextState = new ContextState(
+                    _heightVoteSet.Count,
+                    Height,
+                    Round,
+                    Step,
+                    Proposal?.BlockHash);
             }
 
             MutationConsumed?.Invoke(this, mutation);
@@ -233,6 +222,51 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             ProduceMutation(() => ProcessTimeoutPreCommit(round));
+        }
+
+        internal struct ContextState : IEquatable<ContextState>
+        {
+            public ContextState(
+                int voteCount,
+                long height,
+                int round,
+                ConsensusStep step,
+                BlockHash? proposal)
+            {
+                VoteCount = voteCount;
+                Height = height;
+                Round = round;
+                Step = step;
+                Proposal = proposal;
+            }
+
+            public int VoteCount { get; }
+
+            public long Height { get; }
+
+            public int Round { get; }
+
+            public ConsensusStep Step { get; }
+
+            public BlockHash? Proposal { get; }
+
+            public bool Equals(ContextState other)
+            {
+                return VoteCount == other.VoteCount &&
+                       Round == other.Round &&
+                       Step == other.Step &&
+                       Proposal.Equals(other.Proposal);
+            }
+
+            public override bool Equals(object? obj)
+            {
+                return obj is ContextState other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(VoteCount, Round, (int)Step, Proposal.GetHashCode());
+            }
         }
     }
 }
