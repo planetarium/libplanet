@@ -66,12 +66,6 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
-<li>Changed the type for <code>IAccountStateDelta.UpdatedFungibleAssets</code>
-to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
-from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
-<li>Changed the type for <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code>
-to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
-from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
 <li>(@planetarium/tx) Removed some types and functions related to actions
 because the concept of <code>SystemAction</code> and <code>CustomAction</code> was removed
 since 1.1.0 and some system actions were removed since 1.2.0.  [<a href="https://github.com/planetarium/libplanet/pull/3230">#3230</a>]
@@ -95,10 +89,21 @@ function's signature became <code>signTx(UnsignedTx)</code>.</li>
 <code>SignedTx&lt;T extends UnsignedTx&gt;</code>.</li>
 </ul>
 </li>
+<li>Changed the type for <code>IAccountStateDelta.UpdatedFungibleAssets</code>
+to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
+from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
+<li>Changed the type for <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code>
+to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
+from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
+<li>Added <code>IAccountStateDelta.Delta</code> propery.  [<a href="https://github.com/planetarium/libplanet/pull/3245">#3245</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>IAccountDelta</code> interface and its default implementation
+<code>AccountDelta</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3245">#3245</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
