@@ -43,20 +43,20 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusProposal;
 
-        /// <inheritdoc cref="Equals(ConsensusMsg?)"/>
+        /// <inheritdoc/>
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusProposalMsg message &&
                    message.Proposal.Equals(Proposal);
         }
 
-        /// <inheritdoc cref="Equals(object?)"/>
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is ConsensusMsg other && Equals(other);
         }
 
-        /// <inheritdoc cref="ConsensusMsg.GetHashCode"/>
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, Proposal);
