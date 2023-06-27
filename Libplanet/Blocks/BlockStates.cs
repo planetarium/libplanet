@@ -29,10 +29,10 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockStates.BlockHash"/>
         public BlockHash? BlockHash => _blockHash;
 
-        /// <inheritdoc cref="IBlockStates.GetState"/>
+        /// <inheritdoc cref="IAccountState.GetState"/>
         public IValue? GetState(Address address) => GetStates(new[] { address }).First();
 
-        /// <inheritdoc cref="IBlockStates.GetStates"/>
+        /// <inheritdoc cref="IAccountState.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {
             // Try using cache first
@@ -76,7 +76,7 @@ namespace Libplanet.Blocks
             return result;
         }
 
-        /// <inheritdoc cref="IBlockStates.GetBalance"/>
+        /// <inheritdoc cref="IAccountState.GetBalance"/>
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
             string[] stringKeys = new[] { ToFungibleAssetKey(address, currency) };
@@ -87,7 +87,7 @@ namespace Libplanet.Blocks
                 : currency * 0;
         }
 
-        /// <inheritdoc cref="IBlockStates.GetTotalSupply"/>
+        /// <inheritdoc cref="IAccountState.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency)
         {
             if (!currency.TotalSupplyTrackable)
@@ -103,7 +103,7 @@ namespace Libplanet.Blocks
                 : currency * 0;
         }
 
-        /// <inheritdoc cref="IBlockStates.GetValidatorSet"/>
+        /// <inheritdoc cref="IAccountState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {
             string[] stringKeys = new[] { ValidatorSetKey };
