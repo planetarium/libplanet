@@ -20475,6 +20475,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.SetState
   nameWithType: IAccountStateDelta.SetState
+- uid: Libplanet.State.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_SetValidator_Libplanet_Consensus_Validator_
+  commentId: M:Libplanet.State.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  fullName: Libplanet.State.IAccountStateDelta.SetValidator(Libplanet.Consensus.Validator)
+  nameWithType: IAccountStateDelta.SetValidator(Validator)
+- uid: Libplanet.State.IAccountStateDelta.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_SetValidator_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.SetValidator
+  nameWithType: IAccountStateDelta.SetValidator
 - uid: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
   name: StateUpdatedAddresses
   href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_StateUpdatedAddresses
@@ -20614,6 +20627,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateView.GetTotalSupply
   nameWithType: IAccountStateView.GetTotalSupply
+- uid: Libplanet.State.IAccountStateView.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetValidatorSet
+  commentId: M:Libplanet.State.IAccountStateView.GetValidatorSet
+  fullName: Libplanet.State.IAccountStateView.GetValidatorSet()
+  nameWithType: IAccountStateView.GetValidatorSet()
+- uid: Libplanet.State.IAccountStateView.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetValidatorSet_
+  commentId: Overload:Libplanet.State.IAccountStateView.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateView.GetValidatorSet
+  nameWithType: IAccountStateView.GetValidatorSet
 - uid: Libplanet.State.InsufficientBalanceException
   name: InsufficientBalanceException
   href: api/Libplanet.State.InsufficientBalanceException.html
@@ -20672,38 +20698,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.InsufficientBalanceException.GetObjectData
   nameWithType: InsufficientBalanceException.GetObjectData
-- uid: Libplanet.State.IValidatorSupportStateDelta
-  name: IValidatorSupportStateDelta
-  href: api/Libplanet.State.IValidatorSupportStateDelta.html
-  commentId: T:Libplanet.State.IValidatorSupportStateDelta
-  fullName: Libplanet.State.IValidatorSupportStateDelta
-  nameWithType: IValidatorSupportStateDelta
-- uid: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_GetValidatorSet
-  commentId: M:Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
-  fullName: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet()
-  nameWithType: IValidatorSupportStateDelta.GetValidatorSet()
-- uid: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_GetValidatorSet_
-  commentId: Overload:Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.State.IValidatorSupportStateDelta.GetValidatorSet
-  nameWithType: IValidatorSupportStateDelta.GetValidatorSet
-- uid: Libplanet.State.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_SetValidator_Libplanet_Consensus_Validator_
-  commentId: M:Libplanet.State.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  fullName: Libplanet.State.IValidatorSupportStateDelta.SetValidator(Libplanet.Consensus.Validator)
-  nameWithType: IValidatorSupportStateDelta.SetValidator(Validator)
-- uid: Libplanet.State.IValidatorSupportStateDelta.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.State.IValidatorSupportStateDelta.html#Libplanet_State_IValidatorSupportStateDelta_SetValidator_
-  commentId: Overload:Libplanet.State.IValidatorSupportStateDelta.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.State.IValidatorSupportStateDelta.SetValidator
-  nameWithType: IValidatorSupportStateDelta.SetValidator
 - uid: Libplanet.State.SupplyOverflowException
   name: SupplyOverflowException
   href: api/Libplanet.State.SupplyOverflowException.html
@@ -20806,38 +20800,6 @@ references:
   commentId: T:Libplanet.State.ValidatorSetGetter
   fullName: Libplanet.State.ValidatorSetGetter
   nameWithType: ValidatorSetGetter
-- uid: Libplanet.State.ValidatorStateExtensions
-  name: ValidatorStateExtensions
-  href: api/Libplanet.State.ValidatorStateExtensions.html
-  commentId: T:Libplanet.State.ValidatorStateExtensions
-  fullName: Libplanet.State.ValidatorStateExtensions
-  nameWithType: ValidatorStateExtensions
-- uid: Libplanet.State.ValidatorStateExtensions.GetValidatorSet(Libplanet.State.IAccountStateDelta)
-  name: GetValidatorSet(IAccountStateDelta)
-  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_GetValidatorSet_Libplanet_State_IAccountStateDelta_
-  commentId: M:Libplanet.State.ValidatorStateExtensions.GetValidatorSet(Libplanet.State.IAccountStateDelta)
-  fullName: Libplanet.State.ValidatorStateExtensions.GetValidatorSet(Libplanet.State.IAccountStateDelta)
-  nameWithType: ValidatorStateExtensions.GetValidatorSet(IAccountStateDelta)
-- uid: Libplanet.State.ValidatorStateExtensions.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_GetValidatorSet_
-  commentId: Overload:Libplanet.State.ValidatorStateExtensions.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.State.ValidatorStateExtensions.GetValidatorSet
-  nameWithType: ValidatorStateExtensions.GetValidatorSet
-- uid: Libplanet.State.ValidatorStateExtensions.SetValidator(Libplanet.State.IAccountStateDelta,Libplanet.Consensus.Validator)
-  name: SetValidator(IAccountStateDelta, Validator)
-  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_SetValidator_Libplanet_State_IAccountStateDelta_Libplanet_Consensus_Validator_
-  commentId: M:Libplanet.State.ValidatorStateExtensions.SetValidator(Libplanet.State.IAccountStateDelta,Libplanet.Consensus.Validator)
-  fullName: Libplanet.State.ValidatorStateExtensions.SetValidator(Libplanet.State.IAccountStateDelta, Libplanet.Consensus.Validator)
-  nameWithType: ValidatorStateExtensions.SetValidator(IAccountStateDelta, Validator)
-- uid: Libplanet.State.ValidatorStateExtensions.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.State.ValidatorStateExtensions.html#Libplanet_State_ValidatorStateExtensions_SetValidator_
-  commentId: Overload:Libplanet.State.ValidatorStateExtensions.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.State.ValidatorStateExtensions.SetValidator
-  nameWithType: ValidatorStateExtensions.SetValidator
 - uid: Libplanet.Store
   name: Libplanet.Store
   href: api/Libplanet.Store.html
