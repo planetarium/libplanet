@@ -15,7 +15,7 @@ namespace Libplanet.State
     /// An internal implementation of <see cref="IAccountStateDelta"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDelta : IValidatorSupportStateDelta, IAccountStateDelta
+    internal class AccountStateDelta : IAccountStateDelta
     {
         /// <summary>
         /// Creates a null state delta from the given <paramref name="accountStateGetter"/>.
@@ -155,12 +155,12 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual ValidatorSet GetValidatorSet() =>
+        public ValidatorSet GetValidatorSet() =>
             Delta.ValidatorSet ?? ValidatorSetGetter();
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta MintAsset(
+        public IAccountStateDelta MintAsset(
             IActionContext context, Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
@@ -211,7 +211,7 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta TransferAsset(
+        public IAccountStateDelta TransferAsset(
             IActionContext context,
             Address sender,
             Address recipient,
@@ -222,7 +222,7 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        public virtual IAccountStateDelta BurnAsset(
+        public IAccountStateDelta BurnAsset(
             IActionContext context, Address owner, FungibleAssetValue value)
         {
             string msg;

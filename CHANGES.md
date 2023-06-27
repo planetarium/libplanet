@@ -38,6 +38,10 @@ To be released.
     to `IImmutableSet<(Address, Currency)>`
     from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
  -  Added `IAccountStateDelta.Delta` propery.  [[#3245]]
+ -  Removed `IValidatorSupportStateDelta` interface.  [[#3247]]
+ -  Added `IAccountStateDeltaView.GetValidatorSet()` interface method.
+    [[#3247]]
+ -  Added `IAccountStateDelta.SetValidator()` interface method.  [[#3247]]
 
 ### Backward-incompatible network protocol changes
 
@@ -59,6 +63,7 @@ To be released.
 [#3230]: https://github.com/planetarium/libplanet/pull/3230
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
 [#3245]: https://github.com/planetarium/libplanet/pull/3245
+[#3247]: https://github.com/planetarium/libplanet/pull/3247
 
 
 Version 2.2.0
