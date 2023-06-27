@@ -72,10 +72,17 @@ Released on June 28, 2023.
  -  Added `IBlockChainStates.GetState()` interface method.  [[#3250]]
  -  Added `IBlockStates.GetState()` interface method.  [[#3250]]
  -  Changed `IBlockStates` to inherit `IAccountState` interface.  [[#3251]]
+ -  `Vote.BlockHash` property became `BlockHash` type. (was `BlockHash?`)
+    [[#3249]]
+ -  `VoteMetadata(long, int, BlockHash?, DateTimeOffset, PublicKey, VoteFlag)`
+    constructor became
+    `VoteMetadata(long, int, BlockHash, DateTimeOffset, PublicKey, VoteFlag)`
+    [[#3249]]
  -  (Libplanet.Net) Renamed `Step` enum to `ConsensusStep`
     to remove ambiguity.  [[#3249]]
  -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
     `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
+ -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
 
 ### Added APIs
 

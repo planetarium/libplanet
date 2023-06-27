@@ -178,7 +178,7 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                voteSet.AddVerifiedVote(vote);
+                voteSet.AddVote(vote);
             }
         }
 
@@ -230,12 +230,12 @@ namespace Libplanet.Net.Consensus
         /// <exception cref="ArgumentException">Thrown when given <paramref name="voteFlag"/>
         /// is not either <see cref="VoteFlag.PreVote"/> or <see cref="VoteFlag.PreCommit"/>.
         /// </exception>
+        /// <exception cref="KeyNotFoundException">Thrown when there's no <see cref="RoundVoteSet"/>
+        /// exists for given <paramref name="round"/>.
+        /// </exception>
         public VoteSet GetVoteSet(int round, VoteFlag voteFlag)
         {
-            RoundVoteSet roundVoteSet;
-
-            // TODO: Check if try-catch is needed for KeyNotFoundException.
-            roundVoteSet = _roundVoteSets[round];
+            RoundVoteSet roundVoteSet = _roundVoteSets[round];
             return voteFlag switch
             {
                 VoteFlag.PreVote => roundVoteSet.PreVotes,

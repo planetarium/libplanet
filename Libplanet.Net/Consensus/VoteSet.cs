@@ -260,7 +260,7 @@ namespace Libplanet.Net.Consensus
                 _height, _round, _maj23!.Value, MappedList().ToImmutableArray());
         }
 
-        internal void AddVerifiedVote(Vote vote)
+        internal void AddVote(Vote vote)
         {
             if (vote.Round != _round ||
                 vote.Flag != _voteType)
@@ -283,7 +283,7 @@ namespace Libplanet.Net.Consensus
                 if (existing.BlockHash.Equals(vote.BlockHash))
                 {
                     throw new InvalidVoteException(
-                        $"{nameof(AddVerifiedVote)}() does not expect duplicate votes",
+                        $"{nameof(AddVote)}() does not expect duplicate votes",
                         vote);
                 }
                 else

@@ -301,7 +301,7 @@ namespace Libplanet.Net.Consensus
                     BroadcastMessage(
                         new ConsensusPreCommitMsg(MakeVote(Round, default, VoteFlag.PreCommit)));
                 }
-                else if (!(Proposal is null) && !hash3.Equals(Proposal.BlockHash))
+                else if (Proposal is { } proposal && !proposal.BlockHash.Equals(hash3))
                 {
                     // +2/3 votes were collected and is not equal to proposal's,
                     // remove invalid proposal.
