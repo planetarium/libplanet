@@ -72,17 +72,39 @@ Released on June 28, 2023.
  -  Added `IBlockChainStates.GetState()` interface method.  [[#3250]]
  -  Added `IBlockStates.GetState()` interface method.  [[#3250]]
  -  Changed `IBlockStates` to inherit `IAccountState` interface.  [[#3251]]
+ -  (Libplanet.Net) Renamed `Step` enum to `ConsensusStep`
+    to remove ambiguity.  [[#3249]]
+ -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
+    `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
 
 ### Added APIs
 
  -  Added `IAccountDelta` interface and its default implementation
     `AccountDelta` class.  [[#3245]]
+ -  Added `Maj23` and its related classes.  [[#3249]]
+     -  Added `Maj23` class.
+     -  Added `Maj23Metadata` class.
+     -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.
+ -  Added `VoteSetBits` and its related classes.  [[#3206]]
+     -  Added `VoteSetBits` class.
+     -  Added `VoteSetBitsMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusVoteSetBitsMsg` class.
+ -  (Libplanet.Net) Added `VoteSet` class.  [[#3249]]
+ -  (Libplanet.Net) Added `HeightVoteSet` class.  [[#3249]]
+ -  (Libplanet.Net) Added `ConsensusVoteMsg` abstract class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidProposalException` class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidVoteException` class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidMaj23Exception` class.  [[#3249]]
+ -  (Libplanet.Net) Added
+    `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
+    [[#3249]]
 
 [#3230]: https://github.com/planetarium/libplanet/pull/3230
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
 [#3245]: https://github.com/planetarium/libplanet/pull/3245
 [#3247]: https://github.com/planetarium/libplanet/pull/3247
 [#3248]: https://github.com/planetarium/libplanet/pull/3248
+[#3249]: https://github.com/planetarium/libplanet/pull/3249
 [#3250]: https://github.com/planetarium/libplanet/pull/3250
 [#3251]: https://github.com/planetarium/libplanet/pull/3251
 
