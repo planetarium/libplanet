@@ -6,9 +6,9 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Mocks;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
@@ -23,11 +23,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IValue _action = new DumbAction().PlainValue;
 
         private static IAccountStateDelta _stateDelta =
-            new AccountStateDelta(
-                _ => null,
-                (_, __) => default,
-                _ => default,
-                () => new ValidatorSet());
+            AccountStateDelta.Create(MockAccountState.Empty);
 
         private static Exception _exception = new Exception();
 

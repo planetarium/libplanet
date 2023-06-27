@@ -27,7 +27,7 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        internal AccountStateDelta(
+        private AccountStateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
@@ -38,21 +38,6 @@ namespace Libplanet.State
             BalanceGetter = accountBalanceGetter;
             TotalSupplyGetter = totalSupplyGetter;
             ValidatorSetGetter = validatorSetGetter;
-            TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-        }
-
-        /// <summary>
-        /// Creates a null state delta from given <paramref name="previousState"/>.
-        /// </summary>
-        /// <param name="previousState">The previous <see cref="IAccountState"/> to use as
-        /// a basis.</param>
-        internal AccountStateDelta(IAccountState previousState)
-        {
-            Delta = new AccountDelta();
-            StateGetter = previousState.GetStates;
-            BalanceGetter = previousState.GetBalance;
-            TotalSupplyGetter = previousState.GetTotalSupply;
-            ValidatorSetGetter = previousState.GetValidatorSet;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
         }
 
@@ -289,6 +274,22 @@ namespace Libplanet.State
         public IAccountStateDelta SetValidator(Validator validator)
         {
             return UpdateValidatorSet(GetValidatorSet().Update(validator));
+        }
+
+        /// <summary>
+        /// Creates a null state delta from given <paramref name="previousState"/>.
+        /// </summary>
+        /// <param name="previousState">The previous <see cref="IAccountState"/> to use as
+        /// a basis.</param>
+        /// <returns>A null state delta created from <paramref name="previousState"/>.
+        /// </returns>
+        internal static IAccountStateDelta Create(IAccountState previousState)
+        {
+            return new AccountStateDelta(
+                previousState.GetStates,
+                previousState.GetBalance,
+                previousState.GetTotalSupply,
+                previousState.GetValidatorSet);
         }
 
         /// <summary>

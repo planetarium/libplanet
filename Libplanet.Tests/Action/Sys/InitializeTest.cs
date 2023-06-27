@@ -9,6 +9,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.State;
+using Libplanet.Tests.Mocks;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 using Random = System.Random;
@@ -46,11 +47,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            var prevStates = new AccountStateDelta(
-                accountStateGetter: _ => new List(),
-                accountBalanceGetter: (_, c) => c * 0,
-                totalSupplyGetter: c => c * 0,
-                validatorSetGetter: () => new ValidatorSet());
+            var prevStates = AccountStateDelta.Create(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -78,11 +75,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            var prevStates = new AccountStateDelta(
-                accountStateGetter: _ => new List(),
-                accountBalanceGetter: (_, c) => c * 0,
-                totalSupplyGetter: c => c * 0,
-                validatorSetGetter: () => new ValidatorSet());
+            var prevStates = AccountStateDelta.Create(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,

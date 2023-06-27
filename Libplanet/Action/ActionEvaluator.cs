@@ -500,8 +500,7 @@ namespace Libplanet.Action
         /// </returns>
         internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
         {
-            IBlockStates blockStates = _blockChainStates.GetBlockStates(block.PreviousHash);
-            return new AccountStateDelta(blockStates);
+            return AccountStateDelta.Create(_blockChainStates.GetBlockStates(block.PreviousHash));
         }
 
         [Pure]
