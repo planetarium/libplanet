@@ -162,6 +162,8 @@ namespace Libplanet.Tests.Action
             IValidatorSupportStateDelta,
             IAccountStateDelta
         {
+            public IAccountDelta Delta => new AccountDelta();
+
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
