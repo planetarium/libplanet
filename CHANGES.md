@@ -69,6 +69,7 @@ To be released.
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
 [#3245]: https://github.com/planetarium/libplanet/pull/3245
 [#3247]: https://github.com/planetarium/libplanet/pull/3247
+[#3248]: https://github.com/planetarium/libplanet/pull/3248
 
 
 Version 2.2.0
