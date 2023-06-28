@@ -49,6 +49,7 @@ To be released.
     `IImmutableDictionary<Address, IValue?>`.  [[#3248]]
  -  Added `IBlockChainStates.GetState()` interface method.  [[#3250]]
  -  Added `IBlockStates.GetState()` interface method.  [[#3250]]
+ -  Changed `IBlockStates` to inherit `IAccountState` interface.  [[#3251]]
 
 ### Backward-incompatible network protocol changes
 
@@ -73,6 +74,7 @@ To be released.
 [#3247]: https://github.com/planetarium/libplanet/pull/3247
 [#3248]: https://github.com/planetarium/libplanet/pull/3248
 [#3250]: https://github.com/planetarium/libplanet/pull/3250
+[#3251]: https://github.com/planetarium/libplanet/pull/3251
 
 
 Version 2.2.0
