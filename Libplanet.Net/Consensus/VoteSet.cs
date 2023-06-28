@@ -49,10 +49,25 @@ namespace Libplanet.Net.Consensus
         public BigInteger Sum => _validatorSet.GetValidatorsPower(
             _votes.Values.Select(vote => vote.ValidatorPublicKey).ToList());
 
+        /// <summary>
+        /// Count of the canonical <see cref="Vote"/>s.
+        /// </summary>
         public int Count => _votes.Count;
 
+        /// <summary>
+        /// Count of the all <see cref="Vote"/>s.
+        /// </summary>
         public int TotalCount => _votesByBlock.Values.Sum(votes => votes.Votes.Count);
 
+        /// <summary>
+        /// Predicate indicates where the <see cref="VoteSet"/> have collected a vote with
+        /// given <paramref name="publicKey"/> and <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="publicKey">A <see cref="PublicKey"/> of the <see cref="Vote"/>.</param>
+        /// <param name="blockHash">A <see cref="BlockHash"/> of the <see cref="Vote"/>.</param>
+        /// <returns> <see langword="true"/> when a vote with given params exits,
+        /// else <see langword="false"/>.
+        /// </returns>
         public bool Contains(PublicKey publicKey, BlockHash blockHash)
         {
             return _votes.Values.Any(
@@ -60,6 +75,14 @@ namespace Libplanet.Net.Consensus
                 && vote.BlockHash.Equals(blockHash));
         }
 
+        /// <summary>
+        /// Gets a <see cref="Vote"/> signed by <paramref name="publicKey"/> and of hash
+        /// <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="publicKey">A <see cref="PublicKey"/> of the <see cref="Vote"/>.</param>
+        /// <param name="blockHash">A <see cref="BlockHash"/> of the <see cref="Vote"/>.</param>
+        /// <returns>A <see cref="Vote"/> signed by <paramref name="publicKey"/> and of hash
+        /// <paramref name="blockHash"/> if exists. Else, <see langword="null"/>.</returns>
         public Vote? GetVote(PublicKey publicKey, BlockHash blockHash)
         {
             Vote vote;
@@ -86,15 +109,31 @@ namespace Libplanet.Net.Consensus
             return null;
         }
 
-        public IEnumerable<Vote> GetVotes(BlockHash blockHash) => _votes.Values;
+        /// <summary>
+        /// Gets all collected <see cref="Vote"/>s that voted to block with hash
+        /// <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash">
+        /// <see cref="BlockHash"/> of the <see cref="Vote"/>s to collect.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="Vote"/>.</returns>
+        public IEnumerable<Vote> GetVotes(BlockHash blockHash) =>
+            _votesByBlock[blockHash].Votes.Values;
 
-        // If a peer claims that it has 2/3 majority for given blockKey, call this.
-        // NOTE: if there are too many peers, or too much peer churn,
-        // this can cause memory issues.
-        // TODO: implement ability to remove peers too
-        // NOTE: VoteSet must not be nil
+        /// <summary>
+        /// If a peer claims that it has 2/3 majority for given <see cref="BlockHash"/>,
+        /// modify state by calling this method.
+        /// </summary>
+        /// <param name="maj23">A <see cref="Maj23"/> received by other validator.</param>
+        /// <returns><see langword="true"/> when given <paramref name="maj23"/> actually modified
+        /// state of the <see cref="VoteSet"/>, else <see langword="false"/>.</returns>
+        /// <exception cref="InvalidMaj23Exception">
+        /// Thrown when given <paramref name="maj23"/> has conflicting <see cref="BlockHash"/>.
+        /// </exception>
+        /// <remarks>if there are too many peers, or too much peer churn,
+        /// this can cause memory issues.</remarks>
         public bool SetPeerMaj23(Maj23 maj23)
         {
+            // TODO: implement ability to remove peers too
             lock (_lock)
             {
                 PublicKey publicKey = maj23.ValidatorPublicKey;
@@ -135,7 +174,6 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // Implements VoteSetReader.
         public bool[] BitArray()
         {
             lock (_lock)
@@ -159,11 +197,27 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // List returns a copy of the list of votes stored by the VoteSet.
+        /// <summary>
+        /// Returns a copy of the list of <see cref="Vote"/>s stored by the <see cref="VoteSet"/>.
+        /// </summary>
+        /// <returns>
+        /// A copy of the list of <see cref="Vote"/>s stored by the <see cref="VoteSet"/>.
+        /// </returns>
         public List<Vote> List()
             => _votes.Values.OrderBy(vote => vote.ValidatorPublicKey.ToAddress()).ToList();
 
-        // List returns a copy of the list of votes stored by the VoteSet.
+        /// <summary>
+        /// Returns a copy of the list of <see cref="Vote"/>s stored by the <see cref="VoteSet"/>.
+        /// If failed to collect <see cref="Vote"/> from certain peer,
+        /// fill it with nil <see cref="Vote"/>.
+        /// </summary>
+        /// <returns>
+        /// A copy of the list of <see cref="Vote"/>s stored by the <see cref="VoteSet"/>.
+        /// If failed to collect <see cref="Vote"/> from certain peer,
+        /// fill it with nil <see cref="Vote"/>.
+        /// </returns>
+        /// <exception cref="NullReferenceException">
+        /// Thrown when there are no +2/3 majority <see cref="Vote"/>s.</exception>
         public List<Vote> MappedList()
         {
             if (_maj23 is { } maj23NotNull)
@@ -174,8 +228,15 @@ namespace Libplanet.Net.Consensus
             throw new NullReferenceException();
         }
 
-        // NOTE: if validator has conflicting votes, returns "canonical" vote
-        // Implements VoteSetReader.
+        /// <summary>
+        /// Gets the <see cref="Vote"/> signed by given <paramref name="publicKey"/>.
+        /// If given validator has conflicting votes, returns "canonical" <see cref="Vote"/>.
+        /// </summary>
+        /// <param name="publicKey">
+        /// A <see cref="PublicKey"/> of the validator signed <see cref="Vote"/>.</param>
+        /// <returns>A <see cref="Vote"/> signed by given <paramref name="publicKey"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when there's no <see cref="Vote"/>
+        /// signed by given <paramref name="publicKey"/>.</exception>
         public Vote GetByPublicKey(PublicKey publicKey)
         {
             lock (_lock)
@@ -189,6 +250,10 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>If there is a +2/3 majority for certain <see cref="BlockHash"/>,
+        /// return <see langword="true"/>. Else, return <see langword="false"/>.</summary>
+        /// <returns><see langword="true"/> if +2/3 majority exists,
+        /// else <see langword="false"/>.</returns>
         public bool HasTwoThirdsMajority()
         {
             lock (_lock)
@@ -197,7 +262,11 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // Implements VoteSetReader.
+        /// <summary>
+        /// A predicate indicates whether the <see cref="VoteSet"/> collected +2/3 majority commits.
+        /// </summary>
+        /// <returns><see langword="true"/> if the <see cref="VoteSet"/> collected +2/3 majority
+        /// commits, else <see langword="false"/>.</returns>
         public bool IsCommit()
         {
             if (_voteType != VoteFlag.PreCommit)
@@ -208,6 +277,10 @@ namespace Libplanet.Net.Consensus
             return HasTwoThirdsMajority();
         }
 
+        /// <summary>If there is a +1/3 majority for any <see cref="BlockHash"/>,
+        /// return <see langword="true"/>. Else, return <see langword="false"/>.</summary>
+        /// <returns><see langword="true"/> if +1/3 majority exists,
+        /// else <see langword="false"/>.</returns>
         public bool HasOneThirdsAny()
         {
             lock (_lock)
@@ -216,6 +289,10 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>If there is a +2/3 majority for any <see cref="BlockHash"/>,
+        /// return <see langword="true"/>. Else, return <see langword="false"/>.</summary>
+        /// <returns><see langword="true"/> if +2/3 majority exists,
+        /// else <see langword="false"/>.</returns>
         public bool HasTwoThirdsAny()
         {
             lock (_lock)
@@ -224,6 +301,12 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Predicate which returns <see langword="true"/> when collected all <see cref="Vote"/>s.
+        /// Else, return <see langword="false"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> when collected all <see cref="Vote"/>s.
+        /// Else, <see langword="false"/>.</returns>
         public bool HasAll()
         {
             lock (_lock)
@@ -232,8 +315,14 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // If there was a +2/3 majority for blockID, return blockID and true.
-        // Else, return the empty BlockID{} and false.
+        /// <summary>If there is a +2/3 majority for certain <see cref="BlockHash"/>,
+        /// return <see cref="BlockHash"/> and <see langword="true"/>.
+        /// Else, return the <see langword="default"/> <see cref="BlockHash"/> and
+        /// <see langword="false"/>.</summary>
+        /// <param name="blockHash"><see cref="BlockHash"/> of the +2/3 majority vote.
+        /// If not exists, it will have <see langword="default"/>.</param>
+        /// <returns><see langword="true"/> if +2/3 majority exists,
+        /// else <see langword="false"/>.</returns>
         public bool TwoThirdsMajority(out BlockHash blockHash)
         {
             lock (_lock)
@@ -244,10 +333,17 @@ namespace Libplanet.Net.Consensus
                     return true;
                 }
 
+                blockHash = default;
                 return false;
             }
         }
 
+        /// <summary>
+        /// Create a <see cref="BlockCommit"/> instance if <see cref="VoteSet"/> has +2/3 majority
+        /// commits.
+        /// </summary>
+        /// <returns>A <see cref="BlockCommit"/> instance made by collected commits. If failed
+        /// to collect +2/3 majority commits, return <see langword="null"/>.</returns>
         public BlockCommit? ToBlockCommit()
         {
             if (!IsCommit())

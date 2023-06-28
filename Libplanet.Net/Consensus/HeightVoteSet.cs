@@ -198,7 +198,7 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // Last round and blockID that has +2/3 prevotes for a particular block or nil.
+        // Last round and block hash that has +2/3 prevotes for a particular block or nil.
         // Returns -1 if no such round exists.
         public (int, BlockHash) POLInfo()
         {
