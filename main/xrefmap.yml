@@ -20501,19 +20501,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
   nameWithType: IAccountStateDelta.StateUpdatedAddresses
-- uid: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  name: TotalSupplyUpdatedCurrencies
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TotalSupplyUpdatedCurrencies
-  commentId: P:Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  fullName: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
-- uid: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies*
-  name: TotalSupplyUpdatedCurrencies
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TotalSupplyUpdatedCurrencies_
-  commentId: Overload:Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  isSpec: "True"
-  fullName: Libplanet.State.IAccountStateDelta.TotalSupplyUpdatedCurrencies
-  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
 - uid: Libplanet.State.IAccountStateDelta.TotalUpdatedFungibleAssets
   name: TotalUpdatedFungibleAssets
   href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TotalUpdatedFungibleAssets
@@ -20566,6 +20553,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
   nameWithType: IAccountStateDelta.UpdatedFungibleAssets
+- uid: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
+  name: UpdatedTotalSupplyCurrencies
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedTotalSupplyCurrencies
+  commentId: P:Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
+  fullName: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
+  nameWithType: IAccountStateDelta.UpdatedTotalSupplyCurrencies
+- uid: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies*
+  name: UpdatedTotalSupplyCurrencies
+  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedTotalSupplyCurrencies_
+  commentId: Overload:Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
+  isSpec: "True"
+  fullName: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
+  nameWithType: IAccountStateDelta.UpdatedTotalSupplyCurrencies
 - uid: Libplanet.State.IAccountStateView
   name: IAccountStateView
   href: api/Libplanet.State.IAccountStateView.html
