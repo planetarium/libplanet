@@ -62,7 +62,7 @@ namespace Libplanet.State
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
         [Pure]
-        public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
+        public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
             Delta.UpdatedTotalSupplyCurrencies;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
@@ -78,20 +78,18 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        IValue? IAccountStateView.GetState(Address address)
+        public IValue? GetState(Address address)
         {
             ActionContext.GetStateTimer.Value?.Start();
             ActionContext.GetStateCount.Value += 1;
-            var state = Delta.States.TryGetValue(address, out IValue? value)
-                ? value
-                : StateGetter(new[] { address })[0];
+            IValue? state = GetStates(new[] { address })[0];
             ActionContext.GetStateTimer.Value?.Stop();
             return state;
         }
 
         /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
-        IReadOnlyList<IValue?> IAccountStateView.GetStates(IReadOnlyList<Address> addresses)
+        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {
             ActionContext.GetStateTimer.Value?.Start();
             int length = addresses.Count;
@@ -127,7 +125,7 @@ namespace Libplanet.State
 
         /// <inheritdoc/>
         [Pure]
-        IAccountStateDelta IAccountStateDelta.SetState(Address address, IValue state) =>
+        public IAccountStateDelta SetState(Address address, IValue state) =>
             UpdateStates(Delta.States.SetItem(address, state));
 
         /// <inheritdoc/>

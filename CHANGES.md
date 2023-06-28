@@ -42,6 +42,11 @@ To be released.
  -  Added `IAccountStateDeltaView.GetValidatorSet()` interface method.
     [[#3247]]
  -  Added `IAccountStateDelta.SetValidator()` interface method.  [[#3247]]
+ -  Changed the name `IAccountStateDelta.TotalSupplyUpdatedCurrencies` to
+    `IAccountStateDelta.UpdatedTotalSupplyCurrencies`.  [[#3248]]
+ -  Changed `TxSuccess.UpdatedStates`'s type to
+    `IImmutableDictionary<Address, IValue>` from
+    `IImmutableDictionary<Address, IValue?>`.  [[#3248]]
 
 ### Backward-incompatible network protocol changes
 
@@ -64,6 +69,7 @@ To be released.
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
 [#3245]: https://github.com/planetarium/libplanet/pull/3245
 [#3247]: https://github.com/planetarium/libplanet/pull/3247
+[#3248]: https://github.com/planetarium/libplanet/pull/3248
 
 
 Version 2.2.0

@@ -91,7 +91,7 @@ namespace Libplanet.State
         /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
         /// </summary>
         [Pure]
-        IImmutableSet<Currency> TotalSupplyUpdatedCurrencies { get; }
+        IImmutableSet<Currency> UpdatedTotalSupplyCurrencies { get; }
 
         /// <summary>
         /// Gets a new instance that the account state of the given
