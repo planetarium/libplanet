@@ -15,6 +15,7 @@ using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Mocks;
 using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -116,11 +117,12 @@ namespace Libplanet.Tests.Action
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
             ValidatorSetGetter validatorSetGetter) =>
-            new AccountStateDelta(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter);
+            AccountStateDelta.Create(
+                new MockAccountState(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    totalSupplyGetter,
+                    validatorSetGetter));
 
         public abstract IActionContext CreateContext(
             IAccountStateDelta delta,

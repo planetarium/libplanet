@@ -7,6 +7,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Mocks;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -40,22 +41,19 @@ namespace Libplanet.Tests.Action
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    new AccountStateDelta(
-                        addrs => new IValue[addrs.Count],
-                        (_, c) => new FungibleAssetValue(c),
-                        c => c * 0,
-                        () => new ValidatorSet()),
+                    AccountStateDelta.Create(MockAccountState.Empty),
                     123,
                     0,
                     false
                 ),
-                new AccountStateDelta(
-                    addrs => addrs
-                        .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)
-                        .ToArray(),
-                    (_, c) => new FungibleAssetValue(c),
-                    c => c * 0,
-                    () => new ValidatorSet())
+                AccountStateDelta.Create(
+                    new MockAccountState(
+                        addrs => addrs
+                            .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)
+                            .ToArray(),
+                        (_, c) => new FungibleAssetValue(c),
+                        c => c * 0,
+                        () => new ValidatorSet()))
             );
             var action = (DumbAction)evaluation.Action;
 

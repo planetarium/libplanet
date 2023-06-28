@@ -27,7 +27,7 @@ namespace Libplanet.State
         /// currencies.</param>
         /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
         /// set.</param>
-        internal AccountStateDelta(
+        private AccountStateDelta(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
@@ -277,41 +277,20 @@ namespace Libplanet.State
         }
 
         /// <summary>
-        /// Creates a default null state delta.
+        /// Creates a null state delta from given <paramref name="previousState"/>.
         /// </summary>
-        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
-        /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
-        /// </param>
-        /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
-        /// currencies.</param>
-        /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
-        /// set.</param>
-        /// <returns>A null state delta of type <see cref="AccountStateDelta"/>.</returns>
-        internal static IAccountStateDelta Create(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter)
+        /// <param name="previousState">The previous <see cref="IAccountState"/> to use as
+        /// a basis.</param>
+        /// <returns>A null state delta created from <paramref name="previousState"/>.
+        /// </returns>
+        internal static IAccountStateDelta Create(IAccountState previousState)
         {
             return new AccountStateDelta(
-                accountStateGetter,
-                accountBalanceGetter,
-                totalSupplyGetter,
-                validatorSetGetter);
+                previousState.GetStates,
+                previousState.GetBalance,
+                previousState.GetTotalSupply,
+                previousState.GetValidatorSet);
         }
-
-        /// <summary>
-        /// Creates a default null state delta from <paramref name="stateDelta"/>.
-        /// </summary>
-        /// <param name="stateDelta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <returns>A null state delta made from <paramref name="stateDelta"/>.</returns>
-        internal static IAccountStateDelta Create(
-            IAccountStateDelta stateDelta) =>
-            new AccountStateDelta(
-                stateDelta.GetStates,
-                stateDelta.GetBalance,
-                stateDelta.GetTotalSupply,
-                stateDelta.GetValidatorSet);
 
         /// <summary>
         /// Creates a null state delta while inheriting <paramref name="stateDelta"/>s
