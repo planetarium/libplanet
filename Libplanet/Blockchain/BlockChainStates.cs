@@ -23,6 +23,11 @@ namespace Libplanet.Blockchain
             _stateStore = stateStore;
         }
 
+        /// <inheritdoc cref="IBlockChainStates.GetState"/>
+        public IValue? GetState(
+            Address address, BlockHash? offset) =>
+            GetBlockStates(offset).GetState(address);
+
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>

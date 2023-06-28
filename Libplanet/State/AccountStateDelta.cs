@@ -87,7 +87,7 @@ namespace Libplanet.State
             return state;
         }
 
-        /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
+        /// <inheritdoc cref="IAccountState.GetStates(IReadOnlyList{Address})"/>
         [Pure]
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {

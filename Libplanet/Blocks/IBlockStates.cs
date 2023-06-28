@@ -19,6 +19,22 @@ namespace Libplanet.Blocks
         BlockHash? BlockHash { get; }
 
         /// <summary>
+        /// Gets the state associated to specified <paramref name="address"/>
+        /// at <see cref="BlockHash"/>.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> of the state to query.</param>
+        /// <returns>The state associated to specified <paramref name="address"/>.
+        /// An absent state is represented as <see langword="null"/>.  The returned value
+        /// must be the same as the single element when retrieved via
+        /// <see cref="GetStates"/>.
+        /// </returns>
+        /// <remarks>
+        /// For performance reasons, it is generally recommended to use <see cref="GetStates"/>
+        /// with a batch of <see cref="Address"/>es instead of iterating over this method.
+        /// </remarks>
+        IValue? GetState(Address address);
+
+        /// <summary>
         /// Gets multiple states associated to specified <paramref name="addresses"/>
         /// at <see cref="BlockHash"/>.
         /// </summary>

@@ -494,7 +494,11 @@ namespace Libplanet.Blockchain
         /// <returns>The current state of given <paramref name="address"/>.  This can be
         /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
         public IValue GetState(Address address) =>
-            GetStates(new[] { address }, Tip.Hash)[0];
+            GetState(address, Tip.Hash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetState"/>
+        public IValue GetState(Address address, BlockHash? offset) =>
+            _blockChainStates.GetState(address, offset);
 
         /// <summary>
         /// Gets multiple states associated to the specified <paramref name="addresses"/>.
@@ -524,10 +528,7 @@ namespace Libplanet.Blockchain
         public FungibleAssetValue GetBalance(
             Address address,
             Currency currency) =>
-            GetBalance(
-                address,
-                currency,
-                Tip.Hash);
+            GetBalance(address, currency, Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
