@@ -89,7 +89,7 @@ transfer or an owner has less <a class="xref" href="Libplanet.State.Insufficient
 supply exceed the maximum amount.</p>
 </section>
       <h4><a class="xref" href="Libplanet.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></h4>
-      <section><p>The exception thrown when <a class="xref" href="Libplanet.State.IAccountStateView.html#Libplanet_State_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
+      <section><p>The exception thrown when <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
 legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a> set to
 <span class="xref">false</span>.</p>
 </section>
@@ -97,10 +97,9 @@ legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.h
 </h3>
       <h4><a class="xref" href="Libplanet.State.IAccountDelta.html">IAccountDelta</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a></h4>
-      <section><p>An interface to manipulate account states with
-maintaining the set of <a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a>.</p>
-<p>It is like a map which is virtually initialized such
+      <h4><a class="xref" href="Libplanet.State.IAccountState.html">IAccountState</a></h4>
+      <section><p>An interface to fetch account states.</p>
+<p>It is like a readonly map which is virtually initialized such
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
@@ -110,9 +109,10 @@ but returns <span class="xref">null</span> instead, and</li><li>filling an <a cl
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
 any state.</li></ul>
 </section>
-      <h4><a class="xref" href="Libplanet.State.IAccountStateView.html">IAccountStateView</a></h4>
-      <section><p>An interface to fetch account states.</p>
-<p>It is like a readonly map which is virtually initialized such
+      <h4><a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a></h4>
+      <section><p>An interface to manipulate account states with
+maintaining the set of <a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a>.</p>
+<p>It is like a map which is virtually initialized such
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
