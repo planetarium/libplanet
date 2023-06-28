@@ -75,11 +75,29 @@
   <div class="markdown level0 summary"><p>A minimal interface to get states from output states of a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetState_Libplanet_Address_">IAccountState.GetState(Address)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__">IAccountState.GetStates(IReadOnlyList&lt;Address&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_">IAccountState.GetBalance(Address, Currency)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetTotalSupply_Libplanet_Assets_Currency_">IAccountState.GetTotalSupply(Currency)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetValidatorSet">IAccountState.GetValidatorSet()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blocks_IBlockStates_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IBlockStates</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IBlockStates : IAccountState</code></pre>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -88,7 +106,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L19">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L15">View Source</a>
   </span>
   <a id="Libplanet_Blocks_IBlockStates_BlockHash_" data-uid="Libplanet.Blocks.IBlockStates.BlockHash*"></a>
   <h4 id="Libplanet_Blocks_IBlockStates_BlockHash" data-uid="Libplanet.Blocks.IBlockStates.BlockHash">BlockHash</h4>
@@ -116,281 +134,6 @@ in which case represents initial default states.</p>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates.GetBalance(Libplanet.Address%2CLibplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L58">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_IBlockStates_GetBalance_" data-uid="Libplanet.Blocks.IBlockStates.GetBalance*"></a>
-  <h4 id="Libplanet_Blocks_IBlockStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_" data-uid="Libplanet.Blocks.IBlockStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)">GetBalance(Address, Currency)</h4>
-  <div class="markdown level1 summary"><p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for given <code data-dev-comment-type="paramref" class="paramref">currency</code>
-at <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash">BlockHash</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>The owner <a class="xref" href="Libplanet.Address.html">Address</a> to query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency type to query.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for <code data-dev-comment-type="paramref" class="paramref">currency</code>.
-If absent, returns 0 <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>
-for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates_GetState_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates.GetState(Libplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L35">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_IBlockStates_GetState_" data-uid="Libplanet.Blocks.IBlockStates.GetState*"></a>
-  <h4 id="Libplanet_Blocks_IBlockStates_GetState_Libplanet_Address_" data-uid="Libplanet.Blocks.IBlockStates.GetState(Libplanet.Address)">GetState(Address)</h4>
-  <div class="markdown level1 summary"><p>Gets the state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>
-at <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash">BlockHash</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IValue GetState(Address address)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> of the state to query.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
-        <td><p>The state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.
-An absent state is represented as <span class="xref">null</span>.  The returned value
-must be the same as the single element when retrieved via
-<a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__">GetStates(IReadOnlyList&lt;Address&gt;)</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Blocks_IBlockStates_GetState_Libplanet_Address__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>For performance reasons, it is generally recommended to use <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__">GetStates(IReadOnlyList&lt;Address&gt;)</a>
-with a batch of <a class="xref" href="Libplanet.Address.html">Address</a>es instead of iterating over this method.</p>
-</div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates.GetStates(System.Collections.Generic.IReadOnlyList%7BLibplanet.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L46">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_IBlockStates_GetStates_" data-uid="Libplanet.Blocks.IBlockStates.GetStates*"></a>
-  <h4 id="Libplanet_Blocks_IBlockStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__" data-uid="Libplanet.Blocks.IBlockStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})">GetStates(IReadOnlyList&lt;Address&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets multiple states associated to specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>
-at <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash">BlockHash</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IValue&gt; GetStates(IReadOnlyList&lt;Address&gt; addresses)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
-        <td><span class="parametername">addresses</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a>es of the states to query.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
-        <td><p>The states associated to specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>.
-Associated values are ordered the same to the corresponding
-<code data-dev-comment-type="paramref" class="paramref">addresses</code>.  Absent states are represented as <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates_GetTotalSupply_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates.GetTotalSupply(Libplanet.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L70">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_IBlockStates_GetTotalSupply_" data-uid="Libplanet.Blocks.IBlockStates.GetTotalSupply*"></a>
-  <h4 id="Libplanet_Blocks_IBlockStates_GetTotalSupply_Libplanet_Assets_Currency_" data-uid="Libplanet.Blocks.IBlockStates.GetTotalSupply(Libplanet.Assets.Currency)">GetTotalSupply(Currency)</h4>
-  <div class="markdown level1 summary"><p>Gets the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code> at <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash">BlockHash</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">FungibleAssetValue GetTotalSupply(Currency currency)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency type to query.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>The total supply value of <code data-dev-comment-type="paramref" class="paramref">currency</code>
-in <a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a>.  If absent, returns 0
-<a class="xref" href="Libplanet.Assets.FungibleAssetValue.html">FungibleAssetValue</a> for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></td>
-        <td><p>Thrown when
-given <code data-dev-comment-type="paramref" class="paramref">currency</code>'s <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a>
-is <span class="xref">false</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates_GetValidatorSet.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates.GetValidatorSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L78">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_IBlockStates_GetValidatorSet_" data-uid="Libplanet.Blocks.IBlockStates.GetValidatorSet*"></a>
-  <h4 id="Libplanet_Blocks_IBlockStates_GetValidatorSet" data-uid="Libplanet.Blocks.IBlockStates.GetValidatorSet">GetValidatorSet()</h4>
-  <div class="markdown level1 summary"><p>Returns the validator set.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ValidatorSet GetValidatorSet()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a></td>
-        <td><p>The validator set of type <a class="xref" href="Libplanet.Consensus.ValidatorSet.html">ValidatorSet</a>
-at <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash">BlockHash</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
 
@@ -402,7 +145,7 @@ at <a class="xref" href="Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBl
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockStates.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockStates%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockStates.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
