@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Mocks
         /// </summary>
         public static MockAccountState Empty =>
             new MockAccountState(
-                _ => null,
+                addrs => new IValue[addrs.Count],
                 (_, c) => c * 0,
                 c => c.TotalSupplyTrackable
                     ? c * 0
