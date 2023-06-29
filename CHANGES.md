@@ -4,9 +4,7 @@ Libplanet changelog
 Version 2.3.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 28, 2023.
 
 ### Backward-incompatible API changes
 
@@ -51,22 +49,10 @@ To be released.
  -  Added `IBlockStates.GetState()` interface method.  [[#3250]]
  -  Changed `IBlockStates` to inherit `IAccountState` interface.  [[#3251]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `IAccountDelta` interface and its default implementation
     `AccountDelta` class.  [[#3245]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3230]: https://github.com/planetarium/libplanet/pull/3230
 [#3244]: https://github.com/planetarium/libplanet/pull/3244
