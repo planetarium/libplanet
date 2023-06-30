@@ -131,9 +131,9 @@ namespace Libplanet.Tests.Action
         [Fact]
         public virtual void NullDelta()
         {
-            Assert.Empty(_initDelta.UpdatedAddresses);
-            Assert.Empty(_initDelta.StateUpdatedAddresses);
-            Assert.Empty(_initDelta.UpdatedFungibleAssets);
+            Assert.Empty(_initDelta.Delta.UpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.UpdatedFungibleAssets);
             Assert.Equal("a", (Text)_initDelta.GetState(_addr[0]));
             Assert.Equal("b", (Text)_initDelta.GetState(_addr[1]));
             Assert.Null(_initDelta.GetState(_addr[2]));
@@ -158,14 +158,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal("b", (Text)_initDelta.GetState(_addr[1]));
             Assert.Null(a.GetState(_addr[2]));
             Assert.Null(_initDelta.GetState(_addr[2]));
-            Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.StateUpdatedAddresses);
-            Assert.Equal(a.StateUpdatedAddresses, a.UpdatedAddresses);
-            Assert.Empty(a.UpdatedFungibleAssets);
-            Assert.Empty(a.UpdatedTotalSupplyCurrencies);
-            Assert.Empty(_initDelta.UpdatedAddresses);
-            Assert.Empty(_initDelta.StateUpdatedAddresses);
-            Assert.Empty(_initDelta.UpdatedFungibleAssets);
-            Assert.Empty(_initDelta.UpdatedTotalSupplyCurrencies);
+            Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.Delta.StateUpdatedAddresses);
+            Assert.Equal(a.Delta.StateUpdatedAddresses, a.Delta.UpdatedAddresses);
+            Assert.Empty(a.Delta.UpdatedFungibleAssets);
+            Assert.Empty(a.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Empty(_initDelta.Delta.UpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.UpdatedFungibleAssets);
+            Assert.Empty(_initDelta.Delta.UpdatedTotalSupplyCurrencies);
 
             IAccountStateDelta b = a.SetState(_addr[0], (Text)"z");
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
@@ -175,16 +175,16 @@ namespace Libplanet.Tests.Action
             Assert.Equal("b", (Text)a.GetState(_addr[1]));
             Assert.Null(b.GetState(_addr[2]));
             Assert.Null(a.GetState(_addr[2]));
-            Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.StateUpdatedAddresses);
-            Assert.Equal(a.StateUpdatedAddresses, a.UpdatedAddresses);
-            Assert.Empty(_initDelta.UpdatedAddresses);
-            Assert.Empty(_initDelta.StateUpdatedAddresses);
+            Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.Delta.StateUpdatedAddresses);
+            Assert.Equal(a.Delta.StateUpdatedAddresses, a.Delta.UpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.UpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.StateUpdatedAddresses);
 
             IAccountStateDelta c = b.SetState(_addr[0], (Text)"a");
             Assert.Equal("a", (Text)c.GetState(_addr[0]));
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
-            Assert.Empty(_initDelta.UpdatedAddresses);
-            Assert.Empty(_initDelta.StateUpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.UpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.StateUpdatedAddresses);
         }
 
         [Fact]
@@ -205,15 +205,15 @@ namespace Libplanet.Tests.Action
                 ImmutableHashSet<(Address, Currency)>.Empty
                     .Add((_addr[1], _currencies[2]))
                     .Add((_addr[2], _currencies[2])),
-                a.UpdatedFungibleAssets);
+                a.Delta.UpdatedFungibleAssets);
             Assert.Equal(
-                a.UpdatedFungibleAssets.Select(pair => pair.Item1).ToImmutableHashSet(),
-                a.UpdatedAddresses);
-            Assert.Empty(a.StateUpdatedAddresses);
-            Assert.Empty(_initDelta.UpdatedAddresses);
-            Assert.Empty(_initDelta.StateUpdatedAddresses);
-            Assert.Empty(_initDelta.UpdatedFungibleAssets);
-            Assert.Empty(_initDelta.UpdatedTotalSupplyCurrencies);
+                a.Delta.UpdatedFungibleAssets.Select(pair => pair.Item1).ToImmutableHashSet(),
+                a.Delta.UpdatedAddresses);
+            Assert.Empty(a.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.UpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initDelta.Delta.UpdatedFungibleAssets);
+            Assert.Empty(_initDelta.Delta.UpdatedTotalSupplyCurrencies);
         }
 
         [Fact]

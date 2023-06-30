@@ -51,7 +51,7 @@ namespace Libplanet.Blockchain
                         txid,
                         actionsLogsList,
                         outputStates.GetUpdatedStates(),
-                        outputStates.UpdatedFungibleAssets
+                        outputStates.Delta.UpdatedFungibleAssets
                             .Select(pair =>
                                 (
                                     pair.Item1,
@@ -66,7 +66,7 @@ namespace Libplanet.Blockchain
                                     .ToImmutableDictionary(
                                         triple => triple.Item2,
                                         triple => triple.Item3)),
-                        outputStates.UpdatedFungibleAssets
+                        outputStates.Delta.UpdatedFungibleAssets
                             .Select(pair =>
                                 (
                                     pair.Item1,
