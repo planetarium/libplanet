@@ -6,7 +6,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Store;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.State
 {

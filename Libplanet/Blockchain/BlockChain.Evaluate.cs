@@ -12,7 +12,6 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {

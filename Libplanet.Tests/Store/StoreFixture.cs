@@ -11,7 +11,6 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
-using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Tests.Store
 {

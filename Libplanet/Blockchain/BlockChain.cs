@@ -19,7 +19,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Blockchain
 {

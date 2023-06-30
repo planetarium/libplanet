@@ -25,7 +25,7 @@ using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
