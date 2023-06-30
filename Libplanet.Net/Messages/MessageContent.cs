@@ -97,21 +97,6 @@ namespace Libplanet.Net.Messages
             DifferentVersion = 0x30,
 
             /// <summary>
-            /// Consensus proposal message.
-            /// </summary>
-            ConsensusProposal = 0x40,
-
-            /// <summary>
-            /// Consensus vote message.
-            /// </summary>
-            ConsensusVote = 0x41,
-
-            /// <summary>
-            /// Consensus commit message.
-            /// </summary>
-            ConsensusCommit = 0x42,
-
-            /// <summary>
             /// List of message IDs that the peer seen recently.
             /// </summary>
             HaveMessage = 0x43,
@@ -120,6 +105,21 @@ namespace Libplanet.Net.Messages
             /// List of message IDs that the peer want to have.
             /// </summary>
             WantMessage = 0x44,
+
+            /// <summary>
+            /// Consensus proposal message.
+            /// </summary>
+            ConsensusProposal = 0x50,
+
+            /// <summary>
+            /// Consensus vote message.
+            /// </summary>
+            ConsensusVote = 0x51,
+
+            /// <summary>
+            /// Consensus commit message.
+            /// </summary>
+            ConsensusCommit = 0x52,
         }
 
         /// <summary>

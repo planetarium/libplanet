@@ -10,11 +10,41 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `Vote.BlockHash` property became `BlockHash` type. (was `BlockHash?`)
+    [[#3249]]
+ -  `VoteMetadata(long, int, BlockHash?, DateTimeOffset, PublicKey, VoteFlag)`
+    constructor became
+    `VoteMetadata(long, int, BlockHash, DateTimeOffset, PublicKey, VoteFlag)`
+    [[#3249]]
+ -  (Libplanet.Net) Renamed `Step` enum to `ConsensusStep`
+    to remove ambiguity.  [[#3249]]
+ -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
+    `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
+ -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `Maj23` and its related classes.  [[#3249]]
+     -  Added `Maj23` class.
+     -  Added `Maj23Metadata` class.
+     -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.
+ -  Added `VoteSetBits` and its related classes.  [[#3249]]
+     -  Added `VoteSetBits` class.
+     -  Added `VoteSetBitsMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusVoteSetBitsMsg` class.
+ -  (Libplanet.Net) Added `VoteSet` class.  [[#3249]]
+ -  (Libplanet.Net) Added `HeightVoteSet` class.  [[#3249]]
+ -  (Libplanet.Net) Added `ConsensusVoteMsg` abstract class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidProposalException` class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidVoteException` class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidMaj23Exception` class.  [[#3249]]
+ -  (Libplanet.Net) Added
+    `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
+    [[#3249]]
 
 ### Behavioral changes
 
@@ -23,6 +53,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3249]: https://github.com/planetarium/libplanet/pull/3249
 
 
 Version 2.3.0

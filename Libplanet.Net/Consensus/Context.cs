@@ -25,44 +25,44 @@ namespace Libplanet.Net.Consensus
     /// There are five states:
     /// <list type="bullet">
     ///     <item>
-    ///         <see cref="Libplanet.Net.Consensus.Step.Default"/> which is the initial state when
+    ///         <see cref="ConsensusStep.Default"/> which is the initial state when
     ///         the <see cref="Start"/> is not called (i.e., round has not been started).
     ///     </item>
     ///     <item>
-    ///         <see cref="Libplanet.Net.Consensus.Step.Propose"/>, which is the state when
+    ///         <see cref="ConsensusStep.Propose"/>, which is the state when
     ///         the round has been started and waiting for the block proposal. If a validator is a
     ///         proposer of the round, it will propose a block to the other validators and to
     ///         itself.
     ///     </item>
     ///     <item>
-    ///         <see cref="Libplanet.Net.Consensus.Step.PreVote"/>, which is the state when a block
+    ///         <see cref="ConsensusStep.PreVote"/>, which is the state when a block
     ///         proposal for a round has been received. While translating to this step, state
     ///         machine votes for the block whether block is valid or not, and waiting for any +2/3
     ///         votes from other validators.
     ///     </item>
     ///     <item>
-    ///         <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>, which is the state received
-    ///         any +2/3 votes in <see cref="Libplanet.Net.Consensus.Step.PreVote"/>. While
+    ///         <see cref="ConsensusStep.PreCommit"/>, which is the state received
+    ///         any +2/3 votes in <see cref="ConsensusStep.PreVote"/>. While
     ///         translating to this step, state machine votes for whether the block should be
     ///         committed or not, and waiting for any +2/3 committing votes from other validators.
-    ///         If <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>
+    ///         If <see cref="ConsensusStep.PreCommit"/>
     ///         receives +2/3 commit votes with NIL, starts new round <see cref="StartRound"/> and
-    ///         moves step to <see cref="Libplanet.Net.Consensus.Step.Propose"/>.
+    ///         moves step to <see cref="ConsensusStep.Propose"/>.
     ///     </item>
     ///     <item>
-    ///         <see cref="Libplanet.Net.Consensus.Step.EndCommit"/>, which is the state represents
+    ///         <see cref="ConsensusStep.EndCommit"/>, which is the state represents
     ///         committing vote has been received from other validators. Block will be committed
     ///         to the blockchain and consensus for this height is stopped. (responsibility of next
     ///         height handling is at <see cref="ConsensusContext"/>).
     ///     </item>
     ///     <item>
-    ///         In the above states, <see cref="Libplanet.Net.Consensus.Step.Propose"/>, If
+    ///         In the above states, <see cref="ConsensusStep.Propose"/>, If
     ///         receiving proposal fails in <see cref="TimeoutPropose"/>, then step is moved to
-    ///         <see cref="Libplanet.Net.Consensus.Step.PreVote"/> and vote NIL.
+    ///         <see cref="ConsensusStep.PreVote"/> and vote NIL.
     ///     </item>
     ///     <item>
-    ///         Similar to Propose, <see cref="Libplanet.Net.Consensus.Step.PreVote"/> and
-    ///         <see cref="Libplanet.Net.Consensus.Step.PreCommit"/> also wait for
+    ///         Similar to Propose, <see cref="ConsensusStep.PreVote"/> and
+    ///         <see cref="ConsensusStep.PreCommit"/> also wait for
     ///         <see cref="TimeoutPreVote"/> or <see cref="TimeoutPreCommit"/> respectively,
     ///         if +2/3 vote received but neither NIL nor Block is not +2/3. If still +2/3 vote is
     ///         not received neither NIL nor Block after timeout runs out, then move to next step
@@ -84,7 +84,7 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
-        private readonly MessageLog _messageLog;
+        private readonly HeightVoteSet _heightVoteSet;
 
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -124,7 +124,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="validators">The <see cref="ValidatorSet"/> for
         /// given <paramref name="height"/>.</param>
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="Step"/>.</param>
+        /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public Context(
             ConsensusContext consensusContext,
             BlockChain blockChain,
@@ -138,7 +138,7 @@ namespace Libplanet.Net.Consensus
                 height,
                 privateKey,
                 validators,
-                Step.Default,
+                ConsensusStep.Default,
                 -1,
                 128,
                 contextTimeoutOptions)
@@ -151,7 +151,7 @@ namespace Libplanet.Net.Consensus
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,
-            Step step,
+            ConsensusStep consensusStep,
             int round = -1,
             int cacheSize = 128,
             ContextTimeoutOption? contextTimeoutOptions = null)
@@ -171,7 +171,7 @@ namespace Libplanet.Net.Consensus
             _privateKey = privateKey;
             Height = height;
             Round = round;
-            Step = step;
+            Step = consensusStep;
             _lockedValue = null;
             _lockedRound = -1;
             _validValue = null;
@@ -182,7 +182,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
-            _messageLog = new MessageLog(height, validators);
+            _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
@@ -214,7 +214,9 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A step represents of this consensus state. See <see cref="Context"/> for more detail.
         /// </summary>
-        public Step Step { get; private set; }
+        public ConsensusStep Step { get; private set; }
+
+        public Proposal? Proposal { get; private set; }
 
         /// <summary>
         /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
@@ -238,9 +240,7 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         public BlockCommit? GetBlockCommit()
         {
-            var blockCommit = _decision is null
-                ? (BlockCommit?)null
-                : _messageLog.GetBlockCommit(_committedRound, _decision.Hash);
+            var blockCommit = _heightVoteSet.PreCommits(Round)?.ToBlockCommit();
             _logger.Debug(
                 "{FName}: CommittedRound: {CommittedRound}, Decision: {Decision}, " +
                 "BlockCommit: {BlockCommit}",
@@ -264,6 +264,7 @@ namespace Libplanet.Net.Consensus
                 { "height", Height },
                 { "round", Round },
                 { "step", Step.ToString() },
+                { "proposal", Proposal?.ToString() ?? "null" },
                 { "locked_value", _lockedValue?.Hash.ToString() ?? "null" },
                 { "locked_round", _lockedRound },
                 { "valid_value", _validValue?.Hash.ToString() ?? "null" },
@@ -273,7 +274,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the timeout of <see cref="Libplanet.Net.Consensus.Step.PreVote"/> with the given
+        /// Gets the timeout of <see cref="ConsensusStep.PreVote"/> with the given
         /// round.
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
@@ -286,7 +287,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the timeout of <see cref="Libplanet.Net.Consensus.Step.PreCommit"/> with the given
+        /// Gets the timeout of <see cref="ConsensusStep.PreCommit"/> with the given
         /// round.
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
@@ -299,7 +300,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the timeout of <see cref="Libplanet.Net.Consensus.Step.Propose"/> with the given
+        /// Gets the timeout of <see cref="ConsensusStep.Propose"/> with the given
         /// round.
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
@@ -340,8 +341,7 @@ namespace Libplanet.Net.Consensus
         /// Broadcasts <see cref="ConsensusMsg"/> to validators.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>
-        /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself. See
-        /// <see cref="ConsensusContext.BroadcastMessage"/>.</remarks>
+        /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself.</remarks>
         private void BroadcastMessage(ConsensusMsg message)
         {
             ConsensusContext.BroadcastMessage(message);
@@ -448,7 +448,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns a signed <see cref="Vote"/> with consensus private key.</returns>
         /// <exception cref="ArgumentException">If <paramref name="flag"/> is either
         /// <see cref="VoteFlag.Null"/> or <see cref="VoteFlag.Unknown"/>.</exception>
-        private Vote MakeVote(int round, BlockHash? hash, VoteFlag flag)
+        private Vote MakeVote(int round, BlockHash hash, VoteFlag flag)
         {
             if (flag == VoteFlag.Null || flag == VoteFlag.Unknown)
             {
@@ -469,69 +469,19 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Gets the proposed block and valid round of the given round.
         /// </summary>
-        /// <param name="round">A round to get.</param>
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block, int)? GetProposal(int round)
+        private (Block, int)? GetProposal()
         {
-            ConsensusProposalMsg? proposal = _messageLog.GetProposal(round);
-            if (proposal is { } p)
+            if (Proposal is { } p)
             {
                 var block = BlockMarshaler.UnmarshalBlock(
-                    (Dictionary)_codec.Decode(p.Proposal.MarshaledBlock));
-                return (block, p.Proposal.ValidRound);
+                    (Dictionary)_codec.Decode(p.MarshaledBlock));
+                return (block, p.ValidRound);
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusPreVoteMsg"/> for
-        /// <paramref name="round"/> and <paramref name="predicate"/>.
-        /// </summary>
-        /// <param name="round">The round to check.</param>
-        /// <param name="predicate">An additional predicate for counting votes.</param>
-        /// <returns>Returns <see langword="true"/> if the count is +2/3,
-        /// otherwise <see langword="false"/>.</returns>
-        private bool HasTwoThirdsPreVote(int round, Func<ConsensusPreVoteMsg, bool> predicate)
-        {
-            var validatorPublicKeys = _messageLog.GetPreVotes(round).FindAll(
-                preVote => predicate(preVote)).Select(
-                preVote => preVote.PreVote.ValidatorPublicKey).ToList();
-            return _validatorSet.GetValidatorsPower(validatorPublicKeys)
-                > _validatorSet.TwoThirdsPower;
-        }
-
-        /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusPreCommitMsg"/> for
-        /// <paramref name="round"/> and <paramref name="predicate"/>.
-        /// </summary>
-        /// <param name="round">The round to check.</param>
-        /// <param name="predicate">An additional predicate for counting votes.</param>
-        /// <returns>Returns <see langword="true"/> if the count is +2/3,
-        /// otherwise <see langword="false"/>.</returns>
-        private bool HasTwoThirdsPreCommit(int round, Func<ConsensusPreCommitMsg, bool> predicate)
-        {
-            var validatorPublicKeys = _messageLog.GetPreCommits(round).FindAll(
-                preCommit => predicate(preCommit)).Select(
-                preCommit => preCommit.PreCommit.ValidatorPublicKey).ToList();
-            return _validatorSet.GetValidatorsPower(validatorPublicKeys)
-                > _validatorSet.TwoThirdsPower;
-        }
-
-        /// <summary>
-        /// Checks whether given <paramref name="round"/> has +1/3 distinct validators
-        /// already participating in it, i.e. has a <see cref="ConsensusMsg"/> in the
-        /// <see cref="MessageLog"/>.
-        /// </summary>
-        /// <param name="round">The round to check.</param>
-        /// <returns><see langword="true"/> if the count is +1/3,
-        /// otherwise <see langword="false"/>.</returns>
-        private bool HasOneThirdValidators(int round)
-        {
-            return _validatorSet.GetValidatorsPower(_messageLog.GetValidators(round))
-                > _validatorSet.OneThirdPower;
         }
     }
 }

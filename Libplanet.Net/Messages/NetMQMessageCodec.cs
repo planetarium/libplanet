@@ -207,16 +207,16 @@ namespace Libplanet.Net.Messages
                     return new ChainStatusMsg(dataframes);
                 case MessageContent.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
+                case MessageContent.MessageType.HaveMessage:
+                    return new HaveMessage(dataframes);
+                case MessageContent.MessageType.WantMessage:
+                    return new WantMessage(dataframes);
                 case MessageContent.MessageType.ConsensusProposal:
                     return new ConsensusProposalMsg(dataframes);
                 case MessageContent.MessageType.ConsensusVote:
                     return new ConsensusPreVoteMsg(dataframes);
                 case MessageContent.MessageType.ConsensusCommit:
                     return new ConsensusPreCommitMsg(dataframes);
-                case MessageContent.MessageType.HaveMessage:
-                    return new HaveMessage(dataframes);
-                case MessageContent.MessageType.WantMessage:
-                    return new WantMessage(dataframes);
                 default:
                     throw new InvalidCastException($"Given type {type} is not a valid message.");
             }

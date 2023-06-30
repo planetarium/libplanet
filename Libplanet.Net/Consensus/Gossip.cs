@@ -283,6 +283,7 @@ namespace Libplanet.Net.Consensus
                     await HandleWantAsync(msg, ctx);
                     break;
                 default:
+                    await ReplyMessagePongAsync(msg, ctx);
                     AddMessage(msg.Content);
                     break;
             }

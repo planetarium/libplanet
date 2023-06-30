@@ -130,6 +130,14 @@ namespace Libplanet.Consensus
         /// <returns>The validator at given <paramref name="index"/>.</returns>
         public Validator this[int index] => Validators[index];
 
+        /// <summary>
+        /// Gets the index of given <paramref name="publicKey"/>.
+        /// </summary>
+        /// <param name="publicKey">The <see cref="PublicKey"/> to find index.</param>
+        /// <returns>The index of given <paramref name="publicKey"/>.</returns>
+        public int FindIndex(PublicKey publicKey) => Validators.FindIndex(
+            validator => validator.PublicKey.Equals(publicKey));
+
         public Validator GetValidator(PublicKey publicKey)
             => Validators.Find(validator => validator.PublicKey == publicKey);
 
@@ -150,6 +158,16 @@ namespace Libplanet.Consensus
         /// <returns><see langword="true"/> if given <paramref name="validator"/>
         /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
         public bool Contains(Validator validator) => Validators.Contains(validator);
+
+        /// <summary>
+        /// Checks if given <paramref name="publicKey"/> is a member of <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="publicKey">The <see cref="PublicKey"/> of the
+        /// <see cref="Validator"/> to check.</param>
+        /// <returns><see langword="true"/> if given <paramref name="publicKey"/>
+        /// is in <see cref="Validators"/>, <see langword="false"/> otherwise.</returns>
+        public bool ContainsPublicKey(PublicKey publicKey) =>
+            Validators.Any(validator => validator.PublicKey.Equals(publicKey));
 
         /// <summary>
         /// Creates a new <see cref="ValidatorSet"/> that has been updated with

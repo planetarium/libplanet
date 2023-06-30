@@ -43,7 +43,7 @@ namespace Libplanet.Net.Consensus
         /// block.
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="Step"/>.</param>
+        /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public ConsensusReactor(
             ITransport consensusTransport,
             BlockChain blockChain,
@@ -83,7 +83,10 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public bool Running => _gossip.Running;
 
-        /// <inheritdoc cref="ConsensusContext.Height"/>
+        /// <summary>
+        /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
+        /// changed by starting a consensus or appending a block.
+        /// </summary>
         public long Height => _consensusContext.Height;
 
         /// <summary>

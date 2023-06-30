@@ -57,7 +57,7 @@ namespace Libplanet.Net.Tests
             PrivateKey privateKey,
             long height = 0,
             int round = 0,
-            BlockHash? hash = null,
+            BlockHash hash = default,
             VoteFlag flag = VoteFlag.Null) =>
             new VoteMetadata(
                 height,

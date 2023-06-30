@@ -1,6 +1,6 @@
 namespace Libplanet.Net.Consensus
 {
-    public enum Step
+    public enum ConsensusStep
     {
         /// <summary>
         /// Initial Step.

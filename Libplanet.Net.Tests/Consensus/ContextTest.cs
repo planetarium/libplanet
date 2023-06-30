@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -63,7 +63,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.Start();
             await Task.WhenAll(proposalSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -85,7 +85,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -107,7 +107,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.Start(lastCommit);
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
 
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.NotNull(proposal);
             Block proposed = BlockMarshaler.UnmarshalBlock(
                 (Dictionary)new Codec().Decode(proposal!.Proposal.MarshaledBlock));
@@ -139,11 +139,11 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
-                else if (eventArgs.Step == Step.EndCommit)
+                else if (eventArgs.Step == ConsensusStep.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
@@ -321,17 +321,17 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     enteredPreVote.Set();
                 }
 
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     enteredPreCommit.Set();
                 }
 
-                if (eventArgs.Step == Step.EndCommit)
+                if (eventArgs.Step == ConsensusStep.EndCommit)
                 {
                     enteredEndCommit.Set();
                 }

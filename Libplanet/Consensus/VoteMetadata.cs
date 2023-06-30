@@ -50,7 +50,7 @@ namespace Libplanet.Consensus
         public VoteMetadata(
             long height,
             int round,
-            BlockHash? blockHash,
+            BlockHash blockHash,
             DateTimeOffset timestamp,
             PublicKey validatorPublicKey,
             VoteFlag flag)
@@ -65,10 +65,11 @@ namespace Libplanet.Consensus
                 throw new ArgumentException(
                     $"Given {nameof(round)} cannot be negative: {round}");
             }
-            else if (blockHash is null && (flag == VoteFlag.Null || flag == VoteFlag.Unknown))
+            else if (
+                blockHash.Equals(default) && (flag == VoteFlag.Null || flag == VoteFlag.Unknown))
             {
                 throw new ArgumentException(
-                    $"Given {nameof(blockHash)} cannot be null if {nameof(flag)} " +
+                    $"Given {nameof(blockHash)} cannot be default if {nameof(flag)} " +
                     $"is {VoteFlag.Null} or {VoteFlag.Unknown}");
             }
 
@@ -95,9 +96,7 @@ namespace Libplanet.Consensus
             : this(
                 height: bencoded.GetValue<Integer>(HeightKey),
                 round: bencoded.GetValue<Integer>(RoundKey),
-                blockHash: bencoded.ContainsKey(BlockHashKey)
-                    ? new BlockHash(bencoded.GetValue<IValue>(BlockHashKey))
-                    : (BlockHash?)null,
+                blockHash: new BlockHash(bencoded.GetValue<IValue>(BlockHashKey)),
                 timestamp: DateTimeOffset.ParseExact(
                     bencoded.GetValue<Text>(TimestampKey),
                     TimestampFormat,
@@ -116,7 +115,7 @@ namespace Libplanet.Consensus
         public int Round { get; }
 
         /// <inheritdoc/>
-        public BlockHash? BlockHash { get; }
+        public BlockHash BlockHash { get; }
 
         /// <inheritdoc/>
         public DateTimeOffset Timestamp { get; }

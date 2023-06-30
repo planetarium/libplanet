@@ -1,5 +1,4 @@
 using System;
-using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 
@@ -10,8 +9,6 @@ namespace Libplanet.Net.Messages
     /// </summary>
     public abstract class ConsensusMsg : MessageContent, IEquatable<ConsensusMsg>
     {
-        protected const byte Nil = 0x00;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusMsg"/> class.
         /// </summary>
@@ -19,17 +16,14 @@ namespace Libplanet.Net.Messages
         /// A <see cref="PublicKey"/> of the validator who made this message.</param>
         /// <param name="height">A <see cref="Context.Height"/> the message is for.</param>
         /// <param name="round">A <see cref="Context.Round"/> the message is written for.</param>
-        /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
         protected ConsensusMsg(
             PublicKey validatorPublicKey,
             long height,
-            int round,
-            BlockHash? blockHash)
+            int round)
         {
             ValidatorPublicKey = validatorPublicKey;
             Round = round;
             Height = height;
-            BlockHash = blockHash;
         }
 
         /// <summary>
@@ -48,14 +42,21 @@ namespace Libplanet.Net.Messages
         public int Round { get; }
 
         /// <summary>
-        /// A <see cref="BlockHash"/> the message is written for.
+        /// Indicates whether the current <see cref="ConsensusMsg"/>
+        /// is equal to another <see cref="ConsensusMsg"/>.
         /// </summary>
-        public BlockHash? BlockHash { get; }
-
+        /// <param name="other">An <see cref="ConsensusMsg"/> to compare with this
+        /// <see cref="ConsensusMsg"/>.</param>
+        /// <returns>
+        /// true if the current <see cref="ConsensusMsg"/> is equal to the other parameter;
+        /// otherwise, false.
+        /// </returns>
         public abstract bool Equals(ConsensusMsg? other);
 
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public abstract override bool Equals(object? obj);
 
+        /// <inheritdoc cref="object.GetHashCode"/>
         public abstract override int GetHashCode();
     }
 }
