@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Common.Action
 
         public IAccountStateDelta Execute(IActionContext ctx)
         {
-            IAccountStateDelta states = ctx.PreviousStates;
+            IAccountStateDelta states = ctx.PreviousState;
 
             string rewardRecord = (Text?)states.GetState(RewardRecordAddress);
 

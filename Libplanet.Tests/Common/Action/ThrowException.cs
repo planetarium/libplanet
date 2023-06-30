@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Common.Action
                 }
             }
 
-            return context.PreviousStates;
+            return context.PreviousState;
         }
 
         public class SomeException : Exception

@@ -176,28 +176,28 @@ public class StateQueryTest
     private class MockChainStates : IBlockChainStates
     {
         public IValue GetState(Address address, BlockHash? offset) =>
-            GetBlockStates(offset).GetState(address);
+            GetBlockState(offset).GetState(address);
 
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockStates(offset).GetStates(addresses);
+            GetBlockState(offset).GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockStates(offset).GetBalance(address, currency);
+            GetBlockState(offset).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockStates(offset).GetTotalSupply(currency);
+            GetBlockState(offset).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockStates(offset).GetValidatorSet();
+            GetBlockState(offset).GetValidatorSet();
 
-        public IBlockStates GetBlockStates(BlockHash? offset) => new MockBlockStates(offset);
+        public IBlockState GetBlockState(BlockHash? offset) => new MockBlockState(offset);
     }
 
-    private class MockBlockStates : IBlockStates
+    private class MockBlockState : IBlockState
     {
-        public MockBlockStates(BlockHash? blockHash)
+        public MockBlockState(BlockHash? blockHash)
         {
             BlockHash = blockHash;
         }

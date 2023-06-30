@@ -6,7 +6,7 @@ using Serilog;
 
 namespace Libplanet.Blocks
 {
-    internal class BlockStatesCache
+    internal class BlockStateCache
     {
         public const int CacheSize = 1_000;
         public const int ReportPeriod = 1_000;
@@ -15,7 +15,7 @@ namespace Libplanet.Blocks
         private int _getAttempts;
         private int _getSuccesses;
 
-        public BlockStatesCache()
+        public BlockStateCache()
         {
             _cache = new LruCache<Address, IValue?>(CacheSize);
             _getAttempts = 0;
@@ -41,7 +41,7 @@ namespace Libplanet.Blocks
             {
                 // NOTE: This is only an estimation due to concurrency (or lack there of).
                 Log
-                    .ForContext("Source", nameof(BlockStatesCache))
+                    .ForContext("Source", nameof(BlockStateCache))
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "StatesCacheReport")
                     .Debug(

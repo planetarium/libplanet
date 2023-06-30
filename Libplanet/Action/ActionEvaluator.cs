@@ -109,7 +109,7 @@ namespace Libplanet.Action
                 else
                 {
                     previousStates = evaluations.Count > 0
-                        ? evaluations.Last().OutputStates
+                        ? evaluations.Last().OutputState
                         : previousStates;
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(block, previousStates)
@@ -168,7 +168,7 @@ namespace Libplanet.Action
         /// <list type="bullet">
         /// <item><description>
         ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
-        ///     if any, has <see cref="ActionEvaluation.OutputStates"/> with
+        ///     if any, has <see cref="ActionEvaluation.OutputState"/> with
         ///     <see cref="IAccountStateDelta.Delta"/> that is a
         ///     "superset" of <paramref name="previousStates"/>'s
         ///     <see cref="IAccountStateDelta.Delta"/> (possibly except for
@@ -176,7 +176,7 @@ namespace Libplanet.Action
         /// </description></item>
         /// <item><description>
         ///     Each <see cref="ActionEvaluation"/> in the enumerated result
-        ///     has <see cref="ActionEvaluation.OutputStates"/> with
+        ///     has <see cref="ActionEvaluation.OutputState"/> with
         ///     <see cref="IAccountStateDelta.Delta"/> that is a "superset"
         ///     of the previous one, if any (possibly except for
         ///     <see cref="IAccountDelta.ValidatorSet"/>).
@@ -200,7 +200,7 @@ namespace Libplanet.Action
             ILogger? logger = null)
         {
             ActionContext CreateActionContext(
-                IAccountStateDelta prevStates,
+                IAccountStateDelta prevState,
                 int randomSeed,
                 long actionGasLimit = long.MaxValue,
                 List<string>? logs = null
@@ -212,7 +212,7 @@ namespace Libplanet.Action
                     miner: miner,
                     blockIndex: blockIndex,
                     blockProtocolVersion: blockProtocolVersion,
-                    previousStates: prevStates,
+                    previousState: prevState,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit,
                     logs: logs);
@@ -314,7 +314,7 @@ namespace Libplanet.Action
                 yield return new ActionEvaluation(
                     action: action,
                     inputContext: equivalentContext,
-                    outputStates: nextStates,
+                    outputState: nextStates,
                     exception: exc,
                     logs: context.Logs);
 
@@ -409,7 +409,7 @@ namespace Libplanet.Action
                 foreach (ActionEvaluation evaluation in evaluations)
                 {
                     yield return evaluation;
-                    delta = evaluation.OutputStates;
+                    delta = evaluation.OutputState;
                     actions.Add(evaluation.Action);
                 }
 
@@ -506,7 +506,7 @@ namespace Libplanet.Action
         /// </returns>
         internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
         {
-            return AccountStateDelta.Create(_blockChainStates.GetBlockStates(block.PreviousHash));
+            return AccountStateDelta.Create(_blockChainStates.GetBlockState(block.PreviousHash));
         }
 
         [Pure]

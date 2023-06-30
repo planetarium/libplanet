@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Common.Action
         {
             IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
             IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
-            IAccountStateDelta previousStates = context.PreviousStates;
+            IAccountStateDelta previousStates = context.PreviousState;
 
             object value = previousStates.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))

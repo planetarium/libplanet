@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
             foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
             {
                 TxId txid = txEvals.Key;
-                IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousStates;
+                IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousState;
                 IActionEvaluation evalSum = txEvals.Last();
                 var actionsLogsList = txEvals.Select(ae => ae.Logs).ToList();
                 TxExecution txExecution;
@@ -45,7 +45,7 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    IAccountStateDelta outputStates = evalSum.OutputStates;
+                    IAccountStateDelta outputStates = evalSum.OutputState;
                     txExecution = new TxSuccess(
                         block.Hash,
                         txid,

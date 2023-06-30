@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Common.Action
         public override IAccountStateDelta Execute(IActionContext context)
         {
             // No-op.
-            return context.PreviousStates;
+            return context.PreviousState;
         }
 
         public override void LoadPlainValue(IValue plainValue)

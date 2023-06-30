@@ -26,29 +26,29 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetState"/>
         public IValue? GetState(
             Address address, BlockHash? offset) =>
-            GetBlockStates(offset).GetState(address);
+            GetBlockState(offset).GetState(address);
 
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockStates(offset).GetStates(addresses);
+            GetBlockState(offset).GetStates(addresses);
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockStates(offset).GetBalance(address, currency);
+            GetBlockState(offset).GetBalance(address, currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockStates(offset).GetTotalSupply(currency);
+            GetBlockState(offset).GetTotalSupply(currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockStates(offset).GetValidatorSet();
+            GetBlockState(offset).GetValidatorSet();
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockStates"/>
-        public IBlockStates GetBlockStates(BlockHash? offset) =>
-            new BlockStates(offset, GetStateRoot(offset));
+        /// <inheritdoc cref="IBlockChainStates.GetBlockState"/>
+        public IBlockState GetBlockState(BlockHash? offset) =>
+            new BlockState(offset, GetStateRoot(offset));
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>

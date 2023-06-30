@@ -262,7 +262,7 @@ public static class Utils
 
         /// <inheritdoc/>
         public IAccountStateDelta Execute(IActionContext context) =>
-            context.PreviousStates;
+            context.PreviousState;
 
         /// <inheritdoc/>
         public void LoadPlainValue(IValue plainValue)

@@ -17,30 +17,30 @@ namespace Libplanet.Blockchain
 
         public IValue? GetState(
             Address address, BlockHash? offset) =>
-            GetBlockStates(offset).GetState(address);
+            GetBlockState(offset).GetState(address);
 
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockStates(offset).GetStates(addresses);
+            GetBlockState(offset).GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockStates(offset).GetBalance(address, currency);
+            GetBlockState(offset).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockStates(offset).GetTotalSupply(currency);
+            GetBlockState(offset).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockStates(offset).GetValidatorSet();
+            GetBlockState(offset).GetValidatorSet();
 
-        public IBlockStates GetBlockStates(BlockHash? offset) => new NullBlockStates(offset);
+        public IBlockState GetBlockState(BlockHash? offset) => new NullBlockState(offset);
     }
 
 #pragma warning disable SA1402  // File may only contain a single type
-    internal class NullBlockStates : IBlockStates
+    internal class NullBlockState : IBlockState
 #pragma warning restore SA1402
     {
-        public NullBlockStates(BlockHash? blockHash)
+        public NullBlockState(BlockHash? blockHash)
         {
             BlockHash = blockHash;
         }

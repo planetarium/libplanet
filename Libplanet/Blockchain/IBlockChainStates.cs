@@ -84,7 +84,7 @@ namespace Libplanet.Blockchain
         /// at <paramref name="offset"/>.  If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockStates"/> at
+        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockState"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
         FungibleAssetValue GetBalance(
             Address address,
@@ -102,12 +102,12 @@ namespace Libplanet.Blockchain
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockStates"/> at
+        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockState"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
-        /// <seealso cref="GetBlockStates"/>
+        /// <seealso cref="GetBlockState"/>
         FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash? offset);
@@ -121,19 +121,19 @@ namespace Libplanet.Blockchain
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
         /// <paramref name="offset"/>.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockStates"/> at
+        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockState"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
-        /// <seealso cref="GetBlockStates"/>
+        /// <seealso cref="GetBlockState"/>
         ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
-        /// Returns the <see cref="IBlockStates"/> in the <see cref="BlockChain"/>
+        /// Returns the <see cref="IBlockState"/> in the <see cref="BlockChain"/>
         /// at <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
-        /// for which to create an <see cref="IBlockStates"/>.</param>
+        /// for which to create an <see cref="IBlockState"/>.</param>
         /// <returns>
-        /// The <see cref="IBlockStates"/> at <paramref name="offset"/>.
+        /// The <see cref="IBlockState"/> at <paramref name="offset"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
         /// <see langword="null"/> and one of the following is true.
@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </exception>
-        /// <seealso cref="IBlockStates"/>
-        IBlockStates GetBlockStates(BlockHash? offset);
+        /// <seealso cref="IBlockState"/>
+        IBlockState GetBlockState(BlockHash? offset);
     }
 }

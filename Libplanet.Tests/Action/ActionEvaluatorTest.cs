@@ -104,10 +104,10 @@ namespace Libplanet.Tests.Action
             {
                 var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock);
                 generatedRandomNumbers.Add(
-                    (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
+                    (Integer)actionEvaluations[0].OutputState.GetState(txAddress));
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlock);
                 generatedRandomNumbers.Add(
-                    (Integer)actionEvaluations[0].OutputStates.GetState(txAddress));
+                    (Integer)actionEvaluations[0].OutputState.GetState(txAddress));
             }
 
             for (int i = 1; i < generatedRandomNumbers.Count; ++i)
@@ -349,12 +349,12 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
-                    (Integer)eval.OutputStates.GetState(
+                    (Integer)eval.OutputState.GetState(
                         DumbAction.RandomRecordsAddress),
                     (Integer)randomValue);
                 Assert.Equal(
                     expect.UpdatedStates,
-                    addresses.Select(eval.OutputStates.GetState)
+                    addresses.Select(eval.OutputState.GetState)
                         .Select(x => x is Text t ? t.Value : null));
             }
 
@@ -441,7 +441,7 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(block1, true));
 
             // Forcefully reset to null delta
-            previousStates = AccountStateDelta.Create(evals1.Last().OutputStates);
+            previousStates = AccountStateDelta.Create(evals1.Last().OutputState);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
@@ -458,7 +458,7 @@ namespace Libplanet.Tests.Action
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 List<string> updatedStates = addresses
-                    .Select(eval.OutputStates.GetState)
+                    .Select(eval.OutputState.GetState)
                     .Select(x => x is Text t ? t.Value : null)
                     .ToList();
                 Assert.Equal(expect.UpdatedStates, updatedStates);
@@ -473,12 +473,12 @@ namespace Libplanet.Tests.Action
                 Assert.Null(eval.Exception);
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
-                    eval.OutputStates.GetState(
+                    eval.OutputState.GetState(
                         DumbAction.RandomRecordsAddress),
                     (Integer)randomValue);
             }
 
-            previousStates = AccountStateDelta.Create(evals1.Last().OutputStates);
+            previousStates = AccountStateDelta.Create(evals1.Last().OutputState);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -578,30 +578,30 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(addresses[0], eval.InputContext.Miner);
                 Assert.Equal(1, eval.InputContext.BlockIndex);
                 Assert.Equal(
-                    (Integer)eval.OutputStates.GetState(
+                    (Integer)eval.OutputState.GetState(
                         DumbAction.RandomRecordsAddress),
                     (Integer)eval.InputContext.Random.Next());
                 IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
                 Assert.Equal(
                     prevEval is null
                         ? initStates
-                        : addresses.Select(prevEval.OutputStates.GetState),
-                    addresses.Select(eval.InputContext.PreviousStates.GetState));
+                        : addresses.Select(prevEval.OutputState.GetState),
+                    addresses.Select(eval.InputContext.PreviousState.GetState));
                 Assert.Equal(
                     expectedStates[i],
-                    addresses.Select(eval.OutputStates.GetState)
+                    addresses.Select(eval.OutputState.GetState)
                         .Select(x => x is Text t ? t.Value : null));
                 Assert.Equal(
                     prevEval is null
                         ? initBalances
                         : addresses.Select(a =>
-                            prevEval.OutputStates.GetBalance(a, currency).RawValue),
+                            prevEval.OutputState.GetBalance(a, currency).RawValue),
                     addresses.Select(
-                        a => eval.InputContext.PreviousStates
+                        a => eval.InputContext.PreviousState
                                 .GetBalance(a, currency).RawValue));
                 Assert.Equal(
                     expectedBalances[i],
-                    addresses.Select(a => eval.OutputStates.GetBalance(a, currency).RawValue));
+                    addresses.Select(a => eval.OutputState.GetBalance(a, currency).RawValue));
             }
 
             Assert.DoesNotContain(
@@ -614,9 +614,9 @@ namespace Libplanet.Tests.Action
             IAccountStateDelta delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
-                previousStates: previousStates).Last().OutputStates;
+                previousStates: previousStates).Last().OutputState;
             Assert.Equal(
-                evaluations[3].OutputStates.GetUpdatedStates(),
+                evaluations[3].OutputState.GetUpdatedStates(),
                 delta.GetUpdatedStates());
 
             Assert.DoesNotContain(
@@ -658,7 +658,7 @@ namespace Libplanet.Tests.Action
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
-                previousStates: previousStates).Last().OutputStates;
+                previousStates: previousStates).Last().OutputState;
 
             Assert.Empty(nextStates.GetUpdatedStates());
         }
@@ -695,8 +695,8 @@ namespace Libplanet.Tests.Action
             {
                 IActionEvaluation eval = evalsA[i];
                 IActionContext context = eval.InputContext;
-                IAccountStateDelta prevStates = context.PreviousStates;
-                IAccountStateDelta outputStates = eval.OutputStates;
+                IAccountStateDelta prevState = context.PreviousState;
+                IAccountStateDelta outputState = eval.OutputState;
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
                 _logger.Debug("txA.Actions[{0}] = {1}", i, txA.Actions[i]);
 
@@ -708,10 +708,10 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txA.Signer } : new Address[0],
-                    prevStates.Delta.UpdatedAddresses);
-                Assert.Equal((Integer)deltaA[i].Value, prevStates.GetState(txA.Signer));
-                Assert.Equal(new[] { txA.Signer }, outputStates.Delta.UpdatedAddresses);
-                Assert.Equal((Integer)deltaA[i + 1].Value, outputStates.GetState(txA.Signer));
+                    prevState.Delta.UpdatedAddresses);
+                Assert.Equal((Integer)deltaA[i].Value, prevState.GetState(txA.Signer));
+                Assert.Equal(new[] { txA.Signer }, outputState.Delta.UpdatedAddresses);
+                Assert.Equal((Integer)deltaA[i + 1].Value, outputState.GetState(txA.Signer));
                 Assert.Null(eval.Exception);
             }
 
@@ -744,8 +744,8 @@ namespace Libplanet.Tests.Action
             {
                 IActionEvaluation eval = evalsB[i];
                 IActionContext context = eval.InputContext;
-                IAccountStateDelta prevStates = context.PreviousStates;
-                IAccountStateDelta outputStates = eval.OutputStates;
+                IAccountStateDelta prevState = context.PreviousState;
+                IAccountStateDelta outputState = eval.OutputState;
 
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
                 _logger.Debug("txB.Actions[{0}] = {@1}", i, txB.Actions[i]);
@@ -758,10 +758,10 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txB.Signer } : new Address[0],
-                    prevStates.Delta.UpdatedAddresses);
-                Assert.Equal((Integer)deltaB[i].Value, prevStates.GetState(txB.Signer));
-                Assert.Equal(new[] { txB.Signer }, outputStates.Delta.UpdatedAddresses);
-                Assert.Equal((Integer)deltaB[i + 1].Value, outputStates.GetState(txB.Signer));
+                    prevState.Delta.UpdatedAddresses);
+                Assert.Equal((Integer)deltaB[i].Value, prevState.GetState(txB.Signer));
+                Assert.Equal(new[] { txB.Signer }, outputState.Delta.UpdatedAddresses);
+                Assert.Equal((Integer)deltaB[i + 1].Value, outputState.GetState(txB.Signer));
                 if (i == 1)
                 {
                     Assert.IsType<UnexpectedlyTerminatedActionException>(eval.Exception);
@@ -794,16 +794,16 @@ namespace Libplanet.Tests.Action
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
                 (Integer)1,
-                (Integer)evaluation.OutputStates.GetState(genesis.Miner));
+                (Integer)evaluation.OutputState.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            previousStates = AccountStateDelta.Create(evaluation.OutputStates);
+            previousStates = AccountStateDelta.Create(evaluation.OutputState);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
             Assert.Equal(
                 (Integer)2,
-                (Integer)evaluation.OutputStates.GetState(block.Miner));
+                (Integer)evaluation.OutputState.GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
             chain.Append(block, CreateBlockCommit(block), render: true);
@@ -811,12 +811,12 @@ namespace Libplanet.Tests.Action
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
                 previousStates).ToList();
-            previousStates = txEvaluations.Last().OutputStates;
+            previousStates = txEvaluations.Last().OutputState;
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousStates);
 
             Assert.Equal(
                 (Integer)2,
-                (Integer)evaluation.OutputStates.GetState(block.Miner));
+                (Integer)evaluation.OutputState.GetState(block.Miner));
         }
 
         [Theory]
@@ -939,7 +939,7 @@ namespace Libplanet.Tests.Action
 
             // Includes policy block action
             Assert.Equal(4, evals.Count);
-            var latest = evals.Last().OutputStates;
+            var latest = evals.Last().OutputState;
 
             // Only addresses[0] and addresses[1] succeeded in minting
             Assert.Equal(2, latest.TotalUpdatedFungibleAssets.Count);
@@ -1004,10 +1004,10 @@ namespace Libplanet.Tests.Action
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
                 new FungibleAssetValue(foo, 9),
-                evaluations.Single().OutputStates.GetBalance(address, foo));
+                evaluations.Single().OutputState.GetBalance(address, foo));
             Assert.Equal(
                 new FungibleAssetValue(foo, 1),
-                evaluations.Single().OutputStates.GetBalance(miner.ToAddress(), foo));
+                evaluations.Single().OutputState.GetBalance(miner.ToAddress(), foo));
         }
 
         [Fact]
@@ -1071,10 +1071,10 @@ namespace Libplanet.Tests.Action
                 evaluations.Single().Exception?.InnerException?.GetType());
             Assert.Equal(
                 new FungibleAssetValue(foo, 5),
-                evaluations.Single().OutputStates.GetBalance(address, foo));
+                evaluations.Single().OutputState.GetBalance(address, foo));
             Assert.Equal(
                 new FungibleAssetValue(foo, 5),
-                evaluations.Single().OutputStates.GetBalance(miner.ToAddress(), foo));
+                evaluations.Single().OutputState.GetBalance(miner.ToAddress(), foo));
         }
 
         [Fact]
@@ -1344,7 +1344,7 @@ namespace Libplanet.Tests.Action
             }
 
             public IAccountStateDelta Execute(IActionContext context) =>
-                context.PreviousStates
+                context.PreviousState
                     .SetState(SignerKey, (Text)context.Signer.ToHex())
                     .SetState(MinerKey, (Text)context.Miner.ToHex())
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
@@ -1386,7 +1386,7 @@ namespace Libplanet.Tests.Action
             public IAccountStateDelta Execute(IActionContext context)
             {
                 context.UseGas(GasUsage);
-                var state = context.PreviousStates
+                var state = context.PreviousState
                     .SetState(context.Signer, (Text)Memo);
                 if (!(Receiver is null) && !(MintValue is null))
                 {
@@ -1409,7 +1409,7 @@ namespace Libplanet.Tests.Action
             }
 
             public IAccountStateDelta Execute(IActionContext context) =>
-                context.PreviousStates.MintAsset(
+                context.PreviousState.MintAsset(
                     context, context.Signer, new FungibleAssetValue(Currency, 1));
         }
     }

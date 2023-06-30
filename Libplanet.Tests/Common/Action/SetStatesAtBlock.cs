@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Common.Action
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            IAccountStateDelta states = context.PreviousStates;
+            IAccountStateDelta states = context.PreviousState;
             if (context.BlockIndex == _blockIndex)
             {
                 states = states.SetState(_address, _value);

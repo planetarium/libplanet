@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Common.Action
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
         public IAccountStateDelta Execute(IActionContext context)
         {
-            return context.PreviousStates.SetValidator(Validator);
+            return context.PreviousState.SetValidator(Validator);
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>

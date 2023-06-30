@@ -12,7 +12,7 @@ namespace Libplanet.Action
             this IReadOnlyList<IActionEvaluation> actionEvaluations)
         {
             return actionEvaluations
-                .Select(eval => eval.OutputStates.Delta)
+                .Select(eval => eval.OutputState.Delta)
                 .ToList()
                 .OrderedSum()
                 .ToRawDelta();

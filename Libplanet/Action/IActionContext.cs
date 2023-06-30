@@ -54,7 +54,7 @@ namespace Libplanet.Action
         /// <summary>
         /// Whether an <see cref="IAction"/> is being executed during
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing
-        /// in <see cref="PreviousStates"/>.
+        /// in <see cref="PreviousState"/>.
         /// </summary>
         [Pure]
         bool Rehearsal { get; }
@@ -70,7 +70,7 @@ namespace Libplanet.Action
         /// cref="IAction.Execute(IActionContext)"/> method.</para>
         /// </summary>
         [Pure]
-        IAccountStateDelta PreviousStates { get; }
+        IAccountStateDelta PreviousState { get; }
 
         /// <summary>
         /// An initialized pseudorandom number generator.  Its seed (state)
