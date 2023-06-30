@@ -858,7 +858,7 @@ namespace Libplanet.Net
                     List<byte[]> payloads = blockMessage.Payloads;
                     _logger.Information(
                         "Received {Count} blocks from {Peer}",
-                        payloads.Count,
+                        payloads.Count / 2,
                         message.Remote);
                     for (int i = 0; i < payloads.Count; i += 2)
                     {
