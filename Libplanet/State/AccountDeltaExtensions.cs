@@ -5,10 +5,12 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Consensus;
+using Libplanet.Store;
+using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.State
 {
-    internal static class AccountDeltaExtensions
+    public static class AccountDeltaExtensions
     {
         /// <summary>
         /// Aggregates a list of <see cref="IAccountDelta"/>s in order.
@@ -21,7 +23,7 @@ namespace Libplanet.State
         /// As aggregation is done by partially overwriting previous values,
         /// the order in which <paramref name="deltas"/> is important.
         /// </remarks>
-        internal static IAccountDelta OrderedSum(this IReadOnlyList<IAccountDelta> deltas)
+        public static IAccountDelta OrderedSum(this IReadOnlyList<IAccountDelta> deltas)
         {
             IImmutableDictionary<Address, IValue> states = deltas.Aggregate(
                 ImmutableDictionary<Address, IValue>.Empty,
@@ -37,6 +39,32 @@ namespace Libplanet.State
                 (prev, next) => next.ValidatorSet is { } set ? set : prev);
             return new AccountDelta(
                 states, fungibles, totalSupplies, validatorSet);
+        }
+
+        /// <summary>
+        /// Gets a raw dictionary representation of <see cref="IAccountDelta"/> that gets
+        /// actually written to an <see cref="IStateStore"/>.
+        /// </summary>
+        /// <param name="delta">The <see cref="IAccountDelta"/> to convert.</param>
+        /// <returns>A raw dictionary representation of <see cref="IAccountDelta"/> to write
+        /// to an <see cref="IStateStore"/>.</returns>
+        public static IImmutableDictionary<string, IValue> ToRawDelta(this IAccountDelta delta)
+        {
+            var rawStates = delta.States.Select(
+                kv => new KeyValuePair<string, IValue>(
+                    ToStateKey(kv.Key), kv.Value));
+            var rawFungibles = delta.Fungibles.Select(
+                kv => new KeyValuePair<string, IValue>(
+                    ToFungibleAssetKey(kv.Key), new Integer(kv.Value)));
+            var rawTotalSupplies = delta.TotalSupplies.Select(
+                kv => new KeyValuePair<string, IValue>(
+                    ToTotalSupplyKey(kv.Key), new Integer(kv.Value)));
+
+            var rawDelta = ImmutableDictionary<string, IValue>.Empty;
+            rawDelta = rawDelta.SetItems(rawStates.Concat(rawFungibles).Concat(rawTotalSupplies));
+            return delta.ValidatorSet is { } validatorSet
+                ? rawDelta.SetItem(ValidatorSetKey, validatorSet.Bencoded)
+                : rawDelta;
         }
     }
 }

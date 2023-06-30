@@ -95,8 +95,7 @@ namespace Libplanet.Tests.Action
                     actionEvaluator,
                     noStateRootBlock,
                     out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
+            stateStore.Commit(null, evals.GetRawTotalDelta());
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
