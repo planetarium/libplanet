@@ -36,6 +36,14 @@ To be released.
      -  Added `VoteSetBits` class.
      -  Added `VoteSetBitsMetadata` class.
      -  (Libplanet.Net) Added `ConsensusVoteSetBitsMsg` class.
+ -  Added `Bootstrap` and its related classes.  [[#3258]]
+     -  Added `Bootstrap` class.
+     -  Added `BootstrapMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusBootstrapMsg` class.
+ -  Added `VotesRecall` and its related classes.  [[#3258]]
+     -  Added `VotesRecall` class.
+     -  Added `VotesRecallMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusVotesRecallMsg` class.
  -  (Libplanet.Net) Added `VoteSet` class.  [[#3249]]
  -  (Libplanet.Net) Added `HeightVoteSet` class.  [[#3249]]
  -  (Libplanet.Net) Added `ConsensusVoteMsg` abstract class.  [[#3249]]
