@@ -11,6 +11,15 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `ActionTypeAttribute.ValueOf()` method.  [[#3267]]
+ -  (Libplanet.Net) Added
+    `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
+    [[#3206]]
+ -  (Libplanet.Net) Added `Context.GetVoteSetBits()` method.  [[#3206]]
+ -  (Libplanet.Net) Added `Context.GetVoteSetBitsResponse()` method.  [[#3206]]
+ -  (Libplanet.Net) Added `ConsensusContext.HandleVoteSetBits()` method.
+    [[#3206]]
+ -  (Libplanet.Net) Added `ConsensusContext.HandleProposalClaim()` method.
+    [[#3206]]
 
 ### Backward-incompatible network protocol changes
 
@@ -18,7 +27,24 @@ To be released.
 
 ### Added APIs
 
+ -  Added `VoteSetBits` and its related classes.  [[#3206]]
+     -  Added `VoteSetBits` class.
+     -  Added `VoteSetBitsMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusVoteSetBitsMsg` class.
+ -  Added `ProposalClaim` and its related class.  [[#3206]]
+     -  Added `ProposalClaim` class.
+     -  Added `ProposalClaimMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusProposalClaimMsg` class.
+ -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.
+ -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#3206]]
+     -  Added `ConsensusMaj23Msg` of value `0x53`.
+     -  Added `ConsensusVoteSetBitsMsg` of value `0x54`.
+     -  Added `ConsensusProposalClaimMsg` of value `0x55`.
+
 ### Behavioral changes
+
+ -  (Libplanet.Net) `Context` became to remove its proposal
+    when +2/3 valid votes were collected.  [[#3206]]
 
 ### Bug fixes
 
@@ -26,6 +52,7 @@ To be released.
 
 ### CLI tools
 
+[#3206]: https://github.com/planetarium/libplanet/pull/3206
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
 
 
@@ -52,6 +79,11 @@ Released on July 3, 2023.
  -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
     `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
  -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
+ -  (Libplanet.Net) Some enumeration items to `MessageType` enum has modified.
+    [[#3249]]
+     -  `ConsensusProposal` changed to `0x50` (was `0x40`).
+     -  `ConsensusVote` changed to `0x51` (was `0x41`).
+     -  `ConsensusCommit` changed to `0x52` (was `0x42`).
  -  (Libplanet.Net) Added `Flag` property to `ConsensusVoteMsg` abstract class.
     [[#3260]]
  -  (Libplanet.Net) `ConsensusProposalMsg` no longer inherits
@@ -77,20 +109,12 @@ Released on July 3, 2023.
  -  Added `Maj23` and its related classes.  [[#3249]]
      -  Added `Maj23` class.
      -  Added `Maj23Metadata` class.
-     -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.
- -  Added `VoteSetBits` and its related classes.  [[#3249]]
-     -  Added `VoteSetBits` class.
-     -  Added `VoteSetBitsMetadata` class.
-     -  (Libplanet.Net) Added `ConsensusVoteSetBitsMsg` class.
  -  (Libplanet.Net) Added `VoteSet` class.  [[#3249]]
  -  (Libplanet.Net) Added `HeightVoteSet` class.  [[#3249]]
  -  (Libplanet.Net) Added `ConsensusVoteMsg` abstract class.  [[#3249]]
  -  (Libplanet.Net) Added `InvalidProposalException` class.  [[#3249]]
  -  (Libplanet.Net) Added `InvalidVoteException` class.  [[#3249]]
  -  (Libplanet.Net) Added `InvalidMaj23Exception` class.  [[#3249]]
- -  (Libplanet.Net) Added
-    `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
-    [[#3249]]
  -  Added `IAccountDelta.OrderedSum()` extension method.  [[#3256]]
  -  Added `IAccountDelta.ToRawDelta()` extension method.  [[#3256]]
  -  Removed several properties from `IAccountStateDelta` pertaining to
