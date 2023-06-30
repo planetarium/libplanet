@@ -291,7 +291,7 @@ namespace Libplanet.Net.Consensus
         public void CatchupWithVotesRecall(VotesRecall votesRecall)
         {
             _logger.Debug(
-                "Catch up consensus with VotesRecall contains {count} votes : {votesRecall}",
+                "Catch up consensus with VotesRecall contains {count} votes: {votesRecall}",
                 votesRecall.Votes.Count,
                 votesRecall);
             foreach (Vote vote in votesRecall.Votes)
