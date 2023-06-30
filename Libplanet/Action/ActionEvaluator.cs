@@ -97,9 +97,9 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousStates = PrepareInitialDelta(block);
+                IAccountStateDelta previousState = PrepareInitialDelta(block);
                 ImmutableList<ActionEvaluation> evaluations =
-                    EvaluateBlock(block, previousStates).ToImmutableList();
+                    EvaluateBlock(block, previousState).ToImmutableList();
 
                 var policyBlockAction = _policyBlockActionGetter(block);
                 if (policyBlockAction is null)
@@ -108,11 +108,11 @@ namespace Libplanet.Action
                 }
                 else
                 {
-                    previousStates = evaluations.Count > 0
+                    previousState = evaluations.Count > 0
                         ? evaluations.Last().OutputState
-                        : previousStates;
+                        : previousState;
                     return evaluations.Add(
-                        EvaluatePolicyBlockAction(block, previousStates)
+                        EvaluatePolicyBlockAction(block, previousState)
                     );
                 }
             }
@@ -144,7 +144,7 @@ namespace Libplanet.Action
         /// <see cref="Block"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="txid">The <see cref="ITransaction.Id"/> of the
         /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.</param>
-        /// <param name="previousStates">The states immediately before <paramref name="actions"/>
+        /// <param name="previousState">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
         /// <param name="miner">An address of block miner.</param>
         /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
@@ -170,7 +170,7 @@ namespace Libplanet.Action
         ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
         ///     if any, has <see cref="ActionEvaluation.OutputState"/> with
         ///     <see cref="IAccountStateDelta.Delta"/> that is a
-        ///     "superset" of <paramref name="previousStates"/>'s
+        ///     "superset" of <paramref name="previousState"/>'s
         ///     <see cref="IAccountStateDelta.Delta"/> (possibly except for
         ///     <see cref="IAccountDelta.ValidatorSet"/>).
         /// </description></item>
@@ -190,7 +190,7 @@ namespace Libplanet.Action
             long blockIndex,
             int blockProtocolVersion,
             TxId? txid,
-            IAccountStateDelta previousStates,
+            IAccountStateDelta previousState,
             Address miner,
             Address signer,
             byte[] signature,
@@ -227,7 +227,7 @@ namespace Libplanet.Action
             byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
-            IAccountStateDelta states = previousStates;
+            IAccountStateDelta states = previousState;
             foreach (IAction action in actions)
             {
                 Exception? exc = null;
@@ -372,7 +372,7 @@ namespace Libplanet.Action
         /// of a given <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
-        /// <param name="previousStates">The states immediately before an execution of any
+        /// <param name="previousState">The states immediately before an execution of any
         /// <see cref="IAction"/>s.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s
         /// where each <see cref="ActionEvaluation"/> is the evaluation of an <see cref="IAction"/>.
@@ -380,9 +380,9 @@ namespace Libplanet.Action
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock block,
-            IAccountStateDelta previousStates)
+            IAccountStateDelta previousState)
         {
-            IAccountStateDelta delta = previousStates;
+            IAccountStateDelta delta = previousState;
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
@@ -403,7 +403,7 @@ namespace Libplanet.Action
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
                     tx: tx,
-                    previousStates: delta);
+                    previousState: delta);
 
                 var actions = new List<IAction>();
                 foreach (ActionEvaluation evaluation in evaluations)
@@ -436,7 +436,7 @@ namespace Libplanet.Action
         internal IEnumerable<ActionEvaluation> EvaluateTx(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction tx,
-            IAccountStateDelta previousStates)
+            IAccountStateDelta previousState)
         {
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
@@ -445,7 +445,7 @@ namespace Libplanet.Action
                 blockIndex: blockHeader.Index,
                 blockProtocolVersion: blockHeader.ProtocolVersion,
                 txid: tx.Id,
-                previousStates: previousStates,
+                previousState: previousState,
                 miner: blockHeader.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
@@ -461,7 +461,7 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
-        /// <param name="previousStates">The states immediately before the evaluation of
+        /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
@@ -469,7 +469,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             IPreEvaluationBlockHeader blockHeader,
-            IAccountStateDelta previousStates)
+            IAccountStateDelta previousState)
         {
             var policyBlockAction = _policyBlockActionGetter(blockHeader);
             if (policyBlockAction is null)
@@ -489,7 +489,7 @@ namespace Libplanet.Action
                 blockIndex: blockHeader.Index,
                 blockProtocolVersion: blockHeader.ProtocolVersion,
                 txid: null,
-                previousStates: previousStates,
+                previousState: previousState,
                 miner: blockHeader.Miner,
                 signer: blockHeader.Miner,
                 signature: Array.Empty<byte>(),

@@ -33,9 +33,9 @@ namespace Libplanet.Tests.Common.Action
         {
             IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
             IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
-            IAccountStateDelta previousStates = context.PreviousState;
+            IAccountStateDelta previousState = context.PreviousState;
 
-            object value = previousStates.GetState(TargetAddress);
+            object value = previousState.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))
             {
                 var previousResult = BattleResult.FromBencodex((Bencodex.Types.Dictionary)value);
@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Common.Action
             targets = targets.Add(Target);
             var result = new BattleResult(usedWeapons, targets);
 
-            return previousStates.SetState(TargetAddress, result.ToBencodex());
+            return previousState.SetState(TargetAddress, result.ToBencodex());
         }
     }
 }
