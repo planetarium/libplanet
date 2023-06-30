@@ -28,6 +28,7 @@ namespace Libplanet.Net.Consensus
 
             Round = round;
             _heightVoteSet.SetRound(round);
+
             Proposal = null;
             Step = ConsensusStep.Propose;
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
@@ -126,6 +127,25 @@ namespace Libplanet.Net.Consensus
                         voteMsg.BlockHash,
                         ToString());
                 }
+                else
+                {
+                    switch (message)
+                    {
+                        case ConsensusMaj23Msg maj23:
+                            _heightVoteSet.SetPeerMaj23(maj23.Maj23);
+                            break;
+                    }
+
+                    _logger.Debug(
+                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                        "Validator Address: {VAddress}. (context: {Context})",
+                        nameof(AddMessage),
+                        message,
+                        message.Height,
+                        message.Round,
+                        message.ValidatorPublicKey.ToAddress(),
+                        ToString());
+                }
 
                 return true;
             }
@@ -144,6 +164,17 @@ namespace Libplanet.Net.Consensus
             {
                 var icme = new InvalidConsensusMessageException(
                     ive.Message,
+                    message);
+                var msg = $"Failed to add invalid message {message} to the " +
+                          $"{nameof(HeightVoteSet)}";
+                _logger.Error(icme, msg);
+                ExceptionOccurred?.Invoke(this, icme);
+                return false;
+            }
+            catch (InvalidMaj23Exception ime)
+            {
+                var icme = new InvalidConsensusMessageException(
+                    ime.Message,
                     message);
                 var msg = $"Failed to add invalid message {message} to the " +
                           $"{nameof(HeightVoteSet)}";
@@ -172,7 +203,33 @@ namespace Libplanet.Net.Consensus
                     proposal);
             }
 
-            // FIXME: Should apply more logic?
+            if (proposal.Round != Round)
+            {
+                throw new InvalidProposalException(
+                    $"Given proposal's round {proposal.Round} does not match" +
+                    $" with the current round {Round}",
+                    proposal);
+            }
+
+            // Should check if +2/3 votes already collected and the proposal does not match
+            if (_heightVoteSet.PreVotes(Round).TwoThirdsMajority(out var preVoteMaj23) &&
+                !proposal.BlockHash.Equals(preVoteMaj23))
+            {
+                throw new InvalidProposalException(
+                    $"Given proposal's block hash {proposal.BlockHash} does not match" +
+                    $" with the collected +2/3 preVotes' block hash {preVoteMaj23}",
+                    proposal);
+            }
+
+            if (_heightVoteSet.PreCommits(Round).TwoThirdsMajority(out var preCommitMaj23) &&
+                !proposal.BlockHash.Equals(preCommitMaj23))
+            {
+                throw new InvalidProposalException(
+                    $"Given proposal's block hash {proposal.BlockHash} does not match" +
+                    $" with the collected +2/3 preCommits' block hash {preCommitMaj23}",
+                    proposal);
+            }
+
             if (Proposal is null)
             {
                 Proposal = proposal;
@@ -286,6 +343,11 @@ namespace Libplanet.Net.Consensus
                     PublishMessage(
                         new ConsensusPreCommitMsg(
                             MakeVote(Round, p3.Block.Hash, VoteFlag.PreCommit)));
+
+                    // Maybe need to broadcast periodically?
+                    PublishMessage(
+                        new ConsensusMaj23Msg(
+                            MakeMaj23(Round, p3.Block.Hash, VoteFlag.PreVote)));
                 }
 
                 _validValue = p3.Block;
@@ -317,6 +379,14 @@ namespace Libplanet.Net.Consensus
                         hash3,
                         ToString());
                     Proposal = null;
+                    PublishMessage(
+                        new ConsensusProposalClaimMsg(
+                            new ProposalClaimMetadata(
+                                Height,
+                                Round,
+                                hash3,
+                                DateTimeOffset.UtcNow,
+                                _privateKey.PublicKey).Sign(_privateKey)));
                 }
             }
 
@@ -357,6 +427,11 @@ namespace Libplanet.Net.Consensus
                 Step = ConsensusStep.EndCommit;
                 _decision = block4;
                 _committedRound = round;
+
+                // Maybe need to broadcast periodically?
+                PublishMessage(
+                    new ConsensusMaj23Msg(
+                        MakeMaj23(round, block4.Hash, VoteFlag.PreCommit)));
 
                 try
                 {

@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -155,6 +156,80 @@ namespace Libplanet.Net.Consensus
         {
             switch (content)
             {
+                case ConsensusVoteSetBitsMsg voteSetBits:
+                    // Note: ConsensusVoteSetBitsMsg will not be stored to context's message log.
+                    var messages = _consensusContext.HandleVoteSetBits(voteSetBits.VoteSetBits);
+                    try
+                    {
+                        var sender = _gossip.Peers.First(
+                            peer => peer.PublicKey.Equals(voteSetBits.ValidatorPublicKey));
+                        foreach (var msg in messages)
+                        {
+                            _gossip.PublishMessage(msg, new[] { sender });
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusVoteSetBitsMsg message" +
+                            " {Message} since there is no corresponding peer in the table",
+                            voteSetBits);
+                    }
+
+                    break;
+
+                case ConsensusMaj23Msg maj23Msg:
+                    try
+                    {
+                        if (_consensusContext.HandleMessage(maj23Msg))
+                        {
+                            VoteSetBits voteSetBits = _consensusContext.Contexts[maj23Msg.Height]
+                                .GetVoteSetBits(
+                                    maj23Msg.Round,
+                                    maj23Msg.Maj23.BlockHash,
+                                    maj23Msg.Maj23.Flag);
+                            var sender = _gossip.Peers.First(
+                                peer => peer.PublicKey.Equals(maj23Msg.ValidatorPublicKey));
+
+                            _gossip.PublishMessage(
+                                new ConsensusVoteSetBitsMsg(voteSetBits),
+                                new[] { sender });
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusMaj23Msg message " +
+                            "{Message} since there is no corresponding peer in the table",
+                            maj23Msg);
+                    }
+
+                    break;
+
+                case ConsensusProposalClaimMsg proposalClaimMsg:
+                    try
+                    {
+                        Proposal? proposal = _consensusContext.HandleProposalClaim(
+                            proposalClaimMsg.ProposalClaim);
+                        if (proposal is { } proposalNotNull)
+                        {
+                            var reply = new ConsensusProposalMsg(proposalNotNull);
+                            var sender = _gossip.Peers.First(
+                                peer => peer.PublicKey.Equals(proposalClaimMsg.ValidatorPublicKey));
+
+                            _gossip.PublishMessage(reply, new[] { sender });
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusProposalClaimMsg message " +
+                            "{Message} since there is no corresponding peer in the table",
+                            proposalClaimMsg);
+                    }
+
+                    break;
+
                 case ConsensusMsg consensusMsg:
                     _consensusContext.HandleMessage(consensusMsg);
                     break;

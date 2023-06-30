@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -253,6 +254,78 @@ namespace Libplanet.Net.Consensus
                 _contexts[height].ProduceMessage(consensusMessage);
                 return true;
             }
+        }
+
+        /// <summary>
+        /// Handles a received <see cref="VoteSetBits"/> and return message to fetch.
+        /// </summary>
+        /// <param name="voteSetBits">The <see cref="VoteSetBits"/> received from any validator.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{ConsensusMsg}"/> to reply back.
+        /// </returns>
+        /// <remarks>This method does not update state of the context.</remarks>
+        public IEnumerable<ConsensusMsg> HandleVoteSetBits(VoteSetBits voteSetBits)
+        {
+            long height = voteSetBits.Height;
+            if (height < Height)
+            {
+                _logger.Debug(
+                    "Ignore a received VoteSetBits as its height " +
+                    "#{Height} is lower than the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    if (_contexts.ContainsKey(height))
+                    {
+                        // NOTE: Should check if collected messages have same BlockHash with
+                        // VoteSetBit's BlockHash?
+                        return _contexts[height].GetVoteSetBitsResponse(voteSetBits);
+                    }
+                }
+            }
+
+            return Array.Empty<ConsensusMsg>();
+        }
+
+        public Proposal? HandleProposalClaim(ProposalClaim proposalClaim)
+        {
+            long height = proposalClaim.Height;
+            int round = proposalClaim.Round;
+            if (height != Height)
+            {
+                _logger.Debug(
+                    "Ignore a received ProposalClaim as its height " +
+                    "#{Height} does not match with the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+            }
+            else if (round != Round)
+            {
+                _logger.Debug(
+                    "Ignore a received ProposalClaim as its round " +
+                    "#{Round} does not match with the current context's round #{ContextRound}",
+                    round,
+                    Round);
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    if (_contexts.ContainsKey(height))
+                    {
+                        // NOTE: Should check if collected messages have same BlockHash with
+                        // VoteSetBit's BlockHash?
+                        return _contexts[height].Proposal;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

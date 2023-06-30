@@ -187,12 +187,19 @@ namespace Libplanet.Net.Consensus
         /// Publish given <see cref="MessageContent"/> to peers.
         /// </summary>
         /// <param name="content">A <see cref="MessageContent"/> instance to publish.</param>
-        public void PublishMessage(MessageContent content)
+        public void PublishMessage(MessageContent content) => PublishMessage(
+            content,
+            PeersToBroadcast(_table.Peers, DLazy));
+
+        /// <summary>
+        /// Publish given <see cref="MessageContent"/> to given <paramref name="targetPeers"/>.
+        /// </summary>
+        /// <param name="content">A <see cref="MessageContent"/> instance to publish.</param>
+        /// <param name="targetPeers"><see cref="BoundPeer"/>s to publish to.</param>
+        public void PublishMessage(MessageContent content, IEnumerable<BoundPeer> targetPeers)
         {
             AddMessage(content);
-            _transport.BroadcastMessage(
-                PeersToBroadcast(_table.Peers, DLazy),
-                content);
+            _transport.BroadcastMessage(targetPeers, content);
         }
 
         /// <summary>
