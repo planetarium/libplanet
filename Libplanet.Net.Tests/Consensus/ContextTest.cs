@@ -304,6 +304,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             var consensusContext = new ConsensusContext(
                 BroadcastMessage,
+                () => { },
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,

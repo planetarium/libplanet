@@ -18,6 +18,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">The round to start.</param>
         private void StartRound(int round)
         {
+            ConsensusContext.ClearGossip();
             _logger.Information(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
                 round,

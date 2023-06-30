@@ -37,12 +37,6 @@ namespace Libplanet.Net.Consensus
                 MessageConsumed?.Invoke(this, (context.Height, message));
             context.MutationConsumed += (sender, action) =>
                 MutationConsumed?.Invoke(this, (context.Height, action));
-
-            if (_bootstrapping)
-            {
-                context.StateChanged += (sender, eventArgs) =>
-                    OnContextStateChanged(sender, eventArgs);
-            }
         }
     }
 }

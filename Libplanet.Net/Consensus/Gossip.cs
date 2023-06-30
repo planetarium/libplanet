@@ -9,7 +9,6 @@ using Dasync.Collections;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -24,10 +23,8 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(10);
         private readonly TimeSpan _refreshLifespan = TimeSpan.FromSeconds(60);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
-        private readonly TimeSpan _seenTtl;
         private readonly ITransport _transport;
-        private readonly MessageCache _cache;
-        private readonly MemoryCache _seen;
+        private readonly Dictionary<MessageId, MessageContent> _cache;
         private readonly Action<MessageContent> _processMessage;
         private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
@@ -58,13 +55,7 @@ namespace Libplanet.Net.Consensus
             long? seenCacheLimit = null)
         {
             _transport = transport;
-            _cache = new MessageCache(5, 3);
-            _seenTtl = seenTtl;
-            _seen = new MemoryCache(
-                new MemoryCacheOptions
-                {
-                    SizeLimit = seenCacheLimit,
-                });
+            _cache = new Dictionary<MessageId, MessageContent>();
             _processMessage = processMessage;
             _table = new RoutingTable(transport.AsPeer.Address);
 
@@ -167,12 +158,20 @@ namespace Libplanet.Net.Consensus
             await _transport.StopAsync(waitFor, ctx);
         }
 
+        /// <summary>
+        /// Clear message cache.
+        /// </summary>
+        public void Clear()
+        {
+            _cache.Clear();
+        }
+
         /// <inheritdoc/>
         public void Dispose()
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
-            _seen.Dispose();
+            _cache.Clear();
             _transport.Dispose();
         }
 
@@ -202,7 +201,7 @@ namespace Libplanet.Net.Consensus
         /// process and gossip.</param>
         public void AddMessage(MessageContent content)
         {
-            if (_seen.TryGetValue(content.Id, out _))
+            if (_cache.TryGetValue(content.Id, out _))
             {
                 _logger.Verbose(
                     "Message of content {Content} with id {Id} seen recently, ignored",
@@ -212,15 +211,13 @@ namespace Libplanet.Net.Consensus
 
             try
             {
-                _cache.Put(content);
+                _cache.Add(content.Id, content);
             }
             catch (Exception)
             {
                 return;
             }
 
-            // Message instance does not have to be stored.
-            _seen.Set(content.Id, content.Id, _seenTtl);
             try
             {
                 _processMessage(content);
@@ -300,15 +297,13 @@ namespace Libplanet.Net.Consensus
             while (!ctx.IsCancellationRequested)
             {
                 _logger.Debug("{FName}() has invoked.", nameof(HeartbeatTask));
-                MessageId[] ids = _cache.GetGossipIds();
+                MessageId[] ids = _cache.Keys.ToArray();
                 if (ids.Any())
                 {
                     _transport.BroadcastMessage(
                         PeersToBroadcast(_table.Peers, DLazy),
                         new HaveMessage(ids));
                 }
-
-                _cache.Shift();
 
                 _ = SendWantAsync(ctx);
                 await Task.Delay(_heartbeatInterval, ctx);
@@ -329,7 +324,7 @@ namespace Libplanet.Net.Consensus
 
             await ReplyMessagePongAsync(msg, ctx);
             MessageId[] idsToGet =
-                haveMessage.Ids.Where(id => !_seen.TryGetValue(id, out _)).ToArray();
+                haveMessage.Ids.Where(id => !_cache.TryGetValue(id, out _)).ToArray();
             _logger.Verbose(
                 "Handle HaveMessage. {Total}/{Count} messages to get.",
                 haveMessage.Ids.Count(),
@@ -418,7 +413,7 @@ namespace Libplanet.Net.Consensus
         {
             // FIXME: Message may have been discarded.
             var wantMessage = (WantMessage)msg.Content;
-            MessageContent[] contents = wantMessage.Ids.Select(id => _cache.Get(id)).ToArray();
+            MessageContent[] contents = wantMessage.Ids.Select(id => _cache[id]).ToArray();
             MessageId[] ids = contents.Select(c => c.Id).ToArray();
 
             _logger.Debug(

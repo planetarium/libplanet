@@ -66,6 +66,7 @@ namespace Libplanet.Net.Consensus
 
             _consensusContext = new ConsensusContext(
                 PublishMessage,
+                ClearGossip,
                 blockChain,
                 privateKey,
                 newHeightDelay,
@@ -151,6 +152,11 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to add.</param>
         private void PublishMessage(ConsensusMsg message) => _gossip.PublishMessage(message);
+
+        /// <summary>
+        /// Clears to gossip message cache.
+        /// </summary>
+        private void ClearGossip() => _gossip.Clear();
 
         /// <summary>
         /// A handler for received <see cref="Message"/>s.

@@ -13,10 +13,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block.LastCommit"/> from previous block.
         /// </param>
-        /// <param name="bootstrapping">A <see langword="bool"/> flag indicating whether
-        /// this <see cref="Context"/> should run as a bootstrapping <see cref="Context"/>
-        /// or not.</param>
-        public void Start(BlockCommit? lastCommit = null, bool bootstrapping = false)
+        public void Start(BlockCommit? lastCommit = null)
         {
             _logger.Information(
                 "Starting context for height #{Height}, LastCommit: {LastCommit}",
