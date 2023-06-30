@@ -21669,19 +21669,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.SetValidator
   nameWithType: IAccountStateDelta.SetValidator
-- uid: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
-  name: StateUpdatedAddresses
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_StateUpdatedAddresses
-  commentId: P:Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
-  fullName: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
-  nameWithType: IAccountStateDelta.StateUpdatedAddresses
-- uid: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses*
-  name: StateUpdatedAddresses
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_StateUpdatedAddresses_
-  commentId: Overload:Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.State.IAccountStateDelta.StateUpdatedAddresses
-  nameWithType: IAccountStateDelta.StateUpdatedAddresses
 - uid: Libplanet.State.IAccountStateDelta.TotalUpdatedFungibleAssets
   name: TotalUpdatedFungibleAssets
   href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_TotalUpdatedFungibleAssets
@@ -21708,45 +21695,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.IAccountStateDelta.TransferAsset
   nameWithType: IAccountStateDelta.TransferAsset
-- uid: Libplanet.State.IAccountStateDelta.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedAddresses
-  commentId: P:Libplanet.State.IAccountStateDelta.UpdatedAddresses
-  fullName: Libplanet.State.IAccountStateDelta.UpdatedAddresses
-  nameWithType: IAccountStateDelta.UpdatedAddresses
-- uid: Libplanet.State.IAccountStateDelta.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedAddresses_
-  commentId: Overload:Libplanet.State.IAccountStateDelta.UpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.State.IAccountStateDelta.UpdatedAddresses
-  nameWithType: IAccountStateDelta.UpdatedAddresses
-- uid: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedFungibleAssets
-  commentId: P:Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
-  fullName: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
-  nameWithType: IAccountStateDelta.UpdatedFungibleAssets
-- uid: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets*
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedFungibleAssets_
-  commentId: Overload:Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.State.IAccountStateDelta.UpdatedFungibleAssets
-  nameWithType: IAccountStateDelta.UpdatedFungibleAssets
-- uid: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
-  name: UpdatedTotalSupplyCurrencies
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedTotalSupplyCurrencies
-  commentId: P:Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
-  fullName: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
-  nameWithType: IAccountStateDelta.UpdatedTotalSupplyCurrencies
-- uid: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies*
-  name: UpdatedTotalSupplyCurrencies
-  href: api/Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_UpdatedTotalSupplyCurrencies_
-  commentId: Overload:Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
-  isSpec: "True"
-  fullName: Libplanet.State.IAccountStateDelta.UpdatedTotalSupplyCurrencies
-  nameWithType: IAccountStateDelta.UpdatedTotalSupplyCurrencies
 - uid: Libplanet.State.InsufficientBalanceException
   name: InsufficientBalanceException
   href: api/Libplanet.State.InsufficientBalanceException.html

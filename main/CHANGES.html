@@ -107,6 +107,16 @@ to remove ambiguity.  [<a href="https://github.com/planetarium/libplanet/pull/32
 [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>Added <code>IAccountDelta.OrderedSum()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/3256">#3256</a>]</li>
 <li>Added <code>IAccountDelta.ToRawDelta()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/3256">#3256</a>]</li>
+<li>Removed several properties from <code>IAccountStateDelta</code> pertaining to
+the delta part of <code>IAccountStateDelta</code>.  Access the equivalent data
+through <code>IAccountStateDelta.Delta</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/3257">#3257</a>]
+<ul>
+<li>Removed <code>IAccountStateDelta.UpdatedAddresses</code> property.</li>
+<li>Removed <code>IAccountStateDelta.StateUpdatedAddresses</code> property.</li>
+<li>Removed <code>IAccountStateDelta.UpdatedFungibleAssets</code> property.</li>
+<li>Removed <code>IAccountStateDelta.UpdatedTotalSupplyCurrencies</code> property.</li>
+</ul>
+</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
