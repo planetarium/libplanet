@@ -57,6 +57,7 @@ To be released.
  -  Changed `IBlockStates` to `IBlockState`.  [[#3259]]
  -  Changed `IBlockChainStates.GetBlockStates()` to
     `IBlockChainStates.GetBlockState()`.  [[#3259]]
+ -  Changes `IActionContext.PreviousStates` to `IActionContext.PreviousState`.
  -  Changed `IActionEvaluation.OutputStates` to `IActionEvaluation.OutputState`.
     [[#3259]]
 
