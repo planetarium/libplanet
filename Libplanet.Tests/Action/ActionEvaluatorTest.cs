@@ -25,7 +25,7 @@ using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
@@ -95,8 +95,7 @@ namespace Libplanet.Tests.Action
                     actionEvaluator,
                     noStateRootBlock,
                     out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
+            stateStore.Commit(null, evals.GetRawTotalDelta());
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);

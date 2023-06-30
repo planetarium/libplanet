@@ -11,7 +11,6 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
-using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Tests.Store
 {
@@ -114,8 +113,7 @@ namespace Libplanet.Tests.Store
                     actionEvaluator,
                     preEval,
                     out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey));
+            stateStore.Commit(null, evals.GetRawTotalDelta());
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,

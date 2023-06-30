@@ -45,6 +45,8 @@ To be released.
  -  (Libplanet.Net) Added
     `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
     [[#3249]]
+ -  Added `IAccountDelta.OrderedSum()` extension method.  [[#3256]]
+ -  Added `IAccountDelta.ToRawDelta()` extension method.  [[#3256]]
 
 ### Behavioral changes
 
@@ -55,6 +57,7 @@ To be released.
 ### CLI tools
 
 [#3249]: https://github.com/planetarium/libplanet/pull/3249
+[#3256]: https://github.com/planetarium/libplanet/pull/3256
 
 
 Version 2.3.0

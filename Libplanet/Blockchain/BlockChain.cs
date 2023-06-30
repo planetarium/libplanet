@@ -19,7 +19,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -409,8 +409,7 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            var delta = evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            var delta = evals.GetRawTotalDelta();
             stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);

@@ -12,7 +12,6 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -42,8 +41,7 @@ namespace Libplanet.Blockchain
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
-            ImmutableDictionary<string, IValue> delta = evaluations.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            IImmutableDictionary<string, IValue> delta = evaluations.GetRawTotalDelta();
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
             return trie.Hash;
@@ -107,12 +105,7 @@ namespace Libplanet.Blockchain
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 evaluations = EvaluateBlock(block);
-                var totalDelta =
-                    evaluations.GetTotalDelta(
-                        ToStateKey,
-                        ToFungibleAssetKey,
-                        ToTotalSupplyKey,
-                        ValidatorSetKey);
+                var totalDelta = evaluations.GetRawTotalDelta();
                 _logger.Debug(
                     "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
                     "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
