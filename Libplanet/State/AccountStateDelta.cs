@@ -45,25 +45,8 @@ namespace Libplanet.State
         public IAccountDelta Delta { get; private set; }
 
         /// <inheritdoc/>
-        [Pure]
-        public IImmutableSet<Address> UpdatedAddresses =>
-            Delta.UpdatedAddresses;
-
-        /// <inheritdoc/>
-        public IImmutableSet<Address> StateUpdatedAddresses =>
-            Delta.StateUpdatedAddresses;
-
-        /// <inheritdoc/>
-        public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
-            Delta.UpdatedFungibleAssets;
-
-        /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
-
-        [Pure]
-        public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
-            Delta.UpdatedTotalSupplyCurrencies;
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
             { get; protected set; }

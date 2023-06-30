@@ -708,9 +708,9 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txA.Signer } : new Address[0],
-                    prevStates.UpdatedAddresses);
+                    prevStates.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaA[i].Value, prevStates.GetState(txA.Signer));
-                Assert.Equal(new[] { txA.Signer }, outputStates.UpdatedAddresses);
+                Assert.Equal(new[] { txA.Signer }, outputStates.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaA[i + 1].Value, outputStates.GetState(txA.Signer));
                 Assert.Null(eval.Exception);
             }
@@ -758,9 +758,9 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txB.Signer } : new Address[0],
-                    prevStates.UpdatedAddresses);
+                    prevStates.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i].Value, prevStates.GetState(txB.Signer));
-                Assert.Equal(new[] { txB.Signer }, outputStates.UpdatedAddresses);
+                Assert.Equal(new[] { txB.Signer }, outputStates.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i + 1].Value, outputStates.GetState(txB.Signer));
                 if (i == 1)
                 {

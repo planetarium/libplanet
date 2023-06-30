@@ -166,15 +166,21 @@ namespace Libplanet.Action
         /// <para>
         /// The returned enumeration has the following properties:
         /// <list type="bullet">
-        /// <item><description>The first <see cref="ActionEvaluation"/> in the enumerated result,
-        /// if any, has <see cref="ActionEvaluation.OutputStates"/> with
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> that is a
-        /// superset of <paramref name="previousStates"/>'s
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/>.</description></item>
-        /// <item><description>Each <see cref="ActionEvaluation"/> in the enumerated result
-        /// has <see cref="ActionEvaluation.OutputStates"/> with
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> that is a super set
-        /// of the previous one, if any.</description></item>
+        /// <item><description>
+        ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
+        ///     if any, has <see cref="ActionEvaluation.OutputStates"/> with
+        ///     <see cref="IAccountStateDelta.Delta"/> that is a
+        ///     "superset" of <paramref name="previousStates"/>'s
+        ///     <see cref="IAccountStateDelta.Delta"/> (possibly except for
+        ///     <see cref="IAccountDelta.ValidatorSet"/>).
+        /// </description></item>
+        /// <item><description>
+        ///     Each <see cref="ActionEvaluation"/> in the enumerated result
+        ///     has <see cref="ActionEvaluation.OutputStates"/> with
+        ///     <see cref="IAccountStateDelta.Delta"/> that is a "superset"
+        ///     of the previous one, if any (possibly except for
+        ///     <see cref="IAccountDelta.ValidatorSet"/>).
+        /// </description></item>
         /// </list>
         /// </para>
         /// </remarks>

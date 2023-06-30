@@ -47,6 +47,13 @@ To be released.
     [[#3249]]
  -  Added `IAccountDelta.OrderedSum()` extension method.  [[#3256]]
  -  Added `IAccountDelta.ToRawDelta()` extension method.  [[#3256]]
+ -  Removed several properties from `IAccountStateDelta` pertaining to
+    the delta part of `IAccountStateDelta`.  Access the equivalent data
+    through `IAccountStateDelta.Delta` instead.  [[#3257]]
+     -  Removed `IAccountStateDelta.UpdatedAddresses` property.
+     -  Removed `IAccountStateDelta.StateUpdatedAddresses` property.
+     -  Removed `IAccountStateDelta.UpdatedFungibleAssets` property.
+     -  Removed `IAccountStateDelta.UpdatedTotalSupplyCurrencies` property.
 
 ### Behavioral changes
 
@@ -58,6 +65,7 @@ To be released.
 
 [#3249]: https://github.com/planetarium/libplanet/pull/3249
 [#3256]: https://github.com/planetarium/libplanet/pull/3256
+[#3257]: https://github.com/planetarium/libplanet/pull/3257
 
 
 Version 2.3.0
