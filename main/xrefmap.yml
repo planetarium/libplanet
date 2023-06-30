@@ -21315,6 +21315,41 @@ references:
   commentId: T:Libplanet.State.AccountBalanceGetter
   fullName: Libplanet.State.AccountBalanceGetter
   nameWithType: AccountBalanceGetter
+- uid: Libplanet.State.AccountDeltaExtensions
+  name: AccountDeltaExtensions
+  href: api/Libplanet.State.AccountDeltaExtensions.html
+  commentId: T:Libplanet.State.AccountDeltaExtensions
+  fullName: Libplanet.State.AccountDeltaExtensions
+  nameWithType: AccountDeltaExtensions
+- uid: Libplanet.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList{Libplanet.State.IAccountDelta})
+  name: OrderedSum(IReadOnlyList<IAccountDelta>)
+  href: api/Libplanet.State.AccountDeltaExtensions.html#Libplanet_State_AccountDeltaExtensions_OrderedSum_System_Collections_Generic_IReadOnlyList_Libplanet_State_IAccountDelta__
+  commentId: M:Libplanet.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList{Libplanet.State.IAccountDelta})
+  name.vb: OrderedSum(IReadOnlyList(Of IAccountDelta))
+  fullName: Libplanet.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList<Libplanet.State.IAccountDelta>)
+  fullName.vb: Libplanet.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList(Of Libplanet.State.IAccountDelta))
+  nameWithType: AccountDeltaExtensions.OrderedSum(IReadOnlyList<IAccountDelta>)
+  nameWithType.vb: AccountDeltaExtensions.OrderedSum(IReadOnlyList(Of IAccountDelta))
+- uid: Libplanet.State.AccountDeltaExtensions.OrderedSum*
+  name: OrderedSum
+  href: api/Libplanet.State.AccountDeltaExtensions.html#Libplanet_State_AccountDeltaExtensions_OrderedSum_
+  commentId: Overload:Libplanet.State.AccountDeltaExtensions.OrderedSum
+  isSpec: "True"
+  fullName: Libplanet.State.AccountDeltaExtensions.OrderedSum
+  nameWithType: AccountDeltaExtensions.OrderedSum
+- uid: Libplanet.State.AccountDeltaExtensions.ToRawDelta(Libplanet.State.IAccountDelta)
+  name: ToRawDelta(IAccountDelta)
+  href: api/Libplanet.State.AccountDeltaExtensions.html#Libplanet_State_AccountDeltaExtensions_ToRawDelta_Libplanet_State_IAccountDelta_
+  commentId: M:Libplanet.State.AccountDeltaExtensions.ToRawDelta(Libplanet.State.IAccountDelta)
+  fullName: Libplanet.State.AccountDeltaExtensions.ToRawDelta(Libplanet.State.IAccountDelta)
+  nameWithType: AccountDeltaExtensions.ToRawDelta(IAccountDelta)
+- uid: Libplanet.State.AccountDeltaExtensions.ToRawDelta*
+  name: ToRawDelta
+  href: api/Libplanet.State.AccountDeltaExtensions.html#Libplanet_State_AccountDeltaExtensions_ToRawDelta_
+  commentId: Overload:Libplanet.State.AccountDeltaExtensions.ToRawDelta
+  isSpec: "True"
+  fullName: Libplanet.State.AccountDeltaExtensions.ToRawDelta
+  nameWithType: AccountDeltaExtensions.ToRawDelta
 - uid: Libplanet.State.AccountStateGetter
   name: AccountStateGetter
   href: api/Libplanet.State.AccountStateGetter.html
