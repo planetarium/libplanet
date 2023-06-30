@@ -8218,6 +8218,405 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.IVoteMetadata.ValidatorPublicKey
   nameWithType: IVoteMetadata.ValidatorPublicKey
+- uid: Libplanet.Consensus.Maj23
+  name: Maj23
+  href: api/Libplanet.Consensus.Maj23.html
+  commentId: T:Libplanet.Consensus.Maj23
+  fullName: Libplanet.Consensus.Maj23
+  nameWithType: Maj23
+- uid: Libplanet.Consensus.Maj23.#ctor(Bencodex.Types.Dictionary)
+  name: Maj23(Dictionary)
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Consensus.Maj23.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Consensus.Maj23.Maj23(Bencodex.Types.Dictionary)
+  nameWithType: Maj23.Maj23(Dictionary)
+- uid: Libplanet.Consensus.Maj23.#ctor(Libplanet.Consensus.Maj23Metadata,System.Collections.Immutable.ImmutableArray{System.Byte})
+  name: Maj23(Maj23Metadata, ImmutableArray<Byte>)
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23__ctor_Libplanet_Consensus_Maj23Metadata_System_Collections_Immutable_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Consensus.Maj23.#ctor(Libplanet.Consensus.Maj23Metadata,System.Collections.Immutable.ImmutableArray{System.Byte})
+  name.vb: Maj23(Maj23Metadata, ImmutableArray(Of Byte))
+  fullName: Libplanet.Consensus.Maj23.Maj23(Libplanet.Consensus.Maj23Metadata, System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Consensus.Maj23.Maj23(Libplanet.Consensus.Maj23Metadata, System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: Maj23.Maj23(Maj23Metadata, ImmutableArray<Byte>)
+  nameWithType.vb: Maj23.Maj23(Maj23Metadata, ImmutableArray(Of Byte))
+- uid: Libplanet.Consensus.Maj23.#ctor(System.Byte[])
+  name: Maj23(Byte[])
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23__ctor_System_Byte___
+  commentId: M:Libplanet.Consensus.Maj23.#ctor(System.Byte[])
+  name.vb: Maj23(Byte())
+  fullName: Libplanet.Consensus.Maj23.Maj23(System.Byte[])
+  fullName.vb: Libplanet.Consensus.Maj23.Maj23(System.Byte())
+  nameWithType: Maj23.Maj23(Byte[])
+  nameWithType.vb: Maj23.Maj23(Byte())
+- uid: Libplanet.Consensus.Maj23.#ctor*
+  name: Maj23
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23__ctor_
+  commentId: Overload:Libplanet.Consensus.Maj23.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Maj23
+  nameWithType: Maj23.Maj23
+- uid: Libplanet.Consensus.Maj23.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_BlockHash
+  commentId: P:Libplanet.Consensus.Maj23.BlockHash
+  fullName: Libplanet.Consensus.Maj23.BlockHash
+  nameWithType: Maj23.BlockHash
+- uid: Libplanet.Consensus.Maj23.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_BlockHash_
+  commentId: Overload:Libplanet.Consensus.Maj23.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.BlockHash
+  nameWithType: Maj23.BlockHash
+- uid: Libplanet.Consensus.Maj23.ByteArray
+  name: ByteArray
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_ByteArray
+  commentId: P:Libplanet.Consensus.Maj23.ByteArray
+  fullName: Libplanet.Consensus.Maj23.ByteArray
+  nameWithType: Maj23.ByteArray
+- uid: Libplanet.Consensus.Maj23.ByteArray*
+  name: ByteArray
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_ByteArray_
+  commentId: Overload:Libplanet.Consensus.Maj23.ByteArray
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.ByteArray
+  nameWithType: Maj23.ByteArray
+- uid: Libplanet.Consensus.Maj23.Encoded
+  name: Encoded
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Encoded
+  commentId: P:Libplanet.Consensus.Maj23.Encoded
+  fullName: Libplanet.Consensus.Maj23.Encoded
+  nameWithType: Maj23.Encoded
+- uid: Libplanet.Consensus.Maj23.Encoded*
+  name: Encoded
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Encoded_
+  commentId: Overload:Libplanet.Consensus.Maj23.Encoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Encoded
+  nameWithType: Maj23.Encoded
+- uid: Libplanet.Consensus.Maj23.Equals(Libplanet.Consensus.Maj23)
+  name: Equals(Maj23)
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Equals_Libplanet_Consensus_Maj23_
+  commentId: M:Libplanet.Consensus.Maj23.Equals(Libplanet.Consensus.Maj23)
+  fullName: Libplanet.Consensus.Maj23.Equals(Libplanet.Consensus.Maj23)
+  nameWithType: Maj23.Equals(Maj23)
+- uid: Libplanet.Consensus.Maj23.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Equals_System_Object_
+  commentId: M:Libplanet.Consensus.Maj23.Equals(System.Object)
+  fullName: Libplanet.Consensus.Maj23.Equals(System.Object)
+  nameWithType: Maj23.Equals(Object)
+- uid: Libplanet.Consensus.Maj23.Equals*
+  name: Equals
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Equals_
+  commentId: Overload:Libplanet.Consensus.Maj23.Equals
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Equals
+  nameWithType: Maj23.Equals
+- uid: Libplanet.Consensus.Maj23.Flag
+  name: Flag
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Flag
+  commentId: P:Libplanet.Consensus.Maj23.Flag
+  fullName: Libplanet.Consensus.Maj23.Flag
+  nameWithType: Maj23.Flag
+- uid: Libplanet.Consensus.Maj23.Flag*
+  name: Flag
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Flag_
+  commentId: Overload:Libplanet.Consensus.Maj23.Flag
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Flag
+  nameWithType: Maj23.Flag
+- uid: Libplanet.Consensus.Maj23.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_GetHashCode
+  commentId: M:Libplanet.Consensus.Maj23.GetHashCode
+  fullName: Libplanet.Consensus.Maj23.GetHashCode()
+  nameWithType: Maj23.GetHashCode()
+- uid: Libplanet.Consensus.Maj23.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_GetHashCode_
+  commentId: Overload:Libplanet.Consensus.Maj23.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.GetHashCode
+  nameWithType: Maj23.GetHashCode
+- uid: Libplanet.Consensus.Maj23.Height
+  name: Height
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Height
+  commentId: P:Libplanet.Consensus.Maj23.Height
+  fullName: Libplanet.Consensus.Maj23.Height
+  nameWithType: Maj23.Height
+- uid: Libplanet.Consensus.Maj23.Height*
+  name: Height
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Height_
+  commentId: Overload:Libplanet.Consensus.Maj23.Height
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Height
+  nameWithType: Maj23.Height
+- uid: Libplanet.Consensus.Maj23.Round
+  name: Round
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Round
+  commentId: P:Libplanet.Consensus.Maj23.Round
+  fullName: Libplanet.Consensus.Maj23.Round
+  nameWithType: Maj23.Round
+- uid: Libplanet.Consensus.Maj23.Round*
+  name: Round
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Round_
+  commentId: Overload:Libplanet.Consensus.Maj23.Round
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Round
+  nameWithType: Maj23.Round
+- uid: Libplanet.Consensus.Maj23.Signature
+  name: Signature
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Signature
+  commentId: P:Libplanet.Consensus.Maj23.Signature
+  fullName: Libplanet.Consensus.Maj23.Signature
+  nameWithType: Maj23.Signature
+- uid: Libplanet.Consensus.Maj23.Signature*
+  name: Signature
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Signature_
+  commentId: Overload:Libplanet.Consensus.Maj23.Signature
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Signature
+  nameWithType: Maj23.Signature
+- uid: Libplanet.Consensus.Maj23.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Timestamp
+  commentId: P:Libplanet.Consensus.Maj23.Timestamp
+  fullName: Libplanet.Consensus.Maj23.Timestamp
+  nameWithType: Maj23.Timestamp
+- uid: Libplanet.Consensus.Maj23.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Timestamp_
+  commentId: Overload:Libplanet.Consensus.Maj23.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Timestamp
+  nameWithType: Maj23.Timestamp
+- uid: Libplanet.Consensus.Maj23.ToByteArray
+  name: ToByteArray()
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_ToByteArray
+  commentId: M:Libplanet.Consensus.Maj23.ToByteArray
+  fullName: Libplanet.Consensus.Maj23.ToByteArray()
+  nameWithType: Maj23.ToByteArray()
+- uid: Libplanet.Consensus.Maj23.ToByteArray*
+  name: ToByteArray
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_ToByteArray_
+  commentId: Overload:Libplanet.Consensus.Maj23.ToByteArray
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.ToByteArray
+  nameWithType: Maj23.ToByteArray
+- uid: Libplanet.Consensus.Maj23.ValidatorPublicKey
+  name: ValidatorPublicKey
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_ValidatorPublicKey
+  commentId: P:Libplanet.Consensus.Maj23.ValidatorPublicKey
+  fullName: Libplanet.Consensus.Maj23.ValidatorPublicKey
+  nameWithType: Maj23.ValidatorPublicKey
+- uid: Libplanet.Consensus.Maj23.ValidatorPublicKey*
+  name: ValidatorPublicKey
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_ValidatorPublicKey_
+  commentId: Overload:Libplanet.Consensus.Maj23.ValidatorPublicKey
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.ValidatorPublicKey
+  nameWithType: Maj23.ValidatorPublicKey
+- uid: Libplanet.Consensus.Maj23.Verify
+  name: Verify()
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Verify
+  commentId: M:Libplanet.Consensus.Maj23.Verify
+  fullName: Libplanet.Consensus.Maj23.Verify()
+  nameWithType: Maj23.Verify()
+- uid: Libplanet.Consensus.Maj23.Verify*
+  name: Verify
+  href: api/Libplanet.Consensus.Maj23.html#Libplanet_Consensus_Maj23_Verify_
+  commentId: Overload:Libplanet.Consensus.Maj23.Verify
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23.Verify
+  nameWithType: Maj23.Verify
+- uid: Libplanet.Consensus.Maj23Metadata
+  name: Maj23Metadata
+  href: api/Libplanet.Consensus.Maj23Metadata.html
+  commentId: T:Libplanet.Consensus.Maj23Metadata
+  fullName: Libplanet.Consensus.Maj23Metadata
+  nameWithType: Maj23Metadata
+- uid: Libplanet.Consensus.Maj23Metadata.#ctor(Bencodex.Types.Dictionary)
+  name: Maj23Metadata(Dictionary)
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Consensus.Maj23Metadata.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Consensus.Maj23Metadata.Maj23Metadata(Bencodex.Types.Dictionary)
+  nameWithType: Maj23Metadata.Maj23Metadata(Dictionary)
+- uid: Libplanet.Consensus.Maj23Metadata.#ctor(System.Int64,System.Int32,Libplanet.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
+  name: Maj23Metadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, VoteFlag)
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata__ctor_System_Int64_System_Int32_Libplanet_Blocks_BlockHash_System_DateTimeOffset_Libplanet_Crypto_PublicKey_Libplanet_Consensus_VoteFlag_
+  commentId: M:Libplanet.Consensus.Maj23Metadata.#ctor(System.Int64,System.Int32,Libplanet.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
+  fullName: Libplanet.Consensus.Maj23Metadata.Maj23Metadata(System.Int64, System.Int32, Libplanet.Blocks.BlockHash, System.DateTimeOffset, Libplanet.Crypto.PublicKey, Libplanet.Consensus.VoteFlag)
+  nameWithType: Maj23Metadata.Maj23Metadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, VoteFlag)
+- uid: Libplanet.Consensus.Maj23Metadata.#ctor*
+  name: Maj23Metadata
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata__ctor_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Maj23Metadata
+  nameWithType: Maj23Metadata.Maj23Metadata
+- uid: Libplanet.Consensus.Maj23Metadata.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_BlockHash
+  commentId: P:Libplanet.Consensus.Maj23Metadata.BlockHash
+  fullName: Libplanet.Consensus.Maj23Metadata.BlockHash
+  nameWithType: Maj23Metadata.BlockHash
+- uid: Libplanet.Consensus.Maj23Metadata.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_BlockHash_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.BlockHash
+  nameWithType: Maj23Metadata.BlockHash
+- uid: Libplanet.Consensus.Maj23Metadata.ByteArray
+  name: ByteArray
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_ByteArray
+  commentId: P:Libplanet.Consensus.Maj23Metadata.ByteArray
+  fullName: Libplanet.Consensus.Maj23Metadata.ByteArray
+  nameWithType: Maj23Metadata.ByteArray
+- uid: Libplanet.Consensus.Maj23Metadata.ByteArray*
+  name: ByteArray
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_ByteArray_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.ByteArray
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.ByteArray
+  nameWithType: Maj23Metadata.ByteArray
+- uid: Libplanet.Consensus.Maj23Metadata.Encoded
+  name: Encoded
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Encoded
+  commentId: P:Libplanet.Consensus.Maj23Metadata.Encoded
+  fullName: Libplanet.Consensus.Maj23Metadata.Encoded
+  nameWithType: Maj23Metadata.Encoded
+- uid: Libplanet.Consensus.Maj23Metadata.Encoded*
+  name: Encoded
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Encoded_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Encoded
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Encoded
+  nameWithType: Maj23Metadata.Encoded
+- uid: Libplanet.Consensus.Maj23Metadata.Equals(Libplanet.Consensus.Maj23Metadata)
+  name: Equals(Maj23Metadata)
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Equals_Libplanet_Consensus_Maj23Metadata_
+  commentId: M:Libplanet.Consensus.Maj23Metadata.Equals(Libplanet.Consensus.Maj23Metadata)
+  fullName: Libplanet.Consensus.Maj23Metadata.Equals(Libplanet.Consensus.Maj23Metadata)
+  nameWithType: Maj23Metadata.Equals(Maj23Metadata)
+- uid: Libplanet.Consensus.Maj23Metadata.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Equals_System_Object_
+  commentId: M:Libplanet.Consensus.Maj23Metadata.Equals(System.Object)
+  fullName: Libplanet.Consensus.Maj23Metadata.Equals(System.Object)
+  nameWithType: Maj23Metadata.Equals(Object)
+- uid: Libplanet.Consensus.Maj23Metadata.Equals*
+  name: Equals
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Equals_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Equals
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Equals
+  nameWithType: Maj23Metadata.Equals
+- uid: Libplanet.Consensus.Maj23Metadata.Flag
+  name: Flag
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Flag
+  commentId: P:Libplanet.Consensus.Maj23Metadata.Flag
+  fullName: Libplanet.Consensus.Maj23Metadata.Flag
+  nameWithType: Maj23Metadata.Flag
+- uid: Libplanet.Consensus.Maj23Metadata.Flag*
+  name: Flag
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Flag_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Flag
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Flag
+  nameWithType: Maj23Metadata.Flag
+- uid: Libplanet.Consensus.Maj23Metadata.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_GetHashCode
+  commentId: M:Libplanet.Consensus.Maj23Metadata.GetHashCode
+  fullName: Libplanet.Consensus.Maj23Metadata.GetHashCode()
+  nameWithType: Maj23Metadata.GetHashCode()
+- uid: Libplanet.Consensus.Maj23Metadata.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_GetHashCode_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.GetHashCode
+  nameWithType: Maj23Metadata.GetHashCode
+- uid: Libplanet.Consensus.Maj23Metadata.Height
+  name: Height
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Height
+  commentId: P:Libplanet.Consensus.Maj23Metadata.Height
+  fullName: Libplanet.Consensus.Maj23Metadata.Height
+  nameWithType: Maj23Metadata.Height
+- uid: Libplanet.Consensus.Maj23Metadata.Height*
+  name: Height
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Height_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Height
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Height
+  nameWithType: Maj23Metadata.Height
+- uid: Libplanet.Consensus.Maj23Metadata.Round
+  name: Round
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Round
+  commentId: P:Libplanet.Consensus.Maj23Metadata.Round
+  fullName: Libplanet.Consensus.Maj23Metadata.Round
+  nameWithType: Maj23Metadata.Round
+- uid: Libplanet.Consensus.Maj23Metadata.Round*
+  name: Round
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Round_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Round
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Round
+  nameWithType: Maj23Metadata.Round
+- uid: Libplanet.Consensus.Maj23Metadata.Sign(Libplanet.Crypto.PrivateKey)
+  name: Sign(PrivateKey)
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Sign_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Consensus.Maj23Metadata.Sign(Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.Consensus.Maj23Metadata.Sign(Libplanet.Crypto.PrivateKey)
+  nameWithType: Maj23Metadata.Sign(PrivateKey)
+- uid: Libplanet.Consensus.Maj23Metadata.Sign*
+  name: Sign
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Sign_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Sign
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Sign
+  nameWithType: Maj23Metadata.Sign
+- uid: Libplanet.Consensus.Maj23Metadata.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Timestamp
+  commentId: P:Libplanet.Consensus.Maj23Metadata.Timestamp
+  fullName: Libplanet.Consensus.Maj23Metadata.Timestamp
+  nameWithType: Maj23Metadata.Timestamp
+- uid: Libplanet.Consensus.Maj23Metadata.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_Timestamp_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.Timestamp
+  nameWithType: Maj23Metadata.Timestamp
+- uid: Libplanet.Consensus.Maj23Metadata.ToByteArray
+  name: ToByteArray()
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_ToByteArray
+  commentId: M:Libplanet.Consensus.Maj23Metadata.ToByteArray
+  fullName: Libplanet.Consensus.Maj23Metadata.ToByteArray()
+  nameWithType: Maj23Metadata.ToByteArray()
+- uid: Libplanet.Consensus.Maj23Metadata.ToByteArray*
+  name: ToByteArray
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_ToByteArray_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.ToByteArray
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.ToByteArray
+  nameWithType: Maj23Metadata.ToByteArray
+- uid: Libplanet.Consensus.Maj23Metadata.ValidatorPublicKey
+  name: ValidatorPublicKey
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_ValidatorPublicKey
+  commentId: P:Libplanet.Consensus.Maj23Metadata.ValidatorPublicKey
+  fullName: Libplanet.Consensus.Maj23Metadata.ValidatorPublicKey
+  nameWithType: Maj23Metadata.ValidatorPublicKey
+- uid: Libplanet.Consensus.Maj23Metadata.ValidatorPublicKey*
+  name: ValidatorPublicKey
+  href: api/Libplanet.Consensus.Maj23Metadata.html#Libplanet_Consensus_Maj23Metadata_ValidatorPublicKey_
+  commentId: Overload:Libplanet.Consensus.Maj23Metadata.ValidatorPublicKey
+  isSpec: "True"
+  fullName: Libplanet.Consensus.Maj23Metadata.ValidatorPublicKey
+  nameWithType: Maj23Metadata.ValidatorPublicKey
 - uid: Libplanet.Consensus.Proposal
   name: Proposal
   href: api/Libplanet.Consensus.Proposal.html
@@ -8854,6 +9253,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.ValidatorSet.Contains
   nameWithType: ValidatorSet.Contains
+- uid: Libplanet.Consensus.ValidatorSet.ContainsPublicKey(Libplanet.Crypto.PublicKey)
+  name: ContainsPublicKey(PublicKey)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_ContainsPublicKey_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Consensus.ValidatorSet.ContainsPublicKey(Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Consensus.ValidatorSet.ContainsPublicKey(Libplanet.Crypto.PublicKey)
+  nameWithType: ValidatorSet.ContainsPublicKey(PublicKey)
+- uid: Libplanet.Consensus.ValidatorSet.ContainsPublicKey*
+  name: ContainsPublicKey
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_ContainsPublicKey_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.ContainsPublicKey
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.ContainsPublicKey
+  nameWithType: ValidatorSet.ContainsPublicKey
 - uid: Libplanet.Consensus.ValidatorSet.Equals(Libplanet.Consensus.ValidatorSet)
   name: Equals(ValidatorSet)
   href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_Equals_Libplanet_Consensus_ValidatorSet_
@@ -8873,6 +9285,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Consensus.ValidatorSet.Equals
   nameWithType: ValidatorSet.Equals
+- uid: Libplanet.Consensus.ValidatorSet.FindIndex(Libplanet.Crypto.PublicKey)
+  name: FindIndex(PublicKey)
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_FindIndex_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Consensus.ValidatorSet.FindIndex(Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Consensus.ValidatorSet.FindIndex(Libplanet.Crypto.PublicKey)
+  nameWithType: ValidatorSet.FindIndex(PublicKey)
+- uid: Libplanet.Consensus.ValidatorSet.FindIndex*
+  name: FindIndex
+  href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_FindIndex_
+  commentId: Overload:Libplanet.Consensus.ValidatorSet.FindIndex
+  isSpec: "True"
+  fullName: Libplanet.Consensus.ValidatorSet.FindIndex
+  nameWithType: ValidatorSet.FindIndex
 - uid: Libplanet.Consensus.ValidatorSet.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Consensus.ValidatorSet.html#Libplanet_Consensus_ValidatorSet_GetHashCode
@@ -9322,15 +9747,12 @@ references:
   commentId: M:Libplanet.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)
   fullName: Libplanet.Consensus.VoteMetadata.VoteMetadata(Bencodex.Types.IValue)
   nameWithType: VoteMetadata.VoteMetadata(IValue)
-- uid: Libplanet.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
-  name: VoteMetadata(Int64, Int32, Nullable<BlockHash>, DateTimeOffset, PublicKey, VoteFlag)
-  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_System_Nullable_Libplanet_Blocks_BlockHash__System_DateTimeOffset_Libplanet_Crypto_PublicKey_Libplanet_Consensus_VoteFlag_
-  commentId: M:Libplanet.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,System.Nullable{Libplanet.Blocks.BlockHash},System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
-  name.vb: VoteMetadata(Int64, Int32, Nullable(Of BlockHash), DateTimeOffset, PublicKey, VoteFlag)
-  fullName: Libplanet.Consensus.VoteMetadata.VoteMetadata(System.Int64, System.Int32, System.Nullable<Libplanet.Blocks.BlockHash>, System.DateTimeOffset, Libplanet.Crypto.PublicKey, Libplanet.Consensus.VoteFlag)
-  fullName.vb: Libplanet.Consensus.VoteMetadata.VoteMetadata(System.Int64, System.Int32, System.Nullable(Of Libplanet.Blocks.BlockHash), System.DateTimeOffset, Libplanet.Crypto.PublicKey, Libplanet.Consensus.VoteFlag)
-  nameWithType: VoteMetadata.VoteMetadata(Int64, Int32, Nullable<BlockHash>, DateTimeOffset, PublicKey, VoteFlag)
-  nameWithType.vb: VoteMetadata.VoteMetadata(Int64, Int32, Nullable(Of BlockHash), DateTimeOffset, PublicKey, VoteFlag)
+- uid: Libplanet.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
+  name: VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, VoteFlag)
+  href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Blocks_BlockHash_System_DateTimeOffset_Libplanet_Crypto_PublicKey_Libplanet_Consensus_VoteFlag_
+  commentId: M:Libplanet.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Consensus.VoteFlag)
+  fullName: Libplanet.Consensus.VoteMetadata.VoteMetadata(System.Int64, System.Int32, Libplanet.Blocks.BlockHash, System.DateTimeOffset, Libplanet.Crypto.PublicKey, Libplanet.Consensus.VoteFlag)
+  nameWithType: VoteMetadata.VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, VoteFlag)
 - uid: Libplanet.Consensus.VoteMetadata.#ctor*
   name: VoteMetadata
   href: api/Libplanet.Consensus.VoteMetadata.html#Libplanet_Consensus_VoteMetadata__ctor_
@@ -14404,6 +14826,48 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.ConsensusReactorOption.TargetBlockInterval
   nameWithType: ConsensusReactorOption.TargetBlockInterval
+- uid: Libplanet.Net.Consensus.ConsensusStep
+  name: ConsensusStep
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html
+  commentId: T:Libplanet.Net.Consensus.ConsensusStep
+  fullName: Libplanet.Net.Consensus.ConsensusStep
+  nameWithType: ConsensusStep
+- uid: Libplanet.Net.Consensus.ConsensusStep.Default
+  name: Default
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default
+  commentId: F:Libplanet.Net.Consensus.ConsensusStep.Default
+  fullName: Libplanet.Net.Consensus.ConsensusStep.Default
+  nameWithType: ConsensusStep.Default
+- uid: Libplanet.Net.Consensus.ConsensusStep.EndCommit
+  name: EndCommit
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit
+  commentId: F:Libplanet.Net.Consensus.ConsensusStep.EndCommit
+  fullName: Libplanet.Net.Consensus.ConsensusStep.EndCommit
+  nameWithType: ConsensusStep.EndCommit
+- uid: Libplanet.Net.Consensus.ConsensusStep.Null
+  name: "Null"
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Null
+  commentId: F:Libplanet.Net.Consensus.ConsensusStep.Null
+  fullName: Libplanet.Net.Consensus.ConsensusStep.Null
+  nameWithType: ConsensusStep.Null
+- uid: Libplanet.Net.Consensus.ConsensusStep.PreCommit
+  name: PreCommit
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit
+  commentId: F:Libplanet.Net.Consensus.ConsensusStep.PreCommit
+  fullName: Libplanet.Net.Consensus.ConsensusStep.PreCommit
+  nameWithType: ConsensusStep.PreCommit
+- uid: Libplanet.Net.Consensus.ConsensusStep.PreVote
+  name: PreVote
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote
+  commentId: F:Libplanet.Net.Consensus.ConsensusStep.PreVote
+  fullName: Libplanet.Net.Consensus.ConsensusStep.PreVote
+  nameWithType: ConsensusStep.PreVote
+- uid: Libplanet.Net.Consensus.ConsensusStep.Propose
+  name: Propose
+  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose
+  commentId: F:Libplanet.Net.Consensus.ConsensusStep.Propose
+  fullName: Libplanet.Net.Consensus.ConsensusStep.Propose
+  nameWithType: ConsensusStep.Propose
 - uid: Libplanet.Net.Consensus.Context
   name: Context
   href: api/Libplanet.Net.Consensus.Context.html
@@ -14462,6 +14926,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Context.Height
   nameWithType: Context.Height
+- uid: Libplanet.Net.Consensus.Context.Proposal
+  name: Proposal
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Proposal
+  commentId: P:Libplanet.Net.Consensus.Context.Proposal
+  fullName: Libplanet.Net.Consensus.Context.Proposal
+  nameWithType: Context.Proposal
+- uid: Libplanet.Net.Consensus.Context.Proposal*
+  name: Proposal
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Proposal_
+  commentId: Overload:Libplanet.Net.Consensus.Context.Proposal
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Context.Proposal
+  nameWithType: Context.Proposal
 - uid: Libplanet.Net.Consensus.Context.Round
   name: Round
   href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Round
@@ -14766,6 +15243,181 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.WaitForRunningAsync
   nameWithType: Gossip.WaitForRunningAsync
+- uid: Libplanet.Net.Consensus.HeightVoteSet
+  name: HeightVoteSet
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html
+  commentId: T:Libplanet.Net.Consensus.HeightVoteSet
+  fullName: Libplanet.Net.Consensus.HeightVoteSet
+  nameWithType: HeightVoteSet
+- uid: Libplanet.Net.Consensus.HeightVoteSet.#ctor(System.Int64,Libplanet.Consensus.ValidatorSet)
+  name: HeightVoteSet(Int64, ValidatorSet)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet__ctor_System_Int64_Libplanet_Consensus_ValidatorSet_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.#ctor(System.Int64,Libplanet.Consensus.ValidatorSet)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.HeightVoteSet(System.Int64, Libplanet.Consensus.ValidatorSet)
+  nameWithType: HeightVoteSet.HeightVoteSet(Int64, ValidatorSet)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.#ctor*
+  name: HeightVoteSet
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.HeightVoteSet
+  nameWithType: HeightVoteSet.HeightVoteSet
+- uid: Libplanet.Net.Consensus.HeightVoteSet.AddRound(System.Int32)
+  name: AddRound(Int32)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_AddRound_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.AddRound(System.Int32)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.AddRound(System.Int32)
+  nameWithType: HeightVoteSet.AddRound(Int32)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.AddRound*
+  name: AddRound
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_AddRound_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.AddRound
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.AddRound
+  nameWithType: HeightVoteSet.AddRound
+- uid: Libplanet.Net.Consensus.HeightVoteSet.AddVote(Libplanet.Consensus.Vote)
+  name: AddVote(Vote)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_AddVote_Libplanet_Consensus_Vote_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.AddVote(Libplanet.Consensus.Vote)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.AddVote(Libplanet.Consensus.Vote)
+  nameWithType: HeightVoteSet.AddVote(Vote)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.AddVote*
+  name: AddVote
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_AddVote_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.AddVote
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.AddVote
+  nameWithType: HeightVoteSet.AddVote
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Count
+  name: Count
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Count
+  commentId: P:Libplanet.Net.Consensus.HeightVoteSet.Count
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Count
+  nameWithType: HeightVoteSet.Count
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Count*
+  name: Count
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Count_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.Count
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Count
+  nameWithType: HeightVoteSet.Count
+- uid: Libplanet.Net.Consensus.HeightVoteSet.GetVoteSet(System.Int32,Libplanet.Consensus.VoteFlag)
+  name: GetVoteSet(Int32, VoteFlag)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_GetVoteSet_System_Int32_Libplanet_Consensus_VoteFlag_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.GetVoteSet(System.Int32,Libplanet.Consensus.VoteFlag)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.GetVoteSet(System.Int32, Libplanet.Consensus.VoteFlag)
+  nameWithType: HeightVoteSet.GetVoteSet(Int32, VoteFlag)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.GetVoteSet*
+  name: GetVoteSet
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_GetVoteSet_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.GetVoteSet
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.GetVoteSet
+  nameWithType: HeightVoteSet.GetVoteSet
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Height
+  name: Height()
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Height
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.Height
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Height()
+  nameWithType: HeightVoteSet.Height()
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Height*
+  name: Height
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Height_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.Height
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Height
+  nameWithType: HeightVoteSet.Height
+- uid: Libplanet.Net.Consensus.HeightVoteSet.POLInfo
+  name: POLInfo()
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_POLInfo
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.POLInfo
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.POLInfo()
+  nameWithType: HeightVoteSet.POLInfo()
+- uid: Libplanet.Net.Consensus.HeightVoteSet.POLInfo*
+  name: POLInfo
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_POLInfo_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.POLInfo
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.POLInfo
+  nameWithType: HeightVoteSet.POLInfo
+- uid: Libplanet.Net.Consensus.HeightVoteSet.PreCommits(System.Int32)
+  name: PreCommits(Int32)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_PreCommits_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.PreCommits(System.Int32)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.PreCommits(System.Int32)
+  nameWithType: HeightVoteSet.PreCommits(Int32)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.PreCommits*
+  name: PreCommits
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_PreCommits_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.PreCommits
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.PreCommits
+  nameWithType: HeightVoteSet.PreCommits
+- uid: Libplanet.Net.Consensus.HeightVoteSet.PreVotes(System.Int32)
+  name: PreVotes(Int32)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_PreVotes_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.PreVotes(System.Int32)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.PreVotes(System.Int32)
+  nameWithType: HeightVoteSet.PreVotes(Int32)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.PreVotes*
+  name: PreVotes
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_PreVotes_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.PreVotes
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.PreVotes
+  nameWithType: HeightVoteSet.PreVotes
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Reset(System.Int64,Libplanet.Consensus.ValidatorSet)
+  name: Reset(Int64, ValidatorSet)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Reset_System_Int64_Libplanet_Consensus_ValidatorSet_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.Reset(System.Int64,Libplanet.Consensus.ValidatorSet)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Reset(System.Int64, Libplanet.Consensus.ValidatorSet)
+  nameWithType: HeightVoteSet.Reset(Int64, ValidatorSet)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Reset*
+  name: Reset
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Reset_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.Reset
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Reset
+  nameWithType: HeightVoteSet.Reset
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Round
+  name: Round()
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Round
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.Round
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Round()
+  nameWithType: HeightVoteSet.Round()
+- uid: Libplanet.Net.Consensus.HeightVoteSet.Round*
+  name: Round
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_Round_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.Round
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.Round
+  nameWithType: HeightVoteSet.Round
+- uid: Libplanet.Net.Consensus.HeightVoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)
+  name: SetPeerMaj23(Maj23)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_SetPeerMaj23_Libplanet_Consensus_Maj23_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)
+  nameWithType: HeightVoteSet.SetPeerMaj23(Maj23)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.SetPeerMaj23*
+  name: SetPeerMaj23
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_SetPeerMaj23_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.SetPeerMaj23
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.SetPeerMaj23
+  nameWithType: HeightVoteSet.SetPeerMaj23
+- uid: Libplanet.Net.Consensus.HeightVoteSet.SetRound(System.Int32)
+  name: SetRound(Int32)
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_SetRound_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.HeightVoteSet.SetRound(System.Int32)
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.SetRound(System.Int32)
+  nameWithType: HeightVoteSet.SetRound(Int32)
+- uid: Libplanet.Net.Consensus.HeightVoteSet.SetRound*
+  name: SetRound
+  href: api/Libplanet.Net.Consensus.HeightVoteSet.html#Libplanet_Net_Consensus_HeightVoteSet_SetRound_
+  commentId: Overload:Libplanet.Net.Consensus.HeightVoteSet.SetRound
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.HeightVoteSet.SetRound
+  nameWithType: HeightVoteSet.SetRound
 - uid: Libplanet.Net.Consensus.InvalidConsensusMessageException
   name: InvalidConsensusMessageException
   href: api/Libplanet.Net.Consensus.InvalidConsensusMessageException.html
@@ -14822,6 +15474,177 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.InvalidHeightIncreasingException.InvalidHeightIncreasingException
   nameWithType: InvalidHeightIncreasingException.InvalidHeightIncreasingException
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception
+  name: InvalidMaj23Exception
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html
+  commentId: T:Libplanet.Net.Consensus.InvalidMaj23Exception
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception
+  nameWithType: InvalidMaj23Exception
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidMaj23Exception(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.InvalidMaj23Exception(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidMaj23Exception.InvalidMaj23Exception(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.String,Libplanet.Consensus.Maj23,System.Exception)
+  name: InvalidMaj23Exception(String, Maj23, Exception)
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception__ctor_System_String_Libplanet_Consensus_Maj23_System_Exception_
+  commentId: M:Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.String,Libplanet.Consensus.Maj23,System.Exception)
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.InvalidMaj23Exception(System.String, Libplanet.Consensus.Maj23, System.Exception)
+  nameWithType: InvalidMaj23Exception.InvalidMaj23Exception(String, Maj23, Exception)
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.String,Libplanet.Consensus.Maj23)
+  name: InvalidMaj23Exception(String, Maj23)
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception__ctor_System_String_Libplanet_Consensus_Maj23_
+  commentId: M:Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.String,Libplanet.Consensus.Maj23)
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.InvalidMaj23Exception(System.String, Libplanet.Consensus.Maj23)
+  nameWithType: InvalidMaj23Exception.InvalidMaj23Exception(String, Maj23)
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor*
+  name: InvalidMaj23Exception
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.InvalidMaj23Exception
+  nameWithType: InvalidMaj23Exception.InvalidMaj23Exception
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidMaj23Exception.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_GetObjectData_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData
+  nameWithType: InvalidMaj23Exception.GetObjectData
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23
+  name: Maj23
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23
+  commentId: P:Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23
+  nameWithType: InvalidMaj23Exception.Maj23
+- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23*
+  name: Maj23
+  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23
+  nameWithType: InvalidMaj23Exception.Maj23
+- uid: Libplanet.Net.Consensus.InvalidProposalException
+  name: InvalidProposalException
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html
+  commentId: T:Libplanet.Net.Consensus.InvalidProposalException
+  fullName: Libplanet.Net.Consensus.InvalidProposalException
+  nameWithType: InvalidProposalException
+- uid: Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidProposalException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.InvalidProposalException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidProposalException.InvalidProposalException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.String,Libplanet.Consensus.Proposal,System.Exception)
+  name: InvalidProposalException(String, Proposal, Exception)
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException__ctor_System_String_Libplanet_Consensus_Proposal_System_Exception_
+  commentId: M:Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.String,Libplanet.Consensus.Proposal,System.Exception)
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.InvalidProposalException(System.String, Libplanet.Consensus.Proposal, System.Exception)
+  nameWithType: InvalidProposalException.InvalidProposalException(String, Proposal, Exception)
+- uid: Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.String,Libplanet.Consensus.Proposal)
+  name: InvalidProposalException(String, Proposal)
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException__ctor_System_String_Libplanet_Consensus_Proposal_
+  commentId: M:Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.String,Libplanet.Consensus.Proposal)
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.InvalidProposalException(System.String, Libplanet.Consensus.Proposal)
+  nameWithType: InvalidProposalException.InvalidProposalException(String, Proposal)
+- uid: Libplanet.Net.Consensus.InvalidProposalException.#ctor*
+  name: InvalidProposalException
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidProposalException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.InvalidProposalException
+  nameWithType: InvalidProposalException.InvalidProposalException
+- uid: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Consensus.InvalidProposalException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidProposalException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidProposalException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData
+  nameWithType: InvalidProposalException.GetObjectData
+- uid: Libplanet.Net.Consensus.InvalidProposalException.Proposal
+  name: Proposal
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal
+  commentId: P:Libplanet.Net.Consensus.InvalidProposalException.Proposal
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.Proposal
+  nameWithType: InvalidProposalException.Proposal
+- uid: Libplanet.Net.Consensus.InvalidProposalException.Proposal*
+  name: Proposal
+  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidProposalException.Proposal
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidProposalException.Proposal
+  nameWithType: InvalidProposalException.Proposal
+- uid: Libplanet.Net.Consensus.InvalidVoteException
+  name: InvalidVoteException
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html
+  commentId: T:Libplanet.Net.Consensus.InvalidVoteException
+  fullName: Libplanet.Net.Consensus.InvalidVoteException
+  nameWithType: InvalidVoteException
+- uid: Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidVoteException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.InvalidVoteException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidVoteException.InvalidVoteException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.String,Libplanet.Consensus.Vote,System.Exception)
+  name: InvalidVoteException(String, Vote, Exception)
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException__ctor_System_String_Libplanet_Consensus_Vote_System_Exception_
+  commentId: M:Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.String,Libplanet.Consensus.Vote,System.Exception)
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.InvalidVoteException(System.String, Libplanet.Consensus.Vote, System.Exception)
+  nameWithType: InvalidVoteException.InvalidVoteException(String, Vote, Exception)
+- uid: Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.String,Libplanet.Consensus.Vote)
+  name: InvalidVoteException(String, Vote)
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException__ctor_System_String_Libplanet_Consensus_Vote_
+  commentId: M:Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.String,Libplanet.Consensus.Vote)
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.InvalidVoteException(System.String, Libplanet.Consensus.Vote)
+  nameWithType: InvalidVoteException.InvalidVoteException(String, Vote)
+- uid: Libplanet.Net.Consensus.InvalidVoteException.#ctor*
+  name: InvalidVoteException
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidVoteException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.InvalidVoteException
+  nameWithType: InvalidVoteException.InvalidVoteException
+- uid: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.Consensus.InvalidVoteException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidVoteException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidVoteException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData
+  nameWithType: InvalidVoteException.GetObjectData
+- uid: Libplanet.Net.Consensus.InvalidVoteException.Vote
+  name: Vote
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote
+  commentId: P:Libplanet.Net.Consensus.InvalidVoteException.Vote
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.Vote
+  nameWithType: InvalidVoteException.Vote
+- uid: Libplanet.Net.Consensus.InvalidVoteException.Vote*
+  name: Vote
+  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote_
+  commentId: Overload:Libplanet.Net.Consensus.InvalidVoteException.Vote
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.InvalidVoteException.Vote
+  nameWithType: InvalidVoteException.Vote
 - uid: Libplanet.Net.Consensus.IReactor
   name: IReactor
   href: api/Libplanet.Net.Consensus.IReactor.html
@@ -14925,48 +15748,288 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.MessageCache.Shift
   nameWithType: MessageCache.Shift
-- uid: Libplanet.Net.Consensus.Step
-  name: Step
-  href: api/Libplanet.Net.Consensus.Step.html
-  commentId: T:Libplanet.Net.Consensus.Step
-  fullName: Libplanet.Net.Consensus.Step
-  nameWithType: Step
-- uid: Libplanet.Net.Consensus.Step.Default
-  name: Default
-  href: api/Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Default
-  commentId: F:Libplanet.Net.Consensus.Step.Default
-  fullName: Libplanet.Net.Consensus.Step.Default
-  nameWithType: Step.Default
-- uid: Libplanet.Net.Consensus.Step.EndCommit
-  name: EndCommit
-  href: api/Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_EndCommit
-  commentId: F:Libplanet.Net.Consensus.Step.EndCommit
-  fullName: Libplanet.Net.Consensus.Step.EndCommit
-  nameWithType: Step.EndCommit
-- uid: Libplanet.Net.Consensus.Step.Null
-  name: "Null"
-  href: api/Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Null
-  commentId: F:Libplanet.Net.Consensus.Step.Null
-  fullName: Libplanet.Net.Consensus.Step.Null
-  nameWithType: Step.Null
-- uid: Libplanet.Net.Consensus.Step.PreCommit
-  name: PreCommit
-  href: api/Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit
-  commentId: F:Libplanet.Net.Consensus.Step.PreCommit
-  fullName: Libplanet.Net.Consensus.Step.PreCommit
-  nameWithType: Step.PreCommit
-- uid: Libplanet.Net.Consensus.Step.PreVote
-  name: PreVote
-  href: api/Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote
-  commentId: F:Libplanet.Net.Consensus.Step.PreVote
-  fullName: Libplanet.Net.Consensus.Step.PreVote
-  nameWithType: Step.PreVote
-- uid: Libplanet.Net.Consensus.Step.Propose
-  name: Propose
-  href: api/Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose
-  commentId: F:Libplanet.Net.Consensus.Step.Propose
-  fullName: Libplanet.Net.Consensus.Step.Propose
-  nameWithType: Step.Propose
+- uid: Libplanet.Net.Consensus.VoteSet
+  name: VoteSet
+  href: api/Libplanet.Net.Consensus.VoteSet.html
+  commentId: T:Libplanet.Net.Consensus.VoteSet
+  fullName: Libplanet.Net.Consensus.VoteSet
+  nameWithType: VoteSet
+- uid: Libplanet.Net.Consensus.VoteSet.#ctor(System.Int64,System.Int32,Libplanet.Consensus.VoteFlag,Libplanet.Consensus.ValidatorSet)
+  name: VoteSet(Int64, Int32, VoteFlag, ValidatorSet)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_Libplanet_Consensus_VoteFlag_Libplanet_Consensus_ValidatorSet_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.#ctor(System.Int64,System.Int32,Libplanet.Consensus.VoteFlag,Libplanet.Consensus.ValidatorSet)
+  fullName: Libplanet.Net.Consensus.VoteSet.VoteSet(System.Int64, System.Int32, Libplanet.Consensus.VoteFlag, Libplanet.Consensus.ValidatorSet)
+  nameWithType: VoteSet.VoteSet(Int64, Int32, VoteFlag, ValidatorSet)
+- uid: Libplanet.Net.Consensus.VoteSet.#ctor*
+  name: VoteSet
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.VoteSet
+  nameWithType: VoteSet.VoteSet
+- uid: Libplanet.Net.Consensus.VoteSet.BitArray
+  name: BitArray()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_BitArray
+  commentId: M:Libplanet.Net.Consensus.VoteSet.BitArray
+  fullName: Libplanet.Net.Consensus.VoteSet.BitArray()
+  nameWithType: VoteSet.BitArray()
+- uid: Libplanet.Net.Consensus.VoteSet.BitArray*
+  name: BitArray
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_BitArray_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.BitArray
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.BitArray
+  nameWithType: VoteSet.BitArray
+- uid: Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(Libplanet.Blocks.BlockHash)
+  name: BitArrayByBlockHash(BlockHash)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(Libplanet.Blocks.BlockHash)
+  nameWithType: VoteSet.BitArrayByBlockHash(BlockHash)
+- uid: Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash*
+  name: BitArrayByBlockHash
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash
+  nameWithType: VoteSet.BitArrayByBlockHash
+- uid: Libplanet.Net.Consensus.VoteSet.Contains(Libplanet.Crypto.PublicKey,Libplanet.Blocks.BlockHash)
+  name: Contains(PublicKey, BlockHash)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Contains_Libplanet_Crypto_PublicKey_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.Contains(Libplanet.Crypto.PublicKey,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Net.Consensus.VoteSet.Contains(Libplanet.Crypto.PublicKey, Libplanet.Blocks.BlockHash)
+  nameWithType: VoteSet.Contains(PublicKey, BlockHash)
+- uid: Libplanet.Net.Consensus.VoteSet.Contains*
+  name: Contains
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Contains_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.Contains
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.Contains
+  nameWithType: VoteSet.Contains
+- uid: Libplanet.Net.Consensus.VoteSet.Count
+  name: Count
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Count
+  commentId: P:Libplanet.Net.Consensus.VoteSet.Count
+  fullName: Libplanet.Net.Consensus.VoteSet.Count
+  nameWithType: VoteSet.Count
+- uid: Libplanet.Net.Consensus.VoteSet.Count*
+  name: Count
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Count_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.Count
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.Count
+  nameWithType: VoteSet.Count
+- uid: Libplanet.Net.Consensus.VoteSet.GetByPublicKey(Libplanet.Crypto.PublicKey)
+  name: GetByPublicKey(PublicKey)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetByPublicKey_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.GetByPublicKey(Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Net.Consensus.VoteSet.GetByPublicKey(Libplanet.Crypto.PublicKey)
+  nameWithType: VoteSet.GetByPublicKey(PublicKey)
+- uid: Libplanet.Net.Consensus.VoteSet.GetByPublicKey*
+  name: GetByPublicKey
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetByPublicKey_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.GetByPublicKey
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.GetByPublicKey
+  nameWithType: VoteSet.GetByPublicKey
+- uid: Libplanet.Net.Consensus.VoteSet.GetVote(Libplanet.Crypto.PublicKey,Libplanet.Blocks.BlockHash)
+  name: GetVote(PublicKey, BlockHash)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetVote_Libplanet_Crypto_PublicKey_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.GetVote(Libplanet.Crypto.PublicKey,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Net.Consensus.VoteSet.GetVote(Libplanet.Crypto.PublicKey, Libplanet.Blocks.BlockHash)
+  nameWithType: VoteSet.GetVote(PublicKey, BlockHash)
+- uid: Libplanet.Net.Consensus.VoteSet.GetVote*
+  name: GetVote
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetVote_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.GetVote
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.GetVote
+  nameWithType: VoteSet.GetVote
+- uid: Libplanet.Net.Consensus.VoteSet.GetVotes(Libplanet.Blocks.BlockHash)
+  name: GetVotes(BlockHash)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetVotes_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.GetVotes(Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Net.Consensus.VoteSet.GetVotes(Libplanet.Blocks.BlockHash)
+  nameWithType: VoteSet.GetVotes(BlockHash)
+- uid: Libplanet.Net.Consensus.VoteSet.GetVotes*
+  name: GetVotes
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetVotes_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.GetVotes
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.GetVotes
+  nameWithType: VoteSet.GetVotes
+- uid: Libplanet.Net.Consensus.VoteSet.HasAll
+  name: HasAll()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasAll
+  commentId: M:Libplanet.Net.Consensus.VoteSet.HasAll
+  fullName: Libplanet.Net.Consensus.VoteSet.HasAll()
+  nameWithType: VoteSet.HasAll()
+- uid: Libplanet.Net.Consensus.VoteSet.HasAll*
+  name: HasAll
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasAll_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.HasAll
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.HasAll
+  nameWithType: VoteSet.HasAll
+- uid: Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny
+  name: HasOneThirdsAny()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny
+  commentId: M:Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny
+  fullName: Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny()
+  nameWithType: VoteSet.HasOneThirdsAny()
+- uid: Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny*
+  name: HasOneThirdsAny
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny
+  nameWithType: VoteSet.HasOneThirdsAny
+- uid: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny
+  name: HasTwoThirdsAny()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny
+  commentId: M:Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny
+  fullName: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny()
+  nameWithType: VoteSet.HasTwoThirdsAny()
+- uid: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny*
+  name: HasTwoThirdsAny
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny
+  nameWithType: VoteSet.HasTwoThirdsAny
+- uid: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority
+  name: HasTwoThirdsMajority()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority
+  commentId: M:Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority
+  fullName: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority()
+  nameWithType: VoteSet.HasTwoThirdsMajority()
+- uid: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority*
+  name: HasTwoThirdsMajority
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority
+  nameWithType: VoteSet.HasTwoThirdsMajority
+- uid: Libplanet.Net.Consensus.VoteSet.IsCommit
+  name: IsCommit()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_IsCommit
+  commentId: M:Libplanet.Net.Consensus.VoteSet.IsCommit
+  fullName: Libplanet.Net.Consensus.VoteSet.IsCommit()
+  nameWithType: VoteSet.IsCommit()
+- uid: Libplanet.Net.Consensus.VoteSet.IsCommit*
+  name: IsCommit
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_IsCommit_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.IsCommit
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.IsCommit
+  nameWithType: VoteSet.IsCommit
+- uid: Libplanet.Net.Consensus.VoteSet.List
+  name: List()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_List
+  commentId: M:Libplanet.Net.Consensus.VoteSet.List
+  fullName: Libplanet.Net.Consensus.VoteSet.List()
+  nameWithType: VoteSet.List()
+- uid: Libplanet.Net.Consensus.VoteSet.List*
+  name: List
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_List_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.List
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.List
+  nameWithType: VoteSet.List
+- uid: Libplanet.Net.Consensus.VoteSet.MappedList
+  name: MappedList()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_MappedList
+  commentId: M:Libplanet.Net.Consensus.VoteSet.MappedList
+  fullName: Libplanet.Net.Consensus.VoteSet.MappedList()
+  nameWithType: VoteSet.MappedList()
+- uid: Libplanet.Net.Consensus.VoteSet.MappedList*
+  name: MappedList
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_MappedList_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.MappedList
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.MappedList
+  nameWithType: VoteSet.MappedList
+- uid: Libplanet.Net.Consensus.VoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)
+  name: SetPeerMaj23(Maj23)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_Libplanet_Consensus_Maj23_
+  commentId: M:Libplanet.Net.Consensus.VoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)
+  fullName: Libplanet.Net.Consensus.VoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)
+  nameWithType: VoteSet.SetPeerMaj23(Maj23)
+- uid: Libplanet.Net.Consensus.VoteSet.SetPeerMaj23*
+  name: SetPeerMaj23
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.SetPeerMaj23
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.SetPeerMaj23
+  nameWithType: VoteSet.SetPeerMaj23
+- uid: Libplanet.Net.Consensus.VoteSet.Sum
+  name: Sum
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Sum
+  commentId: P:Libplanet.Net.Consensus.VoteSet.Sum
+  fullName: Libplanet.Net.Consensus.VoteSet.Sum
+  nameWithType: VoteSet.Sum
+- uid: Libplanet.Net.Consensus.VoteSet.Sum*
+  name: Sum
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Sum_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.Sum
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.Sum
+  nameWithType: VoteSet.Sum
+- uid: Libplanet.Net.Consensus.VoteSet.ToBlockCommit
+  name: ToBlockCommit()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_ToBlockCommit
+  commentId: M:Libplanet.Net.Consensus.VoteSet.ToBlockCommit
+  fullName: Libplanet.Net.Consensus.VoteSet.ToBlockCommit()
+  nameWithType: VoteSet.ToBlockCommit()
+- uid: Libplanet.Net.Consensus.VoteSet.ToBlockCommit*
+  name: ToBlockCommit
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_ToBlockCommit_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.ToBlockCommit
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.ToBlockCommit
+  nameWithType: VoteSet.ToBlockCommit
+- uid: Libplanet.Net.Consensus.VoteSet.TotalCount
+  name: TotalCount
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_TotalCount
+  commentId: P:Libplanet.Net.Consensus.VoteSet.TotalCount
+  fullName: Libplanet.Net.Consensus.VoteSet.TotalCount
+  nameWithType: VoteSet.TotalCount
+- uid: Libplanet.Net.Consensus.VoteSet.TotalCount*
+  name: TotalCount
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_TotalCount_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.TotalCount
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.TotalCount
+  nameWithType: VoteSet.TotalCount
+- uid: Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(Libplanet.Blocks.BlockHash@)
+  name: TwoThirdsMajority(out BlockHash)
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(Libplanet.Blocks.BlockHash@)
+  name.vb: TwoThirdsMajority(ByRef BlockHash)
+  fullName: Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(out Libplanet.Blocks.BlockHash)
+  fullName.vb: Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(ByRef Libplanet.Blocks.BlockHash)
+  nameWithType: VoteSet.TwoThirdsMajority(out BlockHash)
+  nameWithType.vb: VoteSet.TwoThirdsMajority(ByRef BlockHash)
+- uid: Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority*
+  name: TwoThirdsMajority
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority
+  nameWithType: VoteSet.TwoThirdsMajority
+- uid: Libplanet.Net.Consensus.VoteSet.Validators
+  name: Validators
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Validators
+  commentId: P:Libplanet.Net.Consensus.VoteSet.Validators
+  fullName: Libplanet.Net.Consensus.VoteSet.Validators
+  nameWithType: VoteSet.Validators
+- uid: Libplanet.Net.Consensus.VoteSet.Validators*
+  name: Validators
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_Validators_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.Validators
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.Validators
+  nameWithType: VoteSet.Validators
 - uid: Libplanet.Net.DifferentAppProtocolVersionEncountered
   name: DifferentAppProtocolVersionEncountered
   href: api/Libplanet.Net.DifferentAppProtocolVersionEncountered.html
@@ -15118,15 +16181,12 @@ references:
   commentId: T:Libplanet.Net.Messages.ConsensusMsg
   fullName: Libplanet.Net.Messages.ConsensusMsg
   nameWithType: ConsensusMsg
-- uid: Libplanet.Net.Messages.ConsensusMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,System.Nullable{Libplanet.Blocks.BlockHash})
-  name: ConsensusMsg(PublicKey, Int64, Int32, Nullable<BlockHash>)
-  href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_System_Nullable_Libplanet_Blocks_BlockHash__
-  commentId: M:Libplanet.Net.Messages.ConsensusMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,System.Nullable{Libplanet.Blocks.BlockHash})
-  name.vb: ConsensusMsg(PublicKey, Int64, Int32, Nullable(Of BlockHash))
-  fullName: Libplanet.Net.Messages.ConsensusMsg.ConsensusMsg(Libplanet.Crypto.PublicKey, System.Int64, System.Int32, System.Nullable<Libplanet.Blocks.BlockHash>)
-  fullName.vb: Libplanet.Net.Messages.ConsensusMsg.ConsensusMsg(Libplanet.Crypto.PublicKey, System.Int64, System.Int32, System.Nullable(Of Libplanet.Blocks.BlockHash))
-  nameWithType: ConsensusMsg.ConsensusMsg(PublicKey, Int64, Int32, Nullable<BlockHash>)
-  nameWithType.vb: ConsensusMsg.ConsensusMsg(PublicKey, Int64, Int32, Nullable(Of BlockHash))
+- uid: Libplanet.Net.Messages.ConsensusMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32)
+  name: ConsensusMsg(PublicKey, Int64, Int32)
+  href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_
+  commentId: M:Libplanet.Net.Messages.ConsensusMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32)
+  fullName: Libplanet.Net.Messages.ConsensusMsg.ConsensusMsg(Libplanet.Crypto.PublicKey, System.Int64, System.Int32)
+  nameWithType: ConsensusMsg.ConsensusMsg(PublicKey, Int64, Int32)
 - uid: Libplanet.Net.Messages.ConsensusMsg.#ctor*
   name: ConsensusMsg
   href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg__ctor_
@@ -15134,19 +16194,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.ConsensusMsg.ConsensusMsg
   nameWithType: ConsensusMsg.ConsensusMsg
-- uid: Libplanet.Net.Messages.ConsensusMsg.BlockHash
-  name: BlockHash
-  href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_BlockHash
-  commentId: P:Libplanet.Net.Messages.ConsensusMsg.BlockHash
-  fullName: Libplanet.Net.Messages.ConsensusMsg.BlockHash
-  nameWithType: ConsensusMsg.BlockHash
-- uid: Libplanet.Net.Messages.ConsensusMsg.BlockHash*
-  name: BlockHash
-  href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_BlockHash_
-  commentId: Overload:Libplanet.Net.Messages.ConsensusMsg.BlockHash
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.ConsensusMsg.BlockHash
-  nameWithType: ConsensusMsg.BlockHash
 - uid: Libplanet.Net.Messages.ConsensusMsg.Equals(Libplanet.Net.Messages.ConsensusMsg)
   name: Equals(ConsensusMsg)
   href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Equals_Libplanet_Net_Messages_ConsensusMsg_
@@ -15192,12 +16239,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.ConsensusMsg.Height
   nameWithType: ConsensusMsg.Height
-- uid: Libplanet.Net.Messages.ConsensusMsg.Nil
-  name: Nil
-  href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Nil
-  commentId: F:Libplanet.Net.Messages.ConsensusMsg.Nil
-  fullName: Libplanet.Net.Messages.ConsensusMsg.Nil
-  nameWithType: ConsensusMsg.Nil
 - uid: Libplanet.Net.Messages.ConsensusMsg.Round
   name: Round
   href: api/Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Round
@@ -15521,6 +16562,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.ConsensusProposalMsg.Type
   nameWithType: ConsensusProposalMsg.Type
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg
+  name: ConsensusVoteMsg
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html
+  commentId: T:Libplanet.Net.Messages.ConsensusVoteMsg
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg
+  nameWithType: ConsensusVoteMsg
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,Libplanet.Blocks.BlockHash)
+  name: ConsensusVoteMsg(PublicKey, Int64, Int32, BlockHash)
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.Net.Messages.ConsensusVoteMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.ConsensusVoteMsg(Libplanet.Crypto.PublicKey, System.Int64, System.Int32, Libplanet.Blocks.BlockHash)
+  nameWithType: ConsensusVoteMsg.ConsensusVoteMsg(PublicKey, Int64, Int32, BlockHash)
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.#ctor*
+  name: ConsensusVoteMsg
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg__ctor_
+  commentId: Overload:Libplanet.Net.Messages.ConsensusVoteMsg.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.ConsensusVoteMsg
+  nameWithType: ConsensusVoteMsg.ConsensusVoteMsg
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg_BlockHash
+  commentId: P:Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash
+  nameWithType: ConsensusVoteMsg.BlockHash
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg_BlockHash_
+  commentId: Overload:Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash
+  nameWithType: ConsensusVoteMsg.BlockHash
 - uid: Libplanet.Net.Messages.DifferentVersionMsg
   name: DifferentVersionMsg
   href: api/Libplanet.Net.Messages.DifferentVersionMsg.html

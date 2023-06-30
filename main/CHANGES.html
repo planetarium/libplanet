@@ -65,9 +65,47 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li><code>Vote.BlockHash</code> property became <code>BlockHash</code> type. (was <code>BlockHash?</code>)
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li><code>VoteMetadata(long, int, BlockHash?, DateTimeOffset, PublicKey, VoteFlag)</code>
+constructor became
+<code>VoteMetadata(long, int, BlockHash, DateTimeOffset, PublicKey, VoteFlag)</code>
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Renamed <code>Step</code> enum to <code>ConsensusStep</code>
+to remove ambiguity.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) <code>ConsensusProposalMsg</code>, <code>ConsensusPreVoteMsg</code> and
+<code>ConsensusPreCommitMsg</code> became to inherit <code>ConsensusVoteMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Removed <code>ConsensusMsg.BlockHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>Maj23</code> and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]
+<ul>
+<li>Added <code>Maj23</code> class.</li>
+<li>Added <code>Maj23Metadata</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusMaj23Msg</code> class.</li>
+</ul>
+</li>
+<li>Added <code>VoteSetBits</code> and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]
+<ul>
+<li>Added <code>VoteSetBits</code> class.</li>
+<li>Added <code>VoteSetBitsMetadata</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusVoteSetBitsMsg</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>VoteSet</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>HeightVoteSet</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusVoteMsg</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidProposalException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidVoteException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidMaj23Exception</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added
+<code>Gossip.PublishMessage(MessageContent, IEnumerable&lt;BoundPeer&gt;)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>

@@ -89,38 +89,38 @@ indices now in consensus.</p>
 proposing, validating, voting a block and committing the voted block to the blockchain.
 There are five states:</p>
 <ul><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Default">Default</a> which is the initial state when
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default">Default</a> which is the initial state when
 the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_">Start(BlockCommit, Boolean)</a> is not called (i.e., round has not been started).
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>, which is the state when
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, which is the state when
 the round has been started and waiting for the block proposal. If a validator is a
 proposer of the round, it will propose a block to the other validators and to
 itself.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>, which is the state when a block
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>, which is the state when a block
 proposal for a round has been received. While translating to this step, state
 machine votes for the block whether block is valid or not, and waiting for any +2/3
 votes from other validators.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>, which is the state received
-any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>. While
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>, which is the state received
+any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>. While
 translating to this step, state machine votes for whether the block should be
 committed or not, and waiting for any +2/3 committing votes from other validators.
-If <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>
+If <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>
 receives +2/3 commit votes with NIL, starts new round <span class="xref">Libplanet.Net.Consensus.Context.StartRound(System.Int32)</span> and
-moves step to <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>.
+moves step to <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_EndCommit">EndCommit</a>, which is the state represents
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit">EndCommit</a>, which is the state represents
 committing vote has been received from other validators. Block will be committed
 to the blockchain and consensus for this height is stopped. (responsibility of next
 height handling is at <span class="xref">Libplanet.Net.Consensus.Context.ConsensusContext</span>).
 </li><li>
-    In the above states, <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>, If
+    In the above states, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, If
     receiving proposal fails in <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPropose(System.Int64)</span>, then step is moved to
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a> and vote NIL.
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and vote NIL.
 </li><li>
-    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a> and
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a> also wait for
+    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a> also wait for
 <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreVote(System.Int64)</span> or <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreCommit(System.Int64)</span> respectively,
 if +2/3 vote received but neither NIL nor Block is not +2/3. If still +2/3 vote is
 not received neither NIL nor Block after timeout runs out, then move to next step
@@ -129,11 +129,14 @@ and vote NIL.
 Validators are bonding/bonded nodes that participate in the consensus.
 </section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a></h4>
-      <section><p>A options class to configure <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> timeout for each <a class="xref" href="Libplanet.Net.Consensus.Step.html">Step</a>.</p>
+      <section><p>A options class to configure <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> timeout
+for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.Gossip.html">Gossip</a></h4>
       <section><p>A class gossips messages into network. Peers will be stored and managed by Kademlia DHT.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.HeightVoteSet.html">HeightVoteSet</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidConsensusMessageException.html">InvalidConsensusMessageException</a></h4>
       <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> is invalid.  In particular,
 this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> is processed, i.e.
@@ -143,9 +146,26 @@ does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Con
       <section><p>An exception thrown when a <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_NewHeight_System_Int64_">NewHeight(Int64)</a> has called with
 height is not the index of <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a> + 1.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html">InvalidMaj23Exception</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23">Maj23</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23">Maj23</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidProposalException.html">InvalidProposalException</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal">Proposal</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal">Proposal</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidVoteException.html">InvalidVoteException</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote">Vote</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote">Vote</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.MessageCache.html">MessageCache</a></h4>
       <section><p>Cache object that stores recently seen <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a></h4>
+      <section></section>
     <h3 id="structs">Structs
 </h3>
       <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusReactorOption.html">ConsensusReactorOption</a></h4>
@@ -158,7 +178,7 @@ height is not the index of <a class="xref" href="Libplanet.Blockchain.BlockChain
 </section>
     <h3 id="enums">Enums
 </h3>
-      <h4><a class="xref" href="Libplanet.Net.Consensus.Step.html">Step</a></h4>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a></h4>
       <section></section>
     <h3 id="delegates">Delegates
 </h3>

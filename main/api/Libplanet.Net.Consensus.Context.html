@@ -76,38 +76,38 @@
 proposing, validating, voting a block and committing the voted block to the blockchain.
 There are five states:</p>
 <ul><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Default">Default</a> which is the initial state when
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default">Default</a> which is the initial state when
 the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_">Start(BlockCommit, Boolean)</a> is not called (i.e., round has not been started).
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>, which is the state when
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, which is the state when
 the round has been started and waiting for the block proposal. If a validator is a
 proposer of the round, it will propose a block to the other validators and to
 itself.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>, which is the state when a block
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>, which is the state when a block
 proposal for a round has been received. While translating to this step, state
 machine votes for the block whether block is valid or not, and waiting for any +2/3
 votes from other validators.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>, which is the state received
-any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>. While
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>, which is the state received
+any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>. While
 translating to this step, state machine votes for whether the block should be
 committed or not, and waiting for any +2/3 committing votes from other validators.
-If <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>
+If <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>
 receives +2/3 commit votes with NIL, starts new round <span class="xref">Libplanet.Net.Consensus.Context.StartRound(System.Int32)</span> and
-moves step to <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>.
+moves step to <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_EndCommit">EndCommit</a>, which is the state represents
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit">EndCommit</a>, which is the state represents
 committing vote has been received from other validators. Block will be committed
 to the blockchain and consensus for this height is stopped. (responsibility of next
 height handling is at <span class="xref">Libplanet.Net.Consensus.Context.ConsensusContext</span>).
 </li><li>
-    In the above states, <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>, If
+    In the above states, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, If
     receiving proposal fails in <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPropose(System.Int64)</span>, then step is moved to
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a> and vote NIL.
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and vote NIL.
 </li><li>
-    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a> and
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a> also wait for
+    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a> also wait for
 <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreVote(System.Int64)</span> or <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreCommit(System.Int64)</span> respectively,
 if +2/3 vote received but neither NIL nor Block is not +2/3. If still +2/3 vote is
 not received neither NIL nor Block after timeout runs out, then move to next step
@@ -210,7 +210,7 @@ will be voted by consensus, and used for proposing a block.</p>
         <td><p>A private key for signing a block and message.
 <span class="xref">Libplanet.Net.Consensus.Context.GetValue</span>
 <span class="xref">Libplanet.Net.Consensus.Context.ProcessGenericUponRules</span>
-<span class="xref">Libplanet.Net.Consensus.Context.MakeVote(System.Int32,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Consensus.VoteFlag)</span></p>
+<span class="xref">Libplanet.Net.Consensus.Context.MakeVote(System.Int32,Libplanet.Blocks.BlockHash,Libplanet.Consensus.VoteFlag)</span></p>
 </td>
       </tr>
       <tr>
@@ -224,7 +224,7 @@ given <code data-dev-comment-type="paramref" class="paramref">height</code>.</p>
         <td><a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a></td>
         <td><span class="parametername">contextTimeoutOptions</span></td>
         <td><p>A <a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a> for
-configuring a timeout for each <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Step">Step</a>.</p>
+configuring a timeout for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -267,6 +267,82 @@ rounds.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Net_Consensus_Context_Height_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> represents a consensus of a single height and its multiple
+rounds.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Context_Proposal.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Context.Proposal%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Context.cs/#L219">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_Context_Proposal_" data-uid="Libplanet.Net.Consensus.Context.Proposal*"></a>
+  <h4 id="Libplanet_Net_Consensus_Context_Proposal" data-uid="Libplanet.Net.Consensus.Context.Proposal">Proposal</h4>
+  <div class="markdown level1 summary"><p>A state machine class of PBFT consensus algorithm. The state machine is responsible for
+proposing, validating, voting a block and committing the voted block to the blockchain.
+There are five states:</p>
+<ul><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default">Default</a> which is the initial state when
+the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_">Start(BlockCommit, Boolean)</a> is not called (i.e., round has not been started).
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, which is the state when
+the round has been started and waiting for the block proposal. If a validator is a
+proposer of the round, it will propose a block to the other validators and to
+itself.
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>, which is the state when a block
+proposal for a round has been received. While translating to this step, state
+machine votes for the block whether block is valid or not, and waiting for any +2/3
+votes from other validators.
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>, which is the state received
+any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>. While
+translating to this step, state machine votes for whether the block should be
+committed or not, and waiting for any +2/3 committing votes from other validators.
+If <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>
+receives +2/3 commit votes with NIL, starts new round <span class="xref">Libplanet.Net.Consensus.Context.StartRound(System.Int32)</span> and
+moves step to <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>.
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit">EndCommit</a>, which is the state represents
+committing vote has been received from other validators. Block will be committed
+to the blockchain and consensus for this height is stopped. (responsibility of next
+height handling is at <span class="xref">Libplanet.Net.Consensus.Context.ConsensusContext</span>).
+</li><li>
+    In the above states, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, If
+    receiving proposal fails in <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPropose(System.Int64)</span>, then step is moved to
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and vote NIL.
+</li><li>
+    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a> also wait for
+<span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreVote(System.Int64)</span> or <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreCommit(System.Int64)</span> respectively,
+if +2/3 vote received but neither NIL nor Block is not +2/3. If still +2/3 vote is
+not received neither NIL nor Block after timeout runs out, then move to next step
+and vote NIL.
+</li></ul>
+Validators are bonding/bonded nodes that participate in the consensus.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Proposal Proposal { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Proposal.html">Proposal</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Consensus_Context_Proposal_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> represents a consensus of a single height and its multiple
 rounds.</p>
 </div>
@@ -319,7 +395,7 @@ rounds.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Step Step { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ConsensusStep Step { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -331,7 +407,7 @@ rounds.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Consensus.Step.html">Step</a></td>
+        <td><a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -347,7 +423,7 @@ rounds.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Context_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Context.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Context.cs/#L226">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Context.cs/#L228">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Context_Dispose_" data-uid="Libplanet.Net.Consensus.Context.Dispose*"></a>
   <h4 id="Libplanet_Net_Consensus_Context_Dispose" data-uid="Libplanet.Net.Consensus.Context.Dispose">Dispose()</h4>
@@ -355,38 +431,38 @@ rounds.</p>
 proposing, validating, voting a block and committing the voted block to the blockchain.
 There are five states:</p>
 <ul><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Default">Default</a> which is the initial state when
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default">Default</a> which is the initial state when
 the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_">Start(BlockCommit, Boolean)</a> is not called (i.e., round has not been started).
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>, which is the state when
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, which is the state when
 the round has been started and waiting for the block proposal. If a validator is a
 proposer of the round, it will propose a block to the other validators and to
 itself.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>, which is the state when a block
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>, which is the state when a block
 proposal for a round has been received. While translating to this step, state
 machine votes for the block whether block is valid or not, and waiting for any +2/3
 votes from other validators.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>, which is the state received
-any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a>. While
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>, which is the state received
+any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>. While
 translating to this step, state machine votes for whether the block should be
 committed or not, and waiting for any +2/3 committing votes from other validators.
-If <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>
+If <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>
 receives +2/3 commit votes with NIL, starts new round <span class="xref">Libplanet.Net.Consensus.Context.StartRound(System.Int32)</span> and
-moves step to <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>.
+moves step to <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>.
 </li><li>
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_EndCommit">EndCommit</a>, which is the state represents
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit">EndCommit</a>, which is the state represents
 committing vote has been received from other validators. Block will be committed
 to the blockchain and consensus for this height is stopped. (responsibility of next
 height handling is at <span class="xref">Libplanet.Net.Consensus.Context.ConsensusContext</span>).
 </li><li>
-    In the above states, <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_Propose">Propose</a>, If
+    In the above states, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, If
     receiving proposal fails in <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPropose(System.Int64)</span>, then step is moved to
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a> and vote NIL.
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and vote NIL.
 </li><li>
-    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreVote">PreVote</a> and
-<a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a> also wait for
+    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a> also wait for
 <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreVote(System.Int64)</span> or <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreCommit(System.Int64)</span> respectively,
 if +2/3 vote received but neither NIL nor Block is not +2/3. If still +2/3 vote is
 not received neither NIL nor Block after timeout runs out, then move to next step
@@ -408,7 +484,7 @@ rounds.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Context_GetBlockCommit.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Context.GetBlockCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Context.cs/#L239">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Context.cs/#L241">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Context_GetBlockCommit_" data-uid="Libplanet.Net.Consensus.Context.GetBlockCommit*"></a>
   <h4 id="Libplanet_Net_Consensus_Context_GetBlockCommit" data-uid="Libplanet.Net.Consensus.Context.GetBlockCommit">GetBlockCommit()</h4>

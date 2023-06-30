@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "M7hZvefXfLT2GUUFcw6OjizdsI4OJuLac3UjCA1Tc/Q="
+          "hash": "Gj2srzFPxTahhrprR3+560xoM6/74ugPV2djQfrl0H4="
         }
       },
       "is_incremental": false,
@@ -1377,7 +1377,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Consensus.IVoteMetadata.html",
-          "hash": "99ofAM1LxjxI7OxwFJduataz+iIy/sm6scXALOQoCVY="
+          "hash": "FpHHZTtivypHwlRUB7VFhPrRuLccKeRyNudu/ZgwlFg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Consensus.Maj23.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Consensus.Maj23.html",
+          "hash": "sSABRsDYVqitNJCmu6gw5V5FCiurs7WFp5r1ajh0zMM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Consensus.Maj23Metadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Consensus.Maj23Metadata.html",
+          "hash": "iVbhUCkMZiU2e3gGca2CIDvrTcmrfrEJ64/PM5azX8s="
         }
       },
       "is_incremental": false,
@@ -1425,7 +1449,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Consensus.ValidatorSet.html",
-          "hash": "M7XmY9yDk/+eiZrZIpwFx1hCdZKWRMVK6qairyHmoR8="
+          "hash": "WXOftwlcS5sqzwTOj/RbKgbr+O1kUVGbYS8IhUSc1cE="
         }
       },
       "is_incremental": false,
@@ -1437,7 +1461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Consensus.Vote.html",
-          "hash": "b179pVYXiy4ZkzbPsFkD95YgVOqsYWgBU30rv6i5HMw="
+          "hash": "2wH7tod0lhTQq4BHD496rfVC823cLdR81L0NPtEnGOs="
         }
       },
       "is_incremental": false,
@@ -1461,7 +1485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Consensus.VoteMetadata.html",
-          "hash": "wY2+G/DuTpau0elYtH2uUVHeOAJDRnogfEkHG7+yNXY="
+          "hash": "Epjx7hrDiQtd6V5KqLohRnetJPaRKa0uO8lMAK8kDVg="
         }
       },
       "is_incremental": false,
@@ -1473,7 +1497,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Consensus.html",
-          "hash": "eFx0prlk9NfdgCEG/IoNZe+E0+v4EhOoZcoRF/zRBfA="
+          "hash": "zDQYYSE03gjO1EUoWZ1jaQHSwzkObt/BOoVetwhoDPU="
         }
       },
       "is_incremental": false,
@@ -2361,7 +2385,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.ConsensusContext.html",
-          "hash": "uuJthAxZ8pjPeogRgWWQf8VXW1bc5n45MqPBY9SiA3o="
+          "hash": "JapB1Ri5gqFmuBYGgN+DvLO5Eg0soyUhTKJPNWc/Rw8="
         }
       },
       "is_incremental": false,
@@ -2373,7 +2397,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.ConsensusReactor.html",
-          "hash": "kha6NhklNXFu2vxR8I0/wSgzUkBMne8or+gVKu8FdQc="
+          "hash": "oOa0M0he9jk7nZxlMc/37znN2VocPo6iPJ6VThnMWyE="
         }
       },
       "is_incremental": false,
@@ -2393,11 +2417,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.ConsensusStep.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.ConsensusStep.html",
+          "hash": "7D006zdk676cVWk9JSBaAg/0OB476klelRYgUb4sFcA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Consensus.Context.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.Context.html",
-          "hash": "otW0O6GGBaXr/GQGA5220gx4/o5sWifGv/GBfYq37A4="
+          "hash": "ZoO6bMJBFIoL9XAA71uFJAuLx1u4jMEDR8WITWdJbu8="
         }
       },
       "is_incremental": false,
@@ -2409,7 +2445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.ContextTimeoutOption.html",
-          "hash": "CFTa6d9higDQLkaSynE1xU28Ikt4XJiiAHCrwSc1/XI="
+          "hash": "2yh6Qs0oStsV7YiN6HhxQrsXoniMZlTqxiJ0QnBxIPA="
         }
       },
       "is_incremental": false,
@@ -2422,6 +2458,18 @@
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.Gossip.html",
           "hash": "7j+N2cB6mueYi/c0PpcG2uxCzLdCb+bYsZ8CpKcIT2U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.HeightVoteSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.HeightVoteSet.html",
+          "hash": "ytMBSXWIx2NSotc5Snn5zdgnu4P2E0aN1EzwrLpQqtI="
         }
       },
       "is_incremental": false,
@@ -2465,6 +2513,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.InvalidMaj23Exception.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.InvalidMaj23Exception.html",
+          "hash": "IlVCE9ui7I7oP6Dh8QngRnj7srR3q9zV4ZqBWwijt5E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.InvalidProposalException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.InvalidProposalException.html",
+          "hash": "YQSYETBvCBSw3xCM08m+GzyRMIddd0jaM7e7voMFIJo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.InvalidVoteException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.InvalidVoteException.html",
+          "hash": "LZpP37smYxQF1jE7BmadxGcGwP0kw2gqi08UaQzVPT0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Consensus.MessageCache.yml",
       "output": {
         ".html": {
@@ -2477,11 +2561,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Consensus.Step.yml",
+      "source_relative_path": "api/Libplanet.Net.Consensus.VoteSet.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Net.Consensus.Step.html",
-          "hash": "s+ZqrD5Oe7QdRJWPAu5tNPdPkLooV2EUTLlLKQoBlUo="
+          "relative_path": "api/Libplanet.Net.Consensus.VoteSet.html",
+          "hash": "MRQAmSYsD6DxmMpCVOYDAFuW7YyXEwz8IMvI4m4oKRE="
         }
       },
       "is_incremental": false,
@@ -2493,7 +2577,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.html",
-          "hash": "JXUVVV4BRVc4OEx/+gkG+MV+eDsi04G5an0V0IQakOc="
+          "hash": "ieesPJOIvyt/roDGDQz06BJCczJOOH6hA+KzjFpz8HY="
         }
       },
       "is_incremental": false,
@@ -2553,7 +2637,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusMsg.html",
-          "hash": "AmpQkTNBvXsWoZtlUEylx25hK9J6EawFYKU+GsUVL7k="
+          "hash": "jssJ8fhbhavxs5CA6mMjaYjo2OordWhggF5rZPYt5AM="
         }
       },
       "is_incremental": false,
@@ -2565,7 +2649,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusPreCommitMsg.html",
-          "hash": "wbE2ob/GkhiIK3cS3nGFOIG+PLGP3HFLfi2yoA9wEMs="
+          "hash": "uDGsf2+ruf4chYzsMFx6Ifc4ycmdDBm8cwnPUmaNSww="
         }
       },
       "is_incremental": false,
@@ -2577,7 +2661,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusPreVoteMsg.html",
-          "hash": "64KIHorBafv1F5e3kEGMudgVwwh0X9FQYG6tRSEVBqc="
+          "hash": "sX6rvWFpgKh4fGWjBOknjogQcpfkNYviT/XfwewxHfM="
         }
       },
       "is_incremental": false,
@@ -2589,7 +2673,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusProposalMsg.html",
-          "hash": "U+/RlNbC6k6IaNem60BrBdORgUNiKTTXfrTbghszlbI="
+          "hash": "eoFtzwqZT1qC8a+NpiqvnJpTjY7ZSHZhpJeQFdAgfuU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Messages.ConsensusVoteMsg.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Messages.ConsensusVoteMsg.html",
+          "hash": "eylpFhRCz5iRtOBeWEvuG33tMJNRPcimZjvgSUO5Gwk="
         }
       },
       "is_incremental": false,
@@ -2781,7 +2877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.html",
-          "hash": "gHqWrU1t/4k/aciTDcqohaZwt43nKuJ41vgRY2yRWRk="
+          "hash": "NmbdXecctmr7BGJk4LOlpObeiSJJIpAjuEhe9mwuq+s="
         }
       },
       "is_incremental": false,
@@ -4593,7 +4689,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "K++xSGQoR1psj9ld7bfr2BdyKyt/W/asT3r6c1ihCRk="
+          "hash": "Rx4A6H1Cx/izlUfupBAEx14MH3+CHqaPfIHbPkLbxno="
         }
       },
       "is_incremental": false,
@@ -4702,7 +4798,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 372,
+          "total_file_count": 380,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

@@ -72,7 +72,7 @@
 
   <h1 id="Libplanet_Net_Messages_ConsensusPreCommitMsg" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg" class="text-break">Class ConsensusPreCommitMsg
 </h1>
-  <div class="markdown level0 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>.</p>
+  <div class="markdown level0 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -80,7 +80,8 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a></div>
     <div class="level2"><a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a></div>
-    <div class="level3"><span class="xref">ConsensusPreCommitMsg</span></div>
+    <div class="level3"><a class="xref" href="Libplanet.Net.Messages.ConsensusVoteMsg.html">ConsensusVoteMsg</a></div>
+    <div class="level4"><span class="xref">ConsensusPreCommitMsg</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -89,7 +90,7 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Nil">ConsensusMsg.Nil</a>
+      <a class="xref" href="Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg_BlockHash">ConsensusVoteMsg.BlockHash</a>
     </div>
     <div>
       <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_ValidatorPublicKey">ConsensusMsg.ValidatorPublicKey</a>
@@ -99,9 +100,6 @@
     </div>
     <div>
       <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_Round">ConsensusMsg.Round</a>
-    </div>
-    <div>
-      <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html#Libplanet_Net_Messages_ConsensusMsg_BlockHash">ConsensusMsg.BlockHash</a>
     </div>
     <div>
       <a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">MessageContent.Id</a>
@@ -126,7 +124,7 @@
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ConsensusPreCommitMsg : ConsensusMsg, IEquatable&lt;ConsensusMsg&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class ConsensusPreCommitMsg : ConsensusVoteMsg, IEquatable&lt;ConsensusMsg&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -135,7 +133,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg__ctor_Libplanet_Consensus_Vote_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.%23ctor(Libplanet.Consensus.Vote)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L23">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg__ctor_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.#ctor*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg__ctor_Libplanet_Consensus_Vote_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.#ctor(Libplanet.Consensus.Vote)">ConsensusPreCommitMsg(Vote)</h4>
@@ -159,7 +157,7 @@
       <tr>
         <td><a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a></td>
         <td><span class="parametername">vote</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>
+        <td><p>The <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> for <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>
 to attach.</p>
 </td>
       </tr>
@@ -187,7 +185,7 @@ to attach.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg__ctor_System_Byte_____.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.%23ctor(System.Byte%5B%5D%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L39">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L40">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg__ctor_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.#ctor*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg__ctor_System_Byte_____" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.#ctor(System.Byte[][])">ConsensusPreCommitMsg(Byte[][])</h4>
@@ -224,7 +222,7 @@ with marshalled message.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg_DataFrames.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.DataFrames%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L51">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L52">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg_DataFrames_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.DataFrames*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_DataFrames" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.DataFrames">DataFrames</h4>
@@ -257,11 +255,11 @@ with marshalled message.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg_PreCommit.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.PreCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L48">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L49">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg_PreCommit_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.PreCommit*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_PreCommit" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.PreCommit">PreCommit</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>.  This will always
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Consensus.Vote.html">Vote</a> for <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>.  This will always
 have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus_Vote_Flag">Flag</a> set to <a class="xref" href="Libplanet.Consensus.VoteFlag.html#Libplanet_Consensus_VoteFlag_PreCommit">PreCommit</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -289,7 +287,7 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg_Type.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.Type%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L55">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L56">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg_Type_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.Type*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_Type" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.Type">Type</h4>
@@ -324,11 +322,12 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg_Equals_Libplanet_Net_Messages_ConsensusMsg_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.Equals(Libplanet.Net.Messages.ConsensusMsg)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg_Equals_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.Equals*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_Equals_Libplanet_Net_Messages_ConsensusMsg_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.Equals(Libplanet.Net.Messages.ConsensusMsg)">Equals(ConsensusMsg)</h4>
-  <div class="markdown level1 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>.</p>
+  <div class="markdown level1 summary"><p>Indicates whether the current <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>
+is equal to another <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -348,7 +347,9 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
       <tr>
         <td><a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a></td>
         <td><span class="parametername">other</span></td>
-        <td></td>
+        <td><p>An <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> to compare with this
+<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -363,7 +364,9 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>true if the current <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> is equal to the other parameter;
+otherwise, false.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -374,11 +377,11 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L63">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg_Equals_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.Equals*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_Equals_System_Object_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>.</p>
+  <div class="markdown level1 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -424,11 +427,11 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L68">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L72">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusPreCommitMsg_GetHashCode_" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.GetHashCode*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusPreCommitMsg_GetHashCode" data-uid="Libplanet.Net.Messages.ConsensusPreCommitMsg.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.Step.html#Libplanet_Net_Consensus_Step_PreCommit">PreCommit</a>.</p>
+  <div class="markdown level1 summary"><p>A message class for <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -467,7 +470,7 @@ have its <a class="xref" href="Libplanet.Consensus.Vote.html#Libplanet_Consensus
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusPreCommitMsg.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusPreCommitMsg%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/ConsensusPreCommitMsg.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
