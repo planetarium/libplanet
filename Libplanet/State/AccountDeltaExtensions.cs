@@ -11,16 +11,17 @@ namespace Libplanet.State
     internal static class AccountDeltaExtensions
     {
         /// <summary>
-        /// Aggregates a list of <see cref="IAccountDelta"/>s.
+        /// Aggregates a list of <see cref="IAccountDelta"/>s in order.
         /// </summary>
         /// <param name="deltas">The list of <see cref="IAccountStateDelta"/>s to aggregate.</param>
-        /// <returns>The sum of <paramref name="deltas"/> as an <see cref="IAccountStateDelta"/>.
+        /// <returns>The aggregate of <paramref name="deltas"/> as an
+        /// <see cref="IAccountStateDelta"/>.
         /// </returns>
         /// <remarks>
         /// As aggregation is done by partially overwriting previous values,
         /// the order in which <paramref name="deltas"/> is important.
         /// </remarks>
-        internal static IAccountDelta Sum(this IReadOnlyList<IAccountDelta> deltas)
+        internal static IAccountDelta OrderedSum(this IReadOnlyList<IAccountDelta> deltas)
         {
             IImmutableDictionary<Address, IValue> states = deltas.Aggregate(
                 ImmutableDictionary<Address, IValue>.Empty,
