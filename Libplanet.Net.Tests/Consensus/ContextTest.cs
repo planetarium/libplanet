@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
@@ -404,6 +406,194 @@ namespace Libplanet.Net.Tests.Consensus
                     vote =>
                         vote.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey) &&
                         vote.Flag.Equals(VoteFlag.PreCommit)));
+        }
+
+        /// <summary>
+        /// <para>
+        /// This test tests whether a validator can discard received proposal
+        /// when another proposal has +2/3 votes and maj23 information.
+        /// This Can be happen in following scenario.
+        /// </para>
+        /// <para>
+        /// There exists 4 validators A B C and D, where D is attacker.
+        /// <list type="bullet">
+        /// <item><description>
+        ///     Validator D sends the block X's proposal to validator A, and block Y's proposal to
+        ///     validator B and C, both blocks are valid.
+        /// </description></item>
+        /// <item><description>
+        ///     The validator A will broadcast block X's pre-vote and the validator C and D
+        ///     will broadcast block Y's pre-vote.
+        /// </description></item>
+        /// <item><description>
+        ///     The validator D sends block X's pre-vote to the validator A and B,
+        ///     and sends block Y's pre-vote to the validator C.
+        /// </description></item>
+        /// <item><description>
+        ///     The validator C will lock block Y and change its state to pre-commit state
+        ///     since 2/3+ pre-vote messages are collected.
+        /// </description></item>
+        ///     Round is increased and other validator proposes valid block, but there are no
+        ///     2/3+ validator to vote to the new valid block since 1/3 of them are locked in
+        ///     block Y.
+        /// <item><description>
+        /// </description></item>
+        /// </list>
+        /// </para>
+        /// <para>
+        /// So this test make one single candidate which is validator A in scenario above,
+        /// to check the validator A can replace its proposal from block X to block Y when
+        /// receiving <see cref="ConsensusMaj23Msg"/> message from peer C or D.
+        /// </para>
+        /// </summary>
+        [Fact]
+        public async void CanReplaceProposal()
+        {
+            var codec = new Codec();
+            var privateKeys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToArray();
+            // Order keys as validator set's order to run test as intended.
+            privateKeys = privateKeys.OrderBy(key => key.ToAddress()).ToArray();
+            var proposer = privateKeys[1];
+            var key1 = privateKeys[2];
+            var key2 = privateKeys[3];
+            var stepChanged = new AsyncAutoResetEvent();
+            var proposalModified = new AsyncAutoResetEvent();
+            var prevStep = ConsensusStep.Default;
+            BlockHash? prevProposal = null;
+            var validatorSet = new ValidatorSet(
+                new[]
+                {
+                    new Validator(privateKeys[0].PublicKey, 1),
+                    new Validator(proposer.PublicKey, 1),
+                    new Validator(key1.PublicKey, 1),
+                    new Validator(key2.PublicKey, 1),
+                }.ToList());
+
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: privateKeys[0],
+                validatorSet: validatorSet);
+            var blockA = blockChain.ProposeBlock(
+                proposer,
+                lastCommit: blockChain.GetBlockCommit(blockChain.Tip.Hash));
+            var blockB = blockChain.ProposeBlock(
+                proposer,
+                lastCommit: blockChain.GetBlockCommit(blockChain.Tip.Hash));
+            context.StateChanged += (sender, state) =>
+            {
+                if (state.Step != prevStep)
+                {
+                    prevStep = state.Step;
+                    stepChanged.Set();
+                }
+
+                if (!state.Proposal.Equals(prevProposal))
+                {
+                    prevProposal = state.Proposal;
+                    proposalModified.Set();
+                }
+            };
+            context.Start();
+            await stepChanged.WaitAsync();
+            Assert.Equal(ConsensusStep.Propose, context.Step);
+
+            var proposalA = new ProposalMetadata(
+                1,
+                0,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                codec.Encode(blockA.MarshalBlock()),
+                -1).Sign(proposer);
+            var preVoteA2 = new ConsensusPreVoteMsg(
+                new VoteMetadata(
+                    1,
+                    0,
+                    blockA.Hash,
+                    DateTimeOffset.UtcNow,
+                    key2.PublicKey,
+                    VoteFlag.PreVote).Sign(key2));
+            var proposalB = new ProposalMetadata(
+                1,
+                0,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                codec.Encode(blockB.MarshalBlock()),
+                -1).Sign(proposer);
+            var proposalAMsg = new ConsensusProposalMsg(proposalA);
+            var proposalBMsg = new ConsensusProposalMsg(proposalB);
+            context.ProduceMessage(proposalAMsg);
+            await proposalModified.WaitAsync();
+            Assert.Equal(proposalA, context.Proposal);
+
+            // Proposal B is ignored because proposal A is received first.
+            context.ProduceMessage(proposalBMsg);
+            Assert.Equal(proposalA, context.Proposal);
+            context.ProduceMessage(preVoteA2);
+
+            // Validator 1 (key1) collected +2/3 pre-vote messages,
+            // sends maj23 message to context.
+            var maj23 = new ConsensusMaj23Msg(
+                new Maj23Metadata(
+                    1,
+                    0,
+                    blockB.Hash,
+                    DateTimeOffset.UtcNow,
+                    key1.PublicKey,
+                    VoteFlag.PreVote).Sign(key1));
+            context.ProduceMessage(maj23);
+
+            var preVoteB0 = new ConsensusPreVoteMsg(
+                new VoteMetadata(
+                    1,
+                    0,
+                    blockB.Hash,
+                    DateTimeOffset.UtcNow,
+                    proposer.PublicKey,
+                    VoteFlag.PreVote).Sign(proposer));
+            var preVoteB1 = new ConsensusPreVoteMsg(
+                new VoteMetadata(
+                    1,
+                    0,
+                    blockB.Hash,
+                    DateTimeOffset.UtcNow,
+                    key1.PublicKey,
+                    VoteFlag.PreVote).Sign(key1));
+            var preVoteB2 = new ConsensusPreVoteMsg(
+                new VoteMetadata(
+                    1,
+                    0,
+                    blockB.Hash,
+                    DateTimeOffset.UtcNow,
+                    key2.PublicKey,
+                    VoteFlag.PreVote).Sign(key2));
+            context.ProduceMessage(preVoteB0);
+            context.ProduceMessage(preVoteB1);
+            context.ProduceMessage(preVoteB2);
+            await proposalModified.WaitAsync();
+            Assert.Null(context.Proposal);
+            context.ProduceMessage(proposalBMsg);
+            await proposalModified.WaitAsync();
+            Assert.Equal(
+                context.Proposal,
+                proposalBMsg.Proposal);
+            await stepChanged.WaitAsync();
+            await stepChanged.WaitAsync();
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
+            Assert.Equal(
+                blockB.Hash.ToString(),
+                JsonSerializer.Deserialize<ContextJson>(context.ToString()).valid_value);
+        }
+
+        public struct ContextJson
+        {
+#pragma warning disable SA1300
+            public string locked_value { get; set; }
+
+            public int locked_round { get; set; }
+
+            public string valid_value { get; set; }
+
+            public int valid_round { get; set; }
+#pragma warning restore SA1300
         }
     }
 }

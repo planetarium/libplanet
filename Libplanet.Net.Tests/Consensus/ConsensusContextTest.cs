@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -251,6 +252,192 @@ namespace Libplanet.Net.Tests.Consensus
                 !x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
+        }
+
+        [Fact]
+        public async void GetVoteSetBits()
+        {
+            PrivateKey proposer = TestUtils.PrivateKeys[1];
+            AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.PrivateKeys[0]);
+            consensusContext.NewHeight(1);
+            var block = blockChain.ProposeBlock(proposer);
+            var proposal = new ProposalMetadata(
+                1,
+                0,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                new Codec().Encode(block.MarshalBlock()),
+                -1).Sign(proposer);
+            var preVote1 = new VoteMetadata(
+                1,
+                0,
+                block.Hash,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                VoteFlag.PreVote).Sign(proposer);
+            var preVote2 = new VoteMetadata(
+                1,
+                0,
+                block.Hash,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[2].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[2]);
+            var preVote3 = new VoteMetadata(
+                1,
+                0,
+                block.Hash,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[3].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[3]);
+            consensusContext.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs is { Height: 1, Step: ConsensusStep.PreCommit })
+                {
+                    stepChanged.Set();
+                }
+            };
+
+            consensusContext.HandleMessage(new ConsensusProposalMsg(proposal));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote1));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote3));
+            await stepChanged.WaitAsync();
+
+            // VoteSetBits expects missing votes
+            VoteSetBits voteSetBits = consensusContext.Contexts[1]
+                .GetVoteSetBits(0, block.Hash, VoteFlag.PreVote);
+            Assert.True(
+                voteSetBits.VoteBits.SequenceEqual(new[] { true, true, false, true }));
+            voteSetBits = consensusContext.Contexts[1]
+                .GetVoteSetBits(0, block.Hash, VoteFlag.PreCommit);
+            Assert.True(
+                voteSetBits.VoteBits.SequenceEqual(new[] { true, false, false, false }));
+        }
+
+        [Fact]
+        public async void HandleVoteSetBits()
+        {
+            PrivateKey proposer = TestUtils.PrivateKeys[1];
+            ConsensusStep step = ConsensusStep.Default;
+            var stepChanged = new AsyncAutoResetEvent();
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.PrivateKeys[0]);
+            consensusContext.NewHeight(1);
+            consensusContext.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step != step)
+                {
+                    step = eventArgs.Step;
+                    stepChanged.Set();
+                }
+            };
+            var block = blockChain.ProposeBlock(proposer);
+            var proposal = new ProposalMetadata(
+                1,
+                0,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                new Codec().Encode(block.MarshalBlock()),
+                -1).Sign(proposer);
+            var preVote1 = new VoteMetadata(
+                1,
+                0,
+                block.Hash,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                VoteFlag.PreVote).Sign(proposer);
+            var preVote2 = new VoteMetadata(
+                1,
+                0,
+                block.Hash,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[2].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[2]);
+            var preVote3 = new VoteMetadata(
+                1,
+                0,
+                block.Hash,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[3].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[3]);
+            consensusContext.HandleMessage(new ConsensusProposalMsg(proposal));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote1));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote2));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote3));
+            do
+            {
+                await stepChanged.WaitAsync();
+            }
+            while (step != ConsensusStep.PreCommit);
+
+            // VoteSetBits expects missing votes
+            var voteSetBits =
+                new VoteSetBitsMetadata(
+                        1,
+                        0,
+                        block.Hash,
+                        DateTimeOffset.UtcNow,
+                        TestUtils.PrivateKeys[1].PublicKey,
+                        VoteFlag.PreVote,
+                        new[] { false, false, true, false })
+                    .Sign(TestUtils.PrivateKeys[1]);
+            ConsensusMsg[] votes =
+                consensusContext.HandleVoteSetBits(voteSetBits).ToArray();
+            Assert.True(votes.All(vote => vote is ConsensusPreVoteMsg));
+            Assert.Equal(3, votes.Length);
+            Assert.Equal(TestUtils.PrivateKeys[0].PublicKey, votes[0].ValidatorPublicKey);
+            Assert.Equal(TestUtils.PrivateKeys[1].PublicKey, votes[1].ValidatorPublicKey);
+            Assert.Equal(TestUtils.PrivateKeys[3].PublicKey, votes[2].ValidatorPublicKey);
+        }
+
+        [Fact]
+        public async void HandleProposalClaim()
+        {
+            PrivateKey proposer = TestUtils.PrivateKeys[1];
+            ConsensusStep step = ConsensusStep.Default;
+            var stepChanged = new AsyncAutoResetEvent();
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.PrivateKeys[0]);
+            consensusContext.NewHeight(1);
+            consensusContext.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step != step)
+                {
+                    step = eventArgs.Step;
+                    stepChanged.Set();
+                }
+            };
+            var block = blockChain.ProposeBlock(proposer);
+            var proposal = new ProposalMetadata(
+                1,
+                0,
+                DateTimeOffset.UtcNow,
+                proposer.PublicKey,
+                new Codec().Encode(block.MarshalBlock()),
+                -1).Sign(proposer);
+            consensusContext.HandleMessage(new ConsensusProposalMsg(proposal));
+            await stepChanged.WaitAsync();
+
+            // ProposalClaim expects corresponding proposal if exists
+            var proposalClaim =
+                new ProposalClaimMetadata(
+                        1,
+                        0,
+                        block.Hash,
+                        DateTimeOffset.UtcNow,
+                        TestUtils.PrivateKeys[1].PublicKey)
+                    .Sign(TestUtils.PrivateKeys[1]);
+            Proposal? reply =
+                consensusContext.HandleProposalClaim(proposalClaim);
+            Assert.NotNull(reply);
+            Assert.Equal(proposal, reply);
         }
     }
 }
