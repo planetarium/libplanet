@@ -14,8 +14,8 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="Context.StateChanged"/>
         internal event EventHandler<Context.ContextState>? StateChanged;
 
-        /// <inheritdoc cref="Context.MessageBroadcasted"/>
-        internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageBroadcasted;
+        /// <inheritdoc cref="Context.MessagePublished"/>
+        internal event EventHandler<(long Height, ConsensusMsg Message)>? MessagePublished;
 
         /// <inheritdoc cref="Context.MessageConsumed"/>
         internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageConsumed;
@@ -31,8 +31,8 @@ namespace Libplanet.Net.Consensus
                 TimeoutProcessed?.Invoke(this, (context.Height, eventArgs.Round, eventArgs.Step));
             context.StateChanged += (sender, eventArgs) =>
                 StateChanged?.Invoke(this, eventArgs);
-            context.MessageBroadcasted += (sender, message) =>
-                MessageBroadcasted?.Invoke(this, (context.Height, message));
+            context.MessagePublished += (sender, message) =>
+                MessagePublished?.Invoke(this, (context.Height, message));
             context.MessageConsumed += (sender, message) =>
                 MessageConsumed?.Invoke(this, (context.Height, message));
             context.MutationConsumed += (sender, action) =>

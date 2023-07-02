@@ -61,7 +61,7 @@ namespace Libplanet.Net.Tests.Consensus
                     heightFourStepChangedToPropose.Set();
                 }
             };
-            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            consensusContext.MessagePublished += (_, eventArgs) =>
             {
                 if (eventArgs.Message is ConsensusProposalMsg proposalMsg)
                 {
@@ -204,7 +204,7 @@ namespace Libplanet.Net.Tests.Consensus
                     heightOneEndCommit.Set();
                 }
             };
-            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            consensusContext.MessagePublished += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 1 && eventArgs.Message is ConsensusProposalMsg proposalMsg)
                 {
