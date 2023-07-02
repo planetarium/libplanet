@@ -336,8 +336,8 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Publish <see cref="ConsensusMsg"/> to validators.
         /// </summary>
-        /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>
-        /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself.</remarks>
+        /// <param name="message">A <see cref="ConsensusMsg"/> to publish.</param>
+        /// <remarks><see cref="ConsensusMsg"/> should be published to itself.</remarks>
         private void PublishMessage(ConsensusMsg message)
         {
             _consensusMessageCommunicator.PublishMessage(message);

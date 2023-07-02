@@ -8,6 +8,10 @@ To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet.Net) Removed `MessageCache` class.  [[#3260]]
+ -  (Libplanet.Net) Removed `ConsensusContext.BroadcastMessage` property.
+    [[#3260]]
+
 ### Backward-incompatible API changes
 
  -  `Vote.BlockHash` property became `BlockHash` type. (was `BlockHash?`)
@@ -21,6 +25,21 @@ To be released.
  -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
     `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
  -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
+ -  (Libplanet.Net) Added `Flag` property to `ConsensusVoteMsg` abstract class.
+    [[#3260]]
+ -  (Libplanet.Net) `ConsensusProposalMsg` no longer inherits
+    `ConsensusVoteMsg`. Instead, inherits `ConsensusMsg`.  [[#3260]]
+ -  (Libplanet.Net) Added parameter
+    `IConsensusMessageCommunicator consensusMessageCommunicator` to
+    `ConsensusContext`.  [[#3260]]
+ -  (Libplanet.Net) Removed parameter
+    `DelegateBroadcastMessage broadcastMessage` from `ConsensusContext`.
+    [[#3260]]
+ -  (Libplanet.Net) Added parameter
+    `IConsensusMessageCommunicator consensusMessageCommunicator` to
+    `Context`.  [[#3260]]
+ -  (Libplanet.Net) Renamed `Context.BroadcastMessage(ConsensusMsg)`
+    as `Context.PublishMessage(ConsensusMsg)`.  [[#3260]]
  -  (Libplanet.Explorer) Changed `TxResult.UpdatedStates`'s type to
     `IImmutableDictionary<Address, IValue>` from
     `IImmutableDictionary<Address, IValue?>`.  [[#3262]]
@@ -63,8 +82,27 @@ To be released.
  -  Changes `IActionContext.PreviousStates` to `IActionContext.PreviousState`.
  -  Changed `IActionEvaluation.OutputStates` to `IActionEvaluation.OutputState`.
     [[#3259]]
+ -  (Libplanet.Net) Added `IConsensusMessageCommunicator` interface
+    and its related classes.  [[#3260]]
+     -  (Libplanet.Net) Added `GossipConsensusMessageCommunicator` class.
+        [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.DenyPeer(BoundPeer)` method.  [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.AllowPeer(BoundPeer)` method.  [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.ClearCache()` method.  [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.ClearDenySet(BoundPeer)` method.  [[#3260]]
 
 ### Behavioral changes
+
+ -  (Libplanet.Net) `Gossip` now maintains single message cache,
+    and contents of this cache does not decayed by time or new messages.
+    This cache is cleared only by `Gossip.ClearCache()` method.  [[#3260]]
+ -  (Libplanet.Net) There are no mechanism for bootstrapping conensus
+    any more. Instead, logic change on `Gossip` solves bootstrapping
+    problem.  [[#3260]]
+ -  (Libplanet.Net) `Context.Start()` now triggers
+    `IConsensusMessageCommunicator.ClearDenySet()`.  [[#3260]]
+ -  (Libplanet.Net) Spam filter logic now denies messages by
+    `Message.ValidatorPublicKey`.  [[#3260]]
 
 ### Bug fixes
 
@@ -76,6 +114,7 @@ To be released.
 [#3256]: https://github.com/planetarium/libplanet/pull/3256
 [#3257]: https://github.com/planetarium/libplanet/pull/3257
 [#3259]: https://github.com/planetarium/libplanet/pull/3259
+[#3260]: https://github.com/planetarium/libplanet/pull/3260
 [#3262]: https://github.com/planetarium/libplanet/pull/3262
 
 
