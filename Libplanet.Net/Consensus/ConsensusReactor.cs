@@ -56,17 +56,17 @@ namespace Libplanet.Net.Consensus
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
             seedPeers ??= ImmutableList<BoundPeer>.Empty;
 
-            _gossip = new Gossip(
-                consensusTransport,
-                validatorPeers.ToImmutableArray(),
-                seedPeers.ToImmutableArray(),
-                ProcessMessage,
-                TimeSpan.FromMinutes(2));
+            GossipConsensusMessageCommunicator consensusMessageHandler =
+                new GossipConsensusMessageCommunicator(
+                    consensusTransport,
+                    validatorPeers.ToImmutableArray(),
+                    seedPeers.ToImmutableArray(),
+                    ProcessMessage);
+            _gossip = consensusMessageHandler.Gossip;
             _blockChain = blockChain;
 
             _consensusContext = new ConsensusContext(
-                PublishMessage,
-                ClearGossip,
+                consensusMessageHandler,
                 blockChain,
                 privateKey,
                 newHeightDelay,
@@ -146,17 +146,6 @@ namespace Libplanet.Net.Consensus
 
             return JsonSerializer.Serialize(dict);
         }
-
-        /// <summary>
-        /// Adds <see cref="ConsensusMsg"/> to gossip.
-        /// </summary>
-        /// <param name="message">A <see cref="ConsensusMsg"/> to add.</param>
-        private void PublishMessage(ConsensusMsg message) => _gossip.PublishMessage(message);
-
-        /// <summary>
-        /// Clears to gossip message cache.
-        /// </summary>
-        private void ClearGossip() => _gossip.Clear();
 
         /// <summary>
         /// A handler for received <see cref="Message"/>s.

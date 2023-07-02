@@ -303,15 +303,14 @@ namespace Libplanet.Net.Tests.Consensus
                 });
 
             var consensusContext = new ConsensusContext(
-                BroadcastMessage,
-                () => { },
+                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
                 new ContextTimeoutOption());
 
             context = new Context(
-                consensusContext,
+                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
                 TestUtils.PrivateKeys[0],

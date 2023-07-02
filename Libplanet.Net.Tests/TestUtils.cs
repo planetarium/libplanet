@@ -222,8 +222,6 @@ namespace Libplanet.Net.Tests
                 TimeSpan newHeightDelay,
                 IBlockPolicy? policy = null,
                 PrivateKey? privateKey = null,
-                ConsensusContext.DelegateBroadcastMessage? broadcastMessage = null,
-                long blockCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
@@ -240,11 +238,8 @@ namespace Libplanet.Net.Tests
                     consensusContext!.HandleMessage(message);
                 });
 
-            broadcastMessage ??= BroadcastMessage;
-
             consensusContext = new ConsensusContext(
-                broadcastMessage,
-                () => { },
+                new DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 privateKey,
                 newHeightDelay,
@@ -274,11 +269,10 @@ namespace Libplanet.Net.Tests
             var (blockChain, consensusContext) = CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 policy,
-                PrivateKeys[1],
-                broadcastMessage: BroadcastMessage);
+                PrivateKeys[1]);
 
             context = new Context(
-                consensusContext,
+                new DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 height,
                 privateKey,
@@ -324,6 +318,35 @@ namespace Libplanet.Net.Tests
             Random.NextBytes(bytes);
 
             return bytes;
+        }
+
+        public class DummyConsensusMessageHandler : IConsensusMessageCommunicator
+        {
+            private Action<ConsensusMsg> _publishMessage;
+
+            public DummyConsensusMessageHandler(Action<ConsensusMsg> publishMessage)
+            {
+                _publishMessage = publishMessage;
+            }
+
+            public void AllowPublicKey(PublicKey publicKey)
+            {
+            }
+
+            public void ClearCache()
+            {
+            }
+
+            public void ClearDenySet()
+            {
+            }
+
+            public void DenyPublicKey(PublicKey publicKey)
+            {
+            }
+
+            public void PublishMessage(ConsensusMsg message)
+                => _publishMessage(message);
         }
     }
 }

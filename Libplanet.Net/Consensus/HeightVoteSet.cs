@@ -15,7 +15,6 @@ namespace Libplanet.Net.Consensus
         private long _height;
         private ValidatorSet _validatorSet;
         private Dictionary<int, RoundVoteSet> _roundVoteSets;
-        private Dictionary<PublicKey, List<int>> _peerCatchupRounds;
         private int _round;
 
         public HeightVoteSet(long height, ValidatorSet validatorSet)
@@ -31,7 +30,6 @@ namespace Libplanet.Net.Consensus
                 _height = height;
                 _validatorSet = validatorSet;
                 _roundVoteSets = new Dictionary<int, RoundVoteSet>();
-                _peerCatchupRounds = new Dictionary<PublicKey, List<int>>();
             }
 
             Reset(height, validatorSet);
@@ -46,7 +44,6 @@ namespace Libplanet.Net.Consensus
                 _height = height;
                 _validatorSet = validatorSet;
                 _roundVoteSets = new Dictionary<int, RoundVoteSet>();
-                _peerCatchupRounds = new Dictionary<PublicKey, List<int>>();
 
                 AddRound(0);
                 _round = 0;
@@ -149,36 +146,15 @@ namespace Libplanet.Net.Consensus
                         vote);
                 }
 
-                VoteSet voteSet;
-
                 try
                 {
-                    voteSet = GetVoteSet(vote.Round, vote.Flag);
+                    GetVoteSet(vote.Round, vote.Flag).AddVote(vote);
                 }
                 catch (KeyNotFoundException)
                 {
-                    if (!_peerCatchupRounds.ContainsKey(validatorKey))
-                    {
-                        _peerCatchupRounds[validatorKey] = new List<int>();
-                    }
-
-                    List<int> rounds = _peerCatchupRounds[validatorKey];
-                    if (rounds.Count < 2)
-                    {
-                        AddRound(vote.Round);
-                        voteSet = GetVoteSet(vote.Round, vote.Flag);
-                        rounds.Add(vote.Round);
-                        _peerCatchupRounds[validatorKey] = rounds;
-                    }
-                    else
-                    {
-                        throw new InvalidVoteException(
-                            $"Got vote from unwanted round {vote.Round}",
-                            vote);
-                    }
+                    throw new InvalidVoteException(
+                        $"Got vote from unwanted round {vote.Round}", vote);
                 }
-
-                voteSet.AddVote(vote);
             }
         }
 

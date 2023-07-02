@@ -19,7 +19,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _contextLock;
         private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
-
+        private readonly IConsensusMessageCommunicator _consensusMessageHandler;
         private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
@@ -31,10 +31,8 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext"/> class.
         /// </summary>
-        /// <param name="broadcastMessage">A delegate method that will broadcasting given
-        /// <see cref="ConsensusMsg"/> to validators.</param>
-        /// <param name="clearGossip">A delegate method for using as clear
-        /// <see cref="Gossip"/> cache.</param>
+        /// <param name="consensusMessageCommunicator">A communicator for receiving
+        /// <see cref="ConsensusMsg"/> from or publishing to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -46,15 +44,13 @@ namespace Libplanet.Net.Consensus
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
-            DelegateBroadcastMessage broadcastMessage,
-            DelegateClearGossip clearGossip,
+            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             ContextTimeoutOption contextTimeoutOption)
         {
-            BroadcastMessage = broadcastMessage;
-            ClearGossip = clearGossip;
+            _consensusMessageHandler = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
             Height = -1;
@@ -74,22 +70,6 @@ namespace Libplanet.Net.Consensus
             _contextLock = new object();
             _newHeightLock = new object();
         }
-
-        /// <summary>
-        /// A delegate method for using as broadcasting a <see cref="Message"/> to
-        /// validators.
-        /// </summary>
-        /// <param name="message">A message to broadcast.</param>
-        public delegate void DelegateBroadcastMessage(ConsensusMsg message);
-
-        /// <summary>
-        /// A delegate method for using as clear <see cref="Gossip"/> cache.
-        /// </summary>
-        public delegate void DelegateClearGossip();
-
-        public DelegateBroadcastMessage BroadcastMessage { get; }
-
-        public DelegateClearGossip ClearGossip { get; }
 
         /// <summary>
         /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
@@ -347,7 +327,7 @@ namespace Libplanet.Net.Consensus
         {
             // blockchain may not contain block of Height - 1?
             var context = new Context(
-                this,
+                _consensusMessageHandler,
                 _blockChain,
                 height,
                 _privateKey,

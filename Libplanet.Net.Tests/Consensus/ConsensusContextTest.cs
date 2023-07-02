@@ -157,8 +157,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
-                blockCommitClearThreshold: 1);
+                TestUtils.PrivateKeys[1]);
 
             // Create context of index 1.
             consensusContext.NewHeight(1);

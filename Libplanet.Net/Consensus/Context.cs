@@ -79,13 +79,13 @@ namespace Libplanet.Net.Consensus
     {
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
+        private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly Codec _codec;
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly HeightVoteSet _heightVoteSet;
-
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
@@ -105,12 +105,13 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private Dictionary<PublicKey, List<int>> _peerCatchupRounds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="consensusContext">A command class for receiving
-        /// <see cref="ConsensusMsg"/> from or broadcasts to other validators.</param>
+        /// <param name="consensusMessageCommunicator">A communicator for receiving
+        /// <see cref="ConsensusMsg"/> from or publishing to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -126,14 +127,14 @@ namespace Libplanet.Net.Consensus
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public Context(
-            ConsensusContext consensusContext,
+            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,
             ContextTimeoutOption contextTimeoutOptions)
             : this(
-                consensusContext,
+                consensusMessageCommunicator,
                 blockChain,
                 height,
                 privateKey,
@@ -146,7 +147,7 @@ namespace Libplanet.Net.Consensus
         }
 
         private Context(
-            ConsensusContext consensusContext,
+            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
             PrivateKey privateKey,
@@ -169,6 +170,7 @@ namespace Libplanet.Net.Consensus
                 .ForContext("Source", nameof(Context));
 
             _privateKey = privateKey;
+            _consensusMessageCommunicator = consensusMessageCommunicator;
             Height = height;
             Round = round;
             Step = consensusStep;
@@ -178,6 +180,7 @@ namespace Libplanet.Net.Consensus
             _validRound = -1;
             _decision = null;
             _committedRound = -1;
+            _peerCatchupRounds = new Dictionary<PublicKey, List<int>>();
             _blockChain = blockChain;
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
@@ -188,7 +191,6 @@ namespace Libplanet.Net.Consensus
             _preCommitTimeoutFlags = new HashSet<int>();
             _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
-            ConsensusContext = consensusContext;
             _blockValidationCache =
                 new LRUCache<BlockHash, (bool, IReadOnlyList<IActionEvaluation>)>(
                     cacheSize, Math.Max(cacheSize / 64, 8));
@@ -217,12 +219,6 @@ namespace Libplanet.Net.Consensus
         public ConsensusStep Step { get; private set; }
 
         public Proposal? Proposal { get; private set; }
-
-        /// <summary>
-        /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
-        /// validators.
-        /// </summary>
-        private ConsensusContext ConsensusContext { get; }
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -338,13 +334,13 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Broadcasts <see cref="ConsensusMsg"/> to validators.
+        /// Publish <see cref="ConsensusMsg"/> to validators.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>
         /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself.</remarks>
-        private void BroadcastMessage(ConsensusMsg message)
+        private void PublishMessage(ConsensusMsg message)
         {
-            ConsensusContext.BroadcastMessage(message);
+            _consensusMessageCommunicator.PublishMessage(message);
             MessageBroadcasted?.Invoke(this, message);
         }
 

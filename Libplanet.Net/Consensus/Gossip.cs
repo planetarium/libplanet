@@ -25,6 +25,7 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly ITransport _transport;
         private readonly Dictionary<MessageId, MessageContent> _cache;
+        private readonly Action<Message> _validateMessage;
         private readonly Action<MessageContent> _processMessage;
         private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
@@ -32,6 +33,7 @@ namespace Libplanet.Net.Consensus
         private TaskCompletionSource<object?> _runningEvent;
         private CancellationTokenSource? _cancellationTokenSource;
         private RoutingTable _table;
+        private HashSet<BoundPeer> _denySet;
         private IProtocol _protocol;
         private ConcurrentDictionary<BoundPeer, HashSet<MessageId>> _haveDict;
 
@@ -42,20 +44,18 @@ namespace Libplanet.Net.Consensus
         /// An <see cref="ITransport"/> used for communicating messages.</param>
         /// <param name="peers">A list of <see cref="BoundPeer"/> composing network.</param>
         /// <param name="seeds">A list of <see cref="BoundPeer"/> for lookup network.</param>
+        /// <param name="validateMessage">Action to be called to validate a new message.</param>
         /// <param name="processMessage">Action to be called when receiving a new message.</param>
-        /// <param name="seenTtl">Time To Live of each entry of the seen cache.
-        /// 2 minutes is recommended.</param>
-        /// <param name="seenCacheLimit">The size limit of the seen cache in byte.</param>
         public Gossip(
             ITransport transport,
             ImmutableArray<BoundPeer> peers,
             ImmutableArray<BoundPeer> seeds,
-            Action<MessageContent> processMessage,
-            TimeSpan seenTtl,
-            long? seenCacheLimit = null)
+            Action<Message> validateMessage,
+            Action<MessageContent> processMessage)
         {
             _transport = transport;
             _cache = new Dictionary<MessageId, MessageContent>();
+            _validateMessage = validateMessage;
             _processMessage = processMessage;
             _table = new RoutingTable(transport.AsPeer.Address);
 
@@ -70,6 +70,7 @@ namespace Libplanet.Net.Consensus
 
             _runningEvent = new TaskCompletionSource<object?>();
             _haveDict = new ConcurrentDictionary<BoundPeer, HashSet<MessageId>>();
+            _denySet = new HashSet<BoundPeer>();
             Running = false;
 
             _logger = Log
@@ -161,7 +162,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Clear message cache.
         /// </summary>
-        public void Clear()
+        public void ClearCache()
         {
             _cache.Clear();
         }
@@ -240,6 +241,34 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Adds <paramref name="peer"/> to the <see cref="_denySet"/> to reject
+        /// <see cref="Message"/>s from.
+        /// </summary>
+        /// <param name="peer"><see cref="BoundPeer"/> to deny.</param>
+        public void DenyPeer(BoundPeer peer)
+        {
+            _denySet.Add(peer);
+        }
+
+        /// <summary>
+        /// Remove <paramref name="peer"/> frin the <see cref="_denySet"/> to allow
+        /// <see cref="Message"/>s from.
+        /// </summary>
+        /// <param name="peer"><see cref="BoundPeer"/> to allow.</param>
+        public void AllowPeer(BoundPeer peer)
+        {
+            _denySet.Remove(peer);
+        }
+
+        /// <summary>
+        /// Clear <see cref="_denySet"/> to allow all <see cref="BoundPeer"/>.
+        /// </summary>
+        public void ClearDenySet()
+        {
+            _denySet.Clear();
+        }
+
+        /// <summary>
         /// Selects <paramref name="count"/> <see cref="BoundPeer"/>s from <paramref name="peers"/>.
         /// </summary>
         /// <param name="peers">A <see cref="BoundPeer"/> pool.</param>
@@ -267,6 +296,25 @@ namespace Libplanet.Net.Consensus
         private Func<Message, Task> HandleMessageAsync(CancellationToken ctx) => async msg =>
         {
             _logger.Verbose("HandleMessage: {Message}", msg);
+
+            if (_denySet.Contains(msg.Remote))
+            {
+                _logger.Verbose("Message from denied peer, rejecting: {Message}", msg);
+                await ReplyMessagePongAsync(msg, ctx);
+                return;
+            }
+
+            try
+            {
+                _validateMessage(msg);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
+                return;
+            }
+
             switch (msg.Content)
             {
                 case PingMsg _:

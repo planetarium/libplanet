@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -18,12 +19,13 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">The round to start.</param>
         private void StartRound(int round)
         {
-            ConsensusContext.ClearGossip();
             _logger.Information(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
                 round,
                 Round,
                 ToString());
+            _consensusMessageCommunicator.ClearCache();
+
             Round = round;
             _heightVoteSet.SetRound(round);
             Proposal = null;
@@ -44,7 +46,7 @@ namespace Libplanet.Net.Consensus
                         _codec.Encode(proposalValue.MarshalBlock()),
                         _validRound).Sign(_privateKey);
 
-                    BroadcastMessage(new ConsensusProposalMsg(proposal));
+                    PublishMessage(new ConsensusProposalMsg(proposal));
                 }
                 else
                 {
@@ -95,17 +97,21 @@ namespace Libplanet.Net.Consensus
                         message);
                 }
 
+                if (message is ConsensusProposalMsg proposal)
+                {
+                    AddProposal(proposal.Proposal);
+                }
+
                 if (message is ConsensusVoteMsg voteMsg)
                 {
                     switch (voteMsg)
                     {
-                        case ConsensusProposalMsg proposal:
-                            AddProposal(proposal.Proposal);
-                            break;
                         case ConsensusPreVoteMsg preVote:
+                            FilterSpam(preVote);
                             _heightVoteSet.AddVote(preVote.PreVote);
                             break;
                         case ConsensusPreCommitMsg preCommit:
+                            FilterSpam(preCommit);
                             _heightVoteSet.AddVote(preCommit.PreCommit);
                             break;
                     }
@@ -154,6 +160,36 @@ namespace Libplanet.Net.Consensus
                 _logger.Error(icme, msg);
                 ExceptionOccurred?.Invoke(this, icme);
                 return false;
+            }
+        }
+
+        private void FilterSpam(ConsensusVoteMsg msg)
+        {
+            try
+            {
+                _heightVoteSet.GetVoteSet(msg.Round, msg.Flag);
+            }
+            catch (KeyNotFoundException)
+            {
+                if (!_peerCatchupRounds.ContainsKey(msg.ValidatorPublicKey))
+                {
+                    _peerCatchupRounds[msg.ValidatorPublicKey] = new List<int>();
+                }
+
+                List<int> rounds = _peerCatchupRounds[msg.ValidatorPublicKey];
+                if (rounds.Count < 2)
+                {
+                    _heightVoteSet.AddRound(msg.Round);
+                    rounds.Add(msg.Round);
+                    _peerCatchupRounds[msg.ValidatorPublicKey] = rounds;
+                }
+                else
+                {
+                    _consensusMessageCommunicator.DenyPublicKey(msg.ValidatorPublicKey);
+                    _logger.Information(
+                        "Repetitively found heigher rounds, add {PublicKey} to deny set.",
+                        msg.ValidatorPublicKey);
+                }
             }
         }
 
@@ -206,12 +242,12 @@ namespace Libplanet.Net.Consensus
 
                 if (IsValid(p1.Block, out _) && (_lockedRound == -1 || _lockedValue == p1.Block))
                 {
-                    BroadcastMessage(
+                    PublishMessage(
                         new ConsensusPreVoteMsg(MakeVote(Round, p1.Block.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
-                    BroadcastMessage(
+                    PublishMessage(
                         new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
                 }
             }
@@ -233,12 +269,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(p2.Block, out _) &&
                     (_lockedRound <= p2.ValidRound || _lockedValue == p2.Block))
                 {
-                    BroadcastMessage(
+                    PublishMessage(
                         new ConsensusPreVoteMsg(MakeVote(Round, p2.Block.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
-                    BroadcastMessage(
+                    PublishMessage(
                         new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
                 }
             }
@@ -279,7 +315,7 @@ namespace Libplanet.Net.Consensus
                     Step = ConsensusStep.PreCommit;
                     _lockedValue = p3.Block;
                     _lockedRound = Round;
-                    BroadcastMessage(
+                    PublishMessage(
                         new ConsensusPreCommitMsg(
                             MakeVote(Round, p3.Block.Hash, VoteFlag.PreCommit)));
                 }
@@ -299,7 +335,7 @@ namespace Libplanet.Net.Consensus
                         Round,
                         ToString());
                     Step = ConsensusStep.PreCommit;
-                    BroadcastMessage(
+                    PublishMessage(
                         new ConsensusPreCommitMsg(MakeVote(Round, default, VoteFlag.PreCommit)));
                 }
                 else if (Proposal is { } proposal && !proposal.BlockHash.Equals(hash3))
@@ -413,7 +449,7 @@ namespace Libplanet.Net.Consensus
         {
             if (round == Round && Step == ConsensusStep.Propose)
             {
-                BroadcastMessage(
+                PublishMessage(
                     new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
                 Step = ConsensusStep.PreVote;
                 TimeoutProcessed?.Invoke(this, (round, ConsensusStep.Propose));
@@ -430,7 +466,7 @@ namespace Libplanet.Net.Consensus
         {
             if (round == Round && Step == ConsensusStep.PreVote)
             {
-                BroadcastMessage(
+                PublishMessage(
                     new ConsensusPreCommitMsg(MakeVote(Round, default, VoteFlag.PreCommit)));
                 Step = ConsensusStep.PreCommit;
                 TimeoutProcessed?.Invoke(this, (round, ConsensusStep.PreVote));
